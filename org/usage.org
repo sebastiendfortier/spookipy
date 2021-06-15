@@ -5,7 +5,7 @@
 
 #+BEGIN_SRC sh
   # activate your conda environment     
-  . activate spooki_pwa_req     
+  . activate spookipy_req     
   # get rmn python library      
   . r.load.dot eccc/mrd/rpn/MIG/ENV/migdep/5.1.1 eccc/mrd/rpn/MIG/ENV/rpnpy/2.1.2      
   # get spookipy ssm package

@@ -28,7 +28,7 @@ algorithms.
 
 ``` {.bash org-language="sh"}
 # activate your conda environment     
-. activate spooki_pwa_req     
+. activate spookipy_req     
 # get rmn python library      
 . r.load.dot eccc/mrd/rpn/MIG/ENV/migdep/5.1.1 eccc/mrd/rpn/MIG/ENV/rpnpy/2.1.2      
 # get spookipy ssm package
@@ -73,18 +73,18 @@ CONTRIBUTING
 # get conda if you don't already have it  
 . ssmuse-sh -x cmd/cmdm/satellite/master_u1/miniconda3_4.9.2_ubuntu-18.04-skylake-64   
 # create a conda environment for spookipy's requirements   
-conda create -n spooki_pwa_dev python=3.6   
+conda create -n spookipy_dev python=3.6   
 # whenever you need to use this environment on science run the following (if you have'nt loaded the conda ssm, you'll need to do it everytime)
 # unless you put it in your profile
-. activate spooki_pwa_dev   
-# installing required packages in spooki_pwa_req environment  
+. activate spookipy_dev   
+# installing required packages in spookipy_req environment  
 conda install sphinx
 conda install -c conda-forge sphinx-autodoc-typehints
 conda install -c conda-forge sphinx-gallery
 conda install -c conda-forge sphinx_rtd_theme
 conda install numpy pandas dask xarray pytest
-# for a full jupyter developpement environment (spooki_pwa_dev.yaml is located in project root)
-conda env create -f spooki_pwa_dev.yaml
+# for a full jupyter developpement environment (spookipy_dev.yaml is located in project root)
+conda env create -f spookipy_dev.yaml
 ```
 
 ## Getting the source code
@@ -110,7 +110,7 @@ Then create a merge request on science\'s gitlab
 
 ``` {.bash org-language="sh"}
 # From the $project_root/test directory of the project
-. activate spooki_pwa_dev    
+. activate spookipy_dev    
 # get rmn python library      
 . r.load.dot eccc/mrd/rpn/MIG/ENV/migdep/5.1.1 eccc/mrd/rpn/MIG/ENV/rpnpy/2.1.2    
 # get fstpy ssm package
@@ -166,7 +166,7 @@ conda install sphinx
 ## export env to file
 
 ``` {.bash org-language="sh"}
-conda env exportspooki_pwa.yaml
+conda env exportspookipy.yaml
 ```
 
 ## deactivate the env

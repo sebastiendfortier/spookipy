@@ -6,7 +6,7 @@ ROOT_DIR=${DIR:0:${#DIR}-3}
 cd ${DIR}
 VERSION=$(head -n 1 ${ROOT_DIR}VERSION)
 echo ${VERSION}
-PKGNAME=spooki_pwa_${VERSION}_${BASE_ARCH}
+PKGNAME=spookipy_${VERSION}_${BASE_ARCH}
 
 echo '{' > control.json
 echo '    "name": "spookipy",' >> control.json

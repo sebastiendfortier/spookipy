@@ -17,24 +17,24 @@ if [[ $ORDENV_SETUP != 1 ]] ; then
     return 1
 fi
 
-use_spooki_pwa(){
-    use_spooki_pwa_deps
-    add_spooki_pwa_to_pythonpath
+use_spookipy(){
+    use_spookipy_deps
+    add_spookipy_to_pythonpath
 }
 
-add_spooki_pwa_to_pythonpath(){
+add_spookipy_to_pythonpath(){
     # Note the use of python for portability.
     # On darwin, readlink does not have the -f option
     bash_source=$(python3 -c "import os; print(os.path.realpath('${BASH_SOURCE[0]}'))")
     this_dir=$(cd -P $(dirname $bash_source) 2>/dev/null && pwd)
-    spooki_pwa_packages_dir=$this_dir
-    export PYTHONPATH=$spooki_pwa_packages_dir:$PYTHONPATH
+    spookipy_packages_dir=$this_dir
+    export PYTHONPATH=$spookipy_packages_dir:$PYTHONPATH
 }
 
-use_spooki_pwa_deps(){
+use_spookipy_deps(){
     # spookipy uses low-level python binding for
     # librmn functions provided by rpnpy
     . r.load.dot eccc/mrd/rpn/MIG/ENV/migdep/5.1.1 eccc/mrd/rpn/MIG/ENV/rpnpy/2.1.2
 }
 
-use_spooki_pwa
+use_spookipy

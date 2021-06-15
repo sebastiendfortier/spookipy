@@ -56,7 +56,7 @@ install-stuff-in-the-env
 export-env-to-file
    :END:
 #+BEGIN_SRC sh
-  conda env exportspooki_pwa.yaml
+  conda env exportspookipy.yaml
 #+END_SRC
 
 ** deactivate the env

@@ -1,0 +1,93 @@
+** English
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- Limit the maximum of a field to the specified value
+
+*Iteration method:*
+
+- Point-by-point
+
+*Dependencies:*
+
+- A meteorological field
+
+*Result(s):*
+
+- The meteorological field of which no value is greater than the
+  specified value
+
+*Algorithm:*
+
+#+begin_example
+     For F, a given field of dimension N, composed of n elements (n = 1,N)
+     For z, a value given by the "value" key, designated as upper boundary of field F
+        For each point n=1,N do
+
+            If F(n) > z then
+               F(n) = z
+            End if
+
+       End do
+#+end_example
+
+*Reference:*
+
+- Does not apply
+
+*Keywords:*
+
+- UTILITAIRE/UTILITY, maximum, borne/bound, supérieur/upper
+
+*Usage:*
+
+*Call example:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/SetUpperBoundary/testsFiles/inputFile.std] >>
+                  [SetUpperBoundary --value 1 ] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std]"
+      ...
+#+end_example
+
+*Results validation:*
+
+*Contacts:*
+
+- Author : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sébastien
+  Fortier]]
+- Coded by : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sébastien
+  Fortier]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Reference to 
+
+
+Units tests
+
+
+
+*Uses:*\\
+
+*Used by:*\\
+
+
+
+  
+

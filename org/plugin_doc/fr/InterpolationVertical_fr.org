@@ -1,0 +1,171 @@
+** Français
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- Module d'interpolation verticale développé à partir de la librairie
+  EZINTERPV de RMNLIB, elle-même basée sur un ensemble de routines
+  classiques d'interpolation 1D
+- Plugin qui traite tous types de niveaux verticaux (eta, sigma, hybrid,
+  pression, etc...)
+- Interpole directement en hauteur géométrique (mètres) par rapport au
+  niveau moyen de la mer ou par rapport au sol en millibars par rapport
+  au sol, sans utiliser la librairie EZINTERPV
+
+*NOTE* : Pour le moment, seulement les interpolations en hauteur
+géométrique par rapport au niveau moyen de la mer ou par rapport à un
+niveau de pression sont disponibles
+
+*Méthode d'itération:*
+
+- Colonne par colonne
+
+*Dépendances:*
+
+- Une ou plusieurs colonne(s) de valeurs à interpoler verticalement
+- Hauteur géopotentielle (GZ), dans le cas d'une interpolation en
+  hauteur
+- Pression à la surface (P0), dans le cas d'une interpolation sur des
+  niveaux de pression
+- Pression hydrostatique(PX), si l'argument de la clé paramétrable
+  --verticalLevelType est MILLIBARS_ABOVE_LEVEL
+
+*Résultat(s):*
+
+- Une ou plusieurs colonne(s) interpolée(s) sur les niveaux verticaux ou
+  hauteurs demandé(e)s, dans les mêmes unités que la source
+
+*Algorithme:*
+
+- si la clé --verticalLevelType METER_SEA_LEVEL ou --verticalLevelType
+  METER_GROUND_LEVEL est utilisée, alors pour chacune des hauteurs sur
+  lesquelles interpoler :
+
+  - recherche des deux hauteurs géopotentielles GZ (en mètres) entourant
+    la hauteur désignée
+  - déduction des indices des niveaux entourant la hauteur sur laquelle
+    interpoler
+  - interpolation de la colonne source sur la hauteur désignée
+
+- sinon :
+
+  - transforme les niveaux entrés en paramètres en niveaux pression
+  - interpole de niveaux de pression à niveaux de pression, en utilisant
+    la librairie EZINTERPV
+
+*Références:*
+
+- [[https://wiki.cmc.ec.gc.ca/wiki/RPN-SI/RpnLibrairies/RMNLIB/INTERP1D/Ez_interpv_f90][Librairie
+  EZINTERPV de RMNLIB]]\\
+
+*Mots clés:*
+
+- INTERPOLATION, extrapolation, niveaux/levels, vertical, ezinterpv
+
+*Usage:*
+
+*/Notes:/*\\
+Pour la clé --outputGridDefinitionMethod :
+
+- USER_DEFINED: la grille verticale cible est définie à l'aide des
+  options --verticalLevelType et --verticalLevel. Attention: la grille
+  horizontale sera identique à celle des champs d'entrée
+- FIELD_DEFINED: la grille verticale cible est définie à l'aide du champ
+  de référence identifié par l'option --fieldName. Attention: le champ
+  de référence ne doit être disponible que sur une grille unique et
+  seules les données sur la même grille horizontale que le champ de
+  référence seront interpolées.
+
+Pour la clé --verticalLevelType :
+
+- METER_SEA_LEVEL: interpolation par rapport au niveau moyen de la mer
+- METER_GROUND_LEVEL: interpolation par rapport au sol
+- MILLIBARS_ABOVE_LEVEL : interpolation en millibars par rapport au
+  niveau de référence
+- MILLIBARS : interpolation en millibars
+
+Pour la clé --interpolationType :
+
+- NEAREST: attribue à la valeur cible, la valeur source dont l'indice
+  est le plus proche
+- LINEAR: moyenne pondérée à partir des 2 valeurs sources les plus
+  proches
+- CUBIC_WITH_DERIVATIVES: utilise les 2 valeurs sources les plus proches
+  et leurs dérivées pour obtenir la meilleure estimation possible de la
+  valeur cible en fonction de ses dérivées d'ordre 3 (méthode cubique)
+- CUBIC_LAGRANGE: méthode d'interpolation d'ordre 4 qui utilise des
+  splines cubiques (fonctions continues formées de polynômes de Lagrange
+  cubiques). Fait appel aux 4 plus proches valeurs sources
+
+Pour la clé --extrapolationType :
+
+- NEAREST: la valeurs cible à extrapoler à l'extérieur de la colonne est
+  remplacée par la valeur du plus proche voisin de la colonne source
+- FIXED: les valeurs cibles à extrapoler sont remplacées par une valeur
+  numérique donnée (float spécifié par les clés --valueAbove et
+  --valueBelow)
+- LAPSERATE: utilise la pente (spécifié par les clés --valueAbove et
+  --valueBelow) entre la valeur cible et la valeur source la plus proche
+  pour déterminer la valeur à extrapoler
+
+*Exemple d'appel:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/InterpolationVertical/testsFiles/inputFile.std] >>
+                  [InterpolationVertical  -m USER_DEFINED --verticalLevel 1000,2000,3000,4000,6000 --verticalLevelType METER_SEA_LEVEL
+                                          --interpolationType LINEAR --extrapolationType FIXED --valueAbove 999.0 --valueBelow 999.0] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std]"
+      ...
+#+end_example
+
+- [[https://wiki.cmc.ec.gc.ca/wiki/Spooki/Documentation/Exemples#Exemples_d.27interpolation_verticale][Autres
+  exemples]]
+
+*/Notes:/*\\
+Pour les interpolations vers de niveaux en mètre ou en pression par
+rapport à un niveau, seul les interpolations LINEAR et NEAREST sont
+supportées. Les extrapolations SURFACE et SURFACE_WIND ne seront pas
+activées. Si vous jugez nécessaire ces extrapolations, veuillez en faire
+la demande à l'équipe. De plus, les interpolations à partir de niveaux
+en mètre ou en pression par rapport à un niveau ne sont pas supportées.
+
+*Validation des résultats:*
+
+*Contacts:*
+
+- Auteur(e) : [[https://wiki.cmc.ec.gc.ca/wiki/User:Edouards][Sandrine
+  Édouard]]
+- Codé par : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortinf][François
+  Fortin]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Voir la référence à
+[[file:InterpolationVertical_8cpp.html][InterpolationVertical]].
+
+Tests unitaires
+
+
+
+*Ce plugin utilise:*\\
+
+*Ce plugin est utilisé par:*\\
+
+
+
+  
+

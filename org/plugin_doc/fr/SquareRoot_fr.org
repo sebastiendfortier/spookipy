@@ -1,0 +1,83 @@
+** Français
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- Calcule la racine carrée de chaque élément d'un champ donné
+
+*Méthode d'itération:*
+
+- Point par point
+
+*Dépendances:*
+
+- Un champ météorologique
+
+*Résultat(s):*
+
+- Le champ météorologique dont la valeur à chaque point est la racine
+  carrée du champ entré.
+
+*Algorithme:*
+
+- Applique la fonction \( \sqrt{z} \) à chaque valeur (z) du champ donné
+
+*Références:*
+
+- Aucune
+
+*Mots clés:*
+
+- UTILITAIRE/UTILITY, racine/root, carré/square, point
+
+*Usage:*
+
+*Exemple d'appel:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/SquareRoot/testsFiles/inputFile.std] >>
+                  [SquareRoot --noFieldNameTag] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std]"
+      ...
+#+end_example
+
+*Validation des résultats:*
+
+*Contacts:*
+
+- Auteur(e) : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sébastien
+  Fortier]]
+- Codé par : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sébastien
+  Fortier]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Voir la référence à 
+
+
+[[file:SquareRootTests_8cpp.html][Tests unitaires]]
+
+
+
+*Ce plugin utilise:*\\
+
+*Ce plugin est utilisé par:*\\
+
+
+
+  
+

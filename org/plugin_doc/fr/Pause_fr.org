@@ -1,0 +1,81 @@
+** Français
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- Opération qui fait une pause d'un temps defini en arguments.
+
+*Méthode d'itération:*
+
+- N/D
+
+*Dépendances:*
+
+- N/D
+
+*Résultat(s):*
+
+- N/D
+
+*Algorithme:*
+
+- N/D
+
+*Références:*
+
+- N/D
+
+*Mots clés:*
+
+- SYSTÈME/SYSTEM, logique/logical, pause
+
+*Usage:*
+
+*Exemple d'appel:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/Pause/testsFiles/inputFile.std] >>
+                  [Pause --time CAFE] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std]"
+      ...
+#+end_example
+
+*Validation des résultats:*
+
+*Contacts:*
+
+- Auteur(e) : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sebastien
+  Fortier]]
+- Codé par : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sebastien
+  Fortier]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Voir la référence à [[file:Pause_8cpp.html][Pause]].
+
+Tests unitaires
+
+
+
+*Ce plugin utilise:*\\
+
+*Ce plugin est utilisé par:*\\
+
+
+
+  
+

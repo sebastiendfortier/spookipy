@@ -1,0 +1,101 @@
+** Français
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- Le Plugin crée un champ composite (NW) indiquant le type de
+  précipitations significatif pour chaque intervalle temporel défini par
+  les données d'entrée. En ayant défini un seuil établit subjectivement
+  on décide quel type de précipitations aura préséance sur les autres
+  types lorsqu'il y en a plusieurs en jeu.
+
+Note: Utilser le plugin
+ si les
+données d'entrée ne définissent pas chaque intervalle désiré.
+
+*Méthode d'itération:*
+
+- Point par point
+
+*Dépendances:*
+
+- Champ d'accumulation RN (pluie) pour chaque intervalle temporel
+  désiré.
+- Champ d'accumulation SN (neige) pour chaque intervalle temporel
+  désiré.
+- Champ d'accumulation FR (pluie verglaçante) pour chaque intervalle
+  temporel désiré.
+- Champ d'accumulation PE (granules de glace) pour chaque intervalle
+  temporel désiré.
+
+*Résultat(s):*
+
+- Champ du type de précipitaions NW (sans unité, compris entre 1000 et
+  6000, champ 2D) sur chaque intervalle temporel.
+
+*Algorithme:*
+
+- [[https://wiki.cmc.ec.gc.ca/images/f/f5/Algorithme_PrecipitationTypeSignificant.doc]]
+- [[https://wiki.cmc.ec.gc.ca/images/6/6c/Algorithme_PrecipitationTypeSignificant.pdf]]
+
+*Références:*
+
+- Inspiré du programme opérationnel : "typcpn.f"
+
+*Mots clés:*
+
+- MÉTÉO/WEATHER, précipitations/precipitation, type, temps/time,
+  intervalle/interval, significatif/significant, accumulation
+
+*Usage:*
+
+*Exemple d'appel:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/PrecipitationTypeSignificant/testsFiles/inputFile.std] >>
+                  [PrecipitationTypeSignificant] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std]"
+      ...
+#+end_example
+
+*Validation des résultats:*
+
+*Contacts:*
+
+- Auteur(e) : [[https://wiki.cmc.ec.gc.ca/wiki/User:Yazidih][Hatem
+  Yazidi]]
+- Codé par : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sébastien
+  Fortier]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Voir la référence à
+
+
+
+Tests unitaires
+
+
+
+*Ce plugin utilise:*\\
+
+*Ce plugin est utilisé par:*\\
+
+
+
+  
+

@@ -1,0 +1,94 @@
+** English
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- ...
+
+*Iteration method:*
+
+- ...
+
+*Dependencies:*
+
+- ...
+
+*Result(s):*
+
+- ...
+
+*Algorithm:*
+
+- ...
+
+*Reference:*
+
+- ...
+
+*Customizable condition:*
+
+- N/A
+
+*Keywords:*
+
+- image, map, carte, R1DFX02-04, quatre, panneaux
+
+*Usage:*
+
+#+begin_example
+#+end_example
+
+#+begin_example
+#+end_example
+
+*Call example:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/QuatrePanneaux/testsFiles/inputFile.std] >>
+                  [QuatrePanneaux --forecastHour 12 --hourDelta 12 --jobName R1DFX03 --runId R1 --runHour 00] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std]"
+      ...
+#+end_example
+
+*Results validation:*
+
+- ...
+
+*Contacts:*
+
+- Author : [[https://wiki.cmc.ec.gc.ca/wiki/User:Beaucheminm][Maryse
+  Beauchemin]]
+- Coded by : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortinf][François
+  Fortin]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Reference to 
+
+
+Tests unitaires
+
+
+
+*Uses:*\\
+
+*Used by:*\\
+
+
+
+  
+

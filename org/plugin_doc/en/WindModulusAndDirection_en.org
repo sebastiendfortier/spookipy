@@ -1,0 +1,87 @@
+** English
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- Calculation of the wind modulus and the wind direction.\\
+
+*Iteration method:*
+
+- Point-by-point
+
+*Dependencies:*
+
+- UU wind component (along the X axis).\\
+- VV wind component (along the Y axis).
+
+*Result(s):*
+
+- Wind modulus, UV, same units as the dependencies.\\
+- Meteorological wind direction, WD (deg).
+
+*Algorithm:*
+
+- The wind, having 2 components, calls the
+  [[file:pluginVectorModulusAndDirection.html][VectorModulusAndDirection]]
+  plug-in with the --orientationType WIND parameter key.
+
+*Reference:*
+
+- Does not apply
+
+*Keywords:*
+
+- MÉTÉO/WEATHER, vent/wind, module/modulus, direction, angle
+
+*Usage:*
+
+*Call example:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/WindModulusAndDirection/testsFiles/inputFile.std] >>
+                  [WindModulusAndDirection] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std]"
+      ...
+#+end_example
+
+*Results validation:*
+
+*Contacts:*
+
+- Author : [[https://wiki.cmc.ec.gc.ca/wiki/User:Beaucheminm][Maryse
+  Beauchemin]]
+- Coded by : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortinf][François
+  Fortin]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Reference to
+
+
+
+Unit tests
+
+
+
+*Uses:*\\
+
+*Used by:*\\
+
+
+
+  
+

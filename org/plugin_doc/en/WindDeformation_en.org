@@ -1,0 +1,91 @@
+** English
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- Calculation of the horizontal wind deformation
+
+*Iteration method:*
+
+- Point-by-point
+
+*Dependencies:*
+
+- UU wind component (along the X axis on the grid)
+- VV wind component (along the Y axis on the grid)
+
+*Result(s):*
+
+- The wind deformation, DEF (s-1)
+
+*Algorithm:*
+
+- ...
+
+*Reference:*
+
+- See the definition of the deformation in the
+  [[http://iweb.cmc.ec.gc.ca/cmc/bibliotheque/PREVISIONS/f_7.pdf][Aviation
+  package]] (link in French only) and the
+  [[http://iweb/~afsg003/doc/ClearAirTurbulence.pdf][Ellrod&Knapp
+  (1992)]] article.
+
+*Customizable condition:*
+
+- N/A
+
+*Keywords:*
+
+- MÉTÉO/WEATHER, vent/wind, déformation/deformation, turbulence,
+  aviation
+
+*Usage:*
+
+*Call example:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/testsFiles/inputFile.std] >>
+                  [WindDeformation] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std  --noUnitConversion]"
+      ...
+#+end_example
+
+*Results validation:*
+
+*Contacts:*
+
+- Author : [[https://wiki.cmc.ec.gc.ca/wiki/User:Klasam][Marc Klasa]]
+- Coded by : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortinf][François
+  Fortin]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Reference to 
+
+
+Tests unitaires
+
+
+
+*Uses:*\\
+
+*Used by:*\\
+
+
+
+  
+

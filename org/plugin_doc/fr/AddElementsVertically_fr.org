@@ -1,0 +1,86 @@
+** Français
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- Addition de toutes les valeurs d'un champ dans la verticale
+
+*Méthode d'itération:*
+
+- Colonne par colonne
+
+*Dépendances:*
+
+- Au moins un champ 3D
+
+*Résultat(s):*
+
+- Un champ 2D du même nom que celui en entrée
+
+*Algorithme:*
+
+#+begin_example
+          Additionne colonne par colonne toutes les valeurs d'un champ dans la verticale :
+
+          A = A[k] + A[k+1] + A[k+2] + ...
+#+end_example
+
+*Références:*
+
+- Aucune
+
+*Mots clés:*
+
+- UTILITAIRE/UTILITY, accumuler/accumulate, addition, verticale/vertical
+
+*Usage:*
+
+*Exemple d'appel:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/AddElementsVertically/testsFiles/inputFile.std] >>
+                  [AddElementsVertically] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std]"
+      ...
+#+end_example
+
+*Validation des résultats:*
+
+*Contacts:*
+
+- Auteur(e) : [[https://wiki.cmc.ec.gc.ca/wiki/User:Klasam][Marc Klasa]]
+- Codé par : [[https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg][Guylaine
+  Hardy]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+*Ce plugin utilise:*\\
+
+*Ce plugin est utilisé par:*\\
+
+Voir la référence à
+
+
+
+Tests unitaires
+
+
+
+
+
+  
+

@@ -1,0 +1,86 @@
+** English
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- For each element of a field, remplaces the values that coressponds to
+  a given condition by value parameter
+
+*Iteration method:*
+
+- Point-by-point
+
+*Dependencies:*
+
+- A meteorological field
+
+*Result(s):*
+
+- The field with values that correspond to condition replaced by the
+  value parameter
+
+*Algorithm:*
+
+- For each vlaue of a field, if ( x corresponds to condition ) replace
+  the value by the given value in parameter
+
+*Reference:*
+
+- Does not apply
+
+*Keywords:*
+
+- UTILITAIRE/UTILITY, remplacer/replace
+
+*Usage:*
+
+*Call example:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderCsv --input $SPOOKI_DIR/pluginsRelatedStuff/ReplaceDataIfCondition/testsFiles/simple_input.csv] >>
+                  [ReplaceDataIfCondition --condition <1 --value -999.0] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std]"
+      ...
+#+end_example
+
+*Results validation:*
+
+*Contacts:*
+
+- Author : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sébastien
+  Fortier]]
+- Coded by : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sébastien
+  Fortier]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Reference to
+
+
+
+Tests unitaires
+
+
+
+*Uses:*\\
+
+*Used by:*\\
+
+
+
+  
+

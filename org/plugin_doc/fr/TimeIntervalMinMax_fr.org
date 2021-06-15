@@ -1,0 +1,135 @@
+** Français
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- Calcul du minimum/maximum d'un champ entre le début et la fin de
+  l'intervalle temporel désiré en tenant compte que des heures
+  spécifiées.
+- Les divers intervalles sont définis par les clés paramétrables. Ce
+  plugin peut être utilisé, par exemple, pour le calcul de l'humidex
+  maximal.
+
+*Méthode d'itération:*
+
+- Calcul temporel, point par point
+
+*Dépendances:*
+
+- Au minimum deux champs pour faire les calculs désirés. C'est le
+  responsbilité de l'usager de s'assurer que tous les champs valides aux
+  heures requises aux calculs sont présents. (Par exemple en invoquant
+  le plugin .) Spooki prendra tous les
+  champs valides entre l'heure du début et de la fin de l'intervalle.
+
+*Résultat(s):*
+
+- Minimum et/ou maximum temporel de champs sur chaque intervalle, dans
+  les mêmes unités que les dépendances
+
+*Algorithme:*
+
+#+begin_example
+    1) Créer une liste complète des paires de temps encadrant chaque intervalle désirée:
+
+  Variables en entrée:
+  Soit N le nombre d'intervalles temporels dans --rangeForecastHour
+  Soit rangeStart(n) la première valeur du n ième intervalle temporel dans --rangeForecastHour
+  Soit rangeEnd(n) la deuxième valeur du n ième intervalle temporel dans --rangeForecastHour
+  Soit interval(n) la n ième valeur dans --interval
+  Soit step(n) la n ième valeur dans -- step
+  k est le nombre de calculs désirés.
+
+  k=0
+  # Boucler sur chaque ensemble d'instructions
+  Pour n= 1,N
+     startime(k) = rangeStart(n)
+     endtime(k) = 0.
+     # Boucler tant que tous les intervalles n'ont pas été traités.
+     While ( startime(k) + interval(n) ) <= rangeEnd(n)
+         endtime(k) = startime(k) + interval(n)
+         i = 0
+          #Pour chaque intervalle, lire les champs nécessaires aux calculs, et prendre le min ou le max.
+          # C'est-à-dire, lire les champs entre startime(k) et endtime(k). Prendre le maximum et ou minimum de ceux-ci.
+
+             #Si tous les champs de l'intervalle ont été traités, on passe au prochain intervalle, et on détermine son heure de début
+              Si endtime(k) < rangeEnd(n)
+                     k = k + 1
+                     startime(k) = startime(k-1) + step(n)
+               fin si
+         fin boucle
+     fin boucle
+     n = n + 1
+  fin
+#+end_example
+
+*Références:*
+
+- Inspiré du script opérationnel : "img.pcpn_intvl"
+
+*Mots clés:*
+
+- UTILITAIRE/UTILITY, min-max, humidex, temps/time, temporel/temporal,
+  intervalle/interval
+
+*Usage:*
+
+#+begin_quote
+  */Note:/* Une seule valeur de chacune des listes des clés --interval
+  et --step s'appliquent à une seul des intervalles temporels définies
+  dans --rangeForecastHour. L'ordre des valeurs dans les listes des clés
+  --interval et --step, doivent correspondre à l'ordre dans la liste de
+  --rangeForecastHour.
+#+end_quote
+
+*Exemple d'appel:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --ignoreExtended --input $SPOOKI_DIR/pluginsRelatedStuff/TimeIntervalMinMax/testsFiles/global20121217_fileSrc.std] >>
+                  [TimeIntervalMinMax --fieldName PR --type MIN --rangeForecastHour 0@177,0@60 --interval 12,3 --step 24,6] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std --noUnitConversion --noMetadata --encodeIP2andIP3]"
+      ...
+#+end_example
+
+*Validation des résultats:*
+
+*Contacts:*
+
+- Auteur(e) :
+  [[https://wiki.cmc.ec.gc.ca/wiki/Agn%C3%A8s_Barszcz][Agnieszka
+  Barszcz]]
+- Codé par : [[https://wiki.cmc.ec.gc.ca/wiki/User:lachapellep][Philippe
+  Lachapelle]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Voir la référence à
+
+
+
+Tests unitaires
+
+
+
+*Ce plugin utilise:*\\
+
+*Ce plugin est utilisé par:*\\
+
+
+
+  
+

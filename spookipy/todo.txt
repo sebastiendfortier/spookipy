@@ -1,0 +1,89 @@
+link avec stock a phil
+/home/smco500/.suites/rdps/components/r1/cmdw_post_processing
+git grep ...
+
+calculer deps
+reconnaitre resultat
+garder plugin clean, concentrer sur l'essentiel
+benchmark vitesse
+memory use
+nom des colonnes
+typvar
+interval
+
+
+
+
+    grille
+        gridpointdistance
+    interpolation
+        interpolationhorizontalgrid
+        interpolationhorizontalpoint
+        interpolationvertical
+    io
+        writerasciibulletinfb
+
+    météo
+        convectiveenergies
+        dewpointdepression
+        energymeanisothermmethod
+        freezinglevel
+        georgekindex
+        humidex
+        humidityrelative
+        humidityspecific
+        levelofcondensationbylifting
+        leveloffreeconvectionandequilibrium
+        liftedindex
+        parcelmeanlayer
+        parcelmostunstable
+        precipitationamount
+        precipitationtypedominant
+        precipitationtypeinstantaneousbourgouin
+        precipitationtypesignificant
+        pressure
+        saturationvapourpressure
+        slopeindex
+        sweatindex
+        temperaturealongpseudoadiabat
+        temperaturedewpoint
+        temperatureofliftedparcel
+        temperaturepotential
+        temperaturevirtual
+        temperaturewetbulb
+        temperaturewetbulbpotential
+        thickness
+        totaltotalsindex
+        vapourpressure
+        watervapourmixingratio
+        windmodulusanddirection
+    produit  
+        bulletinfbpreparation
+    système
+        checknumberoflevels
+        getdictionaryinformation
+    utilitaire
+        *addelementsbypoint
+        multiplyelementsbypoint
+        *arithmeticmeanbypoint
+
+        *addtoelement
+        *multiplyelementby
+        setconstantvalue
+
+        filterdigital
+        gridmergesimilar
+        mask
+        matchfieldsbycommonlevels
+        matchlevelindextovalue
+        minmaxlevelindex
+        
+        
+        setlowerboundary
+        setupperboundary
+        spatialweightedaveraging
+        subtractelementsvertically
+        timeintervaldifference
+        timeintervalminmax
+        vectormodulusanddirection
+        verticalscan

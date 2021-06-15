@@ -1,0 +1,84 @@
+** Français
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- Permet de faire une sélection géographique dans un ensemble de données
+
+*Méthode d'itération:*
+
+- N/D
+
+*Dépendances:*
+
+- N/D
+
+*Résultat(s):*
+
+- N/D
+
+*Algorithme:*
+
+- N/D
+
+*Références:*
+
+- N/D
+
+*Mots clés:*
+
+- SYSTÈME/SYSTEM, sélection/selection, géographique/geographical,
+  latitude, longitude
+
+*Usage:*
+
+*Exemple d'appel:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/testsFiles/inputFile.std] >>
+                  [SelectGeo --longitude1 272.425 --latitude1 45.1621 --longitude2 278.816 --latitude2 46.6413] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std]"
+      ...
+#+end_example
+
+*Validation des résultats:*
+
+*Contacts:*
+
+- Auteur(e) : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sébastien
+  Fortier]]
+- Codé par : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sébastien
+  Fortier]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Voir la référence à [[file:SelectGeo_8cpp.html][SelectGeo]].
+
+Tests unitaires
+
+
+
+*Ce plugin utilise:*\\
+
+*Ce plugin est utilisé par:*\\
+
+
+
+  
+

@@ -1,0 +1,84 @@
+** English
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- Raise to the power each element of a field
+
+*Iteration method:*
+
+- Point-by-point
+
+*Dependencies:*
+
+- A meteorological field
+
+*Result(s):*
+
+- The meteorological field of which the value at each point has been
+  raised to the power.
+
+*Algorithm:*
+
+- Apply the function \(\mathbf z^{value} \) to each element (z) of the
+  given field
+
+*Reference:*
+
+- Does not apply
+
+*Keywords:*
+
+- UTILITAIRE/UTILITY, puissance/power, point
+
+*Usage:*
+
+*Call example:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/Power/testsFiles/inputFile.std] >>
+                  [Power --value 3] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std]"
+      ...
+#+end_example
+
+*Results validation:*
+
+*Contacts:*
+
+- Author : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sébastien
+  Fortier]]
+- Coded by : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sébastien
+  Fortier]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Reference to 
+
+
+[[file:PowerTests_8cpp.html][Unit tests]]
+
+
+
+*Uses:*\\
+
+*Used by:*\\
+
+
+
+  
+

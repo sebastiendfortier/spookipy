@@ -1,0 +1,110 @@
+** English
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- Calculation of the turbulence index DVSI (Deformation Vertical Shear
+  Index - developed by Ellrod)
+
+*Iteration method:*
+
+- Element-by-element
+
+*Dependencies:* Three vertical levels:
+
+- Wind component UU (along the X axis)
+- Wind component VV (along the Y axis)
+
+Two vertical levels (lower and upper):
+
+- Geopotential height GZ.
+
+*Result(s):*
+
+- The turbulence index (DVSI=Deformation Vertical Shear Index, variable
+  of the index Ellrod) at each point on the grid
+
+*Algorithm:*
+
+- DVSI = DEF x BS x correction where correction = |UV|/45.0 (using
+  middle level) (|UV| = the wind modulus calculated by the
+   plug-in) DEF = the
+  deformation of the wind calculated by the
+   plug-in (using
+  middle level) BS = the vertical shear BS calculated by the
+   plug-in (using
+  lower and upper levels) UV is in m/s, DEF is in (m/s)/100km and BS is
+  in (m/s)/km
+
+*Reference:*
+
+- [[http://iweb.cmc.ec.gc.ca/cmc/bibliotheque/PREVISIONS/f_7.pdf][Aviation
+  package]] and the article
+  [[http://iweb/~afsg003/doc/ClearAirTurbulence.pdf][Ellrod&Knapp
+  (1992)]]
+
+*Customizable condition:*
+
+- N/A
+
+*Keywords:*
+
+- MÉTÉO/WEATHER, turbulence, cisaillement/shear, vertical,
+  déformation/deformation, vent/wind, aviation, dvsi, ellrod
+
+*Usage:*
+
+#+begin_example
+#+end_example
+
+#+begin_example
+#+end_example
+
+*Call example:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/WindTurbulenceDVSI/testsFiles/inputFile.std] >>
+                  [WindTurbulenceDVSI] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std]"
+      ...
+#+end_example
+
+*Results validation:*
+
+*Contacts:*
+
+- Author : [[https://wiki.cmc.ec.gc.ca/wiki/User:Klasam][Marc Klasa]]
+- Coded by : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortinf][François
+  Fortin]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Reference to 
+
+
+Tests unitaires
+
+
+
+*Uses:*\\
+
+*Used by:*\\
+
+
+
+  
+

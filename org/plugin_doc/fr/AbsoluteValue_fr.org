@@ -1,0 +1,69 @@
+** Français
+
+
+*Description:*
+
+- Applique la valeur absolue à chaque élément d'un champ
+
+*Méthode d'itération:*
+
+- Point par point
+
+*Dépendances:*
+
+- Un champ météorologique
+
+*Résultat(s):*
+
+- Le champ météorologique en valeur absolue
+
+*Algorithme:*
+
+- Applique la fonction |z| à chaque valeur (z) du champ donné
+
+*Références:*
+
+- Ne s'applique pas
+
+*Mots clés:*
+
+- UTILITAIRE/UTILITY, absolue/absolute
+
+*Usage:*
+
+*Exemple d'appel:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/AbsoluteValue/testsFiles/inputFile.std] >>
+                  [AbsoluteValue] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std]"
+      ...
+#+end_example
+
+*Validation des résultats:*
+
+*Contacts:*
+
+- Auteur(e) : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sébastien
+  Fortier]]
+- Codé par : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sébastien
+  Fortier]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Voir la référence à 
+
+
+[[file:AbsoluteValueTests_8cpp.html][Tests unitaires]]
+
+
+
+*Ce plugin utilise:*\\
+
+*Ce plugin est utilisé par:*\\
+
+
+
+  
+

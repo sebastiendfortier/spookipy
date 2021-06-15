@@ -1,0 +1,81 @@
+** Français
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- Lecture d'un ou plusieurs fichiers. Le type de fichier est déterminé
+  automatiquement.
+
+*Méthode d'itération:*
+
+- N/D
+
+*Dépendances:*
+
+- N/D
+
+*Résultat(s):*
+
+- Le contenu des fichiers demandé est indexé.
+
+*Algorithme:*
+
+- N/D
+
+*Références:*
+
+- N/D
+
+*Mots clés:*
+
+- IO, reader
+
+*Usage:*
+
+*Exemple d'appel:* ==
+
+#+begin_example
+      ...
+      spooki_run "[Reader --input $SPOOKI_DIR/pluginsRelatedStuff/Reader/testsFiles/inputFile.std $SPOOKI_DIR/pluginsRelatedStuff/testsFiles/inputFile.csv] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std]"
+      ...
+#+end_example
+
+*Validation des résultats:*
+
+*Contacts:*
+
+- Auteur(e) : [[https://wiki.cmc.ec.gc.ca/wiki/User:Beaucheminm][Maryse
+  Beauchemin]]
+- Codé par : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortinf][François
+  Fortin]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Voir la référence à [[file:Reader_8cpp.html][Reader]].
+
+Tests unitaires
+
+
+
+*Ce plugin utilise:*\\
+
+*Ce plugin est utilisé par:*\\
+
+
+
+  
+

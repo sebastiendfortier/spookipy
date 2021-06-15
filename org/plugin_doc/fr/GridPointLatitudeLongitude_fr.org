@@ -1,0 +1,89 @@
+** Français
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- Sortie des latitudes et longitudes pour chaque point d'une grille.
+
+*Méthode d'itération:*
+
+- Point par point
+
+*Dépendances:*
+
+- Un champ sur une grille
+
+*Résultat(s):*
+
+- LA, latitude de chaque point de la grille donnée
+- LO, longitude de chaque point de la grille donnée
+
+*Algorithme:*
+
+#+begin_quote
+
+  - Appelle les routines de la librairie EZSCINT appropriées
+  - Retourne les latitudes et longitudes des points de la grille
+#+end_quote
+
+*Références:*
+
+- [[https://wiki.cmc.ec.gc.ca/wiki/Librmn/ezscint][Librairie EZSCINT de
+  RMNLIB]]
+
+*Mots clés:*
+
+- GRILLE/GRID, point, latitude, longitude
+
+*Usage:*
+
+*Exemple d'appel:* ==
+
+#+begin_example
+     ...
+     spooki_run "[ReaderStd         --input $SPOOKI_DIR/pluginsRelatedStuff/GridPointLatitudeLongitude/testsFiles/inputFile.std] >>
+                 [GridPointLatitudeLongitude] >>
+                 [WriterStd         --output /tmp/$USER/outputFile.std]"
+     ...
+#+end_example
+
+*Validation des résultats:*
+
+*Contacts:*
+
+- Auteur(e) : [[https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg][Guylaine
+  Hardy]]
+- Codé par : [[https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg][Guylaine
+  Hardy]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Voir la référence à
+
+
+
+Tests unitaires
+
+
+
+*Ce plugin utilise:*\\
+
+*Ce plugin est utilisé par:*\\
+
+
+
+  
+

@@ -1,0 +1,87 @@
+** English
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- Addition of all the values of a field in the vertical
+
+*Iteration method:*
+
+- Column-by-column
+
+*Dependencies:*
+
+- At least one 3D field
+
+*Result(s):*
+
+- A 2D field of the same name as the input field
+
+*Algorithm:*
+
+#+begin_example
+           Add column by column all the values of a field in the vertical :
+
+           A = A[k] + A[k+1] + A[k+2] + ...
+#+end_example
+
+*Reference:*
+
+- None
+
+*Keywords:*
+
+- UTILITAIRE/UTILITY, accumuler/accumulate, addition, verticale/vertical
+
+*Usage:*
+
+*Call example:* ==
+
+#+begin_example
+       ...
+       spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/AddElementsVertically/testsFiles/inputFile.std] >>
+                   [AddElementsVertically] >>
+                   [WriterStd --output /tmp/$USER/outputFile.std]"
+       ...
+   
+#+end_example
+
+*Results validation:*
+
+*Contacts:*
+
+- Author : [[https://wiki.cmc.ec.gc.ca/wiki/User:Klasam][Marc Klasa]]
+- Coded by : [[https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg][Guylaine
+  Hardy]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Reference to
+
+
+
+Units tests
+
+
+
+*Uses:*\\
+
+*Used by:*\\
+
+
+
+  
+

@@ -1,0 +1,90 @@
+** English
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- ...
+
+*Iteration method:*
+
+- ...
+
+*Dependencies:*
+
+- ...
+
+*Result(s):*
+
+- ...
+
+*Algorithm:*
+
+- ...
+
+*Reference:*
+
+- ...
+
+*Customizable condition:*
+
+- ...
+
+*Keywords:*
+
+- ...
+
+*Usage:*
+
+#+begin_example
+#+end_example
+
+#+begin_example
+      
+#+end_example
+
+*Call example:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/InterpolatedHeight/testsFiles/inputFile.std] >>
+                  [InterpolatedHeight --inputFieldName CLD --threshold 0.6] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std]"
+      ...
+#+end_example
+
+*Results validation:*
+
+- ...
+
+*Contacts:*
+
+- ...
+
+Reference to 
+
+
+Tests unitaires
+
+
+
+*Uses:*\\
+
+*Used by:*\\
+
+
+
+  
+

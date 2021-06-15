@@ -1,0 +1,83 @@
+** English
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- Calculates the square root of each element in a given field
+
+*Iteration method:*
+
+- Point-by-point
+
+*Dependencies:*
+
+- A meteorological field
+
+*Result(s):*
+
+- The meteorological field of which the value at each point is the
+  square root of the field from input
+
+*Algorithm:*
+
+- Apply the function \( \sqrt{z} \) to each value (z) of the given field
+
+*Reference:*
+
+- Does not apply
+
+*Keywords:*
+
+- UTILITAIRE/UTILITY, racine/root, carré/square, point
+
+*Usage:*
+
+*Call example:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/SquareRoot/testsFiles/inputFile.std] >>
+                  [SquareRoot --noFieldNameTag] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std]"
+      ...
+#+end_example
+
+*Results validation:*
+
+*Contacts:*
+
+- Author : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sébastien
+  Fortier]]
+- Coded by : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sébastien
+  Fortier]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Reference to 
+
+
+Tests unitaires
+
+
+
+*Uses:*\\
+
+*Used by:*\\
+
+
+
+  
+

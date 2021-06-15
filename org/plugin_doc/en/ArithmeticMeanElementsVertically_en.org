@@ -1,0 +1,91 @@
+** English
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- Vertical arithmetic mean of each input field received
+
+*Iteration method:*
+
+- Column-by-column
+
+*Dependencies:*
+
+- At least one 3D field
+
+*Result(s):*
+
+- 2D field(s) averaged vertically, of the same name(s) as the input
+  field(s) received
+
+*Algorithm:*
+
+#+begin_quote
+  For F, a field with N levels
+
+  For each column:
+
+  \(\mbox{ $F = \frac {\sum_{k=0}^{N} F(k)}{N+1}$}\)
+#+end_quote
+
+*Reference:*
+
+- None
+
+*Keywords:*
+
+- UTILITAIRE/UTILITY, moyenne/mean, verticale/vertical
+
+*Usage:*
+
+*Call example:* ==
+
+#+begin_example
+       ...
+       spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/ArithmeticMeanElementsVertically/testsFiles/inputFile.std] >>
+                   [ArithmeticMeanElementsVertically] >>
+                   [WriterStd --output /tmp/$USER/outputFile.std]"
+       ...
+   
+#+end_example
+
+*Results validation:*
+
+*Contacts:*
+
+- Author : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Hatem
+  Yazidi]]
+- Coded by : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sébastien
+  Fortier]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Reference to
+
+
+
+Units tests
+
+
+
+*Uses:*\\
+
+*Used by:*\\
+
+
+
+  
+

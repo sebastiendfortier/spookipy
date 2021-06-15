@@ -1,0 +1,151 @@
+** Français
+
+*Description:*
+
+- Moyenne arithmétique en chaque point de tous les champs reçus
+
+*Méthode d'itération:*
+
+- Point par point
+
+*Dépendances:*
+
+- Au moins 2 champs différents
+
+*Résultat(s):*
+
+- La moyenne des champs fournis en entrée nommé "MEAN"
+
+*Algorithme:*
+
+#+begin_quote
+  Soit N champs Fn , (n=1,n)
+
+  La moyenne arithmétique des N champs fournis en entrée s'exprime en
+  chaque point (i,j,k) selon :
+
+  \(\mbox{ $MEAN(i,j,k) = \frac {\sum_{n=1}^{N} F_n(i,j,k)}{N}$}\)
+#+end_quote
+
+*Références:*
+
+- Ne s'applique pas
+
+*Mots clés:*
+
+- UTILITAIRE/UTILITY, moyenne/mean, average
+
+*Usage:*
+
+*Exemple d'appel:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/ArithmeticMeanByPoint/testsFiles/inputFile.std] >>
+                  [ArithmeticMeanByPoint] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std]"
+      ...
+#+end_example
+
+*Validation des résultats:*
+
+*Contacts:*
+
+- Auteur(e) : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sébastien
+  Fortier]]
+- Codé par : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sébastien
+  Fortier]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+*Ce plugin utilise:*\\
+
+*Ce plugin est utilisé par:*\\
+
+Voir la référence à
+
+
+Tests Unitaires
+
+
+
+** English
+
+*Description:*
+
+- Arithmetic mean for each point of all the fields received
+
+*Iteration method:*
+
+- Point-by-point
+
+*Dependencies:*
+
+- At least 2 different fields
+
+*Result(s):*
+
+- The mean of the fields received from input named "MEAN"
+
+*Algorithm:*
+
+#+begin_quote
+  For N fields Fn , (n=1,N)
+
+  The arithmetic mean of the N fields received from input is expressed
+  for each point (i,j,k) as :
+
+  \(\mbox{ $MEAN(i,j,k) = \frac {\sum_{n=1}^{N} F_n(i,j,k)}{N}$}\)
+#+end_quote
+
+*Reference:*
+
+- Does not apply
+
+*Keywords:*
+
+- UTILITAIRE/UTILITY, moyenne/mean, average
+
+*Usage:*
+
+*Call example:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/ArithmeticMeanByPoint/testsFiles/inputFile.std] >>
+                  [ArithmeticMeanByPoint] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std]"
+      ...
+#+end_example
+
+*Results validation:*
+
+*Contacts:*
+
+- Author : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sébastien
+  Fortier]]
+- Coded by : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sébastien
+  Fortier]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Reference to
+
+
+
+Tests unitaires
+
+
+
+*Uses:*\\
+
+*Used by:*\\
+
+
+
+  
+
+
+
+  
+

@@ -1,0 +1,142 @@
+** English
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- Calculation of Ertel's potential vorticity, PV.
+
+*Iteration method:*
+
+- Column by column.
+
+*Dependencies:*
+
+- Wind component along the X-axis of the grid, UU
+
+- Wind component along the Y-axis of the grid, VV
+
+- Air temperature, TT
+
+  */Note:/* : Be sure to provide the dependencies mentioned above to
+  this plug-in or the results of\\
+  the plug-ins called by this plug-in (See the "this plug-in uses"
+  section). For more details on this\\
+  alternative use, see the
+  [[https://wiki.cmc.ec.gc.ca/wiki/Spooki/Documentation/Description_g%C3%A9n%C3%A9rale_du_syst%C3%A8me#RefDependances][documentation]]
+  page.
+
+*Result(s):*
+
+- Potential vorticity, PV (PVU units), 1 PVU = 1.e-6 K m^2 / ( kg s).
+
+*Algorithm:*
+
+#+begin_example
+      For UU (m/s) and VV (m/s), respectively the wind components along the X-axis and Y-axis.
+      For QQ (1/s),   the absolute vorticity.
+      For PX (hPa),   the pressure of the model.
+      For TT (K),     the air temperature.
+      For TH (K),     the potential temperature.
+      For CORP (1/s), the Coriolis parameter.
+      
+      Calculate the potential vorticity of Ertel, PV (in PVU units)
+
+      grav     = 9.806160000000 (gravitational acceleration m s-2)
+      ThetaMax = 380K
+
+      Loop k on the levels :
+          Loop on j :
+              Loop on i :
+                  If theta of the current point is larger than ThetaMax 
+                      Set the PV to --PVU key value, but of the same sign as the Coriolis parameter
+                  Else
+                      Calculate PV (see formula below)
+                      Convert the result in PVU units
+                  End if
+              End of loop on i
+          End of loop on j
+      End of loop on k
+#+end_example
+
+#+begin_quote
+  PV calculation:\\
+  \\
+  The partial derivative of the log of theta according to PX must not be
+  zero, because this quantity is used to divide by.\\
+  It is limited to -1.e-7 (this quantity is negative)\\
+
+  \(\mathrm{ DPX = ( ( PX_{i,j,k+1} - PX_{i,j,k-1} ) * 100. )}\)\\
+  \(\mathrm{ DTH = ( TH_{i,j,k+1} - TH_{i,j,k-1} )}\)\\
+  \\
+  \(\mathrm{ PV_{i,j,k} = -grav * ( QQ_{i,j} - 1. / ( TT_{i,j} * min(
+  -1.e-7, log( TH_{i,j,k+1} / TH_{i,j,k-1} ) / DPX ) ) * }\)\\
+             \(\mathrm{ ( ( VV_{i,j,k+1} - VV_{i,jk-1} ) / DPX * (
+  TT_{i+1,j} - TT_{i-1,j} ) / ( X_{i+1,j} - X_{i-1,j} ) - (
+  UU_{i,j,k+1} - UU_{i,j,k-1} ) / DPX * }\)\\
+             \(\mathrm{ ( TT_{i,j+1} - TT_{i,j-1} ) / ( Y_{i,j+1} -
+  Y_{i,j-1} ) ) ) * DTH / DPX }\)\\
+#+end_quote
+
+*Reference:*
+
+- Bluestein, H. B, 1992. Synoptic-Dynamic Meteorology in Midlatitudes,
+  Volume I.
+- Code Fortran d'André Plante pressure_on_pv_surface.F90 et mod_pv.F90,
+  git clone
+  [[#][git@g.nosp@m.itla.nosp@m.b.sci.nosp@m.ence.nosp@m..gc.c.nosp@m.a]]:cmdn_utils/utilitaires.git
+
+*Keywords:*
+
+- MÉTÉO/WEATHER, vent/wind, tourbillon/vorticity, potentiel/potential
+
+*Usage:*
+
+*Call example:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/VorticityPotential/testsFiles/inputFile.std] >>
+                  [VorticityPotential --maxPVU 2.0] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std]"
+      ...
+#+end_example
+
+*Results validation:*
+
+*Contacts:*
+
+- Author : [[https://wiki.cmc.ec.gc.ca/wiki/User:Prudhommes][Simon
+  Prud'Homme]]
+- Coded by : [[https://wiki.cmc.ec.gc.ca/wiki/User:Prudhommes][Simon
+  Prud'Homme]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Reference to 
+
+
+Unit tests
+
+
+
+*Uses:*\\
+
+*Used by:*\\
+
+
+
+  
+

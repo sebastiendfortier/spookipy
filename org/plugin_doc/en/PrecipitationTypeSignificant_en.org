@@ -1,0 +1,99 @@
+** English
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- This plug-in creates a composite field (NW) indicating the significant
+  type of precipitation for each time interval defined by the input
+  data. By specifying a threshold established subjectively, we decide
+  which type of precipitation shall have precedence over the other types
+  when there is more than one at a time.
+- Note: Use the
+   plug-in if
+  the input data does not define every desired interval.
+
+*Iteration method:*
+
+- Point-by-point
+
+*Dependencies:*
+
+- Precipitation accumulation field RN (rain) for each desired time
+  interval.
+- Precipitation accumulation field SN (snow) for each desired time
+  interval.
+- Precipitation accumulation field FR (freezing rain) for each desired
+  time interval.
+- Precipitation accumulation field PE (ice pellets) for each desired
+  time interval.
+
+*Result(s):*
+
+- Precipitation type field NW (no units, value between 1000 and 6000, 2D
+  field) for each time interval.
+
+*Algorithm:*
+
+- [[https://wiki.cmc.ec.gc.ca/images/c/ce/Spooki_-_Algorithm_PrecipitationTypeDominant.doc]]
+- [[https://wiki.cmc.ec.gc.ca/images/1/10/Spooki_-_Algorithm_PrecipitationTypeDominant.pdf]]
+
+*Reference:*
+
+- Inspired from the operational program : "typcpn.f"
+
+*Keywords:*
+
+- MÉTÉO/WEATHER, précipitations/precipitation, type, temps/time,
+  intervalle/interval, significatif/significant, accumulation
+
+*Usage:*
+
+*Call example:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/PrecipitationTypeSignificant/testsFiles/inputFile.std] >>
+                  [PrecipitationTypeSignificant] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std]"
+      ...
+#+end_example
+
+*Results validation:*
+
+*Contacts:*
+
+- Author : [[https://wiki.cmc.ec.gc.ca/wiki/User:Yazidih][Hatem Yazidi]]
+- Coded by : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sébastien
+  Fortier]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Reference to
+
+
+
+Units tests
+
+
+
+*Uses:*\\
+
+*Used by:*\\
+
+
+
+  
+

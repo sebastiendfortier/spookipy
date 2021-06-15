@@ -1,0 +1,106 @@
+** Français
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- Calculer les accumulations de précipitations pour des intervalles
+  temporels donnés.
+- Les divers intervalles sont définis par les clés paramétrables.
+
+*Méthode d'itération:*
+
+- Différence temporelle, point par point
+
+*Dépendances:*
+
+- Champs d'accumulation de précipitations à toutes les heures requises
+  pour les calculs désirés.
+- Tous les types d'accumulation de précipitations qui se retrouvent dans
+  o.dict peuvent être utilisés:\\
+  Ex. PR, FR, PE, RN, SN, A[1-4], AE, AMX, ASG, ASH, ASN, FR[1|2], PB,
+  PC, PE[1|2], PE2L, PM, PY, PZ, RN[1|2], SN[1-3], SN10, SND, SNLR, etc
+
+*Résultat(s):*
+
+- Champs (2D) d'accumulation de précipitations pour les intervalles
+  temporels demandés, dans les mêmes unités que les dépendances.
+
+*Algorithme:*
+
+- Appel du plugin
+  [[file:pluginTimeIntervalDifference.html][TimeIntervalDifference]]
+  avec les valeurs des quatre clés paramétrables.
+- La clé --fieldName doit être utlisée seulement avec des champs choisis
+  parmi la liste dans la section des Dépendances.
+
+*Références:*
+
+- Inspiré du script opérationnel : "img.pcpn_intvl"
+
+*Mots clés:*
+
+- MÉTÉO/WEATHER, précipitations/precipitation, différence/difference,
+  type, temps/time, intervalle/interval, accumulation
+
+*Usage:*
+
+#+begin_quote
+  \\
+  \\
+  */Note :/* Une seule valeur de chacune des listes des clés --interval
+  et --step s'applique à une seul des intervalles temporels définis dans
+  --rangeForecastHour. L'ordre des valeurs dans les listes des clés
+  --interval et --step, doivent correspondre à l'ordre dans la liste de
+  --rangeForecastHour.\\
+#+end_quote
+
+*Exemple d'appel:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --ignoreExtended --input $SPOOKI_DIR/pluginsRelatedStuff/PrecipitationAmount/testsFiles/inputFile.std] >>
+                  [PrecipitationAmount --fieldName SN --rangeForecastHour 0@48 --interval 3 --step 1] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std]"
+      ...
+#+end_example
+
+*Validation des résultats:*
+
+*Contacts:*
+
+- Auteur(e) : [[https://wiki.cmc.ec.gc.ca/wiki/User:User:Klasam][Marc
+  Klasa]]
+- Codé par : [[https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg][Guylaine
+  Hardy]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Voir la référence à
+
+
+
+Tests unitaires
+
+
+
+*Ce plugin utilise:*\\
+
+*Ce plugin est utilisé par:*\\
+
+
+
+  
+

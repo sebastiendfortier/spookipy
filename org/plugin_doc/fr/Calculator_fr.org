@@ -1,0 +1,84 @@
+** Français
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- Calculatrice
+
+*Méthode d'itération:*
+
+- Ne s'applique pas
+
+*Dépendances:*
+
+- Au moins un champ dans la structure interne de mémoire
+
+*Résultat(s):*
+
+- Un champ
+
+*Algorithme:*
+
+- Ne s'applique pas
+
+*Références:*
+
+- [[https://wiki.cmc.ec.gc.ca/wiki/Spooki/Documentation/Composantes_du_système#meteo_infos:][Composantes
+  de la structure interne de mémoire]]
+- [[https://wiki.cmc.ec.gc.ca/wiki/Spooki/Correspondance_Fichiers_STD_-_SPOOKI][Correspondance
+  entre les descripteurs d'enregistrements de fichiers standards et les
+  attributs de la mémoire interne de SPOOKI]]
+
+*Mots clés:*
+
+- SYSTÈME/SYSTEM, calculatrice/calculator *Usage:*
+
+*Exemple d'appel:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/Calculator/testsFiles/srcFile2.std] >>
+                  [Select --fieldName TT ] >> [Zap --tag tt] >> [Calculator --expression *7 --unit celsius --outputFieldName TT7] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std --noUnitConversion]"
+      ...
+#+end_example
+
+*Validation des résultats:*
+
+*Contacts:*
+
+- Auteur(e) : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sébastien
+  Fortier]]
+- Codé par : [[https://wiki.cmc.ec.gc.ca/wiki/User:Voyerpoitrass][Simon
+  Voyer-Poitras]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Voir la référence à 
+
+
+Tests unitaires
+
+
+
+*Ce plugin utilise:*\\
+
+*Ce plugin est utilisé par:*\\
+
+
+
+  
+

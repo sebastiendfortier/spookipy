@@ -1,0 +1,126 @@
+** Français
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- Calcul du cisaillement vertical du vent entre deux niveaux, en
+  effectuant une différence centrée.
+
+*Méthode d'itération:*
+
+- Colonne par colonne
+
+*Dépendances:*\\
+\\
+Deux niveaux verticaux:
+
+- UU, composante du vent selon l'axe des X.
+- VV, composante du vent selon l'axe des Y.
+- GZ, hauteur géopotentielle.
+
+*Résultat(s):*
+
+- BS, cisaillement vertical du vent entre deux niveaux en 1/s\\
+  \\
+  Si on utilise l'option "--outputComponents YES":
+- BSU, composante du BS selon l'axe des X en 1/s.
+- BSV, composante du BS selon l'axe des Y en 1/s.
+
+*Algorithme:*
+
+#+begin_quote
+  Soit UU et VV, les composantes du vent en m/s.\\
+  Soit GZ, la hauteur géopotentielle en mètres.\\
+  Soit BS, le cisaillement vertical du vent entre 2 niveaux en 1/s.\\
+  Soit BSU et BSV, les composantes du cisaillement vertical du vent en
+  1/s.\\
+  \\
+  Pour chaque niveau, K:
+
+  \( BS_{(K)}\) = \(\mathrm{\sqrt{(BSU)_{(K)}^2 + (BSV)_{(K)}^2}}\)\\
+  \\
+  où\\
+  \(\mathrm{ BSU_{(K)}\; =\; \frac{[UU_{(K+1)} \, - \,
+  UU_{(K-1)}]}{[GZ_{(K+1)} \, - \, GZ_{(K-1)}] }}\)\\
+  et\\
+  \(\mathrm{ BSV_{(K)} \; =\; \frac{[VV_{(K+1)} \, - \,
+  VV_{(K-1)}]}{[GZ_{(K+1)} \, - \, GZ_{(K-1)}] }}\)
+
+  \\
+  Note:\\
+
+  - Le calcul du cisaillement est fait avec une différence centrée.\\
+    Exemple pour UU et N niveaux:\\
+    \\
+    Pour le 1er niveau:\\
+    \(\mathrm{BSU_{(1)} \; =\; \frac{[UU_{(2)} \, - \,
+    UU_{(1)}]}{[GZ_{(2)} \, - \, GZ_{(1)}] }}\)\\
+    \\
+    Pour le dernier niveau:\\
+    \(\mathrm{BSU_{(N)} \; =\; \frac{[UU_{(N)} \, - \,
+    UU_{(N-1)}]}{[GZ_{(N)} \, - \, GZ_{(N-1)}] }}\)
+
+  *Références:*
+
+  - [[http://iweb/~afsypst/pluginsRelatedStuff/WindVerticalShear/reference/PackageAviation.pdf][Package
+    de l'aviation]]
+
+  *Mots clés:*
+
+  - MÉTÉO/WEATHER, cisaillement/shear, vent/wind, vertical, turbulence,
+    aviation
+
+  *Usage:*
+
+  *Exemple d'appel:* ==
+
+  #+begin_example
+        ...
+        spooki_run "[ReaderStd    --input $SPOOKI_DIR/pluginsRelatedStuff/WindVerticalShear/testsFiles/inputFile.std] >>
+                    [WindVerticalShear] >>
+                    [WriterStd --output /tmp/$USER/outputFile.std]"
+        ...
+  #+end_example
+
+  *Validation des résultats:*
+
+  *Contacts:*
+
+  - Auteur(e) : [[https://wiki.cmc.ec.gc.ca/wiki/User:Klasam][Marc
+    Klasa]]
+  - Codé par : [[https://wiki.cmc.ec.gc.ca/wiki/User:Pelletierl][Luc
+    Pelletier]], [[https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg][Guylaine
+    Hardy]]
+  - Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+    [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+  Voir la référence à
+  
+  
+
+  Tests unitaires
+
+  
+
+  *Ce plugin utilise:*\\
+
+  *Ce plugin est utilisé par:*\\
+
+  
+
+    
+  
+#+end_quote

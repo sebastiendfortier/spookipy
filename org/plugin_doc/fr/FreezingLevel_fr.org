@@ -1,0 +1,118 @@
+** Français
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- Calcul des niveaux de congélation, niveaux où la température de l'air
+  est égale à 0 deg C.\\
+  Les niveaux de congélation sont calculés par rapport au niveau moyen
+  de la mer.\\
+  \\
+  */Note:/* Si la température à la surface est négative, la hauteur du
+  1er niveau de congélation est fixée à 0 dam.
+
+*Méthode d'itération:*
+
+- Colonne par colonne
+
+*Dépendances:*
+
+- Température de l'air, TT\\
+
+Selon le choix de l'utilisateur:\\
+
+- Hauteur géopotentielle, GZ\\
+- Pression, PX\\
+  \\
+  */Note:/* Ces champs doivent avoir une coordonnée verticale qui suit
+  la topographie. (Sigma, eta, hybride, hybride staggered et mètres au
+  dessus du sol.)
+
+*Résultat(s):*
+
+- Nombre de niveaux de congélation, NBFL (2D)\\
+
+- Variable booléenne BOVS (false si TT < 0 à la surface et true si TT >
+  0), champ 2D. Sortie du plugin
+  [[file:pluginVerticalScan.html][VerticalScan]].\\
+
+- Altitude des niveaux de congélation:\\
+  FRH (3D,dam )\\
+  et/ou\\
+  FRP (3D, mb)\\
+  \\
+  *et/ou*\\
+  \\
+
+  Niveau de congélation le plus élevé:\\
+  FU (2D, 100*ft)\\
+  et/ou\\
+  FUP (2D, millibars)\\
+
+*     Note :* Les valeurs indéfinies des niveaux de congélation sont
+mises à -999.
+
+*Algorithme:*
+
+- [[https://wiki.cmc.ec.gc.ca/images/e/e9/Spooki_-_Algorithme_FreezingLevel.odt]]\\
+- [[https://wiki.cmc.ec.gc.ca/images/f/f0/Spooki_-_Algorithme_FreezingLevel.pdf]]\\
+
+*Références:*
+
+- Inspiré du programme opérationnel: /eicefrz.f/.
+
+*Mots clés:*
+
+- MÉTÉO/WEATHER, niveaux/levels, congélation/freezing, balayage/scan,
+  vertical
+
+*Usage:*
+
+*Exemple d'appel:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/FreezingLevel/testsFiles/inputFile.std] >>
+                  [FreezingLevel --outputVerticalRepresentation GEOPOTENTIAL ] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std]"
+      ...
+#+end_example
+
+*Validation des résultats:*
+
+*Contacts:*
+
+- Auteur(e) : Hatem Yazidi
+- Codé par : [[https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg][Guylaine
+  Hardy]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/%20wiki/CMDS][CMDS]]
+
+Voir la référence à 
+
+
+Tests unitaires
+
+
+
+*Ce plugin utilise:*\\
+
+*Ce plugin est utilisé par:*\\
+
+
+
+  
+

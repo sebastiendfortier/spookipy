@@ -1,0 +1,90 @@
+** English
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- ...
+
+*Iteration method:*
+
+- ...
+
+*Dependencies:*
+
+- ...
+
+*Result(s):*
+
+- ...
+
+*Algorithm:*
+
+- ...
+
+*Reference:*
+
+- ...
+
+*Customizable condition:*
+
+- N/A
+
+*Keywords:*
+
+- ...
+
+*Usage:*
+
+#+begin_example
+#+end_example
+
+#+begin_example
+#+end_example
+
+*Call example:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/RoundToNearestInteger/testsFiles/inputFile.std] >>
+                  [RoundToNearestInteger] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std]"
+      ...
+#+end_example
+
+*Results validation:*
+
+- ...
+
+*Contacts:*
+
+- ...
+
+Reference to
+
+
+
+Tests unitaires
+
+
+
+*Uses:*\\
+
+*Used by:*\\
+
+
+
+  
+

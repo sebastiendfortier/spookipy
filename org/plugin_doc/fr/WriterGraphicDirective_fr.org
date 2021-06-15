@@ -1,0 +1,89 @@
+** Français
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- Produit un champ de directive WGD qui sera utilisé par le
+   pour remplir le
+  template associé à un produit. Le produit est identifier par
+  l'argument --productName. Les templates se trouve dans le répertoire:
+  $SPOOKI_RESSOURCES_DIR/WriterGraphic/productName/ productName:
+  argument du paramètre --productName Voir le plugin
+  [[../../spooki_french_doc/html/pluginWriterGraphic.html][WriterGraphic]]
+  pour plus d'information
+
+*Méthode d'itération:*
+
+- N/D
+
+*Dépendances:*
+
+- N/D
+
+*Résultat(s):*
+
+- Un champ de directive WGD est produit
+
+*Algorithme:*
+
+- N/D
+
+*Références:*
+
+- N/D
+
+*Mots clés:*
+
+- IO, directive, graphique/graphic, carte/map, writer
+
+*Usage:*
+
+*Exemple d'appel:* ==
+
+#+begin_example
+      ...
+      spooki_run "[TrueOperation] || ([WriterGraphicDirective --productName 4pClassic --directive forecastHour:12,hourDelta:6,jobName:R1DFX03,runId:R1,runHour:00] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std])"
+      ...
+#+end_example
+
+*Validation des résultats:*
+
+*Contacts:*
+
+- Auteur(e) : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortinf][François
+  Fortin]]
+- Codé par : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortinf][François
+  Fortin]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Voir la référence à
+
+
+
+Tests unitaires
+
+
+
+*Ce plugin utilise:*\\
+
+*Ce plugin est utilisé par:*\\
+
+
+
+  
+

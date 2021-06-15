@@ -1,0 +1,89 @@
+** English
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- ...
+
+*Iteration method:*
+
+- ...
+
+*Dependencies:*
+
+- ...
+
+*Result(s):*
+
+- ...
+
+*Algorithm:*
+
+- ...
+
+*Reference:*
+
+- ...
+
+*Customizable condition:*
+
+- ...
+
+*Keywords:*
+
+- ...
+
+*Usage:*
+
+#+begin_example
+#+end_example
+
+#+begin_example
+#+end_example
+
+*Call example:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/WindComponents/testsFiles/inputFile.std] >>
+                  [WindComponents] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std]"
+      ...
+#+end_example
+
+*Results validation:*
+
+- ...
+
+*Contacts:*
+
+- ...
+
+Reference to 
+
+
+Tests unitaires
+
+
+
+*Uses:*\\
+
+*Used by:*\\
+
+
+
+  
+

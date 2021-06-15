@@ -1,0 +1,107 @@
+** Français
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- Calcul de la déformation du vent horizontal
+
+*Méthode d'itération:*
+
+- Point par point
+
+*Dépendances:*
+
+- Composante UU du vent (selon l'axe des X sur la grille).\\
+- Composante VV du vent (selon l'axe des Y sur la grille).
+
+*Résultat(s):*
+
+- La déformation du vent, DEF (s-1)
+
+*Algorithme:*
+
+#+begin_quote
+  La déformation du vent est une combinaison d'un facteur d'étirement
+  ("stretching deformation") et d'un facteur de cisaillement ("shearing
+  deformation"), ce qui se traduit par l'équation suivante où chacun de
+  ces 2 facteurs est représenté respectivement :
+
+  #+begin_quote
+    DEF = \(\sqrt{\left( \frac{\partial U}{\partial X} - \frac{\partial
+    V}{\partial Y} \right)^2 + \left( \frac{\partial V}{\partial X} +
+    \frac{\partial U}{\partial Y} \right)^2}\)
+  #+end_quote
+
+  Les dérivées partielles \(\frac{\partial}{\partial X} \) et \(
+  \frac{\partial}{\partial Y}\) des composantes horizontales du vent
+  sont calculées à l'aide des plugins
+  [[file:pluginGridPointDistance.html][GridPointDistance]] et
+  [[file:pluginGridPointDifference.html][GridPointDifference]] en
+  utilisant des différences centrées.
+
+  /*Note:* L'unité/ des composantes U et V doit être m.s-1
+#+end_quote
+
+*Références:*
+
+- Voir la définition de la déformation dans l'article de
+  [[http://iweb.cmc.ec.gc.ca/%7Eafsg003/doc/ClearAirTurbulence.pdf][Ellrod&Knapp
+  (1992)]] ou dans le
+  [[http://iweb.cmc.ec.gc.ca/cmc/bibliotheque/PREVISIONS/f_7.pdf][Package
+  de l'aviation]].
+
+*Mots clés:*
+
+- MÉTÉO/WEATHER, vent/wind, déformation/deformation, turbulence,
+  aviation
+
+*Usage:*
+
+*Exemple d'appel:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/testsFiles/inputFile.std] >>
+                  [WindDeformation] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std  --noUnitConversion]"
+      ...
+#+end_example
+
+*Validation des résultats:*
+
+*Contacts:*
+
+- Auteur(e) : [[https://wiki.cmc.ec.gc.ca/wiki/User:Klasam][Marc Klasa]]
+- Codé par : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortinf][François
+  Fortin]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Voir la référence à 
+
+
+Tests unitaires
+
+
+
+*Ce plugin utilise:*\\
+
+*Ce plugin est utilisé par:*\\
+
+
+
+  
+

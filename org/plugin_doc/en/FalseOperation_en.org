@@ -1,0 +1,97 @@
+** English
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- Logical operation that always returns false
+
+*Iteration method:*
+
+- Does not apply
+
+*Dependencies:*
+
+- None
+
+*Result(s):*
+
+- Returns false to the system (operational system) and stops the
+  execution of the program.\\
+  \\
+  */Note:/* No data is outputted from this plug-in
+
+*Algorithm:*
+
+- Does not apply
+
+*Reference:*
+
+- Does not apply
+
+*Keywords:*
+
+- SYSTÈME/SYSTEM, logique/logical, faux/false
+
+*Usage:*
+
+#+begin_example
+      [FalseOperation --help]
+        --help                  Produce help message
+        --optimizationLevel arg Level of optimization, by default use global optimization level
+        --verbose               Verbosity level
+        --version               Get version number
+#+end_example
+
+#+begin_example
+      
+#+end_example
+
+*Call example:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/WindChill/testsFiles/inputFile.std] >>
+                  ( [Copy] || [FalseOperation] ) >>
+                  [WriterStd --output /tmp/$USER/outputFile.std]"
+      ...
+#+end_example
+
+*Results validation:*
+
+- ...
+
+*Contacts:*
+
+- Author : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortinf][François
+  Fortin]]
+- Coded by : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortinf][François
+  Fortin]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Reference to 
+
+
+
+
+*Uses:*\\
+
+*Used by:*\\
+
+
+
+  
+

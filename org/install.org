@@ -1,0 +1,8 @@
+#+TITLE_: INSTALL
+#+OPTIONS: toc:1
+
+* Installation
+Use the ssm package
+  #+BEGIN_SRC 
+  . ssmuse-sh -d /fs/site4/eccc/cmd/w/sbf000/spookipy-beta-0.0.0
+#+END_SRC

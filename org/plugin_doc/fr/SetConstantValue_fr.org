@@ -1,0 +1,95 @@
+** Français
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- Copie le champ passé en entrée et remplace toutes ses valeurs par une
+  constante donnée. Possibilité de générer un champ 2D constant à partir
+  d'un champ 3D.
+
+*Méthode d'itération:*
+
+- Point par point
+
+*Dépendances:*
+
+- Un champ météorologique
+
+*Résultat(s):*
+
+- Une copie (3D ou 2D) du champ météorologique passé en entrée contenant
+  la valeur passée en paramètre.
+
+*Algorithme:*
+
+- Ne s'applique pas
+
+*Références:*
+
+- Ne s'applique pas
+
+*Mots clés:*
+
+- UTILITAIRE/UTILITY, constant, generate/produire
+
+*Usage:*
+
+#+begin_quote
+  */Notes:/*\\
+  Pour la clé '--value':
+
+  - MAXINDEX: la valeur de l'indice du dernier niveau du champ d'entrée
+  - MININDEX: la valeur de l'indice du premier niveau du champ d'entrée
+  - NBLEVELS: le nombre de niveaux du champ d'entrée
+
+  *Exemple d'appel:* ==
+
+  #+begin_example
+        ...
+        spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/SetConstantValue/testsFiles/inputFile.std] >>
+                    [SetConstantValue --value 4.0] >>
+                    [WriterStd --output /tmp/$USER/outputFile.std]"
+        ...
+  #+end_example
+
+  *Validation des résultats:*
+
+  *Contacts:*
+
+  - Auteur(e) :
+    [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sébastien Fortier]]
+  - Codé par : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sébastien
+    Fortier]]
+  - Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+    [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+  Voir la référence à
+  
+  
+
+  [[file:SetConstantValueTests_8cpp.html][Tests unitaires]]
+
+  
+
+  *Ce plugin utilise:*\\
+
+  *Ce plugin est utilisé par:*\\
+
+  
+
+    
+  
+#+end_quote

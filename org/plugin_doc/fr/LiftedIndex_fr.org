@@ -1,0 +1,190 @@
+** Français
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- Calcul de l'indice de soulèvement basé sur la différence entre les
+  températures virtuelles au niveau de référence donné par
+  --referenceLevel (valeur défaut de 500hPa) de l'environnement et d'une
+  parcelle soulevée. Cette version de LI est généralisée pour être
+  utilisée avec les niveaux de parcelle à être soulevée : surface,
+  couche moyenne et la couche la plus instable ainsi que pour l'indice
+  Showalter. Des résultats basés sur la température (au lieu de la
+  température virtuelle) sont aussi disponibles. Le calcul peut être
+  aussi effectué à différentes hauteurs.
+- Indice de stabilité de l'air qui donne une indication sur la
+  possibilité d'occurrence de temps violent (orages, etc..).
+
+*Méthode d'itération:*
+
+- Colonne par colonne
+
+*Dépendances:*
+
+- Température de l'air aux niveaux requis pour calculer les valeurs au
+  niveau de la parcelle à être soulevée et au niveau --referenceLevel,
+  TT
+- Champ de pression aux niveaux requis pour calculer les valeurs au
+  niveau de la parcelle à être soulevée et au niveau --referenceLevel,
+  PX\\
+  \\
+  *et* un des champs suivants aux niveaux requis pour calculer les
+  valeurs au niveau de la parcelle à être soulevée et au niveau
+  --referenceLevel:\\
+  \\
+- Humidité spécifique, HU
+- Rapport de mélange de la vapeur d'eau, QV
+- Température du point de rosée, TD
+- Écart du point de rosée, ES
+- Humidité relative, HR\\
+  \\
+  */Note:/* : Assurez-vous de fournir à ce plugin les dépendances
+  ci-haut mentionnées ou alors, les résultats des\\
+  plugins appelés par celui-ci (Voir la section "Ce plugin utilise").
+  Pour plus de détails sur cet usage\\
+  alternatif, voir la page de
+  [[https://wiki.cmc.ec.gc.ca/wiki/Spooki/Documentation/Description_g%C3%A9n%C3%A9rale_du_syst%C3%A8me#RefDependances][documentation.]]
+
+*Résultat(s):*
+
+- Indice de soulèvement pour une parcelle soulevée à partir de la
+  surface utilisant la température virtuelle, VLI (deg K)
+- Indice de soulèvement pour une parcelle soulevée à partir de la
+  surface utilisant la température, LI (deg K)
+- Indice de soulèvement pour une parcelle soulevée à partir d'une couche
+  moyenne utilisant la température virtuelle, MVLI (deg K)
+- Indice de soulèvement pour une parcelle soulevée à partir d'une couche
+  moyenne utilisant la température, MLI (deg K)
+- Indice de soulèvement pour une parcelle soulevée à partir de la couche
+  la plus instable utilisant la température virtuelle, UVLI (deg K)
+- Indice de soulèvement pour une parcelle soulevée à partir de la couche
+  la plus instable utilisant la température, ULI (deg K)
+- Indice Showalter en utilisant la température virtuelle, VWA (deg K)
+- Indice Showalter utilisant la température, WA (deg K)
+
+*     Note :* Les valeurs indéfinies des indices sont mises à 99.99.
+
+*Algorithme:*\\
+
+#+begin_example
+      Le niveau de la parcelle à soulever est spécifié par la clé paramétrable --liftedFrom en temps que: surface (SURFACE),
+      moyenne d'une couche (MEAN_LAYER), la couche la plus instable (MOST_UNSTABLE) ou 850hPa (SHOWALTER). Plusieurs niveaux
+      peuvent être calculés avec un seul appel, un après l'autre.
+
+      Pour chaque niveau de la parcelle à soulever:
+
+      Utiliser le plugin TemperatureOfLiftedParcel avec l'argument de --increment dans la clé du même nom et l'argument
+      de --referenceLevel dans --endLevel) pour obtenir:
+
+      TTLP et/ou UTLP et/ou MTLP et/ou DTLP; valeurs de température du niveau de la parcelle à soulever jusqu'au sommet
+      de la courbe de liftedParcel (--referenceLevel)
+
+      TVLP et/ou UVLP et/ou MVLP et/ou DVLP; valeurs de température virtuelle du niveau de la parcelle à soulever
+      jusqu'au sommet de la courbe de liftedParcel (--referenceLevel)
+
+      Trouver la température virtuelle de l'environnement à --referenceLevel à partir de données d'entrée, eTV500
+      Trouver la température de l'environnement à --referenceLevel à partir des données d'entrée, eTT500
+
+      Trouver la température virtuelle de la parcelle soulevée à --referenceLevel à partir de données d'entrée, pTV500
+      Trouver la température de la parcelle soulevée à --referenceLevel à partir des données d'entrée, pTT500
+
+      VLI = eTV500 - pTV500
+      LI  = eTT500 - pTT500
+
+      Pour une parcelle représentée par la moyenne d'une couche, renommer VLI par MVLI et LI par MLI
+      Pour la parcelle la plus instable renommer VLI par UVLI et LI par ULI
+      Pour Showalter renommer VLI par VWA et LI par WA
+
+      Note 1: Si le niveau de la parcelle la plus instable est au dessus du niveau de référence (--referenceLevel)
+              alors l'indice de soulèvement n'est pas défini et fixé à la valeur de 99.99
+#+end_example
+
+*Références:*
+
+- Doswell, C. A. and E. N. Rasmussen, 1994: The effect of neglecting the
+  virtual temperature correction on CAPE calculations. Wea. Forecasting,
+  9, 625-629.
+- Galway, J. G. 1956: The lifted index as a predictor of latent
+  instability. Bull. Amer. Meteor. Soc., 37, 528-529.
+- Showalter, A. K. 1947. A stability index for forecasting
+  thunderstorms. Bull. Amer. Meteor. Soc., 34, 250-252.
+- "Atmospheric Thermodynamics", Iribarne, J.V., and Godson, W.L.
+  (Riedel, 2nd edition, 1981)
+- [[http://www.books.google.com/books?id=VdaBBHEGAcMC&amp;dq=atmospheric+convection+Kerry+A+Emanuel&amp;printsec=frontcover&amp;source=bn&amp;hl=en&amp;ei=WsWsS7GEONKUtgf9rKHCDw&amp;sa=X&amp;oi=book_result&amp;ct=result&amp;resnum=5&amp;ved=0CBUQ6AEwBA#v=onepage&amp;q=&amp;f=false][Atmospheric
+  Convection, Kerry A., Emanuel, 1994]]
+
+*Mots clés:*
+
+- MÉTÉO/WEATHER, convection, température/temperature,
+  parcellesoulevée/liftedparcel, plusinstable/mostunstable,
+  couchemoyenne/meanlayer, index/indice, stabilité/stability,
+  severeweather/tempsviolent, showalter
+
+*Usage:*
+
+#+begin_quote
+  \\
+  \\
+  *Informations sur les métadonnées :*\\
+
+  Lorsque les options --MeanLayer et --MostUnstable sont utilisées:
+
+  - Le verticalLevel (IP1 dans les fichiers RPN STD) indiquera la base
+    de la couche moyenne ou la base de recherche pour la couche la plus
+    instable.\\
+  - Les caractères 2 à 4 du pdsLabel (5 à 8 de l'etiket dans les
+    fichiers RPN STD) indiqueront l'épaisseur de la couche moyenne ou
+    l'épaisseur de la couche la plus instable. Le dernier de ces
+    caractères indique l'unité (P pour hPa au-dessus de la base de la
+    couche, Z pour mètres au-dessus de la base de la couche).\\
+
+  *Exemple d'appel:* ==
+
+  #+begin_example
+        ...
+        spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/LiftedIndex/testsFiles/inputFile.std] >>
+                    [LiftedIndex --liftedFrom SHOWALTER] >>
+                    [WriterStd --output /tmp/$USER/outputFile.std]"
+        ...
+  #+end_example
+
+  *Validation des résultats:*
+
+  *Contacts:*
+
+  - Auteurs(es) :
+    [[https://wiki.cmc.ec.gc.ca/wiki/Sandrine_Edouard][Sandrine
+    Edouard]], Neil Taylor
+  - Codé par : [[https://wiki.cmc.ec.gc.ca/wiki/User:Stcyrj][Jonathan
+    St-Cyr]]
+  - Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+    [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+  Voir la référence à [[file:LiftedIndex_8cpp.html][LiftedIndex]].
+
+  Tests unitaires
+
+  
+
+  *Ce plugin utilise:*\\
+
+  *Ce plugin est utilisé par:*\\
+
+  
+
+    
+  
+#+end_quote

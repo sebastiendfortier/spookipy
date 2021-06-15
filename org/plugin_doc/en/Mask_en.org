@@ -1,0 +1,103 @@
+** English
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- This plug-in creates a mask according to the threshold value(s) given.
+
+*Iteration method:*
+
+- Point-by-point
+
+*Dependencies:*
+
+- A field
+
+*Result(s):*
+
+- MASK field
+
+*Algorithm:*
+
+#+begin_example
+      For F,             an input field
+      For thresholds[j], jth value given in the list of --thresholds option
+      For operator[j],   jth value given in the list of --operators option
+      For value[j],      jth value given in the list of --values option
+      For nbTrios,       the total number of threshold, operator and value trios
+
+      For each point of the input field (i)
+
+        Initialize MASK = 0.0
+
+        For j = 0 to (nbTrios - 1)
+
+          If F[i]  Operators[j]  Thresholds[j]
+             MASK[i]=Value[j]
+          Endif
+
+        End for
+
+      End for
+#+end_example
+
+*Reference:*
+
+- Does not apply
+
+*Keywords:*
+
+- UTILITAIRE/UTILITY, masque/mask
+
+*Usage:*
+
+*Call example:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/Mask/testsFiles/inputFile.std] >> 
+                  [Mask --thresholds 0.0,10.0,15.0,20.0 --values 0.0,10.0,15.0,20.0 --operators GE,GE,GE,GE] >> 
+                  [WriterStd --output /tmp/$USER/outputFile.std --noUnitConversion]"
+      ...
+#+end_example
+
+*Results validation:*
+
+*Contacts:*
+
+- Auteur(e) : [[https://wiki.cmc.ec.gc.ca/wiki/Marc_Verville][Marc
+  Verville]], / [[https://wiki.cmc.ec.gc.ca/wiki/Daniel_Figueras][Daniel
+  Figueras]]
+- Codé par : [[https://wiki.cmc.ec.gc.ca/wiki/User:Faustl][Louise
+  Faust]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Reference to .
+
+
+Units tests
+
+
+
+*Uses:*\\
+
+*Used by:*\\
+
+
+
+  
+

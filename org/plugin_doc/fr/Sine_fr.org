@@ -1,0 +1,82 @@
+** Français
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- applique la fonction : SIN \( sin{z} \)
+
+*Méthode d'itération:*
+
+- point par point
+
+*Dépendances:*
+
+- un champ météorologique
+
+*Résultat(s):*
+
+- le champ météorologique passé en entrée modifié
+
+*Algorithme:*
+
+- pour chaque point applique l'algorithme choisi
+
+*Références:*
+
+- man 3 sinf
+
+*Mots clés:*
+
+- UTILITAIRE/UTILITY, arrondir/round
+
+*Usage:*
+
+*Exemple d'appel:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/Sine/testsFiles/inputFile.std] >>
+                  [Sine --noFieldNameTag] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std]"
+      ...
+#+end_example
+
+*Validation des résultats:*
+
+*Contacts:*
+
+- Auteur(e) : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sébastien
+  Fortier]]
+- Codé par : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sébastien
+  Fortier]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Voir la référence à 
+
+
+Tests unitaires
+
+
+
+*Ce plugin utilise:*\\
+
+*Ce plugin est utilisé par:*\\
+
+
+
+  
+

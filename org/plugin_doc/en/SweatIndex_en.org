@@ -1,0 +1,145 @@
+** English
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- Calculation of the SWEAT index (Severe Weather Threat Index), a severe
+  weather index used to determine the likelihood of severe thunderstorms
+  and tornadoes (Miller, 1972).
+- This convective index is made up of a stability term (totals-totals
+  index), a humidity at low levels term, wind speed terms and a shear
+  term.
+- The combination of those three terms allows to distinguish severe
+  thunderstorms from the ordinary thunderstorms, whose potential can be
+  evaluated by the Total Totals index or the lifted index.
+
+*Iteration method:*
+
+- Point-by-point
+
+*Dependencies:*
+
+- Air temperature, TT at 850 mb and 500 mb
+- UU wind component (along the x axis) at 850 mb and 500 mb
+- VV wind component (along the y axis) at 850 mb and 500 mb\\
+  \\
+  *and* one of the following fields at 850 mb:\\
+  \\
+- Specific Humidity, HU
+- Water vapour mixing ratio, QV
+- Relative Humidity, HR
+- Dew point temperature, TD
+- Dew point depression, ES */Note:/* : Make sure to provide the
+  dependencies listed above to this plug-in or to the plug-in results
+  called by this\\
+  plug-in (see the section "this plug-in uses"). For more details on
+  this alternative use, see the <a
+  href="[[https://wiki.cmc.ec.gc.ca/wiki/Spooki/en/Documentation/General_system_description#How_does_it_work.3F]]
+
+*Result(s):*
+
+- SWEAT index, SW (scalar, without units)
+
+*Algorithm:*
+
+#+begin_example
+        For TTI, the Total Totals index.
+        For TD850, the dew point temperature (deg C) at 850 mb.
+        For UV850 and UV500, the wind modulus (knots) at 850 mb and 500 mb respectively.
+        For WD850 and WD500, the wind direction (deg) at 850 mb and 500 mb respectively.
+
+        *If the input fields are the specific humidity, HU (kg kg-1) or
+            the water vapour mixing ratio, QV (kg kg-1) or
+            the relative humidity, HR (fraction) or
+            the dew point depression, ES (deg C or deg K) and the air temperature, TT (deg C) and
+            wind components, UU and VV:
+
+            Calculate the dew point temperature, TD (deg C) with TemperatureDewPoint plug-in with --iceWaterPhase WATER.
+
+            The SWEAT index (SW) is calculated according to the equation (Miller, 1972) :
+                SW = 12*TD850 + 20*(TTI-49) + 2*UV850 + UV500 + 125*(S + 0.2)
+            where S = sin(WD500 - WD850)
+
+        *If the input fields are the dew point temperature, TD (deg C) and the air temperature, TT (deg C) and wind components, UU and VV:
+            The SWEAT index (SW) is calculated according to the equation (Miller, 1972) :
+                SW = 12*TD850 + 20*(TTI-49) + 2*UV850 + UV500 + 125*(S + 0.2)
+            where S = sin(WD500 - WD850)
+
+        The term [12*TD850] = 0 if TD850 < 0
+        The instability term [20*(TTI-49)] = 0 if TTI < 49
+        The shear term [125*(S + 0.2)] = 0 if one of the following conditions is not satisfied :
+            130 deg <= WD850 <= 250 deg
+            210 deg <= WD500 <= 310 deg
+            WD500 - WD850 > 0
+            UV850  15 knots and UV500  15 knots
+
+        ATTENTION: The SWEAT Index is very sensitive to TD850. Significant differences in the SWEAT value may be due to the choice
+                   of the humidity variable used to calculate TD850. The algorithm of the TemperatureDewPoint plug-in describes
+                   the priority used in the choice of the humidity variable needed to calculate the temperature dew point.
+#+end_example
+
+*Reference:*
+
+- [[https://wiki.cmc.ec.gc.ca/images/d/dd/Spooki_-_Severe_Weather_Forecasting.pdf][Severe
+  Weather Forecasting:Post-Processing NWP outputs and guidance at the
+  CMC; R. Verret, G. Desautels, A. Bergeron]]
+- Djurik,D 1994:Weather Analysis, Prentice-Hall.
+- [[http://fr.wikipedia.org/wiki/Indice_de_menace_de_temps_violent][Wikipedia
+  : SWEAT index (link only in French)]]
+
+*Keywords:*
+
+- MÉTÉO/WEATHER, stabilité/stability, convection, indice/index,
+  violent/severe, orage/thunderstorm, tornade/tornado
+
+*Usage:*
+
+*Call example:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/SweatIndex/testsFiles/inputFile.std] >>
+                  [SweatIndex] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std]"
+      ...
+#+end_example
+
+*Results validation:*
+
+*Contacts:*
+
+- Author : [[https://wiki.cmc.ec.gc.ca/wiki/User:Karaganisg][George
+  Karaganis]]
+- Coded by : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sébastien
+  Fortier]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Reference to 
+
+
+Units tests
+
+
+
+*Uses:*\\
+
+*Used by:*\\
+
+
+
+  
+

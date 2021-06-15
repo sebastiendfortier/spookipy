@@ -1,0 +1,89 @@
+** English
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- Output the latitudes and longitudes for all grid points
+
+*Iteration method:*
+
+- Point-by-point
+
+*Dependencies:*
+
+- One field of a grid
+
+*Result(s):*
+
+- LA, latitude of each point of the given grid
+- LO, longitude of each point of the given grid
+
+*Algorithm:*
+
+#+begin_quote
+
+  - Call the appropriate EZSCINT functions
+  - Return latitudes and longitudes of the grid points
+
+  *References:*
+
+  - [[https://wiki.cmc.ec.gc.ca/wiki/Librmn/ezscint][RMNLIB EZSCINT
+    libraries]]
+
+  *Keywords:*
+
+  - grille/grid, point, distance, latitude, longitude
+
+  *Usage:*
+
+  *Call example:* ==
+
+  #+begin_example
+       ...
+       spooki_run "[ReaderStd         --input $SPOOKI_DIR/pluginsRelatedStuff/GridPointLatitudeLongitude/testsFiles/inputFile.std] >>
+                   [GridPointLatitudeLongitude] >>
+                   [WriterStd         --output /tmp/$USER/outputFile.std]"
+       ...
+  #+end_example
+
+  *Results validation:*
+
+  *Contacts:*
+
+  - Author : [[https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg][Guylaine
+    Hardy]]
+  - Coded by : [[https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg][Guylaine
+    Hardy]]
+  - Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+    [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+  Reference to
+  
+  
+
+  Units tests
+
+  
+
+  *Uses:*\\
+
+  *Used by:*\\
+
+  
+
+    
+  
+#+end_quote

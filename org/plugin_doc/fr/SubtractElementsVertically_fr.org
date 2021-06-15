@@ -1,0 +1,94 @@
+** Français
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- De la valeur d'un champ au niveau choisi (le plus haut ou le plus
+  bas), soustraire les valeurs de tous les autres niveaux de ce champ.
+
+*Méthode d'itération:*
+
+- Colonne par colonne
+
+*Dépendances:*
+
+- Au moins un champ 3D
+
+*Résultat(s):*
+
+- Un champ 2D du même nom que celui en entrée
+
+*Algorithme:*
+
+#+begin_example
+          Soit k le niveau de départ chosi
+
+          Si direction = "ASCENDING" alors
+              A = A[k] - A[k+1] - A[k+2] - ...
+          Sinon
+              A = A[k] - A[k-1] - A[k-2] - ...
+          Finsi
+#+end_example
+
+*Références:*
+
+- Aucune
+
+*Mots clés:*
+
+- UTILITAIRE/UTILITY, soustraire/subtract, soustraction/subtraction,
+  verticale/vertical
+
+*Usage:*
+
+*Exemple d'appel:* ==
+
+#+begin_example
+  ...
+      spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/SubtractElementsVertically/testsFiles/inputFile.std] >>
+                  [SubtractElementsVertically --direction ASCENDING] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std]"
+    ...
+#+end_example
+
+*Validation des résultats:*
+
+*Contacts:*
+
+- Auteur(e) : [[https://wiki.cmc.ec.gc.ca/wiki/User:Yazidih][Hatem
+  Yazidi]]
+- Codé par : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sébastien
+  Fortier]] [[https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg][Guylaine
+  Hardy]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+*Ce plugin utilise:*\\
+
+*Ce plugin est utilisé par:*\\
+
+Voir la référence à
+
+
+
+Tests Unitaires
+
+
+
+
+
+  
+

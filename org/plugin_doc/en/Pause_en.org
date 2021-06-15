@@ -1,0 +1,95 @@
+** English
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*Description:*
+
+- ...
+
+*Iteration method:*
+
+- ...
+
+*Dependencies:*
+
+- ...
+
+*Result(s):*
+
+- ...
+
+*Algorithm:*
+
+- ...
+
+*Reference:*
+
+- ...
+
+*Customizable condition:*
+
+- N/A
+
+*Keywords:*
+
+- logique/logical, null
+
+*Usage:*
+
+#+begin_example
+      [Pause --help]
+        --help                  Produce help message
+        --optimizationLevel arg Level of optimization, by default use global optimization level
+        --verbose               Verbosity level
+#+end_example
+
+*Call example:* ==
+
+#+begin_example
+      ...
+      spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/Pause/testsFiles/inputFile.std] >>
+                  [Pause --time CAFE] >>
+                  [WriterStd --output /tmp/$USER/outputFile.std]"
+      ...
+#+end_example
+
+*Results validation:*
+
+- ...
+
+*Contacts:*
+
+- Author : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sebastien
+  Fortier]]
+- Coded by : [[https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers][Sebastien
+  Fortier]]
+- Support : [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]] /
+  [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+
+Reference to 
+
+
+Tests unitaires
+
+
+
+*Uses:*\\
+
+*Used by:*\\
+
+
+
+  
+

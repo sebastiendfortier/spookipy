@@ -33,7 +33,7 @@ main(){
   warn_override_variables PYTHONPATH
 
 
-  [ -z "$PYTHONPATH" ] && export PYTHONPATH=${pythonlibbase_base_path}/lib/packages || export PYTHONPATH=$PYTHONPATH:${pythonlibbase_base_path}/lib/packages
+  [ -z "$PYTHONPATH" ] && export PYTHONPATH=${pythonlibbase_base_path}/lib/packages || export PYTHONPATH=${pythonlibbase_base_path}/lib/packages:$PYTHONPATH
 
 
   if $in_ssm ; then

@@ -4,5 +4,5 @@
 * Installation
 Use the ssm package
   #+BEGIN_SRC 
-  . ssmuse-sh -d /fs/site4/eccc/cmd/w/sbf000/spookipy-beta-0.0.0
+  . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/spookipy/0.0.0
 #+END_SRC

@@ -31,7 +31,7 @@ mkdir -p ${PKGNAME}/etc/profile.d
 
 PROJECT_ROOT=../spookipy/
 echo 'Copying files to '${PKGNAME}' directory'
-cp project_setup.sh ${PKGNAME}/etc/profile.d/${PKGNAME}.sh
+cp package_setup.sh ${PKGNAME}/etc/profile.d/${PKGNAME}.sh
 cp control.json ${PKGNAME}/.ssm.d/.
 cp -rf ${PROJECT_ROOT}/* ${PKGNAME}/lib/packages/spookipy/.
 echo 'Creating ssm archive '${PKGNAME}'.ssm'

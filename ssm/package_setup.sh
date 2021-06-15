@@ -23,7 +23,7 @@ main(){
       real_file=$(readlink -f ${sourced_file})
   fi
 
-  pythonlibbase_base_path="$(cd "$(dirname ${real_file})/../.."; pwd)"
+  base_path="$(cd "$(dirname ${real_file})/../.."; pwd)"
 
   if in_build_dir ; then
       message "ERROR: This script is only meant for the installed version of spookipy. "
@@ -33,12 +33,27 @@ main(){
   warn_override_variables PYTHONPATH
 
 
-  [ -z "$PYTHONPATH" ] && export PYTHONPATH=${pythonlibbase_base_path}/lib/packages || export PYTHONPATH=${pythonlibbase_base_path}/lib/packages:$PYTHONPATH
+    cd $TMPDIR
+    if ! [ -d 'ssm_python']; then
+        mkdir ssm_python
+    fi 
+    cd ssm_python     
+    for f in ${base_path}/lib/packages/*; 
+    do
+        ln -s $f
+    done
 
+    warn_override_variables PYTHONPATH
+
+    SSM_PATH_PRESENT=$(echo $PYTHONPATH|grep ssm_python)
+
+    if ! [ -z $SSM_PATH_PRESENT ]; then
+        [ -z "$PYTHONPATH" ] && export PYTHONPATH=${TMPDIR}/ssm_python || export PYTHONPATH=${TMPDIR}/ssm_python:$PYTHONPATH
+    fi    
 
   if $in_ssm ; then
       load_project_runtime_dependencies
-      message "SUCCESS: Using spookipy from ${pythonlibbase_base_path}"
+      message "SUCCESS: Using spookipy from ${base_path}"
   fi
 }
 
@@ -74,7 +89,7 @@ warn_override_variables(){
 # }
 
 in_build_dir(){
-    [ -e ${pythonlibbase_base_path}/CMakeFiles ]
+    [ -e ${base_path}/CMakeFiles ]
 }
 
 print_and_do(){
@@ -86,7 +101,7 @@ load_project_runtime_dependencies(){
     message "Loading spookipy runtime dependencies ..."
     print_and_do . r.load.dot eccc/mrd/rpn/MIG/ENV/migdep/5.1.1
     print_and_do . r.load.dot eccc/mrd/rpn/MIG/ENV/rpnpy/2.1.2
-    #print_and_do python3 -m pip install -r ${pythonlibbase_base_path}/etc/profile.d/requirements.txt
+    #print_and_do python3 -m pip install -r ${base_path}/etc/profile.d/requirements.txt
     message "... done loading spookipy runtime dependencies."
 }
 

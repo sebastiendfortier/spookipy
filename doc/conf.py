@@ -82,7 +82,7 @@ html_theme_options = {
 html_context = {     
     "display_gitlab": True, # Integrate Gitlab     
     "gitlab_host": "gitlab.science.gc.ca",     
-    "gitlab_user": "sbf000", # Username     
+    "gitlab_user": "cmdw-spooki", # Username
     "gitlab_repo": "spookipy", # Repo name     
     "gitlab_version": "master", # Version     
     "conf_py_path": "/doc/", # Path in the checkout to the docs root 

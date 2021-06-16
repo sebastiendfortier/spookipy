@@ -27,14 +27,12 @@ algorithms.
 ## Using spookipy in scripts or Jupyter Lab/Notebook
 
 ``` {.bash org-language="sh"}
-# activate your conda environment     
-. activate spookipy_req     
 # get rmn python library      
 . r.load.dot eccc/mrd/rpn/MIG/ENV/migdep/5.1.1 eccc/mrd/rpn/MIG/ENV/rpnpy/2.1.2      
 # get spookipy ssm package
-. ssmuse-sh -d /fs/site4/eccc/cmd/w/sbf000/spookipy-beta-0.0.0      
+. ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/spookipy/0.0.0/      
 # get fstpy ssm package
-. ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/2.1.2/      
+. ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/fstpy/2.1.3/      
 ```
 
 ### use spookipy
@@ -83,14 +81,12 @@ conda install -c conda-forge sphinx-autodoc-typehints
 conda install -c conda-forge sphinx-gallery
 conda install -c conda-forge sphinx_rtd_theme
 conda install numpy pandas dask xarray pytest
-# for a full jupyter developpement environment (spookipy_dev.yaml is located in project root)
-conda env create -f spookipy_dev.yaml
 ```
 
 ## Getting the source code
 
 ``` {.bash org-language="sh"}
-git clone git@gitlab.science.gc.ca:sbf000/spookipy.git
+git clone git@gitlab.science.gc.ca:cmdw-spooki/spookipy.git
 # create a new branch
 git checkout -b my_change
 # modify the code
@@ -104,7 +100,7 @@ git push origin my_change
 ```
 
 Then create a merge request on science\'s gitlab
-<https://gitlab.science.gc.ca/sbf000/spookipy/merge_requests>
+<https://gitlab.science.gc.ca/cmdw-spooki/spookipy/merge_requests>
 
 ## Testing
 
@@ -114,7 +110,7 @@ Then create a merge request on science\'s gitlab
 # get rmn python library      
 . r.load.dot eccc/mrd/rpn/MIG/ENV/migdep/5.1.1 eccc/mrd/rpn/MIG/ENV/rpnpy/2.1.2    
 # get fstpy ssm package
-. ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/2.1.2/ 
+. ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/fstpy/2.1.3/
 python -m pytest  
 ```
 
@@ -122,73 +118,8 @@ python -m pytest
 
 ``` {.bash org-language="sh"}
 # This will build documentation in docs/build and there you will find index.html 
+# From the $project_root/doc directory of the project
 make clean    
 make doc
 ```
 
-CMC CONDA HOWTO
-
-# Conda basics
-
-\[<https://kiwidamien.github.io/save-the-environment-with-conda-and-how-to-let-others-run-your-programs.html>\]\[conda
-reference\]\]
-
-## get cmc conda
-
-``` {.bash org-language="sh"}
-. ssmuse-sh -x cmd/cmdm/satellite/master_u1/miniconda3_4.9.2_ubuntu-18.04-skylake-64
-```
-
-## create an environment
-
-``` {.bash org-language="sh"}
-conda create --name spookipy python=3.6
-```
-
-## activate an environment
-
-``` {.bash org-language="sh"}
-. activate spookipy
-```
-
-## install stuff in the env
-
-``` {.bash org-language="sh"}
-conda install -c conda-forge sphinx-autodoc-typehints
-conda install -c conda-forge sphinx-gallery
-conda install -c conda-forge sphinx_rtd_theme
-conda install ipykernel
-conda install jupyterlab
-conda install numpy pandas dask xarray pytest
-conda install sphinx
-```
-
-## export env to file
-
-``` {.bash org-language="sh"}
-conda env exportspookipy.yaml
-```
-
-## deactivate the env
-
-``` {.bash org-language="sh"}
-conda deactivate
-```
-
-## deleting the env
-
-``` {.bash org-language="sh"}
-conda env remove --name spookipy
-```
-
-## list all envs
-
-``` {.bash org-language="sh"}
-conda info --envs
-```
-
-## recreate the env from yml specs
-
-``` {.bash org-language="sh"}
-conda env create --file spookipy.yaml
-```

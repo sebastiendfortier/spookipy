@@ -35,6 +35,7 @@ use_spookipy_deps(){
     # spookipy uses low-level python binding for
     # librmn functions provided by rpnpy
     . r.load.dot eccc/mrd/rpn/MIG/ENV/migdep/5.1.1 eccc/mrd/rpn/MIG/ENV/rpnpy/2.1.2
+    . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/fstpy/2.1.3
 }
 
 use_spookipy

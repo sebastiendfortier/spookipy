@@ -8,5 +8,5 @@ toc:1
 #+INCLUDE:"org/install.org" 
 #+INCLUDE:"org/usage.org"
 #+INCLUDE:"org/contributing.org"
-#+INCLUDE:"org/conda_howto.org"
+
 

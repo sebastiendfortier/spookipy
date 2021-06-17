@@ -94,7 +94,6 @@ Documentation
 
 **Misc**
 
-* :doc:`conda_howto`
 * :doc:`acknowledgements`
 * :doc:`LICENSE`
 
@@ -103,7 +102,6 @@ Documentation
    :hidden:
    :caption: Misc
 
-   conda_howto
    acknowledgements
    LICENSE
 

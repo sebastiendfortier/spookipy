@@ -30,6 +30,7 @@ class WindModulus(Plugin):
 
     def __init__(self,df:pd.DataFrame):
         self.df = df
+        #ajouter forecast_hour et unit
         self.validate_input()
         
     # might be able to move    

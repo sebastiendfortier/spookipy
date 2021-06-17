@@ -34,6 +34,7 @@ doc/Mask.rst
 doc/MinMaxLevelIndex.rst
 doc/MultiplyElementsBy.rst
 doc/MultiplyElementsByPoint.rst
+doc/Plugin.rst
 doc/SaturationVapourPressure.rst
 doc/SetConstantValue.rst
 doc/TemperatureDewPoint.rst

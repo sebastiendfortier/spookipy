@@ -81,6 +81,7 @@ Documentation
 **Tutorial**
 
 * :doc:`tutorial`
+* :doc:`plugin`
 
 .. toctree::
    :maxdepth: 1
@@ -88,6 +89,7 @@ Documentation
    :caption: Tutorial
 
    tutorial
+   plugin
 
 
 **Misc**

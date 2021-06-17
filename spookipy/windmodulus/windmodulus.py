@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from spookipy.plugin.plugin import Plugin
 from spookipy.utils import get_existing_result, get_intersecting_levels, get_plugin_dependencies
 import pandas as pd
 import fstpy.all as fstpy
@@ -9,7 +10,7 @@ class WindModulusError(Exception):
     pass
  
 def wind_modulus(uu:np.ndarray,vv:np.ndarray) -> np.ndarray:
-    """Computes thw wind modulus from the wind components
+    """Computes the wind modulus from the wind components
 
     :param uu: U wind component
     :type uu: np.ndarray
@@ -20,7 +21,7 @@ def wind_modulus(uu:np.ndarray,vv:np.ndarray) -> np.ndarray:
     """
     return (uu**2 + vv**2)**.5 
 
-class WindModulus:
+class WindModulus(Plugin):
     plugin_mandatory_dependencies = {
         'UU':{'nomvar':'UU','unit':'knot'},
         'VV':{'nomvar':'VV','unit':'knot'},

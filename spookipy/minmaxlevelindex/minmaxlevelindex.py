@@ -24,12 +24,13 @@ from spookipy.utils import validate_nomvar
 import pandas as pd
 import numpy as np
 import fstpy.all as fstpy
+from spookipy.plugin.plugin import Plugin
 
 
 class MinMaxLevelIndexError(Exception):
     pass
 
-class MinMaxLevelIndex:
+class MinMaxLevelIndex(Plugin):
     # plugin_requires = '(nomvar in ["TD","TT"]) and (unit == "celsius")' 
     plugin_result_specifications = {'ALL':{'etiket':'MinMaxLevelIndex','unit':'scalar','ip1':0}}
 

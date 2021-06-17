@@ -2,11 +2,12 @@
 import pandas as pd
 import numpy as np
 from spookipy.opelementsbypoint.opelementsbypoint import OpElementsByPoint
+from spookipy.plugin.plugin import Plugin
 
 class ArithmeticMeanByPointError(Exception):
     pass
 
-class ArithmeticMeanByPoint:
+class ArithmeticMeanByPoint(Plugin):
 
     def __init__(self, df:pd.DataFrame, group_by_forecast_hour=False, nomvar_out='MEAN'):
         self.df = df

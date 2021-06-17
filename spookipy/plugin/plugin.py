@@ -14,7 +14,6 @@ class Plugin(abc.ABC):
     def __init__(self,df:pd.DataFrame) -> None:
         self.df = df
         self.validate_input()
-        print("super __init__")
 
     def validate_input(self):
         """Checks that the plugin's dataframe is not empty.

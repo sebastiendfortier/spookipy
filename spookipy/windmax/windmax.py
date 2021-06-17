@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 from spookipy.utils import get_existing_result, get_plugin_dependencies
 import fstpy.all as fstpy
+from spookipy.plugin.plugin import Plugin
 
 
 class WindMaxError(Exception):
@@ -34,7 +35,7 @@ def wind_max(uu_3d:np.ndarray,vv_3d:np.ndarray,uv_3d:np.ndarray,px_3d:np.ndarray
     return uu_max,vv_max,uv_max,px_max
     
 
-class WindMax:
+class WindMax(Plugin):
     plugin_mandatory_dependencies = {
         'UV':{'nomvar':'UV','unit':'knot'},
         'UU':{'nomvar':'UU','unit':'knot'},

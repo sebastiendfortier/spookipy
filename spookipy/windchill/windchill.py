@@ -2,13 +2,15 @@ from spookipy.utils import get_existing_result, get_intersecting_levels, get_plu
 import pandas as pd
 import numpy as np
 import fstpy.all as fstpy
+from spookipy.plugin.plugin import Plugin
+
 class WindChillError(Exception):
     pass
 
 def wind_chill(tt:np.ndarray,uv:np.ndarray) ->np.ndarray:
     return np.where( (tt <= 0) & (uv >= 5), 13.12 + 0.6215 * tt + ( 0.3965 * tt - 11.37) * ( uv**0.16 ), tt)
 
-class WindChill:
+class WindChill(Plugin):
     plugin_mandatory_dependencies = {
         'UV':{'nomvar':'UV','unit':'knot','surface':True},
         'TT':{'nomvar':'TT','unit':'celsius','surface':True},

@@ -10,7 +10,7 @@ class WindModulusError(Exception):
     pass
  
 def wind_modulus(uu:np.ndarray,vv:np.ndarray) -> np.ndarray:
-    """Computes thw wind modulus from the wind components
+    """Computes the wind modulus from the wind components
 
     :param uu: U wind component
     :type uu: np.ndarray

@@ -77,7 +77,7 @@
 - WIND : provenance du vecteur par rapport au nord (référentiel
   météorologique)
 
-*Exemple d'appel:* ==
+*Exemple d'appel:* 
 
 #+begin_example
           ...

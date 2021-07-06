@@ -87,7 +87,7 @@
   à aucun des types mentionnés dans la liste
 #+end_quote
 
-*Exemple d'appel:* ==
+*Exemple d'appel:* 
 
 #+begin_example
       ...

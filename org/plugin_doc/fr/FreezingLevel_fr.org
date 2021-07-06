@@ -81,7 +81,7 @@ mises à -999.
 
 *Usage:*
 
-*Exemple d'appel:* ==
+*Exemple d'appel:* 
 
 #+begin_example
       ...

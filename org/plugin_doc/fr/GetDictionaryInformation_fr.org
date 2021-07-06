@@ -92,7 +92,7 @@
 - Syntaxe d'appel de la clé "--advancedRequest" : voir la référence sur
   le langage SQlite
 
-*Exemple d'appel:* ==
+*Exemple d'appel:* 
 
 #+begin_example
       ...

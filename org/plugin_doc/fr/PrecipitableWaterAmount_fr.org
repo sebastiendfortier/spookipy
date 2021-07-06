@@ -217,7 +217,7 @@ Un des champs d'humidité (3D) suivants:
   \\
 #+end_quote
 
-*Exemple d'appel:* ==
+*Exemple d'appel:* 
 
 #+begin_example
       ...

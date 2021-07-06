@@ -61,7 +61,7 @@
         --yOffset arg               Offset along the y axis including first point
 #+end_example
 
-*Call example:* ==
+*Call example:* 
 
 #+begin_example
       ...

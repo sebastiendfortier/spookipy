@@ -62,7 +62,7 @@ données d'entrée ne définissent pas chaque intervalle désiré.
 
 *Usage:*
 
-*Exemple d'appel:* ==
+*Exemple d'appel:* 
 
 #+begin_example
       ...

@@ -68,7 +68,7 @@
   à l'heure de prévision 12 et ayant pour étiquette ETIKET).
 #+end_quote
 
-*Exemple d'appel:* ==
+*Exemple d'appel:* 
 
 #+begin_example
       ...

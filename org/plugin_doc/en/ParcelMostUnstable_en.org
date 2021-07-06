@@ -101,7 +101,7 @@
     last character indicates the units (P for hPa above the base of the
     layer and Z for meters above the base of the layer).\\
 
-  *Call example:* ==
+  *Call example:* 
 
   #+begin_example
         ...

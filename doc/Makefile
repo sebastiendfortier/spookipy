@@ -13,18 +13,20 @@ ORG_DIR       = ../org
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-
 insert_version:
 	@$(ORG_DIR)/insert_version.sh 	
 
 rst:
 	@$(ORG_DIR)/convert_and_send_to_doc.sh 
 
+readme:
+	pandoc -s ../README.org -o ../README.md
+
 replace:
 	@$(ORG_DIR)/replace_modified_files.sh
 
-doc: 
-	make clean&&make insert_version&&make rst&&make replace&&make html
+doc: insert_version rst readme replace
+	make --no-print-directory html
 
 .PHONY: help Makefile
 

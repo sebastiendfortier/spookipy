@@ -1,19 +1,6 @@
 ** Français
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 *Description:*
 
 - Interpolation horizontale d'un ou plusieurs champ(s) sur une grille
@@ -106,7 +93,7 @@
       une valeur numérique donnée (float)
     - ABORT: abandon de la requête
 
-    *Exemple d'appel:* ==
+    *Exemple d'appel:* 
 
     #+begin_example
           ...

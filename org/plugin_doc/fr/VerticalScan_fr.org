@@ -123,7 +123,7 @@
     sur un échantillon de la colonne.
   - Le plugin peut recevoir en entrée un champ 3D ou seulement un profil
 
-  *Exemple d'appel:* ==
+  *Exemple d'appel:* 
 
   #+begin_example
         ...

@@ -190,7 +190,7 @@ niveaux indéfinis associés avec LFC et EL sont mis à -300.
       couche, Z pour mètres au-dessus de la base de la couche).\\
 #+end_quote
 
-*Exemple d'appel:* ==
+*Exemple d'appel:* 
 
 #+begin_example
       ...

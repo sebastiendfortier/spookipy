@@ -121,7 +121,7 @@ Pour la clé --extrapolationType :
   --valueBelow) entre la valeur cible et la valeur source la plus proche
   pour déterminer la valeur à extrapoler
 
-*Exemple d'appel:* ==
+*Exemple d'appel:* 
 
 #+begin_example
       ...

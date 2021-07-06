@@ -45,7 +45,7 @@
 
 *Usage:*
 
-*Exemple d'appel:* ==
+*Exemple d'appel:* 
 
 #+begin_example
        ...

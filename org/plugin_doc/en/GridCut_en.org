@@ -68,7 +68,7 @@ lower right hand corner.
         
   #+end_example
 
-  *Call example:* ==
+  *Call example:* 
 
   #+begin_example
             ...

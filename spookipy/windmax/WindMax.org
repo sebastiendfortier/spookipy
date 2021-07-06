@@ -39,7 +39,7 @@
 
 *Usage:*
 
-*Exemple d'appel:* ==
+*Exemple d'appel:* 
 
 #+begin_example
       ...
@@ -114,7 +114,7 @@ Voir la référence à
 #+begin_example
 #+end_example
 
-*Call example:* ==
+*Call example:* 
 
 #+begin_example
       ...

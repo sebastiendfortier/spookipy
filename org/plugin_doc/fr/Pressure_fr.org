@@ -1,19 +1,5 @@
 ** Français
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 *Description:*
 
 - Calcul du champ de pression pour une coordonnée verticale donnée.\\
@@ -53,7 +39,7 @@
 
 *Usage:*
 
-*Exemple d'appel:* ==
+*Exemple d'appel:* 
 
 #+begin_example
       ...

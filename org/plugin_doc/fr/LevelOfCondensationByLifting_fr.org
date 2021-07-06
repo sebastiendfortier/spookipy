@@ -119,7 +119,7 @@
     caractères indique l'unité (P pour hPa au-dessus de la base de la
     couche, Z pour mètres au-dessus de la base de la couche).\\
 
-  *Exemple d'appel:* ==
+  *Exemple d'appel:* 
 
   #+begin_example
         ...

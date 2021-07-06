@@ -79,7 +79,7 @@
 #+begin_example
 #+end_example
 
-*Call example:* ==
+*Call example:* 
 
 #+begin_example
       ...

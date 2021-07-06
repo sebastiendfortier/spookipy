@@ -49,12 +49,10 @@ Then create a merge request on science's gitlab
 #+END_SRC
 
 ** Building documentation
-   :PROPERTIES:
-   :CUSTOM_ID:
-building-documentation
-   :END:
+
 #+BEGIN_SRC sh
   # This will build documentation in docs/build and there you will find index.html 
+  # make sure fstpy is in the PYTHONPATH
   make clean    
   make doc
 #+END_SRC

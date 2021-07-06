@@ -132,6 +132,7 @@ python -m pytest
 
 ``` {.bash org-language="sh"}
 # This will build documentation in docs/build and there you will find index.html 
+# make sure fstpy is in the PYTHONPATH
 make clean    
 make doc
 ```

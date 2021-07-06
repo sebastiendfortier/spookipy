@@ -6,7 +6,7 @@ DOC_DIR=${DIR:0:${#DIR}-3}doc
 echo ${DOCDIR}
 for f in `ls *.org`
 do
-   echo 'converting '$f&&pandoc $f -o ${DOC_DIR}/${f%.org}.rst
+   echo 'converting '$f&&pandoc -s $f -o ${DOC_DIR}/${f%.org}.rst
 done
 
 cd ../spookipy
@@ -14,5 +14,5 @@ cd ../spookipy
 for f in `find . -name '*.org'`
 do 
    name=${f/.*\/}
-    echo 'converting '$f&&pandoc $f -o ../doc/${name%.org}.rst
+    echo 'converting '$f&&pandoc -s $f -o ../doc/${name%.org}.rst
 done

@@ -1,5 +1,5 @@
 Français
---------
+========
 
 **Description:**
 
@@ -141,7 +141,7 @@ Tests unitaires
 | \*Ce plugin est utilisé par:\*
 
 English
--------
+=======
 
 **Description:**
 

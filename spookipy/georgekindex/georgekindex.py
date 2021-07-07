@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
+from spookipy.plugin import Plugin
 import pandas as pd
 import fstpy.all as fstpy
 import numpy as np
+
 class GeorgeKIndexError(Exception):
     pass
 
 def george_k_index(tt850:np.ndarray, tt500:np.ndarray, td850:np.ndarray, tt700:np.ndarray, td700:np.ndarray) -> np.ndarray:
     return (tt850 - tt500) + td850 - (tt700 - td700)
 
-class GeorgeKIndex:
+class GeorgeKIndex(Plugin):
     plugin_requires = '(nomvar in ["TT","TD"]) and (level in [850,700,500]) and (ip1_pkind =="mb")' 
     plugin_result = {'KI':{'nomvar':'KI','etiket':'GeorgeKIndex','unit':'scalar'}}
 

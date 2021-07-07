@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from spookipy.plugin import Plugin
 from spookipy.utils import validate_nomvar
 import pandas as pd
 import fstpy.all as fstpy
@@ -6,7 +7,7 @@ import fstpy.all as fstpy
 class OpElementsByValueError(Exception):
     pass
 
-class OpElementsByValue:
+class OpElementsByValue(Plugin):
 
     def __init__(self, df:pd.DataFrame, operator, value, operation_name='OpElementsByValue', exception_class = OpElementsByValueError, nomvar_out='', unit=''):
         self.df = df

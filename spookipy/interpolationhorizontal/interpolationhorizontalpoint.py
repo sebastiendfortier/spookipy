@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-from ..plugin import Plugin
+from spookipy.plugin import Plugin
 import numpy as np
 import pandas as pd
 import rpnpy.librmn.all as rmn
 import numpy as np
 import sys
 from fstpy.std_reader import load_data
-from ..utils import initializer
+from spookipy.utils import initializer
 
 class InterpolationHorizontalPointError(Exception):
     pass

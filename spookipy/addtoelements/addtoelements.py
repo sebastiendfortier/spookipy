@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from spookipy.plugin import Plugin
 import pandas as pd
 from spookipy.opelementsbyvalue.opelementsbyvalue import OpElementsByValue
 
@@ -9,7 +10,7 @@ def add_value(a, v):
 class AddToElementsError(Exception):
     pass
 
-class AddToElements:
+class AddToElements(Plugin):
 
     def __init__(self, df:pd.DataFrame, value, nomvar_out=''):
         self.df = df

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from spookipy.plugin import Plugin
 import pandas as pd
 import numpy as np
 from spookipy.opelementsbypoint.opelementsbypoint import OpElementsByPoint
@@ -6,7 +7,7 @@ from spookipy.opelementsbypoint.opelementsbypoint import OpElementsByPoint
 class AddElementsByPointError(Exception):
     pass
 
-class AddElementsByPoint:
+class AddElementsByPoint(Plugin):
     def __init__(self, df:pd.DataFrame, group_by_forecast_hour=False, nomvar_out='ADEP'):
         self.df = df
         self.group_by_forecast_hour = group_by_forecast_hour

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from spookipy.plugin import Plugin
 from spookipy.humidityutils.humidityutils import AEI1, AEI2, AEI3, AEW1, AEW2, AEW3, TDPACK_OFFSET_FIX
 from spookipy.utils import get_existing_result, get_intersecting_levels, get_plugin_dependencies
 import pandas as pd
@@ -10,7 +11,7 @@ from rpnpy.utils.tdpack import FOEWA, FOEW
 class VapourPressureError(Exception):
     pass
 
-class VapourPressure:
+class VapourPressure(Plugin):
     plugin_mandatory_dependencies_option_1 = {
         'HU':{'nomvar':'HU','unit':'kilogram_per_kilogram'},
         'PX':{'nomvar':'PX','unit':'hectoPascal'},

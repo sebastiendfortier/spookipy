@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from spookipy.plugin import Plugin
 from spookipy.utils import validate_nomvar
 import pandas as pd
 import numpy as np
@@ -9,7 +10,7 @@ import fstpy.all as fstpy
 class OpElementsByPointError(Exception):
     pass 
 
-class OpElementsByPoint:
+class OpElementsByPoint(Plugin):
     
     def __init__(self, df:pd.DataFrame, operator, operation_name='OpElementsByPoint', exception_class = OpElementsByPointError, group_by_forecast_hour=False, group_by_level=False, nomvar_out='OPER', unit='scalar'):
         self.df = df

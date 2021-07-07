@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from spookipy.utils import initializer
+from spookipy.plugin import Plugin
 import pandas as pd
 import numpy as np
 import operator as op
@@ -12,14 +14,15 @@ class MaskError(Exception):
     pass
 
 #[Mask --thresholds 0.0,10.0,15.0,20.0 --values 0.0,10.0,15.0,20.0 --operators GE,GE,GE,GE] >> 
-class Mask:
+class Mask(Plugin):
 
+    @initializer
     def __init__(self, df:pd.DataFrame, thresholds=None, values=None, operators=None, nomvar_out=''):
-        self.df = df
-        self.thresholds = thresholds
-        self.values = values
-        self.operators = operators
-        self.nomvar_out = nomvar_out
+        # self.df = df
+        # self.thresholds = thresholds
+        # self.values = values
+        # self.operators = operators
+        # self.nomvar_out = nomvar_out
         if self.df.empty:
             raise  MaskError( 'Mask' + ' - no data to process')
         length = len(thresholds)

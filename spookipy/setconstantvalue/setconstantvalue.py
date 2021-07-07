@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
+from spookipy.opelementsbyvalue.opelementsbyvalue import OpElementsByValue
+from spookipy.plugin import Plugin
 import pandas as pd
-import numpy as np
+
 
 def set_value(a,v):
     a[:]=v
@@ -12,7 +14,7 @@ def set_series_value(a:pd.Series, v):
 class SetConstantValueError(Exception):
     pass
 
-class SetConstantValue:
+class SetConstantValue(Plugin):
     def __init__(self, df:pd.DataFrame, value=0, nomvar_out='', min_index=False, max_index=False, nb_levels=False, bi_dimensionnal=False):
         if self.df.empty:
             raise  SetConstantValueError( 'SetConstantValue' + ' - no data to process')

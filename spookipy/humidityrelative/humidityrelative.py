@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from spookipy.plugin import Plugin
 from spookipy.utils import get_existing_result, get_intersecting_levels, get_plugin_dependencies
 import pandas as pd
 import fstpy.all as fstpy
@@ -20,7 +21,7 @@ def wind_modulus(uu:np.ndarray,vv:np.ndarray) -> np.ndarray:
     """
     return (uu**2 + vv**2)**.5 
 
-class HumidityRelative:
+class HumidityRelative(Plugin):
     plugin_mandatory_dependencies_option_1 = {
         'TT':{'nomvar':'TT','unit':'celsius'},
         'HU':{'nomvar':'HU','unit':'kilogram_per_kilogram'}

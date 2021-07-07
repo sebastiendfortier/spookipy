@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from spookipy.plugin import Plugin
 from spookipy.utils import validate_nomvar
 import pandas as pd
 import fstpy.all as fstpy
@@ -7,7 +8,7 @@ import fstpy.all as fstpy
 #https://numpy.org/doc/stable/reference/routines.math.html
 class ApplyUnaryError(Exception):
     pass     
-class ApplyUnary:
+class ApplyUnary(Plugin):
     
     def __init__(self, df:pd.DataFrame, function=None, nomvar_in=None, nomvar_out=None, etiket=None):
         self.df = df

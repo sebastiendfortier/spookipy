@@ -20,7 +20,8 @@
 #     "Ex: --outputFieldName2 ABCD\n"))
 
 # -*- coding: utf-8 -*-
-from spookipy.utils import validate_nomvar
+from spookipy.plugin import Plugin
+from spookipy.utils import initializer, validate_nomvar
 import pandas as pd
 import numpy as np
 import fstpy.all as fstpy
@@ -29,18 +30,18 @@ import fstpy.all as fstpy
 class MinMaxLevelIndexError(Exception):
     pass
 
-class MinMaxLevelIndex:
+class MinMaxLevelIndex(Plugin):
     # plugin_requires = '(nomvar in ["TD","TT"]) and (unit == "celsius")' 
     plugin_result_specifications = {'ALL':{'etiket':'MinMaxLevelIndex','unit':'scalar','ip1':0}}
-
+    @initializer
     def __init__(self,df:pd.DataFrame, ascending=True, min=False, max=False, bounded=False, nomvar_min='KMIN', nomvar_max='KMAX'):
-        self.df = df
-        self.ascending = ascending
-        self.min = min
-        self.max = max
-        self.bounded = bounded
-        self.nomvar_min = nomvar_min
-        self.nomvar_max = nomvar_max
+        # self.df = df
+        # self.ascending = ascending
+        # self.min = min
+        # self.max = max
+        # self.bounded = bounded
+        # self.nomvar_min = nomvar_min
+        # self.nomvar_max = nomvar_max
         if (not self.min) and (not self.max):
             self.min = True
             self.max = True

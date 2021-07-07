@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from spookipy.plugin import Plugin
 from spookipy.utils import get_existing_result, get_intersecting_levels, get_plugin_dependencies
 import pandas as pd
 import numpy as np
@@ -12,7 +13,7 @@ def dew_point_depression(tt:np.ndarray,td:np.ndarray) -> np.ndarray:
     es = np.where(es < 0.0, 0.0 )
     return es
 
-class DewPointDepression:
+class DewPointDepression(Plugin):
     plugin_mandatory_dependencies_option_1 = {
         'TT':{'nomvar':'TT','unit':'celsius'},
         'TD':{'nomvar':'TD','unit':'celsius'}

@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
+from spookipy.plugin import Plugin
 import pandas as pd
 import numpy as np
-from .opelementsbypoint import OpElementsByPoint
-from utils.utils import initializer
+from spookipy.opelementsbypoint.opelementsbypoint import OpElementsByPoint
+from spookipy.utils import initializer
 
 class MultiplyElementsByPointError(Exception):
     pass
 
-class MultiplyElementsByPoint:
-    )
+class MultiplyElementsByPoint(Plugin):
+
+    @initializer
     def __init__(self, df:pd.DataFrame, group_by_forecast_hour=False, nomvar_out='MUEP'):
         pass
 

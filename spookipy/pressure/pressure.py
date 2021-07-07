@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import ctypes
 import math
-from ..utils import initializer
+from spookipy.utils import initializer
 import sys
 
 import numpy as np
@@ -11,7 +11,7 @@ import rpnpy.vgd.proto as vgdp
 
 from fstpy.dataframe import set_vertical_coordinate_type
 from fstpy.std_reader import load_data
-from ..plugin import Plugin
+from spookipy.plugin import Plugin
 
 STANDARD_ATMOSPHERE = 1013.25
 

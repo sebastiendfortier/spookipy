@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
+from spookipy.plugin import Plugin
 import pandas as pd
 import numpy as np
 from math import exp
 from rpnpy.utils.tdpack import FOEWA, FOEW
-from spookipy.humidityutils import get_temp_phase_switch, TDPACK_OFFSET_FIX, AEW1, AEW2, AEW3, AEI1, AEI2, AEI3
+from spookipy.humidityutils.humidityutils import get_temp_phase_switch, TDPACK_OFFSET_FIX, AEW1, AEW2, AEW3, AEI1, AEI2, AEI3
 
 
 class SaturationVapourPressureError(Exception):
     pass
 
-class SaturationVapourPressure:
+class SaturationVapourPressure(Plugin):
     plugin_requires = 'nomvar =="TT"' 
     plugin_result_specifications = {'SVP':{'nomvar':'SVP','etiket':'SaturationVapourPressure','unit':'hectoPascal'}}
     

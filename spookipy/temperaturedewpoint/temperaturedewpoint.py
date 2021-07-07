@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
+from spookipy.plugin import Plugin
 from spookipy.utils import get_intersecting_levels
 from spookipy.humidityutils.humidityutils import AEI1, AEI2, AEI3, AEW1, AEW2, AEW3, get_temp_phase_switch
 import pandas as pd
 import numpy as np
 from math import log
 import fstpy.all as fstpy
+
 class TemperatureDewPointError(Exception):
     pass
 
@@ -18,7 +20,7 @@ def temperature_dew_point(es,vppr,tt,ice_water_phase_both,temp_phase_switch):
         td = np.where(es<0.0, tt, tt-es)
     return td
 
-class TemperatureDewPoint:
+class TemperatureDewPoint(Plugin):
     plugin_requires = 'nomvar in ["TT","ES","VPPR"]' 
     # plugin_result = {'nomvar':'TD','etiket':'TemperatureDewPoint','unit':'celsius'}
     plugin_result_specifications = {'TD':{'nomvar':'TD','etiket':'TemperatureDewPoint','unit':'celsius'}}

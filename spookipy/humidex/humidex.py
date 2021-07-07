@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
+from spookipy.plugin import Plugin
 import pandas as pd
 import fstpy.all as fstpy
 
 class HumidexError(Exception):
     pass
-class Humidex:
+class Humidex(Plugin):
     plugin_requires = 'nomvar in ["TT","TD"]' 
     plugin_result_specifications = {'HMX':{'nomvar':'HMX','etiket':'Humidex','unit':'celsius'}}
 

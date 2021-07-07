@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
+from spookipy.plugin import Plugin
 from typing import Tuple
 import pandas as pd
 import numpy as np
 from spookipy.utils import get_existing_result, get_plugin_dependencies
+from spookipy.pressure.pressure import Pressure
 import fstpy.all as fstpy
 
 
@@ -34,7 +36,7 @@ def wind_max(uu_3d:np.ndarray,vv_3d:np.ndarray,uv_3d:np.ndarray,px_3d:np.ndarray
     return uu_max,vv_max,uv_max,px_max
     
 
-class WindMax:
+class WindMax(Plugin):
     plugin_mandatory_dependencies = {
         'UV':{'nomvar':'UV','unit':'knot'},
         'UU':{'nomvar':'UU','unit':'knot'},
@@ -85,7 +87,7 @@ class WindMax:
             uv_df = current_fhour_group.query('nomvar=="UV"')
             uv_res_df = create_empty_result(uv_df,self.plugin_result_specifications['UV'])
             
-            px_df = fstpy.Pressure(pd.concat([uv_df,press_meta_df],ignore_index=True)).compute()
+            px_df = Pressure(pd.concat([uv_df,press_meta_df],ignore_index=True)).compute()
             px_res_df = create_empty_result(px_df,self.plugin_result_specifications['PX'])
 
             uu_3d = get_3d_array(uu_df)

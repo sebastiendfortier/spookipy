@@ -13,7 +13,7 @@ class ArithmeticMeanByPoint(Plugin):
         self.df = df
         self.group_by_forecast_hour = group_by_forecast_hour
         self.nomvar_out = nomvar_out
-        self.df = self.df.query('nomvar not in [">>","^^","!!","P0"]')
+        self.df = self.df.query('nomvar not in [">>","^^","!!","P0"]').reset_index(drop=True)
 
     def compute(self) -> pd.DataFrame:
         return OpElementsByPoint(self.df, 

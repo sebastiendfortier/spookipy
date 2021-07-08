@@ -43,7 +43,7 @@ class WindModulus(Plugin):
         if self.existing_result_df.empty:
             self.df = get_plugin_dependencies(self.df,self.plugin_mandatory_dependencies)
             
-            # self.df = self.df.query( 'nomvar==%s'%self.plugin_mandatory_dependencies)
+            # self.df = self.df.query( 'nomvar==%s'%self.plugin_mandatory_dependencies).reset_index(drop=True)
             level_intersection_df = get_intersecting_levels(self.df,self.plugin_mandatory_dependencies)
             # print('intersecting levels',level_intersection_df)
             if level_intersection_df.empty:

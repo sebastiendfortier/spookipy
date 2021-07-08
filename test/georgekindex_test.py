@@ -135,7 +135,7 @@
 #     source0 = plugin_test_dir + "2016122000_006_NatPres.std"
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-#     src_df0 = src_df0.query('ip2==6')
+#     src_df0 = src_df0.query('ip2==6').reset_index(drop=True)
 
 #     #compute GeorgeKIndex
 #     df = spooki.GeorgeKIndex(src_df0).compute()

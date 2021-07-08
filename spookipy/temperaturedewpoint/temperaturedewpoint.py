@@ -29,7 +29,7 @@ class TemperatureDewPoint(Plugin):
             raise TemperatureDewPointError('TemperatureDewPoint - no data to process')
 
         self.temp_phase_switch = get_temp_phase_switch('TemperatureDewPoint', TemperatureDewPointError, self.ice_water_phase_both, self.temp_phase_switch, self.temp_phase_switch_unit, self.rpn)
-        self.df = self.df.query(self.plugin_requires)
+        self.df = self.df.query(self.plugin_requires).reset_index(drop=True)
         self.df = fstpy.load_data(self.df)
         intersect_ttes_df = get_intersecting_levels(self.df,['TT','ES'])
         intersect_ttvppr_df = get_intersecting_levels(self.df,['TT','VPPR'])
@@ -44,9 +44,9 @@ class TemperatureDewPoint(Plugin):
     def compute(self) -> pd.DataFrame:
         td_dfs=[]
         for _, group in self.groups:
-            tt_df = group.query( '(nomvar=="TT") and (unit=="celsius")')
-            esdf = group.query( '(nomvar=="ES") and (unit=="celsius")')
-            vpprdf = group.query( '(nomvar=="VPPR") and (unit=="hectoPascal")')
+            tt_df = group.query( '(nomvar=="TT") and (unit=="celsius")').reset_index(drop=True)
+            esdf = group.query( '(nomvar=="ES") and (unit=="celsius")').reset_index(drop=True)
+            vpprdf = group.query( '(nomvar=="VPPR") and (unit=="hectoPascal")').reset_index(drop=True)
             td_df = tt_df.copy(deep=True)
             # td_df = fstpy.zap(td_df,**self.plugin_result)
             for k,v in self.plugin_result_specifications['SVP'].items():td_df[k] = v

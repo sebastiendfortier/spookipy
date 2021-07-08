@@ -16,7 +16,7 @@ def test_regtest_1(plugin_test_dir):
     source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
 
-    src_df0 = src_df0.query( 'nomvar == "UU"')
+    src_df0 = src_df0.query( 'nomvar == "UU"').reset_index(drop=True)
 
     with pytest.raises(spooki.ArithmeticMeanByPointError):
         #compute ArithmeticMeanByPoint

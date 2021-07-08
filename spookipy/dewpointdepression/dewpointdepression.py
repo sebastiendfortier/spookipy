@@ -74,8 +74,8 @@ class DewPointDepression(Plugin):
                  pass
 
             group = fstpy.load_data(group)
-            tt_df = group.query( 'nomvar=="TT"')
-            tddf = group.query( 'nomvar=="TD"')
+            tt_df = group.query( 'nomvar=="TT"').reset_index(drop=True)
+            tddf = group.query( 'nomvar=="TD"').reset_index(drop=True)
             esdf = tt_df.copy(deep=True)
             # esdf = fstpy.zap(esdf,**self.plugin_result_specifications['ES'])
             for k,v in self.plugin_result_specifications['ES'].items():esdf[k] = v

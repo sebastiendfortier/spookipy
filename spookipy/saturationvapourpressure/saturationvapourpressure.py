@@ -18,7 +18,7 @@ class SaturationVapourPressure(Plugin):
         if df.empty:
             raise SaturationVapourPressureError('SaturationVapourPressure' + ' - no data to process') 
         self.temp_phase_switch = get_temp_phase_switch('SaturationVapourPressure', SaturationVapourPressureError, self.ice_water_phase_both, self.temp_phase_switch, self.temp_phase_switch_unit, self.rpn)
-        self.df = self.df.query(self.plugin_requires)
+        self.df = self.df.query(self.plugin_requires).reset_index(drop=True)
         self.df = fstpy.load_data(self.df)
         self.groups= df.groupby(by=['grid','forecast_hour'])
         
@@ -28,7 +28,7 @@ class SaturationVapourPressure(Plugin):
         self.celsius_to_kelvin = fstpy.get_converter(celsius,kelvin)
         svpdfs=[]
         for _, group in self.groups:
-            tt_df = group.query( '(nomvar=="TT") and (unit=="celsius")')
+            tt_df = group.query( '(nomvar=="TT") and (unit=="celsius")').reset_index(drop=True)
             svp_df = tt_df.copy(deep=True)
             # svp_df = fstpy.zap(svp_df,**self.plugin_result_specifications)
             for k,v in self.plugin_result_specifications['SVP'].items():svp_df[k] = v

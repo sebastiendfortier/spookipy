@@ -16,10 +16,10 @@
 #         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
-#         uu = src_df0.query('nomvar == "UU"')
+#         uu = src_df0.query('nomvar == "UU"').reset_index(drop=True)
 #         #compute SetConstantValue
 #         uudf = SetConstantValue(uu, value=0.33323, nomvar_out='UU*').compute()
-#         vv = src_df0.query('nomvar == "VV"')
+#         vv = src_df0.query('nomvar == "VV"').reset_index(drop=True)
 #         #compute SetConstantValue
 #         vvdf = SetConstantValue(uu, value=0.33323, nomvar_out='VV*').compute()
 #         #[ReaderStd --input {sources[0]}] >> ( ([Select --fieldName UU] >> [SetConstantValue --value 0.33323 --outputFieldName UU*]) + ([Select --fieldName VV] >> [SetConstantValue --value 0.33323 --outputFieldName VV*]) ) >> [WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --IP1EncodingStyle OLDSTYLE]
@@ -44,7 +44,7 @@
 #         source0 = plugin_test_dir + "generate2D_fileSrc.std"
 #         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-#         uu = src_df0.query('nomvar == "UU"')
+#         uu = src_df0.query('nomvar == "UU"').reset_index(drop=True)
 #         #compute SetConstantValue
 #         df = SetConstantValue(uu, min_index=True, bi_dimensionnal=True).compute()
 #         #[ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> [SetConstantValue --value MININDEX --bidimensional] >> [Zap --fieldName RES --pdsLabel GENERATE2D --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
@@ -69,7 +69,7 @@
 #         source0 = plugin_test_dir + "2011072100_006_eta_small"
 #         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-#         uu = src_df0.query('nomvar == "UU"')
+#         uu = src_df0.query('nomvar == "UU"').reset_index(drop=True)
 #         uu['etiket']='580V0N'
 #         #compute SetConstantValue
 #         df = SetConstantValue(uu, max_index=True, bi_dimensionnal=True).compute()
@@ -95,7 +95,7 @@
 #         source0 = plugin_test_dir + "generate2D_fileSrc.std"
 #         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-#         uu = src_df0.query('nomvar == "UU"')
+#         uu = src_df0.query('nomvar == "UU"').reset_index(drop=True)
 #         #compute SetConstantValue
 #         df = SetConstantValue(uu, value=-1, bi_dimensionnal=True).compute()
 #         #[ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> [SetConstantValue --value -1.0 --bidimensional] >> [Zap --fieldName RES --pdsLabel GENERATE2D --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
@@ -120,7 +120,7 @@
 #         source0 = plugin_test_dir + "generate2D_fileSrc.std"
 #         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-#         uu = src_df0.query('nomvar == "UU"')
+#         uu = src_df0.query('nomvar == "UU"').reset_index(drop=True)
 #         #compute SetConstantValue
 #         df1 = SetConstantValue(uu, min_index=True, bi_dimensionnal=True).compute()
 #         df1['nomvar']='KBAS'
@@ -150,7 +150,7 @@
 #         source0 = plugin_test_dir + "2011072100_006_eta_small"
 #         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-#         uu = src_df0.query('nomvar == "UU"')
+#         uu = src_df0.query('nomvar == "UU"').reset_index(drop=True)
 #         uu['etiket']='580V0N'
 #         #compute SetConstantValue
 #         df = SetConstantValue(uu, nb_levels=True, bi_dimensionnal=True, out_name='RES').compute()

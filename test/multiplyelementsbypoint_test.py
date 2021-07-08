@@ -29,7 +29,7 @@
 #     #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
-#     #     src_df0 = src_df0.query( 'nomvar=="UU"')
+#     #     src_df0 = src_df0.query( 'nomvar=="UU"').reset_index(drop=True)
 #     #     #compute MultiplyElementsByPoint
 #     #     with pytest.raises(MultiplyElementsByPointError):
 #     #         df = MultiplyElementsByPoint(src_df0).compute()
@@ -43,7 +43,7 @@
 #     #     source0 = plugin_test_dir + "tt_gz_px_2grilles.std"
 #     #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-#     #     src_df0 = src_df0.query( 'nomvar in ["TT","GZ"]')
+#     #     src_df0 = src_df0.query( 'nomvar in ["TT","GZ"]').reset_index(drop=True)
 #     #     #compute MultiplyElementsByPoint
 #     #     with pytest.raises(MultiplyElementsByPointError):
 #     #         df = MultiplyElementsByPoint(src_df0).compute()

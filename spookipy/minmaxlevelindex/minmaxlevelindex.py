@@ -50,9 +50,9 @@ class MinMaxLevelIndex(Plugin):
         validate_nomvar(nomvar_min, MinMaxLevelIndex, MinMaxLevelIndexError)
         validate_nomvar(nomvar_max, MinMaxLevelIndex, MinMaxLevelIndexError)
         
-        # self.df = self.df.query(self.plugin_requires)
+        # self.df = self.df.query(self.plugin_requires).reset_index(drop=True)
         self.df = fstpy.load_data(self.df)
-        keep = self.df.query('nomvar not in ["KBAS","KTOP"]')
+        keep = self.df.query('nomvar not in ["KBAS","KTOP"]').reset_index(drop=True)
         self.nomvar_groups= keep.groupby(by=['grid','forecast_hour','nomvar'])
         
 
@@ -84,8 +84,8 @@ class MinMaxLevelIndex(Plugin):
 
             if self.bounded:
                 # get kbas and ktop for this grid
-                kbas = self.df.query('(nomvar=="KBAS") and (grid=="%s")'%group.iloc[0]['grid'])
-                ktop = self.df.query('(nomvar=="KTOP") and (grid=="%s")'%group.iloc[0]['grid'])
+                kbas = self.df.query('(nomvar=="KBAS") and (grid=="%s")'%group.iloc[0]['grid']).reset_index(drop=True)
+                ktop = self.df.query('(nomvar=="KTOP") and (grid=="%s")'%group.iloc[0]['grid']).reset_index(drop=True)
                 kbas_arr = kbas.iloc[0]['d'].flatten().astype('int64')
                 kbas_mask = kbas_arr == -1
 

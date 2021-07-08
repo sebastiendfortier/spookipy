@@ -53,7 +53,7 @@ class VapourPressure(Plugin):
         if self.existing_result_df.empty:
             self.df = get_plugin_dependencies(self.df,self.plugin_mandatory_dependencies)
             
-            # self.df = self.df.query( 'nomvar==%s'%self.plugin_mandatory_dependencies)
+            # self.df = self.df.query( 'nomvar==%s'%self.plugin_mandatory_dependencies).reset_index(drop=True)
             level_intersection_df = get_intersecting_levels(self.df,self.plugin_mandatory_dependencies)
             # print('intersecting levels',level_intersection_df)
             if level_intersection_df.empty:
@@ -69,8 +69,8 @@ class VapourPressure(Plugin):
     def compute(self) -> pd.DataFrame:
         vpprdfs=[]
         for _, group in self.groups:
-            tddf = group.query( '(nomvar=="TD") and (unit=="celsius")')
-            tt_df = group.query( '(nomvar=="TT") and (unit=="celsius")')
+            tddf = group.query( '(nomvar=="TD") and (unit=="celsius")').reset_index(drop=True)
+            tt_df = group.query( '(nomvar=="TT") and (unit=="celsius")').reset_index(drop=True)
             vpprdf = tddf.copy(deep=True)
             # vpprdf = fstpy.zap(vpprdf,**self.plugin_result)
             for k,v in self.plugin_result_specifications['ALL'].items(): vpprdf[k] = v

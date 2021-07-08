@@ -54,7 +54,7 @@ class HumidityRelative(Plugin):
         if self.existing_result_df.empty:
             self.df = get_plugin_dependencies(self.df,self.plugin_mandatory_dependencies)
             
-            # self.df = self.df.query( 'nomvar==%s'%self.plugin_mandatory_dependencies)
+            # self.df = self.df.query( 'nomvar==%s'%self.plugin_mandatory_dependencies).reset_index(drop=True)
             level_intersection_df = get_intersecting_levels(self.df,self.plugin_mandatory_dependencies)
             # print('intersecting levels',level_intersection_df)
             if level_intersection_df.empty:
@@ -76,8 +76,8 @@ class HumidityRelative(Plugin):
         for _,current_fhour_group in self.fhour_groups:
             # current_fhour_group = current_fhour_group.reset_index(drop=True)
             # print('-1-','\n',current_fhour_group[['nomvar','level','forecast_hour']])        
-            uudf = current_fhour_group.query('nomvar == "UU"').reset_index(drop=True)
-            vvdf = current_fhour_group.query('nomvar == "VV"').reset_index(drop=True)
+            uudf = current_fhour_group.query('nomvar == "UU"').reset_index(drop=True).reset_index(drop=True)
+            vvdf = current_fhour_group.query('nomvar == "VV"').reset_index(drop=True).reset_index(drop=True)
             uv_df = vvdf.copy(deep=True)
             #recipe: zap with dict
             for k,v in self.plugin_result_specifications['UV'].items():uv_df[k] = v

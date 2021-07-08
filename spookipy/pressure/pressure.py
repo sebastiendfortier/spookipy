@@ -41,7 +41,7 @@ class Pressure(Plugin):
         """
         pxdfs=[]
         for _,grid in self.df.groupby(['grid']):
-            meta_df = grid.query('nomvar in ["!!","HY","P0","PT",">>","^^","PN"]')
+            meta_df = grid.query('nomvar in ["!!","HY","P0","PT",">>","^^","PN"]').reset_index(drop=True)
             meta_df = load_data(meta_df)
             vctypes_groups = grid.groupby(['vctype'])
             for _, vt in vctypes_groups:
@@ -262,7 +262,7 @@ def compute_pressure_from_sigma_coord_array(levels:list,p0_data:np.ndarray,stand
     return pressures
 
 def get_sigma_metadata(meta_df,forecast_hour):
-    p0_df = meta_df.query(f'(nomvar=="P0") and (forecast_hour=="{forecast_hour}")')
+    p0_df = meta_df.query(f'(nomvar=="P0") and (forecast_hour=="{forecast_hour}")').reset_index(drop=True)
     if p0_df.empty:
         return None,None,None
     p0_data = p0_df.iloc[0]['d']
@@ -428,16 +428,16 @@ def compute_pressure_from_eta_coord_array(levels:list,pt_data:np.ndarray,bb_data
     return pressures
 
 def get_eta_metadata(meta_df,forecast_hour):
-    p0_df = meta_df.query(f'(nomvar=="P0") and (forecast_hour=="{forecast_hour}")')
+    p0_df = meta_df.query(f'(nomvar=="P0") and (forecast_hour=="{forecast_hour}")').reset_index(drop=True)
     if p0_df.empty:
         return None,None,None,None,None
     p0_data = p0_df.iloc[0]['d']    
-    pt_df = meta_df.query(f'(nomvar=="PT") and (forecast_hour=="{forecast_hour}")')
+    pt_df = meta_df.query(f'(nomvar=="PT") and (forecast_hour=="{forecast_hour}")').reset_index(drop=True)
     if not pt_df.empty: 
         pt_data = pt_df.iloc[0]['d']
     else:
         pt_data = None,None,None,None,None
-    bb_df = meta_df.query('(nomvar=="!!") and (ig1==1002)')
+    bb_df = meta_df.query('(nomvar=="!!") and (ig1==1002)').reset_index(drop=True)
     if not bb_df.empty: 
         bb_data = bb_df.iloc[0]['d']
     else:
@@ -638,11 +638,11 @@ def compute_pressure_from_hyb_coord_array(hy_data:np.ndarray,hy_ig1:float,hy_ig2
     return pressures
 
 def get_hyb_metadata(meta_df,forecast_hour):
-    p0_df = meta_df.query(f'(nomvar=="P0") and (forecast_hour=="{forecast_hour}")')
+    p0_df = meta_df.query(f'(nomvar=="P0") and (forecast_hour=="{forecast_hour}")').reset_index(drop=True)
     if p0_df.empty:
         return None,None,None,None
     p0_data = p0_df.iloc[0]['d']
-    hy_df = meta_df.query('nomvar=="HY"')
+    hy_df = meta_df.query('nomvar=="HY"').reset_index(drop=True)
     if hy_df.empty:
         return None,None,None,None
     hy_data = hy_df.iloc[0]['d']
@@ -789,11 +789,11 @@ def compute_pressure_from_hybstag_coord_array(ip1s:list,bb_data:np.ndarray,p0_da
     return pressures
 
 def get_hybstag_metadata(meta_df,forecast_hour):
-    p0_df = meta_df.query(f'(nomvar=="P0") and (forecast_hour=="{forecast_hour}")')
+    p0_df = meta_df.query(f'(nomvar=="P0") and (forecast_hour=="{forecast_hour}")').reset_index(drop=True)
     if p0_df.empty:
         return None,None,None,None
     p0_data = p0_df.iloc[0]['d']
-    bb_df = meta_df.query('(nomvar=="!!") and (ig1 in [5002,5005])')
+    bb_df = meta_df.query('(nomvar=="!!") and (ig1 in [5002,5005])').reset_index(drop=True)
     if bb_df.empty:
         return None,None,None,None
     bb_data = bb_df.iloc[0]['d']

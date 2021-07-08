@@ -22,7 +22,7 @@ class ApplyUnary(Plugin):
 
 
     def compute(self) -> pd.DataFrame:
-        indf = self.df.query( 'nomvar=="%s"'%self.nomvar_in)
+        indf = self.df.query( 'nomvar=="%s"'%self.nomvar_in).reset_index(drop=True)
         indf.sort_values('level')
         indf = fstpy.load_data(indf)
         outdf = indf.copy(deep=True)

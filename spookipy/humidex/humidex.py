@@ -16,18 +16,18 @@ class Humidex(Plugin):
         self.rpn = rpn
         if df.empty:
             raise HumidexError('Humidex - no data to process') 
-        self.df = self.df.query(self.plugin_requires)
+        self.df = self.df.query(self.plugin_requires).reset_index(drop=True)
         self.df = fstpy.load_data(self.df)
         self.groups= df.groupby(by=['grid','forecast_hour'])
 
     def compute(self) -> pd.DataFrame:
         tddfs=[]
         for _, group in self.groups:
-            tt850df = group.query( '(nomvar=="TT") and (level==850) and (pkind=="mb")')
-            tt700df = group.query( '(nomvar=="TT") and (level==700) and (pkind=="mb")')
-            tt500df = group.query( '(nomvar=="TT") and (level==500) and (pkind=="mb")')
-            td850df = group.query( '(nomvar=="TD") and (level==850) and (pkind=="mb")')
-            td700df = group.query( '(nomvar=="TD") and (level==700) and (pkind=="mb")')
+            tt850df = group.query( '(nomvar=="TT") and (level==850) and (pkind=="mb")').reset_index(drop=True)
+            tt700df = group.query( '(nomvar=="TT") and (level==700) and (pkind=="mb")').reset_index(drop=True)
+            tt500df = group.query( '(nomvar=="TT") and (level==500) and (pkind=="mb")').reset_index(drop=True)
+            td850df = group.query( '(nomvar=="TD") and (level==850) and (pkind=="mb")').reset_index(drop=True)
+            td700df = group.query( '(nomvar=="TD") and (level==700) and (pkind=="mb")').reset_index(drop=True)
             hmx_df = fstpy.create_1row_df_from_model(tt850df)
             # hmx_df = fstpy.zap(hmx_df,**self.plugin_result_specifications)
             for k,v in self.plugin_result_specifications['HMX'].items():hmx_df[k] = v

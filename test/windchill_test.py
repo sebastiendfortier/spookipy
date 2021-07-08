@@ -50,11 +50,11 @@ def test_regtest_2(plugin_test_dir):
     print(src_df0[['nomvar','typvar','etiket','ni','nj','nk','dateo','d']])
     print(src_df0.nomvar.unique())
 
-    uv_df = src_df0.query('nomvar in ["UU","VV"]')
+    uv_df = src_df0.query('nomvar in ["UU","VV"]').reset_index(drop=True)
     uv_df = spooki.WindModulus(uv_df).compute()
     uv_src_df=pd.concat([src_df0,uv_df],ignore_index=True)
 
-    src_df0 = uv_src_df.query('level!=1.0')
+    src_df0 = uv_src_df.query('level!=1.0').reset_index(drop=True)
     # print(src_df0[['level','surface']])
 
     #compute WindChill

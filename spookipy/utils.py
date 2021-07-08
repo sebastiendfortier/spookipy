@@ -55,7 +55,7 @@ def get_plugin_dependencies(df:pd.DataFrame, plugin_mandatory_dependencies:dict)
     for nomvar,desc in plugin_mandatory_dependencies.items():
         #recipe, query with dict
         tmp_df = df.loc[(df[list(desc)] == pd.Series(desc)).all(axis=1)]
-        # tmp_df = df.query('nomvar=="%s"'%nomvar)
+        # tmp_df = df.query('nomvar=="%s"'%nomvar).reset_index(drop=True)
         # print('query equality',tmp_df1.equals(tmp_df))
         # print('tmp_df',tmp_df,'results',results,sep='\n')
         if tmp_df.empty:
@@ -79,7 +79,7 @@ def get_plugin_dependencies(df:pd.DataFrame, plugin_mandatory_dependencies:dict)
 def get_existing_result(df:pd.DataFrame, plugin_result_specifications) -> pd.DataFrame:
     results = []
     for _,spec in plugin_result_specifications.items():
-        res= df.query('(nomvar=="%s") and (unit=="%s")'%(spec["nomvar"],spec["unit"]))
+        res= df.query('(nomvar=="%s") and (unit=="%s")'%(spec["nomvar"],spec["unit"])).reset_index(drop=True)
         if not res.empty:
             results.append(res)
         else:
@@ -107,20 +107,20 @@ def get_intersecting_levels(df:pd.DataFrame, plugin_mandatory_dependencies:dict)
         # print('get_intersecting_levels - not enough nomvars to process')
         raise LevelIntersectionError('not enough nomvars to process')
 
-    firstdf = df.query( 'nomvar == "%s"' % list(plugin_mandatory_dependencies.keys())[0])
+    firstdf = df.query( 'nomvar == "%s"' % list(plugin_mandatory_dependencies.keys())[0]).reset_index(drop=True)
     if df.empty:
         # print('get_intersecting_levels - no records to intersect')
         raise LevelIntersectionError('get_intersecting_levels - no records to intersect')
     common_levels = set(firstdf.ip1.unique())
 
     for nomvar,_ in plugin_mandatory_dependencies.items():
-        currdf = df.query('nomvar == "%s"' % nomvar)
+        currdf = df.query('nomvar == "%s"' % nomvar).reset_index(drop=True)
         levels = set(currdf.ip1.unique())
         common_levels = common_levels.intersection(levels)
     common_levels = list(common_levels)
     # print('(nomvar in %s) and (ip1 in %s)'%(nomvars,common_levels))
     nomvars = list(plugin_mandatory_dependencies.keys())
-    query_res = df.query('(nomvar in %s) and (ip1 in %s)'%(nomvars,common_levels))
+    query_res = df.query('(nomvar in %s) and (ip1 in %s)'%(nomvars,common_levels)).reset_index(drop=True)
     # print('query_res',query_res)  
     if query_res.empty:
         # print('get_intersecting_levels - no intersecting levels found')

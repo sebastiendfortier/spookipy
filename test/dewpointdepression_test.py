@@ -43,7 +43,7 @@
 #     source0 = plugin_test_dir + "2011100712_012_glbhyb"
 #     src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
 
-#     src_df0 = src_df0.query('nomvar in ["TT","HU"]')
+#     src_df0 = src_df0.query('nomvar in ["TT","HU"]').reset_index(drop=True)
 
 #     #compute spooki.DewPointDepression
 #     df = spooki.DewPointDepression(src_df0,ice_water_phase='water').compute()
@@ -69,7 +69,7 @@
 #     source0 = plugin_test_dir + "2011100712_012_glbhyb"
 #     src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
 
-#     src_df0 = src_df0.query('nomvar in ["TT","HR"]')
+#     src_df0 = src_df0.query('nomvar in ["TT","HR"]').reset_index(drop=True)
 
 #     #compute spooki.DewPointDepression
 #     df = spooki.DewPointDepression(src_df0,ice_water_phase='water').compute()
@@ -96,9 +96,9 @@
 #     source0 = plugin_test_dir + "2011100712_012_glbhyb"
 #     src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
 
-#     src_df0 = src_df0.query('nomvar in ["TT","HU"]')
+#     src_df0 = src_df0.query('nomvar in ["TT","HU"]').reset_index(drop=True)
     
-#     tt_df = src_df0.query('nomvar=="TT"')
+#     tt_df = src_df0.query('nomvar=="TT"').reset_index(drop=True)
 
 #     #compute spooki.DewPointDepression
 #     df = spooki.DewPointDepression(src_df0,ice_water_phase='water').compute()

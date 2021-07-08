@@ -74,17 +74,17 @@ class WindMax(Plugin):
         
         for index,current_fhour_group in self.fhour_groups:
             # print('current_fhour_group',current_fhour_group)
-            press_meta_df = self.df.query('(nomvar in ["P0","PT","!!","HY"]) and (grid=="%s")'%index[0])
+            press_meta_df = self.df.query('(nomvar in ["P0","PT","!!","HY"]) and (grid=="%s")'%index[0]).reset_index(drop=True)
 
-            uu_df = current_fhour_group.query('nomvar=="UU"')
+            uu_df = current_fhour_group.query('nomvar=="UU"').reset_index(drop=True)
             uu_df = fstpy.load_data(uu_df)
             uu_res_df = create_empty_result(uu_df,self.plugin_result_specifications['UU'])
 
-            vv_df = current_fhour_group.query('nomvar=="VV"')
+            vv_df = current_fhour_group.query('nomvar=="VV"').reset_index(drop=True)
             vv_df = fstpy.load_data(vv_df)
             vv_res_df = create_empty_result(vv_df,self.plugin_result_specifications['VV'])
 
-            uv_df = current_fhour_group.query('nomvar=="UV"')
+            uv_df = current_fhour_group.query('nomvar=="UV"').reset_index(drop=True)
             uv_res_df = create_empty_result(uv_df,self.plugin_result_specifications['UV'])
             
             px_df = Pressure(pd.concat([uv_df,press_meta_df],ignore_index=True)).compute()

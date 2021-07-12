@@ -14,10 +14,8 @@
 */Notes:/*\\
 
 - Seul le vent peut être interpolé vectoriellement
-- Ne traite que les grilles qui sont définies comme dans les fichiers
-standards
-- Interpolation sur grilles de type Y ou Z, définie par l'usager, non
-disponible pour le moment
+- Ne traite que les grilles qui sont définies comme dans les fichiers standards
+- Interpolation sur grilles de type Y ou Z, définie par l'usager, non disponible pour le moment
 
 *Méthode d'itération:*
 
@@ -26,9 +24,7 @@ disponible pour le moment
 *Dépendances:*
 
 - Un ou plusieurs champ(s) sur une ou plusieurs grille(s) source(s)
-- Avec l'option --outputGridDefinitionMethod FIELD_DEFINED: Un champ
-sur une grille cible dont le nom est différent de(s) champ(s) sur
-la/les grille(s) source(s)\\
+- Avec l'option --outputGridDefinitionMethod FIELD_DEFINED: Un champ sur une grille cible dont le nom est différent de(s) champ(s) sur la/les grille(s) source(s)\\
 
 *Résultat(s):*
 

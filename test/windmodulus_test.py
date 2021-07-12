@@ -15,7 +15,7 @@ def test_regtest_1(plugin_test_dir):
     """Test #1 : test_read_select_write_UV"""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
-    src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     #compute WindModulus
     df = spooki.WindModulus(src_df0).compute()
@@ -39,7 +39,7 @@ def test_regtest_2(plugin_test_dir):
     """Test #2 : test_read_select_write_UV2"""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
-    src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
     #compute WindModulus
@@ -60,36 +60,11 @@ def test_regtest_2(plugin_test_dir):
     assert(res == True)
 
 
-def test_regtest_3(plugin_test_dir):
-    """Test #3 : test_read_select_write_UVWD"""
-    # open and read source
-    source0 = plugin_test_dir + "windModulusAndDirection_fileSrc.std"
-    src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
-
-
-    #compute WindModulus
-    df = spooki.WindModulus(src_df0).compute()
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [WindModulus] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
-    df['etiket'] = "WNDMAD"
-    #write the result
-    results_file = TMP_PATH + "windmodulus_test_3.std"
-    fstpy.delete_file(results_file)
-    fstpy.StandardFileWriter(results_file, df).to_fst()
-
-    # open and read comparison file
-    file_to_compare = plugin_test_dir + "windModulusAndDirection_file2cmp.std"
-
-    #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,allclose=True)
-    fstpy.delete_file(results_file)
-    assert(res == True)
-
-
 def test_regtest_4(plugin_test_dir):
     """Test #4 : test_read_select_write_UV_already_calculated"""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5_UV_fileSrc.std"
-    src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
     #compute WindModulus
@@ -114,7 +89,7 @@ def test_regtest_5(plugin_test_dir):
     """Test #5 : test_read_select_write_UV_already_calculated_without_UU_VV"""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5_UV_fileSrc.std"
-    src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
     #compute WindModulus
@@ -139,7 +114,7 @@ def test_regtest_6(plugin_test_dir):
     """Test #6 : test_read_select_write_UV_already_calculated2"""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5x2_UV_fileSrc.std"
-    src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
     #compute WindModulus
@@ -165,10 +140,10 @@ def test_regtest_9(plugin_test_dir):
     """Test #9 : test_read_select_write_UV_GRID_X"""
     # open and read source
     source0 = plugin_test_dir + "uu_850.std"
-    src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     source1 = plugin_test_dir + "vv_850.std"
-    src_df1 = fstpy.StandardFileReader(source1,decode_metadata=True).to_pandas()
+    src_df1 = fstpy.StandardFileReader(source1).to_pandas()
 
     src_df=pd.concat([src_df0,src_df1], ignore_index=True)
 

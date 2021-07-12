@@ -14,7 +14,7 @@ def test_regtest_1(plugin_test_dir):
     """Test #1 : Test avec un seul champs en entrée; requête invalide."""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
-    src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     src_df0 = src_df0.query( 'nomvar == "UU"').reset_index(drop=True)
 
@@ -29,7 +29,7 @@ def test_regtest_2(plugin_test_dir):
     """Test #2 : Utilisation de --outputFieldName avec une valeur > 4 caractères."""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
-    src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
     with pytest.raises(spooki.ArithmeticMeanByPointError):
@@ -44,7 +44,7 @@ def test_regtest_3(plugin_test_dir):
     """Test #3 : Fait la moyenne de champs 2D."""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
-    src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
     #compute ArithmeticMeanByPoint
@@ -70,7 +70,7 @@ def test_regtest_4(plugin_test_dir):
     """Test #4 : Fait la moyenne de champs 3D."""
     # open and read source
     source0 = plugin_test_dir + "UUVVTT5x5x2_fileSrc.std"
-    src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
     #compute ArithmeticMeanByPoint
@@ -97,7 +97,7 @@ def test_regtest_5(plugin_test_dir):
     # open and read source
     source0 = plugin_test_dir + "tt_gz_px_2grilles.std"
 
-    src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     #compute ArithmeticMeanByPoint
     df = spooki.ArithmeticMeanByPoint(src_df0).compute()
@@ -124,7 +124,7 @@ def test_regtest_6(plugin_test_dir):
     """Test #6 : Test avec plusieurs champs, differents forecastHours; calcule les resulats pour chacuns des forecastHours."""
     # open and read source
     source0 = plugin_test_dir + "TTES2x2x4_manyForecastHours.std"
-    src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
     #compute ArithmeticMeanByPoint
@@ -151,7 +151,7 @@ def test_regtest_7(plugin_test_dir):
     """Test #7 : Test avec plusieurs champs, differents forecastHours; fait la moyenne des champs de tous les forecastHours."""
     # open and read source
     source0 = plugin_test_dir + "TTES2x2x4_manyForecastHours.std"
-    src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
     #compute ArithmeticMeanByPoint

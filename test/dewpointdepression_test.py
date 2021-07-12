@@ -15,7 +15,7 @@
 #     """Test #1 :  Calcul du point de rosée; utilisation de --iceWaterPhase BOTH mais sans --temperaturePhaseSwitch."""
 #     # open and read source
 #     source0 = plugin_test_dir + "inputFile.std"
-#     src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
+#     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
 #     #compute spooki.DewPointDepression
@@ -41,7 +41,7 @@
 #     """Test #3 :  Calcul de l'écart du point de rosée (ES) à partir de l'humidité spécifique (HU)."""
 #     # open and read source
 #     source0 = plugin_test_dir + "2011100712_012_glbhyb"
-#     src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
+#     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     src_df0 = src_df0.query('nomvar in ["TT","HU"]').reset_index(drop=True)
 
@@ -67,7 +67,7 @@
 #     """Test #5 :  Calcul de l'écart du point de rosée (ES) à partir de l'humidité relative (HR)."""
 #     # open and read source
 #     source0 = plugin_test_dir + "2011100712_012_glbhyb"
-#     src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
+#     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     src_df0 = src_df0.query('nomvar in ["TT","HR"]').reset_index(drop=True)
 
@@ -94,7 +94,7 @@
 #     """Test #6 :  Calcul de l'écart du point de rosée (ES) à partir de la température du point de rosée (TD), option --RPN."""
 #     # open and read source
 #     source0 = plugin_test_dir + "2011100712_012_glbhyb"
-#     src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
+#     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     src_df0 = src_df0.query('nomvar in ["TT","HU"]').reset_index(drop=True)
     
@@ -126,7 +126,7 @@
 #     """Test #7 :  Calcul de l'écart du point de rosée (ES) à partir de la température du point de rosée (TD)."""
 #     # open and read source
 #     source0 = plugin_test_dir + "2011100712_012_glbhyb"
-#     src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
+#     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
 #     #compute spooki.DewPointDepression
@@ -151,7 +151,7 @@
 #     """Test #9 :  Calcul de l'écart du point de rosée (ES) à partir du rapport de mélange de la vapeur d'eau (QV)."""
 #     # open and read source
 #     source0 = plugin_test_dir + "2011100712_012_glbhyb_QV"
-#     src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
+#     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
 #     #compute spooki.DewPointDepression

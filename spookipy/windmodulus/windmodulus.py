@@ -37,6 +37,7 @@ class WindModulus(Plugin):
     def validate_input(self):
         if self.df.empty:
             raise  WindModulusError( "WindModulus" + ' - no data to process')
+        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['unit','forecast_hour'])    
         #check if result already exists
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
 

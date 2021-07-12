@@ -7,6 +7,7 @@ import sys
 import fstpy.all as fstpy
 
 
+
 class OpElementsByPointError(Exception):
     pass 
 
@@ -26,7 +27,8 @@ class OpElementsByPoint(Plugin):
             raise  exception_class( operation_name + ' - no data to process')
         if len(self.df) == 1:
             sys.stderr.write(operation_name + ' - not enough records to process, need at least 2')
-            raise exception_class(operation_name + ' - not enough records to process, need at least 2')    
+            raise exception_class(operation_name + ' - not enough records to process, need at least 2') 
+        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['forecast_hour','ip_info'])       
         self.df = fstpy.load_data(self.df)
 
         #group by grid/forecast hour  

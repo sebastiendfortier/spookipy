@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import fstpy.all as fstpy
 
+
 class WindChillError(Exception):
     pass
 
@@ -20,7 +21,6 @@ class WindChill(Plugin):
     
     def __init__(self,df:pd.DataFrame):
         self.df = df
-        print(df)
         self.validate_input()
         
         
@@ -29,6 +29,8 @@ class WindChill(Plugin):
         if self.df.empty:
             raise  WindChillError( 'WindChil - no data to process')
 
+        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['unit','ip_info','forecast_hour'])
+      
         #check if result already exists
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
 

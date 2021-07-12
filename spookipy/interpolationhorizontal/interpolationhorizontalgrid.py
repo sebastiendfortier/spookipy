@@ -6,7 +6,7 @@ import pandas as pd
 import rpnpy.librmn.all as rmn
 import numpy as np
 
-from fstpy.std_reader import load_data
+import fstpy.all as fstpy
 
 
 class InterpolationHorizontalGridError(Exception):
@@ -17,6 +17,8 @@ class InterpolationHorizontalGrid(Plugin):
 
     :param df: Input dataframe
     :type df: pd.DataFrame
+    :param output_fields: sets what fields are included in output, 'interpolated' - interpolated only,'reference' - add reference field,'all' - add alla fields, defaut is 'all'
+    :type output_fields: str in 
     :param method: Manner in how the target grid is defined
     :type method: str 'field','user'
     :param interpolation_type: Type of interpolation 'nearest','bi-linear','bi-cubic'
@@ -46,9 +48,18 @@ class InterpolationHorizontalGrid(Plugin):
     grid_types = ['A','B','G','L','N','S']
     extrapolation_types = ['nearest','linear','maximum','minimum','value','abort']
     interpolation_types = ['nearest','bi-linear','bi-cubic']
+    output_fields_selection = ['interpolated','reference','all']
+
+
+# –outputField arg Choice of output: include interpolated fields only or include reference field with
+# interpolated
+# fields or include all fields.
+# Supported types: [STRING[INTERPOLATED_FIELD_ONLY|INCLUDE_REFERENCE_FIELD|INCLUDE_ALL_FIELDS] ]
+# Default: INCLUDE_ALL_FIELDS
+# EX: –outputField INCLUDE_REFERENCE_FIELD
 
     @initializer
-    def __init__(self,df:pd.DataFrame, method:str, interpolation_type:str, extrapolation_type:str, grtyp:str=None, ni:int=None, nj:int=None, param1:float=None, param2:float=None, param3:float=None, param4:float=None, extrapolation_value:float=None, nomvar:str=None):
+    def __init__(self,df:pd.DataFrame, method:str, interpolation_type:str, extrapolation_type:str, grtyp:str=None, ni:int=None, nj:int=None, param1:float=None, param2:float=None, param3:float=None, param4:float=None, extrapolation_value:float=None, nomvar:str=None, output_fields='all'):
         self.validate_input()
 
     def validate_input(self):
@@ -62,6 +73,7 @@ class InterpolationHorizontalGrid(Plugin):
 
 
     def define_output_grid(self):
+        self.all_meta_df = pd.DataFrame(dtype=object)
         if self.method == 'user':
 
             if self.grtyp in ['L','N','S']:
@@ -74,12 +86,12 @@ class InterpolationHorizontalGrid(Plugin):
             if self.nomvar is None:
                 raise InterpolationHorizontalGridError('InterpolationHorizontalGrid - you must supply a nomvar with field defined method')    
 
-            field_df = self.df.query(f'nomvar=="{self.nomvar}"')
+            field_df = self.df.query(f'nomvar=="{self.nomvar}"').reset_index(drop=True)
 
             #check for more than one definition for the field method
             if len(field_df.grid.unique()) > 1: 
                 raise InterpolationHorizontalGridError('InterpolationHorizontalGrid - reference field found for multiple grids')  
-
+            
             # get grtyp from the field
             self.grtyp = field_df.iloc[0]['grtyp']
 
@@ -88,6 +100,8 @@ class InterpolationHorizontalGrid(Plugin):
             # get meta for this fields grid
             grid = field_df.iloc[0]['grid']
             meta_df = self.df.query(f"(nomvar in ['>>','^^','^>']) and (grid=='{grid}')").reset_index(drop=True)
+
+            self.all_meta_df = self.df.query(f"(nomvar in ['>>','^^','^>']) and (grid=='{grid}')").reset_index(drop=True)
             
             # define grid from meta
             if not meta_df.empty:
@@ -97,19 +111,28 @@ class InterpolationHorizontalGrid(Plugin):
                     self.ig1,self.ig2,self.ig3,self.ig4 = set_output_column_values(meta_df,field_df) 
 
                 elif ('^>' in meta_df.nomvar.to_list()):
-                    tictac_df = meta_df.query('nomvar=="^>"')
-                    tictac_df = load_data(tictac_df)
+                    tictac_df = meta_df.query('nomvar=="^>"').reset_index(drop=True)
+                    tictac_df = fstpy.load_data(tictac_df)
                     self.output_grid = define_grid(self.grtyp,'',0,0,0,0,0,0,None,None,tictac_df.iloc[0]['d'])   
                     self.ig1,self.ig2,self.ig3,self.ig4 = set_output_column_values(meta_df,field_df) 
-
+                # meta_data present, load it
+                self.all_meta_df = fstpy.load_data(self.all_meta_df)
 
             # define grid from field
             else:
                 self.output_grid = define_grid(self.grtyp,'',self.ni,self.nj,self.ig1,self.ig2,self.ig3,self.ig4,None,None,None) 
 
- 
+
+            #remove ref all fields from source grid from processing
+            if (self.output_fields != 'all') and (self.method != 'user'):
+                to_remove = self.df.query(f'grid=="{grid}"').reset_index(drop=True)
+                self.df = pd.concat([self.df, to_remove],ignore_index=True).drop_duplicates(keep=False)
+
+            
 
     def validate_params(self):
+        if self.output_fields not in self. output_fields_selection:
+            raise InterpolationHorizontalGridError(f'InterpolationHorizontalGrid - output_fields {self.output_fields} not in {self.output_fields_selection}')
         if self.interpolation_type not in self.interpolation_types:
             raise InterpolationHorizontalGridError(f'InterpolationHorizontalGrid - interpolation_type {self.interpolation_type} not in {self.interpolation_types}')
         if self.extrapolation_type not in self.extrapolation_types:
@@ -125,7 +148,7 @@ class InterpolationHorizontalGrid(Plugin):
         no_mod = []
         for _,current_group in self.groups:
 
-            current_group = load_data(current_group)
+            current_group = fstpy.load_data(current_group)
 
             keep_intact_hy_field(current_group, no_mod)
 
@@ -175,12 +198,22 @@ class InterpolationHorizontalGrid(Plugin):
 
         other_res_df = set_new_grid_identifiers(res_df,self.grtyp,self.ni,self.nj,self.ig1,self.ig2,self.ig3,self.ig4)
         
+
         if not toctoc_res_df.empty:
             other_res_df = pd.concat([other_res_df,toctoc_res_df],ignore_index=True)
+
 
         if not no_mod_df.empty:
             other_res_df = pd.concat([other_res_df,no_mod_df],ignore_index=True)
 
+
+        if not self.all_meta_df.empty:
+            other_res_df = pd.concat([other_res_df,self.all_meta_df],ignore_index=True)
+ 
+        
+        #make sure load_data does not execute (does nothing)
+        other_res_df.loc[:,'path'] = None
+        other_res_df.loc[:,'key'] = ''
         return other_res_df
 
 
@@ -287,7 +320,7 @@ def define_input_grid(grtyp,source_df,meta_df):
             input_grid = define_grid(grtyp,grref,ni,nj,ig1,ig2,ig3,ig4,ax,ay,None)
             
         elif ('^>' in meta_df.nomvar.to_list()):
-            tictac_df = meta_df.query('nomvar=="^>"')
+            tictac_df = meta_df.query('nomvar=="^>"').reset_index(drop=True)
             input_grid = define_grid(grtyp,'',0,0,0,0,0,0,None,None,tictac_df.iloc[0]['d'])    
 
     else:
@@ -307,13 +340,13 @@ def keep_toctoc(current_group, results):
         results.append(toctoc_df)
 
 def get_grid_paramters_from_latlon_fields(meta_df):
-    lon_df = meta_df.query('nomvar==">>"')
-    lat_df = meta_df.query('nomvar=="^^"')
+    lon_df = meta_df.query('nomvar==">>"').reset_index(drop=True)
+    lat_df = meta_df.query('nomvar=="^^"').reset_index(drop=True)
     return get_grid_parameters(lat_df, lon_df)
 
 def get_grid_parameters(lat_df, lon_df):
-    lat_df = load_data(lat_df)
-    lon_df = load_data(lon_df)
+    lat_df = fstpy.load_data(lat_df)
+    lon_df = fstpy.load_data(lon_df)
     nj = lat_df.iloc[0]['nj']
     ni = lon_df.iloc[0]['ni']
     grref = lat_df.iloc[0]['grtyp']
@@ -342,14 +375,14 @@ def set_output_column_values(meta_df,field_df):
     return ig1,ig2,ig3,ig4
 
 def set_new_grid_identifiers_for_toctoc(res_df,ig1,ig2):
-    toctoc_res_df = res_df.query('nomvar == "!!"').copy(deep=True)
+    toctoc_res_df = res_df.query('nomvar == "!!"').reset_index(drop=True).copy(deep=True)
     toctoc_res_df['ip1'] = ig1
     toctoc_res_df['ip2'] = ig2
     return toctoc_res_df
 
 
 def set_new_grid_identifiers(res_df,grtyp,ni,nj,ig1,ig2,ig3,ig4):
-    other_res_df = res_df.query('nomvar != "!!"').copy(deep=True)
+    other_res_df = res_df.query('nomvar != "!!"').reset_index(drop=True).copy(deep=True)
     shape_list = [(ni,nj) for _ in range(len(other_res_df.index))]
     other_res_df["shape"] = shape_list
     other_res_df['ni'] = ni

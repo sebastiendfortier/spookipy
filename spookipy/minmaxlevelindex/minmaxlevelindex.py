@@ -51,6 +51,7 @@ class MinMaxLevelIndex(Plugin):
         validate_nomvar(nomvar_max, MinMaxLevelIndex, MinMaxLevelIndexError)
         
         # self.df = self.df.query(self.plugin_requires).reset_index(drop=True)
+        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['forecast_hour'])
         self.df = fstpy.load_data(self.df)
         keep = self.df.query('nomvar not in ["KBAS","KTOP"]').reset_index(drop=True)
         self.nomvar_groups= keep.groupby(by=['grid','forecast_hour','nomvar'])

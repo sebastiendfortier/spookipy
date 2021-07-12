@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import ctypes
 import math
-from spookipy.utils import initializer
+from spookipy.utils import initializer, select_with_meta
 import sys
 
 import numpy as np
@@ -9,8 +9,8 @@ import pandas as pd
 import rpnpy.librmn.all as rmn
 import rpnpy.vgd.proto as vgdp
 
-from fstpy.dataframe import set_vertical_coordinate_type
-from fstpy.std_reader import load_data
+import fstpy.all as fstpy
+
 from spookipy.plugin import Plugin
 
 STANDARD_ATMOSPHERE = 1013.25
@@ -27,11 +27,20 @@ class Pressure(Plugin):
     :type standard_atmosphere: bool, optional
     """
     @initializer
-    def __init__(self,df:pd.DataFrame, standard_atmosphere:bool=False):
+    def __init__(self,df:pd.DataFrame, reference_field=None, standard_atmosphere:bool=False):
+        self.validate_input()
+
+    def validate_input(self):
         if self.df.empty:
             raise PressureError('Pressure - no data to process')
-        if 'vctype' not in self.df.columns:
-            self.df = set_vertical_coordinate_type(self.df)
+
+        if not (self.reference_field is None):
+            self.df = select_with_meta(self.df,[self.reference_field])    
+
+        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['ip_info','forecast_hour'])
+        
+        # if 'vctype' not in self.df.columns:
+        #     self.df = fstpy.set_vertical_coordinate_type(self.df)
 
     def compute(self) -> pd.DataFrame:
         """groups records by grid->vctype->forecast_hour then applies the appropriate algorithm to compute the pressure
@@ -42,7 +51,7 @@ class Pressure(Plugin):
         pxdfs=[]
         for _,grid in self.df.groupby(['grid']):
             meta_df = grid.query('nomvar in ["!!","HY","P0","PT",">>","^^","PN"]').reset_index(drop=True)
-            meta_df = load_data(meta_df)
+            meta_df = fstpy.load_data(meta_df)
             vctypes_groups = grid.groupby(['vctype'])
             for _, vt in vctypes_groups:
                 vctype = vt.vctype.iloc[0]
@@ -52,12 +61,12 @@ class Pressure(Plugin):
                     if not(px_df is None):
                         pxdfs.append(px_df)
         if len(pxdfs) > 1:                     
-            res = pd.concat(pxdfs,ignore_index=True)
+            res_df = pd.concat(pxdfs,ignore_index=True)
         elif len(pxdfs) == 1: 
-            res = pxdfs[0]
+            res_df = pxdfs[0]
         else:
-            res = None
-        return res
+            res_df = None
+        return res_df
 
     def _compute_pressure(self,df:pd.DataFrame,meta_df:pd.DataFrame,vctype:str) -> pd.DataFrame:
         """select approprite algorithm according to vctype
@@ -261,8 +270,8 @@ def compute_pressure_from_sigma_coord_array(levels:list,p0_data:np.ndarray,stand
             pressures.append(mydict)    
     return pressures
 
-def get_sigma_metadata(meta_df,forecast_hour):
-    p0_df = meta_df.query(f'(nomvar=="P0") and (forecast_hour=="{forecast_hour}")').reset_index(drop=True)
+def get_sigma_metadata(meta_df,datev):
+    p0_df = meta_df.query(f'(nomvar=="P0") and (datev=="{datev}")').reset_index(drop=True)
     if p0_df.empty:
         return None,None,None
     p0_data = p0_df.iloc[0]['d']
@@ -281,8 +290,8 @@ def compute_pressure_from_sigma_coord_df(df:pd.DataFrame,meta_df:pd.DataFrame,st
     :return: dataframe containing PX records for all found levels in the input dataframe
     :rtype: pd.DataFrame
     """
-    forecast_hour = df.iloc[0]['forecast_hour']
-    p0_data,datyp, nbits = get_sigma_metadata(meta_df,forecast_hour)
+    datev = df.iloc[0]['datev']
+    p0_data,datyp, nbits = get_sigma_metadata(meta_df,datev)
     if p0_data is None:
         return None
     if df.empty:
@@ -427,12 +436,12 @@ def compute_pressure_from_eta_coord_array(levels:list,pt_data:np.ndarray,bb_data
             pressures.append(mydict)    
     return pressures
 
-def get_eta_metadata(meta_df,forecast_hour):
-    p0_df = meta_df.query(f'(nomvar=="P0") and (forecast_hour=="{forecast_hour}")').reset_index(drop=True)
+def get_eta_metadata(meta_df,datev):
+    p0_df = meta_df.query(f'(nomvar=="P0") and (datev=="{datev}")').reset_index(drop=True)
     if p0_df.empty:
         return None,None,None,None,None
     p0_data = p0_df.iloc[0]['d']    
-    pt_df = meta_df.query(f'(nomvar=="PT") and (forecast_hour=="{forecast_hour}")').reset_index(drop=True)
+    pt_df = meta_df.query(f'(nomvar=="PT") and (datev=="{datev}")').reset_index(drop=True)
     if not pt_df.empty: 
         pt_data = pt_df.iloc[0]['d']
     else:
@@ -459,8 +468,8 @@ def compute_pressure_from_eta_coord_df(df:pd.DataFrame,meta_df:pd.DataFrame,stan
     :return: dataframe containing PX records for all found levels in the input dataframe
     :rtype: pd.DataFrame
     """
-    forecast_hour = df.iloc[0]['forecast_hour']
-    p0_data, pt_data, bb_data, datyp, nbits = get_eta_metadata(meta_df,forecast_hour)
+    datev = df.iloc[0]['datev']
+    p0_data, pt_data, bb_data, datyp, nbits = get_eta_metadata(meta_df,datev)
     if p0_data is None:
         return None
     if df.empty:
@@ -637,8 +646,8 @@ def compute_pressure_from_hyb_coord_array(hy_data:np.ndarray,hy_ig1:float,hy_ig2
             pressures.append(mydict)     
     return pressures
 
-def get_hyb_metadata(meta_df,forecast_hour):
-    p0_df = meta_df.query(f'(nomvar=="P0") and (forecast_hour=="{forecast_hour}")').reset_index(drop=True)
+def get_hyb_metadata(meta_df,datev):
+    p0_df = meta_df.query(f'(nomvar=="P0") and (datev=="{datev}")').reset_index(drop=True)
     if p0_df.empty:
         return None,None,None,None
     p0_data = p0_df.iloc[0]['d']
@@ -663,8 +672,8 @@ def compute_pressure_from_hyb_coord_df(df:pd.DataFrame,meta_df:pd.DataFrame,stan
     :return: dataframe containing PX records for all found levels in the input dataframe
     :rtype: pd.DataFrame
     """
-    forecast_hour = df.iloc[0]['forecast_hour']
-    p0_data,hy_data,hy_ig1,hy_ig2, datyp, nbits = get_hyb_metadata(meta_df,forecast_hour)
+    datev = df.iloc[0]['datev']
+    p0_data,hy_data,hy_ig1,hy_ig2, datyp, nbits = get_hyb_metadata(meta_df,datev)
     if p0_data is None:
         return None
     if df.empty:
@@ -788,8 +797,8 @@ def compute_pressure_from_hybstag_coord_array(ip1s:list,bb_data:np.ndarray,p0_da
         pressures.append(mydict)    
     return pressures
 
-def get_hybstag_metadata(meta_df,forecast_hour):
-    p0_df = meta_df.query(f'(nomvar=="P0") and (forecast_hour=="{forecast_hour}")').reset_index(drop=True)
+def get_hybstag_metadata(meta_df,datev):
+    p0_df = meta_df.query(f'(nomvar=="P0") and (datev=="{datev}")').reset_index(drop=True)
     if p0_df.empty:
         return None,None,None,None
     p0_data = p0_df.iloc[0]['d']
@@ -813,15 +822,15 @@ def compute_pressure_from_hybstag_coord_df(df:pd.DataFrame,meta_df:pd.DataFrame,
     :return: dataframe containing PX records for all found levels in the input dataframe
     :rtype: pd.DataFrame
     """
-    forecast_hour = df.iloc[0]['forecast_hour']
-    p0_data, bb_data, datyp, nbits = get_hybstag_metadata(meta_df,forecast_hour)
+    datev = df.iloc[0]['datev']
+    p0_data, bb_data, datyp, nbits = get_hybstag_metadata(meta_df,datev)
 
     if p0_data is None:
         return None
     if df.empty:
         return None
-    df = df.drop_duplicates('ip1')
-    
+    df = df.drop_duplicates('ip1',ignore_index=True)
+
     p = HybridStaggered2Pressure(bb_data,p0_data,standard_atmosphere)
     press = []    
     for i in df.index:

@@ -145,6 +145,11 @@ def validate_nomvar(nomvar:str, caller_class:str, error_class:Exception):
     if len(nomvar) > 4:
         raise error_class(caller_class + ' - max 4 char for nomvar')
 
+def remove_load_data_info(df):
+    #make sure load_data does not execute (does nothing)
+    df.loc[:,'path'] = None
+    df.loc[:,'key'] = ''
+
 class SelectError(Exception):
     pass
 
@@ -202,7 +207,7 @@ def get_kinds_and_ip1(df:pd.DataFrame) -> dict:
         (_, kind) = rmn.convertIp(rmn.CONVIP_DECODE, int(ip1))
         if kind not in kinds.keys():
             kinds[kind] = ip1    
-    print(kinds)    
+    # print(kinds)    
     return kinds
 
 def get_ips(df:pd.DataFrame,sigma=False,hybrid=False) -> list:
@@ -278,54 +283,26 @@ def metadata_cleanup(df:pd.DataFrame):
     not_meta_df = df.query('nomvar not in  ["!!","P0","PT",">>","^^","^>","HY","!!SF"]').reset_index(drop=True)
     
     # get deformation fields
-    grid_deformation_fields_df = pd.DataFrame(dtype=object)
-    all_grids = not_meta_df.grid.unique()
-
-    df_list = []
-    for grid in all_grids:
-        df_list.append(df.query(f'(nomvar==">>") and (grid=="{grid}")').reset_index(drop=True))
-        df_list.append(df.query(f'(nomvar=="^^") and (grid=="{grid}")').reset_index(drop=True))
-        df_list.append(df.query(f'(nomvar=="^>") and (grid=="{grid}")').reset_index(drop=True))
-
-    if len(df_list):
-        grid_deformation_fields_df = pd.concat(df_list,ignore_index=True)
+    grid_deformation_fields_df = get_grid_deformation_fileds(df,not_meta_df)        
 
     # get P0's
-    p0_fields_df = pd.DataFrame(dtype=object)
-    model_ips = get_model_ips(not_meta_df)
-    model_grids = set()
-    for ip1 in model_ips:
-        model_grids.add(not_meta_df.query(f'ip1=={ip1}').reset_index(drop=True).iloc[0]['grid'])
-    
-    df_list = []
-    for grid in list(model_grids):
-        # print(grid)
-        df_list.append(df.query(f'(nomvar=="P0") and (grid=="{grid}")').reset_index(drop=True))
-
-    if len(df_list):
-        p0_fields_df = pd.concat(df_list,ignore_index=True)
+    p0_fields_df = get_p0_fields(df,not_meta_df)
     
     #get PT's
-    pt_fields_df = pd.DataFrame(dtype=object)
-    sigma_ips = get_sigma_ips(not_meta_df)
-    sigma_grids = set()
-    for ip1 in sigma_ips:
-        sigma_grids.add(not_meta_df.query(f'ip1=={ip1}').reset_index(drop=True).iloc[0]['grid'])
-    
-    df_list = []
-    for grid in list(sigma_grids):
-        df_list.append(df.query(f'(nomvar=="PT") and (grid=="{grid}")').reset_index(drop=True))
-
-    if len(df_list):
-        pt_fields_df = pd.concat(df_list,ignore_index=True)
+    pt_fields_df = get_pt_fields(df,not_meta_df)
 
     #get HY
-    hy_field_df = pd.DataFrame(dtype=object)
-    hybrid_ips = get_hybrid_ips(not_meta_df)
-    if len(hybrid_ips):
-        hy_field_df = df.query(f'nomvar=="HY"').reset_index(drop=True)
+    hybrid_ips, hy_field_df = get_hy_field_and_hybrid_ips(df,not_meta_df)
 
     #get !!'s strict
+    toctoc_fields_df = get_toctoc_fileds_strict(df,hybrid_ips)
+
+
+    df = pd.concat([not_meta_df,grid_deformation_fields_df,p0_fields_df,pt_fields_df,hy_field_df,toctoc_fields_df],ignore_index=True)
+
+    return df
+
+def get_toctoc_fileds_strict(df:pd.DataFrame,hybrid_ips:list):
     toctoc_fields_df = pd.DataFrame(dtype=object)
     hybrid_fields_df = pd.DataFrame(dtype=object)
 
@@ -350,9 +327,15 @@ def metadata_cleanup(df:pd.DataFrame):
     if len(df_list):
         toctoc_fields_df = pd.concat(df_list,ignore_index=True)
 
-    df = pd.concat([not_meta_df,grid_deformation_fields_df,p0_fields_df,pt_fields_df,hy_field_df,toctoc_fields_df],ignore_index=True)
+    return toctoc_fields_df
 
-    return df
+def get_hy_field_and_hybrid_ips(df:pd.DataFrame,not_meta_df:pd.DataFrame):
+    hy_field_df = pd.DataFrame(dtype=object)
+    hybrid_ips = get_hybrid_ips(not_meta_df)
+    if len(hybrid_ips):
+        hy_field_df = df.query(f'nomvar=="HY"').reset_index(drop=True)
+
+    return hybrid_ips, hy_field_df
     # if len(hybrid_ips):
     #     df.query(f'ip=="HY"').reset_index(drop=True)
 
@@ -371,4 +354,50 @@ def metadata_cleanup(df:pd.DataFrame):
     #         int toctocVcode
     #         LEXICALCAST(mpds->second->getOtherInformation().ig1,toctocVcode)
     #         keep = hasPdsWithVcode(toctocVcode)
-        
+def get_grid_deformation_fileds(df:pd.DataFrame,not_meta_df:pd.DataFrame):        
+    grid_deformation_fields_df = pd.DataFrame(dtype=object)
+    all_grids = not_meta_df.grid.unique()
+
+    df_list = []
+    for grid in all_grids:
+        df_list.append(df.query(f'(nomvar==">>") and (grid=="{grid}")').reset_index(drop=True))
+        df_list.append(df.query(f'(nomvar=="^^") and (grid=="{grid}")').reset_index(drop=True))
+        df_list.append(df.query(f'(nomvar=="^>") and (grid=="{grid}")').reset_index(drop=True))
+
+    if len(df_list):
+        grid_deformation_fields_df = pd.concat(df_list,ignore_index=True)
+
+    return grid_deformation_fields_df   
+
+def get_p0_fields(df:pd.DataFrame,not_meta_df:pd.DataFrame):
+    p0_fields_df = pd.DataFrame(dtype=object)
+    model_ips = get_model_ips(not_meta_df)
+    model_grids = set()
+    for ip1 in model_ips:
+        model_grids.add(not_meta_df.query(f'ip1=={ip1}').reset_index(drop=True).iloc[0]['grid'])
+    
+    df_list = []
+    for grid in list(model_grids):
+        # print(grid)
+        df_list.append(df.query(f'(nomvar=="P0") and (grid=="{grid}")').reset_index(drop=True))
+
+    if len(df_list):
+        p0_fields_df = pd.concat(df_list,ignore_index=True)
+
+    return p0_fields_df  
+
+def get_pt_fields(df:pd.DataFrame,not_meta_df:pd.DataFrame):
+    pt_fields_df = pd.DataFrame(dtype=object)
+    sigma_ips = get_sigma_ips(not_meta_df)
+    sigma_grids = set()
+    for ip1 in sigma_ips:
+        sigma_grids.add(not_meta_df.query(f'ip1=={ip1}').reset_index(drop=True).iloc[0]['grid'])
+    
+    df_list = []
+    for grid in list(sigma_grids):
+        df_list.append(df.query(f'(nomvar=="PT") and (grid=="{grid}")').reset_index(drop=True))
+
+    if len(df_list):
+        pt_fields_df = pd.concat(df_list,ignore_index=True)
+
+    return pt_fields_df    

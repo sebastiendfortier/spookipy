@@ -28,6 +28,11 @@ replace:
 doc: insert_version rst readme replace
 	make --no-print-directory html
 
+remove_gen_files:
+	rm `ls -I acknowledgements.rst -I contributing.rst -I index.rst -I install.rst -I intro.rst -I LICENSE.rst -I requirements.rst -I tutorial.rst -I usage.rst -I _build -I _static -I auto_examples -I conf.py -I spookipy_logo.jpg -I Makefile`
+	
+clean: remove_gen_files
+
 .PHONY: help Makefile
 
 # Catch-all target: route all unknown targets to Sphinx using the new

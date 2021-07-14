@@ -1,0 +1,12 @@
+.. raw:: org
+
+   #+TITLE_: INSTALL
+
+Installation
+============
+
+Use the ssm package
+
+::
+
+   . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/spookipy/0.0.0

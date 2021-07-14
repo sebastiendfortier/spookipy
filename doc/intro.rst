@@ -1,0 +1,19 @@
+.. raw:: org
+
+   #+TITLE_: INTRODUCTION
+
+Introduction
+============
+
+What is it?
+-----------
+
+spookipy is a collection of python weather algorithms to work with
+dataframes obtained with fstpy or numpy arrays.
+
+spookipy philosophy
+-------------------
+
+These algorithms are generic in nature and all share a uniform model in
+implementation. The idea is to use the interface to create new
+algorithms.

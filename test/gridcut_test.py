@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from test import TMP_PATH,TEST_PATH
+from test import TMP_PATH,TEST_PATH, convip
 import pytest
 import fstpy.all as fstpy
 import spookipy.all as spooki
@@ -17,20 +17,23 @@ def test_reggc_test_1(plugin_test_dir):
     source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-
     #compute GridCut
     df = spooki.GridCut(src_df0,start_point=(0,0), end_point=(2,3)).compute()
     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [GridCut --start_point 0,0 --end_point 2,3] >> [WriterStd --output {destination_path} --ignoreExtended]
 
+    df = convip(df)
     #write the result
     results_file = TMP_PATH + "gc_test_1.std"
+    fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "gc_test_1.std"
+    
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
+    fstpy.delete_file(results_file)
     assert(res == True)
 
 
@@ -44,8 +47,10 @@ def test_reggc_test_2(plugin_test_dir):
     df = spooki.GridCut(src_df0, start_point=(2,1), end_point=(4,4)).compute()
     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [GridCut --start_point 2,1 --end_point 4,4] >> [WriterStd --output {destination_path} --ignoreExtended]
 
+    df = convip(df)
     #write the result
     results_file = TMP_PATH + "gc_test_2.std"
+    fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
@@ -53,6 +58,7 @@ def test_reggc_test_2(plugin_test_dir):
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
+    fstpy.delete_file(results_file)
     assert(res == True)
 
 
@@ -70,6 +76,7 @@ def test_reggc_test_3(plugin_test_dir):
 
     #write the result
     results_file = TMP_PATH + "gc_test_3.std"
+    fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
@@ -77,6 +84,7 @@ def test_reggc_test_3(plugin_test_dir):
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
+    fstpy.delete_file(results_file)
     assert(res == True)
 
 
@@ -106,6 +114,7 @@ def test_reggc_test_5(plugin_test_dir):
 
     #write the result
     results_file = TMP_PATH + "gc_test_5.std"
+    fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
@@ -113,6 +122,7 @@ def test_reggc_test_5(plugin_test_dir):
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
+    fstpy.delete_file(results_file)
     assert(res == True)
 
 
@@ -129,6 +139,7 @@ def test_reggc_test_6(plugin_test_dir):
 
     #write the result
     results_file = TMP_PATH + "gc_test_6.std"
+    fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
@@ -136,6 +147,7 @@ def test_reggc_test_6(plugin_test_dir):
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
+    fstpy.delete_file(results_file)
     assert(res == True)
 
 
@@ -168,29 +180,31 @@ def test_reggc_test_6(plugin_test_dir):
 #     res = fstpy.fstcomp(results_file,file_to_compare)
 #     assert(res == True)
 
+# same as 1, no multithread in python
+# def test_reggc_test_15(plugin_test_dir):
+#     """Test #15 : Tester SingleThread. Comme le test 1 mais en singlethread"""
+#     # open and read source
+#     source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
+#     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-def test_reggc_test_15(plugin_test_dir):
-    """Test #15 : Tester SingleThread. Comme le test 1 mais en singlethread"""
-    # open and read source
-    source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
-    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
+#     #compute GridCut
+#     df = spooki.GridCut(src_df0, start_point=(0,0), end_point=(2,3)).compute()
+#     #[ReaderStd --ignoreExtended --input {sources[0]}] >> 
+#     # [GridCut -T 1 --start_point 0,0 --end_point 2,3] >>
+#     #  [WriterStd --output {destination_path} --ignoreExtended]
+#     df = convip(df)
+#     #write the result
+#     results_file = TMP_PATH + "gc_test_15.std"
+#     fstpy.delete_file(results_file)
+#     fstpy.StandardFileWriter(results_file, df).to_fst()
 
-    #compute GridCut
-    df = spooki.GridCut(src_df0, start_point=(0,0), end_point=(2,3)).compute()
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> 
-    # [GridCut -T 1 --start_point 0,0 --end_point 2,3] >>
-    #  [WriterStd --output {destination_path} --ignoreExtended]
+#     # open and read comparison file
+#     file_to_compare = plugin_test_dir + "gc_test_1.std"
 
-    #write the result
-    results_file = TMP_PATH + "gc_test_15.std"
-    fstpy.StandardFileWriter(results_file, df).to_fst()
-
-    # open and read comparison file
-    file_to_compare = plugin_test_dir + "gc_test_1.std"
-
-    #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
-    assert(res == True)
+#     #compare results
+#     res = fstpy.fstcomp(results_file,file_to_compare)
+#     fstpy.delete_file(results_file)
+#     assert(res == True)
 
 

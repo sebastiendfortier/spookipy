@@ -26,8 +26,8 @@ def test_regtest_1(plugin_test_dir):
     df = spooki.WindChill(uv_src_df).compute()
     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [WindChill] >> [WriterStd --output {destination_path} --ignoreExtended]
 
-    df['ip1']=0
     df['etiket']='WNDCHL'
+    df.loc[df.nomvar.isin(['^^','>>']),'etiket'] = 'R1558V0N'
     #write the result
     results_file = TMP_PATH + "test_1.std"
     fstpy.delete_file(results_file)
@@ -37,8 +37,8 @@ def test_regtest_1(plugin_test_dir):
     file_to_compare = plugin_test_dir + "windChill_file2cmp.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,allclose=True)
-    fstpy.delete_file(results_file)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.001)
+    # fstpy.delete_file(results_file)
     assert(res == True)
 
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from spookipy.plugin import Plugin
 from spookipy.humidityutils.humidityutils import AEI1, AEI2, AEI3, AEW1, AEW2, AEW3, TDPACK_OFFSET_FIX
-from spookipy.utils import get_existing_result, get_intersecting_levels, get_plugin_dependencies
+from spookipy.utils import get_existing_result, get_intersecting_levels, get_plugin_dependencies, initializer
 import pandas as pd
 import numpy as np
 from math import exp
@@ -26,7 +26,7 @@ class VapourPressure(Plugin):
     }
     plugin_mandatory_dependencies_option_4 = {
         'TT':{'nomvar':'TT','unit':'celsius'},
-        'TD':{'nomvar':'PX','unit':'celsius'},
+        'TD':{'nomvar':'TD','unit':'celsius'},
         'ES':{'nomvar':'ES','unit':'celsius'},
     }
     plugin_mandatory_dependencies_option_5 = {
@@ -34,13 +34,11 @@ class VapourPressure(Plugin):
         'TD':{'nomvar':'PX','unit':'celsius'},
     }
 
-    plugin_result_specifications = {'VPPR':{'nomvar':'VPPR','etiket':'VapourPressure','unit':'hectoPascal'}}
-
+    plugin_result_specifications = {
+        'VPPR':{'nomvar':'VPPR','etiket':'VapourPressure','unit':'hectoPascal'}
+        }
+    @initializer
     def __init__(self,df:pd.DataFrame, ice_water_phase='water', temp_phase_switch='',rpn=False):
-        self.df = df
-        self.ice_water_phase = ice_water_phase
-        self.temp_phase_switch = temp_phase_switch
-        self.rpn = rpn
         self.validate_input()
 
     # might be able to move    

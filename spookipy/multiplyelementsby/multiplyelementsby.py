@@ -14,8 +14,10 @@ class MultiplyElementsByError(Exception):
 class MultiplyElementsBy(Plugin):
     @initializer
     def __init__(self, df:pd.DataFrame, value, nomvar_out=''):
-        validate_nomvar(nomvar_out, 'MultiplyElementsBy', MultiplyElementsByError)
+        self.validate_input()
 
+    def validate_input(self):
+        validate_nomvar(self.nomvar_out, 'MultiplyElementsBy', MultiplyElementsByError)
 
     def compute(self) -> pd.DataFrame:
         return OpElementsByValue(self.df,

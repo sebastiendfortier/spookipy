@@ -17,7 +17,6 @@ def test_regtest_1(plugin_test_dir):
     source0 = plugin_test_dir + "UUVV5x5_zeros_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-
     #compute AddToElements
     df = spooki.AddToElements(src_df0, value=4).compute()
     #[ReaderStd --input {sources[0]}] >> [AddToElements --value +4.0] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]

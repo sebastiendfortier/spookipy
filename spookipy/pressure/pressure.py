@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import ctypes
 import math
-from spookipy.utils import initializer, select_with_meta
+from spookipy.utils import get_existing_result, initializer, remove_load_data_info
 import sys
 
 import numpy as np
@@ -23,9 +23,15 @@ class Pressure(Plugin):
 
     :param df: input dataframe 
     :type df: pd.DataFrame
+    :param reference_field: field to use to get levels, defaults to None
+    :type reference_field: str, optional
     :param standard_atmosphere: calculate pressure in standard atmosphere if specified, defaults to False
     :type standard_atmosphere: bool, optional
     """
+    plugin_result_specifications = {
+        'PX':{'nomvar':'PX','etiket':'WindMax','unit':'hectoPascal'},
+        }
+
     @initializer
     def __init__(self,df:pd.DataFrame, reference_field=None, standard_atmosphere:bool=False):
         self.validate_input()
@@ -33,11 +39,17 @@ class Pressure(Plugin):
     def validate_input(self):
         if self.df.empty:
             raise PressureError('Pressure - no data to process')
-
+        
+        self.meta_df = self.df.query('nomvar in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True)
+        
+        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['ip_info','forecast_hour','unit'])
+        
         if not (self.reference_field is None):
-            self.df = select_with_meta(self.df,[self.reference_field])    
+            self.df = fstpy.select_with_meta(self.df,[self.reference_field])    
 
-        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['ip_info','forecast_hour'])
+        self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
+
+        
         
         # if 'vctype' not in self.df.columns:
         #     self.df = fstpy.set_vertical_coordinate_type(self.df)
@@ -48,9 +60,16 @@ class Pressure(Plugin):
         :return: a dataframe containing available pressure
         :rtype: pd.DataFrame
         """
-        pxdfs=[]
+        if not self.existing_result_df.empty:
+            self.existing_result_df = fstpy.load_data(self.existing_result_df)
+            self.meta_df = fstpy.load_data(self.meta_df)
+            res_df = pd.concat([self.meta_df,self.existing_result_df],ignore_index=True)
+            res_df  = remove_load_data_info(res_df)
+            return res_df
+
+        df_list=[]
         for _,grid in self.df.groupby(['grid']):
-            meta_df = grid.query('nomvar in ["!!","HY","P0","PT",">>","^^","PN"]').reset_index(drop=True)
+            meta_df = grid.query('nomvar in ["!!","HY","P0","PT"]').reset_index(drop=True)
             meta_df = fstpy.load_data(meta_df)
             vctypes_groups = grid.groupby(['vctype'])
             for _, vt in vctypes_groups:
@@ -59,13 +78,20 @@ class Pressure(Plugin):
                 for _, fh in fh_groups:
                     px_df = self._compute_pressure(fh,meta_df,vctype)
                     if not(px_df is None):
-                        pxdfs.append(px_df)
-        if len(pxdfs) > 1:                     
-            res_df = pd.concat(pxdfs,ignore_index=True)
-        elif len(pxdfs) == 1: 
-            res_df = pxdfs[0]
-        else:
-            res_df = None
+                        df_list.append(px_df)
+            df_list.append(meta_df)            
+
+        if not len(df_list):
+            raise PressureError('Pressure - no results where produced')
+
+        self.meta_df = fstpy.load_data(self.meta_df)
+        df_list.append(self.meta_df)    
+        # merge all results together
+        res_df = pd.concat(df_list,ignore_index=True)
+
+        res_df = remove_load_data_info(res_df)
+        res_df = fstpy.metadata_cleanup(res_df)
+
         return res_df
 
     def _compute_pressure(self,df:pd.DataFrame,meta_df:pd.DataFrame,vctype:str) -> pd.DataFrame:

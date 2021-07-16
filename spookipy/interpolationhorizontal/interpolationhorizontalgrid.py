@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from spookipy.utils import initializer
+from spookipy.utils import initializer, remove_load_data_info
 from spookipy.plugin import Plugin
 import numpy as np
 import pandas as pd
@@ -65,6 +65,7 @@ class InterpolationHorizontalGrid(Plugin):
     def validate_input(self):
         if self.df.empty:
             raise InterpolationHorizontalGridError('InterpolationHorizontalGrid - no data to process')
+        self.toctoc = self.df.query('nomvar=="!!"').reset_index(drop=True)
         self.validate_params()
         set_interpolation_type_options(self.interpolation_type)
         set_extrapolation_type_options(self.extrapolation_type,self.extrapolation_value)
@@ -123,12 +124,18 @@ class InterpolationHorizontalGrid(Plugin):
                 self.output_grid = define_grid(self.grtyp,'',self.ni,self.nj,self.ig1,self.ig2,self.ig3,self.ig4,None,None,None) 
 
 
-            #remove ref all fields from source grid from processing
-            if (self.output_fields != 'all') and (self.method != 'user'):
+            #remove all ref fields from source grid from processing
+            if (self.output_fields == 'interpolated') and (self.method != 'user'):
                 to_remove = self.df.query(f'grid=="{grid}"').reset_index(drop=True)
                 self.df = pd.concat([self.df, to_remove],ignore_index=True).drop_duplicates(keep=False)
+     
+            #remove all ref fields except ref field itself from source grid from processing
+            if (self.output_fields == 'reference') and (self.method != 'user'):
+                to_remove = self.df.query(f'grid=="{grid}"').reset_index(drop=True)
+                to_remove = to_remove.query(f'(nomvar!="{self.nomvar}") and (grid=="{grid}")').reset_index(drop=True)
+                self.df = pd.concat([self.df, to_remove],ignore_index=True).drop_duplicates(keep=False)
 
-            
+           
 
     def validate_params(self):
         if self.output_fields not in self. output_fields_selection:
@@ -156,7 +163,7 @@ class InterpolationHorizontalGrid(Plugin):
 
             vect_df = current_group.query("nomvar in ['UU','VV']").reset_index(drop=True)
 
-            others_df = current_group.query("nomvar not in ['UU','VV','PT','>>','^^','^>','!!','HY']").reset_index(drop=True)
+            others_df = current_group.query("nomvar not in ['UU','VV','PT','>>','^^','^>','!!','HY','!!SF']").reset_index(drop=True)
 
             pt_df = current_group.query("nomvar=='PT'").reset_index(drop=True)
 
@@ -200,29 +207,27 @@ class InterpolationHorizontalGrid(Plugin):
         
 
         if not toctoc_res_df.empty:
+            columns_to_keep = ['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4']
+            toctoc_res_df = toctoc_res_df.drop_duplicates(subset=columns_to_keep,ignore_index=True)
             other_res_df = pd.concat([other_res_df,toctoc_res_df],ignore_index=True)
-
 
         if not no_mod_df.empty:
             other_res_df = pd.concat([other_res_df,no_mod_df],ignore_index=True)
 
-
         if not self.all_meta_df.empty:
             other_res_df = pd.concat([other_res_df,self.all_meta_df],ignore_index=True)
  
-        
         #make sure load_data does not execute (does nothing)
-        other_res_df.loc[:,'path'] = None
-        other_res_df.loc[:,'key'] = ''
+        other_res_df = remove_load_data_info(other_res_df)
+
         return other_res_df
 
 
-
-
-
-
 ###################################################################################  
-###################################################################################  
+################################################################################### 
+
+
+
 def set_extrapolation_type_options(extrapolation_type,extrapolation_value):
     if extrapolation_type == 'value':
         if extrapolation_value is None:
@@ -342,9 +347,13 @@ def keep_toctoc(current_group, results):
 def get_grid_paramters_from_latlon_fields(meta_df):
     lon_df = meta_df.query('nomvar==">>"').reset_index(drop=True)
     lat_df = meta_df.query('nomvar=="^^"').reset_index(drop=True)
+    if lat_df.empty or lon_df.empty:
+        raise InterpolationHorizontalGridError('InterpolationHorizontalGridError - no data in lat_df or lon_df')
     return get_grid_parameters(lat_df, lon_df)
 
 def get_grid_parameters(lat_df, lon_df):
+    if lat_df.empty or lon_df.empty:
+        raise InterpolationHorizontalGridError('InterpolationHorizontalGridError - no data in lat_df or lon_df')
     lat_df = fstpy.load_data(lat_df)
     lon_df = fstpy.load_data(lon_df)
     nj = lat_df.iloc[0]['nj']
@@ -359,6 +368,8 @@ def get_grid_parameters(lat_df, lon_df):
     return ni,nj,grref,ax,ay,ig1,ig2,ig3,ig4
 
 def set_grid_parameters(df):
+    if df.empty:
+        raise InterpolationHorizontalGridError('InterpolationHorizontalGridError - no data in df')
     ni = df.iloc[0]['ni']
     nj = df.iloc[0]['nj']
     ig1 = df.iloc[0]['ig1']
@@ -368,6 +379,8 @@ def set_grid_parameters(df):
     return ni,nj,ig1,ig2,ig3,ig4
 
 def set_output_column_values(meta_df,field_df):
+    if meta_df.empty or field_df.empty:
+        raise InterpolationHorizontalGridError('InterpolationHorizontalGridError - missing data in meta_df or field_df')
     ig1 = meta_df.iloc[0]['ip1']
     ig2 = meta_df.iloc[0]['ip2']
     ig3 = field_df.iloc[0]['ig3']
@@ -376,13 +389,18 @@ def set_output_column_values(meta_df,field_df):
 
 def set_new_grid_identifiers_for_toctoc(res_df,ig1,ig2):
     toctoc_res_df = res_df.query('nomvar == "!!"').reset_index(drop=True).copy(deep=True)
+    if toctoc_res_df.empty:
+        return pd.DataFrame(dtype=object)
     toctoc_res_df['ip1'] = ig1
     toctoc_res_df['ip2'] = ig2
     return toctoc_res_df
+    
 
 
 def set_new_grid_identifiers(res_df,grtyp,ni,nj,ig1,ig2,ig3,ig4):
     other_res_df = res_df.query('nomvar != "!!"').reset_index(drop=True).copy(deep=True)
+    if other_res_df.empty:
+        return pd.DataFrame(dtype=object)
     shape_list = [(ni,nj) for _ in range(len(other_res_df.index))]
     other_res_df["shape"] = shape_list
     other_res_df['ni'] = ni

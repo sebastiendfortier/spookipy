@@ -225,14 +225,15 @@ def test_regtest_9(plugin_test_dir):
     # open and read source
     source0 = plugin_test_dir + "test_ICGA.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
     #compute spooki.MinMaxLevelIndex
     df = spooki.MinMaxLevelIndex(src_df0, max=True, bounded=True, nomvar_max='IND').compute()
     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [spooki.MinMaxLevelIndex --bounded --minMax MAX --outputFieldName2 IND] >> [Zap --pdsLabel MinMaxBoundedIndexLevel --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
     df['etiket']='MINMAXBOUNDE'
+
     #write the result
     results_file = TMP_PATH + "test_9.std"
     fstpy.delete_file(results_file)
-    print(df['d'])
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
@@ -267,7 +268,6 @@ def test_regtest_10(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-
     assert(res == True)
 
 

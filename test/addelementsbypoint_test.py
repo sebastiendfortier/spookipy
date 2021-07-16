@@ -24,7 +24,7 @@ def test_regtest_1(plugin_test_dir):
 
     #write the result
     results_file = TMP_PATH + "test_1.std"
-
+    fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
@@ -49,6 +49,7 @@ def test_regtest_2(plugin_test_dir):
 
     #write the result
     results_file = TMP_PATH + "test_2.std"
+    fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
@@ -56,10 +57,7 @@ def test_regtest_2(plugin_test_dir):
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
-
-    #delete results
     fstpy.delete_file(results_file)
-
     assert(res == True)
 
 
@@ -98,7 +96,7 @@ def test_regtest_5(plugin_test_dir):
 
     src_df0 = src_df0.query( 'nomvar in ["TT","GZ"]')
 
-    with pytest.raises(ValueError):
+    with pytest.raises(spooki.AddElementsByPointError):
         #compute AddElementsByPoint
         df = spooki.AddElementsByPoint(src_df0).compute()
         #[ReaderStd --input {sources[0]}] >> [Select --fieldName TT,GZ ] >> [AddElementsByPoint] 

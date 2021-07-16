@@ -103,6 +103,9 @@ def test_regtest_5(plugin_test_dir):
     df = spooki.ArithmeticMeanByPoint(src_df0).compute()
     #[ReaderStd --input {sources[0]}] >> [ArithmeticMeanByPoint ] >> [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
     df['etiket']='__MEANFIX'
+
+    df.loc[df.nomvar.isin(['^^','>>']),'etiket'] = 'G125K80_N'
+    df.loc[df.nomvar=='!!','etiket'] = 'PRESSUREX'
     # df['ip1']=500
     # df['etiket']='MEANFIELDS'
     
@@ -132,6 +135,7 @@ def test_regtest_6(plugin_test_dir):
     #[ReaderStd --input {sources[0]}] >> [ArithmeticMeanByPoint --groupBy FORECAST_HOUR] >> [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} ]
     df['etiket']='__MEANFIX'
     # df['etiket']='MEANFIELDS'
+    df.loc[df.nomvar.isin(['!!','^^','>>','P0']),'etiket'] = 'R1_V700_N'
 
     #write the result
     results_file = TMP_PATH + "test_6.std"
@@ -158,6 +162,7 @@ def test_regtest_7(plugin_test_dir):
     df = spooki.ArithmeticMeanByPoint(src_df0).compute()
     #[ReaderStd --input {sources[0]}] >> [ArithmeticMeanByPoint] >> [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} ]
     df['etiket']='__MEANFIX'
+    df.loc[df.nomvar.isin(['!!','^^','>>','P0']),'etiket'] = 'R1_V700_N'
     # df['typvar']='P'
     # df['ip2']=30
     # df['deet']=300
@@ -169,7 +174,6 @@ def test_regtest_7(plugin_test_dir):
     results_file = TMP_PATH + "test_7.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
-
     
     # open and read comparison file
     file_to_compare = plugin_test_dir + "Mean_test7_file2cmp.std"

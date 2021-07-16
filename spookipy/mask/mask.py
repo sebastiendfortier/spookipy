@@ -54,7 +54,7 @@ class Mask(Plugin):
             outdf['nomvar'] = self.nomvar_out
             outdf['etiket'] = self.get_etiket()
         else:
-        outdf['etiket']=self.get_etiket()
+            outdf['etiket']=self.get_etiket()
         vmask = np.vectorize(self.mask)
         for i in self.df.index:
             pds = self.df.at[i,'d'].flatten()

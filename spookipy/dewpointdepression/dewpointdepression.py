@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from spookipy.plugin import Plugin
-from spookipy.utils import get_existing_result, get_intersecting_levels, get_plugin_dependencies
+from spookipy.utils import get_existing_result, get_intersecting_levels, get_plugin_dependencies, initializer
 import pandas as pd
 import numpy as np
 import fstpy.all as fstpy
@@ -29,11 +29,12 @@ class DewPointDepression(Plugin):
 
     plugin_result_specifications = {'ES':{'nomvar':'ES','etiket':'DewPointDepression','unit':'celsius','nbits':16,'datyp':1}}
 
+    @initializer
     def __init__(self,df:pd.DataFrame, ice_water_phase='water', temp_phase_switch='',rpn=False):
-        self.df = df
-        self.ice_water_phase = ice_water_phase
-        self.temp_phase_switch = temp_phase_switch
-        self.rpn = rpn
+        # self.df = df
+        # self.ice_water_phase = ice_water_phase
+        # self.temp_phase_switch = temp_phase_switch
+        # self.rpn = rpn
         self.validate_input()
 
 
@@ -68,22 +69,22 @@ class DewPointDepression(Plugin):
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:
             return self.existing_result_df
-        esdfs=[]
+        df_list=[]
         for _, group in self.groups:
             if not self.option_1_df.empty: #TT,TD
                  pass
 
             group = fstpy.load_data(group)
             tt_df = group.query( 'nomvar=="TT"').reset_index(drop=True)
-            tddf = group.query( 'nomvar=="TD"').reset_index(drop=True)
-            esdf = tt_df.copy(deep=True)
-            # esdf = fstpy.zap(esdf,**self.plugin_result_specifications['ES'])
-            for k,v in self.plugin_result_specifications['ES'].items():esdf[k] = v
-            for i in esdf.index:
+            td_df = group.query( 'nomvar=="TD"').reset_index(drop=True)
+            es_df = tt_df.copy(deep=True)
+            # es_df = fstpy.zap(es_df,**self.plugin_result_specifications['ES'])
+            for k,v in self.plugin_result_specifications['ES'].items():es_df[k] = v
+            for i in es_df.index:
                 #ES = TT - TD  (if ES < 0.0 , ES = 0.0)
-                esdf.at[i,'d'] = dew_point_depression( tt_df.at[i,'d'],tddf.at[i,'d'])
-                # esdf.at[i,'d'] = tt_df.at[i,'d'] - tddf.at[i,'d']
-                # esdf.at[i,'d'] = np.where(esdf.at[i,'d'] < 0.0, 0.0 )
-                esdfs.append(esdf)
-        res = pd.concat(esdfs,ignore_index=True)
-        return res
+                es_df.at[i,'d'] = dew_point_depression( tt_df.at[i,'d'],td_df.at[i,'d'])
+                # es_df.at[i,'d'] = tt_df.at[i,'d'] - td_df.at[i,'d']
+                # es_df.at[i,'d'] = np.where(es_df.at[i,'d'] < 0.0, 0.0 )
+                df_list.append(es_df)
+        res_df = pd.concat(df_list,ignore_index=True)
+        return res_df

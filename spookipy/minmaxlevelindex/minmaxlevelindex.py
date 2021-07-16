@@ -1,27 +1,6 @@
-# ((minMax,"",           string, TRUE, FALSE, "",                                                                        \
-#     "Finds either the maximum or minimum value index or both\n  "                                                      \
-#     "Supported types: [ STRING" OPERATION " ]\n  "                                                                       \
-#     "Ex: --minMax MIN or --minMax BOTH\n"))                                                                            \
-# ((bounded,"",          bool,   TRUE, TRUE, "",                                                                        \
-#     "Searches in part of the column (requires fields KBAS and KTOP as inputs)\n  "                                     \
-#     "Default: searches the whole column\n"))                                                                           \
-# ((direction,"",        string, FALSE, TRUE, "UPWARD",                                                                  \
-#     "The level iteration direction (upward or downward)\n  "                                                           \
-#     "Supported types: [ STRING" VERTICAL_DIRECTION " ]\n  "                                                                       \
-#     "Default: UPWARD\n  "                                                                                              \
-#     "Ex: --direction DOWNWARD\n"))                                                                                     \
-# ((outputFieldName1,"", string, FALSE, TRUE, OUTPUTFIELDNAME1,                                                          \
-#     "Option to change the name of output field " OUTPUTFIELDNAME1 "\n  "                                                 \
-#     "Supported types:[ STRING[(2 to 4 characters)] ]\n  "                                                              \
-#     "Ex: --outputFieldName1 ABCD\n"))                                                                                  \
-# ((outputFieldName2,"", string, FALSE, TRUE, OUTPUTFIELDNAME2,                                                          \
-#     "Option to change the name of output field " OUTPUTFIELDNAME2 "\n  "                                                 \
-#     "Supported types:[ STRING[(2 to 4 characters)] ]\n  "                                                              \
-#     "Ex: --outputFieldName2 ABCD\n"))
-
 # -*- coding: utf-8 -*-
 from spookipy.plugin import Plugin
-from spookipy.utils import initializer, validate_nomvar
+from spookipy.utils import create_empty_result, get_3d_array, initializer, remove_load_data_info, validate_nomvar
 import pandas as pd
 import numpy as np
 import fstpy.all as fstpy
@@ -35,48 +14,46 @@ class MinMaxLevelIndex(Plugin):
     plugin_result_specifications = {'ALL':{'etiket':'MinMaxLevelIndex','unit':'scalar','ip1':0}}
     @initializer
     def __init__(self,df:pd.DataFrame, ascending=True, min=False, max=False, bounded=False, nomvar_min='KMIN', nomvar_max='KMAX'):
-        # self.df = df
-        # self.ascending = ascending
-        # self.min = min
-        # self.max = max
-        # self.bounded = bounded
-        # self.nomvar_min = nomvar_min
-        # self.nomvar_max = nomvar_max
+        self.validate_input()
+        
+        
+    def validate_input(self):
+        if self.df.empty:
+            raise MinMaxLevelIndexError('MinMaxLevelIndex' + ' - no data to process') 
+        
+        validate_nomvar(self.nomvar_min, MinMaxLevelIndex, MinMaxLevelIndexError)
+        validate_nomvar(self.nomvar_max, MinMaxLevelIndex, MinMaxLevelIndexError)
+        
+        self.meta_df = self.df.query('nomvar in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True) 
+
+        self.df = self.df.query('nomvar not in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True) 
+
         if (not self.min) and (not self.max):
             self.min = True
             self.max = True
-        if df.empty:
-            raise MinMaxLevelIndexError('MinMaxLevelIndex' + ' - no data to process') 
-        validate_nomvar(nomvar_min, MinMaxLevelIndex, MinMaxLevelIndexError)
-        validate_nomvar(nomvar_max, MinMaxLevelIndex, MinMaxLevelIndexError)
-        
-        # self.df = self.df.query(self.plugin_requires).reset_index(drop=True)
+
         self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['forecast_hour'])
-        self.df = fstpy.load_data(self.df)
-        keep = self.df.query('nomvar not in ["KBAS","KTOP"]').reset_index(drop=True)
-        self.nomvar_groups= keep.groupby(by=['grid','forecast_hour','nomvar'])
         
+        keep = self.df.query(f'nomvar not in ["KBAS","KTOP"]').reset_index(drop=True)
+
+        self.nomvar_groups= keep.groupby(by=['grid','forecast_hour','nomvar'])
 
     def compute(self) -> pd.DataFrame:
-        kminmaxdfs=[]
+        df_list=[]
         for _,group in self.nomvar_groups:
             group = fstpy.load_data(group)
 
-
-            kmin_df = fstpy.create_1row_df_from_model(group)
-            # kmin_df = fstpy.zap(kmin_df,**self.plugin_result_specifications['ALL'], nomvar=self.nomvar_min)
-            for k,v in self.plugin_result_specifications['ALL'].items():kmin_df[k] = v
+            kmin_df = create_empty_result(group,self.plugin_result_specifications['ALL'])
             kmin_df['nomvar']=self.nomvar_min
-            kmax_df = fstpy.create_1row_df_from_model(group)
-            # kmax_df = fstpy.zap(kmax_df,**self.plugin_result_specifications['ALL'], nomvar=self.nomvar_max)
-            for k,v in self.plugin_result_specifications['ALL'].items():kmax_df[k] = v
-            kmax_df['nomvar']=self.nomvar_max
-            #flatten arrays in group
-            for i in group.index:
-                group.at[i,'d'] = group.at[i,'d'].flatten()
+            # for k,v in self.plugin_result_specifications['ALL'].items():kmin_df[k] = v
 
-            #create a multi level array
-            array_3d = np.stack(group['d'].to_list())
+            
+            kmax_df = create_empty_result(group,self.plugin_result_specifications['ALL'])
+            kmax_df['nomvar']=self.nomvar_max
+            # for k,v in self.plugin_result_specifications['ALL'].items():kmax_df[k] = v
+           
+            
+            array_3d = get_3d_array(group)
 
             # if not ascending, reverse array
             if not self.ascending:
@@ -86,7 +63,9 @@ class MinMaxLevelIndex(Plugin):
             if self.bounded:
                 # get kbas and ktop for this grid
                 kbas = self.df.query('(nomvar=="KBAS") and (grid=="%s")'%group.iloc[0]['grid']).reset_index(drop=True)
+                kbas = fstpy.load_data(kbas)
                 ktop = self.df.query('(nomvar=="KTOP") and (grid=="%s")'%group.iloc[0]['grid']).reset_index(drop=True)
+                ktop = fstpy.load_data(ktop)
                 kbas_arr = kbas.iloc[0]['d'].flatten().astype('int64')
                 kbas_mask = kbas_arr == -1
 
@@ -112,14 +91,25 @@ class MinMaxLevelIndex(Plugin):
                 kmax_df.at[0,'d'] = np.where(mask,-1.0,kmax_df.at[0,'d'])
 
             if self.min:
-                kminmaxdfs.append(kmin_df)
+                df_list.append(kmin_df)
             if self.max:
-                kminmaxdfs.append(kmax_df)
-            kminmaxdfs.append(group)    
+                df_list.append(kmax_df)
+            df_list.append(group)
 
-        res = pd.concat(kminmaxdfs,ignore_index=True)
 
-        return res
+        if not len(df_list):
+            raise MinMaxLevelIndexError('MinMaxLevelIndex - no results where produced')
+
+        self.meta_df = fstpy.load_data(self.meta_df)
+        df_list.append(self.meta_df)    
+        # merge all results together
+        res_df = pd.concat(df_list,ignore_index=True)
+
+        res_df = remove_load_data_info(res_df)
+        res_df = fstpy.metadata_cleanup(res_df)
+
+        return res_df
+
 
 def fix_ktop(ktop, array_max_index):
     newktop = (array_max_index-1)-ktop
@@ -135,19 +125,3 @@ def bound_array(a, kbas, ktop):
     arr = np.rot90(arr,k=-3)
     return arr
 
-
-# print('array_3d','\n',array_3d)
-# print('min','\n',min)
-# print('max','\n',max)
-# print('array_3dr','\n',array_3dr)
-# print('minr','\n',minr)
-# print('maxr','\n',maxr)
-
-# new_bounded_array = bound_array(array_3d, kbas, ktop)
-# new_bounded_arrayr = np.flip(new_bounded_array,axis=0)
-
-
-# maxb = np.nanargmax(new_bounded_array, axis=0)
-# minb = np.nanargmin(new_bounded_array, axis=0)
-# maxrb = new_bounded_arrayr.shape[0]-1 - np.nanargmax(new_bounded_arrayr, axis=0)
-# minrb = new_bounded_arrayr.shape[0]-1 - np.nanargmin(new_bounded_arrayr, axis=0)

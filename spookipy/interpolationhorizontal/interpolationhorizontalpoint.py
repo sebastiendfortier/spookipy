@@ -6,7 +6,7 @@ import rpnpy.librmn.all as rmn
 import numpy as np
 import sys
 from fstpy.std_reader import load_data
-from spookipy.utils import initializer
+from spookipy.utils import initializer, remove_load_data_info
 
 class InterpolationHorizontalPointError(Exception):
     pass
@@ -174,8 +174,8 @@ class InterpolationHorizontalPoint(Plugin):
         
         other_res_df = pd.concat([other_res_df,self.lat_lon_df],ignore_index=True) 
         #make sure load_data does not execute (does nothing)
-        other_res_df.loc[:,'path'] = None
-        other_res_df.loc[:,'key'] = ''
+        other_res_df = remove_load_data_info(other_res_df)
+
         # print(other_res_df[['nomvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4','path','key','shape']])
         return other_res_df
 

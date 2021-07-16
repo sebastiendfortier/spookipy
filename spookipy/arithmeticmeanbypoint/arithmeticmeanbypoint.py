@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from spookipy.utils import initializer
 from spookipy.plugin import Plugin
 import pandas as pd
 import numpy as np
@@ -8,12 +9,9 @@ class ArithmeticMeanByPointError(Exception):
     pass
 
 class ArithmeticMeanByPoint(Plugin):
-
+    @initializer
     def __init__(self, df:pd.DataFrame, group_by_forecast_hour=False, nomvar_out='MEAN'):
-        self.df = df
-        self.group_by_forecast_hour = group_by_forecast_hour
-        self.nomvar_out = nomvar_out
-        self.df = self.df.query('nomvar not in [">>","^^","!!","P0"]').reset_index(drop=True)
+        pass
 
     def compute(self) -> pd.DataFrame:
         return OpElementsByPoint(self.df, 

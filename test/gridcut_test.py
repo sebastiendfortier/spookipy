@@ -147,7 +147,7 @@ def test_reggc_test_6(plugin_test_dir):
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
-    fstpy.delete_file(results_file)
+    # fstpy.delete_file(results_file)
     assert(res == True)
 
 

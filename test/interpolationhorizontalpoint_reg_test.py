@@ -333,19 +333,27 @@ def test_regtest_4(plugin_test_dir,latlon2_df):
     source0 = plugin_test_dir + "2011072100_006_eta_small"
     src_df0 = StandardFileReader(source0).to_pandas()
 
-    src_df0['dateo']=368660482
+    src_df0.loc[src_df0.nomvar!='P0','dateo']=368660482
     latlon2_df['dateo']=368660482
     #compute spooki.InterpolationHorizontalPoint
     df = spooki.InterpolationHorizontalPoint(src_df0,latlon2_df).compute()
-    #[ReaderStd --input {sources[0]}] >> [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> [spooki.InterpolationHorizontalPoint] >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
+    #[ReaderStd --input {sources[0]}] >> 
+    # [ReaderCsv --input {sources[1]}] >> 
+    # [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> 
+    # [InterpolationHorizontalPoint] >> 
+    # [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
     
-    df['etiket']='R1580V0_N'
+    df.loc[:,'etiket']='R1580V0_N'
     df.loc[df.nomvar == '^^','etiket'] = '__INTHPTX'
     df.loc[df.nomvar == '>>','etiket'] = '__INTHPTX'
+    df = df.loc[df.nomvar!='PT']
+    # print('df\n',df[['nomvar', 'typvar', 'etiket', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'datyp', 'nbits', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4','grid']].to_string())
     # df['dateo']=368660482
 
     # df['datyp']=5
     # df['nbits']=32
+# P0   P  R1580V0_N           4       1     1 20110210 215210             0         6         0      450       48  R 16  Y     0     0     0     0
+# P0   PI R1580V0_N           4       1     1 20110721 000000             0         6         0      450       48  R 16  Y     0     0     0     0
 
 
     #write the result
@@ -358,9 +366,9 @@ def test_regtest_4(plugin_test_dir,latlon2_df):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_4"
 
     #compare results
-    res = fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare,e_max=0.01,e_moy=0.001)
     delete_file(results_file)
-    assert(res == True)
+    assert(False == True)
 
 def test_regtest_5(plugin_test_dir,latlon_df):
     """Test #5 : test_nearest"""
@@ -581,7 +589,7 @@ def test_regtest_10(plugin_test_dir,latlon_extrapolation_df):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_10"
 
     #compare results
-    res = fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare,e_max=0.001)
     delete_file(results_file)
     assert(res == True)
 
@@ -689,7 +697,7 @@ def test_regtest_13(plugin_test_dir,latlon_df):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_13"
 
     #compare results
-    res = fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare,e_max=0.001,e_moy=0.001)
     delete_file(results_file)
     assert(res == True)
 

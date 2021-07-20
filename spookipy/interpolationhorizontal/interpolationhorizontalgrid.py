@@ -65,13 +65,14 @@ class InterpolationHorizontalGrid(Plugin):
     def validate_input(self):
         if self.df.empty:
             raise InterpolationHorizontalGridError('InterpolationHorizontalGrid - no data to process')
-        self.toctoc = self.df.query('nomvar=="!!"').reset_index(drop=True)
+        self.toctoc_df = self.df.query('nomvar=="!!"').reset_index(drop=True)
+        self.hy_df = self.df.query('nomvar=="HY"').reset_index(drop=True)
+        # print('self.toctoc_df\n',self.toctoc_df[['nomvar','grid']])
         self.validate_params()
         set_interpolation_type_options(self.interpolation_type)
         set_extrapolation_type_options(self.extrapolation_type,self.extrapolation_value)
         self.define_output_grid()
         self.groups =  self.df.groupby(by=['grid'])
-
 
     def define_output_grid(self):
         self.all_meta_df = pd.DataFrame(dtype=object)
@@ -195,32 +196,36 @@ class InterpolationHorizontalGrid(Plugin):
         res_df = pd.DataFrame(dtype=object)
         if len(results):
             res_df = pd.concat(results,ignore_index=True)   
+            res_df = set_new_grid_identifiers(res_df,self.grtyp,self.ni,self.nj,self.ig1,self.ig2,self.ig3,self.ig4)
 
         no_mod_df = pd.DataFrame(dtype=object)
 
         if len(no_mod): 
             no_mod_df = pd.concat(no_mod,ignore_index=True)
 
-        toctoc_res_df = set_new_grid_identifiers_for_toctoc(res_df,self.ig1,self.ig2)
-
-        other_res_df = set_new_grid_identifiers(res_df,self.grtyp,self.ni,self.nj,self.ig1,self.ig2,self.ig3,self.ig4)
         
 
-        if not toctoc_res_df.empty:
-            columns_to_keep = ['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4']
-            toctoc_res_df = toctoc_res_df.drop_duplicates(subset=columns_to_keep,ignore_index=True)
-            other_res_df = pd.concat([other_res_df,toctoc_res_df],ignore_index=True)
-
+        # print('other_res_df\n',other_res_df[['nomvar','grid']])
         if not no_mod_df.empty:
-            other_res_df = pd.concat([other_res_df,no_mod_df],ignore_index=True)
+            res_df = pd.concat([res_df,no_mod_df],ignore_index=True)
 
         if not self.all_meta_df.empty:
-            other_res_df = pd.concat([other_res_df,self.all_meta_df],ignore_index=True)
- 
-        #make sure load_data does not execute (does nothing)
-        other_res_df = remove_load_data_info(other_res_df)
+            res_df = pd.concat([res_df,self.all_meta_df],ignore_index=True)
 
-        return other_res_df
+        if not self.toctoc_df.empty:
+            self.toctoc_df = fstpy.load_data(self.toctoc_df)
+            self.toctoc_df = set_new_grid_identifiers_for_toctoc(self.toctoc_df,self.ig1,self.ig2)
+            res_df = pd.concat([res_df,self.toctoc_df],ignore_index=True)
+
+        if not self.hy_df.empty:
+            self.hy_df = fstpy.load_data(self.hy_df)
+            res_df = pd.concat([res_df,self.hy_df],ignore_index=True)
+
+        #make sure load_data does not execute (does nothing)
+        res_df = remove_load_data_info(res_df)
+        res_df = fstpy.metadata_cleanup(res_df)
+
+        return res_df
 
 
 ###################################################################################  
@@ -388,17 +393,18 @@ def set_output_column_values(meta_df,field_df):
     return ig1,ig2,ig3,ig4
 
 def set_new_grid_identifiers_for_toctoc(res_df,ig1,ig2):
-    toctoc_res_df = res_df.query('nomvar == "!!"').reset_index(drop=True).copy(deep=True)
+    toctoc_res_df = res_df.query('nomvar == "!!"').reset_index(drop=True)
     if toctoc_res_df.empty:
         return pd.DataFrame(dtype=object)
     toctoc_res_df['ip1'] = ig1
     toctoc_res_df['ip2'] = ig2
+    toctoc_res_df['grid'] = ''.join([str(ig1),str(ig2)])
     return toctoc_res_df
     
 
 
 def set_new_grid_identifiers(res_df,grtyp,ni,nj,ig1,ig2,ig3,ig4):
-    other_res_df = res_df.query('nomvar != "!!"').reset_index(drop=True).copy(deep=True)
+    other_res_df = res_df.query('nomvar != "!!"').reset_index(drop=True)
     if other_res_df.empty:
         return pd.DataFrame(dtype=object)
     shape_list = [(ni,nj) for _ in range(len(other_res_df.index))]
@@ -411,6 +417,7 @@ def set_new_grid_identifiers(res_df,grtyp,ni,nj,ig1,ig2,ig3,ig4):
     other_res_df['ig2'] = ig2
     other_res_df['ig3'] = ig3
     other_res_df['ig4'] = ig4
+    other_res_df['grid'] = ''.join([str(ig1),str(ig2)])
     return other_res_df
     
 def define_grid(grtyp:str,grref:str,ni:int,nj:int,ig1:int,ig2:int,ig3:int,ig4:int,ax:np.ndarray,ay:np.ndarray,tictac:np.ndarray) -> int:

@@ -3,7 +3,7 @@ from ..plugin import Plugin
 import pandas as pd
 import fstpy.all as fstpy
 from ..utils import initializer, remove_load_data_info
-import numpy as np
+
 
 class GridCutError(Exception):
     pass
@@ -74,7 +74,8 @@ class GridCut(Plugin):
 
         res_df = pd.concat([cp_df,self.meta_df,cptic_df,cptac_df],ignore_index=True)
 
-        res_df = remove_load_data_info(res_df)    
+        res_df = remove_load_data_info(res_df)
+        res_df = fstpy.metadata_cleanup(res_df)    
 
         return res_df
 

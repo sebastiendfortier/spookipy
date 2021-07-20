@@ -126,12 +126,12 @@ def test_regtest_5(plugin_test_dir):
     # [InterpolationHorizontalGrid -m FIELD_DEFINED --fieldName RT --interpolationType NEAREST --extrapolationType NEAREST] >> 
     # [WriterStd --output {destination_path} --makeIP1EncodingWorkWithTests]
 
-
     df = convip(df,nomvar='',style=rmn.CONVIP_ENCODE_OLD)
 
-    df['datyp'] = 5
-    df['nbits'] = 32
+    df.loc[:,'datyp'] = 5
+    df.loc[:,'nbits'] = 32
 
+    # print(df[['nomvar','etiket','ip1','ip2','ig1','ig2']].to_string())
     #write the result
     results_file = TMP_PATH + "test_interpgrid_reg_5.std"
     fstpy.delete_file(results_file)
@@ -142,7 +142,7 @@ def test_regtest_5(plugin_test_dir):
     file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalGrid/result_test_5"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,verbose=True)
     fstpy.delete_file(results_file)
     assert(res == True)
 
@@ -186,12 +186,14 @@ def test_regtest_7(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
     src_df0 = fstpy.select_with_meta(src_df0,["TT"])
 
+
     source1 = plugin_test_dir + "2015072100_240_TTESUUVV_GridZ.std"
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
     src_df1 = fstpy.select_with_meta(src_df1,["ES"])
-    
 
+    
     src_df = pd.concat([src_df0,src_df1],ignore_index=True)
+
     # print(src_df[['nomvar','ni','nj','ip1','ip2','ig1','ig2']])
     #compute spooki.InterpolationHorizontalGrid
     df = spooki.InterpolationHorizontalGrid(src_df,method='field',nomvar='ES',interpolation_type='bi-cubic',extrapolation_type='nearest').compute()
@@ -202,9 +204,10 @@ def test_regtest_7(plugin_test_dir):
 
     df['datyp'] = 5
     df['nbits'] = 32
+    df.loc[df.nomvar=='!!','nbits']=64
 
     df = convip(df,nomvar='',style=rmn.CONVIP_ENCODE)
-
+    
 
     #write the result
     results_file = TMP_PATH + "test_interpgrid_reg_7.std"
@@ -216,7 +219,7 @@ def test_regtest_7(plugin_test_dir):
     file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalGrid/result_test_7"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,exclude_meta=True)
     fstpy.delete_file(results_file)
     assert(res == True)
 
@@ -235,21 +238,20 @@ def test_regtest_8(plugin_test_dir):
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
     src_df1 = fstpy.select_with_meta(src_df1,["TT"])
 
-
     src_df = pd.concat([src_df0,src_df1],ignore_index=True)
 
     #compute spooki.InterpolationHorizontalGrid
     df = spooki.InterpolationHorizontalGrid(src_df,method='field',nomvar='ES',interpolation_type='bi-cubic',extrapolation_type='nearest').compute()
-    #([ReaderStd --input {sources[0]}] >> [Select --fieldName ES]) + 
+    #"([ReaderStd --input {sources[0]}] >> [Select --fieldName ES]) + 
     # ([ReaderStd --input {sources[1]}] >> [Select --fieldName TT]) >> 
     # [InterpolationHorizontalGrid -m FIELD_DEFINED --fieldName ES --interpolationType BI-CUBIC --extrapolationType NEAREST] >> 
-    # [WriterStd --output {destination_path} ]
+    # [Zap --nbitsForDataStorage E32]>>[WriterStd --output {destination_path} ]",
 
     # for i in df.index:
     #     if df.at[i,'nomvar'] != 'ES':
     df['datyp'] = 5
     df['nbits'] = 32
-
+    df.loc[df.nomvar=='!!','nbits']=64
     df = convip(df,nomvar='ES',style=rmn.CONVIP_ENCODE)
 
     #write the result
@@ -288,10 +290,12 @@ def test_regtest_9(plugin_test_dir):
     # [Select --fieldName UU,VV] >> 
     # [WriterStd --output {destination_path} ]
 
+
     df = fstpy.select_with_meta(df,['UU','VV'])
-    # df = df.query('nomvar!="TT"').reset_index(drop=True)
+
     df['datyp'] = 5
     df['nbits'] = 32
+    df.loc[df.nomvar=='!!','nbits']=64
     df = convip(df,nomvar='',style=rmn.CONVIP_ENCODE)
     #write the result
     results_file = TMP_PATH + "test_interpgrid_reg_9.std"
@@ -305,7 +309,7 @@ def test_regtest_9(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(False == True)
 
 
 def test_regtest_10(plugin_test_dir):
@@ -313,11 +317,11 @@ def test_regtest_10(plugin_test_dir):
     # open and read source
     source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-    src_df0 = src_df0.query('nomvar  in ["TT",">>","^^","^>","!!","HY","P0"]').reset_index(drop=True)
+    src_df0 = fstpy.select_with_meta(src_df0,["TT"])
 
     source1 = plugin_test_dir + "2015072100_240_TTESUUVV_GridZ.std"
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
-    src_df1 = src_df1.query('nomvar in ["UU","VV",">>","^^","^>","!!","HY","P0"]').reset_index(drop=True)
+    src_df1 = fstpy.select_with_meta(src_df1,["UU","VV"])
 
     src_df = pd.concat([src_df0,src_df1],ignore_index=True)
 
@@ -330,9 +334,10 @@ def test_regtest_10(plugin_test_dir):
     # [WriterStd --output {destination_path} ]
 
     df = fstpy.select_with_meta(df,['UU','VV'])
-
+    df = df.loc[df.nomvar!='P0']
     df['datyp'] = 5
     df['nbits'] = 32
+    df.loc[df.nomvar=='!!','nbits']=64
     #write the result
     results_file = TMP_PATH + "test_interpgrid_reg_10.std"
     fstpy.delete_file(results_file)
@@ -363,15 +368,20 @@ def test_regtest_11(plugin_test_dir):
     # src_df2 = fstpy.StandardFileReader(source2)
 
     src_df = pd.concat([src_df0,src_df1],ignore_index=True)
-
+    # print('src_df\n',src_df[['nomvar', 'typvar', 'etiket', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'datyp', 'nbits', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4','grid']].to_string())
     #compute spooki.InterpolationHorizontalGrid
     df = spooki.InterpolationHorizontalGrid(src_df,method='field',nomvar='ES',interpolation_type='bi-cubic',extrapolation_type='nearest').compute()
     #([ReaderStd --input {sources[0]}] >> [Select --fieldName TT,UU,VV]) + 
     # ([ReaderStd --input {sources[1]}] >> [Select --fieldName ES]) >> 
     # [InterpolationHorizontalGrid -m FIELD_DEFINED --fieldName ES --interpolationType BI-CUBIC --extrapolationType NEAREST] >> [WriterStd --output {destination_path} ]
 
+    
     df['datyp'] = 5
     df['nbits'] = 32
+    df.loc[df.nomvar=='!!','nbits']=64
+    df = convip(df,nomvar='ES',style=rmn.CONVIP_ENCODE)
+
+    # print('df\n',df[['nomvar', 'typvar', 'etiket', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'datyp', 'nbits', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4','grid']].to_string())
     #write the result
     results_file = TMP_PATH + "test_interpgrid_reg_11.std"
     fstpy.delete_file(results_file)
@@ -382,7 +392,7 @@ def test_regtest_11(plugin_test_dir):
     file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalGrid/result_test_11"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res == True)
 
@@ -403,7 +413,9 @@ def test_regtest_13(plugin_test_dir):
 
     df['datyp'] = 5
     df['nbits'] = 32
+    df.loc[df.nomvar=='!!','nbits']=64
 
+    df = df.loc[df.nomvar!='HY']
     #write the result
     results_file = TMP_PATH + "test_interpgrid_reg_13.std"
     fstpy.delete_file(results_file)

@@ -5,7 +5,7 @@ import pandas as pd
 import rpnpy.librmn.all as rmn
 import numpy as np
 import sys
-from fstpy.std_reader import load_data
+import fstpy.all as fstpy
 from spookipy.utils import initializer, remove_load_data_info
 
 class InterpolationHorizontalPointError(Exception):
@@ -47,6 +47,7 @@ class InterpolationHorizontalPoint(Plugin):
     def validate_input(self):
         if self.df.empty:
             raise InterpolationHorizontalPointError('InterpolationHorizontalPoint - no data to process')
+        print('self.df\n',self.df[['nomvar', 'typvar', 'etiket', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'datyp', 'nbits', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4','grid']].to_string())
         if self.lat_lon_df.empty:
             raise InterpolationHorizontalPointError('InterpolationHorizontalPoint - missing latitudes and longitudes')    
         self.validate_params()
@@ -73,8 +74,8 @@ class InterpolationHorizontalPoint(Plugin):
     def define_output_grid(self):
         if ('LON' in self.lat_lon_df.nomvar.to_list()) and  ('LAT' in self.lat_lon_df.nomvar.to_list()):
             self.lat_lon_df = self.lat_lon_df.query('nomvar in ["LAT","LON"]').reset_index(drop=True)
-            self.lat_lon_df = load_data(self.lat_lon_df)
-            ni,nj,_,ax,ay,ig1,ig2,ig3,ig4 = get_grid_paramters_from_latlon_fields(self.lat_lon_df)
+            self.lat_lon_df = fstpy.load_data(self.lat_lon_df)
+            ni,nj,_,ax,ay,ig1,ig2,ig3,ig4 = get_grid_paramters_from_latlon_fields(self.lat_lon_df) 
             self.output_grid = define_grid('Y','L',ni,nj,ig1,ig2,ig3,ig4,ax,ay,None)
             self.lat = self.lat_lon_df.query('nomvar=="LAT"').reset_index(drop=True).iloc[0]['d']
             self.lon = self.lat_lon_df.query('nomvar=="LON"').reset_index(drop=True).iloc[0]['d']
@@ -85,6 +86,7 @@ class InterpolationHorizontalPoint(Plugin):
             self.lat_lon_df.loc[:,'ig2'] = 100
             self.lat_lon_df.loc[:,'ig3'] = 9000
             self.lat_lon_df.loc[:,'ig4'] = 0
+            self.lat_lon_df.loc[:,'etiket'] = 'InterpolationHorizontalPoint'
 
         else:    
             raise InterpolationHorizontalPointError('InterpolationHorizontalPoint - missing longitudes and/or latitudes to process')
@@ -102,7 +104,7 @@ class InterpolationHorizontalPoint(Plugin):
         no_mod = []
         for _,current_group in self.groups:
 
-            current_group = load_data(current_group)
+            current_group = fstpy.load_data(current_group)
 
             keep_intact_hy_field(current_group, no_mod)
 
@@ -171,12 +173,15 @@ class InterpolationHorizontalPoint(Plugin):
         if not no_mod_df.empty:
             other_res_df = pd.concat([other_res_df,no_mod_df],ignore_index=True)
 
-        
         other_res_df = pd.concat([other_res_df,self.lat_lon_df],ignore_index=True) 
+
+        other_res_df.loc[other_res_df.nomvar!='HY','grid'] = '00000000'
+        print('other_res_df\n',other_res_df[['nomvar', 'typvar', 'etiket', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'datyp', 'nbits', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4','grid']].to_string())
         #make sure load_data does not execute (does nothing)
         other_res_df = remove_load_data_info(other_res_df)
+        other_res_df = fstpy.metadata_cleanup(other_res_df)
 
-        # print(other_res_df[['nomvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4','path','key','shape']])
+        print('other_res_df\n',other_res_df[['nomvar', 'typvar', 'etiket', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'datyp', 'nbits', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4','grid']].to_string())
         return other_res_df
 
 
@@ -324,8 +329,8 @@ def get_grid_paramters_from_latlon_fields(meta_df):
     return get_grid_parameters(lat_df, lon_df)
 
 def get_grid_parameters(lat_df, lon_df):
-    lat_df = load_data(lat_df)
-    lon_df = load_data(lon_df)
+    lat_df = fstpy.load_data(lat_df)
+    lon_df = fstpy.load_data(lon_df)
     nj = lat_df.iloc[0]['nj']
     ni = lon_df.iloc[0]['ni']
     grref = lat_df.iloc[0]['grtyp']
@@ -354,14 +359,14 @@ def set_output_column_values(meta_df,field_df):
     return ig1,ig2,ig3,ig4
 
 def set_new_grid_identifiers_for_toctoc(res_df,ig1,ig2):
-    toctoc_res_df = res_df.query('nomvar == "!!"').reset_index(drop=True).copy(deep=True)
+    toctoc_res_df = res_df.query('nomvar == "!!"').reset_index(drop=True)
     toctoc_res_df['ip1'] = ig1
     toctoc_res_df['ip2'] = ig2
     return toctoc_res_df
 
 
 def set_new_grid_identifiers(res_df,grtyp,ni,nj,ig1,ig2,ig3,ig4):
-    other_res_df = res_df.query('nomvar != "!!"').reset_index(drop=True).copy(deep=True)
+    other_res_df = res_df.query('nomvar != "!!"').reset_index(drop=True)
     shape_list = [(ni,nj) for _ in range(len(other_res_df.index))]
     other_res_df["shape"] = shape_list
     other_res_df['ni'] = ni

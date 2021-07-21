@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from spookipy.plugin import Plugin
-from spookipy.utils import create_empty_result, get_existing_result, get_intersecting_levels, get_plugin_dependencies, initializer, remove_load_data_info
+from ..plugin import Plugin
+from ..utils import create_empty_result, get_existing_result, get_intersecting_levels, get_plugin_dependencies, initializer, prepare_existing_results, remove_load_data_info
 import pandas as pd
 import fstpy.all as fstpy
 import numpy as np
@@ -47,6 +47,9 @@ class HumidityRelative(Plugin):
             raise  HumidityRelativeError('No data to process')
 
         self.df = fstpy.metadata_cleanup(self.df)    
+
+        self.meta_df = self.df.query('nomvar in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True)  
+
         #check if result already exists
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
 
@@ -69,13 +72,7 @@ class HumidityRelative(Plugin):
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:
-            sys.stdout.write('HumidityRelative - found results')
-            self.existing_result_df = fstpy.load_data(self.existing_result_df)
-            self.meta_df = fstpy.load_data(self.meta_df)
-            res_df = pd.concat([self.meta_df,self.existing_result_df],ignore_index=True)
-            res_df  = remove_load_data_info(res_df)
-            res_df = fstpy.metadata_cleanup(res_df)
-            return res_df 
+            return prepare_existing_results('HumidityRelative',self.existing_result_df,self.meta_df)
 
         sys.stdout.write('HumidityRelative - compute')    
         df_list = []
@@ -101,7 +98,7 @@ class HumidityRelative(Plugin):
 
         res_df = remove_load_data_info(res_df)
         res_df = fstpy.metadata_cleanup(res_df)
-        # print('windmodulus\n',res_df)
+        
         return res_df
     
 

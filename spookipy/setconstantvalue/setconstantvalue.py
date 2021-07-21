@@ -4,6 +4,7 @@ from ..opelementsbyvalue.opelementsbyvalue import OpElementsByValue
 from ..plugin import Plugin
 import pandas as pd
 import fstpy.all as fstpy
+import sys
 
 
 def set_value(a,v):
@@ -46,6 +47,7 @@ class SetConstantValue(Plugin):
 
 
     def compute(self) -> pd.DataFrame:
+        sys.stdout.write('SetConstantValue - compute')
         df_list = []
         for _,current_group in self.groups: 
             if self.max_index:
@@ -74,8 +76,8 @@ class SetConstantValue(Plugin):
         df_list.append(self.meta_df)    
         # merge all results together
         res_df = pd.concat(df_list,ignore_index=True)
-        # print('res_df\n',res_df[['nomvar','typvar','etiket','ni','nj','nk','dateo','ip1']])
+        
         res_df = remove_load_data_info(res_df)
         res_df = fstpy.metadata_cleanup(res_df)
-        # print('res_df\n',res_df[['nomvar','typvar','etiket','ni','nj','nk','dateo','ip1']])
+        
         return res_df

@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-from spookipy.plugin import Plugin
-from spookipy.utils import get_existing_result, get_intersecting_levels, get_plugin_dependencies, initializer
+from ..plugin import Plugin
+from ..utils import get_existing_result, get_intersecting_levels, get_plugin_dependencies, initializer, prepare_existing_results, remove_load_data_info
 import pandas as pd
 import fstpy.all as fstpy
 import numpy as np
+import sys
 
 
 class HumiditySpecificError(Exception):
@@ -47,6 +48,8 @@ class HumiditySpecific(Plugin):
             raise  HumiditySpecificError('No data to process')
 
         self.df = fstpy.metadata_cleanup(self.df)
+
+        self.meta_df = self.df.query('nomvar in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True)  
             
         #check if result already exists
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
@@ -70,29 +73,35 @@ class HumiditySpecific(Plugin):
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:
-            return self.existing_result_df
-        results = []
+            return prepare_existing_results('HumiditySpecific',self.existing_result_df,self.meta_df)
 
+        sys.stdout.write('HumiditySpecific - compute')
+        df_list = []
         for _,current_fhour_group in self.fhour_groups:
-            # current_fhour_group = current_fhour_group.reset_index(drop=True)
-            # print('-1-','\n',current_fhour_group[['nomvar','level','forecast_hour']])        
+
             uudf = current_fhour_group.query('nomvar == "UU"').reset_index(drop=True).reset_index(drop=True)
             vvdf = current_fhour_group.query('nomvar == "VV"').reset_index(drop=True).reset_index(drop=True)
             uv_df = vvdf.copy(deep=True)
             #recipe: zap with dict
             for k,v in self.plugin_result_specifications['UV'].items():uv_df[k] = v
-            # uv_df = fstpy.zap(uv_df, **self.plugin_result_specifications['UV'])
-            # print('---uv_df---\n',uv_df[['nomvar','etiket','unit']])
-            # test = uv_df.replace(self.plugin_result_specifications['UV'])
-            # print('---test---\n',test[['nomvar','etiket','unit']])
-            # print('equality',uv_df.equals(test))
+
             for i in uv_df.index:
                 uu = uudf.at[i,'d']
                 vv = vvdf.at[i,'d']
-                uv_df.at[i,'d'] = wind_modulus(uu,vv)
-            results.append(uv_df)
+                uv_df.at[i,'d']
+            df_list.append(uv_df)
+
+        if not len(df_list):
+            raise HumiditySpecificError('No results were produced')
+
+        self.meta_df = fstpy.load_data(self.meta_df)
+        df_list.append(self.meta_df)    
         # merge all results together
-        result = pd.concat(results, ignore_index=True)
-        return result
+        res_df = pd.concat(df_list,ignore_index=True)
+
+        res_df = remove_load_data_info(res_df)
+        res_df = fstpy.metadata_cleanup(res_df)
+        
+        return res_df
     
 

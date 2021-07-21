@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from spookipy.utils import initializer, remove_load_data_info
-from spookipy.plugin import Plugin
+from ..utils import initializer, remove_load_data_info
+from ..plugin import Plugin
 import numpy as np
 import pandas as pd
 import rpnpy.librmn.all as rmn

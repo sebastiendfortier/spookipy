@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-from spookipy.plugin import Plugin
+from ..plugin import Plugin
 import pandas as pd
 import numpy as np
-from spookipy.opelementsbypoint.opelementsbypoint import OpElementsByPoint
-from spookipy.utils import initializer
+from ..opelementsbypoint.opelementsbypoint import OpElementsByPoint
+from ..utils import initializer
+import sys
 
 class MultiplyElementsByPointError(Exception):
     pass
@@ -15,6 +16,7 @@ class MultiplyElementsByPoint(Plugin):
         pass
 
     def compute(self) -> pd.DataFrame:
+        sys.stdout.write('MultiplyElementsByPoint - compute')
         return OpElementsByPoint(self.df, 
         operator = np.prod,
         operation_name='MultiplyElementsByPoint', 

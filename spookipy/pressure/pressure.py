@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import ctypes
 import math
-from spookipy.utils import get_existing_result, initializer, remove_load_data_info
+from ..utils import get_existing_result, initializer, prepare_existing_results, remove_load_data_info
 import sys
 
 import numpy as np
@@ -11,7 +11,7 @@ import rpnpy.vgd.proto as vgdp
 
 import fstpy.all as fstpy
 
-from spookipy.plugin import Plugin
+from ..plugin import Plugin
 
 STANDARD_ATMOSPHERE = 1013.25
 
@@ -62,13 +62,11 @@ class Pressure(Plugin):
         :return: a dataframe containing available pressure
         :rtype: pd.DataFrame
         """
+        
         if not self.existing_result_df.empty:
-            self.existing_result_df = fstpy.load_data(self.existing_result_df)
-            self.meta_df = fstpy.load_data(self.meta_df)
-            res_df = pd.concat([self.meta_df,self.existing_result_df],ignore_index=True)
-            res_df  = remove_load_data_info(res_df)
-            return res_df
+            return prepare_existing_results('Pressure',self.existing_result_df,self.meta_df) 
 
+        sys.stdout.write('Pressure - compute')
         df_list=[]
         for _,grid in self.df.groupby(['grid']):
             meta_df = grid.query('nomvar in ["!!","HY","P0","PT"]').reset_index(drop=True)

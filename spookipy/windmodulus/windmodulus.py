@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from ..plugin import Plugin
-from ..utils import create_empty_result, get_existing_result, get_intersecting_levels, get_plugin_dependencies, remove_load_data_info
+from ..utils import create_empty_result, get_existing_result, get_intersecting_levels, get_plugin_dependencies, prepare_existing_results, remove_load_data_info
 import pandas as pd
 import fstpy.all as fstpy
 import numpy as np
@@ -57,13 +57,10 @@ class WindModulus(Plugin):
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:
-            self.existing_result_df = fstpy.load_data(self.existing_result_df)
-            self.meta_df = fstpy.load_data(self.meta_df)
-            res_df = pd.concat([self.meta_df,self.existing_result_df],ignore_index=True)
-            res_df  = remove_load_data_info(res_df)
-            return res_df
-        df_list = []
+            return prepare_existing_results('WindModulus',self.existing_result_df,self.meta_df)
 
+        sys.stdout.write('WindModulus - compute')      
+        df_list = []
         for _,current_fhour_group in self.fhour_groups:
             current_fhour_group = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies)
             if current_fhour_group.empty:
@@ -75,9 +72,6 @@ class WindModulus(Plugin):
             vv_df = current_fhour_group.query('nomvar == "VV"').reset_index(drop=True)
             uv_df = create_empty_result(vv_df,self.plugin_result_specifications['UV'],copy=True)
 
-            # print('windmodulus\n',uu_df)
-            # print('windmodulus\n',vv_df)
-            # print('windmodulus\n',uv_df)
 
             for i in uv_df.index:
                 uu = uu_df.at[i,'d']
@@ -96,7 +90,9 @@ class WindModulus(Plugin):
 
         res_df = remove_load_data_info(res_df)
         res_df = fstpy.metadata_cleanup(res_df)
-        # print('windmodulus\n',res_df)
+        
         return res_df
+
+
     
 

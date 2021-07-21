@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from spookipy.plugin import Plugin
-from spookipy.utils import create_empty_result, get_3d_array, initializer, remove_load_data_info, validate_nomvar
+from ..plugin import Plugin
+from ..utils import create_empty_result, get_3d_array, initializer, remove_load_data_info, validate_nomvar
 import pandas as pd
 import numpy as np
 import sys
@@ -16,14 +16,7 @@ class OpElementsByPoint(Plugin):
 
     @initializer
     def __init__(self, df:pd.DataFrame, operator, operation_name='OpElementsByPoint', exception_class = OpElementsByPointError, group_by_forecast_hour=False, group_by_level=False, nomvar_out='OPER', unit='scalar'):
-        # self.df = df
-        # self.operator = operator
-        # self.operation_name = operation_name
-        # self.exception_class = exception_class
-        # self.group_by_forecast_hour = group_by_forecast_hour
-        # self.group_by_level = group_by_level
-        # self.nomvar_out = nomvar_out
-        # self.unit = unit
+
         self.validate_input()
         self.plugin_result_specifications = {
         'ALL':{'nomvar':self.nomvar_out,'etiket':self.operation_name,'unit':self.unit}
@@ -57,7 +50,7 @@ class OpElementsByPoint(Plugin):
         
 
     def compute(self) -> pd.DataFrame:
-        
+        sys.stdout.write('OpElementsByPoint - compute')
         #holds data from all the groups
         df_list = []
         for _,current_group in self.groups:

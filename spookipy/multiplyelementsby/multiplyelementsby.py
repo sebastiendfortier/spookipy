@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-from spookipy.utils import validate_nomvar
-from spookipy.plugin import Plugin
+from ..utils import validate_nomvar
+from ..plugin import Plugin
 import pandas as pd
-from spookipy.opelementsbyvalue.opelementsbyvalue import OpElementsByValue
-from spookipy.utils import initializer, validate_nomvar
+from ..opelementsbyvalue.opelementsbyvalue import OpElementsByValue
+from ..utils import initializer, validate_nomvar
+import sys
 
 def mult_value(a,v):
     return a * v
@@ -14,12 +15,10 @@ class MultiplyElementsByError(Exception):
 class MultiplyElementsBy(Plugin):
     @initializer
     def __init__(self, df:pd.DataFrame, value, nomvar_out=''):
-        self.validate_input()
-
-    def validate_input(self):
-        validate_nomvar(self.nomvar_out, 'MultiplyElementsBy', MultiplyElementsByError)
+        pass
 
     def compute(self) -> pd.DataFrame:
+        sys.stdout.write('MultiplyElementsBy - compute')
         return OpElementsByValue(self.df,
         value = self.value,
         operation_name='MultiplyElementsBy',

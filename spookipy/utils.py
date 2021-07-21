@@ -4,6 +4,7 @@ from functools import wraps
 import pandas as pd
 import numpy as np
 import sys
+import fstpy.all as fstpy
 
 def initializer(func):
     """
@@ -40,13 +41,13 @@ class LevelIntersectionError(Exception):
     pass
 
 def get_plugin_dependencies(df:pd.DataFrame, plugin_mandatory_dependencies:dict) -> pd.DataFrame:
-    from spookipy.windmodulus.windmodulus import WindModulus
-    from spookipy.humidityspecific.humidityspecific import HumiditySpecific
-    from spookipy.humidityrelative.humidityrelative import HumidityRelative
-    from spookipy.temperaturedewpoint.temperaturedewpoint import TemperatureDewPoint
-    from spookipy.windmodulus.windmodulus import WindModulus
-    from spookipy.pressure.pressure import Pressure
-    from spookipy.saturationvapourpressure.saturationvapourpressure import SaturationVapourPressure
+    from .windmodulus.windmodulus import WindModulus
+    from .humidityspecific.humidityspecific import HumiditySpecific
+    from .humidityrelative.humidityrelative import HumidityRelative
+    from .temperaturedewpoint.temperaturedewpoint import TemperatureDewPoint
+    from .windmodulus.windmodulus import WindModulus
+    from .pressure.pressure import Pressure
+    from .saturationvapourpressure.saturationvapourpressure import SaturationVapourPressure
     computable_dependencies = {
         'UV':WindModulus,
         'PX':Pressure,
@@ -190,3 +191,11 @@ def get_3d_array(df) -> np.ndarray:
         df.at[i,'d'] = df.at[i,'d'].flatten()
     arr_3d = np.stack(df['d'].to_list())
     return arr_3d
+
+def prepare_existing_results(plugin_name:str,df:pd.DataFrame,meta_df:pd.DataFrame):
+    sys.stdout.write(''.join([plugin_name,' - found results']))  
+    df = fstpy.load_data(df)
+    meta_df = fstpy.load_data(meta_df)
+    res_df = pd.concat([meta_df,df],ignore_index=True)
+    res_df  = remove_load_data_info(res_df)
+    return res_df    

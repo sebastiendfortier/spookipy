@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from spookipy.utils import initializer
-from spookipy.plugin import Plugin
+from ..utils import initializer
+from ..plugin import Plugin
 import pandas as pd
 import numpy as np
 import sys
-from spookipy.opelementsbypoint.opelementsbypoint import OpElementsByPoint
+from ..opelementsbypoint.opelementsbypoint import OpElementsByPoint
 
 class AddElementsByPointError(Exception):
     pass

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from spookipy.plugin import Plugin
-from spookipy.utils import create_empty_result, get_existing_result, get_intersecting_levels, get_plugin_dependencies, initializer, remove_load_data_info
+from ..plugin import Plugin
+from ..utils import create_empty_result, get_existing_result, get_intersecting_levels, get_plugin_dependencies, initializer, prepare_existing_results, remove_load_data_info
 import pandas as pd
 import numpy as np
 import fstpy.all as fstpy
@@ -31,7 +31,7 @@ class DewPointDepression(Plugin):
     plugin_result_specifications = {'ES':{'nomvar':'ES','etiket':'DewPointDepression','unit':'celsius','nbits':16,'datyp':1}}
 
     @initializer
-    def __init__(self,df:pd.DataFrame, ice_water_phase='water', temp_phase_switch='',rpn=False):
+    def __init__(self,df:pd.DataFrame, ice_water_phase='water', temp_phase_switch='', temp_phase_switch_unit='',rpn=False):
         self.validate_input()
 
 
@@ -69,15 +69,9 @@ class DewPointDepression(Plugin):
             
 
     def compute(self) -> pd.DataFrame:
-        
         if not self.existing_result_df.empty:
-            sys.stdout.write('DewPointDepression - found results')
-            self.existing_result_df = fstpy.load_data(self.existing_result_df)
-            self.meta_df = fstpy.load_data(self.meta_df)
-            res_df = pd.concat([self.meta_df,self.existing_result_df],ignore_index=True)
-            res_df  = remove_load_data_info(res_df)
-            res_df = fstpy.metadata_cleanup(res_df)    
-            return res_df
+            return prepare_existing_results('DewPointDepression',self.existing_result_df,self.meta_df)
+
         sys.stdout.write('DewPointDepression - compute')    
         df_list=[]
         for _, group in self.groups:
@@ -97,13 +91,13 @@ class DewPointDepression(Plugin):
                 df_list.append(es_df)
 
         if not len(df_list):
-            raise DewPointDepression('DewPointDepression - no results where produced')
+            raise DewPointDepression('No results where produced')
 
         self.meta_df = fstpy.load_data(self.meta_df)
         df_list.append(self.meta_df)    
         # merge all results together
         res_df = pd.concat(df_list,ignore_index=True)
-
+ 
         res_df = remove_load_data_info(res_df)
         res_df = fstpy.metadata_cleanup(res_df)
 

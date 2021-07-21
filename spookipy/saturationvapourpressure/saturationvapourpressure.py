@@ -4,9 +4,10 @@ import pandas as pd
 import numpy as np
 from math import exp
 from rpnpy.utils.tdpack import FOEWA, FOEW
-from ..utils import create_empty_result, get_existing_result, get_plugin_dependencies, initializer, remove_load_data_info
-from spookipy.humidityutils.humidityutils import get_temp_phase_switch, TDPACK_OFFSET_FIX, AEW1, AEW2, AEW3, AEI1, AEI2, AEI3
+from ..utils import create_empty_result, get_existing_result, get_plugin_dependencies, initializer, prepare_existing_results, remove_load_data_info
+from .humidityutils.humidityutils import get_temp_phase_switch, TDPACK_OFFSET_FIX, AEW1, AEW2, AEW3, AEI1, AEI2, AEI3
 import fstpy.all as fstpy
+import sys
 
 class SaturationVapourPressureError(Exception):
     pass
@@ -62,12 +63,9 @@ class SaturationVapourPressure(Plugin):
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:
-            self.existing_result_df = fstpy.load_data(self.existing_result_df)
-            self.meta_df = fstpy.load_data(self.meta_df)
-            res_df = pd.concat([self.meta_df,self.existing_result_df],ignore_index=True)
-            res_df  = remove_load_data_info(res_df)
-            return res_df
+            return prepare_existing_results('SaturationVapourPressure',self.existing_result_df,self.meta_df) 
 
+        sys.stdout.write('SaturationVapourPressure - compute')
         df_list=[]
         for _, current_fhour_group in self.fhour_groups:
             current_fhour_group = fstpy.load_data(current_fhour_group)

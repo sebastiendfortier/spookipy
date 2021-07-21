@@ -4,7 +4,7 @@ from typing import Tuple
 import pandas as pd
 import numpy as np
 import fstpy.all as fstpy
-from ..utils import create_empty_result, get_3d_array, get_intersecting_levels, remove_load_data_info, get_existing_result, get_plugin_dependencies
+from ..utils import create_empty_result, get_3d_array, get_intersecting_levels, prepare_existing_results, remove_load_data_info, get_existing_result, get_plugin_dependencies
 import sys
 
 class WindMaxError(Exception):
@@ -73,11 +73,9 @@ class WindMax(Plugin):
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:
-            self.existing_result_df = fstpy.load_data(self.existing_result_df)
-            self.meta_df = fstpy.load_data(self.meta_df)
-            res_df = pd.concat([self.meta_df,self.existing_result_df],ignore_index=True)
-            res_df  = remove_load_data_info(res_df)
-            return res_df
+            return prepare_existing_results('WindMax',self.existing_result_df,self.meta_df) 
+
+        sys.stdout.write('WindMax - compute')     
         #holds data from all the groups
         df_list = []
         

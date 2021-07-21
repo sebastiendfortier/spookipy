@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from spookipy.utils import initializer
-from spookipy.plugin import Plugin
+from ..utils import initializer
+from ..plugin import Plugin
 import pandas as pd
 import sys
-from spookipy.opelementsbyvalue.opelementsbyvalue import OpElementsByValue
+from ..opelementsbyvalue.opelementsbyvalue import OpElementsByValue
 
 
 def add_value(a, v):

@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
-from spookipy.plugin import Plugin
-from spookipy.humidityutils.humidityutils import AEI1, AEI2, AEI3, AEW1, AEW2, AEW3, TDPACK_OFFSET_FIX
-from spookipy.utils import get_existing_result, get_intersecting_levels, get_plugin_dependencies, initializer
+from ..plugin import Plugin
+from .humidityutils.humidityutils import AEI1, AEI2, AEI3, AEW1, AEW2, AEW3, TDPACK_OFFSET_FIX
+from ..utils import get_existing_result, get_intersecting_levels, get_plugin_dependencies, initializer, prepare_existing_results, remove_load_data_info
 import pandas as pd
 import numpy as np
 from math import exp
 import fstpy.all as fstpy
 from rpnpy.utils.tdpack import FOEWA, FOEW
+import sys
 
 class VapourPressureError(Exception):
     pass
@@ -47,6 +48,8 @@ class VapourPressure(Plugin):
             raise  VapourPressureError('No data to process')
 
         self.df = fstpy.metadata_cleanup(self.df)
+
+        self.meta_df = self.df.query('nomvar in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True) 
             
         #check if result already exists
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
@@ -68,10 +71,15 @@ class VapourPressure(Plugin):
 
 
     def compute(self) -> pd.DataFrame:
-        vpprdfs=[]
+        if not self.existing_result_df.empty:
+            return prepare_existing_results('VapourPressure',self.existing_result_df,self.meta_df) 
+
+        sys.stdout.write('VapourPressure - compute')
+        df_list=[]
         for _, group in self.groups:
             tddf = group.query( '(nomvar=="TD") and (unit=="celsius")').reset_index(drop=True)
             tt_df = group.query( '(nomvar=="TT") and (unit=="celsius")').reset_index(drop=True)
+            
             vpprdf = tddf.copy(deep=True)
             # vpprdf = fstpy.zap(vpprdf,**self.plugin_result)
             for k,v in self.plugin_result_specifications['ALL'].items(): vpprdf[k] = v
@@ -87,6 +95,18 @@ class VapourPressure(Plugin):
                 vpprdf['d'] = np.where( (not self.ice_water_phase_both) or (self.ice_water_phase_both and (tt_df['d'] > self.temp_phase_switch)),
                 AEW1 * exp((AEW2 * tddf['d']) / (AEW3 + tddf['d'])),
                 AEI1 * exp((AEI2 * tddf['d']) / (AEI3 + tddf['d'])))
-        res = pd.concat(vpprdfs,ignore_index=True)
-        return res
+        
+        if not len(df_list):
+            raise VapourPressureError('No results were produced')
+
+        self.meta_df = fstpy.load_data(self.meta_df)
+
+        df_list.append(self.meta_df)    
+        # merge all results together
+        res_df = pd.concat(df_list,ignore_index=True)
+        
+        res_df = remove_load_data_info(res_df)
+        res_df = fstpy.metadata_cleanup(res_df)
+        
+        return res_df
 

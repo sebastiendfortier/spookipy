@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 import sys
 import fstpy.all as fstpy
+from spookipy.plugin.plugin import Plugin
 
 
 class MinMaxLevelIndexError(Exception):

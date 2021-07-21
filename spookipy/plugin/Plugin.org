@@ -1,0 +1,55 @@
+** Français
+
+*** Description:
+
+Classe abstraite de base pour les plugins. 
+Tous les plugins doivent hériter de cette classe.
+
+*** Usage
+- La fonction __init__ peut être surchargée au besoin, par exemple pour ajouter des paramètres supplémentaires. L’idéale serait d’appeler la fonction de la classe de base dans la fonction surchargée.
+- La fonction compute doit absolument être implémentée.
+
+**** Exemple:
+
+    #+BEGIN_SRC python
+        python3
+        import pandas as pd
+        import spookipy.all as spooki
+        class Exemple(spooki.Plugin):
+            def __init__(self,df:pd.DataFrame,param) -> None:
+                self.param = param
+                super().__init__(df)
+
+            def compute(self) -> pd.DataFrame:
+                # my_df = ...
+                # Manipulations quelconque sur le self.df 
+                return my_df
+    #+END_SRC
+
+** English
+
+*** Description:
+
+Abstract base class for plugins.
+Each plugin must inherit from this class.
+
+*** Usage:
+- The __init__ method can be overloaded if necessary, e.g. to add parameters. Ideally, the overloaded method should call the superclass method.
+- The compute method needs to be implemented.
+
+**** Example:
+
+    #+BEGIN_SRC python
+        python3
+        import pandas as pd
+        import spookipy.all as spooki
+        class Exemple(spooki.Plugin):
+            def __init__(self,df:pd.DataFrame,param) -> None:
+                self.param = param
+                super().__init__(df)
+
+            def compute(self) -> pd.DataFrame:
+                # my_df = ...
+                # Some manipulation on self.df 
+                return my_df
+    #+END_SRC

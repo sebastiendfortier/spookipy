@@ -33,17 +33,19 @@ class SaturationVapourPressure(Plugin):
         
     def validate_input(self):
         if self.df.empty:
-            raise SaturationVapourPressureError('SaturationVapourPressure - no data to process') 
+            raise SaturationVapourPressureError('No data to process') 
+
+        self.df = fstpy.metadata_cleanup(self.df)    
 
         # if self.ice_water_phase == 'both':
         #     if self.temp_phase_switch==-99999:
         #         raise SaturationVapourPressureError(f'SaturationVapourPressure - cant use ice_water_phase="both" without defining temp_phase_switch and temp_phase_switch_unit')     
 
         if self.temp_phase_switch_unit not in self.valid_units:
-            raise SaturationVapourPressureError(f'SaturationVapourPressure - invalid unit {self.temp_phase_switch_unit} not in {self.valid_units}') 
+            raise SaturationVapourPressureError(f'Invalid unit {self.temp_phase_switch_unit} not in {self.valid_units}') 
 
         if self.ice_water_phase not in self.valid_phases:
-            raise SaturationVapourPressureError(f'SaturationVapourPressure - invalid unit {self.ice_water_phase} not in {self.valid_phases}') 
+            raise SaturationVapourPressureError(f'Invalid unit {self.ice_water_phase} not in {self.valid_phases}') 
 
         self.temp_phase_switch = get_temp_phase_switch('SaturationVapourPressure', SaturationVapourPressureError, self.ice_water_phase=='both', self.temp_phase_switch, self.temp_phase_switch_unit, self.rpn)
 
@@ -97,7 +99,7 @@ class SaturationVapourPressure(Plugin):
             df_list.append(svp_df)
 
         if not len(df_list):
-            raise SaturationVapourPressureError('SaturationVapourPressure - no results where produced')
+            raise SaturationVapourPressureError('No results were produced')
 
         self.meta_df = fstpy.load_data(self.meta_df)
         df_list.append(self.meta_df)    

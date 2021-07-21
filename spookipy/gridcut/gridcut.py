@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from ..plugin import Plugin
 import pandas as pd
+import sys
 import fstpy.all as fstpy
 from ..utils import initializer, remove_load_data_info
 
@@ -15,7 +16,9 @@ class GridCut(Plugin):
 
     def validate_input(self):
         if self.df.empty:
-            raise GridCutError('GridCut - no data to process') 
+            raise GridCutError('No data to process') 
+
+        self.df = fstpy.metadata_cleanup(self.df)
         
         self.validate_coords()
 
@@ -32,29 +35,29 @@ class GridCut(Plugin):
     def validate_grid(self):
         tictac_df = self.meta_df.query('nomvar=="^>"').reset_index(drop=True)
         if not tictac_df.empty:
-            raise GridCutError('GridCut - cannot handle yin yan grids') 
+            raise GridCutError('Cannot handle yin yan grids') 
 
     def validate_coords(self):
         if (not isinstance(self.start_point,tuple)):
-            raise GridCutError('GridCut - start_point must be a tuple of 2 elements') 
+            raise GridCutError('Start_point must be a tuple of 2 elements') 
         if (not isinstance(self.end_point,tuple)):
-            raise GridCutError('GridCut - end_point must be a tuple of 2 elements') 
+            raise GridCutError('End_point must be a tuple of 2 elements') 
         if len(self.start_point) != 2:
-            raise GridCutError('GridCut - start_point must be a tuple of 2 elements') 
+            raise GridCutError('Start_point must be a tuple of 2 elements') 
         if len(self.end_point) != 2:
-            raise GridCutError('GridCut - end_point must be a tuple of 2 elements') 
+            raise GridCutError('End_point must be a tuple of 2 elements') 
         if (self.start_point[0] > self.end_point[0]) or (self.start_point[1] > self.end_point[1]):
-            raise GridCutError('GridCut - start point must be inferior on all axes to end point') 
+            raise GridCutError('Start point must be inferior on all axes to end point') 
 
     def compute(self) -> pd.DataFrame:
-
+        sys.stdout.write('GridCut - compute') 
         cp_df = self.df.copy(deep=True)
 
         # cp_df["shape"].map(lambda nix, njy: (nix <=  self.end_point[0]) or (njy <= self.end_point[1])).any()
         # cp_df['d'] = cp_df["d"].map(lambda d: d[self.start_point[0]:self.end_point[0]+1,self.start_point[1]:self.end_point[1]+1])
         for i in cp_df.index:
             if (cp_df.at[i,'ni'] <= self.end_point[0]) or (cp_df.at[i,'nj'] <= self.end_point[1]):
-                raise GridCutError('GridCut - you asked for more values than exists') 
+                raise GridCutError('You asked for more values than exists') 
             cp_df.at[i,'d'] = cp_df.at[i,'d'][self.start_point[0]:self.end_point[0]+1,self.start_point[1]:self.end_point[1]+1]
             cp_df.at[i,'shape'] = cp_df.at[i,'d'].shape
             cp_df.at[i,'ni'] = cp_df.at[i,'d'].shape[0]

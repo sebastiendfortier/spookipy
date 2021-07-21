@@ -8,6 +8,8 @@ from .dewpointdepression.dewpointdepression import DewPointDepression,DewPointDe
 from .georgekindex.georgekindex import GeorgeKIndex,GeorgeKIndexError,george_k_index
 from .gridcut.gridcut import GridCut,GridCutError
 from .humidex.humidex import Humidex, HumidexError, humidex
+from .humidityrelative.humidityrelative import HumidityRelative, HumidityRelativeError
+from .humidityspecific.humidityspecific import HumiditySpecific, HumiditySpecificError, humidity_specific
 from .interpolationhorizontal.interpolationhorizontalgrid import InterpolationHorizontalGrid, InterpolationHorizontalGridError
 from .interpolationhorizontal.interpolationhorizontalpoint import InterpolationHorizontalPoint, InterpolationHorizontalPointError
 from .minmaxlevelindex.minmaxlevelindex import MinMaxLevelIndex,MinMaxLevelIndexError
@@ -17,6 +19,8 @@ from .opelementsbypoint.opelementsbypoint import OpElementsByPoint,OpElementsByP
 from .pressure.pressure import Pressure, compute_pressure_from_eta_coord_array,compute_pressure_from_hyb_coord_array,compute_pressure_from_hybstag_coord_array,compute_pressure_from_pressure_coord_array,compute_pressure_from_sigma_coord_array
 from .saturationvapourpressure.saturationvapourpressure import SaturationVapourPressure, SaturationVapourPressureError
 from .setconstantvalue.setconstantvalue import SetConstantValue, SetConstantValueError
+from .temperaturedewpoint.temperaturedewpoint import TemperatureDewPoint, TemperatureDewPointError, temperature_dew_point
+from .vapourpessure.vapourpessure import VapourPressure, VapourPressureError
 from .windchill.windchill import WindChill,WindChillError,wind_chill
 from .windmax.windmax import WindMax,WindMaxError,wind_max
 from .windmodulus.windmodulus import WindModulus,WindModulusError,wind_modulus

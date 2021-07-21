@@ -19,7 +19,9 @@ class MinMaxLevelIndex(Plugin):
         
     def validate_input(self):
         if self.df.empty:
-            raise MinMaxLevelIndexError('MinMaxLevelIndex' + ' - no data to process') 
+            raise MinMaxLevelIndexError('No data to process') 
+        
+        self.df = fstpy.metadata_cleanup(self.df)
         
         validate_nomvar(self.nomvar_min, MinMaxLevelIndex, MinMaxLevelIndexError)
         validate_nomvar(self.nomvar_max, MinMaxLevelIndex, MinMaxLevelIndexError)
@@ -98,7 +100,7 @@ class MinMaxLevelIndex(Plugin):
 
 
         if not len(df_list):
-            raise MinMaxLevelIndexError('MinMaxLevelIndex - no results where produced')
+            raise MinMaxLevelIndexError('No results were produced')
 
         self.meta_df = fstpy.load_data(self.meta_df)
         df_list.append(self.meta_df)    

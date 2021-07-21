@@ -46,12 +46,14 @@ def get_plugin_dependencies(df:pd.DataFrame, plugin_mandatory_dependencies:dict)
     from spookipy.temperaturedewpoint.temperaturedewpoint import TemperatureDewPoint
     from spookipy.windmodulus.windmodulus import WindModulus
     from spookipy.pressure.pressure import Pressure
+    from spookipy.saturationvapourpressure.saturationvapourpressure import SaturationVapourPressure
     computable_dependencies = {
         'UV':WindModulus,
         'PX':Pressure,
         'HR':HumidityRelative,
         'HU':HumiditySpecific,
         'TD':TemperatureDewPoint,
+        'SVP':SaturationVapourPressure,
         }
     results = []
     # print(df[['nomvar','unit','level','ip1_pkind']].to_string())
@@ -67,7 +69,7 @@ def get_plugin_dependencies(df:pd.DataFrame, plugin_mandatory_dependencies:dict)
             else:
                 plugin = None    
             if plugin == None:
-                raise DependencyError(f'get_plugin_dependencies - {plugin_mandatory_dependencies[nomvar]} not found!')
+                raise DependencyError(f'{plugin_mandatory_dependencies[nomvar]} not found!')
             else:
                 # print('-------',df)
                 tmp_df = plugin(df).compute()
@@ -110,12 +112,12 @@ def get_intersecting_levels(df:pd.DataFrame, plugin_mandatory_dependencies:dict)
     #logger.debug('1',df[['nomvar','surface','level','ip1_kind']])
     if len(plugin_mandatory_dependencies)<=1:
         # print('get_intersecting_levels - not enough nomvars to process')
-        raise LevelIntersectionError('not enough nomvars to process')
+        raise LevelIntersectionError('Not enough nomvars to process')
 
     first_df = df.query( 'nomvar == "%s"' % list(plugin_mandatory_dependencies.keys())[0]).reset_index(drop=True)
     if df.empty:
         # print('get_intersecting_levels - no records to intersect')
-        raise LevelIntersectionError('get_intersecting_levels - no records to intersect')
+        raise LevelIntersectionError('No records to intersect')
 
     common_levels = set(first_df.ip1.unique())
 

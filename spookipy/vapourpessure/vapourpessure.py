@@ -44,7 +44,10 @@ class VapourPressure(Plugin):
     # might be able to move    
     def validate_input(self):
         if self.df.empty:
-            raise  VapourPressureError( 'VapourPressure - no data to process')
+            raise  VapourPressureError('No data to process')
+
+        self.df = fstpy.metadata_cleanup(self.df)
+            
         #check if result already exists
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
 
@@ -55,7 +58,7 @@ class VapourPressure(Plugin):
             level_intersection_df = get_intersecting_levels(self.df,self.plugin_mandatory_dependencies)
             # print('intersecting levels',level_intersection_df)
             if level_intersection_df.empty:
-                raise  VapourPressureError( 'VapourPressure - no data to process')
+                raise  VapourPressureError('No data to process')
             # if level_intersection_df.empty:
             #     raise VapourPressureError('cant find intersecting levels between UU and VV')
             level_intersection_df = fstpy.load_data(level_intersection_df)

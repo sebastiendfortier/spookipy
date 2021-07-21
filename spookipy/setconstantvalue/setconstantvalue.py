@@ -24,7 +24,9 @@ class SetConstantValue(Plugin):
 
     def validate_input(self):
         if self.df.empty:
-            raise SetConstantValueError('SetConstantValue - no data to process')
+            raise SetConstantValueError('No data to process')
+
+        self.df = fstpy.metadata_cleanup(self.df)    
 
         self.meta_df = self.df.query('nomvar in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True) 
 
@@ -38,7 +40,7 @@ class SetConstantValue(Plugin):
         lcount = l.count(True)
 
         if lcount > 1:
-            raise SetConstantValueError('SetConstantValue - too many options selected, you can only choose one option at a time in %s' % ['min_index','max_index','nb_levels'])
+            raise SetConstantValueError('Too many options selected, you can only choose one option at a time in %s' % ['min_index','max_index','nb_levels'])
         if self.min_index:
             self.value=0
 
@@ -65,7 +67,7 @@ class SetConstantValue(Plugin):
 
 
         if not len(df_list):
-            raise SetConstantValueError('SetConstantValue - no results where produced')
+            raise SetConstantValueError('No results were produced')
 
         self.meta_df = fstpy.load_data(self.meta_df)
 

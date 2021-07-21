@@ -39,7 +39,9 @@ class WindChill(Plugin):
     # might be able to move    
     def validate_input(self):
         if self.df.empty:
-            raise  WindChillError( 'WindChil - no data to process')
+            raise  WindChillError('No data to process')
+
+        self.df = fstpy.metadata_cleanup(self.df)    
         
         self.meta_df = self.df.query('nomvar in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True)
 
@@ -80,7 +82,7 @@ class WindChill(Plugin):
             df_list.append(re_df)
 
         if not len(df_list):
-            raise WindChillError('WindChill - no results where produced')
+            raise WindChillError('No results were produced')
 
         self.meta_df = fstpy.load_data(self.meta_df)
 

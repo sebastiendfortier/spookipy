@@ -54,7 +54,9 @@ class WindMax(Plugin):
     # might be able to move    
     def validate_input(self):
         if self.df.empty:
-            raise  WindMaxError( "WindMax" + ' - no data to process')
+            raise  WindMaxError('No data to process')
+
+        self.df = fstpy.metadata_cleanup(self.df)    
 
         self.meta_df = self.df.query('nomvar in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True)
 
@@ -118,7 +120,7 @@ class WindMax(Plugin):
             df_list.append(px_res_df)
 
         if not len(df_list):
-            raise WindMaxError('WindMax - no results where produced')
+            raise WindMaxError('No results were produced')
 
         self.meta_df = fstpy.load_data(self.meta_df)
         df_list.append(self.meta_df)    

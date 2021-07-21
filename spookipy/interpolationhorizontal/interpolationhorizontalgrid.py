@@ -64,8 +64,12 @@ class InterpolationHorizontalGrid(Plugin):
 
     def validate_input(self):
         if self.df.empty:
-            raise InterpolationHorizontalGridError('InterpolationHorizontalGrid - no data to process')
+            raise InterpolationHorizontalGridError('No data to process')
+
+        self.df = fstpy.metadata_cleanup(self.df)    
+
         self.toctoc_df = self.df.query('nomvar=="!!"').reset_index(drop=True)
+        
         self.hy_df = self.df.query('nomvar=="HY"').reset_index(drop=True)
         # print('self.toctoc_df\n',self.toctoc_df[['nomvar','grid']])
         self.validate_params()
@@ -86,13 +90,13 @@ class InterpolationHorizontalGrid(Plugin):
 
         else: # method field defined
             if self.nomvar is None:
-                raise InterpolationHorizontalGridError('InterpolationHorizontalGrid - you must supply a nomvar with field defined method')    
+                raise InterpolationHorizontalGridError('You must supply a nomvar with field defined method')    
 
             field_df = self.df.query(f'nomvar=="{self.nomvar}"').reset_index(drop=True)
 
             #check for more than one definition for the field method
             if len(field_df.grid.unique()) > 1: 
-                raise InterpolationHorizontalGridError('InterpolationHorizontalGrid - reference field found for multiple grids')  
+                raise InterpolationHorizontalGridError('Reference field found for multiple grids')  
             
             # get grtyp from the field
             self.grtyp = field_df.iloc[0]['grtyp']
@@ -140,16 +144,16 @@ class InterpolationHorizontalGrid(Plugin):
 
     def validate_params(self):
         if self.output_fields not in self. output_fields_selection:
-            raise InterpolationHorizontalGridError(f'InterpolationHorizontalGrid - output_fields {self.output_fields} not in {self.output_fields_selection}')
+            raise InterpolationHorizontalGridError(f'Output_fields {self.output_fields} not in {self.output_fields_selection}')
         if self.interpolation_type not in self.interpolation_types:
-            raise InterpolationHorizontalGridError(f'InterpolationHorizontalGrid - interpolation_type {self.interpolation_type} not in {self.interpolation_types}')
+            raise InterpolationHorizontalGridError(f'Interpolation_type {self.interpolation_type} not in {self.interpolation_types}')
         if self.extrapolation_type not in self.extrapolation_types:
-            raise InterpolationHorizontalGridError(f'InterpolationHorizontalGrid - extrapolation_type {self.extrapolation_type} not in {self.extrapolation_types}')
+            raise InterpolationHorizontalGridError(f'Extrapolation_type {self.extrapolation_type} not in {self.extrapolation_types}')
         if self.method not in self.methods:
-            raise InterpolationHorizontalGridError(f'InterpolationHorizontalGrid - method {self.method} not in {self.methods}')
+            raise InterpolationHorizontalGridError(f'Method {self.method} not in {self.methods}')
         if self.method == 'user':    
             if self.grtyp not in self.grid_types:
-                raise InterpolationHorizontalGridError(f'InterpolationHorizontalGrid - grtyp {self.grtyp} not in {self.grid_types}')    
+                raise InterpolationHorizontalGridError(f'Grtyp {self.grtyp} not in {self.grid_types}')    
 
     def compute(self) -> pd.DataFrame:
         results = []
@@ -236,7 +240,7 @@ class InterpolationHorizontalGrid(Plugin):
 def set_extrapolation_type_options(extrapolation_type,extrapolation_value):
     if extrapolation_type == 'value':
         if extrapolation_value is None:
-            raise InterpolationHorizontalGridError(f'InterpolationHorizontalGrid - extrapolation_value {extrapolation_value} is not set')
+            raise InterpolationHorizontalGridError(f'Extrapolation_value {extrapolation_value} is not set')
         rmn.ezsetval('EXTRAP_VALUE', extrapolation_value)
         rmn.ezsetopt('EXTRAP_DEGREE', 'VALUE')
     else:
@@ -353,12 +357,12 @@ def get_grid_paramters_from_latlon_fields(meta_df):
     lon_df = meta_df.query('nomvar==">>"').reset_index(drop=True)
     lat_df = meta_df.query('nomvar=="^^"').reset_index(drop=True)
     if lat_df.empty or lon_df.empty:
-        raise InterpolationHorizontalGridError('InterpolationHorizontalGridError - no data in lat_df or lon_df')
+        raise InterpolationHorizontalGridError('No data in lat_df or lon_df')
     return get_grid_parameters(lat_df, lon_df)
 
 def get_grid_parameters(lat_df, lon_df):
     if lat_df.empty or lon_df.empty:
-        raise InterpolationHorizontalGridError('InterpolationHorizontalGridError - no data in lat_df or lon_df')
+        raise InterpolationHorizontalGridError('No data in lat_df or lon_df')
     lat_df = fstpy.load_data(lat_df)
     lon_df = fstpy.load_data(lon_df)
     nj = lat_df.iloc[0]['nj']
@@ -374,7 +378,7 @@ def get_grid_parameters(lat_df, lon_df):
 
 def set_grid_parameters(df):
     if df.empty:
-        raise InterpolationHorizontalGridError('InterpolationHorizontalGridError - no data in df')
+        raise InterpolationHorizontalGridError('No data in df')
     ni = df.iloc[0]['ni']
     nj = df.iloc[0]['nj']
     ig1 = df.iloc[0]['ig1']
@@ -385,7 +389,7 @@ def set_grid_parameters(df):
 
 def set_output_column_values(meta_df,field_df):
     if meta_df.empty or field_df.empty:
-        raise InterpolationHorizontalGridError('InterpolationHorizontalGridError - missing data in meta_df or field_df')
+        raise InterpolationHorizontalGridError('Missing data in meta_df or field_df')
     ig1 = meta_df.iloc[0]['ip1']
     ig2 = meta_df.iloc[0]['ip2']
     ig3 = field_df.iloc[0]['ig3']
@@ -426,7 +430,7 @@ def define_grid(grtyp:str,grref:str,ni:int,nj:int,ig1:int,ig2:int,ig3:int,ig4:in
     grid_id = -1
     
     if grtyp not in grid_types:
-        raise InterpolationHorizontalGridError(f'InterpolationHorizontalGrid - grtyp {grtyp} not in {grid_types}')
+        raise InterpolationHorizontalGridError(f'Grtyp {grtyp} not in {grid_types}')
 
 
     if  grtyp in ['Y','Z','#']:

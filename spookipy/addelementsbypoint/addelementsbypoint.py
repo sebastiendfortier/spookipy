@@ -3,6 +3,7 @@ from spookipy.utils import initializer
 from spookipy.plugin import Plugin
 import pandas as pd
 import numpy as np
+import sys
 from spookipy.opelementsbypoint.opelementsbypoint import OpElementsByPoint
 
 class AddElementsByPointError(Exception):
@@ -14,6 +15,7 @@ class AddElementsByPoint(Plugin):
         pass
         
     def compute(self) -> pd.DataFrame:
+        sys.stdout.write('AddElementsByPoint - compute')
         return OpElementsByPoint(self.df, 
         operator = np.sum,
         operation_name='AddElementsByPoint', 

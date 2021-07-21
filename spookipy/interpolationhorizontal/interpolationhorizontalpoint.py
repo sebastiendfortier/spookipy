@@ -46,10 +46,12 @@ class InterpolationHorizontalPoint(Plugin):
 
     def validate_input(self):
         if self.df.empty:
-            raise InterpolationHorizontalPointError('InterpolationHorizontalPoint - no data to process')
-        print('self.df\n',self.df[['nomvar', 'typvar', 'etiket', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'datyp', 'nbits', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4','grid']].to_string())
+            raise InterpolationHorizontalPointError('No data to process')
+            
+        self.df = fstpy.metadata_cleanup(self.df)        
+        # print('self.df\n',self.df[['nomvar', 'typvar', 'etiket', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'datyp', 'nbits', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4','grid']].to_string())
         if self.lat_lon_df.empty:
-            raise InterpolationHorizontalPointError('InterpolationHorizontalPoint - missing latitudes and longitudes')    
+            raise InterpolationHorizontalPointError('Missing latitudes and longitudes')    
         self.validate_params()
         set_interpolation_type_options(self.interpolation_type)
         # set_extrapolation_type_options(self.extrapolation_type,self.extrapolation_value)
@@ -89,14 +91,14 @@ class InterpolationHorizontalPoint(Plugin):
             self.lat_lon_df.loc[:,'etiket'] = 'InterpolationHorizontalPoint'
 
         else:    
-            raise InterpolationHorizontalPointError('InterpolationHorizontalPoint - missing longitudes and/or latitudes to process')
+            raise InterpolationHorizontalPointError('Missing longitudes and/or latitudes to process')
  
 
     def validate_params(self):
         if self.interpolation_type not in self.interpolation_types:
-            raise InterpolationHorizontalPointError(f'InterpolationHorizontalPoint - interpolation_type {self.interpolation_type} not in {self.interpolation_types}')
+            raise InterpolationHorizontalPointError(f'Interpolation_type {self.interpolation_type} not in {self.interpolation_types}')
         if self.extrapolation_type not in self.extrapolation_types:
-            raise InterpolationHorizontalPointError(f'InterpolationHorizontalPoint - extrapolation_type {self.extrapolation_type} not in {self.extrapolation_types}')
+            raise InterpolationHorizontalPointError(f'Extrapolation_type {self.extrapolation_type} not in {self.extrapolation_types}')
 
 
     def compute(self) -> pd.DataFrame:
@@ -387,7 +389,7 @@ def define_grid(grtyp:str,grref:str,ni:int,nj:int,ig1:int,ig2:int,ig3:int,ig4:in
     grid_id = -1
     
     if grtyp not in grid_types:
-        raise InterpolationHorizontalPointError(f'InterpolationHorizontalPoint - grtyp {grtyp} not in {grid_types}')
+        raise InterpolationHorizontalPointError(f'Grtyp {grtyp} not in {grid_types}')
 
 
     if  grtyp in ['Y','Z','#']:
@@ -405,7 +407,7 @@ def define_grid(grtyp:str,grref:str,ni:int,nj:int,ig1:int,ig2:int,ig3:int,ig4:in
 
     elif grtyp == 'U':
         if not len(tictac):
-            raise InterpolationHorizontalPointError('InterpolationHorizontalPoint - Missing tictac')
+            raise InterpolationHorizontalPointError('Missing tictac')
         ni, nj, sub_grid_id_1, sub_grid_id_2 = create_type_u_sub_grids(tictac, ni, nj, ig1, ig2, ig3, ig4, ax, ay)
 
         vercode = 1

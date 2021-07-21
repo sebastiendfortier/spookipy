@@ -2,6 +2,7 @@
 from spookipy.utils import initializer
 from spookipy.plugin import Plugin
 import pandas as pd
+import sys
 from spookipy.opelementsbyvalue.opelementsbyvalue import OpElementsByValue
 
 
@@ -17,6 +18,7 @@ class AddToElements(Plugin):
         pass
 
     def compute(self) -> pd.DataFrame:
+        sys.stdout.write('AddToElements - compute')
         return OpElementsByValue(
             df = self.df,
             operator = add_value, 

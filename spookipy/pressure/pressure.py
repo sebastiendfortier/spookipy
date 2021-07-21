@@ -38,7 +38,9 @@ class Pressure(Plugin):
 
     def validate_input(self):
         if self.df.empty:
-            raise PressureError('Pressure - no data to process')
+            raise PressureError('No data to process')
+
+        self.df = fstpy.metadata_cleanup(self.df)    
         
         self.meta_df = self.df.query('nomvar in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True)
         
@@ -82,7 +84,7 @@ class Pressure(Plugin):
             df_list.append(meta_df)            
 
         if not len(df_list):
-            raise PressureError('Pressure - no results where produced')
+            raise PressureError('No results were produced')
 
         self.meta_df = fstpy.load_data(self.meta_df)
         df_list.append(self.meta_df)    

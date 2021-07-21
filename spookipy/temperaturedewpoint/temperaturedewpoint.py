@@ -28,8 +28,10 @@ class TemperatureDewPoint(Plugin):
         }
     def __init__(self,df:pd.DataFrame, ice_water_phase_both=False, temp_phase_switch=-99999,temp_phase_switch_unit='celsius', rpn=False):
         if self.df.empty:
-            raise TemperatureDewPointError('TemperatureDewPoint - no data to process')
+            raise TemperatureDewPointError('No data to process')
 
+        self.df = fstpy.metadata_cleanup(self.df)
+        
         self.temp_phase_switch = get_temp_phase_switch('TemperatureDewPoint', TemperatureDewPointError, self.ice_water_phase_both, self.temp_phase_switch, self.temp_phase_switch_unit, self.rpn)
         self.df = self.df.query(self.plugin_requires).reset_index(drop=True)
         self.df = fstpy.load_data(self.df)
@@ -37,7 +39,7 @@ class TemperatureDewPoint(Plugin):
         intersect_ttvppr_df = get_intersecting_levels(self.df,['TT','VPPR'])
         if intersect_ttes_df.empty and intersect_ttvppr_df.empty:
             sys.stderr.write('TemperatureDewPoint - cant find intersecting levels between TT and ES or VPPR')
-            raise TemperatureDewPointError('cant find intersecting levels between TT and ES or VPPR')
+            raise TemperatureDewPointError('Cannot find intersecting levels between TT and ES or VPPR')
         elif intersect_ttes_df.empty:
             self.groups= intersect_ttvppr_df.groupby(['grid','forecast_hour'])
         else:

@@ -4,6 +4,7 @@ from spookipy.plugin import Plugin
 import pandas as pd
 import fstpy.all as fstpy
 import numpy as np
+import sys
 
 
 # Calculates the Humidex (HMX) from the Temperature (TT) and the Temperature Dew Point (TD) and the Satuvation Vapour Pressure (SVP).
@@ -32,7 +33,10 @@ class Humidex(Plugin):
         
     def validate_input(self):
         if self.df.empty:
-            raise HumidexError('Humidex - no data to process') 
+            raise HumidexError('No data to process') 
+
+        self.df = fstpy.metadata_cleanup(self.df)
+            
         self.meta_df = self.df.query('nomvar in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True)
 
         self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['unit','forecast_hour','ip_info'])     
@@ -41,16 +45,19 @@ class Humidex(Plugin):
 
         if self.existing_result_df.empty:
             self.dependencies_df = get_plugin_dependencies(self.df,self.plugin_mandatory_dependencies)
+            print('self.dependencies_df',self.dependencies_df['nomvar'].to_string())
             self.fhour_groups=self.dependencies_df.groupby(by=['grid','forecast_hour'])
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:
+            sys.stdout.write('Humidex - found results')
             self.existing_result_df = fstpy.load_data(self.existing_result_df)
             self.meta_df = fstpy.load_data(self.meta_df)
             res_df = pd.concat([self.meta_df,self.existing_result_df],ignore_index=True)
             res_df  = remove_load_data_info(res_df)
-            return res_df
-
+            res_df = fstpy.metadata_cleanup(res_df)
+            return res_df 
+        sys.stdout.write('Humidex - compute')
         df_list=[]
         for _, current_fhour_group in self.fhour_groups:
             current_fhour_group = fstpy.load_data(current_fhour_group)
@@ -65,7 +72,7 @@ class Humidex(Plugin):
             df_list.append(hmx_df)
 
         if not len(df_list):
-            raise HumidexError('Humidex - no results where produced')
+            raise HumidexError('No results were produced')
 
         self.meta_df = fstpy.load_data(self.meta_df)
         df_list.append(self.meta_df)    

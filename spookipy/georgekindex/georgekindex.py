@@ -4,6 +4,7 @@ from spookipy.plugin import Plugin
 import pandas as pd
 import fstpy.all as fstpy
 import numpy as np
+import sys
 
 class GeorgeKIndexError(Exception):
     pass
@@ -31,7 +32,9 @@ class GeorgeKIndex(Plugin):
 
     def validate_input(self):
         if self.df.empty:
-            raise GeorgeKIndexError(GeorgeKIndex + ' - no data to process') 
+            raise GeorgeKIndexError('No data to process') 
+
+        self.df = fstpy.metadata_cleanup(self.df)
 
         self.meta_df = self.df.query('nomvar in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True)
 
@@ -45,11 +48,14 @@ class GeorgeKIndex(Plugin):
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:
+            sys.stdout.write('GeorgeKIndex - found results')
             self.existing_result_df = fstpy.load_data(self.existing_result_df)
             self.meta_df = fstpy.load_data(self.meta_df)
             res_df = pd.concat([self.meta_df,self.existing_result_df],ignore_index=True)
             res_df  = remove_load_data_info(res_df)
+            res_df = fstpy.metadata_cleanup(res_df)
             return res_df
+        sys.stdout.write('GeorgeKIndex - compute')    
         df_list=[]
         for _,current_fhour_group in self.fhour_groups:
             current_fhour_group = fstpy.load_data(current_fhour_group)
@@ -65,7 +71,7 @@ class GeorgeKIndex(Plugin):
 
 
         if not len(df_list):
-            raise GeorgeKIndexError('GeorgeKIndex - no results where produced')
+            raise GeorgeKIndexError('No results were produced')
 
         self.meta_df = fstpy.load_data(self.meta_df)
         df_list.append(self.meta_df)    

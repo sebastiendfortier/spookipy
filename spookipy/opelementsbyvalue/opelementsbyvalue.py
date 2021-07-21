@@ -16,6 +16,8 @@ class OpElementsByValue(Plugin):
         if self.df.empty:
             raise self.exception_class(self.operation_name + ' - no data to process')
 
+        self.df = fstpy.metadata_cleanup(self.df)    
+
         validate_nomvar(self.nomvar_out, self.operation_name, self.exception_class)
 
         self.meta_df = self.df.query('nomvar in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True) 

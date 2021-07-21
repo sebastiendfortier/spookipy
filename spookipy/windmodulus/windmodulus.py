@@ -39,7 +39,9 @@ class WindModulus(Plugin):
     # might be able to move    
     def validate_input(self):
         if self.df.empty:
-            raise  WindModulusError( "WindModulus" + ' - no data to process')
+            raise  WindModulusError('No data to process')
+
+        self.df = fstpy.metadata_cleanup(self.df)    
 
         self.meta_df = self.df.query('nomvar in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True)    
 
@@ -85,7 +87,7 @@ class WindModulus(Plugin):
             df_list.append(uv_df)
 
         if not len(df_list):
-            raise WindModulusError('WindModulus - no results where produced')
+            raise WindModulusError('No results were produced')
 
         self.meta_df = fstpy.load_data(self.meta_df)
         df_list.append(self.meta_df)    

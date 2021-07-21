@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from spookipy.plugin import Plugin
-from spookipy.utils import get_existing_result, get_intersecting_levels, get_plugin_dependencies
+from spookipy.utils import get_existing_result, get_intersecting_levels, get_plugin_dependencies, initializer
 import pandas as pd
 import fstpy.all as fstpy
 import numpy as np
@@ -37,17 +37,17 @@ class HumiditySpecific(Plugin):
     }
     plugin_result_specifications = {'HR':{'nomvar':'HR','etiket':'HumiditySpecific','unit':'scalar'}}
 
+    @initializer
     def __init__(self,df:pd.DataFrame, ice_water_phase='water', temp_phase_switch='',rpn=False):
-        self.df = df
-        self.ice_water_phase = ice_water_phase
-        self.temp_phase_switch = temp_phase_switch
-        self.rpn = rpn
         self.validate_input()
         
     # might be able to move    
     def validate_input(self):
         if self.df.empty:
-            raise  HumiditySpecificError( "HumiditySpecific" + ' - no data to process')
+            raise  HumiditySpecificError('No data to process')
+
+        self.df = fstpy.metadata_cleanup(self.df)
+            
         #check if result already exists
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
 
@@ -58,7 +58,7 @@ class HumiditySpecific(Plugin):
             level_intersection_df = get_intersecting_levels(self.df,self.plugin_mandatory_dependencies)
             # print('intersecting levels',level_intersection_df)
             if level_intersection_df.empty:
-                raise  HumiditySpecificError( "HumiditySpecific" + ' - no data to process')
+                raise  HumiditySpecificError('No data to process')
             # if level_intersection_df.empty:
             #     raise HumiditySpecificError('cant find intersecting levels between UU and VV')
             level_intersection_df = fstpy.load_data(level_intersection_df)

@@ -3,6 +3,7 @@ from spookipy.plugin import Plugin
 from spookipy.utils import initializer, remove_load_data_info, validate_nomvar
 import pandas as pd
 import fstpy.all as fstpy
+import sys
 
 #see functions without arguments from numpy lib
 #https://numpy.org/doc/stable/reference/routines.math.html
@@ -11,17 +12,14 @@ class ApplyUnaryError(Exception):
 class ApplyUnary(Plugin):
     @initializer
     def __init__(self, df:pd.DataFrame, function=None, nomvar_in=None, nomvar_out=None, etiket=None):
-        # self.df = df
-        # self.function = function
-        # self.nomvar_in = nomvar_in
-        # self.nomvar_out = nomvar_out
-        # self.etiket = etiket
         self.validate_input()
 
     def validate_input(self):
         validate_nomvar(self.nomvar_out, 'ApplyUnary', ApplyUnaryError)
         if self.df.empty:
-            raise  ApplyUnaryError( 'ApplyUnary' + ' - no data to process')
+            raise  ApplyUnaryError('No data to process')
+
+        self.df = fstpy.metadata_cleanup(self.df)
         
         self.meta_df = self.df.query('nomvar in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True) 
 
@@ -29,10 +27,11 @@ class ApplyUnary(Plugin):
 
 
     def compute(self) -> pd.DataFrame:
+        sys.stdout.write('ApplyUnary - compute')
         in_df = self.df.query( 'nomvar=="%s"'%self.nomvar_in).reset_index(drop=True)
         
         if in_df.empty:
-            raise ApplyUnaryError(f'ApplyUnary' + ' - no data to process with nomvar {self.nomvar_in}')
+            raise ApplyUnaryError(f'No data to process with nomvar {self.nomvar_in}')
 
         in_df = fstpy.load_data(in_df)
         res_df = in_df.copy(deep=True)

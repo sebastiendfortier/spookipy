@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..plugin import Plugin
+from ..plugin.plugin import Plugin
 import numpy as np
 import pandas as pd
 import rpnpy.librmn.all as rmn
@@ -178,12 +178,10 @@ class InterpolationHorizontalPoint(Plugin):
         other_res_df = pd.concat([other_res_df,self.lat_lon_df],ignore_index=True) 
 
         other_res_df.loc[other_res_df.nomvar!='HY','grid'] = '00000000'
-        print('other_res_df\n',other_res_df[['nomvar', 'typvar', 'etiket', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'datyp', 'nbits', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4','grid']].to_string())
         #make sure load_data does not execute (does nothing)
         other_res_df = remove_load_data_info(other_res_df)
         other_res_df = fstpy.metadata_cleanup(other_res_df)
 
-        print('other_res_df\n',other_res_df[['nomvar', 'typvar', 'etiket', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'datyp', 'nbits', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4','grid']].to_string())
         return other_res_df
 
 

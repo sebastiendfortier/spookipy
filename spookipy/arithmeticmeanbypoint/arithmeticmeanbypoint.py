@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from ..utils import initializer
-from ..plugin import Plugin
+from ..plugin.plugin import Plugin
 import pandas as pd
 import numpy as np
 import sys
@@ -15,7 +15,7 @@ class ArithmeticMeanByPoint(Plugin):
         pass
 
     def compute(self) -> pd.DataFrame:
-        sys.stdout.write('ArithmeticMeanByPoint - compute')
+        sys.stdout.write('ArithmeticMeanByPoint - compute\n')
         return OpElementsByPoint(self.df, 
         operator = np.mean,
         operation_name='ArithmeticMeanByPoint', 

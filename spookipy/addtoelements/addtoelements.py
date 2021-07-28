@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from ..utils import initializer
-from ..plugin import Plugin
+from ..plugin.plugin import Plugin
 import pandas as pd
 import sys
 from ..opelementsbyvalue.opelementsbyvalue import OpElementsByValue
@@ -18,7 +18,7 @@ class AddToElements(Plugin):
         pass
 
     def compute(self) -> pd.DataFrame:
-        sys.stdout.write('AddToElements - compute')
+        sys.stdout.write('AddToElements - compute\n')
         return OpElementsByValue(
             df = self.df,
             operator = add_value, 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..plugin import Plugin
+from ..plugin.plugin import Plugin
 from ..utils import initializer, remove_load_data_info, validate_nomvar
 import pandas as pd
 import fstpy.all as fstpy
@@ -27,7 +27,7 @@ class ApplyUnary(Plugin):
 
 
     def compute(self) -> pd.DataFrame:
-        sys.stdout.write('ApplyUnary - compute')
+        sys.stdout.write('ApplyUnary - compute\n')
         in_df = self.df.query( 'nomvar=="%s"'%self.nomvar_in).reset_index(drop=True)
         
         if in_df.empty:

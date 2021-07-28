@@ -117,7 +117,7 @@
     fichier et on crée un nouveau fichier contenant exclusivement les
     nouvelles données.
 
-  *Exemple d'appel:* ==
+  *Exemple d'appel:* 
 
   #+begin_example
         ...

@@ -82,7 +82,7 @@ de la densité de l'air]]
 
 *Usage:*
 
-*Exemple d'appel:* ==
+*Exemple d'appel:* 
 
 #+begin_example
       ...

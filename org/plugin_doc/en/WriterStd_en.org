@@ -113,7 +113,7 @@
   - NEWFILEONLY: If the standard file already exists, we erase the file
     and we create a new file containing exclusively the new data.
 
-  *Call example:* ==
+  *Call example:* 
 
   #+begin_example
         ...

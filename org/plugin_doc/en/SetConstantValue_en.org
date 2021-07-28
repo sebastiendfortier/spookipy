@@ -55,7 +55,7 @@
   - MININDEX: the index number of the first level of the input field
   - NBLEVELS: the number of levels of the input field
 
-  *Call example:* ==
+  *Call example:* 
 
   #+begin_example
         ...

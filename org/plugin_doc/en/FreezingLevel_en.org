@@ -80,7 +80,7 @@ Depending on the user's choice:\\
 
 *Usage:*
 
-*Call example:* ==
+*Call example:* 
 
 #+begin_example
       ...

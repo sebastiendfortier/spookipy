@@ -63,7 +63,7 @@ Deux niveaux verticaux (Inférieur et supérieur):
 
 *Usage:*
 
-*Exemple d'appel:* ==
+*Exemple d'appel:* 
 
 #+begin_example
       ...

@@ -117,7 +117,7 @@
 
 *Usage:*
 
-*Exemple d'appel:* ==
+*Exemple d'appel:* 
 
 #+begin_example
       ...
@@ -272,7 +272,7 @@ Tests unitaires
 
 *Usage:*
 
-*Call example:* ==
+*Call example:* 
 
 #+begin_example
       ...

@@ -1,19 +1,6 @@
 ** English
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 *Description:*
 
 - Calculation of the wind modulus from its 2 horizontal components.
@@ -51,7 +38,7 @@
 
 *Usage:*
 
-*Call example:* ==
+*Call example:* 
 
 #+begin_example
       ...

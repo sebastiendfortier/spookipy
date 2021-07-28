@@ -43,10 +43,13 @@ Documentation
 * :doc:`dewpointdepression`
 * :doc:`georgekindex`
 * :doc:`humidex`
+* :doc:`interpolationhorizontalgrid`
+* :doc:`interpolationhorizontalpoint`
 * :doc:`mask`
 * :doc:`minmaxlevelindex`
 * :doc:`multiplyelementsby`
 * :doc:`multiplyelementsbypoint`
+* :doc:`pressure`
 * :doc:`saturationvapourpressure`
 * :doc:`setconstantvalue`
 * :doc:`temperaturedewpoint`
@@ -66,10 +69,13 @@ Documentation
    dewpointdepression
    georgekindex
    humidex
+   interpolationhorizontalgrid
+   interpolationhorizontalpoint
    mask
    minmaxlevelindex
    multiplyelementsby
    multiplyelementsbypoint
+   pressure
    saturationvapourpressure
    setconstantvalue
    temperaturedewpoint

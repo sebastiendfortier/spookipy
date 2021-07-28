@@ -53,7 +53,7 @@
         --verbose               Verbosity level
 #+end_example
 
-*Call example:* ==
+*Call example:* 
 
 #+begin_example
       ...

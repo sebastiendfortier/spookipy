@@ -1,19 +1,6 @@
 ** English
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 *Description:*
 
 - Calculation of the pressure field for a given vertical coordinate.\\
@@ -52,7 +39,7 @@
 
 *Usage:*
 
-*Call example:* ==
+*Call example:* 
 
 #+begin_example
       ...

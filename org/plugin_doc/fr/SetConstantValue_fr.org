@@ -55,7 +55,7 @@
   - MININDEX: la valeur de l'indice du premier niveau du champ d'entrée
   - NBLEVELS: le nombre de niveaux du champ d'entrée
 
-  *Exemple d'appel:* ==
+  *Exemple d'appel:* 
 
   #+begin_example
         ...

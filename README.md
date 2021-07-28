@@ -1,6 +1,13 @@
+```{=org}
+#+TITLE_:
+```
 SPOOKIPY
 
+toc:1
 
+```{=org}
+#+TITLE_: INTRODUCTION
+```
 # Introduction
 
 ## What is it?
@@ -8,12 +15,14 @@ SPOOKIPY
 spookipy is a collection of python weather algorithms to work with
 dataframes obtained with fstpy or numpy arrays.
 
-## Spookipy philosophy
+## spookipy philosophy
 
 These algorithms are generic in nature and all share a uniform model in
 implementation. The idea is to use the interface to create new
 algorithms.
-
+```{=org}
+#+TITLE_: REQUIREMENTS
+```
 # Requirements
 
 ## packages
@@ -23,10 +32,17 @@ algorithms.
 -   pandas
 -   fstpy
 
-
+```{=org}
+#+INCLUDE:"../org/install.org" 
+```
+```{=org}
+#+TITLE_: USAGE
+```
 ## Using spookipy in scripts or Jupyter Lab/Notebook
 
 ``` {.bash org-language="sh"}
+# activate your conda environment     
+. activate spookipy_req     
 # get rmn python library      
 . r.load.dot eccc/mrd/rpn/MIG/ENV/migdep/5.1.1 eccc/mrd/rpn/MIG/ENV/rpnpy/2.1.2      
 # get spookipy ssm package
@@ -60,11 +76,9 @@ dest_path = '/tmp/out.std'
 fstpy.StandardFileWriter(dest_path,uv_df).to_fst()    
 ```
 
-
-CONTRIBUTING
-
-# Contributing
-
+```{=org}
+#+TITLE_:CONTRIBUTING
+```
 ## Creating the developpement environment
 
 ``` {.bash org-language="sh"}
@@ -110,7 +124,7 @@ Then create a merge request on science\'s gitlab
 # get rmn python library      
 . r.load.dot eccc/mrd/rpn/MIG/ENV/migdep/5.1.1 eccc/mrd/rpn/MIG/ENV/rpnpy/2.1.2    
 # get fstpy ssm package
-. ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/fstpy/2.1.3/
+. ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/2.1.4/ 
 python -m pytest  
 ```
 
@@ -118,8 +132,7 @@ python -m pytest
 
 ``` {.bash org-language="sh"}
 # This will build documentation in docs/build and there you will find index.html 
-# From the $project_root/doc directory of the project
+# make sure fstpy is in the PYTHONPATH
 make clean    
 make doc
 ```
-

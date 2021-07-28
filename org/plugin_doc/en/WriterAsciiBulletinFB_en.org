@@ -148,7 +148,7 @@ NOTE: These dependencies can be first obtained by the
 
 *Usage:*
 
-*Call example:* ==
+*Call example:* 
 
 #+begin_example
           ...

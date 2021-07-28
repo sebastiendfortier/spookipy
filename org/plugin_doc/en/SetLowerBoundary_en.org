@@ -60,7 +60,7 @@ src="forward2python.php/spooki_create_dynamic_doc_parts/usage/SetLowerBoundary"
 width="100%" frameborder="0" scrolling="no"
 onload="resizeFrame(document.getElementById('usage'))"></iframe>
 
-*Call example:* ==
+*Call example:* 
 
 #+begin_example
       ...

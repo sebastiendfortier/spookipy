@@ -44,17 +44,15 @@ Then create a merge request on science's gitlab
   # get rmn python library      
   . r.load.dot eccc/mrd/rpn/MIG/ENV/migdep/5.1.1 eccc/mrd/rpn/MIG/ENV/rpnpy/2.1.2    
   # get fstpy ssm package
-  . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/2.1.2/ 
+  . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/2.1.4/ 
   python -m pytest  
 #+END_SRC
 
 ** Building documentation
-   :PROPERTIES:
-   :CUSTOM_ID:
-building-documentation
-   :END:
+
 #+BEGIN_SRC sh
   # This will build documentation in docs/build and there you will find index.html 
+  # make sure fstpy is in the PYTHONPATH
   make clean    
   make doc
 #+END_SRC

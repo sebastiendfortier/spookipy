@@ -112,7 +112,7 @@
   - The plug-in can receive a 3D field or just a vertical profile from
     input
 
-  *Call example:* ==
+  *Call example:* 
 
   #+begin_example
         ...

@@ -1,19 +1,6 @@
 ** English
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 *Description:*
 
 - voir
@@ -51,7 +38,7 @@
 
 *Usage:*
 
-*Call example:* ==
+*Call example:* 
 
 #+begin_example
       ...

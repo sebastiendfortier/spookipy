@@ -1,19 +1,6 @@
 ** Français
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 *Description:*
 
 - Interpolation horizontale d'un ou plusieurs champ(s) sur un ensemble
@@ -79,7 +66,7 @@ Pour la clé "--extrapolationType":
   valeur numérique donnée (float).
 - ABORT: abandon de la requête.
 
-*Exemple d'appel:* ==
+*Exemple d'appel:* 
 
 #+begin_example
       ...

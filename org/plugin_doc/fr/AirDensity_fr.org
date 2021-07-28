@@ -76,7 +76,7 @@ de la densité de l'air selon le projet Wind Energy]]
 
 *Usage:*
 
-*Exemple d'appel:* ==
+*Exemple d'appel:* 
 
 #+begin_example
       ...

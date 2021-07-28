@@ -188,7 +188,7 @@ associated with LFC and EL are set to -300.
       above the base of the layer).\\
 #+end_quote
 
-*Call example:* ==
+*Call example:* 
 
 #+begin_example
       ...

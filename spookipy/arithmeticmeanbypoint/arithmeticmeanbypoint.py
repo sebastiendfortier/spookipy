@@ -1,21 +1,21 @@
 # -*- coding: utf-8 -*-
+from ..utils import initializer
+from ..plugin.plugin import Plugin
 import pandas as pd
 import numpy as np
-from spookipy.opelementsbypoint.opelementsbypoint import OpElementsByPoint
-from spookipy.plugin.plugin import Plugin
+import sys
+from ..opelementsbypoint.opelementsbypoint import OpElementsByPoint
 
 class ArithmeticMeanByPointError(Exception):
     pass
 
 class ArithmeticMeanByPoint(Plugin):
-
+    @initializer
     def __init__(self, df:pd.DataFrame, group_by_forecast_hour=False, nomvar_out='MEAN'):
-        self.df = df
-        self.group_by_forecast_hour = group_by_forecast_hour
-        self.nomvar_out = nomvar_out
-        self.df = self.df.query('nomvar not in [">>","^^","!!","P0"]')
+        pass
 
     def compute(self) -> pd.DataFrame:
+        sys.stdout.write('ArithmeticMeanByPoint - compute\n')
         return OpElementsByPoint(self.df, 
         operator = np.mean,
         operation_name='ArithmeticMeanByPoint', 

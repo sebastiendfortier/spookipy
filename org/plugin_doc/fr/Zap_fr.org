@@ -71,7 +71,7 @@
   niveaux HYBRID et HYBRID_STAGGERED en niveaux HYBRID.
 #+end_quote
 
-*Exemple d'appel:* ==
+*Exemple d'appel:* 
 
 #+begin_example
       ...

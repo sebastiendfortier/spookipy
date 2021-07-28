@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
+from ..utils import initializer
+from ..plugin.plugin import Plugin
 import pandas as pd
 import numpy as np
 import operator as op
+import fstpy.all as fstpy
 
 def eq(v,t):
     if (v >= (t - 0.4) ) and (v <= (t + 0.4)):
@@ -12,26 +15,28 @@ class MaskError(Exception):
     pass
 
 #[Mask --thresholds 0.0,10.0,15.0,20.0 --values 0.0,10.0,15.0,20.0 --operators GE,GE,GE,GE] >> 
-class Mask:
+class Mask(Plugin):
 
+    @initializer
     def __init__(self, df:pd.DataFrame, thresholds=None, values=None, operators=None, nomvar_out=''):
-        self.df = df
-        self.thresholds = thresholds
-        self.values = values
-        self.operators = operators
-        self.nomvar_out = nomvar_out
+        # self.df = df
+        # self.thresholds = thresholds
+        # self.values = values
+        # self.operators = operators
+        # self.nomvar_out = nomvar_out
         if self.df.empty:
-            raise  MaskError( 'Mask' + ' - no data to process')
+            raise  MaskError('No data to process')
+
+        self.df = fstpy.metadata_cleanup(self.df)
+            
         length = len(thresholds)
         if not all(len(lst) == length for lst in [values, operators]):
-            sys.stderr.write('Mask' + ' - threshholds, values and operators lists, must have the same lenght')
-            raise MaskError('Mask' + ' - threshholds, values and operators lists, must have the same lenght')
+            raise MaskError('Threshholds, values and operators lists, must have the same lenght')
         ops = {op.lt,op.le,eq,op.ge,op.gt}
         in_ops = set(self.operators)
         
         if not in_ops.issubset(ops):
-            sys.stderr.write('Mask' + ' - operators must have values included in %s' % ops)
-            raise MaskError('Mask' + ' - operators must have values included in %s' % ops)
+            raise MaskError('Operators must have values included in %s' % ops)
         self.df = fstpy.load_data(self.df)
         self.lenght = length
         self.thresholds = np.flip(thresholds)
@@ -51,7 +56,7 @@ class Mask:
             outdf['nomvar'] = self.nomvar_out
             outdf['etiket'] = self.get_etiket()
         else:
-        outdf['etiket']=self.get_etiket()
+            outdf['etiket']=self.get_etiket()
         vmask = np.vectorize(self.mask)
         for i in self.df.index:
             pds = self.df.at[i,'d'].flatten()

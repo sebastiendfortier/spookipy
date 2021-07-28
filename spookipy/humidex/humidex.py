@@ -1,36 +1,157 @@
 # -*- coding: utf-8 -*-
+from spookipy.temperaturedewpoint.temperaturedewpoint import TemperatureDewPoint
+from ..humidityutils.humidityutils import calc_humidex
+from ..utils import create_empty_result, get_existing_result, get_intersecting_levels, get_plugin_dependencies, existing_results, final_results
+from ..plugin.plugin import Plugin
 import pandas as pd
 import fstpy.all as fstpy
+import sys
+from ..saturationvapourpressure.saturationvapourpressure import SaturationVapourPressure
+
+
 
 class HumidexError(Exception):
     pass
-class Humidex:
-    plugin_requires = 'nomvar in ["TT","TD"]' 
-    plugin_result_specifications = {'HMX':{'nomvar':'HMX','etiket':'Humidex','unit':'celsius'}}
 
-    def __init__(self,df:pd.DataFrame, ice_water_phase='water', temp_phase_switch='',rpn=False):
+class Humidex(Plugin):
+
+
+    def __init__(self,df:pd.DataFrame):
+        self.plugin_mandatory_dependencies_option_1 = {
+            'TT':{'nomvar':'TT','unit':'celsius','surface':True},
+            'HU':{'nomvar':'HU','unit':'kilogram_per_kilogram','surface':True,'select_only':True},
+        }
+        self.plugin_mandatory_dependencies_option_2 = {
+            'TT':{'nomvar':'TT','unit':'celsius','surface':True},
+            'QV':{'nomvar':'QV','unit':'gram_per_kilogram','surface':True,'select_only':True},
+        }
+        self.plugin_mandatory_dependencies_option_3 = {
+            'TT':{'nomvar':'TT','unit':'celsius','surface':True},
+            'HR':{'nomvar':'HR','unit':'scalar','surface':True,'select_only':True},
+        }
+        self.plugin_mandatory_dependencies_option_4 = {
+            'TT':{'nomvar':'TT','unit':'celsius','surface':True},
+            'ES':{'nomvar':'ES','unit':'celsius','surface':True,'select_only':True},
+        }
+        self.plugin_result_specifications = {
+            'HMX':{'nomvar':'HMX','etiket':'Humidex','unit':'scalar','ip1':0}
+        }
+
         self.df = df
-        self.ice_water_phase = ice_water_phase
-        self.temp_phase_switch = temp_phase_switch
-        self.rpn = rpn
-        if df.empty:
-            raise HumidexError('Humidex - no data to process') 
-        self.df = self.df.query(self.plugin_requires)
-        self.df = fstpy.load_data(self.df)
-        self.groups= df.groupby(by=['grid','forecast_hour'])
+        self.validate_input()
+        
+    def validate_input(self):
+        if self.df.empty:
+            raise HumidexError('No data to process') 
+
+        self.df = fstpy.metadata_cleanup(self.df)    
+
+        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['unit','forecast_hour','ip_info'])     
+        
+        print(self.df[['nomvar','typvar','etiket','unit','surface','grid','forecast_hour']].sort_values(by=['grid','nomvar']).to_string())
+        self.meta_df = self.df.query('nomvar in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True)
+
+        #check if result already exists
+        self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
+
+
+        if self.existing_result_df.empty:
+            self.dependencies_df = get_plugin_dependencies(self.df,None,self.plugin_mandatory_dependencies_option_1,throw_error=False)
+            self.option=1
+            if self.dependencies_df.empty:
+                self.dependencies_df = get_plugin_dependencies(self.df,None,self.plugin_mandatory_dependencies_option_2,throw_error=False)
+                self.option=2
+            if self.dependencies_df.empty:
+                self.dependencies_df = get_plugin_dependencies(self.df,None,self.plugin_mandatory_dependencies_option_3,throw_error=False)
+                self.option=3
+            if self.dependencies_df.empty:
+                self.dependencies_df = get_plugin_dependencies(self.df,None,self.plugin_mandatory_dependencies_option_4)
+                self.option=4        
+
+            self.fhour_groups = self.dependencies_df.groupby(['grid','forecast_hour'])
 
     def compute(self) -> pd.DataFrame:
-        tddfs=[]
-        for _, group in self.groups:
-            tt850df = group.query( '(nomvar=="TT") and (level==850) and (pkind=="mb")')
-            tt700df = group.query( '(nomvar=="TT") and (level==700) and (pkind=="mb")')
-            tt500df = group.query( '(nomvar=="TT") and (level==500) and (pkind=="mb")')
-            td850df = group.query( '(nomvar=="TD") and (level==850) and (pkind=="mb")')
-            td700df = group.query( '(nomvar=="TD") and (level==700) and (pkind=="mb")')
-            hmx_df = fstpy.create_1row_df_from_model(tt850df)
-            # hmx_df = fstpy.zap(hmx_df,**self.plugin_result_specifications)
-            for k,v in self.plugin_result_specifications['HMX'].items():hmx_df[k] = v
-            hmx_df.iloc[0]['d'] = (tt850df.iloc[0]['d'] - tt500df.iloc[0]['d']) + td850df.iloc[0]['d'] - (tt700df.iloc[0]['d'] - td700df.iloc[0]['d'])
-            tddfs.append(hmx_df)
-        res = pd.concat(tddfs,ignore_index=True)
-        return res
+        if not self.existing_result_df.empty:
+            return existing_results('Humidex',self.existing_result_df,self.meta_df)
+
+        sys.stdout.write('Humidex - compute\n')
+        df_list=[]
+        for _, current_fhour_group in self.fhour_groups:
+            if self.option==1:
+                print('option 1')   
+                current_fhour_group = fstpy.load_data(current_fhour_group)
+                if len(current_fhour_group.index) != 2:
+                    continue
+                tt_df = current_fhour_group.query( '(nomvar=="TT")').reset_index(drop=True)
+                hu_df = current_fhour_group.query( '(nomvar=="HU")').reset_index(drop=True)
+                hmx_df = create_empty_result(tt_df,self.plugin_result_specifications['HMX'],copy=True)
+                td_df = TemperatureDewPoint(pd.concat([tt_df,hu_df,self.meta_df],ignore_index=True),ice_water_phase='water').compute()
+                td_df = td_df.loc[td_df.nomvar=='TD'].reset_index(drop=True)
+                tttd_df = td_df.copy(deep=True)
+                tttd_df.loc[:,'nomvar'] = 'TT'
+                svp_df = SaturationVapourPressure(pd.concat([tttd_df,self.meta_df],ignore_index=True),ice_water_phase='water').compute()
+                svp_df = svp_df.loc[svp_df.nomvar=='SVP'].reset_index(drop=True)
+                for i in td_df.index:
+                    tt = tt_df.at[i,'d']
+                    svp = svp_df.at[i,'d']
+                    hmx_df.at[i,'d'] = calc_humidex(tt,svp)
+
+            elif self.option==2:
+                print('option 2')   
+                current_fhour_group = fstpy.load_data(current_fhour_group)
+                if len(current_fhour_group.index) != 2:
+                    continue
+                tt_df = current_fhour_group.query( '(nomvar=="TT")').reset_index(drop=True)
+                qv_df = current_fhour_group.query( '(nomvar=="QV")').reset_index(drop=True)
+                hmx_df = create_empty_result(tt_df,self.plugin_result_specifications['HMX'],copy=True)
+                td_df = TemperatureDewPoint(pd.concat([tt_df,qv_df,self.meta_df],ignore_index=True),ice_water_phase='water').compute()
+                td_df = td_df.loc[td_df.nomvar=='TD'].reset_index(drop=True)
+                tttd_df = td_df.copy(deep=True)
+                tttd_df.loc[:,'nomvar'] = 'TT'
+                svp_df = SaturationVapourPressure(pd.concat([tttd_df,self.meta_df],ignore_index=True),ice_water_phase='water').compute()
+                svp_df = svp_df.loc[svp_df.nomvar=='SVP'].reset_index(drop=True)
+                for i in td_df.index:
+                    tt = tt_df.at[i,'d']
+                    svp = svp_df.at[i,'d']
+                    hmx_df.at[i,'d'] = calc_humidex(tt,svp)
+            elif self.option==3:
+                print('option 3')   
+                current_fhour_group = fstpy.load_data(current_fhour_group)
+                if len(current_fhour_group.index) != 2:
+                    continue
+                tt_df = current_fhour_group.query( '(nomvar=="TT")').reset_index(drop=True)
+                hr_df = current_fhour_group.query( '(nomvar=="HR")').reset_index(drop=True)
+                hmx_df = create_empty_result(tt_df,self.plugin_result_specifications['HMX'],copy=True)
+                td_df = TemperatureDewPoint(pd.concat([tt_df,hr_df,self.meta_df],ignore_index=True),ice_water_phase='water').compute()
+                td_df = td_df.loc[td_df.nomvar=='TD'].reset_index(drop=True)
+                tttd_df = td_df.copy(deep=True)
+                tttd_df.loc[:,'nomvar'] = 'TT'
+                svp_df = SaturationVapourPressure(pd.concat([tttd_df,self.meta_df],ignore_index=True),ice_water_phase='water').compute()
+                svp_df = svp_df.loc[svp_df.nomvar=='SVP'].reset_index(drop=True)
+                for i in td_df.index:
+                    tt = tt_df.at[i,'d']
+                    svp = svp_df.at[i,'d']
+                    hmx_df.at[i,'d'] = calc_humidex(tt,svp) 
+            else:
+                print('option 4')  
+                current_fhour_group = fstpy.load_data(current_fhour_group)
+                if len(current_fhour_group.index) != 2:
+                    continue
+                tt_df = current_fhour_group.query( '(nomvar=="TT")').reset_index(drop=True)
+                es_df = current_fhour_group.query( '(nomvar=="ES")').reset_index(drop=True)
+                hmx_df = create_empty_result(tt_df,self.plugin_result_specifications['HMX'],copy=True)
+                td_df = TemperatureDewPoint(pd.concat([tt_df,es_df,self.meta_df],ignore_index=True),ice_water_phase='water').compute()
+                td_df = td_df.loc[td_df.nomvar=='TD'].reset_index(drop=True)
+                tttd_df = td_df.copy(deep=True)
+                tttd_df.loc[:,'nomvar'] = 'TT'
+                svp_df = SaturationVapourPressure(pd.concat([tttd_df,self.meta_df],ignore_index=True),ice_water_phase='water').compute()
+                svp_df = svp_df.loc[svp_df.nomvar=='SVP'].reset_index(drop=True)
+                for i in td_df.index:
+                    tt = tt_df.at[i,'d']
+                    svp = svp_df.at[i,'d']
+                    hmx_df.at[i,'d'] = calc_humidex(tt,svp)
+
+
+            df_list.append(hmx_df)
+
+        return final_results(df_list, HumidexError, self.meta_df)

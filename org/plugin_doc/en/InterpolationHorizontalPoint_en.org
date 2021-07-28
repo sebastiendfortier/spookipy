@@ -1,19 +1,5 @@
 ** English
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 *Description:*
 
 *Iteration method:*
@@ -46,7 +32,7 @@
 
 *Usage:*
 
-*Call example:* ==
+*Call example:* 
 
 #+begin_example
       ...

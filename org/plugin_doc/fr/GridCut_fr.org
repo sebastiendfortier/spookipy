@@ -1,19 +1,5 @@
 ** Français
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 *Description:*
 
 - Permet de découper un morceau de grille, défini par son point
@@ -57,7 +43,7 @@
 
 *Usage:*
 
-*Exemple d'appel:* ==
+*Exemple d'appel:* 
 
 #+begin_example
           ...

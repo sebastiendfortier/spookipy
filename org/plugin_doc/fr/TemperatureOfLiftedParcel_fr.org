@@ -132,7 +132,7 @@ pouvant être calclulées seront mises à -300.\\
 
 *Usage:*
 
-*Exemple d'appel:* ==
+*Exemple d'appel:* 
 
 #+begin_example
       ...

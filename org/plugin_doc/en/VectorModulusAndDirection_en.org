@@ -76,7 +76,7 @@
 - WIND : where the vector is coming from with respect to north
   (meteorological convention)
 
-*Call example:* ==
+*Call example:* 
 
 #+begin_example
           ...

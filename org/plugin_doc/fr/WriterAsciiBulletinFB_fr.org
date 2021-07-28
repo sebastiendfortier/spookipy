@@ -152,7 +152,7 @@ NOTE: Ces dépendances peuvent être au préalable obtenues par le plugin
 
 *Usage:*
 
-*Exemple d'appel:* ==
+*Exemple d'appel:* 
 
 #+begin_example
           ...

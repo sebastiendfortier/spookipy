@@ -1,20 +1,21 @@
 # -*- coding: utf-8 -*-
+from ..plugin.plugin import Plugin
+from ..utils import initializer
 import pandas as pd
 import numpy as np
-from spookipy.opelementsbypoint.opelementsbypoint import OpElementsByPoint
-from spookipy.plugin.plugin import Plugin
-
+import sys
+from ..opelementsbypoint.opelementsbypoint import OpElementsByPoint
 
 class AddElementsByPointError(Exception):
     pass
 
 class AddElementsByPoint(Plugin):
+    @initializer
     def __init__(self, df:pd.DataFrame, group_by_forecast_hour=False, nomvar_out='ADEP'):
-        self.df = df
-        self.group_by_forecast_hour = group_by_forecast_hour
-        self.nomvar_out = nomvar_out
+        pass
         
     def compute(self) -> pd.DataFrame:
+        sys.stdout.write('AddElementsByPoint - compute\n')
         return OpElementsByPoint(self.df, 
         operator = np.sum,
         operation_name='AddElementsByPoint', 

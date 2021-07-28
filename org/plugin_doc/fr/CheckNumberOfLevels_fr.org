@@ -57,7 +57,7 @@
 - Une seule clé paramétrable doit obligatoirement être choisie parmi la
   liste.
 
-*Exemple d'appel:* ==
+*Exemple d'appel:* 
 
 #+begin_example
       ...

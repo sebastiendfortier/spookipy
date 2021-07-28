@@ -1,18 +1,22 @@
 # -*- coding: utf-8 -*-
+from ..plugin.plugin import Plugin
 import pandas as pd
 import numpy as np
-from .opelementsbypoint import OpElementsByPoint
-from utils.utils import initializer
+from ..opelementsbypoint.opelementsbypoint import OpElementsByPoint
+from ..utils import initializer
+import sys
 
 class MultiplyElementsByPointError(Exception):
     pass
 
-class MultiplyElementsByPoint:
-    )
+class MultiplyElementsByPoint(Plugin):
+
+    @initializer
     def __init__(self, df:pd.DataFrame, group_by_forecast_hour=False, nomvar_out='MUEP'):
         pass
 
     def compute(self) -> pd.DataFrame:
+        sys.stdout.write('MultiplyElementsByPoint - compute\n')
         return OpElementsByPoint(self.df, 
         operator = np.prod,
         operation_name='MultiplyElementsByPoint', 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from ..utils import initializer, remove_load_data_info
+from ..utils import initializer, final_results, remove_load_data_info
 from ..opelementsbyvalue.opelementsbyvalue import OpElementsByValue
-from ..plugin import Plugin
+from ..plugin.plugin import Plugin
 import pandas as pd
 import fstpy.all as fstpy
 import sys
@@ -47,7 +47,7 @@ class SetConstantValue(Plugin):
 
 
     def compute(self) -> pd.DataFrame:
-        sys.stdout.write('SetConstantValue - compute')
+        sys.stdout.write('SetConstantValue - compute\n')
         df_list = []
         for _,current_group in self.groups: 
             if self.max_index:
@@ -67,17 +67,17 @@ class SetConstantValue(Plugin):
                 res_df.loc[:,'ip1'] = 0
             df_list.append(res_df)    
 
+        return final_results(df_list,SetConstantValueError, self.meta_df)
+        # if not len(df_list):
+        #     raise SetConstantValueError('No results were produced')
 
-        if not len(df_list):
-            raise SetConstantValueError('No results were produced')
+        # self.meta_df = fstpy.load_data(self.meta_df)
 
-        self.meta_df = fstpy.load_data(self.meta_df)
-
-        df_list.append(self.meta_df)    
-        # merge all results together
-        res_df = pd.concat(df_list,ignore_index=True)
+        # df_list.append(self.meta_df)    
+        # # merge all results together
+        # res_df = pd.concat(df_list,ignore_index=True)
         
-        res_df = remove_load_data_info(res_df)
-        res_df = fstpy.metadata_cleanup(res_df)
+        # res_df = remove_load_data_info(res_df)
+        # res_df = fstpy.metadata_cleanup(res_df)
         
-        return res_df
+        # return res_df

@@ -21,7 +21,7 @@ def test_regtest_1(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute HumidityRelative
-    with pytest.raise(spooki.HumidityRelativeError):
+    with pytest.raises(spooki.HumidityRelativeError):
         _ = spooki.HumidityRelative(src_df0, ice_water_phase='both', temp_phase_switch=-30, temp_phase_switch_unit='G').compute()
     #[ReaderStd --input {sources[0]}] >> [HumidityRelative --iceWaterPhase BOTH --temperaturePhaseSwitch -30G]
 
@@ -35,7 +35,7 @@ def test_regtest_2(plugin_test_dir):
 
 
     # compute HumidityRelative
-    with pytest.raise(spooki.HumidityRelativeError):
+    with pytest.raises(spooki.HumidityRelativeError):
         _ = spooki.HumidityRelative(src_df0, ice_water_phase='both', temp_phase_switch=-273.16, temp_phase_switch_unit='kelvin').compute()
     #[ReaderStd --input {sources[0]}] >> [HumidityRelative --iceWaterPhase BOTH --temperaturePhaseSwitch -273.16K]
 
@@ -49,7 +49,7 @@ def test_regtest_3(plugin_test_dir):
 
 
     # compute HumidityRelative
-    with pytest.raise(spooki.HumidityRelativeError):
+    with pytest.raises(spooki.HumidityRelativeError):
         _ = spooki.HumidityRelative(src_df0, ice_water_phase='both', temp_phase_switch=273.17, temp_phase_switch_unit='kelvin').compute()
     #[ReaderStd --input {sources[0]}] >> [HumidityRelative --iceWaterPhase BOTH --temperaturePhaseSwitch 273.17K]
 
@@ -63,7 +63,7 @@ def test_regtest_4(plugin_test_dir):
 
 
     # compute HumidityRelative
-    with pytest.raise(spooki.HumidityRelativeError):
+    with pytest.raises(spooki.HumidityRelativeError):
         _ = spooki.HumidityRelative(src_df0, ice_water_phase='invalid', temp_phase_switch=273.17, temp_phase_switch_unit='kelvin').compute()
     #[ReaderStd --input {sources[0]}] >> [HumidityRelative --iceWaterPhase INVALIDE --temperaturePhaseSwitch 273.17K]
 
@@ -120,7 +120,7 @@ def test_regtest_7(plugin_test_dir):
     # [HumidityRelative --iceWaterPhase WATER] >> 
     # [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >> 
     # [WriterStd --output {destination_path} --ignoreExtended]
-
+    # df.loc[:,'etiket'] = 'G133K80N'
     #write the result
     results_file = TMP_PATH + "test_7.std"
     fstpy.delete_file(results_file)

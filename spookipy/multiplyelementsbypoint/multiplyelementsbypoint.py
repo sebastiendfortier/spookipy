@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..plugin import Plugin
+from ..plugin.plugin import Plugin
 import pandas as pd
 import numpy as np
 from ..opelementsbypoint.opelementsbypoint import OpElementsByPoint
@@ -16,7 +16,7 @@ class MultiplyElementsByPoint(Plugin):
         pass
 
     def compute(self) -> pd.DataFrame:
-        sys.stdout.write('MultiplyElementsByPoint - compute')
+        sys.stdout.write('MultiplyElementsByPoint - compute\n')
         return OpElementsByPoint(self.df, 
         operator = np.prod,
         operation_name='MultiplyElementsByPoint', 

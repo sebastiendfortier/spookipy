@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from ..plugin import Plugin
-from ..utils import create_empty_result, get_3d_array, initializer, remove_load_data_info, validate_nomvar
+from ..plugin.plugin import Plugin
+from ..utils import create_empty_result, get_3d_array, initializer, final_results, remove_load_data_info, validate_nomvar
 import pandas as pd
 import numpy as np
 import sys
@@ -50,7 +50,7 @@ class OpElementsByPoint(Plugin):
         
 
     def compute(self) -> pd.DataFrame:
-        sys.stdout.write('OpElementsByPoint - compute')
+        sys.stdout.write('OpElementsByPoint - compute\n')
         #holds data from all the groups
         df_list = []
         for _,current_group in self.groups:
@@ -70,17 +70,18 @@ class OpElementsByPoint(Plugin):
 
             df_list.append(res_df)
 
-        if not len(df_list):
-            raise self.exception_class(self.operation_name + ' - no results where produced')
+        return final_results(df_list, self.exception_class, self.meta_df)
+        # if not len(df_list):
+        #     raise self.exception_class(self.operation_name + ' - no results where produced')
         
-        self.meta_df = fstpy.load_data(self.meta_df)
-        df_list.append(self.meta_df)  
+        # self.meta_df = fstpy.load_data(self.meta_df)
+        # df_list.append(self.meta_df)  
 
-        # merge all results together
-        res_df = pd.concat(df_list,ignore_index=True)
+        # # merge all results together
+        # res_df = pd.concat(df_list,ignore_index=True)
 
-        res_df = remove_load_data_info(res_df)
-        res_df = fstpy.metadata_cleanup(res_df)
+        # res_df = remove_load_data_info(res_df)
+        # res_df = fstpy.metadata_cleanup(res_df)
 
         return res_df
 

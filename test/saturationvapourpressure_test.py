@@ -94,9 +94,6 @@ def test_regtest_6(plugin_test_dir):
     df.loc[df.nomvar=='SVP','etiket']='SVPRES'
     df.loc[df.nomvar.isin(['HY','P0']),'etiket']='580V0'
 
-    # df.loc[:,'nbits'] = 32
-    # df.loc[:,'datyp'] = 5
-
     #write the result
     results_file = TMP_PATH + "test_6.std"
     fstpy.delete_file(results_file)

@@ -69,6 +69,7 @@ def test_regtest_4(plugin_test_dir):
     # [TemperatureDewPoint --iceWaterPhase BOTH --temperaturePhaseSwitch -40C] >> 
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
+    df.loc[:,'etiket'] = 'DEWPTT'
     #write the result
     results_file = TMP_PATH + "test_4.std"
     fstpy.delete_file(results_file)
@@ -97,7 +98,7 @@ def test_regtest_5(plugin_test_dir):
     # [Select --fieldName TT,ES] >>
     # [TemperatureDewPoint --iceWaterPhase BOTH --temperaturePhaseSwitch -40C] >> 
     # [WriterStd --output {destination_path} --ignoreExtended]
-
+    df.loc[df.nomvar=='TD','etiket'] = 'DEWPTT'
     #write the result
     results_file = TMP_PATH + "test_5.std"
     fstpy.delete_file(results_file)
@@ -121,12 +122,12 @@ def test_regtest_6(plugin_test_dir):
     ttes_df = fstpy.select_with_meta(src_df0,['TT','ES'])
 
     #compute TemperatureDewPoint
-    df = spooki.TemperatureDewPoint(ttes_df, ice_water_phase='both', rpn=True).compute()
+    df = spooki.TemperatureDewPoint(ttes_df, ice_water_phase='both', temp_phase_switch=-40, rpn=True).compute()
     #[ReaderStd --ignoreExtended --input {sources[0]}] >> 
     # [Select --fieldName TT,ES] >>
     # [TemperatureDewPoint --iceWaterPhase BOTH --RPN] >> 
     # [WriterStd --output {destination_path} --ignoreExtended]
-
+    df.loc[df.nomvar=='TD','etiket'] = 'DEWPTT'
     #write the result
     results_file = TMP_PATH + "test_6.std"
     fstpy.delete_file(results_file)
@@ -155,7 +156,7 @@ def test_regtest_7(plugin_test_dir):
     # [Select --fieldName TT,HR] >> 
     # [TemperatureDewPoint --iceWaterPhase BOTH --temperaturePhaseSwitch -40C] >> 
     # [WriterStd --output {destination_path} --ignoreExtended]
-
+    df.loc[df.nomvar=='TD','etiket'] = 'DEWPTT'
     #write the result
     results_file = TMP_PATH + "test_7.std"
     fstpy.delete_file(results_file)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from ..utils import validate_nomvar
-from ..plugin import Plugin
+from ..plugin.plugin import Plugin
 import pandas as pd
 from ..opelementsbyvalue.opelementsbyvalue import OpElementsByValue
 from ..utils import initializer, validate_nomvar
@@ -18,7 +18,7 @@ class MultiplyElementsBy(Plugin):
         pass
 
     def compute(self) -> pd.DataFrame:
-        sys.stdout.write('MultiplyElementsBy - compute')
+        sys.stdout.write('MultiplyElementsBy - compute\n')
         return OpElementsByValue(self.df,
         value = self.value,
         operation_name='MultiplyElementsBy',

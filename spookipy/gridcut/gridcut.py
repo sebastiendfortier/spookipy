@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..plugin import Plugin
+from ..plugin.plugin import Plugin
 import pandas as pd
 import sys
 import fstpy.all as fstpy
@@ -50,7 +50,7 @@ class GridCut(Plugin):
             raise GridCutError('Start point must be inferior on all axes to end point') 
 
     def compute(self) -> pd.DataFrame:
-        sys.stdout.write('GridCut - compute') 
+        sys.stdout.write('GridCut - compute\n') 
         cp_df = self.df.copy(deep=True)
 
         # cp_df["shape"].map(lambda nix, njy: (nix <=  self.end_point[0]) or (njy <= self.end_point[1])).any()

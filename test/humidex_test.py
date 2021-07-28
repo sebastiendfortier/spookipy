@@ -36,7 +36,7 @@ def test_regtest_1(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare,exclude_meta=True)
     fstpy.delete_file(results_file)
-    assert(False == True)
+    assert(res == True)
 
 
 def test_regtest_2(plugin_test_dir):
@@ -61,6 +61,6 @@ def test_regtest_2(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(False == True)
+    assert(res == True)
 
 

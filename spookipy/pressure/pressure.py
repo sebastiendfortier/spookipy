@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import ctypes
 import math
-from ..utils import get_existing_result, initializer, prepare_existing_results, remove_load_data_info
+from ..utils import get_existing_result, initializer, existing_results, final_results, remove_load_data_info
 import sys
 
 import numpy as np
@@ -11,7 +11,7 @@ import rpnpy.vgd.proto as vgdp
 
 import fstpy.all as fstpy
 
-from ..plugin import Plugin
+from ..plugin.plugin import Plugin
 
 STANDARD_ATMOSPHERE = 1013.25
 
@@ -29,7 +29,7 @@ class Pressure(Plugin):
     :type standard_atmosphere: bool, optional
     """
     plugin_result_specifications = {
-        'PX':{'nomvar':'PX','etiket':'WindMax','unit':'hectoPascal'},
+        'PX':{'nomvar':'PX','etiket':'Pressure','unit':'hectoPascal'},
         }
 
     @initializer
@@ -52,7 +52,6 @@ class Pressure(Plugin):
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
 
         
-        
         # if 'vctype' not in self.df.columns:
         #     self.df = fstpy.set_vertical_coordinate_type(self.df)
 
@@ -64,9 +63,9 @@ class Pressure(Plugin):
         """
         
         if not self.existing_result_df.empty:
-            return prepare_existing_results('Pressure',self.existing_result_df,self.meta_df) 
+            return existing_results('Pressure',self.existing_result_df,self.meta_df) 
 
-        sys.stdout.write('Pressure - compute')
+        sys.stdout.write('Pressure - compute\n')
         df_list=[]
         for _,grid in self.df.groupby(['grid']):
             meta_df = grid.query('nomvar in ["!!","HY","P0","PT"]').reset_index(drop=True)
@@ -81,18 +80,8 @@ class Pressure(Plugin):
                         df_list.append(px_df)
             df_list.append(meta_df)            
 
-        if not len(df_list):
-            raise PressureError('No results were produced')
+        return final_results(df_list,PressureError, self.meta_df)
 
-        self.meta_df = fstpy.load_data(self.meta_df)
-        df_list.append(self.meta_df)    
-        # merge all results together
-        res_df = pd.concat(df_list,ignore_index=True)
-
-        res_df = remove_load_data_info(res_df)
-        res_df = fstpy.metadata_cleanup(res_df)
-
-        return res_df
 
     def _compute_pressure(self,df:pd.DataFrame,meta_df:pd.DataFrame,vctype:str) -> pd.DataFrame:
         """select approprite algorithm according to vctype

@@ -2,7 +2,7 @@
 import fstpy.all as fstpy
 import pytest
 import pandas as pd
-from test import TMP_PATH,TEST_PATH
+from test import TMP_PATH,TEST_PATH, convip
 
 import spookipy.all as spooki
 
@@ -21,7 +21,7 @@ def test_regtest_a(plugin_test_dir):
 
 
     #compute HumiditySpecific
-    with pytest.raise(spooki.HumiditySpecificError):
+    with pytest.raises(spooki.HumiditySpecificError):
         _ = spooki.HumiditySpecific(src_df0, ice_water_phase='both').compute()
     #[ReaderStd --input {sources[0]}] >> [HumiditySpecific --iceWaterPhase BOTH]
 
@@ -35,7 +35,7 @@ def test_regtest_2(plugin_test_dir):
 
 
     #compute HumiditySpecific
-    with pytest.raise(spooki.HumiditySpecificError):
+    with pytest.raises(spooki.HumiditySpecificError):
         _ = spooki.HumiditySpecific(src_df0, temp_phase_switch=-30, temp_phase_switch_unit='celsius').compute()
     #[ReaderStd --input {sources[0]}] >> [HumiditySpecific --temperaturePhaseSwitch -30C]
 
@@ -49,8 +49,8 @@ def test_regtest_c(plugin_test_dir):
 
 
     #compute HumiditySpecific
-    with pytest.raise(spooki.HumiditySpecificError, ice_water_phase='water', temp_phase_switch=-30, temp_phase_switch_unit='celsius'):
-        _ = spooki.HumiditySpecific(src_df0).compute()
+    with pytest.raises(spooki.HumiditySpecificError):
+        _ = spooki.HumiditySpecific(src_df0,ice_water_phase='water', temp_phase_switch=-30, temp_phase_switch_unit='celsius').compute()
     #[ReaderStd --input {sources[0]}] >> [HumiditySpecific --iceWaterPhase WATER --temperaturePhaseSwitch -30C]
 
 
@@ -63,7 +63,7 @@ def test_regtest_4(plugin_test_dir):
 
 
     #compute HumiditySpecific
-    with pytest.raise(spooki.HumiditySpecificError):
+    with pytest.raises(spooki.HumiditySpecificError):
         _ = spooki.HumiditySpecific(src_df0, ice_water_phase='both', temp_phase_switch=-30, temp_phase_switch_unit='G').compute()
     #[ReaderStd --input {sources[0]}] >> [HumiditySpecific --iceWaterPhase BOTH --temperaturePhaseSwitch -30G]
 
@@ -77,7 +77,7 @@ def test_regtest_5(plugin_test_dir):
 
 
     #compute HumiditySpecific
-    with pytest.raise(spooki.HumiditySpecificError):
+    with pytest.raises(spooki.HumiditySpecificError):
         _ = spooki.HumiditySpecific(src_df0, ice_water_phase='both', temp_phase_switch=-273.76, temp_phase_switch_unit='kelvin').compute()
     #[ReaderStd --input {sources[0]}] >> [HumiditySpecific --iceWaterPhase BOTH --temperaturePhaseSwitch -273.16K]
 
@@ -91,7 +91,7 @@ def test_regtest_6(plugin_test_dir):
 
 
     #compute HumiditySpecific
-    with pytest.raise(spooki.HumiditySpecificError):
+    with pytest.raises(spooki.HumiditySpecificError):
         _ = spooki.HumiditySpecific(src_df0,ice_water_phase='both', temp_phase_switch=273.17, temp_phase_switch_unit='kelvin').compute()
     #[ReaderStd --input {sources[0]}] >> [HumiditySpecific --iceWaterPhase BOTH --temperaturePhaseSwitch 273.17K]
 
@@ -105,7 +105,7 @@ def test_regtest_7(plugin_test_dir):
 
 
     #compute HumiditySpecific
-    with pytest.raise(spooki.HumiditySpecificError):
+    with pytest.raises(spooki.HumiditySpecificError):
         _ = spooki.HumiditySpecific(src_df0, ice_water_phase='invalide', temp_phase_switch=273.17, temp_phase_switch_unit='kelvin').compute()
     #[ReaderStd --input {sources[0]}] >> [HumiditySpecific --iceWaterPhase INVALIDE --temperaturePhaseSwitch 273.17K]
 
@@ -126,7 +126,8 @@ def test_regtest_8(plugin_test_dir):
     # [HumiditySpecific --iceWaterPhase WATER] >> 
     # [Zap --pdsLabel R1580V0N --doNotFlagAsZapped] >> 
     # [WriterStd --output {destination_path} --ignoreExtended]
-
+    df.loc[:,'etiket'] = 'R1580V0N'
+    df = convip(df)
     #write the result
     results_file = TMP_PATH + "test_8.std"
     fstpy.delete_file(results_file)

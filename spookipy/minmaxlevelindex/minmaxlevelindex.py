@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from ..plugin import Plugin
-from ..utils import create_empty_result, get_3d_array, initializer, remove_load_data_info, validate_nomvar
+from ..plugin.plugin import Plugin
+from ..utils import create_empty_result, get_3d_array, initializer, final_results, remove_load_data_info, validate_nomvar
 import pandas as pd
 import numpy as np
 import sys
@@ -43,7 +43,7 @@ class MinMaxLevelIndex(Plugin):
         self.nomvar_groups= keep.groupby(by=['grid','forecast_hour','nomvar'])
 
     def compute(self) -> pd.DataFrame:
-        sys.stdout.write('MinMaxLevelIndex - compute')
+        sys.stdout.write('MinMaxLevelIndex - compute\n')
         df_list=[]
         for _,group in self.nomvar_groups:
             group = fstpy.load_data(group)
@@ -101,19 +101,19 @@ class MinMaxLevelIndex(Plugin):
                 df_list.append(kmax_df)
             df_list.append(group)
 
+        return final_results(df_list, MinMaxLevelIndexError, self.meta_df)
+        # if not len(df_list):
+        #     raise MinMaxLevelIndexError('No results were produced')
 
-        if not len(df_list):
-            raise MinMaxLevelIndexError('No results were produced')
+        # self.meta_df = fstpy.load_data(self.meta_df)
+        # df_list.append(self.meta_df)    
+        # # merge all results together
+        # res_df = pd.concat(df_list,ignore_index=True)
 
-        self.meta_df = fstpy.load_data(self.meta_df)
-        df_list.append(self.meta_df)    
-        # merge all results together
-        res_df = pd.concat(df_list,ignore_index=True)
+        # res_df = remove_load_data_info(res_df)
+        # res_df = fstpy.metadata_cleanup(res_df)
 
-        res_df = remove_load_data_info(res_df)
-        res_df = fstpy.metadata_cleanup(res_df)
-
-        return res_df
+        # return res_df
 
 
 def fix_ktop(ktop, array_max_index):

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from ..plugin import Plugin
+from ..plugin.plugin import Plugin
 from typing import Tuple
 import pandas as pd
 import numpy as np
 import fstpy.all as fstpy
-from ..utils import create_empty_result, get_3d_array, get_intersecting_levels, prepare_existing_results, remove_load_data_info, get_existing_result, get_plugin_dependencies
+from ..utils import create_empty_result, get_3d_array, get_intersecting_levels, existing_results, final_results, remove_load_data_info, get_existing_result, get_plugin_dependencies
 import sys
 
 class WindMaxError(Exception):
@@ -66,16 +66,15 @@ class WindMax(Plugin):
 
         # print('self.df\n',self.df[['nomvar','typvar','etiket','datev','ip1']].to_string())
         if self.existing_result_df.empty:
-            self.dependencies_df = get_plugin_dependencies(self.df,self.plugin_mandatory_dependencies)
-            # print('self.dependencies_df\n',self.dependencies_df[['nomvar','typvar','etiket','datev','ip1']].to_string())
+            self.dependencies_df = get_plugin_dependencies(self.df,None,self.plugin_mandatory_dependencies)
             self.fhour_groups=self.dependencies_df.groupby(by=['grid','forecast_hour'])
 
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:
-            return prepare_existing_results('WindMax',self.existing_result_df,self.meta_df) 
+            return existing_results('WindMax',self.existing_result_df,self.meta_df) 
 
-        sys.stdout.write('WindMax - compute')     
+        sys.stdout.write('WindMax - compute\n')     
         #holds data from all the groups
         df_list = []
         
@@ -117,18 +116,8 @@ class WindMax(Plugin):
             df_list.append(uv_res_df)
             df_list.append(px_res_df)
 
-        if not len(df_list):
-            raise WindMaxError('No results were produced')
+        return final_results(df_list,WindMaxError, self.meta_df)
 
-        self.meta_df = fstpy.load_data(self.meta_df)
-        df_list.append(self.meta_df)    
-        # merge all results together
-        res_df = pd.concat(df_list,ignore_index=True)
-
-        res_df = remove_load_data_info(res_df)
-        res_df = fstpy.metadata_cleanup(res_df)
-
-        return res_df
 
 
     

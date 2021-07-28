@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from ..plugin import Plugin
-from ..utils import create_empty_result, get_existing_result, get_plugin_dependencies, prepare_existing_results, remove_load_data_info
+from ..plugin.plugin import Plugin
+from ..utils import create_empty_result, get_existing_result, get_plugin_dependencies, existing_results, final_results
 import pandas as pd
 import numpy as np
 import fstpy.all as fstpy
@@ -52,21 +52,19 @@ class WindChill(Plugin):
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
 
         if self.existing_result_df.empty:
-            self.dependencies_df = get_plugin_dependencies(self.df,self.plugin_mandatory_dependencies)
+            self.dependencies_df = get_plugin_dependencies(self.df,None,self.plugin_mandatory_dependencies)
             self.fhour_groups=self.dependencies_df.groupby(by=['grid','forecast_hour'])
 
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:
-            return prepare_existing_results('WindChill',self.existing_result_df,self.meta_df) 
+            return existing_results('WindChill',self.existing_result_df,self.meta_df) 
 
-        sys.stdout.write('WindChill - compute')    
+        sys.stdout.write('WindChill - compute\n')    
         #holds data from all the groups
         df_list = []
         for _,current_fhour_group in self.fhour_groups:
             current_fhour_group = fstpy.load_data(current_fhour_group)
-            
-            #print('-1-','\n',current_fhour_group[['nomvar','level','fhour']])        
             tt_df = current_fhour_group.query('nomvar == "TT"').reset_index(drop=True)
             uv_df = current_fhour_group.query('nomvar == "UV"').reset_index(drop=True)
             uv_df = fstpy.unit_convert(uv_df,'kilometer_per_hour')
@@ -79,17 +77,6 @@ class WindChill(Plugin):
 
             df_list.append(re_df)
 
-        if not len(df_list):
-            raise WindChillError('No results were produced')
+        return final_results(df_list,WindChillError, self.meta_df)
 
-        self.meta_df = fstpy.load_data(self.meta_df)
-
-        df_list.append(self.meta_df)    
-        # merge all results together
-        res_df = pd.concat(df_list,ignore_index=True)
-
-        res_df = remove_load_data_info(res_df)
-        res_df = fstpy.metadata_cleanup(res_df)
-
-        return res_df
 

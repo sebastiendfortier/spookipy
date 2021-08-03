@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..plugin.plugin import Plugin
+from ..plugin import Plugin
 import numpy as np
 import pandas as pd
 import rpnpy.librmn.all as rmn

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..plugin.plugin import Plugin
+from ..plugin import Plugin
 import pandas as pd
 import sys
 import fstpy.all as fstpy

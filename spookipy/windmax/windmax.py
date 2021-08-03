@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..plugin.plugin import Plugin
+from ..plugin import Plugin
 from typing import Tuple
 import pandas as pd
 import numpy as np

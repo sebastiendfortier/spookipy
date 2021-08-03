@@ -4,12 +4,12 @@ import sys
 from numpy import float32
 import fstpy.all as fstpy
 import pandas as pd
-from ..humidityutils.humidityutils import (
+from ..humidityutils import (
     TDPACK_OFFSET_FIX, calc_dew_point_depression_td, get_temp_phase_switch,
     rpn_calc_dew_point_depression_hr, rpn_calc_dew_point_depression_hu,
     validate_humidity_parameters)
 
-from ..plugin.plugin import Plugin
+from ..plugin import Plugin
 from ..utils import (create_empty_result, existing_results, final_results,
                      get_existing_result, get_intersecting_levels,
                      get_plugin_dependencies, initializer)

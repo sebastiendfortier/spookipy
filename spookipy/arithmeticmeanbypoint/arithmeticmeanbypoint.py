@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from ..utils import initializer
-from ..plugin.plugin import Plugin
+from ..plugin import Plugin
 import pandas as pd
 import numpy as np
 import sys
-from ..opelementsbypoint.opelementsbypoint import OpElementsByPoint
+from ..opelementsbypoint import OpElementsByPoint
 
 class ArithmeticMeanByPointError(Exception):
     pass

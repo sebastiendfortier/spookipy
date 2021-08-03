@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from ..utils import initializer, final_results, remove_load_data_info
-from ..opelementsbyvalue.opelementsbyvalue import OpElementsByValue
-from ..plugin.plugin import Plugin
+from ..opelementsbyvalue import OpElementsByValue
+from ..plugin import Plugin
 import pandas as pd
 import fstpy.all as fstpy
 import sys

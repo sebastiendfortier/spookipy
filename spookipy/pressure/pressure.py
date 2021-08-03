@@ -11,7 +11,7 @@ import rpnpy.vgd.proto as vgdp
 
 import fstpy.all as fstpy
 
-from ..plugin.plugin import Plugin
+from ..plugin import Plugin
 
 STANDARD_ATMOSPHERE = 1013.25
 

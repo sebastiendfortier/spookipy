@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..plugin.plugin import Plugin
+from ..plugin import Plugin
 from ..utils import initializer, remove_load_data_info, validate_nomvar
 import pandas as pd
 import fstpy.all as fstpy

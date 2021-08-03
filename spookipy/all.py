@@ -1,6 +1,6 @@
 from .humidityutils.humidityutils import *
 
-
+from .plugin.plugin import Plugin
 from .addelementsbypoint.addelementsbypoint import AddElementsByPoint,AddElementsByPointError
 from .addtoelements.addtoelements import AddToElements,AddToElementsError
 from .arithmeticmeanbypoint.arithmeticmeanbypoint import ArithmeticMeanByPoint,ArithmeticMeanByPointError

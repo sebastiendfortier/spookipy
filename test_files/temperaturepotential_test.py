@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"TemperaturePotential/testsFiles/"
 
 class TestTemperaturePotential(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 :  Calcule de la température potentiel à partir d'un fichier standard."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_reghyb"
@@ -44,7 +44,7 @@ class TestTemperaturePotential(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 :  Calcule de la température potentiel à partir d'un fichier standard."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_reghyb"

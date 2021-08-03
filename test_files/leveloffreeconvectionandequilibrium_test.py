@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"LevelOfFreeConvectionAndEquilibrium/testsFiles/"
 
 class TestLevelOfFreeConvectionAndEquilibrium(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 :  Utilisation du parametre --liftedFrom SURFACE avec un fichier en pression. Requete invalide"""
         # open and read source
         source0 = plugin_test_dir + "2016031600_024_regpres_1_petit"
@@ -41,10 +41,10 @@ class TestLevelOfFreeConvectionAndEquilibrium(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 :  Utilisation du parametre --liftedFrom MEAN_LAYER --baseMeanLayer SURFACE avec un fichier en pression. Requete invalide"""
         # open and read source
         source0 = plugin_test_dir + "2016031600_024_regpres_1_petit"
@@ -64,10 +64,10 @@ class TestLevelOfFreeConvectionAndEquilibrium(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 :  Utilisation du parametre --liftedFrom MOST_UNSTABLE avec un fichier en pression. Requete invalide"""
         # open and read source
         source0 = plugin_test_dir + "2016031600_024_regpres_1_petit"
@@ -87,10 +87,10 @@ class TestLevelOfFreeConvectionAndEquilibrium(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6 :  Calcul des niveaux de convection a partir d'un fichier hybrid de 2 points, SURFACE."""
         # open and read source
         source0 = plugin_test_dir + "lam_nat_coupe_cas4_TTESHUGZ"
@@ -113,7 +113,7 @@ class TestLevelOfFreeConvectionAndEquilibrium(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_8(self):
+    def test_8(self):
         """Test #8 :  Calcul des niveaux de convection a partir d'un fichier lam national de 2 points, SURFACE et OPTIMAL_VALUE_ONLY."""
         # open and read source
         source0 = plugin_test_dir + "input_point61-51.std"
@@ -136,7 +136,7 @@ class TestLevelOfFreeConvectionAndEquilibrium(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_10(self):
+    def test_10(self):
         """Test #10 :  Calcul des niveaux de convection a partir d'un fichier de 3 points, SURFACE et OPTIMAL_VALUE_ONLY."""
         # open and read source
         source0 = plugin_test_dir + "Fichier3Pts_2017092900.std"
@@ -159,7 +159,7 @@ class TestLevelOfFreeConvectionAndEquilibrium(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_11(self):
+    def test_11(self):
         """Test #11 :  Calcul des niveaux de convection a partir d'un fichier de 6 points, SURFACE et OPTIMAL_VALUE_ONLY."""
         # open and read source
         source0 = plugin_test_dir + "2018052906_lam_nat_CroisementsAetB.std"
@@ -182,7 +182,7 @@ class TestLevelOfFreeConvectionAndEquilibrium(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_12(self):
+    def test_12(self):
         """Test #12 :  Calcul des niveaux de convection a partir d'un fichier de 6 points, SURFACE et OPTIMAL_VALUE_ONLY."""
         # open and read source
         source0 = plugin_test_dir + "2017092900_000_CroisementCas3.std"
@@ -205,7 +205,7 @@ class TestLevelOfFreeConvectionAndEquilibrium(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_13(self):
+    def test_13(self):
         """Test #13 :  Calcul des niveaux de convection a partir d'un fichier de 8 points, avec correction virtuelle,  SURFACE et OPTIMAL_VALUE_ONLY."""
         # open and read source
         source0 = plugin_test_dir + "2018060606_lam_nat_CroisementCas3.std"
@@ -228,7 +228,7 @@ class TestLevelOfFreeConvectionAndEquilibrium(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_14(self):
+    def test_14(self):
         """Test #14 :  Calcul des niveaux de convection a partir d'un fichier de 18 points, SURFACE."""
         # open and read source
         source0 = plugin_test_dir + "input_convection_CroisementCas4.std"

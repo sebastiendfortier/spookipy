@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"InterpolationVertical/testsFiles/"
 
 class TestInterpolationVertical(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 : Tester l'option --outputGridDefinitionMethod avec une valeur invalide _OK_"""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
@@ -41,10 +41,10 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 : Tester l'option --interpolationType avec une valeur invalide _OK_"""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
@@ -64,10 +64,10 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 : Tester l'option --extrapolationType avec une valeur invalide _OK_"""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
@@ -87,10 +87,10 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4 : Tester l'option --outputGridDefinitionMethod FIELD_DEFINED sans l'option --referenceFieldName _OK_"""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
@@ -110,10 +110,10 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5 : Tester l'option --outputGridDefinitionMethod USER_DEFINED sans l'option --verticalLevel _OK_"""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
@@ -133,10 +133,10 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6 : Tester l'option --verticalLevel avec des valeurs invalides _OK_"""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
@@ -156,10 +156,10 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_7(self):
+    def test_7(self):
         """Test #7 : Tester l'option --verticalLevel avec un intervalle sans --verticalLevelRangeIncrement. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
@@ -179,10 +179,10 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_8(self):
+    def test_8(self):
         """Test #8 : Tester l'option --outputGridDefinitionMethod USER_DEFINED sans l'option --verticalLevelType _OK_"""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
@@ -202,10 +202,10 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_9(self):
+    def test_9(self):
         """Test #9 : Tester l'option --verticalLevelType avec une valeur invalide _OK_"""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
@@ -225,10 +225,10 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_10(self):
+    def test_10(self):
         """Test #10 : Tester l'option --referenceFieldName avec un champ qui n'est pas dans le fichier d'input. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
@@ -248,10 +248,10 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_11(self):
+    def test_11(self):
         """Test #11 : Tester l'option --referenceFieldName avec un champ sur plusieurs grilles. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
@@ -274,10 +274,10 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_12(self):
+    def test_12(self):
         """Test #12 :  Interpolation vertical hybrid (reg) to millibars. _BETTER_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_reghyb_TTGZUUVV.std"
@@ -303,7 +303,7 @@ class TestInterpolationVertical(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_13(self):
+    def test_13(self):
         """Test #13 :  Interpolation vertical millibars (reg) to hybrid. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_regpres_TTGZUUVV.std"
@@ -329,7 +329,7 @@ class TestInterpolationVertical(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_15(self):
+    def test_15(self):
         """Test #15 :  Interpolation vertical hybrid staggered (glb) to millibars. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_glbhyb_TTGZUUVV.std"
@@ -352,7 +352,7 @@ class TestInterpolationVertical(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_16(self):
+    def test_16(self):
         """Test #16 :  Interpolation vertical eta (glb) to hybrid staggered. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_glbeta_TTGZUUVV.std"
@@ -378,7 +378,7 @@ class TestInterpolationVertical(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_18(self):
+    def test_18(self):
         """Test #18 :  Interpolation vertical millibars (glb) to hybrid staggered. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_glbpres_TTGZUUVV.std"
@@ -404,7 +404,7 @@ class TestInterpolationVertical(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_20(self):
+    def test_20(self):
         """Test #20 :  Interpolation vertical hybrid (reg) to eta. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_reghyb_TTGZUUVV.std"
@@ -430,7 +430,7 @@ class TestInterpolationVertical(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_22(self):
+    def test_22(self):
         """Test #22 :  Interpolation vertical eta (reg) to millibars. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_regeta_TTGZUUVV.std"
@@ -453,7 +453,7 @@ class TestInterpolationVertical(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_24(self):
+    def test_24(self):
         """Test #24 :  Interpolation vertical millibars to meter sea level. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2011051818_000.UUVVTTGZ.std"
@@ -476,7 +476,7 @@ class TestInterpolationVertical(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_25(self):
+    def test_25(self):
         """Test #25 :  Interpolation vertical hybrid to meter sea level. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2011070818_054_hyb"
@@ -499,7 +499,7 @@ class TestInterpolationVertical(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_26(self):
+    def test_26(self):
         """Test #26 :  Teste l'option --verticalLevelType MILLIBARS_ABOVE_LEVEL sans l'option --referenceLevel. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_glbeta_TTGZUUVV.std"
@@ -519,10 +519,10 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_27(self):
+    def test_27(self):
         """Test #27 :  Teste l'option --verticalLevelType MILLIBARS_ABOVE_LEVEL sans l'option --referenceLevel. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_glbeta_TTGZUUVV.std"
@@ -542,10 +542,10 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_28(self):
+    def test_28(self):
         """Test #28 :  Interpolation vertical eta (glb) to millibars above ground. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_glbeta_TTGZUUVV.std"
@@ -568,7 +568,7 @@ class TestInterpolationVertical(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_29(self):
+    def test_29(self):
         """Test #29 :  Interpolation vertical with extrapolationType ABORT _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2011070818_054_hyb"
@@ -588,10 +588,10 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_30(self):
+    def test_30(self):
         """Test #30 :  Interpolation vertical with interpolationType NEAREST _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_glbhyb_TTGZUUVV.std"
@@ -614,7 +614,7 @@ class TestInterpolationVertical(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_31(self):
+    def test_31(self):
         """Test #31 :  Interpolation vertical with interpolationLevelType METER_GROUND_LEVEL _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_glbhyb_TTGZUUVV.std"
@@ -637,7 +637,7 @@ class TestInterpolationVertical(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_32(self):
+    def test_32(self):
         """Test #32 : Tester l'option --outputField avec une valeur invalide."""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
@@ -657,10 +657,10 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_33(self):
+    def test_33(self):
         """Test #33 :  Interpolation vertical hybrid (reg) to eta --outputField INCLUDE_REFERENCE_FIELD. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_reghyb_TTGZUUVV.std"
@@ -686,7 +686,7 @@ class TestInterpolationVertical(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_34(self):
+    def test_34(self):
         """Test #34 : Interpolation vertical hybrid (reg) to eta --outputField INCLUDE_ALL_FIELDS. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_reghyb_TTGZUUVV.std"
@@ -712,7 +712,7 @@ class TestInterpolationVertical(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_35(self):
+    def test_35(self):
         """Test #35 : Interpolation vertical hybrid (reg) to eta --outputField INTERPOLATED_FIELD_ONLY _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_reghyb_TTGZUUVV.std"
@@ -738,7 +738,7 @@ class TestInterpolationVertical(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_36(self):
+    def test_36(self):
         """Test #36 : Interpolation vertical hybrid (reg) to eta avec le parametre --outputField INTERPOLATED_FIELD_ONLY _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_reghyb_TTGZUUVV.std"
@@ -764,7 +764,7 @@ class TestInterpolationVertical(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_37(self):
+    def test_37(self):
         """Test #37 : Tester l'option --outputField INTERPOLATED_FIELD_ONLY avec pas de champs a interpole. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_reghyb_pres_TTGZUUVV.std"
@@ -784,10 +784,10 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_38(self):
+    def test_38(self):
         """Test #38 : Tester l'option --outputField INCLUDE_REFERENCE_FIELD avec pas de champs a interpole. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_reghyb_pres_TTGZUUVV.std"
@@ -807,10 +807,10 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_39(self):
+    def test_39(self):
         """Test #39 : Interpolation vertical with a file containing many forecast hours (ens glb). _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2015081700_024_ensglb_shortTTGZUUVV.std"
@@ -833,7 +833,7 @@ class TestInterpolationVertical(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_40(self):
+    def test_40(self):
         """Test #40 : Interpolation vertical avec un fichier hybrid pour les champs QC et TD. _SIMILIAR_"""
         # open and read source
         source0 = plugin_test_dir + "2011070818_054_hyb"
@@ -856,7 +856,7 @@ class TestInterpolationVertical(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_41(self):
+    def test_41(self):
         """Test #41 : Interpolation vertical pour tester les parametres_--valueAbove et --valueBelow"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_regeta_TTGZUUVV.std"
@@ -879,7 +879,7 @@ class TestInterpolationVertical(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_41(self):
+    def test_41(self):
         """Test #41 : Interpolation vertical avec un fichier hybrid 5005 pour les champs QC et TD. _SIMILIAR_"""
         # open and read source
         source0 = plugin_test_dir + "coord_5005_big.std"

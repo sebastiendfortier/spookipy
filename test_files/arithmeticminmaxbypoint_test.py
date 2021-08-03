@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"ArithmeticMinMaxByPoint/testsFiles/"
 
 class TestArithmeticMinMaxByPoint(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1: Successfully find both the minimum and the maximum. Default outputFieldName1/2. Small custom file."""
         # open and read source
         source0 = plugin_test_dir + "TTHRHU_3X3X2_SrcFile.std"
@@ -44,7 +44,7 @@ class TestArithmeticMinMaxByPoint(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2: Successfully find the minimum, exclusively. Custom outputFieldName1. Small custom file."""
         # open and read source
         source0 = plugin_test_dir + "TTHRHU_3X3X2_SrcFile.std"
@@ -67,7 +67,7 @@ class TestArithmeticMinMaxByPoint(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """"""
         # open and read source
         source0 = plugin_test_dir + "TTHRHU_3X3X2_SrcFile.std"
@@ -90,7 +90,7 @@ class TestArithmeticMinMaxByPoint(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """"""
         # open and read source
         source0 = plugin_test_dir + "2016031600_024_regeta_1_petit"
@@ -113,7 +113,7 @@ class TestArithmeticMinMaxByPoint(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """"""
         # open and read source
         source0 = plugin_test_dir + "TTES2x2x4_MinMax_DifferentForecastHours_SrcFile.std"
@@ -136,7 +136,7 @@ class TestArithmeticMinMaxByPoint(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test avec option --minMax MIN mais sans regrouper les forecast hour."""
         # open and read source
         source0 = plugin_test_dir + "TTES2x2x4_MinMax_DifferentForecastHours_SrcFile.std"
@@ -159,7 +159,7 @@ class TestArithmeticMinMaxByPoint(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_7(self):
+    def test_7(self):
         """Cherche le min lorsqu'il y a seulement 1 champ en entrée."""
         # open and read source
         source0 = plugin_test_dir + "TTES2x2x4_MinMax_DifferentForecastHours_SrcFile.std"
@@ -179,10 +179,10 @@ class TestArithmeticMinMaxByPoint(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_8(self):
+    def test_8(self):
         """Utilisation de --outputFieldName avec une valeur > 4 caractères."""
         # open and read source
         source0 = plugin_test_dir + "TTES2x2x4_MinMax_DifferentForecastHours_SrcFile.std"
@@ -202,6 +202,6 @@ class TestArithmeticMinMaxByPoint(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 

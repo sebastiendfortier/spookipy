@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from spookipy.dewpointdepression.dewpointdepression import DewPointDepression
+from numpy import float32
 from ..humidityutils.humidityutils import TDPACK_OFFSET_FIX, calc_dew_point_depression_td, calc_humidity_specific_qv, calc_humidity_specific_vppr, get_temp_phase_switch, rpn_calc_humidity_specific_es, rpn_calc_humidity_specific_hr, validate_humidity_parameters
 from ..plugin.plugin import Plugin
 from ..utils import create_empty_result, get_existing_result, get_intersecting_levels, get_plugin_dependencies, initializer, existing_results, final_results
@@ -10,7 +12,7 @@ import sys
 
 class HumiditySpecificError(Exception):
     pass
- 
+
 class HumiditySpecific(Plugin):
 
 
@@ -35,29 +37,29 @@ class HumiditySpecific(Plugin):
             'PX':{'nomvar':'PX','unit':'hectoPascal'},
             'TD':{'nomvar':'TD','unit':'celsius','select_only':True},
         }
-       
-        
+
+
         self.plugin_result_specifications = {
             'HU':{'nomvar':'HU','etiket':'HumiditySpecific','unit':'kilogram_per_kilogram','nbits':16,'datyp':1}
-            }        
+            }
         self.validate_input()
-        
-    # might be able to move    
+
+    # might be able to move
     def validate_input(self):
         if self.df.empty:
             raise  HumiditySpecificError('No data to process')
 
-        self.df = fstpy.metadata_cleanup(self.df)    
+        self.df = fstpy.metadata_cleanup(self.df)
 
-        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['unit','forecast_hour','ip_info'])     
-        
+        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['unit','forecast_hour','ip_info'])
+
         validate_humidity_parameters(HumiditySpecificError,self.ice_water_phase,self.temp_phase_switch,self.temp_phase_switch_unit)
 
         self.temp_phase_switch = get_temp_phase_switch(HumiditySpecificError, self.ice_water_phase=='both', self.temp_phase_switch, self.temp_phase_switch_unit, self.rpn)
 
         self.meta_df = self.df.query('nomvar in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True)
 
-        
+
         #check if result already exists
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
         if self.existing_result_df.empty:
@@ -66,18 +68,18 @@ class HumiditySpecific(Plugin):
             if self.dependencies_df.empty:
                 self.dependencies_df = get_plugin_dependencies(self.df,self.plugin_params,self.plugin_mandatory_dependencies_option_2,throw_error=False)
                 self.option=2
-            if self.dependencies_df.empty:    
+            if self.dependencies_df.empty:
                 self.dependencies_df = get_plugin_dependencies(self.df,self.plugin_params,self.plugin_mandatory_dependencies_option_3,throw_error=False)
                 self.option=3
             if self.dependencies_df.empty:
                 self.dependencies_df = get_plugin_dependencies(self.df,self.plugin_params,self.plugin_mandatory_dependencies_option_4)
                 self.option=4
 
-                
-            #current_fhour_group by grid/forecast hour    
+
+            #current_fhour_group by grid/forecast hour
             self.fhour_groups = self.dependencies_df.groupby(['grid','forecast_hour'])
 
-            
+
 
     def compute(self) -> pd.DataFrame:
         from ..all import SaturationVapourPressure, VapourPressure
@@ -88,26 +90,25 @@ class HumiditySpecific(Plugin):
         df_list = []
         for _, current_fhour_group in self.fhour_groups:
             if self.rpn:
+                print('rpn')
                 if self.option==1:
                     print('option 1')
-                    # print('current_fhour_group 1\n',current_fhour_group)
                     current_fhour_group = fstpy.load_data(current_fhour_group)
-                    qv_df = current_fhour_group.query( 'nomvar=="QV"').reset_index(drop=True)
+                    qv_df = current_fhour_group.loc[current_fhour_group.nomvar=='QV'].reset_index(drop=True)
                     hu_df = create_empty_result(qv_df,self.plugin_result_specifications['HU'],copy=True)
                     qv_df = fstpy.unit_convert(qv_df,'kilogram_per_kilogram')
                     for i in hu_df.index:
                         qv = qv_df.at[i,'d']
-                        hu_df.at[i,'d'] = calc_humidity_specific_qv(qv)
+                        hu_df.at[i,'d'] = calc_humidity_specific_qv(qv).astype(float32)
 
-                if self.option==2:
+                elif self.option==2:
                     print('option 2')
-                    # print('current_fhour_group 2\n',current_fhour_group)
                     level_intersection_df = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies_option_2)
                     current_fhour_group = fstpy.load_data(level_intersection_df)
-                    tt_df = current_fhour_group.query( 'nomvar=="TT"').reset_index(drop=True)
-                    hr_df = current_fhour_group.query( 'nomvar=="HR"').reset_index(drop=True)
-                    px_df = current_fhour_group.query( 'nomvar=="PX"').reset_index(drop=True)
-                    
+                    tt_df = current_fhour_group.loc[current_fhour_group.nomvar=='TT'].reset_index(drop=True)
+                    hr_df = current_fhour_group.loc[current_fhour_group.nomvar=='HR'].reset_index(drop=True)
+                    px_df = current_fhour_group.loc[current_fhour_group.nomvar=='PX'].reset_index(drop=True)
+
                     hu_df = create_empty_result(tt_df,self.plugin_result_specifications['HU'],copy=True)
                     tt_df = fstpy.unit_convert(tt_df,'kelvin')
                     px_df = fstpy.unit_convert(px_df,'pascal')
@@ -115,106 +116,99 @@ class HumiditySpecific(Plugin):
                         tt = tt_df.at[i,'d']
                         px = px_df.at[i,'d']
                         hr = hr_df.at[i,'d']
-                        hu_df.at[i,'d'] = rpn_calc_humidity_specific_hr(hr,tt,px,self.ice_water_phase=='both')
+                        hu_df.at[i,'d'] = rpn_calc_humidity_specific_hr(hr,tt,px,self.ice_water_phase=='both').astype(float32)
 
                 elif self.option==3:
                     print('option 3')
-                    # print('current_fhour_group 3\n',current_fhour_group)
                     level_intersection_df = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies_option_3)
                     current_fhour_group = fstpy.load_data(level_intersection_df)
-                    tt_df = current_fhour_group.query( 'nomvar=="TT"').reset_index(drop=True)
-                    es_df = current_fhour_group.query( 'nomvar=="ES"').reset_index(drop=True)
-                    px_df = current_fhour_group.query( 'nomvar=="PX"').reset_index(drop=True)
+                    tt_df = current_fhour_group.loc[current_fhour_group.nomvar=='TT'].reset_index(drop=True)
+                    es_df = current_fhour_group.loc[current_fhour_group.nomvar=='ES'].reset_index(drop=True)
+                    px_df = current_fhour_group.loc[current_fhour_group.nomvar=='PX'].reset_index(drop=True)
                     hu_df = create_empty_result(tt_df,self.plugin_result_specifications['HU'],copy=True)
                     tt_df = fstpy.unit_convert(tt_df,'kelvin')
+                    # es_df = fstpy.unit_convert(es_df,'kelvin')
                     px_df = fstpy.unit_convert(px_df,'pascal')
                     for i in hu_df.index:
-                        tt = tt_df.at[i,'d']
+                        tt = tt_df.at[i,'d']-TDPACK_OFFSET_FIX
+                        es = es_df.at[i,'d']-TDPACK_OFFSET_FIX
                         px = px_df.at[i,'d']
-                        es = es_df.at[i,'d']
-                        hu_df.at[i,'d'] = rpn_calc_humidity_specific_es(es, tt, px, self.ice_water_phase=='both')
+                        hu_df.at[i,'d'] = rpn_calc_humidity_specific_es(es, tt, px, self.ice_water_phase=='both').astype(float32)
 
                 else:
                     print('option 4')
                     level_intersection_df = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies_option_4)
                     current_fhour_group = fstpy.load_data(level_intersection_df)
-                    tt_df = current_fhour_group.query( '(nomvar=="TT")').reset_index(drop=True)
-                    td_df = current_fhour_group.query( '(nomvar=="TD")').reset_index(drop=True)
-                    px_df = current_fhour_group.query( '(nomvar=="PX")').reset_index(drop=True)
+                    tt_df = current_fhour_group.loc[current_fhour_group.nomvar=='TT'].reset_index(drop=True)
+                    px_df = current_fhour_group.loc[current_fhour_group.nomvar=='PX'].reset_index(drop=True)
                     hu_df = create_empty_result(tt_df,self.plugin_result_specifications['HU'],copy=True)
+                    es_df = DewPointDepression(pd.concat([current_fhour_group,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,temp_phase_switch=self.temp_phase_switch,temp_phase_switch_unit=self.temp_phase_switch_unit,rpn=True).compute()
+                    es_df = es_df.loc[es_df.nomvar=='ES'].reset_index(drop=True)
                     tt_df = fstpy.unit_convert(tt_df,'kelvin')
-                    td_df = fstpy.unit_convert(td_df,'kelvin')
+                    # es_df = fstpy.unit_convert(es_df,'kelvin')
+                    px_df = fstpy.unit_convert(px_df,'pascal')
                     for i in hu_df.index:
                         tt = tt_df.at[i,'d']-TDPACK_OFFSET_FIX
-                        td = td_df.at[i,'d']-TDPACK_OFFSET_FIX
-                        es = calc_dew_point_depression_td(tt,td)
-                        hu_df.at[i,'d'] = rpn_calc_humidity_specific_es(es, tt, px, self.ice_water_phase=='both')
+                        es = es_df.at[i,'d']-TDPACK_OFFSET_FIX
+                        px = px_df.at[i,'d']
+                        hu_df.at[i,'d'] = rpn_calc_humidity_specific_es(es, tt, px, self.ice_water_phase=='both').astype(float32)
 
             else:
                 if self.option==1:
                     print('option 1')
                     current_fhour_group = fstpy.load_data(current_fhour_group)
-                    qv_df = current_fhour_group.query( 'nomvar=="QV"').reset_index(drop=True)
+                    qv_df = current_fhour_group.loc[current_fhour_group.nomvar=='QV'].reset_index(drop=True)
                     hu_df = create_empty_result(qv_df,self.plugin_result_specifications['HU'],copy=True)
                     qv_df = fstpy.unit_convert(qv_df,'kilogram_per_kilogram')
                     for i in hu_df.index:
                         qv = qv_df.at[i,'d']
-                        hu_df.at[i,'d'] = calc_humidity_specific_qv(qv)
+                        hu_df.at[i,'d'] = calc_humidity_specific_qv(qv).astype(float32)
 
-                if self.option==2:
+                elif self.option==2:
                     print('option 2')
                     level_intersection_df = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies_option_2)
                     current_fhour_group = fstpy.load_data(level_intersection_df)
-                    tt_df = current_fhour_group.query( 'nomvar=="TT"').reset_index(drop=True)
-                    hr_df = current_fhour_group.query( 'nomvar=="HR"').reset_index(drop=True)
-                    px_df = current_fhour_group.query( 'nomvar=="PX"').reset_index(drop=True)
-                    svp_df = SaturationVapourPressure(pd.concat([tt_df,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,temp_phase_switch=self.temp_phase_switch,temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
-                    svp_df = svp_df.loc[svp_df.nomvar=='SVP'].reset_index(drop=True)
-                    vppr_df = VapourPressure(pd.concat([tt_df,svp_df,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,temp_phase_switch=self.temp_phase_switch,temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
+                    px_df = current_fhour_group.loc[current_fhour_group.nomvar=='PX'].reset_index(drop=True)
+                    vppr_df = VapourPressure(pd.concat([current_fhour_group,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,temp_phase_switch=self.temp_phase_switch,temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
                     vppr_df = vppr_df.loc[vppr_df.nomvar=='VPPR'].reset_index(drop=True)
-                    hu_df = create_empty_result(tt_df,self.plugin_result_specifications['HU'],copy=True)
-                    px_df = fstpy.unit_convert(px_df,'pascal')
-                    vppr_df = fstpy.unit_convert(vppr_df,'pascal')
+                    hu_df = create_empty_result(px_df,self.plugin_result_specifications['HU'],copy=True)
+                    # px_df = fstpy.unit_convert(px_df,'pascal')
+                    # vppr_df = fstpy.unit_convert(vppr_df,'pascal')
                     for i in hu_df.index:
-                        tt = tt_df.at[i,'d']
                         px = px_df.at[i,'d']
                         vppr = vppr_df.at[i,'d']
-                        hu_df.at[i,'d'] = calc_humidity_specific_vppr(vppr,px)
+                        hu_df.at[i,'d'] = calc_humidity_specific_vppr(vppr,px).astype(float32)
 
                 elif self.option==3:
                     print('option 3')
                     level_intersection_df = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies_option_3)
                     current_fhour_group = fstpy.load_data(level_intersection_df)
-                    tt_df = current_fhour_group.query( 'nomvar=="TT"').reset_index(drop=True)
-                    es_df = current_fhour_group.query( 'nomvar=="ES"').reset_index(drop=True)
-                    px_df = current_fhour_group.query( 'nomvar=="PX"').reset_index(drop=True)
-                    vppr_df = VapourPressure(pd.concat([es_df,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,temp_phase_switch=self.temp_phase_switch,temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
+                    px_df = current_fhour_group.loc[current_fhour_group.nomvar=='PX'].reset_index(drop=True)
+                    vppr_df = VapourPressure(pd.concat([current_fhour_group,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,temp_phase_switch=self.temp_phase_switch,temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
                     vppr_df = vppr_df.loc[vppr_df.nomvar=='VPPR'].reset_index(drop=True)
-                    hu_df = create_empty_result(tt_df,self.plugin_result_specifications['HU'],copy=True)
-                    px_df = fstpy.unit_convert(px_df,'pascal')
-                    vppr_df = fstpy.unit_convert(vppr_df,'pascal')
+                    hu_df = create_empty_result(px_df,self.plugin_result_specifications['HU'],copy=True)
+                    # px_df = fstpy.unit_convert(px_df,'pascal')
+                    # vppr_df = fstpy.unit_convert(vppr_df,'pascal')
                     for i in hu_df.index:
                         px = px_df.at[i,'d']
                         vppr = vppr_df.at[i,'d']
-                        hu_df.at[i,'d'] = calc_humidity_specific_vppr(vppr,px)
+                        hu_df.at[i,'d'] = calc_humidity_specific_vppr(vppr,px).astype(float32)
 
                 else:
                     print('option 4')
                     level_intersection_df = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies_option_4)
                     current_fhour_group = fstpy.load_data(level_intersection_df)
-                    tt_df = current_fhour_group.query( '(nomvar=="TT")').reset_index(drop=True)
-                    td_df = current_fhour_group.query( '(nomvar=="TD")').reset_index(drop=True)
-                    px_df = current_fhour_group.query( '(nomvar=="PX")').reset_index(drop=True)
-                    vppr_df = VapourPressure(pd.concat([tt_df,td_df,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,temp_phase_switch=self.temp_phase_switch,temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
+                    px_df = current_fhour_group.loc[current_fhour_group.nomvar=='PX'].reset_index(drop=True)
+                    vppr_df = VapourPressure(pd.concat([current_fhour_group,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,temp_phase_switch=self.temp_phase_switch,temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
                     vppr_df = vppr_df.loc[vppr_df.nomvar=='VPPR'].reset_index(drop=True)
-                    hu_df = create_empty_result(tt_df,self.plugin_result_specifications['HU'],copy=True)
-                    px_df = fstpy.unit_convert(px_df,'pascal')
-                    vppr_df = fstpy.unit_convert(vppr_df,'pascal')
+                    hu_df = create_empty_result(px_df,self.plugin_result_specifications['HU'],copy=True)
+                    # px_df = fstpy.unit_convert(px_df,'pascal')
+                    # vppr_df = fstpy.unit_convert(vppr_df,'pascal')
                     for i in hu_df.index:
                         px = px_df.at[i,'d']
                         vppr = vppr_df.at[i,'d']
-                        hu_df.at[i,'d'] = calc_humidity_specific_vppr(vppr,px)
+                        hu_df.at[i,'d'] = calc_humidity_specific_vppr(vppr,px).astype(float32)
 
-            df_list.append(hu_df)        
+            df_list.append(hu_df)
 
         return final_results(df_list, HumiditySpecificError, self.meta_df)

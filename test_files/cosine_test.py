@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"Cosine/testsFiles/"
 
 class TestCosine(unittest.TestCase):
 
-    def test_regtest_function_COS(self):
+    def test_function_COS(self):
         """Test #1 : Test de la fonction cosinus sur chaque element"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_1_fileSrc.std"

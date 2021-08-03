@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"TimeIntervalMinMax/testsFiles/"
 
 class TestTimeIntervalMinMax(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 : Tester sans la cle obligatoire FIELDNAME."""
         # open and read source
         source0 = plugin_test_dir + "global20121217_fileSrc.std"
@@ -41,10 +41,10 @@ class TestTimeIntervalMinMax(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 : Tester sans la cle obligatoire type."""
         # open and read source
         source0 = plugin_test_dir + "global20121217_fileSrc.std"
@@ -64,10 +64,10 @@ class TestTimeIntervalMinMax(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 : Tester sans la cle obligatoire rangeForecastHour."""
         # open and read source
         source0 = plugin_test_dir + "global20121217_fileSrc.std"
@@ -87,10 +87,10 @@ class TestTimeIntervalMinMax(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4 : Tester avec le type TYPE en majuscule."""
         # open and read source
         source0 = plugin_test_dir + "global20121217_fileSrc.std"
@@ -110,10 +110,10 @@ class TestTimeIntervalMinMax(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5 : Tester avec un interval à zero"""
         # open and read source
         source0 = plugin_test_dir + "global20121217_fileSrc.std"
@@ -133,10 +133,10 @@ class TestTimeIntervalMinMax(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6 : Tester avec un step a zero."""
         # open and read source
         source0 = plugin_test_dir + "global20121217_fileSrc.std"
@@ -156,10 +156,10 @@ class TestTimeIntervalMinMax(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_7(self):
+    def test_7(self):
         """Test #7 : Tester avec type max avec une sortie min."""
         # open and read source
         source0 = plugin_test_dir + "global20121217_fileSrc.std"
@@ -179,10 +179,10 @@ class TestTimeIntervalMinMax(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_8(self):
+    def test_8(self):
         """Test #8 : Tester avec step max et une sortie min."""
         # open and read source
         source0 = plugin_test_dir + "global20121217_fileSrc.std"
@@ -202,10 +202,10 @@ class TestTimeIntervalMinMax(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_9(self):
+    def test_9(self):
         """Test #9 : Tester l'option --output avec un path qui n'existe pas!"""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
@@ -225,10 +225,10 @@ class TestTimeIntervalMinMax(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_10(self):
+    def test_10(self):
         """Test #10 : Tester avec type MAX et outputfieldNameMIN, c'est pas bon."""
         # open and read source
         source0 = plugin_test_dir + "global20121217_fileSrc.std"
@@ -248,10 +248,10 @@ class TestTimeIntervalMinMax(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_11(self):
+    def test_11(self):
         """Test #11 : Tester avec type MIN et outputfieldNameMAX c'est pas bon."""
         # open and read source
         source0 = plugin_test_dir + "global20121217_fileSrc.std"
@@ -271,10 +271,10 @@ class TestTimeIntervalMinMax(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_12(self):
+    def test_12(self):
         """Test #12 : Tester avec type MINI, le type mini existe pas."""
         # open and read source
         source0 = plugin_test_dir + "global20121217_fileSrc.std"
@@ -294,10 +294,10 @@ class TestTimeIntervalMinMax(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_13(self):
+    def test_13(self):
         """Test #13 : Tester avec un rangeForecastHour invalide"""
         # open and read source
         source0 = plugin_test_dir + "global20121217_fileSrc.std"
@@ -317,10 +317,10 @@ class TestTimeIntervalMinMax(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_14(self):
+    def test_14(self):
         """Test #14 : Tester avec deux intervales à la place d'un seul."""
         # open and read source
         source0 = plugin_test_dir + "global20121217_fileSrc.std"
@@ -340,10 +340,10 @@ class TestTimeIntervalMinMax(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_15(self):
+    def test_15(self):
         """Test #15 : Tester avec un interval qui depasse le rangeForecastHour."""
         # open and read source
         source0 = plugin_test_dir + "global20121217_fileSrc.std"
@@ -363,10 +363,10 @@ class TestTimeIntervalMinMax(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_16(self):
+    def test_16(self):
         """Test #16 : Tester avec deux steps à la place d'un seul."""
         # open and read source
         source0 = plugin_test_dir + "global20121217_fileSrc.std"
@@ -386,10 +386,10 @@ class TestTimeIntervalMinMax(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_17(self):
+    def test_17(self):
         """Test #17 : Tester avec 2 outputfieldNameMin mais un seul fieldName."""
         # open and read source
         source0 = plugin_test_dir + "global20121217_fileSrc.std"
@@ -409,10 +409,10 @@ class TestTimeIntervalMinMax(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_18(self):
+    def test_18(self):
         """Test #18 : Tester avec 2 steps  mais un seul fieldName."""
         # open and read source
         source0 = plugin_test_dir + "global20121217_fileSrc.std"
@@ -432,10 +432,10 @@ class TestTimeIntervalMinMax(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_19(self):
+    def test_19(self):
         """Test #19 : Tester avec 2 outputFieldNameMax mais 1 seul fieldName."""
         # open and read source
         source0 = plugin_test_dir + "global20121217_fileSrc.std"
@@ -455,10 +455,10 @@ class TestTimeIntervalMinMax(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_20(self):
+    def test_20(self):
         """Test #20 : Tester avec 1 fieldName PR et 2 outputFieldNameMin PRX,PRZ mais un seul outputFieldNameMax."""
         # open and read source
         source0 = plugin_test_dir + "global20121217_fileSrc.std"
@@ -478,10 +478,10 @@ class TestTimeIntervalMinMax(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_21(self):
+    def test_21(self):
         """Test #21 :  Calcul d'un test min avec un fieldName TT et 2 rangeForecastHours."""
         # open and read source
         source0 = plugin_test_dir + "TT_Interval_3_168_160_150_fileSrc.std"
@@ -504,7 +504,7 @@ class TestTimeIntervalMinMax(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_22(self):
+    def test_22(self):
         """Test #22 :  Calcul d'un test MIN avec 2 fieldNames TT,HU et 2 rangeForecastHours."""
         # open and read source
         source0 = plugin_test_dir + "TT_HU_Interval_3_168_160_24_0_fileSrc.std"
@@ -527,7 +527,7 @@ class TestTimeIntervalMinMax(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_23(self):
+    def test_23(self):
         """Test #23 :  Calcul d'un test MAX avec 2 fieldNames TT,GZ et 2 rangeForecastHours."""
         # open and read source
         source0 = plugin_test_dir + "TT_GZ_Interval_3_80_56_20_0_diff_fileSrc.std"
@@ -550,7 +550,7 @@ class TestTimeIntervalMinMax(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_24(self):
+    def test_24(self):
         """Test #24 :  Calcul d'un test MAX  avec 2 fieldNames HU,GZ et 2 rangeForecastHours."""
         # open and read source
         source0 = plugin_test_dir + "HU_GZ_Interval_4_144_168_20_0_fileSrc.std"
@@ -573,7 +573,7 @@ class TestTimeIntervalMinMax(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_25(self):
+    def test_25(self):
         """Test #25 :  Calcul d'un test MAX avec 1 fieldName TT et 3 rangeForecastHours."""
         # open and read source
         source0 = plugin_test_dir + "TT_Interval_2_3_4_160_150_140_20_0_fileSrc.std"
@@ -596,7 +596,7 @@ class TestTimeIntervalMinMax(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_26(self):
+    def test_26(self):
         """Test #26 :  Calcul d'un test MAX avec 3 fieldNames et 1 rangeForecastHour."""
         # open and read source
         source0 = plugin_test_dir + "TT_HU_GZ_Interval_2_30_0_diff_fileSrc.std"
@@ -619,7 +619,7 @@ class TestTimeIntervalMinMax(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_27(self):
+    def test_27(self):
         """Test #27 :  Calcul d'un test BOTH avec 2 fieldNames , 2 rangeForecastHours."""
         # open and read source
         source0 = plugin_test_dir + "TT_HU_Interval_3_168_160_20_0_fileSrc.std"
@@ -642,7 +642,7 @@ class TestTimeIntervalMinMax(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_28(self):
+    def test_28(self):
         """Test #28 :  Calcul d'un test BOTH avec 1 fieldNames , 3 rangeForecastHours"""
         # open and read source
         source0 = plugin_test_dir + "TT_168_160_140_20_0_fileSrc.std"
@@ -665,7 +665,7 @@ class TestTimeIntervalMinMax(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_29(self):
+    def test_29(self):
         """Test #29 :  Calcul d'un test BOTH avec 3 fieldNames , 3 rangeForecastHours."""
         # open and read source
         source0 = plugin_test_dir + "TT_HU_GZ_168_160_140_20_0_fileSrc.std"
@@ -688,7 +688,7 @@ class TestTimeIntervalMinMax(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_30(self):
+    def test_30(self):
         """Test #30 :  Calcul d'un test MIN avec 1 fieldName sans interval."""
         # open and read source
         source0 = plugin_test_dir + "TT_168_160_140_20_0_fileSrc.std"
@@ -711,7 +711,7 @@ class TestTimeIntervalMinMax(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_31(self):
+    def test_31(self):
         """Test #31 :  Calcul d'un test MAX avec 1 fieldName sans interval."""
         # open and read source
         source0 = plugin_test_dir + "TT_168_160_140_20_0_fileSrc.std"
@@ -734,7 +734,7 @@ class TestTimeIntervalMinMax(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_32(self):
+    def test_32(self):
         """Test #32 :  Calcul d'un test BOTH avec 1 fieldName sans interval."""
         # open and read source
         source0 = plugin_test_dir + "TT_168_160_140_20_0_fileSrc.std"
@@ -757,7 +757,7 @@ class TestTimeIntervalMinMax(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_33(self):
+    def test_33(self):
         """Test #33 :  Calcul d'un test MIN avec 3 fieldName avec interval sans step."""
         # open and read source
         source0 = plugin_test_dir + "TT_125_100_75_50_25_fileSrc.std"
@@ -780,7 +780,7 @@ class TestTimeIntervalMinMax(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_34(self):
+    def test_34(self):
         """Test #34 :  Calcul d'un test MAX avec 3 fieldName avec interval sans step."""
         # open and read source
         source0 = plugin_test_dir + "TT_125_100_75_50_25_fileSrc.std"
@@ -803,7 +803,7 @@ class TestTimeIntervalMinMax(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_35(self):
+    def test_35(self):
         """Test #35 :  Calcul d'un test BOTH avec 3 fieldName avec interval sans step."""
         # open and read source
         source0 = plugin_test_dir + "TT_125_100_75_50_25_fileSrc.std"
@@ -826,7 +826,7 @@ class TestTimeIntervalMinMax(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_36(self):
+    def test_36(self):
         """Test #36 :  Calcul d'un test BOTH avec 3 fieldName avec interval sans step. rangeForecastHour"""
         # open and read source
         source0 = plugin_test_dir + "TT_125_100_75_50_25_fileSrc.std"
@@ -849,7 +849,7 @@ class TestTimeIntervalMinMax(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_35(self):
+    def test_35(self):
         """Test #35 :  Calcul d'un test MAX avec 3 fieldName avec interval sans step."""
         # open and read source
         source0 = plugin_test_dir + "TT_125_100_75_50_25_fileSrc.std"
@@ -872,7 +872,7 @@ class TestTimeIntervalMinMax(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_36(self):
+    def test_36(self):
         """Test #36 :  Calcul d'un test min avec un fieldName TT et 2 rangeForecastHours."""
         # open and read source
         source0 = plugin_test_dir + "TT_Interval_3_168_160_150_fileSrc.std"

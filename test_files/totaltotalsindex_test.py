@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"TotalTotalsIndex/testsFiles/"
 
 class TestTotalTotalsIndex(unittest.TestCase):
 
-    def test_regtest_straight_tti2(self):
+    def test_straight_tti2(self):
         """Test #1 : Calcul de l'indice total-total avec TT à 850 et 500 mb et ES à 850 mb."""
         # open and read source
         source0 = plugin_test_dir + "TT850_500_ES_850_fileSrc.std"

@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"GridMerge/testsFiles/"
 
 class TestGridMerge(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 : Test de fusion de 2 grilles consecutives alignees horizontalement"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_reghyb_TTGZ.std"
@@ -44,7 +44,7 @@ class TestGridMerge(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 : Test de fusion de 2 grilles consecutives alignees verticalement"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_reghyb_TTGZ.std"
@@ -67,7 +67,7 @@ class TestGridMerge(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 : Test de fusion de 3 grilles ne formant pas une grille rectangulaire"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_reghyb_TTGZ.std"
@@ -87,10 +87,10 @@ class TestGridMerge(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4 : Test de fusion de grilles consecutives de taille irreguliere"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_reghyb_TTGZ.std"
@@ -113,7 +113,7 @@ class TestGridMerge(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5 : Test de fusion de grilles consecutives de taille irreguliere et de point d'origine different de (0,0)"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_reghyb_TTGZ.std"
@@ -136,7 +136,7 @@ class TestGridMerge(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6 : Test de fusion de grilles consecutives, retour au fichier original"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_reghyb_TTGZ.std"
@@ -159,7 +159,7 @@ class TestGridMerge(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_7(self):
+    def test_7(self):
         """Test #7 : Test de fusion de grilles, retour au fichier original, valeurs manquantes"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_reghyb_TTGZ.std"
@@ -182,7 +182,7 @@ class TestGridMerge(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_8(self):
+    def test_8(self):
         """Test #8 : Test de fusion de grilles avec overlap"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_reghyb_TTGZ.std"
@@ -202,10 +202,10 @@ class TestGridMerge(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_9(self):
+    def test_9(self):
         """Test #9 : Test de fusion de grilles yan yan"""
         # open and read source
         source0 = plugin_test_dir + "2016031600_024_glbhyb"
@@ -225,6 +225,6 @@ class TestGridMerge(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 

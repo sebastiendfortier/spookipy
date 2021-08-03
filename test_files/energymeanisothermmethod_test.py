@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"EnergyMeanIsothermMethod/testsFiles/"
 
 class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 :   Test with maxNbLayer = -1, it should stop because of invalid value."""
         # open and read source
         source0 = plugin_test_dir + "inputFileTests.std"
@@ -41,10 +41,10 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 :   Test with epsilonTemperature = -1, it should stop because of invalid value."""
         # open and read source
         source0 = plugin_test_dir + "inputFileTests.std"
@@ -64,10 +64,10 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 :   Test with epsilonPressure = -1, it should stop because of invalid value."""
         # open and read source
         source0 = plugin_test_dir + "inputFileTests.std"
@@ -87,10 +87,10 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4 :  Test avec un fichier maison de 10 cas, champs APX et NBVS non disponibles en input,  sans option."""
         # open and read source
         source0 = plugin_test_dir + "inputFileTests.std"
@@ -113,7 +113,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5 :  Test avec un fichier maison de 10 cas, champs APX et NBVS non disponibles en input, avec l'option --maxNbLayer 2"""
         # open and read source
         source0 = plugin_test_dir + "inputFileTests.std"
@@ -136,7 +136,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6 :  Test avec un fichier maison de 10 cas, champs APX et NBVS disponibles en input,  sans option."""
         # open and read source
         source0 = plugin_test_dir + "inputFileTests.std"
@@ -159,7 +159,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_7(self):
+    def test_7(self):
         """Test #7 :  Test avec un fichier maison de 10 cas, champs APX et NBVS en input, avec l'option --maxNbLayer 2"""
         # open and read source
         source0 = plugin_test_dir + "inputFileTests.std"
@@ -182,7 +182,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_8(self):
+    def test_8(self):
         """Test #8 :  Test avec un fichier maison de 10 cas, champs APX et NBVS disponibles en input (NBVS=1),  sans option."""
         # open and read source
         source0 = plugin_test_dir + "inputFileTests.std"
@@ -205,7 +205,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_9(self):
+    def test_9(self):
         """Test #9 :  Test avec un fichier maison de 10 cas, champs APX et NBVS disponibles en input (NBVS=1), .--maxNbLayer 2"""
         # open and read source
         source0 = plugin_test_dir + "inputFileTests.std"
@@ -228,7 +228,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_10(self):
+    def test_10(self):
         """Test #10 :  Test avec un fichier reel, nombre de couches inferieur a ce qui est demande, epsilons passes en parametres."""
         # open and read source
         source0 = plugin_test_dir + "2013042906_048_reghyb"
@@ -251,7 +251,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_11(self):
+    def test_11(self):
         """Test #11 :  Test avec 2 points d'un fichier du lam_nat, avec la cle pour tenir compte du LCL."""
         # open and read source
         source0 = plugin_test_dir + "lam_nat_2017042506_040_2pts"
@@ -277,7 +277,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_12(self):
+    def test_12(self):
         """Test #12 :  Test avec 2 points d'un fichier du lam_nat, cle pour tenir compte du LCL. Cas ou un LCL coupe la couche positive."""
         # open and read source
         source0 = plugin_test_dir + "lam_nat_coupe_cas1a"
@@ -303,7 +303,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_13(self):
+    def test_13(self):
         """Test #13 :  Test avec 2 points d'un fichier du lam_nat, cle pour tenir compte du LCL. Aucun croisement."""
         # open and read source
         source0 = plugin_test_dir + "lam_nat_coupe_cas4"
@@ -329,7 +329,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_14(self):
+    def test_14(self):
         """Test #14 :  Test avec 3 points d'un fichier du lam_nat, cle pour tenir compte du LCL. Avec croisements."""
         # open and read source
         source0 = plugin_test_dir + "Fichier3Pts_LCL.std"
@@ -355,7 +355,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_15(self):
+    def test_15(self):
         """Test #15 :  Test avec cle pour tenir compte du LCL et calcul de l'energie bornee (Cas A,B,C,D et F)."""
         # open and read source
         source0 = plugin_test_dir + "FichierNRJ_CasABCDF.std"
@@ -378,7 +378,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_16(self):
+    def test_16(self):
         """Test #16 :  Test avec cle pour tenir compte du LCL et calcul de l'energie bornee (Cas E)."""
         # open and read source
         source0 = plugin_test_dir + "FichierNRJ_CasE.std"
@@ -401,7 +401,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_17(self):
+    def test_17(self):
         """Test #17 :  Test avec cle pour tenir compte du LCL et calcul de l'energie bornee (Cas E)."""
         # open and read source
         source0 = plugin_test_dir + "FichierNRJ_CasE.std"
@@ -424,7 +424,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_18(self):
+    def test_18(self):
         """Test #18 :  Test avec cle pour tenir compte du LCL et calcul de l'energie bornee (Cas G)."""
         # open and read source
         source0 = plugin_test_dir + "FichierNRJ_CasG.std"
@@ -447,7 +447,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_19(self):
+    def test_19(self):
         """Test #19 :  Test avec cle pour tenir compte du LCL et calcul de l'energie bornee (Cas I)."""
         # open and read source
         source0 = plugin_test_dir + "FichierNRJ_CasI.std"
@@ -470,7 +470,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_20(self):
+    def test_20(self):
         """Test #20 :  Test avec cle pour tenir compte du LCL et calcul de l'energie bornee (Cas I) avec --capeType BOUNDED."""
         # open and read source
         source0 = plugin_test_dir + "FichierNRJ_CasI.std"
@@ -493,7 +493,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_21(self):
+    def test_21(self):
         """Test #21 :  Test avec cle pour tenir compte du LCL et calcul de l'energie bornee (Cas I) avec --capeType UNBOUNDED."""
         # open and read source
         source0 = plugin_test_dir + "FichierNRJ_CasI.std"
@@ -516,7 +516,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_22(self):
+    def test_22(self):
         """Test #22 :  Calcul de l'energie bornee avec des bornes qui englobent tous les niveaux."""
         # open and read source
         source0 = plugin_test_dir + "FichierNRJ_CasABCDF.std"
@@ -539,7 +539,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_23(self):
+    def test_23(self):
         """Test #23 :  Calcul de l'energie bornee avec des bornes qui n'englobent pas tous les niveaux."""
         # open and read source
         source0 = plugin_test_dir + "FichierNRJ_CasABCDF.std"
@@ -562,7 +562,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_24(self):
+    def test_24(self):
         """Test #24 :  Calcul de l'energie bornee avec des bornes dont les valeurs arrivent sur un niveau de  pression."""
         # open and read source
         source0 = plugin_test_dir + "FichierNRJ_CasABCDF.std"
@@ -585,7 +585,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_25(self):
+    def test_25(self):
         """Test #25 :  Calcul de l'energie bornee avec des bornes qui ne concordent pas avec aucun niveau de pression."""
         # open and read source
         source0 = plugin_test_dir + "FichierNRJ_CasABCDF.std"
@@ -608,7 +608,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_26(self):
+    def test_26(self):
         """Test #26 :  Calcul de l'energie bornee avec option MEAN_LAYER."""
         # open and read source
         source0 = plugin_test_dir + "SortieLFCEL_MEANLAYER_inc2mb_v2.std"
@@ -631,7 +631,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_27(self):
+    def test_27(self):
         """Test #27 :  Calcul de l'energie bornee avec option MEAN_LAYER; la borne inferieure est sous le niveau de depart de la parcelle, donc CAPE indefini."""
         # open and read source
         source0 = plugin_test_dir + "SortieLFCEL_MEANLAYER_inc2mb_v2.std"
@@ -654,7 +654,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_28(self):
+    def test_28(self):
         """Test #28 :  Calcul de l'energie bornee avec option MOST_UNSTABLE."""
         # open and read source
         source0 = plugin_test_dir + "SortieLFCEL_MOSTUNSTABLE_inc2mb.std"
@@ -677,7 +677,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_29(self):
+    def test_29(self):
         """Test #29 :  Calcul de l'energie bornee avec option MOST_UNSTABLE; la borne inferieure est sous le niveau de depart de la parcelle, donc CAPE indefini."""
         # open and read source
         source0 = plugin_test_dir + "SortieLFCEL_MOSTUNSTABLE_inc2mb.std"
@@ -700,7 +700,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_30(self):
+    def test_30(self):
         """Test #30 :  Calcul de l'energie bornee; on ne trouve pas de valeurs pour la borne inferieure, donc EPB indefini."""
         # open and read source
         source0 = plugin_test_dir + "SortieLFCEL_SFC_inc10mb.std"
@@ -723,7 +723,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_31(self):
+    def test_31(self):
         """Test #31 :  Calcul de l'energie bornee; on frole la valeur de borne inferieure sans jamais l'atteindre, donc EPB indefini."""
         # open and read source
         source0 = plugin_test_dir + "SortieLFCEL_SFC_inc10mb.std"
@@ -746,7 +746,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_32(self):
+    def test_32(self):
         """Test #32 :  Calcul de l'energie bornee; borne inferieure plus grande que temperature du 1er niveau, calcul a partir du 1er niveau."""
         # open and read source
         source0 = plugin_test_dir + "SortieLFCEL_SFC_inc10mb_2.std"
@@ -769,7 +769,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_33(self):
+    def test_33(self):
         """Test #33 :  Calcul de l'energie bornee; bornes retrouvees au milieu des temperatures."""
         # open and read source
         source0 = plugin_test_dir + "minimal_TTTDGZ_5005.std"

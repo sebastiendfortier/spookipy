@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"BulletinFBPreparation/testsFiles/"
 
 class TestBulletinFBPreparation(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 : Produit(sans les champs pressions) les informations du bulletin FBCN31_000 à partir d'un fichier eta minimal"""
         # open and read source
         source0 = plugin_test_dir + "2011072100_006_eta_small"
@@ -44,7 +44,7 @@ class TestBulletinFBPreparation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 : Produit les informations du bulletin FBCN31_000 à partir d'un fichier eta complet"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regeta"
@@ -67,7 +67,7 @@ class TestBulletinFBPreparation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 : Produit les informations du bulletin FBCN31_000 à partir d'un fichier hybrid complet"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_reghyb"
@@ -90,7 +90,7 @@ class TestBulletinFBPreparation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4 : Produit les informations du bulletin FBCN31_000 à partir d'un fichier hybrid complet et utilise runID et implementation."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_reghyb"

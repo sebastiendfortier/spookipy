@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"SlopeIndex/testsFiles/"
 
 class TestSlopeIndex(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 : Appel a SlopeIndex,valeur invalide pour verticalLevel."""
         # open and read source
         source0 = plugin_test_dir + "minimal_pres.std"
@@ -41,10 +41,10 @@ class TestSlopeIndex(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 :  Test avec UU, VV fetch 5"""
         # open and read source
         source0 = plugin_test_dir + "minimal_pres.std"
@@ -70,7 +70,7 @@ class TestSlopeIndex(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 without edges default fetch"""
         # open and read source
         source0 = plugin_test_dir + "minimal_pres.std"
@@ -96,7 +96,7 @@ class TestSlopeIndex(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4 with edges default fetch"""
         # open and read source
         source0 = plugin_test_dir + "minimal_pres.std"
@@ -122,7 +122,7 @@ class TestSlopeIndex(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5 :  Test avec UU, VV fetch 5, verify writer with missing data"""
         # open and read source
         source0 = plugin_test_dir + "minimal_pres.std"
@@ -148,7 +148,7 @@ class TestSlopeIndex(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6 :  Test avec UU, VV fetch 1 - comparer avec exe marc verville"""
         # open and read source
         source0 = plugin_test_dir + "slopeIndex.work"
@@ -171,7 +171,7 @@ class TestSlopeIndex(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_7(self):
+    def test_7(self):
         """Test #7 :  segfault test lamarctic - marc verville"""
         # open and read source
         source0 = plugin_test_dir + "lamarctic.eta.std"
@@ -194,7 +194,7 @@ class TestSlopeIndex(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_8(self):
+    def test_8(self):
         """Test #8 :  segfault test ens.regmodel - marc verville"""
         # open and read source
         source0 = plugin_test_dir + "ens.regmodel.std"
@@ -217,7 +217,7 @@ class TestSlopeIndex(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_9(self):
+    def test_9(self):
         """Test #9 :  segfault test ens.glbmodel - marc verville"""
         # open and read source
         source0 = plugin_test_dir + "ens.glbmodel.std"

@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"ArcCosine/testsFiles/"
 
 class TestArcCosine(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 : Calcule la valeur arc cosinus de chaque champ."""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_point1_fileSrc.std"

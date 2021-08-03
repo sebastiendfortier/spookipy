@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"GridMergeSimilar/testsFiles/"
 
 class TestGridMergeSimilar(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 : Test """
         # open and read source
         source0 = plugin_test_dir + "2011072100_006_eta_small"
@@ -44,7 +44,7 @@ class TestGridMergeSimilar(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 : Test"""
         # open and read source
         source0 = plugin_test_dir + "2011072100_006_eta_small"
@@ -64,6 +64,6 @@ class TestGridMergeSimilar(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 

@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"Sine/testsFiles/"
 
 class TestSine(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 :  Test Sine normal"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_1_fileSrc.std"

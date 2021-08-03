@@ -36,20 +36,20 @@ main(){
     cd $TMPDIR
     if ! [ -d 'ssm_python' ]; then
         mkdir ssm_python
-    fi 
-    cd ssm_python     
-    for f in ${base_path}/lib/packages/*; 
+    fi
+    cd ssm_python
+    for f in ${base_path}/lib/packages/*;
     do
         ln -s $f
     done
     cd $CDIR
     warn_override_variables PYTHONPATH
 
-    SSM_PATH_PRESENT=$(echo $PYTHONPATH|grep ssm_python)
+    SSM_PATH_PRESENT=$(echo $PYTHONPATH|grep ssm_python || test $? = 1;)
 
     if [ -z $SSM_PATH_PRESENT ]; then
         [ -z "$PYTHONPATH" ] && export PYTHONPATH=${TMPDIR}/ssm_python || export PYTHONPATH=${TMPDIR}/ssm_python:$PYTHONPATH
-    fi    
+    fi
 
   if $in_ssm ; then
       load_project_runtime_dependencies
@@ -58,7 +58,7 @@ main(){
 }
 
 message(){
-   echo $(tput setaf 3)${sourced_file}: $@$(tput sgr 0) >&2
+   echo $(tput -T xterm setaf 3)${sourced_file}: $@$(tput -T xterm sgr 0) >&2
    true
 }
 

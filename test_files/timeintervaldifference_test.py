@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"TimeIntervalDifference/testsFiles/"
 
 class TestTimeIntervalDifference(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 : Tester avec un interval 6 sur un range de 12 a 18 et a tous les sauts de 1."""
         # open and read source
         source0 = plugin_test_dir + "18_fileSrc.std"
@@ -47,7 +47,7 @@ class TestTimeIntervalDifference(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 : Tester avec deux groupes d'interval."""
         # open and read source
         source0 = plugin_test_dir + "18_fileSrc.std"
@@ -76,7 +76,7 @@ class TestTimeIntervalDifference(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 : Tester avec un interval 6 sur un range de 6 a 12 et a tous les sauts de 1."""
         # open and read source
         source0 = plugin_test_dir + "PR2009051312_012_fileSrc.std"
@@ -102,7 +102,7 @@ class TestTimeIntervalDifference(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4 : Tester avec un interval 6 sur un range de 12 a 18 et a tous les sauts de 1."""
         # open and read source
         source0 = plugin_test_dir + "18_fileSrc.std"
@@ -128,7 +128,7 @@ class TestTimeIntervalDifference(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5 : Tester avec un fichier qui vient de regeta."""
         # open and read source
         source0 = plugin_test_dir + "global20121217_fileSrc.std"
@@ -151,7 +151,7 @@ class TestTimeIntervalDifference(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6 :   Test avec une valeur invalide pour interval."""
         # open and read source
         source0 = plugin_test_dir + "global20121217_fileSrc.std"
@@ -171,10 +171,10 @@ class TestTimeIntervalDifference(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_7(self):
+    def test_7(self):
         """Test #7 :   Test avec une valeur invalide pour step."""
         # open and read source
         source0 = plugin_test_dir + "global20121217_fileSrc.std"
@@ -194,10 +194,10 @@ class TestTimeIntervalDifference(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_8(self):
+    def test_8(self):
         """Test #8 : Tester avec un fichier qui contient des champs TT et UV mais des UV qui sont a 0 et 20 dans le IP3"""
         # open and read source
         source0 = plugin_test_dir + "UVTT_3a24hre_delta3_IP3_20_40_0_fileSrc.std"
@@ -220,7 +220,7 @@ class TestTimeIntervalDifference(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_9(self):
+    def test_9(self):
         """Test #9 : Tester avec un Interval de 0@3 et de 0@9 sur un range de 3@9 avec un interval de 6 et un saut de 9."""
         # open and read source
         source0 = plugin_test_dir + "PR_Interval_012_0_3_fileSrc_encoded.std"
@@ -246,7 +246,7 @@ class TestTimeIntervalDifference(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_10(self):
+    def test_10(self):
         """Test #10 : Tester avec un Interval de 0@9 et de 6@9 sur un range de 0@6 avec un interval de 6 et un saut de 9."""
         # open and read source
         source0 = plugin_test_dir + "PR_Interval_012_6_9_fileSrc_encoded.std"
@@ -272,7 +272,7 @@ class TestTimeIntervalDifference(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_11(self):
+    def test_11(self):
         """Test #11 : Tester avec deux Interval de 0@3 et 9@12 et de 0@9 et 9@18 sur un range de 3@18 avec un interval de 6 et un saut de 9."""
         # open and read source
         source0 = plugin_test_dir + "PR_Interval_0-3_9-12_fileSrc_encoded.std"
@@ -298,7 +298,7 @@ class TestTimeIntervalDifference(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_12(self):
+    def test_12(self):
         """Test #12 : Tester avec un Interval de 0@9 et de 6@9 sur un range de 0@6 avec un interval de 6 et un saut de 9."""
         # open and read source
         source0 = plugin_test_dir + "PR_Interval_0-9_9-18_fileSrc_encoded.std"
@@ -324,7 +324,7 @@ class TestTimeIntervalDifference(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_13(self):
+    def test_13(self):
         """Test #13 : Tester avec un Interval de 0@9 et de 6@9 sur un range de 0@6 avec un interval de 6 et un saut de 9 en encodant la sortie."""
         # open and read source
         source0 = plugin_test_dir + "PR_Interval_012_6_9_fileSrc_encoded.std"
@@ -350,7 +350,7 @@ class TestTimeIntervalDifference(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_14(self):
+    def test_14(self):
         """Test #14 : Tester avec une valeur invalide pour rangeForecastHour."""
         # open and read source
         source0 = plugin_test_dir + "global20121217_fileSrc.std"
@@ -370,10 +370,10 @@ class TestTimeIntervalDifference(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_15(self):
+    def test_15(self):
         """Test #15 : Tester avec l'intervalle 0@9 manquant dans le fichier source."""
         # open and read source
         source0 = plugin_test_dir + "PR_exclude_interval_0A9_fileSrc_encoded.std"
@@ -393,10 +393,10 @@ class TestTimeIntervalDifference(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_16(self):
+    def test_16(self):
         """Test #16 : Tester avec un range invalide pour --interval."""
         # open and read source
         source0 = plugin_test_dir + "global20121217_fileSrc.std"
@@ -416,10 +416,10 @@ class TestTimeIntervalDifference(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_17(self):
+    def test_17(self):
         """Test #17 : Tester avec la valeur du lower bound de --forecastHour plus grande que son upper bound."""
         # open and read source
         source0 = plugin_test_dir + "global20121217_fileSrc.std"
@@ -439,10 +439,10 @@ class TestTimeIntervalDifference(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_18(self):
+    def test_18(self):
         """Test #18 : Tester si single thread fonctionne. Probleme potentiel avec algorithm.hpp => Segmentation fault (core dumped)"""
         # open and read source
         source0 = plugin_test_dir + "SN0_SN1.std"
@@ -465,7 +465,7 @@ class TestTimeIntervalDifference(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_19(self):
+    def test_19(self):
         """Test #19 : Tester avec un fichier qui contient des champs TT et UV mais des UV qui sont a 0 et 20 dans le IP3 avec strictlyPositive switch"""
         # open and read source
         source0 = plugin_test_dir + "UVTT_3a24hre_delta3_IP3_20_40_0_fileSrc.std"
@@ -488,7 +488,7 @@ class TestTimeIntervalDifference(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_20(self):
+    def test_20(self):
         """Test #20 : Tester avec un fichier qui contient des champs TT et UV mais des UV qui sont a 0 et 20 dans le IP3 avec strictlyPositive switch"""
         # open and read source
         source0 = plugin_test_dir + "UVTT_3a24hre_delta3_IP3_20_40_0_fileSrc.std"
@@ -511,7 +511,7 @@ class TestTimeIntervalDifference(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_21(self):
+    def test_21(self):
         """Test #21 : Tester la presence de une des 2 parametres rangeForeCastHour"""
         # open and read source
         source0 = plugin_test_dir + "UVTT_3a24hre_delta3_IP3_20_40_0_fileSrc.std"
@@ -531,10 +531,10 @@ class TestTimeIntervalDifference(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_22(self):
+    def test_22(self):
         """Test #22 : Test interval patameter"""
         # open and read source
         source0 = plugin_test_dir + "UVTT_3a24hre_delta3_IP3_20_40_0_fileSrc.std"
@@ -557,7 +557,7 @@ class TestTimeIntervalDifference(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_23(self):
+    def test_23(self):
         """Test #23 : Test step patameter"""
         # open and read source
         source0 = plugin_test_dir + "UVTT_3a24hre_delta3_IP3_20_40_0_fileSrc.std"
@@ -580,7 +580,7 @@ class TestTimeIntervalDifference(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_24(self):
+    def test_24(self):
         """Test #24 : Test allHourMinuteSecond parameters"""
         # open and read source
         source0 = plugin_test_dir + "UVTT_3a24hre_delta3_IP3_20_40_0_fileSrc.std"

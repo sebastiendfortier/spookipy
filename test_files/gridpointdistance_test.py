@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"GridPointDistance/testsFiles/"
 
 class TestGridPointDistance(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 : test_gridPointDistance_X_centered"""
         # open and read source
         source0 = plugin_test_dir + "ps5x4_fileSrc.std"
@@ -44,7 +44,7 @@ class TestGridPointDistance(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 : test_gridPointDistance_Y_centered"""
         # open and read source
         source0 = plugin_test_dir + "ps5x4_fileSrc.std"
@@ -67,7 +67,7 @@ class TestGridPointDistance(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 : test_gridPointDistance_X_forward"""
         # open and read source
         source0 = plugin_test_dir + "ps5x4_fileSrc.std"
@@ -90,7 +90,7 @@ class TestGridPointDistance(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4 : test_gridPointDistance_Y_forward"""
         # open and read source
         source0 = plugin_test_dir + "ps5x4_fileSrc.std"
@@ -113,7 +113,7 @@ class TestGridPointDistance(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5 : test_gridPointDistance_X_backward"""
         # open and read source
         source0 = plugin_test_dir + "ps5x4_fileSrc.std"
@@ -136,7 +136,7 @@ class TestGridPointDistance(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6 : test_gridPointDistance_Y_backward"""
         # open and read source
         source0 = plugin_test_dir + "ps5x4_fileSrc.std"
@@ -159,7 +159,7 @@ class TestGridPointDistance(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_7(self):
+    def test_7(self):
         """Test #7 : test_gridPointDistance_XY_centered"""
         # open and read source
         source0 = plugin_test_dir + "ps5x4_fileSrc.std"

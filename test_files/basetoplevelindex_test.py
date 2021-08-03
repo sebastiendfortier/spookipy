@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"BaseTopLevelIndex/testsFiles/"
 
 class TestBaseTopLevelIndex(unittest.TestCase):
 
-    def test_regtest_bt1(self):
+    def test_bt1(self):
         """Test #1 : Lit le champ IFLD et recherche 0.6 dans les colonnes a l'aide de l'opérateur >= et retourne les indices trouvées dans BASE et TOP"""
         # open and read source
         source0 = plugin_test_dir + "baseTop_fileSrc.csv"
@@ -44,7 +44,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_operatorEqual(self):
+    def test_operatorEqual(self):
         """Test #2 : Lit le champ IFLD et recherche 0.5 dans les colonnes a l'aide de l'opérateur == et retourne les indices trouvées dans BASE et TOP"""
         # open and read source
         source0 = plugin_test_dir + "baseTop_fileSrcEqual.csv"
@@ -67,7 +67,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_operatorLessEqual(self):
+    def test_operatorLessEqual(self):
         """Test #3 : Lit le champ IFLD et recherche 0.5 dans les colonnes a l'aide de l'opérateur <= et retourne les indices trouvées dans BASE et TOP"""
         # open and read source
         source0 = plugin_test_dir + "baseTop_fileSrcLessEqual.csv"
@@ -90,7 +90,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_operatorLessThan(self):
+    def test_operatorLessThan(self):
         """Test #4 : Lit le champ IFLD et recherche 0.5 dans les colonnes a l'aide de l'opérateur < et retourne les indices trouvées dans BASE et TOP"""
         # open and read source
         source0 = plugin_test_dir + "baseTop_fileSrcLessThan.csv"
@@ -113,7 +113,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_operatorGreaterEqual(self):
+    def test_operatorGreaterEqual(self):
         """Test #5 : Lit le champ IFLD et recherche 0.5 dans les colonnes a l'aide de l'opérateur >= et retourne les indices trouvées dans BASE et TOP"""
         # open and read source
         source0 = plugin_test_dir + "baseTop_fileSrcGreaterEqual.csv"
@@ -136,7 +136,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_operatorGreaterThan(self):
+    def test_operatorGreaterThan(self):
         """Test #6 : Lit le champ IFLD et recherche 0.5 dans les colonnes a l'aide de l'opérateur > et retourne les indices trouvées dans BASE et TOP"""
         # open and read source
         source0 = plugin_test_dir + "baseTop_fileSrcGreaterThan.csv"
@@ -159,7 +159,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_operatorNotEqual(self):
+    def test_operatorNotEqual(self):
         """Test #7 : Lit le champ IFLD et recherche 0.5 dans les colonnes a l'aide de l'opérateur != et retourne les indices trouvées dans BASE et TOP"""
         # open and read source
         source0 = plugin_test_dir + "baseTop_fileSrcNotEqual.csv"

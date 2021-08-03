@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"PrecipitationTypeInstantaneousBourgouin/testsFiles/"
 
 class TestPrecipitationTypeInstantaneousBourgouin(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 :   Test avec une valeur invalide pour precipitationRate."""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
@@ -41,10 +41,10 @@ class TestPrecipitationTypeInstantaneousBourgouin(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 :   Test avec un fichier contenant les niveaux de congelation (FRP et NBFL)"""
         # open and read source
         source0 = plugin_test_dir + "input_2010032500_012"
@@ -67,7 +67,7 @@ class TestPrecipitationTypeInstantaneousBourgouin(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 :   Test avec un fichier dont on doit calculer au prealable les niveaux de congelation"""
         # open and read source
         source0 = plugin_test_dir + "input_2013041212_024"

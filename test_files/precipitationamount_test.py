@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"PrecipitationAmount/testsFiles/"
 
 class TestPrecipitationAmount(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 : Tester avec une liste de fieldName invalide."""
         # open and read source
         source0 = plugin_test_dir + "18_fileSrc.std"
@@ -44,10 +44,10 @@ class TestPrecipitationAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 : Tester avec un interval 6 sur un range de 12 a 18 et a tous les sauts de 1."""
         # open and read source
         source0 = plugin_test_dir + "18_fileSrc.std"
@@ -73,7 +73,7 @@ class TestPrecipitationAmount(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 : Tester avec une liste de valeurs pour rangeForecastHour, interval et step."""
         # open and read source
         source0 = plugin_test_dir + "global20121217_fileSrc.std"
@@ -96,7 +96,7 @@ class TestPrecipitationAmount(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4 : Tester avec une liste de valeurs pour rangeForecastHour, interval et step."""
         # open and read source
         source0 = plugin_test_dir + "global20121217_fileSrc.std"
@@ -119,7 +119,7 @@ class TestPrecipitationAmount(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5 : Tester avec une liste de valeurs pour rangeForecastHour, interval et step."""
         # open and read source
         source0 = plugin_test_dir + "global20121217_fileSrc.std"
@@ -142,7 +142,7 @@ class TestPrecipitationAmount(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6 : Tester avec une liste de valeurs pour rangeForecastHour, interval et step."""
         # open and read source
         source0 = plugin_test_dir + "global20121217_fileSrc.std"
@@ -165,7 +165,7 @@ class TestPrecipitationAmount(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_7(self):
+    def test_7(self):
         """Test #7 : Test HourMinuteSecond parameters"""
         # open and read source
         source0 = plugin_test_dir + "global20121217_fileSrc.std"
@@ -188,7 +188,7 @@ class TestPrecipitationAmount(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_8(self):
+    def test_8(self):
         """Test #8 : Test HourMinuteSecond parameters step test"""
         # open and read source
         source0 = plugin_test_dir + "2020102212_023_lamwest_minimal.pres"

@@ -156,7 +156,7 @@ def test_reggc_test_6(plugin_test_dir):
     assert(res == True)
 
 
-# def test_regtest_14(plugin_test_dir):
+# def test_14(plugin_test_dir):
 #     """Test #14 : Interpolation Verticale 1/16 pieces 649x672 664Mo"""
 #     # open and read source
 #     source0 = plugin_test_dir + "2011100712_012_regpres"

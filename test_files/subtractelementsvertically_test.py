@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"SubtractElementsVertically/testsFiles/"
 
 class TestSubtractElementsVertically(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 : Utilisation de --outputFieldName avec une valeur > 4 caractères - requete invalide."""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
@@ -41,10 +41,10 @@ class TestSubtractElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 : Effectue un test avec --outputFieldName mais plusieurs champs en entrée - requete invalide."""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
@@ -64,10 +64,10 @@ class TestSubtractElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 : Test avec 2 champs et 2 niveaux, option --direction ASCENDING"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
@@ -90,7 +90,7 @@ class TestSubtractElementsVertically(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4 : Test avec un fichier de 2 champs et 2 niveaux, option --direction DESCENDING"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
@@ -113,7 +113,7 @@ class TestSubtractElementsVertically(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5 :Test avec un fichier de 2 champs; selection d'un champ et --direction ASCENDING"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
@@ -136,7 +136,7 @@ class TestSubtractElementsVertically(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6 : Test sur un fichier dont les champs possèdent des intervalles - requete invalide."""
         # open and read source
         source0 = plugin_test_dir + "inputTest6.std"
@@ -156,10 +156,10 @@ class TestSubtractElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_7(self):
+    def test_7(self):
         """Test #7 :Test avec 2 champs, plusieurs niveaux, differents forecastHours et --direction ASCENDING"""
         # open and read source
         source0 = plugin_test_dir + "TTES2x2x4_manyForecastHours.std"
@@ -182,7 +182,7 @@ class TestSubtractElementsVertically(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_8(self):
+    def test_8(self):
         """Test #8 :Test avec 2 champs, plusieurs niveaux, differents forecastHours et --direction DESCENDING"""
         # open and read source
         source0 = plugin_test_dir + "TTES2x2x4_manyForecastHours.std"

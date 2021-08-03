@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"CubeRoot/testsFiles/"
 
 class TestCubeRoot(unittest.TestCase):
 
-    def test_regtest_function_CBRT(self):
+    def test_function_CBRT(self):
         """Test #1 : Calcul de la fonction racine cubique pour chaque element."""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_8_fileSrc.std"

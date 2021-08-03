@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"PrecipitationTypeDominant/testsFiles/"
 
 class TestPrecipitationTypeDominant(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 : Tester le plugin avec un epsilon invalide """
         # open and read source
         source0 = plugin_test_dir + "PetitFichier.std"
@@ -41,10 +41,10 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 : Tester le plugin avec un precipThreshold invalide """
         # open and read source
         source0 = plugin_test_dir + "PetitFichier.std"
@@ -64,10 +64,10 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 : Tester le plugin avec le cas de base BOURGOUIN"""
         # open and read source
         source0 = plugin_test_dir + "accums.std"
@@ -90,7 +90,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4 : Tester le plugin avec le cas de base MY2"""
         # open and read source
         source0 = plugin_test_dir + "accums.std"
@@ -113,7 +113,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5 : Tester le plugin avec le cas de base P3"""
         # open and read source
         source0 = plugin_test_dir + "accums.std"
@@ -136,7 +136,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6 : Tester le plugin avec le cas de base CUSTOM"""
         # open and read source
         source0 = plugin_test_dir + "customAccums.std"
@@ -159,7 +159,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_7(self):
+    def test_7(self):
         """Test #7 : Tester le plugin avec le cas 3 champs CUSTOM"""
         # open and read source
         source0 = plugin_test_dir + "customAccums.std"
@@ -182,7 +182,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_8(self):
+    def test_8(self):
         """Test #8 : Tester le plugin avec le cas de base BOURGOUIN precipAmountPreCalcule"""
         # open and read source
         source0 = plugin_test_dir + "accumIntervals.std"
@@ -205,7 +205,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_9(self):
+    def test_9(self):
         """Test #9 : Tester le plugin avec le cas 4 champs CUSTOM"""
         # open and read source
         source0 = plugin_test_dir + "accums.std"
@@ -228,7 +228,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_10(self):
+    def test_10(self):
         """Test #10 : Tester le plugin avec le cas 4 champs CUSTOM et option de nbits npak E32"""
         # open and read source
         source0 = plugin_test_dir + "accumsNbits.std"
@@ -251,7 +251,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_11(self):
+    def test_11(self):
         """Test #11 : Tester le plugin avec le cas 4 champs CUSTOM et option de nbits npak e32"""
         # open and read source
         source0 = plugin_test_dir + "accumsNbits2.std"
@@ -274,7 +274,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_12(self):
+    def test_12(self):
         """Test #12: Tester le plugin avec champs CUSTOM egalite des champs RN==RN1, ordre"""
         # open and read source
         source0 = plugin_test_dir + "intervals_cp.std"
@@ -297,7 +297,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_13(self):
+    def test_13(self):
         """Test #13: Tester le plugin avec champs MY2 egalite des champs RN=RN1, ordre"""
         # open and read source
         source0 = plugin_test_dir + "intervals_cp2.std"
@@ -320,7 +320,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_14(self):
+    def test_14(self):
         """Test #14: Tester le plugin avec champs CUSTOM egalite des champs RN=RN1, ordre"""
         # open and read source
         source0 = plugin_test_dir + "intervals_cp3.std"
@@ -343,7 +343,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_15(self):
+    def test_15(self):
         """Test #15: Tester le plugin avec champs CUSTOM egalite des champs, difference en un point"""
         # open and read source
         source0 = plugin_test_dir + "intervals_cp4.std"
@@ -366,7 +366,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_16(self):
+    def test_16(self):
         """Test #16: Tester le plugin avec champs CUSTOM egalite des champs, difference en un point"""
         # open and read source
         source0 = plugin_test_dir + "intervals_cp5.std"
@@ -389,7 +389,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_17(self):
+    def test_17(self):
         """Test #17: Tester le plugin avec champs CUSTOM egalite des champs, difference en un point"""
         # open and read source
         source0 = plugin_test_dir + "intervals_cp6.std"
@@ -412,7 +412,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_18(self):
+    def test_18(self):
         """Test #18: Tester le plugin avec champs BOURGOUIN egalite des champs, difference en un point"""
         # open and read source
         source0 = plugin_test_dir + "intervals_cp7.std"

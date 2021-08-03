@@ -11,7 +11,7 @@ pytestmark = [pytest.mark.regressions]
 def plugin_test_dir():
     return TEST_PATH + '/MultiplyElementsByPoint/testsFiles/'
 
-def test_regtest_1(plugin_test_dir):
+def test_1(plugin_test_dir):
     """Test #1 : Utilisation de --outputFieldName avec une valeur > 4 caractères."""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
@@ -25,7 +25,7 @@ def test_regtest_1(plugin_test_dir):
 
 
 
-def test_regtest_2(plugin_test_dir):
+def test_2(plugin_test_dir):
     """Test #2 : Essaie de multiplier lorsqu'il y a seulement 1 champ en entrée."""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
@@ -40,7 +40,7 @@ def test_regtest_2(plugin_test_dir):
 
 
 
-def test_regtest_3(plugin_test_dir):
+def test_3(plugin_test_dir):
     """Test #3 : Essaie de multiplier lorsqu'il y a plusieurs champs mais pas sur la même grille."""
     # open and read source
     source0 = plugin_test_dir + "tt_gz_px_2grilles.std"
@@ -54,7 +54,7 @@ def test_regtest_3(plugin_test_dir):
         #[ReaderStd --input {sources[0]}] >> [Select --fieldName TT,GZ ] >> [MultiplyElementsByPoint] 
 
 
-def test_regtest_4(plugin_test_dir):
+def test_4(plugin_test_dir):
     """Test #4 : Multiplication des champs 2D."""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
@@ -80,7 +80,7 @@ def test_regtest_4(plugin_test_dir):
     assert(res == True)
 
 
-def test_regtest_5(plugin_test_dir):
+def test_5(plugin_test_dir):
     """Test #5 : Multiplication des champs 3D."""
     # open and read source
     source0 = plugin_test_dir + "UUVVTT5x5x2_fileSrc.std"
@@ -106,7 +106,7 @@ def test_regtest_5(plugin_test_dir):
     assert(res == True)
 
 
-def test_regtest_6(plugin_test_dir):
+def test_6(plugin_test_dir):
     """Test #6 : Test avec plusieurs champs, differents forecastHours; calcule les resulats pour chacuns des forecastHours."""
     # open and read source
     source0 = plugin_test_dir + "TTES2x2x4_manyForecastHours.std"
@@ -133,7 +133,7 @@ def test_regtest_6(plugin_test_dir):
     assert(res == True)
 
 
-def test_regtest_7(plugin_test_dir):
+def test_7(plugin_test_dir):
     """Test #7 : Test avec plusieurs champs, differents forecastHours; fait la multiplication des champs de tous les forecastHours."""
     # open and read source
     source0 = plugin_test_dir + "TTES2x2x4_manyForecastHours.std"

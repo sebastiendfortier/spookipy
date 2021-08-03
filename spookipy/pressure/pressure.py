@@ -215,6 +215,7 @@ class Sigma2Pressure:
     def create_vgrid_descriptor(self):
         myvgd = vgdp.c_vgd_construct()
         # see https://wiki.cmc.ec.gc.ca/wiki/Vgrid/C_interface/Cvgd_new_gen for kind and version
+        print(self.levels)
         status = vgdp.c_vgd_new_gen(myvgd, SIGMA_KIND, SIGMA_VERSION, self.levels, len(self.levels), None,None,None,None,None,0,0,None,None)
         if status:
             sys.stderr.write("Sigma2Pressure - There was a problem creating the VGridDescriptor\n")

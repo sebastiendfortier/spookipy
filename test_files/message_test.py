@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"Message/testsFiles/"
 
 class TestMessage(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 : Tester lorsqu'aucune option n'est spécifiée."""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
@@ -41,10 +41,10 @@ class TestMessage(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 : Test avec l'option 'verificationMessage' seulement"""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
@@ -67,7 +67,7 @@ class TestMessage(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 : Test avec l'option 'executionMessage' seulement"""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
@@ -90,7 +90,7 @@ class TestMessage(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4 : Test avec l'option 'verificationMessage' et 'severity' a WARNING"""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
@@ -113,7 +113,7 @@ class TestMessage(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5 : Test avec l'option 'verificationMessage' et 'severity' a INFO"""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
@@ -136,7 +136,7 @@ class TestMessage(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6 : Test avec les options 'verificationMessage', 'executionMessage' et 'severity' a ERROR"""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"

@@ -11,7 +11,7 @@ def plugin_test_dir():
     return TEST_PATH + '/AddToElement/testsFiles/'
 
 
-def test_regtest_1(plugin_test_dir):
+def test_1(plugin_test_dir):
     """Test #1 : test_offset1"""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5_zeros_fileSrc.std"
@@ -35,7 +35,7 @@ def test_regtest_1(plugin_test_dir):
     assert(res == True)
 
 
-def test_regtest_2(plugin_test_dir):
+def test_2(plugin_test_dir):
     """Test #2 : test_offset2"""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5_zeros_fileSrc.std"

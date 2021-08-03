@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"SpatialWeightedAveraging/testsFiles/"
 
 class TestSpatialWeightedAveraging(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 : SpatialWeightedAveraging --searchRadius 5 --distanceType KM --kernelType UNIFORM"""
         # open and read source
         source0 = plugin_test_dir + "input_nat.eta"
@@ -44,7 +44,7 @@ class TestSpatialWeightedAveraging(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 : SpatialWeightedAveraging --searchRadius 20 --distanceType KM --kernelType GAUSSIAN --smoothingParameter 15"""
         # open and read source
         source0 = plugin_test_dir + "input_nat.eta"
@@ -67,7 +67,7 @@ class TestSpatialWeightedAveraging(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5 : SpatialWeightedAveraging --searchRadius 9 --distanceType KM --kernelType GAUSSIAN --smoothingParameter 4         --landFracDiffMax 0.7 """
         # open and read source
         source0 = plugin_test_dir + "input_nat.eta"
@@ -90,7 +90,7 @@ class TestSpatialWeightedAveraging(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6 : SpatialWeightedAveraging --searchRadius 15 --distanceType KM --kernelType GAUSSIAN --smoothingParameter 4        --landFracDiffMax 0.7 """
         # open and read source
         source0 = plugin_test_dir + "input_nat.eta"
@@ -113,7 +113,7 @@ class TestSpatialWeightedAveraging(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_8(self):
+    def test_8(self):
         """Test #8 : test includeEdges with controlled data"""
         # open and read source
         source0 = plugin_test_dir + "gds1_pds1_level.csv"
@@ -136,7 +136,7 @@ class TestSpatialWeightedAveraging(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_9(self):
+    def test_9(self):
         """Test #9 : Tester fichier global"""
         # open and read source
         source0 = plugin_test_dir + "glbpres_TT_UU_VV.std"
@@ -159,7 +159,7 @@ class TestSpatialWeightedAveraging(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_10(self):
+    def test_10(self):
         """Test #10 : test includeEdges with controlled data global simulation"""
         # open and read source
         source0 = plugin_test_dir + "gds1_pds1_level.csv"
@@ -182,7 +182,7 @@ class TestSpatialWeightedAveraging(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_11(self):
+    def test_11(self):
         """Test #11 : test excludeEdges with controlled data"""
         # open and read source
         source0 = plugin_test_dir + "input_nat.eta"
@@ -205,7 +205,7 @@ class TestSpatialWeightedAveraging(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_12(self):
+    def test_12(self):
         """Test #12 : test excludeEdges with controlled data global simulation, test writer with missing data"""
         # open and read source
         source0 = plugin_test_dir + "gds1_pds1_level.csv"
@@ -228,7 +228,7 @@ class TestSpatialWeightedAveraging(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_13(self):
+    def test_13(self):
         """Test #13 : issue #120 expected fail with message """
         # open and read source
         source0 = plugin_test_dir + "issue120.std"
@@ -248,6 +248,6 @@ class TestSpatialWeightedAveraging(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 

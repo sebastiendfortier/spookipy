@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"HighLevelOperation/testsFiles/"
 
 class TestHighLevelOperation(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 :  Test - calculer car les resultats ne sont pas disponibles"""
         # open and read source
         source0 = plugin_test_dir + "UUVV.std"
@@ -44,7 +44,7 @@ class TestHighLevelOperation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 :  Test - prendre les resultats deja calcules (no input available)"""
         # open and read source
         source0 = plugin_test_dir + "UVWD.std"
@@ -67,7 +67,7 @@ class TestHighLevelOperation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 :  Test - Resultats deja calcules"""
         # open and read source
         source0 = plugin_test_dir + "UUVV.std"
@@ -93,7 +93,7 @@ class TestHighLevelOperation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4 :  Test - Choix de resultats avec plus de niveaux"""
         # open and read source
         source0 = plugin_test_dir + "UUVV.std"
@@ -119,7 +119,7 @@ class TestHighLevelOperation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5 :  Test - Choisit le resultat precalcule meme si il a moins de niveau. C'est le comportement normal de spooki lineaire."""
         # open and read source
         source0 = plugin_test_dir + "UUVV.std"

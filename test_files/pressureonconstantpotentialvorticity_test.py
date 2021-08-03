@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"PressureOnConstantPotentialVorticity/testsFiles/"
 
 class TestPressureOnConstantPotentialVorticity(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 : Invalid value for --PVU"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
@@ -41,10 +41,10 @@ class TestPressureOnConstantPotentialVorticity(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 : Calculate with a small regpres file"""
         # open and read source
         source0 = plugin_test_dir + "regpres_small.std"
@@ -67,7 +67,7 @@ class TestPressureOnConstantPotentialVorticity(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 : Calculate with a simple test data """
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
@@ -90,7 +90,7 @@ class TestPressureOnConstantPotentialVorticity(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4 : Same as test 1 but in singlethread"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
@@ -113,7 +113,7 @@ class TestPressureOnConstantPotentialVorticity(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5 : Calculate with more test data with multiple PVU"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
@@ -136,7 +136,7 @@ class TestPressureOnConstantPotentialVorticity(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6 : Calculate with more test data with multiple PVU but not in order"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"

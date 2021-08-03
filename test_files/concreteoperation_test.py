@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"ConcreteOperation/testsFiles/"
 
 class TestConcreteOperation(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 :  Test - manque 1 niveau pour UU et 2 niveaux pour VV"""
         # open and read source
         source0 = plugin_test_dir + "GZUUVV_144_fileSrc.std"
@@ -44,7 +44,7 @@ class TestConcreteOperation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 :  Test - seulement niveau 2 pour GZ"""
         # open and read source
         source0 = plugin_test_dir + "GZUUVV_144_fileSrc.std"
@@ -67,7 +67,7 @@ class TestConcreteOperation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 :  Test - seulement niveau 0 pour UU"""
         # open and read source
         source0 = plugin_test_dir + "GZUUVV_144_fileSrc.std"
@@ -90,7 +90,7 @@ class TestConcreteOperation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4: Verifier si ca fonctionne meme s'il manque un niveau dans le milieu."""
         # open and read source
         source0 = plugin_test_dir + "GZUUVV_144_fileSrc.std"
@@ -113,7 +113,7 @@ class TestConcreteOperation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5: Verifier si ca fonctionne lorsque 2 calculs ont besoin des mêmes données."""
         # open and read source
         source0 = plugin_test_dir + "GZUUVV_144_fileSrc.std"
@@ -136,7 +136,7 @@ class TestConcreteOperation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6: Test avec pressure."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
@@ -159,7 +159,7 @@ class TestConcreteOperation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_7(self):
+    def test_7(self):
         """Test #7: Test avec des données manquantes."""
         # open and read source
         source0 = plugin_test_dir + "notSameMatrixShape.std"
@@ -179,6 +179,6 @@ class TestConcreteOperation(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 

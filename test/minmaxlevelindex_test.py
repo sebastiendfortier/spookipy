@@ -11,7 +11,7 @@ def plugin_test_dir():
     return TEST_PATH + '/MinMaxLevelIndex/testsFiles/'
 
 
-def test_regtest_1(plugin_test_dir):
+def test_1(plugin_test_dir):
     """Test #1 :    --minMax MIN --direction UPWARD --outputFieldName1 IND"""
     # open and read source
     source0 = plugin_test_dir + "UUOrdered2D_fileSrc.std"
@@ -38,7 +38,7 @@ def test_regtest_1(plugin_test_dir):
     assert(res == True)
 
 
-def test_regtest_2(plugin_test_dir):
+def test_2(plugin_test_dir):
     """Test #2 :   --minMax MIN --direction UPWARD --outputFieldName1 IND"""
     # open and read source
     source0 = plugin_test_dir + "UUDoubled2D_fileSrc.std"
@@ -64,7 +64,7 @@ def test_regtest_2(plugin_test_dir):
     assert(res == True)
 
 
-def test_regtest_3(plugin_test_dir):
+def test_3(plugin_test_dir):
     """Test #3 :   --minMax MIN --direction DOWNWARD --outputFieldName1 IND"""
     # open and read source
     source0 = plugin_test_dir + "UUOrdered2D_fileSrc.std"
@@ -90,7 +90,7 @@ def test_regtest_3(plugin_test_dir):
     assert(res == True)
 
 
-def test_regtest_4(plugin_test_dir):
+def test_4(plugin_test_dir):
     """Test #4 :   --minMax MIN --direction DOWNWARD --outputFieldName1 IND"""
     # open and read source
     source0 = plugin_test_dir + "UUDoubled2D_fileSrc.std"
@@ -116,7 +116,7 @@ def test_regtest_4(plugin_test_dir):
     assert(res == True)
 
 
-def test_regtest_5(plugin_test_dir):
+def test_5(plugin_test_dir):
     """Test #5 :   -minMax MAX --outputFieldName2 IND"""
     # open and read source
     source0 = plugin_test_dir + "UUOrdered2D_fileSrc.std"
@@ -142,7 +142,7 @@ def test_regtest_5(plugin_test_dir):
     assert(res == True)
 
 
-def test_regtest_6(plugin_test_dir):
+def test_6(plugin_test_dir):
     """Test #6 :   --minMax MAX --direction UPWARD --outputFieldName2 IND"""
     # open and read source
     source0 = plugin_test_dir + "UUDoubled2D_fileSrc.std"
@@ -168,7 +168,7 @@ def test_regtest_6(plugin_test_dir):
     assert(res == True)
 
 
-def test_regtest_7(plugin_test_dir):
+def test_7(plugin_test_dir):
     """Test #7 :   --minMax MAX --direction DOWNWARD --outputFieldName2 IND"""
     # open and read source
     source0 = plugin_test_dir + "UUOrdered2D_fileSrc.std"
@@ -194,7 +194,7 @@ def test_regtest_7(plugin_test_dir):
     assert(res == True)
 
 
-def test_regtest_8(plugin_test_dir):
+def test_8(plugin_test_dir):
     """Test #8 :   --minMax MAX --direction DOWNWARD --outputFieldName2 IND"""
     # open and read source
     source0 = plugin_test_dir + "UUDoubled2D_fileSrc.std"
@@ -220,7 +220,7 @@ def test_regtest_8(plugin_test_dir):
     assert(res == True)
 
 
-def test_regtest_9(plugin_test_dir):
+def test_9(plugin_test_dir):
     """Test #9 :   --bounded --minMax MAX --outputFieldName2 IND"""
     # open and read source
     source0 = plugin_test_dir + "test_ICGA.std"
@@ -245,7 +245,7 @@ def test_regtest_9(plugin_test_dir):
     assert(res == True)
 
 
-def test_regtest_10(plugin_test_dir):
+def test_10(plugin_test_dir):
     """Test #10 :   --bounded --minMax BOTH"""
     # open and read source
     source0 = plugin_test_dir + "TT_bounded_minmax.std"

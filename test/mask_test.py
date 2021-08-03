@@ -13,7 +13,7 @@ def plugin_test_dir():
     return TEST_PATH + '/Mask/testsFiles/'
 
 
-def test_regtest_1(plugin_test_dir):
+def test_1(plugin_test_dir):
     """Test #1 : seuils: 0,10,15,20 valeurs: 0,10,15,20 ops: ge,ge,ge,ge"""
     # open and read source
     source0 = plugin_test_dir + "new_input.std"
@@ -40,7 +40,7 @@ def test_regtest_1(plugin_test_dir):
     assert(res == True)
 
 
-def test_regtest_2(plugin_test_dir):
+def test_2(plugin_test_dir):
     """Test #2 : seuils: -15,-15,-5,10,20 valeurs: -20,-15,-5,10,20 ops: le,ge,ge,ge,ge"""
     # open and read source
     source0 = plugin_test_dir + "inputFile.std"
@@ -67,7 +67,7 @@ def test_regtest_2(plugin_test_dir):
     assert(res == True)
 
 
-def test_regtest_3(plugin_test_dir):
+def test_3(plugin_test_dir):
     """Test #3 : seuils: -10,0,10 valeurs: 1,2,3 ops: le,eq,gt"""
     # open and read source
     source0 = plugin_test_dir + "inputFile.std"
@@ -94,7 +94,7 @@ def test_regtest_3(plugin_test_dir):
     assert(res == True)
 
 
-def test_regtest_4(plugin_test_dir):
+def test_4(plugin_test_dir):
     """Test #4 : ERREUR: pas le meme nombre de valeurs associe a seuils, valeurs, et ops"""
     # open and read source
     source0 = plugin_test_dir + "inputFile.std"
@@ -110,7 +110,7 @@ def test_regtest_4(plugin_test_dir):
 
 
 
-def test_regtest_5(plugin_test_dir):
+def test_5(plugin_test_dir):
     """Test #5 : ERREUR: valeur invalide associee a operators (TT)"""
     # open and read source
     source0 = plugin_test_dir + "inputFile.std"
@@ -123,7 +123,7 @@ def test_regtest_5(plugin_test_dir):
         # [WriterStd --output {destination_path} --noUnitConversion]
 
 
-def test_regtest_6(plugin_test_dir):
+def test_6(plugin_test_dir):
     """Test #6 :  seuils: -10,0,10 valeurs: 1,2,3 ops: le,eq,gt + outputFieldName=TOTO"""
     # open and read source
     source0 = plugin_test_dir + "inputFile.std"

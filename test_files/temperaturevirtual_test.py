@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"TemperatureVirtual/testsFiles/"
 
 class TestTemperatureVirtual(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 : Calcul de la pression de vapeur saturante avec un fichier hybrid."""
         # open and read source
         source0 = plugin_test_dir + "hyb_prog_2012071312_009_1HY"
@@ -44,7 +44,7 @@ class TestTemperatureVirtual(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 : Calcul de la pression de vapeur saturante avec un fichier hybrid 5005."""
         # open and read source
         source0 = plugin_test_dir + "minimal_TTHR_5005.std"

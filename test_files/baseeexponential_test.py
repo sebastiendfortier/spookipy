@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"BaseEExponential/testsFiles/"
 
 class TestBaseEExponential(unittest.TestCase):
 
-    def test_regtest_function_EXP(self):
+    def test_function_EXP(self):
         """Test #1 : Applique la fonction EXP pour chaque élément"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_2_fileSrc.std"

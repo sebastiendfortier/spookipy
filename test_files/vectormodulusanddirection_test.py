@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"VectorModulusAndDirection/testsFiles/"
 
 class TestVectorModulusAndDirection(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 : Test l'option --orientationType avec la valeur WIND."""
         # open and read source
         source0 = plugin_test_dir + "inputInterpolatedToStation.std"
@@ -44,7 +44,7 @@ class TestVectorModulusAndDirection(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 : Test l'option --orientationType avec la valeur TRIG."""
         # open and read source
         source0 = plugin_test_dir + "inputInterpolatedToStation.std"
@@ -67,7 +67,7 @@ class TestVectorModulusAndDirection(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 : Test l'option --inputInterpolatedToStation avec une valeur autre que WIND et TRIG."""
         # open and read source
         source0 = plugin_test_dir + "inputInterpolatedToStation.std"
@@ -87,10 +87,10 @@ class TestVectorModulusAndDirection(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4 : Test un fichier standard avec des champs sur une grille Y avec les tictic tactac définis sur une grille N."""
         # open and read source
         source0 = plugin_test_dir + "Ygrid_Ntypetictac_UUVV.fst"
@@ -110,10 +110,10 @@ class TestVectorModulusAndDirection(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5 : Test un fichier standard avec des champs sur une grille autre que celle autorisé."""
         # open and read source
         source0 = plugin_test_dir + "pm2001092012-01-00_000.fst"
@@ -133,10 +133,10 @@ class TestVectorModulusAndDirection(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6 : Test un fichier standard avec des champs sur une grille autre que celle autorisé."""
         # open and read source
         source0 = plugin_test_dir + "dm2001092012-00-00_000.fst"
@@ -156,10 +156,10 @@ class TestVectorModulusAndDirection(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_7(self):
+    def test_7(self):
         """Test #7 : Test avec une grille U le calcul de la vitesse et de la direction des vents, référentiel météorologique."""
         # open and read source
         source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
@@ -182,7 +182,7 @@ class TestVectorModulusAndDirection(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_8(self):
+    def test_8(self):
         """Test #8 : Test avec une grille U le calcul de la vitesse et de la direction des vents, référentiel trigonométrique."""
         # open and read source
         source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"

@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"ReplaceDataIfCondition/testsFiles/"
 
 class TestReplaceDataIfCondition(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 : isnan"""
         # open and read source
         source0 = plugin_test_dir + "simple_input.csv"
@@ -44,7 +44,7 @@ class TestReplaceDataIfCondition(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 : < 1"""
         # open and read source
         source0 = plugin_test_dir + "simple_input.csv"
@@ -67,7 +67,7 @@ class TestReplaceDataIfCondition(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 : <= 1"""
         # open and read source
         source0 = plugin_test_dir + "simple_input.csv"
@@ -90,7 +90,7 @@ class TestReplaceDataIfCondition(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4 : > 1"""
         # open and read source
         source0 = plugin_test_dir + "simple_input.csv"
@@ -113,7 +113,7 @@ class TestReplaceDataIfCondition(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5 : >=1"""
         # open and read source
         source0 = plugin_test_dir + "simple_input.csv"
@@ -136,7 +136,7 @@ class TestReplaceDataIfCondition(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6 : == 2"""
         # open and read source
         source0 = plugin_test_dir + "simple_input.csv"
@@ -159,7 +159,7 @@ class TestReplaceDataIfCondition(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_7(self):
+    def test_7(self):
         """Test #7 : != 2"""
         # open and read source
         source0 = plugin_test_dir + "simple_input.csv"
@@ -179,6 +179,6 @@ class TestReplaceDataIfCondition(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 

@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"GetDictionaryInformation/testsFiles/"
 
 class TestGetDictionaryInformation(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 : Get every column of table DATATYPE."""
         # open and read source
         source0 = plugin_test_dir + "bidon_fileSrc.std"
@@ -44,7 +44,7 @@ class TestGetDictionaryInformation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 : Get station type only from FDSTATIONS."""
         # open and read source
         source0 = plugin_test_dir + "bidon_fileSrc.std"
@@ -67,7 +67,7 @@ class TestGetDictionaryInformation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 : Get station lat only from CANSTAT."""
         # open and read source
         source0 = plugin_test_dir + "bidon_fileSrc.std"
@@ -90,7 +90,7 @@ class TestGetDictionaryInformation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4 : Get station lon only from CANSTAT."""
         # open and read source
         source0 = plugin_test_dir + "bidon_fileSrc.std"
@@ -113,7 +113,7 @@ class TestGetDictionaryInformation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5 : Get station elevation only from CANSTAT."""
         # open and read source
         source0 = plugin_test_dir + "bidon_fileSrc.std"
@@ -136,7 +136,7 @@ class TestGetDictionaryInformation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6 : Get all except id from CANSTAT."""
         # open and read source
         source0 = plugin_test_dir + "bidon_fileSrc.std"
@@ -159,7 +159,7 @@ class TestGetDictionaryInformation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_7(self):
+    def test_7(self):
         """Test #7 : Get station type only from FDSTATIONS."""
         # open and read source
         source0 = plugin_test_dir + "bidon_fileSrc.std"
@@ -182,7 +182,7 @@ class TestGetDictionaryInformation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_8(self):
+    def test_8(self):
         """Test #8 : Get station lat only from FDSTATIONS."""
         # open and read source
         source0 = plugin_test_dir + "bidon_fileSrc.std"
@@ -205,7 +205,7 @@ class TestGetDictionaryInformation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_9(self):
+    def test_9(self):
         """Test #9 : Get station lon only from FDSTATIONS."""
         # open and read source
         source0 = plugin_test_dir + "bidon_fileSrc.std"
@@ -228,7 +228,7 @@ class TestGetDictionaryInformation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_10(self):
+    def test_10(self):
         """Test #10 : Get station elevation only from FDSTATIONS."""
         # open and read source
         source0 = plugin_test_dir + "bidon_fileSrc.std"
@@ -251,7 +251,7 @@ class TestGetDictionaryInformation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_11(self):
+    def test_11(self):
         """Test #11 : Get many fields from FDSTATIONS."""
         # open and read source
         source0 = plugin_test_dir + "bidon_fileSrc.std"
@@ -274,7 +274,7 @@ class TestGetDictionaryInformation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_12(self):
+    def test_12(self):
         """Test #12 : Get station type only from FUSTNS."""
         # open and read source
         source0 = plugin_test_dir + "bidon_fileSrc.std"
@@ -297,7 +297,7 @@ class TestGetDictionaryInformation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_13(self):
+    def test_13(self):
         """Test #13 : Get station lat only from FUSTNS."""
         # open and read source
         source0 = plugin_test_dir + "bidon_fileSrc.std"
@@ -320,7 +320,7 @@ class TestGetDictionaryInformation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_14(self):
+    def test_14(self):
         """Test #14 : Get station lon only from FUSTNS."""
         # open and read source
         source0 = plugin_test_dir + "bidon_fileSrc.std"
@@ -343,7 +343,7 @@ class TestGetDictionaryInformation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_15(self):
+    def test_15(self):
         """Test #15 : Get station elevation only from FUSTNS."""
         # open and read source
         source0 = plugin_test_dir + "bidon_fileSrc.std"
@@ -366,7 +366,7 @@ class TestGetDictionaryInformation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_16(self):
+    def test_16(self):
         """Test #16 : Get all except ids from FUSTNS."""
         # open and read source
         source0 = plugin_test_dir + "bidon_fileSrc.std"
@@ -389,7 +389,7 @@ class TestGetDictionaryInformation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_17(self):
+    def test_17(self):
         """Test #17 : Get station type only from FX6STNS."""
         # open and read source
         source0 = plugin_test_dir + "bidon_fileSrc.std"
@@ -412,7 +412,7 @@ class TestGetDictionaryInformation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_18(self):
+    def test_18(self):
         """Test #18 : Get station lat only from FX6STNS."""
         # open and read source
         source0 = plugin_test_dir + "bidon_fileSrc.std"
@@ -435,7 +435,7 @@ class TestGetDictionaryInformation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_19(self):
+    def test_19(self):
         """Test #19 : Get station lon only from FX6STNS."""
         # open and read source
         source0 = plugin_test_dir + "bidon_fileSrc.std"
@@ -458,7 +458,7 @@ class TestGetDictionaryInformation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_20(self):
+    def test_20(self):
         """Test #20 : Get station elevation only from FX6STNS."""
         # open and read source
         source0 = plugin_test_dir + "bidon_fileSrc.std"
@@ -481,7 +481,7 @@ class TestGetDictionaryInformation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_21(self):
+    def test_21(self):
         """Test #21 : Get all except ids from FX6STNS."""
         # open and read source
         source0 = plugin_test_dir + "bidon_fileSrc.std"
@@ -504,7 +504,7 @@ class TestGetDictionaryInformation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_22(self):
+    def test_22(self):
         """Test #22 : Get all except ids from FX6STNS."""
         # open and read source
         source0 = plugin_test_dir + "bidon_fileSrc.std"
@@ -527,7 +527,7 @@ class TestGetDictionaryInformation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_23(self):
+    def test_23(self):
         """Test #23 : Test advancedRequest 2 : get all FB station."""
         # open and read source
         source0 = plugin_test_dir + "bidon_fileSrc.std"
@@ -550,7 +550,7 @@ class TestGetDictionaryInformation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_24(self):
+    def test_24(self):
         """Test #24 : Test advancedRequest 3 : get all FB station from view."""
         # open and read source
         source0 = plugin_test_dir + "bidon_fileSrc.std"
@@ -573,7 +573,7 @@ class TestGetDictionaryInformation(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_25(self):
+    def test_25(self):
         """Test #25 : Get all except ids from FX6STNS and interpolate with interpolationHorizontalLatLon."""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"

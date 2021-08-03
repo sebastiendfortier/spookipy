@@ -33,7 +33,7 @@ pytestmark = [pytest.mark.regressions]
 
 
 def base_dict():
-    base = {'shape':(1,1),'datev':0,'path':None,'typvar':'X', 'ni':1,'nj':1,'nk':1,'ip1':0,'ip2':0,'ip3':0, 'deet':0,'npas':0,'datyp':5,'nbits':32, 'grtyp':'L','ig1':100,'ig2':100,'ig3':9000,'ig4':0} 
+    base = {'shape':(1,1),'datev':0,'path':None,'typvar':'X', 'ni':1,'nj':1,'nk':1,'ip1':0,'ip2':0,'ip3':0, 'deet':0,'npas':0,'datyp':5,'nbits':32, 'grtyp':'L','ig1':100,'ig2':100,'ig3':9000,'ig4':0}
     lat = base.copy()
     lat['nomvar'] = 'LAT'
     lon = base.copy()
@@ -43,7 +43,7 @@ def base_dict():
 @pytest.fixture
 def simple_input_df():
     lat,lon = base_dict()
-    lat['d'] = np.expand_dims(np.array([45.73,43.40,49.18],dtype='float32'),axis=-1) 
+    lat['d'] = np.expand_dims(np.array([45.73,43.40,49.18],dtype='float32'),axis=-1)
     lat['ni'] = lat['d'].shape[0]
     lat['nj'] = lat['d'].shape[1]
     lon['d'] = np.expand_dims(np.array([-73.75,-79.38,-123.18],dtype='float32'),axis=-1)
@@ -53,7 +53,7 @@ def simple_input_df():
         # {'nomvar':'LAT','etiket':'LATLON','level':'1.0','d':np.array([45.73,43.40,49.18],dtype='float32'),axis=-1),'date_of_origin':date_of_origin},
         # {'nomvar':'LON','etiket':'LATLON','level':'1.0','d':np.array([-73.75,-79.38,-123.18],dtype='float32'),axis=-1),'date_of_origin':date_of_origin}
         # ]
-    return pd.DataFrame(latlon)    
+    return pd.DataFrame(latlon)
 
 
 # ::::::::::::::
@@ -79,7 +79,7 @@ def latlon_extrapolation_df():
         # {'nomvar':'LAT','etiket':'LATLON','level':'1.0','d':np.array([43.86,-43.4,43.61,43.47,43.22,-44.0],dtype='float32'),axis=-1),'date_of_origin':date_of_origin},
         # {'nomvar':'LON','etiket':'LATLON','level':'1.0','d':np.array([-78.926,77.7,-78.380,-79.26,-78.72,70.0],dtype='float32'),axis=-1),'date_of_origin':date_of_origin},
         # ]
-    return pd.DataFrame(latlon)   
+    return pd.DataFrame(latlon)
 
 # ::::::::::::::
 # latlonWithGrid_fileSrc.csv
@@ -106,7 +106,7 @@ def latlon_with_grid_df():
         # {'nomvar':'LAT','etiket':'LATLON','level':'1.0','grtyp':'L','d':np.array([45.73,43.40,49.18],dtype='float32'),axis=-1),'date_of_origin':date_of_origin},
         # {'nomvar':'LON','etiket':'LATLON','level':'1.0','grtyp':'L','d':np.array([-73.75,-79.38,-123.18],dtype='float32'),axis=-1),'date_of_origin':date_of_origin},
         # ]
-    latlon_df = pd.DataFrame(latlon)   
+    latlon_df = pd.DataFrame(latlon)
     latlon_df['ip2'] = 2
     latlon_df['ip3'] = 3
     return latlon_df
@@ -134,7 +134,7 @@ def latlon_yy_df():
         # {'nomvar':'LAT','etiket':'LATLON','level':'1000.0','d':np.array([46.60,14.098,-45.828,-13.458,51.048,-8.49,56.056,-43.81,-4.7,-51.8,-80.11,-14.034,-15.68,34.63,36.22,76.28],dtype='float32'),axis=-1),'date_of_origin':date_of_origin},
         # {'nomvar':'LON','etiket':'LATLON','level':'1000.0','d':np.array([-67.368,-44.74,-33.34,38.155,31.50,116.93,158.32,170.64,-52.73,-59.236,100.28,127.28,40.56,-140.24,-30.495,-99.63],dtype='float32'),axis=-1),'date_of_origin':date_of_origin},
         # ]
-    return pd.DataFrame(latlon)   
+    return pd.DataFrame(latlon)
 # ::::::::::::::
 # latlon_fileSrc.csv
 # ::::::::::::::
@@ -168,7 +168,7 @@ def latlon_df():
         # {'nomvar':'LAT','etiket':'LATLON','level':'1.0','d':np.array([45.73,43.40,49.18],dtype='float32'),axis=-1),'date_of_origin':date_of_origin},
         # {'nomvar':'LON','etiket':'LATLON','level':'1.0','d':np.array([-73.75,-79.38,-123.18],dtype='float32'),axis=-1),'date_of_origin':date_of_origin},
         # ]
-    return pd.DataFrame(latlon)   
+    return pd.DataFrame(latlon)
 
 # ::::::::::::::
 # latlon_fileSrc2.csv
@@ -193,7 +193,7 @@ def latlon2_df():
         # {'nomvar':'LAT','etiket':'LATLON','level':'1.0','d':np.array([45.73,43.40,49.18,53.13],dtype='float32'),'date_of_origin':date_of_origin},
         # {'nomvar':'LON','etiket':'LATLON','level':'1.0','d':np.array([-73.75,-79.38,-123.18,-108.15],dtype='float32'),'date_of_origin':date_of_origin},
         # ]
-    return pd.DataFrame(latlon)   
+    return pd.DataFrame(latlon)
 
 # @pytest.fixture
 # def stationsdf_df():
@@ -208,7 +208,7 @@ def latlon2_df():
 #         # {'nomvar':'LAT','etiket':'LATLON','level':'1.0','d':STATIONSFB['Latitude'].to_numpy().astype('float32'),'date_of_origin':date_of_origin},
 #         # {'nomvar':'LON','etiket':'LATLON','level':'1.0','d':STATIONSFB['Longitude'].to_numpy().astype('float32'),'date_of_origin':date_of_origin},
 #         # ]
-#     latlon_df =  pd.DataFrame(latlon)  
+#     latlon_df =  pd.DataFrame(latlon)
 #     latlon_df['ip2'] = 222
 #     latlon_df['ip3'] = 333
 #     return latlon_df
@@ -218,7 +218,7 @@ def plugin_test_dir():
     return TEST_PATH +"InterpolationHorizontalPoint/testsFiles/"
 
 
-def test_regtest_1(plugin_test_dir,latlon_df):
+def test_1(plugin_test_dir,latlon_df):
     """Test #1 : test_onlyscalarR1Operational"""
     # open and read source
     source0 = plugin_test_dir + "4panneaux_input4_fileSrc.std"
@@ -237,7 +237,7 @@ def test_regtest_1(plugin_test_dir,latlon_df):
 
     # df['datyp']=5
     # df['nbits']=32
-    
+
     #write the result
     results_file = TMP_PATH + "test_interppoint_reg_1.std"
     delete_file(results_file)
@@ -253,7 +253,7 @@ def test_regtest_1(plugin_test_dir,latlon_df):
     assert(res == True)
 
 
-def test_regtest_2(plugin_test_dir,latlon_df):
+def test_2(plugin_test_dir,latlon_df):
     """Test #2 : test_onlyscalar"""
     # open and read source
     source0 = plugin_test_dir + "4panneaux_input4_fileSrc.std"
@@ -269,7 +269,7 @@ def test_regtest_2(plugin_test_dir,latlon_df):
     df['etiket']='R1558V0_N'
     df.loc[df.nomvar == '^^','etiket'] = '__INTHPTX'
     df.loc[df.nomvar == '>>','etiket'] = '__INTHPTX'
-    
+
     # df['dateo']=368660482
 
     # df['datyp']=5
@@ -290,7 +290,7 @@ def test_regtest_2(plugin_test_dir,latlon_df):
     assert(res == True)
 
 
-def test_regtest_3(plugin_test_dir,latlon_df):
+def test_3(plugin_test_dir,latlon_df):
     """Test #3 : test_scalarvectorial"""
     # open and read source
     source0 = plugin_test_dir + "tape10.std"
@@ -327,7 +327,7 @@ def test_regtest_3(plugin_test_dir,latlon_df):
     assert(res == True)
 
 
-def test_regtest_4(plugin_test_dir,latlon2_df):
+def test_4(plugin_test_dir,latlon2_df):
     """Test #4 : test_scalarvectorial2"""
     # open and read source
     source0 = plugin_test_dir + "2011072100_006_eta_small"
@@ -337,12 +337,12 @@ def test_regtest_4(plugin_test_dir,latlon2_df):
     latlon2_df['dateo']=368660482
     #compute spooki.InterpolationHorizontalPoint
     df = spooki.InterpolationHorizontalPoint(src_df0,latlon2_df).compute()
-    #[ReaderStd --input {sources[0]}] >> 
-    # [ReaderCsv --input {sources[1]}] >> 
-    # [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> 
-    # [InterpolationHorizontalPoint] >> 
+    #[ReaderStd --input {sources[0]}] >>
+    # [ReaderCsv --input {sources[1]}] >>
+    # [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >>
+    # [InterpolationHorizontalPoint] >>
     # [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
-    
+
     df.loc[:,'etiket']='R1580V0_N'
     df.loc[df.nomvar == '^^','etiket'] = '__INTHPTX'
     df.loc[df.nomvar == '>>','etiket'] = '__INTHPTX'
@@ -350,8 +350,8 @@ def test_regtest_4(plugin_test_dir,latlon2_df):
     # print('df\n',df[['nomvar', 'typvar', 'etiket', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'datyp', 'nbits', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4','grid']].to_string())
     # df['dateo']=368660482
 
-    # df['datyp']=5
-    # df['nbits']=32
+    df['datyp']=5
+    df['nbits']=32
 # P0   P  R1580V0_N           4       1     1 20110210 215210             0         6         0      450       48  R 16  Y     0     0     0     0
 # P0   PI R1580V0_N           4       1     1 20110721 000000             0         6         0      450       48  R 16  Y     0     0     0     0
 
@@ -362,14 +362,14 @@ def test_regtest_4(plugin_test_dir,latlon2_df):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "resultScalarVectorial2_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_4"
+    file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_4"
 
     #compare results
-    res = fstcomp(results_file,file_to_compare,e_max=0.01,e_moy=0.001)
+    res = fstcomp(results_file,file_to_compare)
     delete_file(results_file)
     assert(res == True)
 
-def test_regtest_5(plugin_test_dir,latlon_df):
+def test_5(plugin_test_dir,latlon_df):
     """Test #5 : test_nearest"""
     # open and read source
     source0 = plugin_test_dir + "tape10.std"
@@ -406,7 +406,7 @@ def test_regtest_5(plugin_test_dir,latlon_df):
     assert(res == True)
 
 
-def test_regtest_6(plugin_test_dir,latlon_df):
+def test_6(plugin_test_dir,latlon_df):
     """Test #6 : test_linear"""
     # open and read source
     source0 = plugin_test_dir + "tape10.std"
@@ -443,7 +443,7 @@ def test_regtest_6(plugin_test_dir,latlon_df):
     assert(res == True)
 
 
-def test_regtest_7(plugin_test_dir,latlon_with_grid_df):
+def test_7(plugin_test_dir,latlon_with_grid_df):
     """Test #7 : test_withGridInCsv"""
     # open and read source
     source0 = plugin_test_dir + "tape10.std"
@@ -481,7 +481,7 @@ def test_regtest_7(plugin_test_dir,latlon_with_grid_df):
     assert(res == True)
 
 
-def test_regtest_8(plugin_test_dir,latlon_extrapolation_df):
+def test_8(plugin_test_dir,latlon_extrapolation_df):
     """Test #8 : test_extrapolationValue"""
     # open and read source
     source0 = plugin_test_dir + "tape10.std"
@@ -503,7 +503,7 @@ def test_regtest_8(plugin_test_dir,latlon_extrapolation_df):
     # df['nbits']=32
 
     df.loc[df.nomvar == 'VS','etiket'] = 'XVSHEAR_X'
-    
+
     #write the result
     results_file = TMP_PATH + "test_interppoint_reg_8.std"
     delete_file(results_file)
@@ -519,7 +519,7 @@ def test_regtest_8(plugin_test_dir,latlon_extrapolation_df):
     assert(res == True)
 
 
-def test_regtest_9(plugin_test_dir,latlon_extrapolation_df):
+def test_9(plugin_test_dir,latlon_extrapolation_df):
     """Test #9 : test_negativeValue"""
     # open and read source
     source0 = plugin_test_dir + "tape10.std"
@@ -556,7 +556,7 @@ def test_regtest_9(plugin_test_dir,latlon_extrapolation_df):
     assert(res == True)
 
 
-def test_regtest_10(plugin_test_dir,latlon_extrapolation_df):
+def test_10(plugin_test_dir,latlon_extrapolation_df):
     """Test #10 : test_extrapolationMax"""
     # open and read source
     source0 = plugin_test_dir + "tape10.std"
@@ -578,6 +578,8 @@ def test_regtest_10(plugin_test_dir,latlon_extrapolation_df):
 
     df.loc[df.nomvar == 'VS','etiket'] = 'XVSHEAR_X'
 
+    df['datyp']=5
+    df['nbits']=32
     #write the result
     results_file = TMP_PATH + "test_interppoint_reg_10.std"
     delete_file(results_file)
@@ -585,15 +587,15 @@ def test_regtest_10(plugin_test_dir,latlon_extrapolation_df):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "result_extrapolMax_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_10"
+    file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_10"
 
     #compare results
-    res = fstcomp(results_file,file_to_compare,e_max=0.001)
+    res = fstcomp(results_file,file_to_compare)
     delete_file(results_file)
     assert(res == True)
 
 
-def test_regtest_11(plugin_test_dir,latlon_extrapolation_df):
+def test_11(plugin_test_dir,latlon_extrapolation_df):
     """Test #11 : test_extrapolationMin"""
     # open and read source
     source0 = plugin_test_dir + "tape10.std"
@@ -613,7 +615,7 @@ def test_regtest_11(plugin_test_dir,latlon_extrapolation_df):
     # df['nbits']=32
 
     df.loc[df.nomvar == 'VS','etiket'] = 'XVSHEAR_X'
-    
+
     #write the result
     results_file = TMP_PATH + "test_interppoint_reg_11.std"
     delete_file(results_file)
@@ -629,7 +631,7 @@ def test_regtest_11(plugin_test_dir,latlon_extrapolation_df):
     assert(res == True)
 
 # need to fix stations order for it to work
-# def test_regtest_12(plugin_test_dir,stationsdf_df):
+# def test_12(plugin_test_dir,stationsdf_df):
 #     """Test #12 : test_stations"""
 #     # open and read source
 #     source0 = plugin_test_dir + "2011072100_006_eta_small"
@@ -662,7 +664,7 @@ def test_regtest_11(plugin_test_dir,latlon_extrapolation_df):
 #     assert(res == True)
 
 
-def test_regtest_13(plugin_test_dir,latlon_df):
+def test_13(plugin_test_dir,latlon_df):
     """Test #13 : test with 2 grids and 3 fields on each grid"""
     # open and read source
     source0 = plugin_test_dir + "2011110112_045_small"
@@ -671,7 +673,7 @@ def test_regtest_13(plugin_test_dir,latlon_df):
     source1 = plugin_test_dir + "2011110112_048_small"
     src_df1 = StandardFileReader(source1).to_pandas()
 
-    src_df = pd.concat([src_df0,src_df1],ignore_index=True) 
+    src_df = pd.concat([src_df0,src_df1],ignore_index=True)
 
     src_df['dateo']=368660482
     latlon_df['dateo']=368660482
@@ -683,8 +685,8 @@ def test_regtest_13(plugin_test_dir,latlon_df):
     df.loc[df.nomvar == '>>','etiket'] = '__INTHPTX'
     # df['dateo']=368660482
 
-    # df['datyp']=5
-    # df['nbits']=32
+    df['datyp']=5
+    df['nbits']=32
 
     #write the result
     results_file = TMP_PATH + "test_interppoint_reg_13.std"
@@ -693,15 +695,15 @@ def test_regtest_13(plugin_test_dir,latlon_df):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "result_2grids_3fields_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_13"
+    file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_13"
 
     #compare results
-    res = fstcomp(results_file,file_to_compare,e_max=0.001,e_moy=0.001)
+    res = fstcomp(results_file,file_to_compare)
     delete_file(results_file)
     assert(res == True)
 
 # strangly the result file ni nj for lat and lon is reversed
-def test_regtest_14(plugin_test_dir):
+def test_14(plugin_test_dir):
     """Test #14 : test_DanielPoints"""
     # open and read source
     source0 = plugin_test_dir + "2012022712_012_glbdiag"
@@ -744,7 +746,7 @@ def test_regtest_14(plugin_test_dir):
     assert(res == True)
 
 
-def test_regtest_15(plugin_test_dir):
+def test_15(plugin_test_dir):
     """Test #15 : test_northPole_southPole"""
     # open and read source
     source0 = plugin_test_dir + "2012022712_012_glbdiag"
@@ -762,7 +764,7 @@ def test_regtest_15(plugin_test_dir):
     #compute spooki.InterpolationHorizontalPoint
     df = spooki.InterpolationHorizontalPoint(src_df0,src_df1,interpolation_type='bi-cubic',extrapolation_type='value', extrapolation_value=999.9).compute()
     #[ReaderStd --input {sources[0]}] >> [Select --fieldName SN] >> [ReaderStd --ignoreExtended --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> [spooki.InterpolationHorizontalPoint --interpolationType BI-CUBIC --extrapolationType VALUE=999.9] >> [WriterStd --output {destination_path}]
-    df['etiket'] = 'G133K80_N'  
+    df['etiket'] = 'G133K80_N'
     df.loc[df.nomvar == '^^','etiket'] = '__INTHPTX'
     df.loc[df.nomvar == '>>','etiket'] = '__INTHPTX'
     #fix for reversed ni nj in results
@@ -786,7 +788,7 @@ def test_regtest_15(plugin_test_dir):
     assert(res == True)
 
 
-def test_regtest_16(plugin_test_dir,simple_input_df):
+def test_16(plugin_test_dir,simple_input_df):
     """Test #16 : Test avec un fichier YinYang"""
     # open and read source
     source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
@@ -823,7 +825,7 @@ def test_regtest_16(plugin_test_dir,simple_input_df):
     assert(res == True)
 
 
-def test_regtest_17(plugin_test_dir,latlon_yy_df):
+def test_17(plugin_test_dir,latlon_yy_df):
     """Test #17 : Test avec un fichier YinYang en entree et des lat-lon sur les grilles Yin et Yang."""
     # open and read source
     source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
@@ -843,7 +845,7 @@ def test_regtest_17(plugin_test_dir,latlon_yy_df):
     df.loc[df.nomvar == '>>','etiket'] = '__INTHPTX'
     # df['datyp']=5
     # df['nbits']=32
-    
+
     df = convip(df,nomvar='',style=rmn.CONVIP_ENCODE)
 
     #write the result
@@ -859,5 +861,3 @@ def test_regtest_17(plugin_test_dir,latlon_yy_df):
     res = fstcomp(results_file,file_to_compare)
     delete_file(results_file)
     assert(res == True)
-
-

@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"UnitConvert/testsFiles/"
 
 class TestUnitConvert(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 : test a case simple conversion"""
         # open and read source
         source0 = plugin_test_dir + "windModulus_file2cmp.std"
@@ -44,7 +44,7 @@ class TestUnitConvert(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 : test a case with no conversion"""
         # open and read source
         source0 = plugin_test_dir + "windModulus_file2cmp.std"
@@ -67,7 +67,7 @@ class TestUnitConvert(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 : test a case with no conversion (with extended info)"""
         # open and read source
         source0 = plugin_test_dir + "windModulus_file2cmp.std"
@@ -90,7 +90,7 @@ class TestUnitConvert(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4 : test a case with simple conversion and another plugin 2D"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
@@ -113,7 +113,7 @@ class TestUnitConvert(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5 : test a case with simple conversion and another plugin 3D"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
@@ -136,7 +136,7 @@ class TestUnitConvert(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6 : test a case with complete roundtrip conversion celcius -> kelvin -> fahrenheit -> celsius"""
         # open and read source
         source0 = plugin_test_dir + "UUVVTT5x5_fileSrc.std"
@@ -159,7 +159,7 @@ class TestUnitConvert(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_7(self):
+    def test_7(self):
         """Test #7 : test a case for output file mode in standard format"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -182,7 +182,7 @@ class TestUnitConvert(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_8(self):
+    def test_8(self):
         """Test #8 : test a case with complete roundtrip conversion celcius -> kelvin -> celsius"""
         # open and read source
         source0 = plugin_test_dir + "TTES_fileSrc.std"
@@ -205,7 +205,7 @@ class TestUnitConvert(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_9(self):
+    def test_9(self):
         """Test #9 : test a case with complete roundtrip conversion celcius -> kelvin -> fahrenheit -> celsius in GeorgeKIndex context"""
         # open and read source
         source0 = plugin_test_dir + "TTES_fileSrc.std"
@@ -228,7 +228,7 @@ class TestUnitConvert(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_10(self):
+    def test_10(self):
         """Test #10 : test a case for output file mode in standard format"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -251,7 +251,7 @@ class TestUnitConvert(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_11(self):
+    def test_11(self):
         """Test #11 : test --ignoremissing"""
         # open and read source
         source0 = plugin_test_dir + "windModulus_file2cmp.std"
@@ -274,7 +274,7 @@ class TestUnitConvert(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_12(self):
+    def test_12(self):
         """Test #12 : test bad unit"""
         # open and read source
         source0 = plugin_test_dir + "windModulus_file2cmp.std"
@@ -294,6 +294,6 @@ class TestUnitConvert(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 

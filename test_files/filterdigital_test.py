@@ -19,7 +19,7 @@ plugin_test_dir=TEST_PATH +"FilterDigital/testsFiles/"
 
 class TestFilterDigital(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 :  Test 1 répétition avec un filtre standard."""
         # open and read source
         source0 = plugin_test_dir + "UUVVfil5x5_fileSrc.std"
@@ -42,7 +42,7 @@ class TestFilterDigital(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 :  Test 3 répétitions avec un filtre standard."""
         # open and read source
         source0 = plugin_test_dir + "UUVVfil5x5_fileSrc.std"
@@ -65,7 +65,7 @@ class TestFilterDigital(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 :  Test 1 répétition avec un long filtre et un fichier provenant du site de rpn PGSM."""
         # open and read source
         source0 = plugin_test_dir + "UU11x11_1_0_fileSrc.std"
@@ -88,7 +88,7 @@ class TestFilterDigital(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4 :  Test 3 répétitions avec un long filtre et un fichier provenant du site de rpn PGSM."""
         # open and read source
         source0 = plugin_test_dir + "UU11x11_1_0_fileSrc.std"
@@ -111,7 +111,7 @@ class TestFilterDigital(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5 :  Test 1 répétition avec un filtre à 1 chiffre."""
         # open and read source
         source0 = plugin_test_dir + "UUVVfil5x5_fileSrc.std"
@@ -134,7 +134,7 @@ class TestFilterDigital(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6 :  Test 1 répétition avec un long filtre et un gros fichier."""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -157,7 +157,7 @@ class TestFilterDigital(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_7(self):
+    def test_7(self):
         """Test #7 :  Test 3 répétitions avec un long filtre et un gros fichier."""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -180,7 +180,7 @@ class TestFilterDigital(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_8(self):
+    def test_8(self):
         """Test #8 :  Test 3 répétitions avec un long filtre, poids importants et un gros fichier."""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -203,7 +203,7 @@ class TestFilterDigital(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_9(self):
+    def test_9(self):
         """Test #9 :  Test de comparaison avec le programme pgsm FILTRE3PTS3X."""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -226,7 +226,7 @@ class TestFilterDigital(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_10(self):
+    def test_10(self):
         """Test #10 :  Test de comparaison avec le programme pgsm FILTRE3PTS1X."""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -249,7 +249,7 @@ class TestFilterDigital(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_11(self):
+    def test_11(self):
         """Test #11 :  Test de comparaison avec le programme pgsm FILTRE5PTS2X."""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -272,7 +272,7 @@ class TestFilterDigital(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_12(self):
+    def test_12(self):
         """Test #12 :  Test de comparaison avec le programme pgsm FILTRE9PTS1X."""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -295,7 +295,7 @@ class TestFilterDigital(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_13(self):
+    def test_13(self):
         """Test #13 :  Test de comparaison."""
         # open and read source
         source0 = plugin_test_dir + "LATLON_L_9x11_fileSrc.std"
@@ -318,7 +318,7 @@ class TestFilterDigital(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_14(self):
+    def test_14(self):
         """Test #14 :  Test 1 répétition avec un filtre standard et l'option outputFieldName."""
         # open and read source
         source0 = plugin_test_dir + "UUVVfil5x5_fileSrc.std"

@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"Calculator/testsFiles/"
 
 class TestCalculator(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 : Multiplication de deux valeurs d'un fichier volumineux."""
         # open and read source
         source0 = plugin_test_dir + "srcFile1.std"
@@ -44,7 +44,7 @@ class TestCalculator(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 : 6 variables impliquant plusieurs opérateurs simples (HU+HR+ES)/(VV-(TT*UU))."""
         # open and read source
         source0 = plugin_test_dir + "srcFile2.std"
@@ -67,7 +67,7 @@ class TestCalculator(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 : Test de certaines fonctions typiques: abs(tt) + cos(uu) + ceil(vv) + sqrt(hu) + pow(hr,2) + log10(es)"""
         # open and read source
         source0 = plugin_test_dir + "srcFile3.std"
@@ -90,7 +90,7 @@ class TestCalculator(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4 : Test avec un nombre élevé de variables. (Sommation des variables)"""
         # open and read source
         source0 = plugin_test_dir + "srcFile4.std"
@@ -113,7 +113,7 @@ class TestCalculator(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5 : Test avec un outputFieldname différent et une utilisation répétée d'une même variable. ( (TT+UU+VV)/TT )"""
         # open and read source
         source0 = plugin_test_dir + "srcFile2.std"
@@ -136,7 +136,7 @@ class TestCalculator(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6 : Test avec une seule variable. (TT*7)"""
         # open and read source
         source0 = plugin_test_dir + "srcFile2.std"
@@ -159,7 +159,7 @@ class TestCalculator(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_7(self):
+    def test_7(self):
         """Test #7 : Même test que test_5, mais échoue parce qu'il y n'y a pas le même nombre de variables que de PDS avec tag."""
         # open and read source
         source0 = plugin_test_dir + "srcFile2.std"
@@ -179,6 +179,6 @@ class TestCalculator(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 

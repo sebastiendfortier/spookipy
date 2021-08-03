@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"BaseTopBoundedLevelIndex/testsFiles/"
 
 class TestBaseTopBoundedLevelIndex(unittest.TestCase):
 
-    def test_regtest_base_top_1(self):
+    def test_base_top_1(self):
         """Test #1 : Calcul les Base et Top d'un phenomene."""
         # open and read source
         source0 = plugin_test_dir + "baseTop_fileSrc.csv"

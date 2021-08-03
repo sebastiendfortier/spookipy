@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"TemperatureWetBulb/testsFiles/"
 
 class TestTemperatureWetBulb(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 :  Calculates wet-bulb temperature from a reghyb file."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_reghyb"
@@ -44,7 +44,7 @@ class TestTemperatureWetBulb(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 :  Calculates wet-bulb temperature from a regpres file."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
@@ -67,7 +67,7 @@ class TestTemperatureWetBulb(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 :  Calculates wet-bulb temperature from a glbeta file."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_glbeta"
@@ -90,7 +90,7 @@ class TestTemperatureWetBulb(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4 :  Calculates wet-bulb temperature using neil's files."""
         # open and read source
         source0 = plugin_test_dir + "inputforTW_withQV.fst"

@@ -54,11 +54,11 @@ class GeorgeKIndex(Plugin):
         df_list=[]
         for _,current_fhour_group in self.fhour_groups:
             current_fhour_group = fstpy.load_data(current_fhour_group)
-            tt850_df = current_fhour_group.query( '(nomvar=="TT") and (level==850)').reset_index(drop=True)
-            tt700_df = current_fhour_group.query( '(nomvar=="TT") and (level==700)').reset_index(drop=True)
-            tt500_df = current_fhour_group.query( '(nomvar=="TT") and (level==500)').reset_index(drop=True)
-            td850_df = current_fhour_group.query( '(nomvar=="TD") and (level==850)').reset_index(drop=True)
-            td700_df = current_fhour_group.query( '(nomvar=="TD") and (level==700)').reset_index(drop=True)
+            tt850_df = current_fhour_group.loc[current_fhour_group.nomvar=='TT'].reset_index(drop=True)
+            tt700_df = current_fhour_group.loc[current_fhour_group.nomvar=='TT'].reset_index(drop=True)
+            tt500_df = current_fhour_group.loc[current_fhour_group.nomvar=='TT'].reset_index(drop=True)
+            td850_df = current_fhour_group.loc[current_fhour_group.nomvar=='TD'].reset_index(drop=True)
+            td700_df = current_fhour_group.loc[current_fhour_group.nomvar=='TD'].reset_index(drop=True)
             ki_df = create_empty_result(td700_df,self.plugin_result_specifications['KI'])
 
             ki_df.iloc[0]['d'] = george_k_index(tt850_df.iloc[0]['d'],tt500_df.iloc[0]['d'],td850_df.iloc[0]['d'],tt700_df.iloc[0]['d'],td700_df.iloc[0]['d'])

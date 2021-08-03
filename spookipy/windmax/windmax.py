@@ -88,19 +88,19 @@ class WindMax(Plugin):
             # print('windmax current_fhour_group 2\n',current_fhour_group[['nomvar','typvar','etiket','ni','nj','nk','dateo','ip1','unit']])
             current_fhour_group = fstpy.load_data(current_fhour_group)
             # print('windmax current_fhour_group 3\n',current_fhour_group[['nomvar','typvar','etiket','ni','nj','nk','dateo','ip1','unit']])
-            uu_df = current_fhour_group.query('nomvar=="UU"').reset_index(drop=True)
+            uu_df = current_fhour_group.loc[current_fhour_group.nomvar=='UU'].reset_index(drop=True)
             # print('windmax uu_df\n',uu_df[['nomvar','typvar','etiket','ni','nj','nk','dateo','ip1','unit']])
             uu_res_df = create_empty_result(uu_df,self.plugin_result_specifications['UU'])
 
-            vv_df = current_fhour_group.query('nomvar=="VV"').reset_index(drop=True)
+            vv_df = current_fhour_group.loc[current_fhour_group.nomvar=='VV'].reset_index(drop=True)
             # print('windmax vv_df\n',vv_df[['nomvar','typvar','etiket','ni','nj','nk','dateo','ip1','unit']])
             vv_res_df = create_empty_result(vv_df,self.plugin_result_specifications['VV'])
 
-            uv_df = current_fhour_group.query('nomvar=="UV"').reset_index(drop=True)
+            uv_df = current_fhour_group.loc[current_fhour_group.nomvar=='UV'].reset_index(drop=True)
             # print('windmax uv_df\n',uv_df[['nomvar','typvar','etiket','ni','nj','nk','dateo','ip1','unit']])
             uv_res_df = create_empty_result(uv_df,self.plugin_result_specifications['UV'])
             
-            px_df = current_fhour_group.query('nomvar=="PX"').reset_index(drop=True)
+            px_df = current_fhour_group.loc[current_fhour_group.nomvar=='PX'].reset_index(drop=True)
             # print('windmax px_df\n',px_df[['nomvar','typvar','etiket','ni','nj','nk','dateo','ip1','unit']])
             px_res_df = create_empty_result(px_df,self.plugin_result_specifications['PX'])
 

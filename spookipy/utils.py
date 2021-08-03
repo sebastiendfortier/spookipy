@@ -51,9 +51,11 @@ def get_plugin_dependencies(df:pd.DataFrame, plugin_params:dict=None, plugin_man
     from .saturationvapourpressure.saturationvapourpressure import SaturationVapourPressure
     from .vapourpessure.vapourpessure import VapourPressure
     from .watervapourmixingratio.watervapourmixingratio import WaterVapourMixingRatio
+    from .dewpointdepression.dewpointdepression import DewPointDepression
     computable_dependencies = {
         'UV':WindModulus,
         'PX':Pressure,
+        'ES':DewPointDepression,
         'HR':HumidityRelative,
         'HU':HumiditySpecific,
         'TD':TemperatureDewPoint,
@@ -62,46 +64,46 @@ def get_plugin_dependencies(df:pd.DataFrame, plugin_params:dict=None, plugin_man
         'QV':WaterVapourMixingRatio
         }
     df_list = []
-    print('before\n',df[['nomvar','unit','level','ip1_pkind']].to_string())
-    print(plugin_mandatory_dependencies)
+    # print('before\n',df[['nomvar','unit','level','ip1_pkind']].to_string())
+    # print(plugin_mandatory_dependencies)
     for nomvar,desc in plugin_mandatory_dependencies.items():
         # plugin_params = desc.pop('plugin_params') if 'plugin_params' in desc.keys() else None
         select_only = desc.pop('select_only') if 'select_only' in desc.keys() else False
         if (nomvar in computable_dependencies.keys()) and (df.loc[df.nomvar==nomvar].empty) and (select_only==False):
-            plugin = computable_dependencies[nomvar] 
+            plugin = computable_dependencies[nomvar]
             sig = signature(plugin)
             function_keys = []
             for param in sig.parameters:
                 function_keys.append(param)
-            # print(function_keys)    
+            # print(function_keys)
             # print(f'computing - {nomvar}')
 
             if plugin_params is None:
-                print('plugin_params is None')
+                # print('plugin_params is None')
                 tmp_df = plugin(df).compute()
             else:
-                print('plugin_params is not None')
+                # print('plugin_params is not None')
                 if set(plugin_params.keys()).issubset(function_keys):
-                    print('call plugin with params')
-                    tmp_df = plugin(df,**plugin_params).compute()    
+                    # print('call plugin with params')
+                    tmp_df = plugin(df,**plugin_params).compute()
                 else:
-                    print('call plugin without params')    
+                    # print('call plugin without params')
                     tmp_df = plugin(df).compute()
-            print('plugin result\n',tmp_df)
-            df = pd.concat([df,tmp_df],ignore_index=True)    
-            print('after\n',df[['nomvar','unit','level','ip1_pkind']].to_string())
+            # print('plugin result\n',tmp_df)
+            df = pd.concat([df,tmp_df],ignore_index=True)
+            # print('after\n',df[['nomvar','unit','level','ip1_pkind']].to_string())
         # print(f'selecting - {nomvar}')
         # print(df[list(desc)])
         # print(pd.Series(desc))
         #recipe, query with dict
-        tmp_df = df.loc[(df[list(desc)] == pd.Series(desc)).all(axis=1)]   
+        tmp_df = df.loc[(df[list(desc)] == pd.Series(desc)).all(axis=1)]
 
         if tmp_df.empty:
             if throw_error:
                 raise DependencyError(f'{plugin_mandatory_dependencies[nomvar]} not found!')
             else:
-                return pd.DataFrame(dtype=object)    
-            
+                return pd.DataFrame(dtype=object)
+
         df_list.append(tmp_df)
 
     res_df = pd.concat(df_list,ignore_index=True)
@@ -118,15 +120,15 @@ def get_existing_result(df:pd.DataFrame, plugin_result_specifications) -> pd.Dat
             df_list.append(res_df)
         else:
             break
-    if len(df_list)==len(plugin_result_specifications):    
-        return pd.concat(df_list,ignore_index=True)    
+    if len(df_list)==len(plugin_result_specifications):
+        return pd.concat(df_list,ignore_index=True)
     else:
-        return pd.DataFrame(dtype='object')    
+        return pd.DataFrame(dtype='object')
 
 def get_intersecting_levels(df:pd.DataFrame, plugin_mandatory_dependencies:dict) -> pd.DataFrame:
     """Gets the records of all intersecting levels for nomvars in list.
-    if TT,UU and VV are in the list, the output dataframe will contain all 3 
-    varaibles at all the intersectiong levels between the 3 variables 
+    if TT,UU and VV are in the list, the output dataframe will contain all 3
+    varaibles at all the intersectiong levels between the 3 variables
 
     :param df: input dataframe
     :type df: pd.DataFrame
@@ -153,7 +155,7 @@ def get_intersecting_levels(df:pd.DataFrame, plugin_mandatory_dependencies:dict)
         curr_df = df.loc[df.nomvar==nomvar]
         levels = set(curr_df.ip1.unique())
         common_levels = common_levels.intersection(levels)
-        
+
     common_levels = list(common_levels)
     # print('(nomvar in %s) and (ip1 in %s)'%(nomvars,common_levels))
     nomvars = list(plugin_mandatory_dependencies.keys())
@@ -162,10 +164,10 @@ def get_intersecting_levels(df:pd.DataFrame, plugin_mandatory_dependencies:dict)
     res_df = df.loc[(df.nomvar.isin(nomvars)) & (df.ip1.isin(common_levels))].drop_duplicates(subset=['nomvar','typvar','etiket','ni','nj','nk','dateo','ip1','ip2','ip3','deet','npas','ig1','ig2','ig3','ig4'])
         # print('query_res_df\n',query_res_df[['nomvar','typvar','etiket','ni','nj','nk','dateo','ip1','ip2','ip3','grid']].to_string(),len(query_res_df.index))
         # df_list.append(query_res_df)
-    
+
     # res_df = pd.concat(df_list,ignore_index=True)
-      
-    return res_df            
+
+    return res_df
 
 
 def validate_nomvar(nomvar:str, caller_class:str, error_class:Exception):
@@ -212,7 +214,7 @@ def create_empty_result(df, plugin_result_specifications,copy=False):
     for k,v in plugin_result_specifications.items():
         if v != '':
             res_df.loc[:,k] = v
-    return res_df    
+    return res_df
 
 def get_3d_array(df) -> np.ndarray:
     for i in df.index:
@@ -221,12 +223,12 @@ def get_3d_array(df) -> np.ndarray:
     return arr_3d
 
 def existing_results(plugin_name:str,df:pd.DataFrame,meta_df:pd.DataFrame):
-    sys.stdout.write(''.join([plugin_name,' - found results\n']))  
+    sys.stdout.write(''.join([plugin_name,' - found results\n']))
     df = fstpy.load_data(df)
     meta_df = fstpy.load_data(meta_df)
     res_df = pd.concat([meta_df,df],ignore_index=True)
     res_df  = remove_load_data_info(res_df)
-    return res_df    
+    return res_df
 
 def final_results(df_list,error_class,meta_df):
     new_list = []
@@ -238,10 +240,10 @@ def final_results(df_list,error_class,meta_df):
 
     meta_df = fstpy.load_data(meta_df)
 
-    new_list.append(meta_df)    
+    new_list.append(meta_df)
     # merge all results together
     res_df = pd.concat(new_list,ignore_index=True)
-    
+
     res_df = remove_load_data_info(res_df)
     res_df = fstpy.metadata_cleanup(res_df)
-    return res_df 
+    return res_df

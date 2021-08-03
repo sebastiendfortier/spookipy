@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"PressureOnIsopleth/testsFiles/"
 
 class TestPressureOnIsopleth(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 : Calculate with a simple test data """
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
@@ -44,7 +44,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 : Utilisation de --outputFieldName avec une valeur > 4 caractères."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
@@ -64,10 +64,10 @@ class TestPressureOnIsopleth(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 : Utilisation de --fieldName avec une valeur > 4 caractères."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
@@ -87,10 +87,10 @@ class TestPressureOnIsopleth(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4 : Calculate more test data with multiple fieldConstant, DESCENDING scandDirection and cases with larger and smaller values"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
@@ -113,7 +113,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5 :  Calculate more test data with multiple fieldConstant, ASCENDING scandDirection and cases with larger and smaller values"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
@@ -136,7 +136,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6 : Same as test 1 but in singlethread"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"

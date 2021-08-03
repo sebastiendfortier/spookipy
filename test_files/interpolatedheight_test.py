@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"InterpolatedHeight/testsFiles/"
 
 class TestInterpolatedHeight(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 :  Test  --inputFieldName CLD --threshold 0.6"""
         # open and read source
         source0 = plugin_test_dir + "interHeight_fileSrc.csv"

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys
+
+from numpy import float32
 import fstpy.all as fstpy
 import pandas as pd
 from ..humidityutils.humidityutils import (
@@ -17,7 +19,7 @@ class DewPointDepressionError(Exception):
     pass
 
 class DewPointDepression(Plugin):
-    
+
 
     @initializer
     def __init__(self,df:pd.DataFrame, ice_water_phase=None, temp_phase_switch=None,temp_phase_switch_unit='celsius', rpn=False):
@@ -59,23 +61,23 @@ class DewPointDepression(Plugin):
             'TD':{'nomvar':'TD','unit':'celsius','select_only':True},
         }
 
-        
+
         self.plugin_result_specifications = {
             'ES':{'nomvar':'ES','etiket':'DewPointDepression','unit':'celsius','nbits':16,'datyp':1}
         }
         self.validate_input()
 
 
-    # might be able to move    
+    # might be able to move
     def validate_input(self):
         if self.df.empty:
-            raise DewPointDepressionError('No data to process') 
+            raise DewPointDepressionError('No data to process')
 
-        self.df = fstpy.metadata_cleanup(self.df)    
+        self.df = fstpy.metadata_cleanup(self.df)
 
-        self.meta_df = self.df.query('nomvar in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True)    
+        self.meta_df = self.df.query('nomvar in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True)
 
-        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['unit','forecast_hour','ip_info'])  
+        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['unit','forecast_hour','ip_info'])
 
         validate_humidity_parameters(DewPointDepressionError,self.ice_water_phase,self.temp_phase_switch,self.temp_phase_switch_unit)
 
@@ -91,34 +93,34 @@ class DewPointDepression(Plugin):
                 if self.dependencies_df.empty:
                     self.dependencies_df = get_plugin_dependencies(self.df,self.plugin_params,self.plugin_mandatory_dependencies_option_rpn2,throw_error=False)
                     self.option=2
-                if self.dependencies_df.empty:    
+                if self.dependencies_df.empty:
                     self.dependencies_df = get_plugin_dependencies(self.df,self.plugin_params,self.plugin_mandatory_dependencies_option_rpn3,throw_error=False)
                     self.option=3
-                if self.dependencies_df.empty:    
+                if self.dependencies_df.empty:
                     self.dependencies_df = get_plugin_dependencies(self.df,self.plugin_params,self.plugin_mandatory_dependencies_option_rpn4)
-                    self.option=4    
+                    self.option=4
             else:
                 self.dependencies_df = get_plugin_dependencies(self.df,self.plugin_params,self.plugin_mandatory_dependencies_option_1,throw_error=False)
                 self.option=1
                 if self.dependencies_df.empty:
                     self.dependencies_df = get_plugin_dependencies(self.df,self.plugin_params,self.plugin_mandatory_dependencies_option_2,throw_error=False)
                     self.option=2
-                if self.dependencies_df.empty:    
+                if self.dependencies_df.empty:
                     self.dependencies_df = get_plugin_dependencies(self.df,self.plugin_params,self.plugin_mandatory_dependencies_option_3,throw_error=False)
                     self.option=3
-                if self.dependencies_df.empty:    
+                if self.dependencies_df.empty:
                     self.dependencies_df = get_plugin_dependencies(self.df,self.plugin_params,self.plugin_mandatory_dependencies_option_4)
-                    self.option=4            
+                    self.option=4
 
-            self.fhour_groups = self.dependencies_df.groupby(['grid','forecast_hour'])    
-            
+            self.fhour_groups = self.dependencies_df.groupby(['grid','forecast_hour'])
+
 
     def compute(self) -> pd.DataFrame:
         from ..all import HumiditySpecific,TemperatureDewPoint
         if not self.existing_result_df.empty:
             return existing_results('DewPointDepression',self.existing_result_df,self.meta_df)
 
-        sys.stdout.write('DewPointDepression - compute\n')    
+        sys.stdout.write('DewPointDepression - compute\n')
         df_list=[]
         for _, current_fhour_group in self.fhour_groups:
             if self.rpn:
@@ -137,7 +139,7 @@ class DewPointDepression(Plugin):
                         tt = tt_df.at[i,'d']
                         px = px_df.at[i,'d']
                         hu = hu_df.at[i,'d']
-                        es_df.at[i,'d'] = rpn_calc_dew_point_depression_hu(tt,hu,px,self.ice_water_phase=='both')
+                        es_df.at[i,'d'] = rpn_calc_dew_point_depression_hu(tt,hu,px,self.ice_water_phase=='both').astype(float32)
                 elif self.option==2:
                     print('option 2')
                     level_intersection_df = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies_option_rpn2)
@@ -146,7 +148,7 @@ class DewPointDepression(Plugin):
                     qv_df = level_intersection_df.query( 'nomvar=="QV"').reset_index(drop=True)
                     px_df = level_intersection_df.query( 'nomvar=="PX"').reset_index(drop=True)
                     es_df = create_empty_result(tt_df,self.plugin_result_specifications['ES'],copy=True)
-                    hu_df = HumiditySpecific(pd.concat([tt_df,qv_df,px_df,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,rpn=True).compute()
+                    hu_df = HumiditySpecific(pd.concat([current_fhour_group,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,rpn=True).compute()
                     hu_df = hu_df.loc[hu_df.nomvar=='HU'].reset_index(drop=True)
                     tt_df = fstpy.unit_convert(tt_df,'kelvin')
                     px_df = fstpy.unit_convert(px_df,'pascal')
@@ -154,7 +156,7 @@ class DewPointDepression(Plugin):
                         tt = tt_df.at[i,'d']
                         px = px_df.at[i,'d']
                         hu = hu_df.at[i,'d']
-                        es_df.at[i,'d'] = rpn_calc_dew_point_depression_hu(tt,hu,px,self.ice_water_phase=='both')
+                        es_df.at[i,'d'] = rpn_calc_dew_point_depression_hu(tt,hu,px,self.ice_water_phase=='both').astype(float32)
                 elif self.option==3:
                     print('option 3')
                     level_intersection_df = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies_option_rpn3)
@@ -169,7 +171,7 @@ class DewPointDepression(Plugin):
                         tt = tt_df.at[i,'d']
                         px = px_df.at[i,'d']
                         hr = hr_df.at[i,'d']
-                        es_df.at[i,'d'] = rpn_calc_dew_point_depression_hr(tt,hr,px,self.ice_water_phase=='both')
+                        es_df.at[i,'d'] = rpn_calc_dew_point_depression_hr(tt,hr,px,self.ice_water_phase=='both').astype(float32)
                 else:
                     print('option 4')
                     level_intersection_df = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies_option_rpn4)
@@ -182,7 +184,7 @@ class DewPointDepression(Plugin):
                     for i in es_df.index:
                         tt = tt_df.at[i,'d']-TDPACK_OFFSET_FIX
                         td = td_df.at[i,'d']-TDPACK_OFFSET_FIX
-                        es_df.at[i,'d'] = calc_dew_point_depression_td(tt,td)
+                        es_df.at[i,'d'] = calc_dew_point_depression_td(tt,td).astype(float32)
             else:
                 if self.option==1:
                     print('option 1')
@@ -191,12 +193,12 @@ class DewPointDepression(Plugin):
                     tt_df = level_intersection_df.query( 'nomvar=="TT"').reset_index(drop=True)
                     hu_df = level_intersection_df.query( 'nomvar=="HU"').reset_index(drop=True)
                     es_df = create_empty_result(tt_df,self.plugin_result_specifications['ES'],copy=True)
-                    td_df = TemperatureDewPoint(pd.concat([tt_df,hu_df,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,temp_phase_switch=self.temp_phase_switch,temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
+                    td_df = TemperatureDewPoint(pd.concat([current_fhour_group,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,temp_phase_switch=self.temp_phase_switch,temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
                     td_df = td_df.loc[td_df.nomvar=='TD'].reset_index(drop=True)
                     for i in es_df.index:
                         tt = tt_df.at[i,'d']-TDPACK_OFFSET_FIX
                         td = td_df.at[i,'d']-TDPACK_OFFSET_FIX
-                        es_df.at[i,'d'] = calc_dew_point_depression_td(tt,td)
+                        es_df.at[i,'d'] = calc_dew_point_depression_td(tt,td).astype(float32)
 
 
                 elif self.option==2:
@@ -206,12 +208,12 @@ class DewPointDepression(Plugin):
                     tt_df = level_intersection_df.query( 'nomvar=="TT"').reset_index(drop=True)
                     qv_df = level_intersection_df.query( 'nomvar=="QV"').reset_index(drop=True)
                     es_df = create_empty_result(tt_df,self.plugin_result_specifications['ES'],copy=True)
-                    td_df = TemperatureDewPoint(pd.concat([tt_df,qv_df,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,temp_phase_switch=self.temp_phase_switch,temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
+                    td_df = TemperatureDewPoint(pd.concat([current_fhour_group,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,temp_phase_switch=self.temp_phase_switch,temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
                     td_df = td_df.loc[td_df.nomvar=='TD'].reset_index(drop=True)
                     for i in es_df.index:
                         tt = tt_df.at[i,'d']-TDPACK_OFFSET_FIX
                         td = td_df.at[i,'d']-TDPACK_OFFSET_FIX
-                        es_df.at[i,'d'] = calc_dew_point_depression_td(tt,td)
+                        es_df.at[i,'d'] = calc_dew_point_depression_td(tt,td).astype(float32)
 
 
                 elif self.option==3:
@@ -221,12 +223,12 @@ class DewPointDepression(Plugin):
                     tt_df = level_intersection_df.query( 'nomvar=="TT"').reset_index(drop=True)
                     hr_df = level_intersection_df.query( 'nomvar=="HR"').reset_index(drop=True)
                     es_df = create_empty_result(tt_df,self.plugin_result_specifications['ES'],copy=True)
-                    td_df = TemperatureDewPoint(pd.concat([tt_df,hr_df,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,temp_phase_switch=self.temp_phase_switch,temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
+                    td_df = TemperatureDewPoint(pd.concat([current_fhour_group,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,temp_phase_switch=self.temp_phase_switch,temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
                     td_df = td_df.loc[td_df.nomvar=='TD'].reset_index(drop=True)
                     for i in es_df.index:
                         tt = tt_df.at[i,'d']-TDPACK_OFFSET_FIX
                         td = td_df.at[i,'d']-TDPACK_OFFSET_FIX
-                        es_df.at[i,'d'] = calc_dew_point_depression_td(tt,td)
+                        es_df.at[i,'d'] = calc_dew_point_depression_td(tt,td).astype(float32)
 
                 else:
                     print('option 4')
@@ -238,7 +240,7 @@ class DewPointDepression(Plugin):
                     for i in es_df.index:
                         tt = tt_df.at[i,'d']-TDPACK_OFFSET_FIX
                         td = td_df.at[i,'d']-TDPACK_OFFSET_FIX
-                        es_df.at[i,'d'] = calc_dew_point_depression_td(tt,td)
+                        es_df.at[i,'d'] = calc_dew_point_depression_td(tt,td).astype(float32)
 
             df_list.append(es_df)
 

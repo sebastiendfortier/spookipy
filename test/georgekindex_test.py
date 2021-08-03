@@ -12,7 +12,7 @@ def plugin_test_dir():
     return TEST_PATH + '/GeorgeKIndex/testsFiles/'
 
 
-def test_regtest_1(plugin_test_dir):
+def test_1(plugin_test_dir):
     """Test #1 :  Calcul de l'indice à partir d'une matrice de températures de 5x4x3 et d'écarts de point de rosée de 5x4x2"""
     # open and read source
     source0 = plugin_test_dir + "inputFileSimple.std"
@@ -37,7 +37,7 @@ def test_regtest_1(plugin_test_dir):
     assert(False == True)
 
 
-def test_regtest_2(plugin_test_dir):
+def test_2(plugin_test_dir):
     """Test #2 :  Calcul de l'indice avec un vrai fichier de données"""
     # open and read source
     source0 = plugin_test_dir + "inputFile.std"
@@ -62,7 +62,7 @@ def test_regtest_2(plugin_test_dir):
     assert(False == True)
 
 
-def test_regtest_with_TT_TD(plugin_test_dir):
+def test_with_TT_TD(plugin_test_dir):
     """Test #3 :  Calcul de l'indice avec un fichier de données contenant TT et TD mais pas ES"""
     # open and read source
     source0 = plugin_test_dir + "inputFileSimpleTD_TT.std"
@@ -87,7 +87,7 @@ def test_regtest_with_TT_TD(plugin_test_dir):
     assert(False == True)
 
 
-def test_regtest_TT_ES_differentsUnites(plugin_test_dir):
+def test_TT_ES_differentsUnites(plugin_test_dir):
     """Test #4 :  Calcul de l'indice avec un fichier contenant des TT et des ES d'unités différentes"""
     # open and read source
     source0 = plugin_test_dir + "inputFileSimple.std"
@@ -111,7 +111,7 @@ def test_regtest_TT_ES_differentsUnites(plugin_test_dir):
     assert(False == True)
 
 
-def test_regtest_PlusieursForecastHours(plugin_test_dir):
+def test_PlusieursForecastHours(plugin_test_dir):
     """Test #5 :  Calcul avec un fichier ayant plusieurs forecastHour - Ne doit pas fonctionner car des niveaux sont manquants pour un forecastHour"""
     # open and read source
     source0 = plugin_test_dir + "2016122000_006_NatPres.std"
@@ -123,7 +123,7 @@ def test_regtest_PlusieursForecastHours(plugin_test_dir):
     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [GeorgeKIndex] 
 
 
-def test_regtest_6(plugin_test_dir):
+def test_6(plugin_test_dir):
     """Test #6 :  Calcul avec un fichier ayant plusieurs forecastHour"""
     # open and read source
     source0 = plugin_test_dir + "2016122000_006_NatPres.std"

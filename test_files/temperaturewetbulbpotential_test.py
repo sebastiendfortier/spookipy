@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"TemperatureWetBulbPotential/testsFiles/"
 
 class TestTemperatureWetBulbPotential(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 : Faire appel a TemperatureAlongPseudoadiabat avec --endLevel 1000mb et --increment 1mb et garderseulement le niveau a 1000mb pour le comparer avec TemperatureWetBulbPotential."""
         # open and read source
         source0 = plugin_test_dir + "2014031006_024_fileSrc.std"
@@ -44,7 +44,7 @@ class TestTemperatureWetBulbPotential(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 : Calcul TemperatureWetBulbPotential à partir d'un fichier hybrid."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_reghyb"

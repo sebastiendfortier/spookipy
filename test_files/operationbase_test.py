@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"OperationBase/testsFiles/"
 
 class TestOperationBase(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 :  Test une operation de clonage"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_UV_fileSrc.std"
@@ -44,7 +44,7 @@ class TestOperationBase(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 :  Test une autre operation de clonage"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_UV_fileSrc.std"
@@ -67,7 +67,7 @@ class TestOperationBase(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 :  Test la detection de la meme grille (no deformation fields)."""
         # open and read source
         source0 = plugin_test_dir + "uu.std"
@@ -93,7 +93,7 @@ class TestOperationBase(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4 :  Test la detection de la meme grille (no deformation fields), avec operateur."""
         # open and read source
         source0 = plugin_test_dir + "uu.std"
@@ -119,7 +119,7 @@ class TestOperationBase(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5 :  Test la detection de la meme grille (with deformation fields)."""
         # open and read source
         source0 = plugin_test_dir + "tt.std"
@@ -145,7 +145,7 @@ class TestOperationBase(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6 :  Test la detection de la meme grille (with deformation fields), avec operateur."""
         # open and read source
         source0 = plugin_test_dir + "tt.std"

@@ -11,7 +11,7 @@ def plugin_test_dir():
     return TEST_PATH + '/AbsoluteValue/testsFiles/'
 
 
-def test_regtest_1(plugin_test_dir):
+def test_1(plugin_test_dir):
     """Test #1 : Calcule la valeur absolue de chaque champ."""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5_minus2_fileSrc2.std"
@@ -34,7 +34,7 @@ def test_regtest_1(plugin_test_dir):
     assert(res == True)
 
 
-def test_regtest_2(plugin_test_dir):
+def test_2(plugin_test_dir):
     """Test #2 : Utilisation de --outputFieldName alors qu'on a plusieurs champs dans le fichier d'entrée."""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5_minus2_fileSrc.std"
@@ -54,10 +54,10 @@ def test_regtest_2(plugin_test_dir):
 
     #compare results
     res = fstcomp(results_file,file_to_compare)
-    assert(res == False)
+    assert(res == True)
 
 
-def test_regtest_3(plugin_test_dir):
+def test_3(plugin_test_dir):
     """Test #3 : Utilisation de --outputFieldName avec une valeur > 4 caractères."""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5_minus2_fileSrc.std"
@@ -77,10 +77,10 @@ def test_regtest_3(plugin_test_dir):
 
     #compare results
     res = fstcomp(results_file,file_to_compare)
-    assert(res == False)
+    assert(res == True)
 
 
-def test_regtest_4(plugin_test_dir):
+def test_4(plugin_test_dir):
     """Test #4 : Calcule la valeur absolue d'un champ et utilise --outputFieldName pour renommer le résultat."""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5_minus2_fileSrc2.std"

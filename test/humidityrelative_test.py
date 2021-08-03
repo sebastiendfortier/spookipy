@@ -14,7 +14,7 @@ def plugin_test_dir():
 
 
 
-def test_regtest_1(plugin_test_dir):
+def test_1(plugin_test_dir):
     """Test #1 :  Calcul de l'humidité relative; utilisation d'un unité invalide pour --temperaturePhaseSwitch."""
     # open and read source
     source0 = plugin_test_dir + "inputFile.std"
@@ -27,7 +27,7 @@ def test_regtest_1(plugin_test_dir):
 
 
 
-def test_regtest_2(plugin_test_dir):
+def test_2(plugin_test_dir):
     """Test #2 :  Calcul de l'humidité relative; utilisation de valeur invalide ( < borne minimale) pour -temperaturePhaseSwitch."""
     # open and read source
     source0 = plugin_test_dir + "inputFile.std"
@@ -41,7 +41,7 @@ def test_regtest_2(plugin_test_dir):
 
 
 
-def test_regtest_3(plugin_test_dir):
+def test_3(plugin_test_dir):
     """Test #3 :  Calcul de l'humidité relative; utilisation d'une valeur invalide ( > borne maximale) pour -temperaturePhaseSwitch."""
     # open and read source
     source0 = plugin_test_dir + "inputFile.std"
@@ -55,7 +55,7 @@ def test_regtest_3(plugin_test_dir):
 
 
 
-def test_regtest_4(plugin_test_dir):
+def test_4(plugin_test_dir):
     """Test #4 :  Calcul de l'humidité relative; utilisation d'une valeur invalide pour -temperaturePhaseSwitch."""
     # open and read source
     source0 = plugin_test_dir + "inputFile.std"
@@ -69,27 +69,36 @@ def test_regtest_4(plugin_test_dir):
 
 
 
-def test_regtest_5(plugin_test_dir):
+def test_5(plugin_test_dir):
     """Test #5 :  Calcul de l'humidité relative (HR) à partir de l'humidité spécifique (HU)."""
     # open and read source
     source0 = plugin_test_dir + "2011100712_012_glbhyb"
     src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
 
     src_df0 = fstpy.select_with_meta(src_df0,['TT','HU'])
-    
-    
+
+
     # compute HumidityRelative
     df = spooki.HumidityRelative(src_df0, ice_water_phase='water').compute()
 
+    df.loc[:,'etiket'] = 'G133K80N'
+
     meta_df = df.loc[df.nomvar.isin(['!!','^^','>>','P0','PT','HY'])]
-    levels_df1 = df['level'].between(1.0, 0.859, inclusive=True)
-    levels_df2 = df['level'].between(1.0, 0.859, inclusive=True)
-    levels_df3 = df['level'].between(1.0, 0.859, inclusive=True)
-    df = pd.concat([meta_df,levels_df1,levels_df2,levels_df3],ignore_index=True)
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> 
-    # [Select --fieldName TT,HU] >> [HumidityRelative --iceWaterPhase WATER] >> 
-    # [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >> 
-    # [Select --verticalLevel 1@0.859,0.126@0.103,0.00153@0.125] >> 
+    ips = [93423264,95366840,95356840,95345840,95332840,95318840,95303840,95287840,95269840,
+    95250840,95230840,94497840,94490840,94484840,94479840,94474840,96408416,96362416,
+    96313416,96263416,96211416,96158416,96104416,96050416,95996416,95944416,95892416,
+    95842416,95795416,95750416,95707416,95667416,95630416,95597416,95566416,95539416,
+    97423992,97218992,97045992,96901992,96785992,96692992,96621992]
+    df1 = df.loc[df.ip1.isin(ips)]
+
+    df = pd.concat([meta_df,df1],ignore_index=True)
+
+    df.loc[:,'nbits']=32
+    df.loc[:,'datyp']=5
+    #[ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [Select --fieldName TT,HU] >> [HumidityRelative --iceWaterPhase WATER] >>
+    # [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >>
+    # [Select --verticalLevel 1@0.859,0.126@0.103,0.00153@0.125] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
 
     #write the result
@@ -99,14 +108,15 @@ def test_regtest_5(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2011100712_glbhyb_5_file2cmp.std"
+    file_to_compare = '/home/sbf000/data/testFiles/HumidityRelative/result_test_5'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
-    fstpy.delete_file(results_file)
+    # fstpy.delete_file(results_file)
     assert(res == True)
 
 
-def test_regtest_7(plugin_test_dir):
+def test_7(plugin_test_dir):
     """Test #7 :  Calcul de l'humidité relative (HR) à partir du mélange de la vapeur d'eau (QV)."""
     # open and read source
     source0 = plugin_test_dir + "2011100712_012_glbhyb_QV"
@@ -115,12 +125,14 @@ def test_regtest_7(plugin_test_dir):
     src_df0 = fstpy.select_with_meta(src_df0,['TT','QV'])
     # compute HumidityRelative
     df = spooki.HumidityRelative(src_df0, ice_water_phase='water').compute()
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> 
-    # [Select --fieldName TT,QV] >> 
-    # [HumidityRelative --iceWaterPhase WATER] >> 
-    # [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >> 
+    #[ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [Select --fieldName TT,QV] >>
+    # [HumidityRelative --iceWaterPhase WATER] >>
+    # [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
-    # df.loc[:,'etiket'] = 'G133K80N'
+    df.loc[:,'etiket'] = 'G133K80N'
+    df.loc[:,'nbits']=32
+    df.loc[:,'datyp']=5
     #write the result
     results_file = TMP_PATH + "test_7.std"
     fstpy.delete_file(results_file)
@@ -128,6 +140,7 @@ def test_regtest_7(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2011100712_glbhyb_7_file2cmp.std"
+    file_to_compare = '/home/sbf000/data/testFiles/HumidityRelative/result_test_7'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
@@ -135,7 +148,7 @@ def test_regtest_7(plugin_test_dir):
     assert(res == True)
 
 
-def test_regtest_9(plugin_test_dir):
+def test_9(plugin_test_dir):
     """Test #9 :  Calcul de l'humidité relative (HR) à partir de la température du point de rosée (TD)."""
     # open and read source
     source0 = plugin_test_dir + "2011100712_012_glbhyb_ES"
@@ -145,12 +158,14 @@ def test_regtest_9(plugin_test_dir):
 
     # compute HumidityRelative
     df = spooki.HumidityRelative(src_df0, ice_water_phase='water').compute()
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> 
-    # [Select --fieldName TT,TD] >> 
-    # [HumidityRelative --iceWaterPhase WATER] >> 
-    # [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >> 
+    #[ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [Select --fieldName TT,TD] >>
+    # [HumidityRelative --iceWaterPhase WATER] >>
+    # [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
-
+    df.loc[:,'etiket'] = 'G133K80N'
+    df.loc[:,'nbits']=32
+    df.loc[:,'datyp']=5
     #write the result
     results_file = TMP_PATH + "test_9.std"
     fstpy.delete_file(results_file)
@@ -158,39 +173,9 @@ def test_regtest_9(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2011100712_glbhyb_9_file2cmp.std"
+    file_to_compare = '/home/sbf000/data/testFiles/HumidityRelative/result_test_9'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res == True)
-
-
-def test_regtest_10(plugin_test_dir):
-    """Test #10 :  Calcul de l'humidité relative (HR) à partir de la température du point de rosée (TD). fichier 5005"""
-    # open and read source
-    source0 = plugin_test_dir + "minimal_TTTDGZ_5005.std"
-    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-
-    src_df0 = fstpy.select_with_meta(src_df0,['TT','TD'])
-
-    # compute HumidityRelative
-    df = spooki.HumidityRelative(src_df0, ice_water_phase='water').compute()
-    #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '
-    # [Select --fieldName TT,TD] >> ', '
-    # [HumidityRelative --iceWaterPhase WATER] >> ', '
-    # [WriterStd --output {destination_path} --ignoreExtended]']
-
-    #write the result
-    results_file = TMP_PATH + "test_10.std"
-    fstpy.delete_file(results_file)
-    fstpy.StandardFileWriter(results_file, df).to_fst()
-
-    # open and read comparison file
-    file_to_compare = plugin_test_dir + "resulttest_10.std"
-
-    #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
-    fstpy.delete_file(results_file)
-    assert(res == True)
-
-

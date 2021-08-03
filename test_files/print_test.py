@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"Print/testsFiles/"
 
 class TestPrint(unittest.TestCase):
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 : Imprime au format voir vers un fichier"""
         # open and read source
         source0 = plugin_test_dir + "UUVV10x10_fileSrc.std"
@@ -36,10 +36,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_2.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 : Test voir avec un fichier qui possde un champ de type entier."""
         # open and read source
         source0 = plugin_test_dir + "regdiag_2012061300_012_fileSrc.std"
@@ -54,10 +54,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_3.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5 : Test voir avec un petit fichier"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
@@ -72,10 +72,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_5.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6 : Test voir avec un gros fichier"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -90,10 +90,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_6.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_7(self):
+    def test_7(self):
         """Test #7 : test_voir_print_sigma12000_pressure"""
         # open and read source
         source0 = plugin_test_dir + "input_model"
@@ -108,10 +108,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_7.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_8(self):
+    def test_8(self):
         """Test #8 : test_voir_print_file_with_duplicated_grid"""
         # open and read source
         source0 = plugin_test_dir + "fstdWithDuplicatedGrid_fileSrc.std"
@@ -126,10 +126,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_8.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_9(self):
+    def test_9(self):
         """Test #9 : test_voir_print_64bit"""
         # open and read source
         source0 = plugin_test_dir + "tt_stg_fileSrc.std"
@@ -144,10 +144,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_9.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_10(self):
+    def test_10(self):
         """Test #10 : test_voir_print_3_file"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
@@ -168,10 +168,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_10.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_11(self):
+    def test_11(self):
         """Test #11 : test_voir_print_ip3"""
         # open and read source
         source0 = plugin_test_dir + "ip3.std"
@@ -186,10 +186,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_11.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_12(self):
+    def test_12(self):
         """Test #12 : test_voir_print_ip1_mb_newstyle"""
         # open and read source
         source0 = plugin_test_dir + "UUVV93423264_hyb_fileSrc.std"
@@ -204,10 +204,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_12.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_13(self):
+    def test_13(self):
         """Test #13 : test voir print fields with typvar == PZ"""
         # open and read source
         source0 = plugin_test_dir + "UUVVTT5x5x2_fileSrc_PZ.std"
@@ -222,10 +222,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_13.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_14(self):
+    def test_14(self):
         """Test #14 : test voir print fields with typvar == PU"""
         # open and read source
         source0 = plugin_test_dir + "UUVVTT5x5x2_fileSrc_PU.std"
@@ -240,10 +240,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_14.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_15(self):
+    def test_15(self):
         """Test #15 : test voir print fields with typvar == PI"""
         # open and read source
         source0 = plugin_test_dir + "UUVVTT5x5x2_fileSrc_PI.std"
@@ -258,10 +258,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_15.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_16(self):
+    def test_16(self):
         """Test #16 : test voir print fields with typvar == PF"""
         # open and read source
         source0 = plugin_test_dir + "UUVVTT5x5x2_fileSrc_PF.std"
@@ -276,10 +276,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_16.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_17(self):
+    def test_17(self):
         """Test #17 : test voir print fields with typvar == PM"""
         # open and read source
         source0 = plugin_test_dir + "UUVVTT5x5x2_fileSrc_PM.std"
@@ -294,10 +294,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_17.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_18(self):
+    def test_18(self):
         """Test #18 : test voir if HY is put in memory and print back when we have a grid with two kind of level, one of them being hybrid"""
         # open and read source
         source0 = plugin_test_dir + "mb_plus_hybrid_fileSrc.std"
@@ -312,10 +312,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_18.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_19(self):
+    def test_19(self):
         """Test #19 : test voir that PT is NOT read by the reader when the level type of the fields on the grid is not sigma"""
         # open and read source
         source0 = plugin_test_dir + "pt_with_hybrid.std"
@@ -330,10 +330,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_19.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_20(self):
+    def test_20(self):
         """Test #20 : test voir that PT is NOT printed back when there is a PT field created in memory and the level type of the fields on the grid is not sigma"""
         # open and read source
         source0 = plugin_test_dir + "kt_ai_hybrid.std"
@@ -348,10 +348,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_20.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_21(self):
+    def test_21(self):
         """Test #21 : Test voir print ip2 != deet * npas"""
         # open and read source
         source0 = plugin_test_dir + "2012121000_cancm3_m1_00_fileSrc.std"
@@ -366,10 +366,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_21.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_22(self):
+    def test_22(self):
         """Test #22 : Test voir print of a pilot file"""
         # open and read source
         source0 = plugin_test_dir + "2015040800_030_piloteta"
@@ -384,10 +384,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_22.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_23(self):
+    def test_23(self):
         """Test #23 : test voir print file glbpres"""
         # open and read source
         source0 = plugin_test_dir + "glbpres_TT_UU_VV.std"
@@ -402,10 +402,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_23.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_24(self):
+    def test_24(self):
         """Test #24 : test voir print of files containing special chars and of multiple input files"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_+fileSrc.std"
@@ -426,10 +426,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_24.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_25(self):
+    def test_25(self):
         """Test #25 : test print fststat"""
         # open and read source
         source0 = plugin_test_dir + "UUVV10x10_fileSrc.std"
@@ -444,10 +444,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_25.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_26(self):
+    def test_26(self):
         """Test #26 : Test fststat avec un fichier qui possde un champ de type entier."""
         # open and read source
         source0 = plugin_test_dir + "regdiag_2012061300_012_fileSrc.std"
@@ -462,10 +462,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_26.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_27(self):
+    def test_27(self):
         """Test #27 : Test fststat avec un petit fichier"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
@@ -480,10 +480,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_27.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_28(self):
+    def test_28(self):
         """Test #28 : Test fststat avec un gros fichier"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -498,10 +498,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_28.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_29(self):
+    def test_29(self):
         """Test #29 : test_fststat_print_sigma12000_pressure"""
         # open and read source
         source0 = plugin_test_dir + "input_model"
@@ -516,10 +516,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_29.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_30(self):
+    def test_30(self):
         """Test #30 : test_fststat_print_file_with_duplicated_grid"""
         # open and read source
         source0 = plugin_test_dir + "fstdWithDuplicatedGrid_fileSrc.std"
@@ -534,10 +534,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_30.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_31(self):
+    def test_31(self):
         """Test #31 : test_fststat_print_64bit"""
         # open and read source
         source0 = plugin_test_dir + "tt_stg_fileSrc.std"
@@ -552,10 +552,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_31.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_32(self):
+    def test_32(self):
         """Test #32 : test_fststat_print_3_file"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
@@ -576,10 +576,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_32.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_33(self):
+    def test_33(self):
         """Test #33 : test_fststat_print_ip3"""
         # open and read source
         source0 = plugin_test_dir + "ip3.std"
@@ -594,10 +594,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_33.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_34(self):
+    def test_34(self):
         """Test #34 : test_fststat_print_ip1_mb_newstyle"""
         # open and read source
         source0 = plugin_test_dir + "UUVV93423264_hyb_fileSrc.std"
@@ -612,10 +612,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_34.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_35(self):
+    def test_35(self):
         """Test #35 : test fststat print fields with typvar == PZ"""
         # open and read source
         source0 = plugin_test_dir + "UUVVTT5x5x2_fileSrc_PZ.std"
@@ -630,10 +630,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_35.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_36(self):
+    def test_36(self):
         """Test #36 : test fststat print fields with typvar == PU"""
         # open and read source
         source0 = plugin_test_dir + "UUVVTT5x5x2_fileSrc_PU.std"
@@ -648,10 +648,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_36.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_37(self):
+    def test_37(self):
         """Test #37 : test fststat print fields with typvar == PI"""
         # open and read source
         source0 = plugin_test_dir + "UUVVTT5x5x2_fileSrc_PI.std"
@@ -666,10 +666,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_37.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_38(self):
+    def test_38(self):
         """Test #38 : test fststat print fields with typvar == PF"""
         # open and read source
         source0 = plugin_test_dir + "UUVVTT5x5x2_fileSrc_PF.std"
@@ -684,10 +684,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_38.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_39(self):
+    def test_39(self):
         """Test #39 : test fststat print fields with typvar == PM"""
         # open and read source
         source0 = plugin_test_dir + "UUVVTT5x5x2_fileSrc_PM.std"
@@ -702,10 +702,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_39.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_40(self):
+    def test_40(self):
         """Test #40 : test fststat if HY is put in memory and print back when we have a grid with two kind of level, one of them being hybrid"""
         # open and read source
         source0 = plugin_test_dir + "mb_plus_hybrid_fileSrc.std"
@@ -720,10 +720,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_40.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_41(self):
+    def test_41(self):
         """Test #41 : test fststat that PT is NOT read by the reader when the level type of the fields on the grid is not sigma"""
         # open and read source
         source0 = plugin_test_dir + "pt_with_hybrid.std"
@@ -738,10 +738,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_41.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_42(self):
+    def test_42(self):
         """Test #42 : test fststat that PT is NOT printed back when there is a PT field created in memory and the level type of the fields on the grid is not sigma"""
         # open and read source
         source0 = plugin_test_dir + "kt_ai_hybrid.std"
@@ -756,10 +756,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_42.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_43(self):
+    def test_43(self):
         """Test #43 : Test fststat print ip2 != deet * npas"""
         # open and read source
         source0 = plugin_test_dir + "2012121000_cancm3_m1_00_fileSrc.std"
@@ -774,10 +774,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_43.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_44(self):
+    def test_44(self):
         """Test #44 : Test fststat print of a plot file"""
         # open and read source
         source0 = plugin_test_dir + "2015040800_030_piloteta"
@@ -792,10 +792,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_44.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_45(self):
+    def test_45(self):
         """Test #45 : test fststat print file glbpres"""
         # open and read source
         source0 = plugin_test_dir + "glbpres_TT_UU_VV.std"
@@ -810,10 +810,10 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_45.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_46(self):
+    def test_46(self):
         """Test #46 : test fststat print of files containing special chars and of multiple input files"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_+fileSrc.std"
@@ -834,6 +834,6 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_46.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 

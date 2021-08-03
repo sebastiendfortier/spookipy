@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"CheckNumberOfLevels/testsFiles/"
 
 class TestCheckNumberOfLevels(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 : Test le plugin avec aucune option."""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -36,10 +36,10 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_1.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 : Test le plugin avec l'option 'minimum' égale à 3. Il doit retourné un message indiquant que le minimun n'est pas atteint!"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -54,10 +54,10 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_2.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 : Test le plugin avec l'option 'minimum' égale à -1. Il doit retourné un message indiquant que le minimun est invalide!"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -72,10 +72,10 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_3.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4 : Test le plugin avec l'option 'minimum' égale à 1. Il doit indiquer aucun message!"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -93,7 +93,7 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5 : Test le plugin avec l'option 'maximum' égale à 11. Il doit indiquer aucun message!"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -111,7 +111,7 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6 : Test le plugin avec l'option 'maximum' égale à 1. Il doit retourné un message indiquant que le maximum est dépassé!"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -126,10 +126,10 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_6.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_7(self):
+    def test_7(self):
         """Test #7 : Test le plugin avec l'option 'maximum' égale à 10. Il doit retourné un message indiquant que le maximum est dépassé!"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -144,10 +144,10 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_7.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_8(self):
+    def test_8(self):
         """Test #8 : Test le plugin avec l'option 'maximum' égale à -1. Il doit retourné un message indiquant que le maximum est invalide!"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -162,10 +162,10 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_8.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_9(self):
+    def test_9(self):
         """Test #9 : Test le plugin avec l'option 'exact' égale à 11. Il doit indiquer aucun message!"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -183,7 +183,7 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_10(self):
+    def test_10(self):
         """Test #10 : Test le plugin avec l'option 'exact' égale à 12. Il doit retourné un message indiquant que le nombre exact est pas atteint!"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -198,10 +198,10 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_10.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_11(self):
+    def test_11(self):
         """Test #11 : Test le plugin avec l'option 'exact' égale à 0. Il doit retourné un message indiquant que le nombre exact est pas atteint!"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -216,10 +216,10 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_11.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_12(self):
+    def test_12(self):
         """Test #12 : Test le plugin avec l'option 'exact' égale à -1. Il doit retourné un message indiquant que le nombre exact est invalide!"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -234,10 +234,10 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_12.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_13(self):
+    def test_13(self):
         """Test #13 : Test le plugin avec l'option 'exact' égale à 4. Il doit retourné un message indiquant que le nombre exact est pas atteint!!"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -252,10 +252,10 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_13.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_14(self):
+    def test_14(self):
         """Test #14 : Test le plugin avec l'option 'exact' égale à 16. Il doit retourné un message indiquant que le nombre exact est pas atteint!"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -270,10 +270,10 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_14.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_15(self):
+    def test_15(self):
         """Test #15 : Test le plugin avec l'option 'allSame'. Il doit indiquer aucun message!"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -291,7 +291,7 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_16(self):
+    def test_16(self):
         """Test #16 : Test le plugin avec l'option 'allSame'. Il doit retourné un message indiquant que les champs n'ont pas tous le mème nombre de niveau!"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -306,10 +306,10 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_16.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_17(self):
+    def test_17(self):
         """Test #17 : Test le plugin avec l'option 'allSame'. Test le cas où il y a deux types de grilles (2 gds différents) organisé de la façon suivante: gds1 : pds VV et UU qui ont le même nombre de niveaux soit 11 niveaux. gds2 : pds UU et VV qui ont le même nombre de niveaux soit 1 niveau. Il doit retourné un message indiquant que les champs n'ont pas tous le mème nombre de niveau!"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -324,10 +324,10 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_17.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_18(self):
+    def test_18(self):
         """Test #18 : Test le plugin avec l'option 'allSame'. Test le cas où il y a deux types de grilles (2 gds différents) organisé de la façon suivante: gds1 : pds VV et UU qui ont le même nombre de niveaux gds2 : pds TT(10 à 1000) et TT(12000) qui n'ont pas le même nombre de niveaux Il doit retourné un message indiquant que les champs n'ont pas tous le mème nombre de niveau!"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -342,10 +342,10 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_18.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_19(self):
+    def test_19(self):
         """Test #19 : Test le plugin avec l'option 'allSameInGrids'. Il doit indiquer aucun message!"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -363,7 +363,7 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_20(self):
+    def test_20(self):
         """Test #20 : Test le plugin avec l'option 'allSameInGrids'. Il doit retourné un message indiquant que les champs n'ont pas le même nombre de niveau sur la même grille!"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -378,10 +378,10 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_20.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_21(self):
+    def test_21(self):
         """Test #21 : Test le plugin avec l'option 'allSameInGrids'. Test le cas où il y a deux types de grilles (2 gds différents) organisé de la façon suivante: gds1 : pds VV et UU qui ont le même nombre de niveaux soit 11 niveaux. gds2 : pds UU et VV qui ont le même nombre de niveaux soit 1 niveau. Il doit retourné un message indiquant que les champs n'ont pas le même nombre de niveau sur la même grille!"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -396,10 +396,10 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_21.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_22(self):
+    def test_22(self):
         """Test #22 : Test le plugin avec l'option 'allSameInGrids'. Test le cas où il y a deux types de grilles (2 gds différents) organisé de la façon suivante: gds1 : pds VV et UU qui ont le même nombre de niveaux gds2 : pds TT(10 à 1000) et TT(12000) qui n'ont pas le même nombre de niveaux Il doit retourné un message indiquant que les champs n'ont pas le même nombre de niveau sur la même grille!"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -414,6 +414,6 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_22.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == False)
+        assert(res == True)
 
 

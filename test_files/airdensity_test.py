@@ -20,7 +20,7 @@ plugin_test_dir=TEST_PATH +"AirDensity/testsFiles/"
 
 class TestAirDensity(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 :  Calcul de la densite de l'air avec un fichier d'entree normal qui a des TT,HU et PX."""
         # open and read source
         source0 = plugin_test_dir + "inputFile_TT_HU_PX_fileSrc.std"
@@ -43,7 +43,7 @@ class TestAirDensity(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 :  Calcul de la densite de l'air avec un fichier d'entree VT et PX."""
         # open and read source
         source0 = plugin_test_dir + "inputFile_VT_PX_fileSrc.std"
@@ -66,7 +66,7 @@ class TestAirDensity(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 :  Calcul de la densite de l'air avec un fichier d'entree TT,ES et PX."""
         # open and read source
         source0 = plugin_test_dir + "inputFile_TT_ES_PX_fileSrc.std"
@@ -89,7 +89,7 @@ class TestAirDensity(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4 :  Calcul de la densite de l'air avec un fichier d'entree TT,QV et PX."""
         # open and read source
         source0 = plugin_test_dir + "inputFile_TT_QV_PX_fileSrc.std"
@@ -112,7 +112,7 @@ class TestAirDensity(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5 :  Calcul de la densite de l'air avec un fichier d'entree TT,TD et PX."""
         # open and read source
         source0 = plugin_test_dir + "inputFile_TT_TD_PX_fileSrc.std"
@@ -135,7 +135,7 @@ class TestAirDensity(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6 :  Calcul de la densite de l'air avec un fichier d'entree TT,HR et PX."""
         # open and read source
         source0 = plugin_test_dir + "inputFile_TT_HR_PX_fileSrc.std"
@@ -158,7 +158,7 @@ class TestAirDensity(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_7(self):
+    def test_7(self):
         """Test #7 :  Test d'une mauvais valeur de la cle virtualTemperature"""
         # open and read source
         source0 = plugin_test_dir + "inputFile_VT_PX_fileSrc.std"
@@ -178,10 +178,10 @@ class TestAirDensity(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_8(self):
+    def test_8(self):
         """Test #8 :  Test de la valeur par défaut de virtualTemperature"""
         # open and read source
         source0 = plugin_test_dir + "inputFile_VT_PX_fileSrc.std"
@@ -204,7 +204,7 @@ class TestAirDensity(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_9(self):
+    def test_9(self):
         """Test #9 :  Calcul de la densite de l'air sec avec un fichier d'entree TT et PX."""
         # open and read source
         source0 = plugin_test_dir + "inputFile_TT_PX_fileSrc.std"
@@ -227,7 +227,7 @@ class TestAirDensity(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_10(self):
+    def test_10(self):
         """Test #10 :  Calcul de la densite de l'air sec avec un fichier d'entree VT et PX."""
         # open and read source
         source0 = plugin_test_dir + "inputFile_VT_PX_fileSrc.std"
@@ -247,10 +247,10 @@ class TestAirDensity(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_11(self):
+    def test_11(self):
         """Test #11 :  Calcul de la densite de l'air reelle et sec."""
         # open and read source
         source0 = plugin_test_dir + "inputFile_TT_HU_PX_fileSrc.std"

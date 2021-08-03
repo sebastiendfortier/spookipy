@@ -1,10 +1,10 @@
-#+TITLE_: TUTORIAL
-#+OPTIONS: toc:1
+#+TITLE_:TUTORIAL
+#+OPTIONS:toc:1
 
 * Tutorial
 ** Getting and manipulating the meta data
 *** Get a dataframe from a standard file
-    #+BEGIN_SRC python  
+    #+BEGIN_SRC python
         import fstpy.all as fstpy
         # method 1 - to_pandas with explicit instance
         std_file = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std')
@@ -38,7 +38,7 @@
     : 82     TT      P  ...  /fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_...  3379277761
     : 83     TT      P  ...  /fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_...  3379277761
     : 84     TT      P  ...  /fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_...  3379277761
-    : 
+    :
     : [5 rows x 26 columns]
     #+end_example
 
@@ -72,7 +72,7 @@
     2       0.986026
     3       0.977868
     4       0.968043
-	...   
+	...
     1869    0.000206
     1870    0.000128
     1871   -1.000000
@@ -135,17 +135,17 @@
 
     #+RESULTS:
     #+begin_example
-    :   nomvar typvar     etiket    ni    nj  nk               dateo       ip1    ip2  ip3  deet  npas datyp  nbits grtyp    ig1    ig2    ig3    ig4     level    
+    :   nomvar typvar     etiket    ni    nj  nk               dateo       ip1    ip2  ip3  deet  npas datyp  nbits grtyp    ig1    ig2    ig3    ig4     level
     : 0     ZZ      P  R1_V710_N  1108  1082   1 2020-07-14 12:00:00  95791989      6    0   300    72     f     12     Z  33792  77761      1      0  0.037157  hy
     : 1     ZZ      P  R1_V710_N  1108  1082   1 2020-07-14 12:00:00  94486466      6    0   300    72     f     12     Z  33792  77761      1      0  0.114626  hy
-    : 2     ^^      X  R1_V710_N     1  1081   1 2020-07-14 12:00:00     50460  53326    4     0     0     E     32     E   1470    560  54400  46560        -1    
-    : 3     ^^      X  R1_V710_N     1  1078   1 2020-07-14 12:00:00     35132  56748    1     0     0     E     32     E   1470    560  54400  46560        -1    
-    : 4     ^^      X  R1_V710_N     1  1082   1 2020-07-14 12:00:00     33792  77761    1     0     0     E     32     E   1470    560  54400  46560        -1    
+    : 2     ^^      X  R1_V710_N     1  1081   1 2020-07-14 12:00:00     50460  53326    4     0     0     E     32     E   1470    560  54400  46560        -1
+    : 3     ^^      X  R1_V710_N     1  1078   1 2020-07-14 12:00:00     35132  56748    1     0     0     E     32     E   1470    560  54400  46560        -1
+    : 4     ^^      X  R1_V710_N     1  1082   1 2020-07-14 12:00:00     33792  77761    1     0     0     E     32     E   1470    560  54400  46560        -1
     #+end_example
 
 
 *** select sub-sets of data
-    *Note*: fstpy.select is a wrapper for pandas.DataFrame.query method 
+    *Note*: fstpy.select is a wrapper for pandas.DataFrame.query method
     #+BEGIN_SRC python  :results output :exports both
         import fstpy.all as fstpy
         df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std',load_data=True).to_pandas()
@@ -162,7 +162,7 @@
     : 2     TT      P  R1_V710_N  ...  443004200  3379277761     2021-01-26 09:31:54
     : 3     TT      P  R1_V710_N  ...  443004200  3379277761     2021-01-26 09:31:54
     : 4     TT      P  R1_V710_N  ...  443004200  3379277761     2021-01-26 09:31:54
-    : 
+    :
     : [5 rows x 26 columns]
     #+end_example
 
@@ -247,7 +247,7 @@
     : 2    TTI      P  ...  1092609  (1108, 1082, 1)
     : 3    TTI      P  ...  1093633  (1108, 1082, 1)
     : 4    TTI      P  ...    23553  (1108, 1082, 1)
-    : 
+    :
     : [5 rows x 26 columns]
     #+end_example
 
@@ -331,7 +331,7 @@
 
         # compute
         uu = (uu_df.at[0,'d']) #at[0,'d'] gets the first row of data from the dataframe
-        vv = (vv_df.at[0,'d']) 
+        vv = (vv_df.at[0,'d'])
         print('UU',uu)
         print('VV',vv)
 
@@ -378,7 +378,7 @@
         uv_df = vv_df.copy(deep=True)
         uv_df = fstpy.zap(uv_df,nomvar='UV')
         uu = (uu_df.iloc[0]['d']) #iloc[0]['d'] gets the first row of data from the dataframe
-        vv = (vv_df.iloc[0]['d']) 
+        vv = (vv_df.iloc[0]['d'])
         uv_df.at[0,'d'] = (uu**2 + vv**2)**.5
         tt_df = fstpy.select(df,'(nomvar=="TT") and (surface==True)')
         tt_df = fstpy.load_data(uuvv_df)
@@ -391,7 +391,7 @@
         re_df = uv_df.copy(deep=True)
         re_df = fstpy.zap(re_df, nomvar='RE')
 
-        # compute            
+        # compute
         tt = (tt_df.iloc[0]['d'])
         uv = (uv_df.iloc[0]['d'])
 
@@ -443,7 +443,7 @@
                 df.at[i,'max_pos'] = (df.at[i,'max_pos'][0] + 1, df.at[i,'max_pos'][1]+1)
             return df
 
-        # now the dataframe contains extra columns [mean,std,min,max,min_pos,max_pos] with stats for each record in the dataframe 
+        # now the dataframe contains extra columns [mean,std,min,max,min_pos,max_pos] with stats for each record in the dataframe
         df = compute_basic_stats(df)
         print(df.head())
     #+END_SRC
@@ -456,7 +456,7 @@
     : 2     TT      P  R1_V710_N  1108  ... -41.0226  3.84673  (1009, 231)  (815, 967)
     : 3     TT      P  R1_V710_N  1108  ...  -43.062   3.9307    (655, 96)  (814, 782)
     : 4     TT      P  R1_V710_N  1108  ... -40.4699  5.70201   (413, 863)  (108, 244)
-    : 
+    :
     : [5 rows x 32 columns]
     #+end_example
 
@@ -507,11 +507,11 @@
         mean_df = create_result_df(tt_df,'MEAN','AVERAGE')
 
         # assign resulting arrays to the dataframes
-        # .at gets the row at index in a dataframe, we have 1 row dataframes in each case and our arrays are simple 2d result arrays 
+        # .at gets the row at index in a dataframe, we have 1 row dataframes in each case and our arrays are simple 2d result arrays
         min_df.at[0,'d'] = min_arr
-        max_df.at[0,'d'] = max_arr 
-        std_df.at[0,'d'] = std_arr 
-        mean_df.at[0,'d'] = mean_arr 
+        max_df.at[0,'d'] = max_arr
+        std_df.at[0,'d'] = std_arr
+        mean_df.at[0,'d'] = mean_arr
 
         # combine all results into a single dataframe
         res_df = pd.concat([min_df,max_df,std_df,mean_df],ignore_index=True)
@@ -631,7 +631,7 @@
 
 ** Exporting the data
 *** Formats
-With fstpy 
+With fstpy
 **** Rpn standard file
     #+BEGIN_SRC python  :results output :exports both
         import fstpy.all as fstpy
@@ -659,7 +659,7 @@ With [[https://pandas.pydata.org/pandas-docs/stable/user_guide/io.html][pandas i
         # select TT only from input
         tt_df = fstpy.select(df,'nomvar=="TT"')
 
-        # this will write the complete dataframe to the compressed output file, if no data was fstpy.load_datad no data will be written, 
+        # this will write the complete dataframe to the compressed output file, if no data was fstpy.load_datad no data will be written,
         # 'd' column will be None
         from os import getenv
         USER = getenv("USER")

@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"Helicity/testsFiles/"
 
 class TestHelicity(unittest.TestCase):
 
-    def test_regtest_Helicity3(self):
+    def test_Helicity3(self):
         """Test #1 : Test du plugin Helicity"""
         # open and read source
         source0 = plugin_test_dir + "UUVVGZ77x57x54_fileSrc.std"

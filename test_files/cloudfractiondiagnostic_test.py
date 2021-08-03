@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"CloudFractionDiagnostic/testsFiles/"
 
 class TestCloudFractionDiagnostic(unittest.TestCase):
 
-    def test_regtest_cfd_1(self):
+    def test_cfd_1(self):
         """Test #1 : Test regulier des donnees venant avec la demande de plugin"""
         # open and read source
         source0 = plugin_test_dir + "HR_27_fileSrc.std"

@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"VerticalScan/testsFiles/"
 
 class TestVerticalScan(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 : Test with GEOPOTENTIAL vertical representation, consecutiveEvents = INF."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
@@ -44,7 +44,7 @@ class TestVerticalScan(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 :   Test with GEOPOTENTIAL vertical representation, consecutiveEvents = SUP."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
@@ -67,7 +67,7 @@ class TestVerticalScan(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 :   Test with GEOPOTENTIAL vertical representation, limited occurrences (same as input)."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
@@ -90,7 +90,7 @@ class TestVerticalScan(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4 :   Test with GEOPOTENTIAL vertical representation, limited occurrences (less than input)."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
@@ -113,7 +113,7 @@ class TestVerticalScan(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5 :   Test with GEOPOTENTIAL vertical representation, limited occurrences (one only)."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
@@ -136,7 +136,7 @@ class TestVerticalScan(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6 :   Test with PRESSURE vertical representation, consecutiveEvents = INF."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
@@ -159,7 +159,7 @@ class TestVerticalScan(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_7(self):
+    def test_7(self):
         """Test #7 :   Test with PRESSURE vertical representation, consecutiveEvents = SUP."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
@@ -182,7 +182,7 @@ class TestVerticalScan(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_8(self):
+    def test_8(self):
         """Test #8 :   Test with BOTH vertical representations, consecutiveEvents = INF."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
@@ -205,7 +205,7 @@ class TestVerticalScan(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_9(self):
+    def test_9(self):
         """Test #9 :   Test with BOTH vertical representations, consecutiveEvents = SUP."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
@@ -228,7 +228,7 @@ class TestVerticalScan(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_10(self):
+    def test_10(self):
         """Test #10 :   Test with BOTH vertical representations, with outputFieldName1, outputFieldName2, outputFieldName3, outputFieldName4 and consecutiveEvents = SUP."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
@@ -251,7 +251,7 @@ class TestVerticalScan(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_11(self):
+    def test_11(self):
         """Test #11 :   Test with maxNbOccurrence = -1, it should stop because of invalid value."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
@@ -271,10 +271,10 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_12(self):
+    def test_12(self):
         """Test #12 :   Test with epsilon = -1, it should stop because of invalid value."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
@@ -294,10 +294,10 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_13(self):
+    def test_13(self):
         """Test #13 :   Test with BOTH vertical representations, consecutiveEvents = INF, type VARIABLEVALUE."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
@@ -320,7 +320,7 @@ class TestVerticalScan(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_14(self):
+    def test_14(self):
         """Test #14 :   Test with BOTH vertical representations, crossover, consecutiveEvents = INF, type VARIABLEVALUE."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
@@ -343,7 +343,7 @@ class TestVerticalScan(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_15(self):
+    def test_15(self):
         """Test #16 :  Test with direction = INVALID, it should stop because of invalid value."""
         # open and read source
         source0 = plugin_test_dir + "tests_15_16_source.std"
@@ -363,10 +363,10 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_16(self):
+    def test_16(self):
         """Test #16 :   Test with comparisonType INTERSECTIONS, consecutiveEvents = SUP."""
         # open and read source
         source0 = plugin_test_dir + "tests_15_16_source.std"
@@ -389,7 +389,7 @@ class TestVerticalScan(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_17(self):
+    def test_17(self):
         """Test #17 :   Test with comparisonField, consecutiveEvents = INF."""
         # open and read source
         source0 = plugin_test_dir + "tests_15_16_source.std"
@@ -412,7 +412,7 @@ class TestVerticalScan(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_19(self):
+    def test_19(self):
         """Test #19 :   Test with a file that contains only 1 level for TT."""
         # open and read source
         source0 = plugin_test_dir + "verticalScan_1niveau.std"
@@ -435,7 +435,7 @@ class TestVerticalScan(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_20(self):
+    def test_20(self):
         """Test #20 :   Test with a file that contains many occurences."""
         # open and read source
         source0 = plugin_test_dir + "verticalScanHighOccurence.std"
@@ -458,7 +458,7 @@ class TestVerticalScan(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_21(self):
+    def test_21(self):
         """Test #21 :   Test with a file that contains a first point with equalities, but no crossing and a second point with close crossing."""
         # open and read source
         source0 = plugin_test_dir + "equalitiesWithoutCrossingAndCloseOccurences.std"
@@ -481,7 +481,7 @@ class TestVerticalScan(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_22(self):
+    def test_22(self):
         """Test #22 :   Test with BOTH vertical representations, crossover, consecutiveEvents = SUP, type VARIABLEVALUE."""
         # open and read source
         source0 = plugin_test_dir + "testcases2_fileSrc.std"
@@ -504,7 +504,7 @@ class TestVerticalScan(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_23(self):
+    def test_23(self):
         """Test #23 :   Test with BOTH vertical representations, crossover, consecutiveEvents = SUP, type VARIABLEVALUE."""
         # open and read source
         source0 = plugin_test_dir + "testcases2_fileSrc.std"
@@ -527,7 +527,7 @@ class TestVerticalScan(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_24(self):
+    def test_24(self):
         """Test #24 :   Test with BOTH vertical representations, crossover, consecutiveEvents = SUP, type VARIABLEVALUE."""
         # open and read source
         source0 = plugin_test_dir + "testcases2_fileSrc.std"
@@ -550,7 +550,7 @@ class TestVerticalScan(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_25(self):
+    def test_25(self):
         """Test #25 :   Test with BOTH vertical representations, crossover, consecutiveEvents = SUP, type INTERSECTIONS."""
         # open and read source
         source0 = plugin_test_dir + "testcases2_fileSrc.std"
@@ -573,7 +573,7 @@ class TestVerticalScan(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_26(self):
+    def test_26(self):
         """Test #26 : Test with GEOPOTENTIAL vertical representation, direction DESCENDING, comparisonType = CONSTANTVALUE, consecutiveEvents = INF."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
@@ -596,7 +596,7 @@ class TestVerticalScan(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_27(self):
+    def test_27(self):
         """Test #27 :   Test with GEOPOTENTIAL vertical representation, direction DESCENDING, comparisonType = CONSTANTVALUE,consecutiveEvents = SUP."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
@@ -619,7 +619,7 @@ class TestVerticalScan(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_28(self):
+    def test_28(self):
         """Test #28 :   Test with PRESSURE vertical representation,  direction = DESCENDING, comparisonType = CONSTANTVALUE,consecutiveEvents = INF."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
@@ -642,7 +642,7 @@ class TestVerticalScan(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_29(self):
+    def test_29(self):
         """Test #29 :   Test with PRESSURE vertical representation, direction = DESCENDING, comparisonType = CONSTANTVALUE, consecutiveEvents = SUP."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
@@ -665,7 +665,7 @@ class TestVerticalScan(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_30(self):
+    def test_30(self):
         """Test #30 :   Test with BOTH vertical representations, crossover, direction = DESCENDING, consecutiveEvents = INF, type VARIABLEVALUE."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
@@ -688,7 +688,7 @@ class TestVerticalScan(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_31(self):
+    def test_31(self):
         """Test #31 :   Test with BOTH vertical representations, descending, crossover, consecutiveEvents = SUP, type INTERSECTIONS."""
         # open and read source
         source0 = plugin_test_dir + "testcases2_fileSrc.std"
@@ -711,7 +711,7 @@ class TestVerticalScan(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_32(self):
+    def test_32(self):
         """Test #32 : Test with GEOPOTENTIAL vertical representation, checkForEquality, consecutiveEvents = INF."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
@@ -734,7 +734,7 @@ class TestVerticalScan(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_33(self):
+    def test_33(self):
         """Test #33 : Test with PRESSURE vertical representation, checkForEquality, direction DESCENDING, consecutiveEvents = INF, outputFieldName5 = ABCD ."""
         # open and read source
         source0 = plugin_test_dir + "testcases2_fileSrc.std"
@@ -757,7 +757,7 @@ class TestVerticalScan(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_34(self):
+    def test_34(self):
         """Test #34 : Test with GEOPOTENTIAL vertical representation, checkForEquality, consecutiveEvents = INF."""
         # open and read source
         source0 = plugin_test_dir + "testcases3_fileSrc.std"
@@ -780,7 +780,7 @@ class TestVerticalScan(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_35(self):
+    def test_35(self):
         """Test #35 :   Test with BOTH vertical representations, crossover, consecutiveEvents = SUP, type VARIABLEVALUE. HYBRID_5005"""
         # open and read source
         source0 = plugin_test_dir + "minimal_TT_5005.std"

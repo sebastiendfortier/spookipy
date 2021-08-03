@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"CheckRange/testsFiles/"
 
 class TestCheckRange(unittest.TestCase):
 
-    def test_regtest_cr_1(self):
+    def test_cr_1(self):
         """Test #1 : Tester avec tous les valeurs à l'intérieur du range."""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
@@ -44,7 +44,7 @@ class TestCheckRange(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_cr_2(self):
+    def test_cr_2(self):
         """Test #2 : Tester avec certaines valeurs à l'extérieur du range"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
@@ -67,7 +67,7 @@ class TestCheckRange(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_cr_3(self):
+    def test_cr_3(self):
         """Test #3 : Tester avec certaines valeurs sur les limites du range et l'option --strictComparisonOperator"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_int_fileSrc.std"
@@ -90,7 +90,7 @@ class TestCheckRange(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_cr_4(self):
+    def test_cr_4(self):
         """Test #4 : Tester avec certaines valeurs sur les limites du range et sans l'option --strictComparisonOperator"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_int_fileSrc.std"

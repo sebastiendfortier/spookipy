@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"InterpolationHorizontalPoint/testsFiles/"
 
 class TestInterpolationHorizontalPoint(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 : test_onlyscalarR1Operational"""
         # open and read source
         source0 = plugin_test_dir + "4panneaux_input4_fileSrc.std"
@@ -47,7 +47,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 : test_onlyscalar"""
         # open and read source
         source0 = plugin_test_dir + "4panneaux_input4_fileSrc.std"
@@ -73,7 +73,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 : test_scalarvectorial"""
         # open and read source
         source0 = plugin_test_dir + "tape10.std"
@@ -99,7 +99,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4 : test_scalarvectorial2"""
         # open and read source
         source0 = plugin_test_dir + "2011072100_006_eta_small"
@@ -125,7 +125,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5 : test_nearest"""
         # open and read source
         source0 = plugin_test_dir + "tape10.std"
@@ -151,7 +151,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6 : test_linear"""
         # open and read source
         source0 = plugin_test_dir + "tape10.std"
@@ -177,7 +177,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_7(self):
+    def test_7(self):
         """Test #7 : test_withGridInCsv"""
         # open and read source
         source0 = plugin_test_dir + "tape10.std"
@@ -203,7 +203,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_8(self):
+    def test_8(self):
         """Test #8 : test_extrapolationValue"""
         # open and read source
         source0 = plugin_test_dir + "tape10.std"
@@ -229,7 +229,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_9(self):
+    def test_9(self):
         """Test #9 : test_negativeValue"""
         # open and read source
         source0 = plugin_test_dir + "tape10.std"
@@ -255,7 +255,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_10(self):
+    def test_10(self):
         """Test #10 : test_extrapolationMax"""
         # open and read source
         source0 = plugin_test_dir + "tape10.std"
@@ -281,7 +281,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_11(self):
+    def test_11(self):
         """Test #11 : test_extrapolationMin"""
         # open and read source
         source0 = plugin_test_dir + "tape10.std"
@@ -307,7 +307,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_12(self):
+    def test_12(self):
         """Test #12 : test_stations"""
         # open and read source
         source0 = plugin_test_dir + "2011072100_006_eta_small"
@@ -330,7 +330,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_13(self):
+    def test_13(self):
         """Test #13 : test with 2 grids and 3 fields on each grid"""
         # open and read source
         source0 = plugin_test_dir + "2011110112_045_small"
@@ -359,7 +359,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_14(self):
+    def test_14(self):
         """Test #14 : test_DanielPoints"""
         # open and read source
         source0 = plugin_test_dir + "2012022712_012_glbdiag"
@@ -385,7 +385,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_15(self):
+    def test_15(self):
         """Test #15 : test_northPole_southPole"""
         # open and read source
         source0 = plugin_test_dir + "2012022712_012_glbdiag"
@@ -411,7 +411,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_16(self):
+    def test_16(self):
         """Test #16 : Test avec un fichier YinYang"""
         # open and read source
         source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
@@ -437,7 +437,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_17(self):
+    def test_17(self):
         """Test #17 : Test avec un fichier YinYang en entree et des lat-lon sur les grilles Yin et Yang."""
         # open and read source
         source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"

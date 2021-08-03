@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"Thickness/testsFiles/"
 
 class TestThickness(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 : Test avec un fichier de coordonnées Sigma."""
         # open and read source
         source0 = plugin_test_dir + "GZ_12000_10346_fileSrc.std"
@@ -44,7 +44,7 @@ class TestThickness(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 : Test avec un fichier de coordonnées Sigma avec valeur de base plus haute dans l'atmosphère que valeur de top."""
         # open and read source
         source0 = plugin_test_dir + "GZ_12000_10346_fileSrc.std"
@@ -67,7 +67,7 @@ class TestThickness(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 : Test avec un fichier en pression."""
         # open and read source
         source0 = plugin_test_dir + "GZ_1000_500_fileSrc.std"
@@ -90,7 +90,7 @@ class TestThickness(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4 : Test avec un fichier en pression avec valeur de base plus haute dans l'atmosphère que valeur de top."""
         # open and read source
         source0 = plugin_test_dir + "GZ_1000_500_fileSrc.std"
@@ -113,7 +113,7 @@ class TestThickness(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5 : Test en utilisant le même niveau pour base et top; requête invalide."""
         # open and read source
         source0 = plugin_test_dir + "GZ_1000_500_fileSrc.std"
@@ -133,10 +133,10 @@ class TestThickness(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6 : Test avec un fichier hybride."""
         # open and read source
         source0 = plugin_test_dir + "2016031600_024_reghyb"

@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"LiftedIndex/testsFiles/"
 
 class TestLiftedIndex(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 : Tester l'option --liftedFrom avec une valeur invalide."""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
@@ -41,10 +41,10 @@ class TestLiftedIndex(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 : Tester l'option --increment avec une valeur invalide."""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
@@ -64,10 +64,10 @@ class TestLiftedIndex(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 : Tester l'option --referenceLevel avec une valeur invalide."""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
@@ -87,10 +87,10 @@ class TestLiftedIndex(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4 : Tester l'option --liftedFrom MEAN_LAYER sans --baseMeanLayer ni --deltaMeanLayer."""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
@@ -110,10 +110,10 @@ class TestLiftedIndex(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5 : Tester l'option --liftedFrom MEAN_LAYER sans --deltaMeanLayer."""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
@@ -133,10 +133,10 @@ class TestLiftedIndex(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6 : Tester l'option --deltaMostUnstable avec une valeur invalide."""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
@@ -156,10 +156,10 @@ class TestLiftedIndex(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_7(self):
+    def test_7(self):
         """Test #7 :  Calcul de l'indice de soulèvement à partir d'un fichier pression et du niveau de surface d'un fichier hybrid."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
@@ -182,7 +182,7 @@ class TestLiftedIndex(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_8(self):
+    def test_8(self):
         """Test #8 :  Calcul de l'indice de soulèvement à partir d'un fichier pression (SHOWALTER)."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
@@ -205,7 +205,7 @@ class TestLiftedIndex(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_9(self):
+    def test_9(self):
         """Test #9 :  Calcul de l'indice de soulèvement à partir d'un fichier hybrid et pression (MEAN_LAYER)."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_reghyb"
@@ -228,7 +228,7 @@ class TestLiftedIndex(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_10(self):
+    def test_10(self):
         """Test #10 :  Calcul de l'indice de soulèvement à partir d'un fichier hybrid et pression (MOST_UNSTABLE)."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_reghyb"

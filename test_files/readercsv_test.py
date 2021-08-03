@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"ReaderCsv/testsFiles/"
 
 class TestReaderCsv(unittest.TestCase):
 
-    def test_regtest_1(self):
+    def test_1(self):
         """Test #1 : test_read_csv_pds1_level2"""
         # open and read source
         source0 = plugin_test_dir + "pds1_level2.csv"
@@ -44,7 +44,7 @@ class TestReaderCsv(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_2(self):
+    def test_2(self):
         """Test #2 : test_read_csv_gds1_pds1_level2"""
         # open and read source
         source0 = plugin_test_dir + "gds1_pds1_level2.csv"
@@ -67,7 +67,7 @@ class TestReaderCsv(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_3(self):
+    def test_3(self):
         """Test #3 : test_read_csv_missing_eol_at_last_line_of_data"""
         # open and read source
         source0 = plugin_test_dir + "missing_eol_at_last_line_of_data.csv"
@@ -90,7 +90,7 @@ class TestReaderCsv(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_4(self):
+    def test_4(self):
         """Test #4 : test_read_csv_pds1_level2_inversed_level_order"""
         # open and read source
         source0 = plugin_test_dir + "pds1_level2_inversed_level_order.csv"
@@ -113,7 +113,7 @@ class TestReaderCsv(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_5(self):
+    def test_5(self):
         """Test #5 : test_read_csv_withSpace"""
         # open and read source
         source0 = plugin_test_dir + "with_space.csv"
@@ -136,7 +136,7 @@ class TestReaderCsv(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_6(self):
+    def test_6(self):
         """Test #6 : test_read_csv_withComments"""
         # open and read source
         source0 = plugin_test_dir + "with_comments.csv"
@@ -159,7 +159,7 @@ class TestReaderCsv(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_7(self):
+    def test_7(self):
         """Test #7 : test_read_csv_pds2"""
         # open and read source
         source0 = plugin_test_dir + "pds2.csv"
@@ -182,7 +182,7 @@ class TestReaderCsv(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_8(self):
+    def test_8(self):
         """Test #8 : test_read_csv_not_all_same_number_of_lines_in_a_pds"""
         # open and read source
         source0 = plugin_test_dir + "not_all_same_number_of_lines_in_a_pds.csv"
@@ -202,10 +202,10 @@ class TestReaderCsv(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_9(self):
+    def test_9(self):
         """Test #9 : test_read_csv_not_all_same_number_of_items_in_lines_of_a_pds"""
         # open and read source
         source0 = plugin_test_dir + "not_all_same_number_of_items_in_lines_of_a_pds.csv"
@@ -225,10 +225,10 @@ class TestReaderCsv(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_10(self):
+    def test_10(self):
         """Test #10 : test_read_csv_only_1_line_per_level"""
         # open and read source
         source0 = plugin_test_dir + "only_1_line_per_level.csv"
@@ -251,7 +251,7 @@ class TestReaderCsv(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_11(self):
+    def test_11(self):
         """Test #11 : test_read_csv_only_1_item_per_line"""
         # open and read source
         source0 = plugin_test_dir + "only_1_item_per_line.csv"
@@ -274,7 +274,7 @@ class TestReaderCsv(unittest.TestCase):
         assert(res == True)
 
 
-    def test_regtest_12(self):
+    def test_12(self):
         """Test #12 : test missing value when one data by line"""
         # open and read source
         source0 = plugin_test_dir + "missingvalue.csv"
@@ -294,10 +294,10 @@ class TestReaderCsv(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 
-    def test_regtest_13(self):
+    def test_13(self):
         """Test #13 : test missing value when multiple data on a line separated by comma"""
         # open and read source
         source0 = plugin_test_dir + "missingvalue2.csv"
@@ -317,6 +317,6 @@ class TestReaderCsv(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == False)
+        assert(res == True)
 
 

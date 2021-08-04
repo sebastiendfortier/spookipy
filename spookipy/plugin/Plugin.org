@@ -5,7 +5,7 @@
 Classe abstraite de base pour les plugins. 
 Tous les plugins doivent hériter de cette classe.
 
-*** Usage
+*** Usage:
 - La fonction __init__ peut être surchargée au besoin, par exemple pour ajouter des paramètres supplémentaires. L’idéale serait d’appeler la fonction de la classe de base dans la fonction surchargée.
 - La fonction compute doit absolument être implémentée.
 
@@ -25,6 +25,15 @@ Tous les plugins doivent hériter de cette classe.
                 # Manipulations quelconque sur le self.df 
                 return my_df
     #+END_SRC
+
+*** Contacts:
+
+    Codé par :
+        [[https://wiki.cmc.ec.gc.ca/wiki/User:Germaina][Audrey Germain]]
+
+    Support :
+        - [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]]
+        - [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
 
 ** English
 
@@ -53,3 +62,13 @@ Each plugin must inherit from this class.
                 # Some manipulation on self.df 
                 return my_df
     #+END_SRC
+
+*** Contacts:
+
+    Coded by :
+        [[https://wiki.cmc.ec.gc.ca/wiki/User:Germaina][Audrey Germain]]
+
+    Support :
+        - [[https://wiki.cmc.ec.gc.ca/wiki/CMDW][CMDW]]
+        - [[https://wiki.cmc.ec.gc.ca/wiki/CMDS][CMDS]]
+

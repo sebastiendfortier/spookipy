@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from ..plugin.plugin import Plugin
+from ..plugin import Plugin
 from ..utils import initializer
 import pandas as pd
 import numpy as np
 import sys
-from ..opelementsbypoint.opelementsbypoint import OpElementsByPoint
+from ..opelementsbypoint import OpElementsByPoint
 
 class AddElementsByPointError(Exception):
     pass

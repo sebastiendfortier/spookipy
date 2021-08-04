@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from ..utils import validate_nomvar
-from ..plugin.plugin import Plugin
+from ..plugin import Plugin
 import pandas as pd
-from ..opelementsbyvalue.opelementsbyvalue import OpElementsByValue
+from ..opelementsbyvalue import OpElementsByValue
 from ..utils import initializer, validate_nomvar
 import sys
 

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from numpy import float32
-from ..plugin.plugin import Plugin
+from ..plugin import Plugin
 import pandas as pd
 from math import exp
 from ..utils import create_empty_result, get_existing_result, get_plugin_dependencies, initializer, existing_results, final_results
-from spookipy.humidityutils.humidityutils import calc_saturation_vapour_pressure, get_temp_phase_switch, TDPACK_OFFSET_FIX, rpn_calc_saturation_vapour_pressure, validate_humidity_parameters
+from ..humidityutils import calc_saturation_vapour_pressure, get_temp_phase_switch, TDPACK_OFFSET_FIX, rpn_calc_saturation_vapour_pressure, validate_humidity_parameters
 import fstpy.all as fstpy
 import sys
 

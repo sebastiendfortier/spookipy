@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 from numpy import float32
-from spookipy.temperaturedewpoint.temperaturedewpoint import TemperatureDewPoint
-from ..humidityutils.humidityutils import calc_humidex
+from ..temperaturedewpoint import TemperatureDewPoint
+from ..humidityutils import calc_humidex
 from ..utils import create_empty_result, get_existing_result, get_intersecting_levels, get_plugin_dependencies, existing_results, final_results
-from ..plugin.plugin import Plugin
+from ..plugin import Plugin
 import pandas as pd
 import fstpy.all as fstpy
 import sys
-from ..saturationvapourpressure.saturationvapourpressure import SaturationVapourPressure
+from ..saturationvapourpressure import SaturationVapourPressure
 
 
 

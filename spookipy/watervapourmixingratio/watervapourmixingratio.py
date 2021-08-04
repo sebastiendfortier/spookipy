@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from numpy import float32
-from ..humidityutils.humidityutils import calc_water_vapour_mixing_ratio_hu, calc_water_vapour_mixing_ratio_px_vppr, get_temp_phase_switch, validate_humidity_parameters
-from ..plugin.plugin import Plugin
+from ..humidityutils import calc_water_vapour_mixing_ratio_hu, calc_water_vapour_mixing_ratio_px_vppr, get_temp_phase_switch, validate_humidity_parameters
+from ..plugin import Plugin
 from ..utils import create_empty_result, get_existing_result, get_intersecting_levels, get_plugin_dependencies, initializer, existing_results, final_results
 import pandas as pd
 import fstpy.all as fstpy

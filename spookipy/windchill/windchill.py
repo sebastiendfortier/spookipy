@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..plugin.plugin import Plugin
+from ..plugin import Plugin
 from ..utils import create_empty_result, get_existing_result, get_plugin_dependencies, existing_results, final_results
 import pandas as pd
 import numpy as np

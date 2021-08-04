@@ -38,7 +38,7 @@ run_regtests:
   stage: run_regtests
   script:
     - cd test
-    - python3 -m pytest -m regressions
+    - python3 -m pytest -v -m regressions
 
 make_doc:
   stage: make_doc

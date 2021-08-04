@@ -6,7 +6,7 @@ import spookipy.all as spooki
 import fstpy.all as fstpy
 import pandas as pd
 
-pytestmark = [pytest.mark.regressions]
+pytestmark = [pytest.mark.to_skip]
 
 @pytest.fixture
 def plugin_test_dir():
@@ -24,14 +24,14 @@ def test_1(plugin_test_dir):
     df = spooki.Pressure(src_df0,"TT").compute()
     #[ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Pressure --coordinateType ETA_COORDINATE --referenceField TT] >>
-    # [Zap --pdsLabel R1580V0N] >> 
+    # [Zap --pdsLabel R1580V0N] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     #write the result
     results_file = TMP_PATH + "test_1.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file,df).to_fst()
-    
+
     # open and read comparison file
     file_to_compare = plugin_test_dir + "px_eta_file2cmp.std"
     # file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_1"
@@ -52,9 +52,9 @@ def test_2(plugin_test_dir):
     df = spooki.Pressure(src_df0,"TT",True).compute()
     df.loc[:,'etiket'] = 'PRESSR'
     df.loc[df.nomvar.isin(['>>','^^','P0','PT']),'etiket'] = 'R1580V0N'
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> 
-    # [Zap --pdsLabel PRESSURE --doNotFlagAsZapped] >> 
-    # [Pressure --coordinateType ETA_COORDINATE --standardAtmosphere --referenceField TT] >> 
+    #[ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [Zap --pdsLabel PRESSURE --doNotFlagAsZapped] >>
+    # [Pressure --coordinateType ETA_COORDINATE --standardAtmosphere --referenceField TT] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     #write the result
@@ -131,9 +131,9 @@ def test_5(plugin_test_dir):
     df.loc[:,'etiket'] = 'R1580V0N'
     df.loc[df.nomvar=='P0','etiket'] = 'GA72A16N'
 
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    #[ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Pressure --coordinateType SIGMA_COORDINATE --referenceField HU ] >>
-    # [Zap --pdsLabel R1580V0N] >> 
+    # [Zap --pdsLabel R1580V0N] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     #write the result
@@ -159,9 +159,9 @@ def test_6(plugin_test_dir):
 
     #compute spooki.Pressure
     df = spooki.Pressure(src_df0,"HU",True).compute()
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> 
-    # [Zap --pdsLabel PRESSURE --doNotFlagAsZapped] >> 
-    # [Pressure --coordinateType SIGMA_COORDINATE --standardAtmosphere --referenceField HU] >> 
+    #[ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [Zap --pdsLabel PRESSURE --doNotFlagAsZapped] >>
+    # [Pressure --coordinateType SIGMA_COORDINATE --standardAtmosphere --referenceField HU] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     df.loc[:,'etiket'] = 'PRESSR'
@@ -237,9 +237,9 @@ def test_9(plugin_test_dir):
 
     #compute spooki.Pressure
     df = spooki.Pressure(src_df0,"TT").compute()
-    #['[ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    #['[ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Pressure --coordinateType HYBRID_COORDINATE --referenceField TT] >>
-    # [Zap --pdsLabel R1580V0N] >> 
+    # [Zap --pdsLabel R1580V0N] >>
     # [WriterStd --output {destination_path} --ignoreExtended]']
 
     #write the result
@@ -267,9 +267,9 @@ def test_10(plugin_test_dir):
     df = spooki.Pressure(src_df0,"TT",True).compute()
     df['etiket'] = 'PRESSR'
     df.loc[df.nomvar.isin(['>>','^^','HY','P0']),'etiket'] = 'R1580V0N'
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> 
-    # [Zap --pdsLabel PRESSURE --doNotFlagAsZapped] >> 
-    # [Pressure --coordinateType HYBRID_COORDINATE --standardAtmosphere --referenceField TT] >> 
+    #[ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [Zap --pdsLabel PRESSURE --doNotFlagAsZapped] >>
+    # [Pressure --coordinateType HYBRID_COORDINATE --standardAtmosphere --referenceField TT] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
 
     #write the result
@@ -343,7 +343,7 @@ def test_13(plugin_test_dir):
 
     #compute spooki.Pressure
     df = spooki.Pressure(src_df0,"UU").compute()
-    #[ReaderStd --input {sources[0]}] >> 
+    #[ReaderStd --input {sources[0]}] >>
     # [Pressure --coordinateType HYBRID_STAGGERED_COORDINATE --referenceField UU] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
     df['etiket'] = 'PRESSR'
@@ -373,8 +373,8 @@ def test_14(plugin_test_dir):
 
     #compute spooki.Pressure
     df = spooki.Pressure(src_df0,"UU",True).compute()
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> 
-    # [Pressure --coordinateType HYBRID_STAGGERED_COORDINATE --standardAtmosphere --referenceField UU] >> 
+    #[ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [Pressure --coordinateType HYBRID_STAGGERED_COORDINATE --standardAtmosphere --referenceField UU] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:,'etiket'] = 'PRESSR'
     df.loc[df.nomvar.isin(['!!','P0','^^','>>']),'etiket'] = '__PRESSX'
@@ -402,8 +402,8 @@ def test_14(plugin_test_dir):
 
 # #     #compute spooki.Pressure
 # #     df = spooki.Pressure(src_df0).compute()
-# #     #[ReaderStd --input {sources[0]}] >> 
-# [Pressure --coordinateType AUTODETECT --referenceField UU] >> 
+# #     #[ReaderStd --input {sources[0]}] >>
+# [Pressure --coordinateType AUTODETECT --referenceField UU] >>
 # [WriterStd --output {destination_path} --ignoreExtended]
 
 # #     #write the result
@@ -451,8 +451,8 @@ def test_17(plugin_test_dir):
 
     #compute spooki.Pressure
     df = spooki.Pressure(src_df0,"TT").compute()
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> 
-    # [Pressure --coordinateType PRESSURE_COORDINATE --referenceField TT] >> 
+    #[ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [Pressure --coordinateType PRESSURE_COORDINATE --referenceField TT] >>
     # [Zap --pdsLabel R1580V0N] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     #write the result
@@ -478,9 +478,9 @@ def test_18(plugin_test_dir):
 
     #compute spooki.Pressure
     df = spooki.Pressure(src_df0,"TT",True).compute()
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> 
-    # [Zap --pdsLabel PRESSURE --doNotFlagAsZapped] >> 
-    # [Pressure --coordinateType PRESSURE_COORDINATE --standardAtmosphere --referenceField TT] >> 
+    #[ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [Zap --pdsLabel PRESSURE --doNotFlagAsZapped] >>
+    # [Pressure --coordinateType PRESSURE_COORDINATE --standardAtmosphere --referenceField TT] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     df.loc[:,'etiket'] = 'PRESSR'
@@ -763,8 +763,8 @@ def test_30(plugin_test_dir):
 
     #compute spooki.Pressure
     df = spooki.Pressure(src_df0,"TT").compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
-    # [Pressure --coordinateType AUTODETECT --referenceField TT] >> 
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [Pressure --coordinateType AUTODETECT --referenceField TT] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --noMetadata]
 
     #write the result
@@ -845,8 +845,8 @@ def test_33(plugin_test_dir):
     #compute spooki.Pressure
     df = spooki.Pressure(src_df,"TT").compute()
 
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> 
-    # [Pressure --coordinateType PRESSURE_COORDINATE --referenceField TT] >> 
+    #[ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [Pressure --coordinateType PRESSURE_COORDINATE --referenceField TT] >>
     # [WriterStd --output {destination_path} --ignoreExtended ]
     df['etiket'] = 'PRESSR'
     df.loc[df.nomvar.isin(['!!','^^','>>']),'etiket'] = 'G1_4_0_0N'
@@ -862,7 +862,7 @@ def test_33(plugin_test_dir):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_33"
     # !!   X  G1_4_0_0N           3      51     1 00000000 000000         52341     87193         0        0        0  E 64  X  2001     0     0     0 cmp_file
     # !!   X  G1_4_0_0N           3     164     1 00000000 000000         52341     87193         0        0        0  E 64  X  5002    75   450   450 spookipy
-    
+
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
@@ -877,8 +877,8 @@ def test_34(plugin_test_dir):
 
     #compute spooki.Pressure
     df = spooki.Pressure(src_df0,"TT").compute()
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> 
-    # [Pressure --coordinateType ETA_COORDINATE --referenceField TT] >> 
+    #[ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [Pressure --coordinateType ETA_COORDINATE --referenceField TT] >>
     # [Zap --pdsLabel G1_7_0_0N --nbitsForDataStorage e32]>>
     # [WriterStd --output {destination_path} --ignoreExtended --noMetadata --IP1EncodingStyle OLDSTYLE]
 
@@ -893,7 +893,7 @@ def test_34(plugin_test_dir):
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
-    fstpy.delete_file(results_file) 
+    fstpy.delete_file(results_file)
     assert(res == True)
 
 
@@ -905,7 +905,7 @@ def test_35(plugin_test_dir):
 
     #compute spooki.Pressure
     df = spooki.Pressure(src_df0,"TT").compute()
-    #['[ReaderStd --ignoreExtended --input {sources[0]} ]>> 
+    #['[ReaderStd --ignoreExtended --input {sources[0]} ]>>
     # [Pressure --coordinateType HYBRID_5005_COORDINATE --referenceField TT] >>
     # [Zap --pdsLabel R1_V710_N --metadataZappable --doNotFlagAsZapped]  >>
     # [Select --metadataFieldName P0,>>,^^ --exclude] >>
@@ -935,8 +935,8 @@ def test_36(plugin_test_dir):
 
     #compute spooki.Pressure
     df = spooki.Pressure(src_df0,"UU").compute()
-    #['[ReaderStd --ignoreExtended --input {sources[0]} ]>> 
-    # [Pressure --coordinateType HYBRID_5005_COORDINATE --referenceField UU] >> 
+    #['[ReaderStd --ignoreExtended --input {sources[0]} ]>>
+    # [Pressure --coordinateType HYBRID_5005_COORDINATE --referenceField UU] >>
     # [Zap --pdsLabel R1_V710_N --metadataZappable --doNotFlagAsZapped]  >>
     # [Select --metadataFieldName P0,>>,^^ --exclude] >>
     # [WriterStd --output {destination_path} --ignoreExtended]']
@@ -976,5 +976,3 @@ def test_36(plugin_test_dir):
 # #     #compare results
 # #     res = fstpy.fstcomp(results_file,file_to_compare)
 # #     assert(res == True)
-
-

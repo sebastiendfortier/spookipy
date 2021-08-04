@@ -28,8 +28,8 @@ def test_1(plugin_test_dir):
 
     df['etiket']='WNDCHL'
     df.loc[df.nomvar.isin(['^^','>>']),'etiket'] = 'R1558V0N'
-    df['datyp']=5
-    df['nbits']=32
+    # df['datyp']=5
+    # df['nbits']=32
     #write the result
     results_file = TMP_PATH + "test_1.std"
     fstpy.delete_file(results_file)
@@ -39,7 +39,7 @@ def test_1(plugin_test_dir):
     file_to_compare = plugin_test_dir + "windChill_file2cmp.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.001)
     # fstpy.delete_file(results_file)
     assert(res == True)
 

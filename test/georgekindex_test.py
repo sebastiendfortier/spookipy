@@ -5,7 +5,7 @@ import fstpy.all as fstpy
 import spookipy.all as spooki
 import pandas as pd
 
-pytestmark = [pytest.mark.regressions]
+pytestmark = [pytest.mark.to_skip]
 
 @pytest.fixture
 def plugin_test_dir():
@@ -120,7 +120,7 @@ def test_PlusieursForecastHours(plugin_test_dir):
     #compute GeorgeKIndex
     with pytest.raises(spooki.GeorgeKIndexError):
         _ = spooki.GeorgeKIndex(src_df0).compute()
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [GeorgeKIndex] 
+    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [GeorgeKIndex]
 
 
 def test_6(plugin_test_dir):
@@ -150,5 +150,3 @@ def test_6(plugin_test_dir):
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(False == True)
-
-

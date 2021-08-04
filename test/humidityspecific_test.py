@@ -6,7 +6,7 @@ from test import TMP_PATH,TEST_PATH, convip
 
 import spookipy.all as spooki
 
-pytestmark = [pytest.mark.skip]
+pytestmark = [pytest.mark.to_skip]
 
 @pytest.fixture
 def plugin_test_dir():

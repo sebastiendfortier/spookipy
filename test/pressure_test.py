@@ -6,7 +6,7 @@ import spookipy.all as spooki
 import fstpy.all as fstpy
 import pandas as pd
 
-pytestmark = [pytest.mark.skip]
+pytestmark = [pytest.mark.to_skip]
 
 @pytest.fixture
 def plugin_test_dir():

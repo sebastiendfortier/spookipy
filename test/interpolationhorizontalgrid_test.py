@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 import rpnpy.librmn.all as rmn
 
-pytestmark = [pytest.mark.skip]
+pytestmark = [pytest.mark.to_skip]
 
 @pytest.fixture
 def plugin_test_dir():

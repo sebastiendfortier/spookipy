@@ -5,7 +5,7 @@ from test import TMP_PATH,TEST_PATH
 
 import spookipy.all as spooki
 
-pytestmark = [pytest.mark.regressions]
+pytestmark = [pytest.mark.skip]
 
 @pytest.fixture
 def plugin_test_dir():

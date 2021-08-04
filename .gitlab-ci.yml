@@ -7,7 +7,6 @@ variables:
 
 
 stages:
-  - run_unittest
   - run_regtests
   - make_doc
   - install_doc
@@ -26,12 +25,6 @@ before_script:
   - . ssmuse-sh -d /fs/site4/eccc/cmd/w/sbf000/ssm/fstpy/2.1.5
   # - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/2.1.4/
 
-
-run_unittest:
-  stage: run_unittest
-  script:
-    - cd test
-    # - python -m pytest -n 10 -m unit_tests
 
 
 run_regtests:

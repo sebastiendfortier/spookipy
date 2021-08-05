@@ -18,7 +18,7 @@ from .multiplyelementsby import *
 from .multiplyelementsbypoint import *
 from .opelementsbypoint import *
 from .pressure import *
-from .saturationvapourpressure.saturationvapourpressure import *
+from .saturationvapourpressure import *
 from .setconstantvalue import *
 from .temperaturedewpoint import *
 from .vapourpessure import*

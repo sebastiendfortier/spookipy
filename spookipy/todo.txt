@@ -17,21 +17,21 @@ interval
     grille
         gridpointdistance
     interpolation
-        interpolationhorizontalgrid
-        interpolationhorizontalpoint
+        *interpolationhorizontalgrid
+        *interpolationhorizontalpoint
         interpolationvertical
     io
         writerasciibulletinfb
 
     météo
         convectiveenergies
-        dewpointdepression
+        *dewpointdepression
         energymeanisothermmethod
         freezinglevel
         georgekindex
-        humidex
-        humidityrelative
-        humidityspecific
+        *humidex
+        *humidityrelative
+        *humidityspecific
         levelofcondensationbylifting
         leveloffreeconvectionandequilibrium
         liftedindex
@@ -41,12 +41,12 @@ interval
         precipitationtypedominant
         precipitationtypeinstantaneousbourgouin
         precipitationtypesignificant
-        pressure
-        saturationvapourpressure
+        *pressure
+        *saturationvapourpressure
         slopeindex
         sweatindex
         temperaturealongpseudoadiabat
-        temperaturedewpoint
+        *temperaturedewpoint
         temperatureofliftedparcel
         temperaturepotential
         temperaturevirtual
@@ -54,22 +54,22 @@ interval
         temperaturewetbulbpotential
         thickness
         totaltotalsindex
-        vapourpressure
-        watervapourmixingratio
+        *vapourpressure
+        *watervapourmixingratio
         windmodulusanddirection
-    produit  
+    produit
         bulletinfbpreparation
     système
         checknumberoflevels
         getdictionaryinformation
     utilitaire
         *addelementsbypoint
-        multiplyelementsbypoint
+        *multiplyelementsbypoint
         *arithmeticmeanbypoint
 
         *addtoelement
         *multiplyelementby
-        setconstantvalue
+        *setconstantvalue
 
         filterdigital
         gridmergesimilar
@@ -77,8 +77,8 @@ interval
         matchfieldsbycommonlevels
         matchlevelindextovalue
         minmaxlevelindex
-        
-        
+
+
         setlowerboundary
         setupperboundary
         spatialweightedaveraging

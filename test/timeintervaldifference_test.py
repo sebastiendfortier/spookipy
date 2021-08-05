@@ -181,7 +181,8 @@ def test_6(plugin_test_dir):
 
 
     #compute TimeIntervalDifference
-    df = spooki.TimeIntervalDifference(src_df0 , nomvar='PR' ,forecast_hour_range=[0@177,0@60] , interval=[0,3] , step=[24,6]).compute()
+    with pytest.raises(TimeIntervalDifferenceError):
+        _ = spooki.TimeIntervalDifference(src_df0 , nomvar='PR' ,forecast_hour_range=[0@177,0@60] , interval=[0,3] , step=[24,6]).compute()
     #[ReaderStd --input {sources[0]}] >> [TimeIntervalDifference --fieldName PR --rangeForecastHour 0@177,0@60 --interval 0,3 --step 24,6]
 
 
@@ -194,7 +195,8 @@ def test_7(plugin_test_dir):
 
 
     #compute TimeIntervalDifference
-    df = spooki.TimeIntervalDifference(src_df0 , nomvar='PR' ,forecast_hour_range=[0@177,0@60] , interval=[12,3] , step=[0,6]).compute()
+    with pytest.raises(TimeIntervalDifferenceError):
+        _ = spooki.TimeIntervalDifference(src_df0 , nomvar='PR' ,forecast_hour_range=[0@177,0@60] , interval=[12,3] , step=[0,6]).compute()
     #[ReaderStd --input {sources[0]}] >> [TimeIntervalDifference --fieldName PR --rangeForecastHour 0@177,0@60 --interval 12,3 --step 0,6]
 
 
@@ -389,7 +391,8 @@ def test_14(plugin_test_dir):
 
 
     #compute TimeIntervalDifference
-    df = spooki.TimeIntervalDifference(src_df0, nomvar='PR' ,forecast_hour_range=[0@200] , interval=3 , step=3).compute()
+    with pytest.raises(TimeIntervalDifferenceError):
+        _ = spooki.TimeIntervalDifference(src_df0, nomvar='PR' ,forecast_hour_range=[0@200] , interval=3 , step=3).compute()
     #[ReaderStd --input {sources[0]}] >>
     # [TimeIntervalDifference --fieldName PR --rangeForecastHour 0@200 --interval 3 --step 3]
 
@@ -403,7 +406,8 @@ def test_15(plugin_test_dir):
 
 
     #compute TimeIntervalDifference
-    df = spooki.TimeIntervalDifference(src_df0, nomvar='PR', forecast_hour_range=[0@15], interval=3 , step=3).compute()
+    with pytest.raises(TimeIntervalDifferenceError):
+        _ = spooki.TimeIntervalDifference(src_df0, nomvar='PR', forecast_hour_range=[0@15], interval=3 , step=3).compute()
     #[ReaderStd --input {sources[0]}] >>
     # [TimeIntervalDifference --fieldName PR --rangeForecastHour 0@15 --interval 3 --step 3]
 
@@ -417,7 +421,8 @@ def test_16(plugin_test_dir):
 
 
     #compute TimeIntervalDifference
-    df = spooki.TimeIntervalDifference(src_df0, nomvar='PR', forecast_hour_range=[3@6], interval=4 , step=3).compute()
+    with pytest.raises(TimeIntervalDifferenceError):
+        _ = spooki.TimeIntervalDifference(src_df0, nomvar='PR', forecast_hour_range=[3@6], interval=4 , step=3).compute()
     #[ReaderStd --input {sources[0]}] >>
     # [TimeIntervalDifference --fieldName PR --rangeForecastHour 3@6 --interval 4 --step 3]
 
@@ -431,7 +436,8 @@ def test_17(plugin_test_dir):
 
 
     #compute TimeIntervalDifference
-    df = spooki.TimeIntervalDifference(src_df0 , nomvar='PR' , forecast_hour_range=[9@6] , interval=3 , step=3).compute()
+    with pytest.raises(TimeIntervalDifferenceError):
+        _ = spooki.TimeIntervalDifference(src_df0 , nomvar='PR' , forecast_hour_range=[9@6] , interval=3 , step=3).compute()
     #[ReaderStd --input {sources[0]}] >>
     # [TimeIntervalDifference --fieldName PR --rangeForecastHour 9@6 --interval 3 --step 3]
 
@@ -526,7 +532,8 @@ def test_21(plugin_test_dir):
 
 
     #compute TimeIntervalDifference
-    df = spooki.TimeIntervalDifference(src_df0 , nomvar='UV' , interval=[3,12] , step=[3,12] , strictlyPositive=True).compute()
+    with pytest.raises(TimeIntervalDifferenceError):
+        _ = spooki.TimeIntervalDifference(src_df0 , nomvar='UV' , interval=[3,12] , step=[3,12] , strictlyPositive=True).compute()
     #['[ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [TimeIntervalDifference --fieldName UV --interval 3,12 --step 3,12 --strictlyPositive] >>
     # [WriterStd --output {destination_path} --ignoreExtended]']

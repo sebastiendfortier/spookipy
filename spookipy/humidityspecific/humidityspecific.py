@@ -2,7 +2,7 @@
 
 from ..dewpointdepression import DewPointDepression
 from numpy import float32
-from ..humidityutils import TDPACK_OFFSET_FIX, calc_dew_point_depression_td, calc_humidity_specific_qv, calc_humidity_specific_vppr, get_temp_phase_switch, rpn_calc_humidity_specific_es, rpn_calc_humidity_specific_hr, validate_humidity_parameters
+from ..humidityutils import TDPACK_OFFSET_FIX, calc_humidity_specific_qv, calc_humidity_specific_vppr, get_temp_phase_switch, rpn_calc_humidity_specific_es, rpn_calc_humidity_specific_hr, validate_humidity_parameters
 from ..plugin import Plugin
 from ..utils import create_empty_result, get_existing_result, get_intersecting_levels, get_plugin_dependencies, initializer, existing_results, final_results
 import pandas as pd

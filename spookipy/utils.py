@@ -112,7 +112,6 @@ def get_plugin_dependencies(df:pd.DataFrame, plugin_params:dict=None, plugin_man
 
 def get_existing_result(df:pd.DataFrame, plugin_result_specifications) -> pd.DataFrame:
     df_list = []
-
     for _,spec in plugin_result_specifications.items():
         res_df = df.loc[(df.nomvar==spec['nomvar']) & (df.unit==spec['unit'])].reset_index(drop=True)
 
@@ -171,7 +170,7 @@ def get_intersecting_levels(df:pd.DataFrame, plugin_mandatory_dependencies:dict)
 
 
 def validate_nomvar(nomvar:str, caller_class:str, error_class:Exception):
-    """Check that a nomvar only has 4 characters
+    """Check that a nomvar has between 2 and 4 characters
 
     :param nomvar: nomvar string
     :type nomvar: str
@@ -181,6 +180,10 @@ def validate_nomvar(nomvar:str, caller_class:str, error_class:Exception):
     :type error_class: Exception
     :raises error_class: The class of the exception
     """
+    if nomvar is None:
+        return
+    if len(nomvar) < 2:
+        raise error_class(caller_class + ' - min 2 char for nomvar')
     if len(nomvar) > 4:
         raise error_class(caller_class + ' - max 4 char for nomvar')
 

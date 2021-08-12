@@ -3,7 +3,6 @@ from test import TMP_PATH,TEST_PATH
 import pytest
 import fstpy.all as fstpy
 import spookipy.all as spooki
-import pandas as pd
 
 pytestmark = [pytest.mark.regressions]
 
@@ -26,8 +25,8 @@ def test_1(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     # df.loc[:,'etiket'] = 'PGSMUFIL'
-    df.loc[:,'datyp'] = 5
-    df.loc[df.nomvar!='!!','nbits'] = 32
+    # df.loc[:,'datyp'] = 5
+    # df.loc[df.nomvar!='!!','nbits'] = 32
     #write the result
     results_file = TMP_PATH + "test_1.std"
     fstpy.delete_file(results_file)
@@ -35,7 +34,7 @@ def test_1(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "filter1_file2cmp.std"
-    file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_1'
+    # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_1'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
@@ -55,8 +54,8 @@ def test_2(plugin_test_dir):
     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [FilterDigital --filter 1,1,1 --repetitions 3] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
     # df.loc[:,'etiket'] = 'PGSMUFIL'
-    df.loc[:,'datyp'] = 5
-    df.loc[df.nomvar!='!!','nbits'] = 32
+    # df.loc[:,'datyp'] = 5
+    # df.loc[df.nomvar!='!!','nbits'] = 32
     #write the result
     results_file = TMP_PATH + "test_2.std"
     fstpy.delete_file(results_file)
@@ -64,7 +63,7 @@ def test_2(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "filter2_file2cmp.std"
-    file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_2'
+    # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_2'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
@@ -86,8 +85,8 @@ def test_3(plugin_test_dir):
 
     # df.loc[:,'etiket'] = 'UNAOPS'
 
-    df.loc[:,'datyp'] = 5
-    df.loc[df.nomvar!='!!','nbits'] = 32
+    # df.loc[:,'datyp'] = 5
+    # df.loc[df.nomvar!='!!','nbits'] = 32
 
     #write the result
     results_file = TMP_PATH + "test_3.std"
@@ -96,7 +95,7 @@ def test_3(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "filter3_file2cmp.std"
-    file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_3'
+    # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_3'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
@@ -117,8 +116,8 @@ def test_4(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
     # df.loc[:,'etiket'] = 'UNAOPS'
 
-    df.loc[:,'datyp'] = 5
-    df.loc[df.nomvar!='!!','nbits'] = 32
+    # df.loc[:,'datyp'] = 5
+    # df.loc[df.nomvar!='!!','nbits'] = 32
 
     #write the result
     results_file = TMP_PATH + "test_4.std"
@@ -127,7 +126,7 @@ def test_4(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "filter4_file2cmp.std"
-    file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_4'
+    # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_4'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
@@ -149,8 +148,8 @@ def test_5(plugin_test_dir):
 
     # df.loc[:,'etiket'] = 'PGSMUFIL'
 
-    df.loc[:,'datyp'] = 5
-    df.loc[df.nomvar!='!!','nbits'] = 32
+    # df.loc[:,'datyp'] = 5
+    # df.loc[df.nomvar!='!!','nbits'] = 32
 
     #write the result
     results_file = TMP_PATH + "test_5.std"
@@ -159,7 +158,7 @@ def test_5(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "filter5_file2cmp.std"
-    file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_5'
+    # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_5'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
@@ -188,8 +187,8 @@ def test_6(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "filter6_file2cmp.std"
-    file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_6'
+    file_to_compare = plugin_test_dir + "filter6_file2cmp.std+E3220210812"
+    # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_6'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
@@ -209,8 +208,8 @@ def test_7(plugin_test_dir):
     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [FilterDigital --filter 1,1,1,2,2,1,1,1,1 --repetitions 3] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
-    df.loc[:,'datyp'] = 5
-    df.loc[df.nomvar!='!!','nbits'] = 32
+    # df.loc[:,'datyp'] = 5
+    # df.loc[df.nomvar!='!!','nbits'] = 32
 
     #write the result
     results_file = TMP_PATH + "test_7.std"
@@ -219,10 +218,10 @@ def test_7(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "filter7_file2cmp.std"
-    file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_7'
+    # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_7'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
     assert(res == True)
 
@@ -239,8 +238,8 @@ def test_8(plugin_test_dir):
     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [FilterDigital --filter 1,1,1,2,3,2,1,1,1 --repetitions 3] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
-    df.loc[:,'datyp'] = 5
-    df.loc[df.nomvar!='!!','nbits'] = 32
+    # df.loc[:,'datyp'] = 5
+    # df.loc[df.nomvar!='!!','nbits'] = 32
 
     #write the result
     results_file = TMP_PATH + "test_8.std"
@@ -249,10 +248,10 @@ def test_8(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "filter8_file2cmp.std"
-    file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_8'
+    # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_8'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
     assert(res == True)
 
@@ -274,8 +273,8 @@ def test_9(plugin_test_dir):
     df.loc[df.nomvar=='TT','datyp'] = 1
     df.loc[df.nomvar=='TT','nbits'] = 16
 
-    df.loc[:,'datyp'] = 5
-    df.loc[df.nomvar!='!!','nbits'] = 32
+    # df.loc[:,'datyp'] = 5
+    # df.loc[df.nomvar!='!!','nbits'] = 32
 
     #write the result
     results_file = TMP_PATH + "test_9.std"
@@ -284,7 +283,7 @@ def test_9(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "filteredByPgsm1_file2cmp.std"
-    file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_9'
+    # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_9'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
@@ -311,8 +310,8 @@ def test_10(plugin_test_dir):
     df.loc[df.nomvar=='TT','datyp'] = 1
     df.loc[df.nomvar=='TT','nbits'] = 16
 
-    df.loc[:,'datyp'] = 5
-    df.loc[df.nomvar!='!!','nbits'] = 32
+    # df.loc[:,'datyp'] = 5
+    # df.loc[df.nomvar!='!!','nbits'] = 32
 
     #write the result
     results_file = TMP_PATH + "test_10.std"
@@ -321,7 +320,7 @@ def test_10(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "filteredByPgsm2_file2cmp.std"
-    file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_10'
+    # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_10'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
@@ -348,8 +347,8 @@ def test_11(plugin_test_dir):
     df.loc[df.nomvar=='TT','datyp'] = 1
     df.loc[df.nomvar=='TT','nbits'] = 16
 
-    df.loc[:,'datyp'] = 5
-    df.loc[df.nomvar!='!!','nbits'] = 32
+    # df.loc[:,'datyp'] = 5
+    # df.loc[df.nomvar!='!!','nbits'] = 32
 
     #write the result
     results_file = TMP_PATH + "test_11.std"
@@ -358,7 +357,7 @@ def test_11(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "filteredByPgsm3_file2cmp.std"
-    file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_11'
+    # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_11'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
@@ -395,8 +394,8 @@ def test_12(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "filteredByPgsm4_file2cmp.std"
-    file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_12'
+    file_to_compare = plugin_test_dir + "filteredByPgsm4_file2cmp.std+E3220210812"
+    # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_12'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
@@ -418,8 +417,8 @@ def test_13(plugin_test_dir):
 
     df.loc[:,'etiket'] = 'R1580V0_N'
 
-    df.loc[:,'datyp'] = 5
-    df.loc[df.nomvar!='!!','nbits'] = 32
+    # df.loc[:,'datyp'] = 5
+    # df.loc[df.nomvar!='!!','nbits'] = 32
 
     #write the result
     results_file = TMP_PATH + "test_13.std"
@@ -428,7 +427,7 @@ def test_13(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "LATLON_L_9x11_file2cmp.std"
-    file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_13'
+    # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_13'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
@@ -450,8 +449,8 @@ def test_14(plugin_test_dir):
     # [FilterDigital --filter 1,1,1 --repetitions 1 --outputFieldName abcd] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
-    df.loc[:,'datyp'] = 5
-    df.loc[df.nomvar!='!!','nbits'] = 32
+    # df.loc[:,'datyp'] = 5
+    # df.loc[df.nomvar!='!!','nbits'] = 32
 
     #write the result
     results_file = TMP_PATH + "test_14.std"
@@ -460,7 +459,7 @@ def test_14(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "filter9_file2cmp.std"
-    file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_14'
+    # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_14'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)

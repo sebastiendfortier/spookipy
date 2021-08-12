@@ -3,6 +3,7 @@ from .addelementsbypoint import *
 from .addtoelements import *
 from .applyunary import *
 from .arithmeticmeanbypoint import *
+from .cloudfractiondiagnostic import *
 from .coriolisparameter import *
 from .dewpointdepression import *
 from .filterdigital import *

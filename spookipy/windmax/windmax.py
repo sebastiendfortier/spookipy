@@ -11,7 +11,7 @@ class WindMaxError(Exception):
     pass
 
 def wind_max(uu_3d:np.ndarray,vv_3d:np.ndarray,uv_3d:np.ndarray,px_3d:np.ndarray) -> Tuple[np.ndarray,np.ndarray,np.ndarray,np.ndarray]:
-    """Computes the maximum values by column for uu,vv,uv and px. 
+    """Computes the maximum values by column for uu,vv,uv and px.
 
     :param uu_3d: flattened then stacked uu wind component arrays. the array is actually 2d (rows(flattened 2d grid) by levels)
     :type uu_3d: np.ndarray
@@ -46,21 +46,21 @@ class WindMax(Plugin):
         'VV':{'nomvar':'VV','etiket':'WindMax','unit':'knot','ip1':0},
         'PX':{'nomvar':'PX','etiket':'WindMax','unit':'hectoPascal','ip1':0},
         }
-    
+
     def __init__(self,df:pd.DataFrame):
         self.df = df
         self.validate_input()
-        
-    # might be able to move    
+
+    # might be able to move
     def validate_input(self):
         if self.df.empty:
             raise  WindMaxError('No data to process')
 
-        self.df = fstpy.metadata_cleanup(self.df)    
+        self.df = fstpy.metadata_cleanup(self.df)
 
-        self.meta_df = self.df.query('nomvar in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True)
+        self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
-        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['unit','forecast_hour'])     
+        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['unit','forecast_hour'])
         #check if result already exists
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
 
@@ -72,12 +72,12 @@ class WindMax(Plugin):
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:
-            return existing_results('WindMax',self.existing_result_df,self.meta_df) 
+            return existing_results('WindMax',self.existing_result_df,self.meta_df)
 
-        sys.stdout.write('WindMax - compute\n')     
+        sys.stdout.write('WindMax - compute\n')
         #holds data from all the groups
         df_list = []
-        
+
         for _,current_fhour_group in self.fhour_groups:
             # print('windmax current_fhour_group 1\n',current_fhour_group[['nomvar','typvar','etiket','ni','nj','nk','dateo','ip1','unit']])
             current_fhour_group = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies)
@@ -99,7 +99,7 @@ class WindMax(Plugin):
             uv_df = current_fhour_group.loc[current_fhour_group.nomvar=='UV'].reset_index(drop=True)
             # print('windmax uv_df\n',uv_df[['nomvar','typvar','etiket','ni','nj','nk','dateo','ip1','unit']])
             uv_res_df = create_empty_result(uv_df,self.plugin_result_specifications['UV'])
-            
+
             px_df = current_fhour_group.loc[current_fhour_group.nomvar=='PX'].reset_index(drop=True)
             # print('windmax px_df\n',px_df[['nomvar','typvar','etiket','ni','nj','nk','dateo','ip1','unit']])
             px_res_df = create_empty_result(px_df,self.plugin_result_specifications['PX'])
@@ -117,10 +117,3 @@ class WindMax(Plugin):
             df_list.append(px_res_df)
 
         return final_results(df_list,WindMaxError, self.meta_df)
-
-
-
-    
-
-
-

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from numpy.core.numeric import allclose
 import spookipy.all as spooki
 from test import TEST_PATH, TMP_PATH, convip
 
@@ -35,7 +36,7 @@ def test_1(plugin_test_dir):
     #write the result
     results_file = TMP_PATH + "test_interpgrid_reg_1.std"
     fstpy.delete_file(results_file)
-    fstpy.StandardFileWriter(results_file, df).to_fst()
+    fstpy.StandardFileWriter(results_file, df,no_meta=True).to_fst()
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "interpolationHoriz_file2cmp.std"
@@ -44,7 +45,7 @@ def test_1(plugin_test_dir):
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
-    fstpy.delete_file(results_file)
+    # fstpy.delete_file(results_file)
     assert(res == True)
 
 def test_2(plugin_test_dir):
@@ -142,7 +143,7 @@ def test_5(plugin_test_dir):
     file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalGrid/result_test_5"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,verbose=True)
+    res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res == True)
 
@@ -291,11 +292,11 @@ def test_9(plugin_test_dir):
     # [WriterStd --output {destination_path} ]
 
 
-    df = fstpy.select_with_meta(df,['UU','VV'])
+    # df = fstpy.select_with_meta(df,['UU','VV'])
 
     df['datyp'] = 5
-    df['nbits'] = 32
-    df.loc[df.nomvar=='!!','nbits']=64
+    df.loc[df.nomvar!='!!','nbits'] = 32
+
     df = convip(df,nomvar='',style=rmn.CONVIP_ENCODE)
     #write the result
     results_file = TMP_PATH + "test_interpgrid_reg_9.std"
@@ -333,11 +334,10 @@ def test_10(plugin_test_dir):
     # [Select --fieldName UU,VV] >>
     # [WriterStd --output {destination_path} ]
 
-    df = fstpy.select_with_meta(df,['UU','VV'])
-    df = df.loc[df.nomvar!='P0']
+    # df = fstpy.select_with_meta(df,['UU','VV'])
+    # df = df.loc[df.nomvar!='P0']
     df['datyp'] = 5
-    df['nbits'] = 32
-    df.loc[df.nomvar=='!!','nbits']=64
+    df.loc[df.nomvar!='!!','nbits']=32
     #write the result
     results_file = TMP_PATH + "test_interpgrid_reg_10.std"
     fstpy.delete_file(results_file)

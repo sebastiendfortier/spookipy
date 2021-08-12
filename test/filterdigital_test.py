@@ -178,8 +178,8 @@ def test_6(plugin_test_dir):
     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [FilterDigital --filter 1,1,1,2,2,1,1,1,1 --repetitions 1] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
-    df.loc[:,'datyp'] = 5
-    df.loc[df.nomvar!='!!','nbits'] = 32
+    # df.loc[:,'datyp'] = 5
+    # df.loc[df.nomvar!='!!','nbits'] = 32
 
     #write the result
     results_file = TMP_PATH + "test_6.std"
@@ -187,7 +187,8 @@ def test_6(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "filter6_file2cmp.std+E3220210812"
+    file_to_compare = plugin_test_dir + "filter6_file2cmp.std"
+    # file_to_compare = plugin_test_dir + "filter6_file2cmp.std+E3220210812"
     # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_6'
 
     #compare results
@@ -221,7 +222,7 @@ def test_7(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_7'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
+    res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res == True)
 
@@ -251,7 +252,7 @@ def test_8(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_8'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
+    res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res == True)
 
@@ -385,8 +386,8 @@ def test_12(plugin_test_dir):
     df.loc[df.nomvar=='TT','datyp'] = 1
     df.loc[df.nomvar=='TT','nbits'] = 16
 
-    df.loc[:,'datyp'] = 5
-    df.loc[df.nomvar!='!!','nbits'] = 32
+    # df.loc[:,'datyp'] = 5
+    # df.loc[df.nomvar!='!!','nbits'] = 32
 
     #write the result
     results_file = TMP_PATH + "test_12.std"
@@ -394,7 +395,8 @@ def test_12(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "filteredByPgsm4_file2cmp.std+E3220210812"
+    file_to_compare = plugin_test_dir + "filteredByPgsm4_file2cmp.std"
+    # file_to_compare = plugin_test_dir + "filteredByPgsm4_file2cmp.std+E3220210812"
     # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_12'
 
     #compare results

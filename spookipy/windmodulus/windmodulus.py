@@ -9,7 +9,7 @@ import sys
 
 class WindModulusError(Exception):
     pass
- 
+
 def wind_modulus(uu:np.ndarray,vv:np.ndarray) -> np.ndarray:
     """Computes the wind modulus from the wind components
 
@@ -20,7 +20,7 @@ def wind_modulus(uu:np.ndarray,vv:np.ndarray) -> np.ndarray:
     :return: wind modulus
     :rtype: np.ndarray
     """
-    return (uu**2 + vv**2)**.5 
+    return (uu**2 + vv**2)**.5
 
 class WindModulus(Plugin):
     plugin_mandatory_dependencies = {
@@ -35,17 +35,17 @@ class WindModulus(Plugin):
         self.df = df
         #ajouter forecast_hour et unit
         self.validate_input()
-        
-    # might be able to move    
+
+    # might be able to move
     def validate_input(self):
         if self.df.empty:
             raise  WindModulusError('No data to process')
 
-        self.df = fstpy.metadata_cleanup(self.df)    
+        self.df = fstpy.metadata_cleanup(self.df)
 
-        self.meta_df = self.df.query('nomvar in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True)    
+        self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
-        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['unit','forecast_hour'])    
+        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['unit','forecast_hour'])
 
          #check if result already exists
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
@@ -53,13 +53,13 @@ class WindModulus(Plugin):
         if self.existing_result_df.empty:
             self.dependencies_df = get_plugin_dependencies(self.df,None,self.plugin_mandatory_dependencies)
             self.fhour_groups=self.dependencies_df.groupby(by=['grid','forecast_hour'])
-           
+
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:
             return existing_results('WindModulus',self.existing_result_df,self.meta_df)
 
-        sys.stdout.write('WindModulus - compute\n')      
+        sys.stdout.write('WindModulus - compute\n')
         df_list = []
         for _,current_fhour_group in self.fhour_groups:
             current_fhour_group = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies)
@@ -80,8 +80,3 @@ class WindModulus(Plugin):
             df_list.append(uv_df)
 
         return final_results(df_list,WindModulusError, self.meta_df)
-
-
-
-    
-

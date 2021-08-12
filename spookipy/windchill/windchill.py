@@ -30,23 +30,23 @@ class WindChill(Plugin):
     plugin_result_specifications = {
         'RE':{'nomvar':'RE','etiket':'WindChill','unit':'celsius','ip1':0}
         }
-    
+
     def __init__(self,df:pd.DataFrame):
         self.df = df
         self.validate_input()
-        
-        
-    # might be able to move    
+
+
+    # might be able to move
     def validate_input(self):
         if self.df.empty:
             raise  WindChillError('No data to process')
 
-        self.df = fstpy.metadata_cleanup(self.df)    
-        
-        self.meta_df = self.df.query('nomvar in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True)
+        self.df = fstpy.metadata_cleanup(self.df)
+
+        self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
         self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['unit','ip_info','forecast_hour'])
-      
+
 
         #check if result already exists
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
@@ -58,9 +58,9 @@ class WindChill(Plugin):
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:
-            return existing_results('WindChill',self.existing_result_df,self.meta_df) 
+            return existing_results('WindChill',self.existing_result_df,self.meta_df)
 
-        sys.stdout.write('WindChill - compute\n')    
+        sys.stdout.write('WindChill - compute\n')
         #holds data from all the groups
         df_list = []
         for _,current_fhour_group in self.fhour_groups:
@@ -69,7 +69,7 @@ class WindChill(Plugin):
             uv_df = current_fhour_group.query('nomvar == "UV"').reset_index(drop=True)
             uv_df = fstpy.unit_convert(uv_df,'kilometer_per_hour')
             re_df = create_empty_result(tt_df,self.plugin_result_specifications['RE'])
-            
+
             for i in re_df.index:
                 tt = (tt_df.at[i,'d'])
                 uv = (uv_df.at[i,'d'])
@@ -78,5 +78,3 @@ class WindChill(Plugin):
             df_list.append(re_df)
 
         return final_results(df_list,WindChillError, self.meta_df)
-
-

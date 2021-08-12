@@ -31,13 +31,13 @@ class GeorgeKIndex(Plugin):
 
     def validate_input(self):
         if self.df.empty:
-            raise GeorgeKIndexError('No data to process') 
+            raise GeorgeKIndexError('No data to process')
 
         self.df = fstpy.metadata_cleanup(self.df)
 
-        self.meta_df = self.df.query('nomvar in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True)
+        self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
-        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['unit','forecast_hour','ip_info'])     
+        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['unit','forecast_hour','ip_info'])
         #check if result already exists
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
 
@@ -50,7 +50,7 @@ class GeorgeKIndex(Plugin):
         if not self.existing_result_df.empty:
             return existing_results('GeorgeKIndex',self.existing_result_df,self.meta_df)
 
-        sys.stdout.write('GeorgeKIndex - compute\n')    
+        sys.stdout.write('GeorgeKIndex - compute\n')
         df_list=[]
         for _,current_fhour_group in self.fhour_groups:
             current_fhour_group = fstpy.load_data(current_fhour_group)
@@ -69,7 +69,7 @@ class GeorgeKIndex(Plugin):
         #     raise GeorgeKIndexError('No results were produced')
 
         # self.meta_df = fstpy.load_data(self.meta_df)
-        # df_list.append(self.meta_df)    
+        # df_list.append(self.meta_df)
         # # merge all results together
         # res_df = pd.concat(df_list,ignore_index=True)
 

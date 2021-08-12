@@ -6,7 +6,7 @@ import spookipy.all as spooki
 import fstpy.all as fstpy
 import pandas as pd
 
-pytestmark = [pytest.mark.to_skip]
+pytestmark = [pytest.mark.regressions]
 
 @pytest.fixture
 def plugin_test_dir():
@@ -836,14 +836,11 @@ def test_33(plugin_test_dir):
     source0 = plugin_test_dir + "glbpres_TT_UU_VV.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    src_df = src_df0.query('nomvar=="TT" and ip1!=93423264').reset_index(drop=True)
-    # print(src_df[['nomvar','ip1']])
-    meta_df = src_df0.query('nomvar in ["!!","HY","P0","PT","^^",">>"]').reset_index(drop=True)
+    tt_df = fstpy.select_with_meta(src_df0,['TT'])
+    tt_df = tt_df.loc[tt_df.ip1!=93423264]
 
-    src_df = pd.concat([src_df,meta_df],ignore_index=True)
-    # print(src_df[['nomvar','ip1']].to_string())
     #compute spooki.Pressure
-    df = spooki.Pressure(src_df,"TT").compute()
+    df = spooki.Pressure(tt_df,"TT").compute()
 
     #[ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Pressure --coordinateType PRESSURE_COORDINATE --referenceField TT] >>
@@ -911,7 +908,7 @@ def test_35(plugin_test_dir):
     # [Select --metadataFieldName P0,>>,^^ --exclude] >>
     # [WriterStd --output {destination_path} --ignoreExtended]']
 
-    df = df.query('nomvar not in ["^^",">>","P0"]')
+    df = df.loc[~df.nomvar.isin(["^^",">>","P0"])]
     #write the result
     results_file = TMP_PATH + "test_35.std"
     fstpy.delete_file(results_file)
@@ -940,7 +937,7 @@ def test_36(plugin_test_dir):
     # [Zap --pdsLabel R1_V710_N --metadataZappable --doNotFlagAsZapped]  >>
     # [Select --metadataFieldName P0,>>,^^ --exclude] >>
     # [WriterStd --output {destination_path} --ignoreExtended]']
-    df = df.query('nomvar not in ["^^",">>","P0"]')
+    df = df.loc[~df.nomvar.isin(["^^",">>","P0"])]
     #write the result
     results_file = TMP_PATH + "test_36.std"
     fstpy.delete_file(results_file)

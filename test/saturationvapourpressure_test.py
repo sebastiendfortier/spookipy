@@ -5,7 +5,7 @@ from test import TMP_PATH,TEST_PATH
 
 import spookipy.all as spooki
 
-pytestmark = [pytest.mark.to_skip]
+pytestmark = [pytest.mark.regressions]
 
 @pytest.fixture
 def plugin_test_dir():
@@ -94,8 +94,8 @@ def test_6(plugin_test_dir):
     df.loc[df.nomvar=='SVP','etiket']='SVPRES'
     df.loc[df.nomvar.isin(['HY','P0']),'etiket']='580V0'
 
-    df['datyp']=5
-    df['nbits']=32
+    # df['datyp']=5
+    # df['nbits']=32
     #write the result
     results_file = TMP_PATH + "test_6.std"
     fstpy.delete_file(results_file)
@@ -103,7 +103,7 @@ def test_6(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "SaturationVapourPressure_file2cmp.std"
-    file_to_compare = '/fs/site4/eccc/cmd/w/sbf000/testFiles/SaturationVapourPressure/res_test_6.std'
+    # file_to_compare = '/fs/site4/eccc/cmd/w/sbf000/testFiles/SaturationVapourPressure/res_test_6.std'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
@@ -126,8 +126,8 @@ def test_7(plugin_test_dir):
     df.loc[df.nomvar=='SVP','etiket']='SVPRES'
     df.loc[df.nomvar.isin(['!!','^^','>>','HY','P0']),'etiket']='_V710_'
 
-    df['datyp']=5
-    df['nbits']=32
+    # df['datyp']=5
+    # df.loc[df.nomvar!='!!','nbits']=32
     #write the result
     results_file = TMP_PATH + "test_7.std"
     fstpy.delete_file(results_file)
@@ -135,7 +135,7 @@ def test_7(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "resulttest_7.std"
-    file_to_compare = '/fs/site4/eccc/cmd/w/sbf000/testFiles/SaturationVapourPressure/res_test_7.std'
+    # file_to_compare = '/fs/site4/eccc/cmd/w/sbf000/testFiles/SaturationVapourPressure/res_test_7.std'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)

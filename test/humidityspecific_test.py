@@ -128,8 +128,8 @@ def test_8(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:,'etiket']='R1580V0N'
     df = convip(df,nomvar='HU')
-    df.loc[:,'nbits']=32
-    df.loc[:,'datyp']=5
+    # df.loc[:,'nbits']=32
+    # df.loc[:,'datyp']=5
     #write the result
     results_file = TMP_PATH + "test_8.std"
     fstpy.delete_file(results_file)
@@ -137,7 +137,7 @@ def test_8(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "regpres_testWithHR_file2cmp.std"
-    file_to_compare = '/home/sbf000/data/testFiles/HumiditySpecific/result_test_8'
+    # file_to_compare = '/home/sbf000/data/testFiles/HumiditySpecific/result_test_8'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
@@ -167,8 +167,8 @@ def test_10(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:,'etiket']='R1580V0N'
     df = convip(df,nomvar='HU')
-    df.loc[:,'nbits']=32
-    df.loc[:,'datyp']=5
+    # df.loc[:,'nbits']=32
+    # df.loc[:,'datyp']=5
     #write the result
     results_file = TMP_PATH + "test_10.std"
     fstpy.delete_file(results_file)
@@ -176,7 +176,7 @@ def test_10(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "regpres_testWithES_file2cmp.std"
-    file_to_compare = '/home/sbf000/data/testFiles/HumiditySpecific/result_test_10'
+    # file_to_compare = '/home/sbf000/data/testFiles/HumiditySpecific/result_test_10'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
@@ -204,8 +204,8 @@ def test_11(plugin_test_dir):
     # [Zap --pdsLabel R1580V0N --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:,'etiket'] = 'R1580V0N'
     df = convip(df,'HU')
-    df.loc[:,'nbits']=32
-    df.loc[:,'datyp']=5
+    # df.loc[:,'nbits']=32
+    # df.loc[:,'datyp']=5
     #write the result
     results_file = TMP_PATH + "test_11.std"
     fstpy.delete_file(results_file)
@@ -213,7 +213,7 @@ def test_11(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "regpres_testWithES_file2cmp.std"
-    file_to_compare = '/home/sbf000/data/testFiles/HumiditySpecific/result_test_11'
+    # file_to_compare = '/home/sbf000/data/testFiles/HumiditySpecific/result_test_11'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
@@ -246,8 +246,8 @@ def test_12(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:,'etiket'] = 'G133K80N'
     # df = convip(df,'HU')
-    df.loc[:,'nbits']=32
-    df.loc[:,'datyp']=5
+    # df.loc[:,'nbits']=32
+    # df.loc[:,'datyp']=5
     #write the result
     results_file = TMP_PATH + "test_12.std"
     fstpy.delete_file(results_file)
@@ -255,7 +255,7 @@ def test_12(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_4_file2cmp.std"
-    file_to_compare = '/home/sbf000/data/testFiles/HumiditySpecific/result_test_12'
+    # file_to_compare = '/home/sbf000/data/testFiles/HumiditySpecific/result_test_12'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
@@ -288,8 +288,8 @@ def test_13(plugin_test_dir):
     # [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:,'etiket'] = 'G133K80N'
-    df.loc[:,'nbits']=32
-    df.loc[:,'datyp']=5
+    # df.loc[:,'nbits']=32
+    # df.loc[:,'datyp']=5
     #write the result
     results_file = TMP_PATH + "test_13.std"
     fstpy.delete_file(results_file)
@@ -297,7 +297,7 @@ def test_13(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_4_file2cmp.std"
-    file_to_compare = '/home/sbf000/data/testFiles/HumiditySpecific/result_test_13'
+    # file_to_compare = '/home/sbf000/data/testFiles/HumiditySpecific/result_test_13'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
@@ -329,8 +329,8 @@ def test_14(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:,'etiket'] = 'R1580V0N'
     df = convip(df,'HU')
-    df.loc[:,'nbits']=32
-    df.loc[:,'datyp']=5
+    # df.loc[:,'nbits']=32
+    # df.loc[:,'datyp']=5
     #write the result
     results_file = TMP_PATH + "test_14.std"
     fstpy.delete_file(results_file)
@@ -338,7 +338,7 @@ def test_14(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "regpres_testWithQV.std"
-    file_to_compare = '/home/sbf000/data/testFiles/HumiditySpecific/result_test_14'
+    # file_to_compare = '/home/sbf000/data/testFiles/HumiditySpecific/result_test_14'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)

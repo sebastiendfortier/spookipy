@@ -23,7 +23,7 @@ def test_1(plugin_test_dir):
         df = spooki.ArithmeticMeanByPoint(src_df0).compute()
         #[ReaderStd --input {sources[0]}] >> [Select --fieldName UU ] >> [ArithmeticMeanByPoint]
 
-    
+
 
 def test_2(plugin_test_dir):
     """Test #2 : Utilisation de --outputFieldName avec une valeur > 4 caractères."""
@@ -35,7 +35,7 @@ def test_2(plugin_test_dir):
     with pytest.raises(spooki.ArithmeticMeanByPointError):
         #compute ArithmeticMeanByPoint
         df = spooki.ArithmeticMeanByPoint(src_df0, nomvar_out='TROPLONG').compute()
-        #[ReaderStd --input {sources[0]}] >> [ArithmeticMeanByPoint --outputFieldName TROPLONG] 
+        #[ReaderStd --input {sources[0]}] >> [ArithmeticMeanByPoint --outputFieldName TROPLONG]
 
 
 
@@ -108,7 +108,7 @@ def test_5(plugin_test_dir):
     df.loc[df.nomvar=='!!','etiket'] = 'PRESSUREX'
     # df['ip1']=500
     # df['etiket']='MEANFIELDS'
-    
+
     #write the result
     results_file = TMP_PATH + "test_5.std"
     fstpy.delete_file(results_file)
@@ -174,7 +174,7 @@ def test_7(plugin_test_dir):
     results_file = TMP_PATH + "test_7.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
-    
+
     # open and read comparison file
     file_to_compare = plugin_test_dir + "Mean_test7_file2cmp.std"
 

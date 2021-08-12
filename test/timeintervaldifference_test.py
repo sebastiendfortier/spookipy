@@ -5,7 +5,7 @@ import fstpy.all as fstpy
 import spookipy.all as spooki
 import pandas as pd
 
-pytestmark = [pytest.mark.to_skip]
+pytestmark = [pytest.mark.skip]
 
 @pytest.fixture
 def plugin_test_dir():
@@ -22,6 +22,7 @@ def test_1(plugin_test_dir):
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
 
     src_df = pd.concat([src_df0,src_df1],ignore_index=True)
+    print(src_df.loc[src_df.nomvar=='PR'].to_string())
     #compute TimeIntervalDifference
     df = spooki.TimeIntervalDifference(src_df , nomvar='PR' ,forecast_hour_range=[12@18] , interval=6 , step=1).compute()
     #[ReaderStd --ignoreExtended --input {sources[0]}] >>

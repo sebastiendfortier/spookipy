@@ -8,7 +8,7 @@ import sys
 #see functions without arguments from numpy lib
 #https://numpy.org/doc/stable/reference/routines.math.html
 class ApplyUnaryError(Exception):
-    pass     
+    pass
 class ApplyUnary(Plugin):
     @initializer
     def __init__(self, df:pd.DataFrame, function=None, nomvar_in=None, nomvar_out=None, etiket=None):
@@ -20,16 +20,16 @@ class ApplyUnary(Plugin):
             raise  ApplyUnaryError('No data to process')
 
         self.df = fstpy.metadata_cleanup(self.df)
-        
-        self.meta_df = self.df.query('nomvar in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True) 
 
-        self.df = self.df.query('nomvar not in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True)         
+        self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
+
+        self.df = self.df.loc[~self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
 
     def compute(self) -> pd.DataFrame:
         sys.stdout.write('ApplyUnary - compute\n')
         in_df = self.df.query( 'nomvar=="%s"'%self.nomvar_in).reset_index(drop=True)
-        
+
         if in_df.empty:
             raise ApplyUnaryError(f'No data to process with nomvar {self.nomvar_in}')
 
@@ -39,7 +39,7 @@ class ApplyUnary(Plugin):
         res_df['etiket']=self.etiket
         for i in res_df.index:
             res_df.at[i,'d'] = self.function(in_df.at[i,'d'])
-        
+
         self.meta_df = fstpy.load_data(self.meta_df)
         # merge all results together
         res_df = pd.concat([res_df,self.meta_df],ignore_index=True)

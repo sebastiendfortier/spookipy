@@ -40,7 +40,7 @@ class SaturationVapourPressure(Plugin):
 
         self.temp_phase_switch = get_temp_phase_switch(SaturationVapourPressureError, self.ice_water_phase=='both', self.temp_phase_switch, self.temp_phase_switch_unit, self.rpn)
 
-        self.meta_df = self.df.query('nomvar in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True)
+        self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
 
         #check if result already exists
@@ -60,7 +60,6 @@ class SaturationVapourPressure(Plugin):
             current_fhour_group = fstpy.load_data(current_fhour_group)
             tt_df = current_fhour_group.loc[current_fhour_group.nomvar=='TT'].reset_index(drop=True)
             svp_df = create_empty_result(tt_df,self.plugin_result_specifications['SVP'],copy=True)
-
             if self.rpn:
                 print('rpn')
                 print('option 1')

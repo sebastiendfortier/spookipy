@@ -40,7 +40,7 @@ def test_1(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/CoriolisParameter/test_1'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=1.0000000001)
+    res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res == True)
 

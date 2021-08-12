@@ -93,8 +93,8 @@ def test_5(plugin_test_dir):
 
     df = pd.concat([meta_df,df1],ignore_index=True)
 
-    df.loc[:,'nbits']=32
-    df.loc[:,'datyp']=5
+    # df.loc[:,'nbits']=32
+    # df.loc[:,'datyp']=5
     #[ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Select --fieldName TT,HU] >> [HumidityRelative --iceWaterPhase WATER] >>
     # [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >>
@@ -108,7 +108,7 @@ def test_5(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2011100712_glbhyb_5_file2cmp.std"
-    file_to_compare = '/home/sbf000/data/testFiles/HumidityRelative/result_test_5'
+    # file_to_compare = '/home/sbf000/data/testFiles/HumidityRelative/result_test_5'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
@@ -131,8 +131,8 @@ def test_7(plugin_test_dir):
     # [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:,'etiket'] = 'G133K80N'
-    df.loc[:,'nbits']=32
-    df.loc[:,'datyp']=5
+    # df.loc[:,'nbits']=32
+    # df.loc[:,'datyp']=5
     #write the result
     results_file = TMP_PATH + "test_7.std"
     fstpy.delete_file(results_file)
@@ -140,7 +140,7 @@ def test_7(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2011100712_glbhyb_7_file2cmp.std"
-    file_to_compare = '/home/sbf000/data/testFiles/HumidityRelative/result_test_7'
+    # file_to_compare = '/home/sbf000/data/testFiles/HumidityRelative/result_test_7'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
@@ -164,8 +164,8 @@ def test_9(plugin_test_dir):
     # [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:,'etiket'] = 'G133K80N'
-    df.loc[:,'nbits']=32
-    df.loc[:,'datyp']=5
+    # df.loc[:,'nbits']=32
+    # df.loc[:,'datyp']=5
     #write the result
     results_file = TMP_PATH + "test_9.std"
     fstpy.delete_file(results_file)
@@ -173,7 +173,7 @@ def test_9(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2011100712_glbhyb_9_file2cmp.std"
-    file_to_compare = '/home/sbf000/data/testFiles/HumidityRelative/result_test_9'
+    # file_to_compare = '/home/sbf000/data/testFiles/HumidityRelative/result_test_9'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)

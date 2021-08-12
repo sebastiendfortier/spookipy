@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from numpy import float32
-from ..plugin import Plugin
-from ..humidityutils import TDPACK_OFFSET_FIX, calc_temperature_dew_point_es, calc_vapour_pressure_hr, calc_vapour_pressure_hu, calc_vapour_pressure_qv, calc_vapour_pressure_td, get_temp_phase_switch, rpn_calc_vapour_pressure_hu, rpn_calc_vapour_pressure_td, validate_humidity_parameters
+from ..plugin.plugin import Plugin
+from ..humidityutils.humidityutils import TDPACK_OFFSET_FIX, calc_temperature_dew_point_es, calc_vapour_pressure_hr, calc_vapour_pressure_hu, calc_vapour_pressure_qv, calc_vapour_pressure_td, get_temp_phase_switch, rpn_calc_vapour_pressure_hu, rpn_calc_vapour_pressure_td, validate_humidity_parameters
 from ..utils import create_empty_result, get_existing_result, get_intersecting_levels, get_plugin_dependencies, initializer, existing_results, final_results
 import pandas as pd
 import fstpy.all as fstpy
@@ -86,7 +86,7 @@ class VapourPressure(Plugin):
 
         self.temp_phase_switch = get_temp_phase_switch(VapourPressureError, self.ice_water_phase=='both', self.temp_phase_switch, self.temp_phase_switch_unit, self.rpn)
 
-        self.meta_df = self.df.query('nomvar in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True)
+        self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
 
         #check if result already exists
@@ -130,7 +130,7 @@ class VapourPressure(Plugin):
 
 
     def compute(self) -> pd.DataFrame:
-        from ..all import HumiditySpecific
+        from ..all import HumiditySpecific, TemperatureDewPoint
 
         if not self.existing_result_df.empty:
             return existing_results('VapourPressure',self.existing_result_df,self.meta_df)

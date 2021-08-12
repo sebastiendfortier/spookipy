@@ -14,11 +14,11 @@ def eq(v,t):
 class MaskError(Exception):
     pass
 
-#[Mask --thresholds 0.0,10.0,15.0,20.0 --values 0.0,10.0,15.0,20.0 --operators GE,GE,GE,GE] >> 
+#[Mask --thresholds 0.0,10.0,15.0,20.0 --values 0.0,10.0,15.0,20.0 --operators GE,GE,GE,GE] >>
 class Mask(Plugin):
 
     @initializer
-    def __init__(self, df:pd.DataFrame, thresholds=None, values=None, operators=None, nomvar_out=''):
+    def __init__(self, df:pd.DataFrame, thresholds=None, values=None, operators=None, nomvar_out=None):
         # self.df = df
         # self.thresholds = thresholds
         # self.values = values
@@ -28,13 +28,13 @@ class Mask(Plugin):
             raise  MaskError('No data to process')
 
         self.df = fstpy.metadata_cleanup(self.df)
-            
+
         length = len(thresholds)
         if not all(len(lst) == length for lst in [values, operators]):
             raise MaskError('Threshholds, values and operators lists, must have the same lenght')
         ops = {op.lt,op.le,eq,op.ge,op.gt}
         in_ops = set(self.operators)
-        
+
         if not in_ops.issubset(ops):
             raise MaskError('Operators must have values included in %s' % ops)
         self.df = fstpy.load_data(self.df)
@@ -75,7 +75,3 @@ class Mask(Plugin):
             if self.operators[i](value, self.thresholds[i]):
                 return self.values[i]
         return rslt
-
-
-        
-        

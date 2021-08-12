@@ -70,8 +70,8 @@ def test_4(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     df.loc[:,'etiket'] = 'DEWPTT'
-    df.loc[:,'datyp'] = 5
-    df.loc[:,'nbits'] = 32
+    # df.loc[:,'datyp'] = 5
+    # df.loc[:,'nbits'] = 32
     #write the result
     results_file = TMP_PATH + "test_4.std"
     fstpy.delete_file(results_file)
@@ -79,7 +79,7 @@ def test_4(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "TemperatureDewPoint_file2cmp.std"
-    file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_4"
+    # file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_4"
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
@@ -102,8 +102,8 @@ def test_5(plugin_test_dir):
     # [TemperatureDewPoint --iceWaterPhase BOTH --temperaturePhaseSwitch -40C] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[df.nomvar=='TD','etiket'] = 'DEWPTT'
-    df.loc[:,'datyp'] = 5
-    df.loc[:,'nbits'] = 32
+    # df.loc[:,'datyp'] = 5
+    # df.loc[:,'nbits'] = 32
     #write the result
     results_file = TMP_PATH + "test_5.std"
     fstpy.delete_file(results_file)
@@ -111,7 +111,7 @@ def test_5(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_es_file2cmp.std"
-    file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_5"
+    # file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_5"
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
@@ -134,8 +134,8 @@ def test_6(plugin_test_dir):
     # [TemperatureDewPoint --iceWaterPhase BOTH --RPN] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[df.nomvar=='TD','etiket'] = 'DEWPTT'
-    df.loc[:,'datyp'] = 5
-    df.loc[:,'nbits'] = 32
+    # df.loc[:,'datyp'] = 5
+    # df.loc[:,'nbits'] = 32
     #write the result
     results_file = TMP_PATH + "test_6.std"
     fstpy.delete_file(results_file)
@@ -143,7 +143,7 @@ def test_6(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "rpn2011100712_012_glbhyb_es_file2cmp.std"
-    file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_6"
+    # file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_6"
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
@@ -166,8 +166,8 @@ def test_7(plugin_test_dir):
     # [TemperatureDewPoint --iceWaterPhase BOTH --temperaturePhaseSwitch -40C] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[df.nomvar=='TD','etiket'] = 'DEWPTT'
-    df.loc[:,'datyp'] = 5
-    df.loc[:,'nbits'] = 32
+    # df.loc[:,'datyp'] = 5
+    # df.loc[:,'nbits'] = 32
     #write the result
     results_file = TMP_PATH + "test_7.std"
     fstpy.delete_file(results_file)
@@ -175,7 +175,7 @@ def test_7(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_hr_file2cmp.std"
-    file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_7"
+    # file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_7"
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
@@ -198,8 +198,8 @@ def test_9(plugin_test_dir):
     # [TemperatureDewPoint --iceWaterPhase WATER] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[df.nomvar=='TD','etiket'] = 'DEWPTT'
-    df.loc[:,'datyp'] = 5
-    df.loc[:,'nbits'] = 32
+    # df.loc[:,'datyp'] = 5
+    # df.loc[:,'nbits'] = 32
 
     #write the result
     results_file = TMP_PATH + "test_9.std"
@@ -208,7 +208,7 @@ def test_9(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_hu_file2cmp.std"
-    file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_9"
+    # file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_9"
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
@@ -229,8 +229,8 @@ def test_11(plugin_test_dir):
     # [TemperatureDewPoint --iceWaterPhase WATER ] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[df.nomvar=='TD','etiket'] = 'DEWPTT'
-    df.loc[:,'datyp'] = 5
-    df.loc[:,'nbits'] = 32
+    # df.loc[:,'datyp'] = 5
+    # df.loc[:,'nbits'] = 32
 
     #write the result
     results_file = TMP_PATH + "test_11.std"
@@ -239,7 +239,7 @@ def test_11(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_qv_file2cmp.std"
-    file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_11"
+    # file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_11"
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
@@ -262,8 +262,8 @@ def test_12(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]']
     df.loc[df.nomvar=='TD','etiket'] = 'DEWPTT'
     # df.loc[df.nomvar=='TD','dateo']= 443004200
-    df.loc[:,'datyp'] = 5
-    df.loc[:,'nbits'] = 32
+    # df.loc[:,'datyp'] = 5
+    # df.loc[:,'nbits'] = 32
     df = convip(df,'TD,')
     #write the result
     results_file = TMP_PATH + "test_12.std"
@@ -272,7 +272,7 @@ def test_12(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "resulttest_12.std"
-    file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_12"
+    # file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_12"
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)

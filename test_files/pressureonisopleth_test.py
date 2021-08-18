@@ -41,7 +41,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
@@ -53,7 +53,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
 
         #compute PressureOnIsopleth
         df = PressureOnIsopleth(src_df0).compute()
-        #[ReaderStd --input {sources[0]}] >> [PressureOnIsopleth --fieldName TT --scanDirection DESCENDING --fieldConstant 20 --outputFieldName ABCDEF] 
+        #[ReaderStd --input {sources[0]}] >> [PressureOnIsopleth --fieldName TT --scanDirection DESCENDING --fieldConstant 20 --outputFieldName ABCDEF]
 
         #write the result
         results_file = TMP_PATH + "test_2.std"
@@ -64,7 +64,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
@@ -76,7 +76,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
 
         #compute PressureOnIsopleth
         df = PressureOnIsopleth(src_df0).compute()
-        #[ReaderStd --input {sources[0]}] >> [PressureOnIsopleth --fieldName ABCDE --scanDirection DESCENDING --fieldConstant 20 --outputFieldName PXXX] 
+        #[ReaderStd --input {sources[0]}] >> [PressureOnIsopleth --fieldName ABCDE --scanDirection DESCENDING --fieldConstant 20 --outputFieldName PXXX]
 
         #write the result
         results_file = TMP_PATH + "test_3.std"
@@ -87,7 +87,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
@@ -110,7 +110,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
@@ -133,7 +133,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_6(self):
@@ -156,6 +156,4 @@ class TestPressureOnIsopleth(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

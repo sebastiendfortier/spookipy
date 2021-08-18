@@ -41,7 +41,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_operatorEqual(self):
@@ -64,7 +64,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_operatorLessEqual(self):
@@ -87,7 +87,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_operatorLessThan(self):
@@ -110,7 +110,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_operatorGreaterEqual(self):
@@ -133,7 +133,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_operatorGreaterThan(self):
@@ -156,7 +156,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_operatorNotEqual(self):
@@ -179,6 +179,4 @@ class TestBaseTopLevelIndex(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

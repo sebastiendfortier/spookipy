@@ -30,7 +30,7 @@ class TestPrecipitationTypeInstantaneousBourgouin(unittest.TestCase):
 
         #compute PrecipitationTypeInstantaneousBourgouin
         df = PrecipitationTypeInstantaneousBourgouin(src_df0).compute()
-        #[ReaderStd --input {sources[0]}] >> [PrecipitationTypeInstantaneousBourgouin --precipitationRate -0.2] 
+        #[ReaderStd --input {sources[0]}] >> [PrecipitationTypeInstantaneousBourgouin --precipitationRate -0.2]
 
         #write the result
         results_file = TMP_PATH + "test_1.std"
@@ -41,7 +41,7 @@ class TestPrecipitationTypeInstantaneousBourgouin(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
@@ -64,7 +64,7 @@ class TestPrecipitationTypeInstantaneousBourgouin(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
@@ -87,6 +87,4 @@ class TestPrecipitationTypeInstantaneousBourgouin(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

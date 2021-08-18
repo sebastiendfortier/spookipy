@@ -30,7 +30,7 @@ class TestPower(unittest.TestCase):
 
         #compute Power
         df = Power(src_df0).compute()
-        #[ReaderStd --input {sources[0]}] >> [Power --value 2 --outputFieldName ABCDEF] 
+        #[ReaderStd --input {sources[0]}] >> [Power --value 2 --outputFieldName ABCDEF]
 
         #write the result
         results_file = TMP_PATH + "test_1.std"
@@ -41,7 +41,7 @@ class TestPower(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
@@ -53,7 +53,7 @@ class TestPower(unittest.TestCase):
 
         #compute Power
         df = Power(src_df0).compute()
-        #[ReaderStd --input {sources[0]}] >> [Power --value 2 --outputFieldName ABCD] 
+        #[ReaderStd --input {sources[0]}] >> [Power --value 2 --outputFieldName ABCD]
 
         #write the result
         results_file = TMP_PATH + "test_2.std"
@@ -64,7 +64,7 @@ class TestPower(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
@@ -87,7 +87,7 @@ class TestPower(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
@@ -110,6 +110,4 @@ class TestPower(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

@@ -41,6 +41,4 @@ class TestLevelFromIp1(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

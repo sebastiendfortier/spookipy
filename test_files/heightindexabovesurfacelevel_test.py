@@ -41,7 +41,7 @@ class TestHeightIndexAboveSurfaceLevel(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_basic_km(self):
@@ -64,7 +64,7 @@ class TestHeightIndexAboveSurfaceLevel(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_base(self):
@@ -87,6 +87,4 @@ class TestHeightIndexAboveSurfaceLevel(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

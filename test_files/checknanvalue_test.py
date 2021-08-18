@@ -41,7 +41,7 @@ class TestCheckNanValue(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
@@ -64,7 +64,7 @@ class TestCheckNanValue(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
@@ -76,7 +76,7 @@ class TestCheckNanValue(unittest.TestCase):
 
         #compute CheckNanValue
         df = CheckNanValue(src_df0).compute()
-        #[ReaderStd --input {sources[0]}] >> [CheckNanValue --outputFieldName ABCD] 
+        #[ReaderStd --input {sources[0]}] >> [CheckNanValue --outputFieldName ABCD]
 
         #write the result
         results_file = TMP_PATH + "test_3.std"
@@ -87,7 +87,7 @@ class TestCheckNanValue(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
@@ -99,7 +99,7 @@ class TestCheckNanValue(unittest.TestCase):
 
         #compute CheckNanValue
         df = CheckNanValue(src_df0).compute()
-        #[ReaderStd --input {sources[0]}] >> [CheckNanValue --outputFieldName ABCDEF] 
+        #[ReaderStd --input {sources[0]}] >> [CheckNanValue --outputFieldName ABCDEF]
 
         #write the result
         results_file = TMP_PATH + "test_4.std"
@@ -110,6 +110,4 @@ class TestCheckNanValue(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

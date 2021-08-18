@@ -36,7 +36,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_1.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
@@ -54,7 +54,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_2.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_pathExisteMaisPasLesPermissions(self):
@@ -75,7 +75,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_pathExisteMaisPasLesPermissions.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_invalidRunHour(self):
@@ -93,7 +93,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_invalidRunHour.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_invalidUnitTT(self):
@@ -111,7 +111,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_invalidUnitTT.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_invalidUnitUV(self):
@@ -129,7 +129,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_invalidUnitUV.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_invalidUnitGZ(self):
@@ -147,7 +147,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_invalidUnitGZ.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_invalidUnitTerrainElevation(self):
@@ -165,7 +165,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_invalidUnitTerrainElevation.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFB000061(self):
@@ -183,7 +183,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFB000061.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFB00012(self):
@@ -201,7 +201,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFB00012.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFB00018(self):
@@ -219,7 +219,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFB00018.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFB00024(self):
@@ -240,7 +240,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFB00024.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFB00030(self):
@@ -258,7 +258,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFB00030.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFB00036(self):
@@ -276,7 +276,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFB00036.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFB00048(self):
@@ -294,7 +294,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFB00048.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFB12006(self):
@@ -312,7 +312,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFB12006.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFB12012(self):
@@ -330,7 +330,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFB12012.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFB12018(self):
@@ -348,7 +348,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFB12018.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFB12024(self):
@@ -366,7 +366,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFB12024.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFB12030(self):
@@ -384,7 +384,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFB12030.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFB12036(self):
@@ -402,7 +402,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFB12036.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFB12048(self):
@@ -420,7 +420,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFB12048.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinGlobal(self):
@@ -438,7 +438,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinGlobal.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFB000061b(self):
@@ -456,7 +456,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFB000061b.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFBDate(self):
@@ -474,7 +474,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFBDate.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFBDate2(self):
@@ -492,6 +492,4 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFBDate2.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
-
-
+        assert(res)

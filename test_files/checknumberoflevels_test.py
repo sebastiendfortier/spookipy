@@ -36,7 +36,7 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_1.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
@@ -54,7 +54,7 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_2.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
@@ -72,7 +72,7 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_3.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
@@ -90,7 +90,7 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_4.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
@@ -108,7 +108,7 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_5.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_6(self):
@@ -126,7 +126,7 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_6.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_7(self):
@@ -144,7 +144,7 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_7.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_8(self):
@@ -162,7 +162,7 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_8.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_9(self):
@@ -180,7 +180,7 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_9.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_10(self):
@@ -198,7 +198,7 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_10.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_11(self):
@@ -216,7 +216,7 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_11.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_12(self):
@@ -234,7 +234,7 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_12.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_13(self):
@@ -252,7 +252,7 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_13.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_14(self):
@@ -270,7 +270,7 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_14.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_15(self):
@@ -288,7 +288,7 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_15.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_16(self):
@@ -306,7 +306,7 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_16.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_17(self):
@@ -324,7 +324,7 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_17.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_18(self):
@@ -342,7 +342,7 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_18.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_19(self):
@@ -360,7 +360,7 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_19.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_20(self):
@@ -378,7 +378,7 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_20.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_21(self):
@@ -396,7 +396,7 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_21.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_22(self):
@@ -414,6 +414,4 @@ class TestCheckNumberOfLevels(unittest.TestCase):
         results_file = TMP_PATH + "test_22.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
-
-
+        assert(res)

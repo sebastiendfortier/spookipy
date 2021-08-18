@@ -31,7 +31,7 @@ def test_1(plugin_test_dir):
 
     #compare results
     res = fstcomp(results_file,file_to_compare)
-    assert(res == True)
+    assert(res)
 
 
 def test_2(plugin_test_dir):
@@ -43,7 +43,7 @@ def test_2(plugin_test_dir):
 
     #compute AbsoluteValue
     df = AbsoluteValue(src_df0).compute()
-    #[ReaderStd --input {sources[0]}] >> [AbsoluteValue --outputFieldName ABCD] 
+    #[ReaderStd --input {sources[0]}] >> [AbsoluteValue --outputFieldName ABCD]
 
     #write the result
     results_file = TMP_PATH + "test_2.std"
@@ -54,7 +54,7 @@ def test_2(plugin_test_dir):
 
     #compare results
     res = fstcomp(results_file,file_to_compare)
-    assert(res == True)
+    assert(res)
 
 
 def test_3(plugin_test_dir):
@@ -66,7 +66,7 @@ def test_3(plugin_test_dir):
 
     #compute AbsoluteValue
     df = AbsoluteValue(src_df0).compute()
-    #[ReaderStd --input {sources[0]}] >> [AbsoluteValue --outputFieldName ABCDEF] 
+    #[ReaderStd --input {sources[0]}] >> [AbsoluteValue --outputFieldName ABCDEF]
 
     #write the result
     results_file = TMP_PATH + "test_3.std"
@@ -77,7 +77,7 @@ def test_3(plugin_test_dir):
 
     #compare results
     res = fstcomp(results_file,file_to_compare)
-    assert(res == True)
+    assert(res)
 
 
 def test_4(plugin_test_dir):
@@ -100,6 +100,4 @@ def test_4(plugin_test_dir):
 
     #compare results
     res = fstcomp(results_file,file_to_compare)
-    assert(res == True)
-
-
+    assert(res)

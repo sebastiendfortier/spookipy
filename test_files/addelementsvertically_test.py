@@ -19,7 +19,7 @@ def test_1(plugin_test_dir):
 
     #compute AddElementsVertically
     df = AddElementsVertically(src_df0).compute()
-    #[ReaderStd --input {sources[0]}] >> [AddElementsVertically --outputFieldName TROPLONG] 
+    #[ReaderStd --input {sources[0]}] >> [AddElementsVertically --outputFieldName TROPLONG]
 
     #write the result
     results_file = TMP_PATH + "test_1.std"
@@ -30,7 +30,7 @@ def test_1(plugin_test_dir):
 
     #compare results
     res = fstcomp(results_file,file_to_compare)
-    assert(res == True)
+    assert(res)
 
 
 def test_2(plugin_test_dir):
@@ -42,7 +42,7 @@ def test_2(plugin_test_dir):
 
     #compute AddElementsVertically
     df = AddElementsVertically(src_df0).compute()
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [AddElementsVertically --outputFieldName ABCD] 
+    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [AddElementsVertically --outputFieldName ABCD]
 
     #write the result
     results_file = TMP_PATH + "test_2.std"
@@ -53,7 +53,7 @@ def test_2(plugin_test_dir):
 
     #compare results
     res = fstcomp(results_file,file_to_compare)
-    assert(res == True)
+    assert(res)
 
 
 def test_3(plugin_test_dir):
@@ -76,7 +76,7 @@ def test_3(plugin_test_dir):
 
     #compare results
     res = fstcomp(results_file,file_to_compare)
-    assert(res == True)
+    assert(res)
 
 
 def test_4(plugin_test_dir):
@@ -99,7 +99,7 @@ def test_4(plugin_test_dir):
 
     #compare results
     res = fstcomp(results_file,file_to_compare)
-    assert(res == True)
+    assert(res)
 
 
 def test_5(plugin_test_dir):
@@ -122,7 +122,7 @@ def test_5(plugin_test_dir):
 
     #compare results
     res = fstcomp(results_file,file_to_compare)
-    assert(res == True)
+    assert(res)
 
 
 def test_6(plugin_test_dir):
@@ -134,7 +134,7 @@ def test_6(plugin_test_dir):
 
     #compute AddElementsVertically
     df = AddElementsVertically(src_df0).compute()
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [AddElementsVertically] 
+    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [AddElementsVertically]
 
     #write the result
     results_file = TMP_PATH + "test_6.std"
@@ -145,6 +145,4 @@ def test_6(plugin_test_dir):
 
     #compare results
     res = fstcomp(results_file,file_to_compare)
-    assert(res == True)
-
-
+    assert(res)

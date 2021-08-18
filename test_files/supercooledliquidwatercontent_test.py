@@ -41,7 +41,7 @@ class TestSupercooledLiquidWaterContent(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
@@ -64,7 +64,7 @@ class TestSupercooledLiquidWaterContent(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
@@ -87,7 +87,7 @@ class TestSupercooledLiquidWaterContent(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
@@ -110,7 +110,7 @@ class TestSupercooledLiquidWaterContent(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
@@ -133,6 +133,4 @@ class TestSupercooledLiquidWaterContent(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

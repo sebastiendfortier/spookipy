@@ -41,7 +41,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
@@ -64,7 +64,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
@@ -87,7 +87,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
@@ -110,7 +110,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_6(self):
@@ -133,7 +133,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_7(self):
@@ -156,7 +156,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_8(self):
@@ -179,7 +179,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_9(self):
@@ -191,7 +191,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
         #compute ArithmeticMeanElementsVertically
         df = ArithmeticMeanElementsVertically(src_df0).compute()
-        #[ReaderStd --ignoreExtended --input {sources[0]}] >> [ArithmeticMeanElementsVertically --outputFieldName ABCD] 
+        #[ReaderStd --ignoreExtended --input {sources[0]}] >> [ArithmeticMeanElementsVertically --outputFieldName ABCD]
 
         #write the result
         results_file = TMP_PATH + "test_9.std"
@@ -202,7 +202,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_10(self):
@@ -214,7 +214,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
         #compute ArithmeticMeanElementsVertically
         df = ArithmeticMeanElementsVertically(src_df0).compute()
-        #[ReaderStd --input {sources[0]}] >> [ArithmeticMeanElementsVertically --outputFieldName ABCDEF] 
+        #[ReaderStd --input {sources[0]}] >> [ArithmeticMeanElementsVertically --outputFieldName ABCDEF]
 
         #write the result
         results_file = TMP_PATH + "test_10.std"
@@ -225,6 +225,4 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

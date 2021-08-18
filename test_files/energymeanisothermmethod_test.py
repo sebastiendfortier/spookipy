@@ -30,7 +30,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compute EnergyMeanIsothermMethod
         df = EnergyMeanIsothermMethod(src_df0).compute()
-        #[ReaderStd --input {sources[0]}] >> ( [Copy] + ([Select --fieldName TT] >> [SetConstantValue --value 0] >> [Zap --fieldName CF --doNotFlagAsZapped]) ) >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature CF --maxNbLayer 0] 
+        #[ReaderStd --input {sources[0]}] >> ( [Copy] + ([Select --fieldName TT] >> [SetConstantValue --value 0] >> [Zap --fieldName CF --doNotFlagAsZapped]) ) >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature CF --maxNbLayer 0]
 
         #write the result
         results_file = TMP_PATH + "test_1.std"
@@ -41,7 +41,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
@@ -53,7 +53,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compute EnergyMeanIsothermMethod
         df = EnergyMeanIsothermMethod(src_df0).compute()
-        #[ReaderStd --input {sources[0]}] >> ( [Copy] + ([Select --fieldName TT] >> [SetConstantValue --value 0] >> [Zap --fieldName CF --unit scalar --doNotFlagAsZapped]) ) >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature CF --epsilonTemperature -1 ] 
+        #[ReaderStd --input {sources[0]}] >> ( [Copy] + ([Select --fieldName TT] >> [SetConstantValue --value 0] >> [Zap --fieldName CF --unit scalar --doNotFlagAsZapped]) ) >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature CF --epsilonTemperature -1 ]
 
         #write the result
         results_file = TMP_PATH + "test_2.std"
@@ -64,7 +64,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
@@ -76,7 +76,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compute EnergyMeanIsothermMethod
         df = EnergyMeanIsothermMethod(src_df0).compute()
-        #[ReaderStd --input {sources[0]}] >> ( [Copy] + ([Select --fieldName TT] >> [SetConstantValue --value 0] >> [Zap --fieldName CF --unit scalar --doNotFlagAsZapped]) ) >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature CF --epsilonPressure -1] 
+        #[ReaderStd --input {sources[0]}] >> ( [Copy] + ([Select --fieldName TT] >> [SetConstantValue --value 0] >> [Zap --fieldName CF --unit scalar --doNotFlagAsZapped]) ) >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature CF --epsilonPressure -1]
 
         #write the result
         results_file = TMP_PATH + "test_3.std"
@@ -87,7 +87,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
@@ -110,7 +110,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
@@ -133,7 +133,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_6(self):
@@ -156,7 +156,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_7(self):
@@ -179,7 +179,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_8(self):
@@ -202,7 +202,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_9(self):
@@ -225,7 +225,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_10(self):
@@ -248,7 +248,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_11(self):
@@ -274,7 +274,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_12(self):
@@ -300,7 +300,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_13(self):
@@ -326,7 +326,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_14(self):
@@ -352,7 +352,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_15(self):
@@ -375,7 +375,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_16(self):
@@ -398,7 +398,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_17(self):
@@ -421,7 +421,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_18(self):
@@ -444,7 +444,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_19(self):
@@ -467,7 +467,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_20(self):
@@ -490,7 +490,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_21(self):
@@ -513,7 +513,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_22(self):
@@ -536,7 +536,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_23(self):
@@ -559,7 +559,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_24(self):
@@ -582,7 +582,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_25(self):
@@ -605,7 +605,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_26(self):
@@ -628,7 +628,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_27(self):
@@ -651,7 +651,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_28(self):
@@ -674,7 +674,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_29(self):
@@ -697,7 +697,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_30(self):
@@ -720,7 +720,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_31(self):
@@ -743,7 +743,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_32(self):
@@ -766,7 +766,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_33(self):
@@ -792,6 +792,4 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

@@ -36,7 +36,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_2.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
@@ -54,7 +54,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_3.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
@@ -72,7 +72,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_5.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_6(self):
@@ -90,7 +90,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_6.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_7(self):
@@ -108,7 +108,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_7.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_8(self):
@@ -126,7 +126,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_8.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_9(self):
@@ -144,7 +144,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_9.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_10(self):
@@ -168,7 +168,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_10.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_11(self):
@@ -186,7 +186,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_11.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_12(self):
@@ -204,7 +204,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_12.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_13(self):
@@ -222,7 +222,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_13.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_14(self):
@@ -240,7 +240,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_14.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_15(self):
@@ -258,7 +258,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_15.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_16(self):
@@ -276,7 +276,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_16.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_17(self):
@@ -294,7 +294,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_17.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_18(self):
@@ -312,7 +312,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_18.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_19(self):
@@ -330,7 +330,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_19.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_20(self):
@@ -348,7 +348,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_20.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_21(self):
@@ -366,7 +366,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_21.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_22(self):
@@ -384,7 +384,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_22.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_23(self):
@@ -402,7 +402,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_23.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_24(self):
@@ -426,7 +426,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_24.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_25(self):
@@ -444,7 +444,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_25.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_26(self):
@@ -462,7 +462,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_26.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_27(self):
@@ -480,7 +480,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_27.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_28(self):
@@ -498,7 +498,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_28.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_29(self):
@@ -516,7 +516,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_29.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_30(self):
@@ -534,7 +534,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_30.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_31(self):
@@ -552,7 +552,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_31.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_32(self):
@@ -576,7 +576,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_32.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_33(self):
@@ -594,7 +594,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_33.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_34(self):
@@ -612,7 +612,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_34.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_35(self):
@@ -630,7 +630,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_35.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_36(self):
@@ -648,7 +648,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_36.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_37(self):
@@ -666,7 +666,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_37.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_38(self):
@@ -684,7 +684,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_38.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_39(self):
@@ -702,7 +702,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_39.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_40(self):
@@ -720,7 +720,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_40.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_41(self):
@@ -738,7 +738,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_41.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_42(self):
@@ -756,7 +756,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_42.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_43(self):
@@ -774,7 +774,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_43.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_44(self):
@@ -792,7 +792,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_44.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_45(self):
@@ -810,7 +810,7 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_45.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_46(self):
@@ -834,6 +834,4 @@ class TestPrint(unittest.TestCase):
         results_file = TMP_PATH + "test_46.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
-
-
+        assert(res)

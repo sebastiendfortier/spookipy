@@ -31,7 +31,7 @@ def test_reggc_test_1(plugin_test_dir):
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
-    assert(res == True)
+    assert(res)
 
 
 def test_reggc_test_2(plugin_test_dir):
@@ -53,7 +53,7 @@ def test_reggc_test_2(plugin_test_dir):
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
-    assert(res == True)
+    assert(res)
 
 
 def test_reggc_test_3(plugin_test_dir):
@@ -65,7 +65,7 @@ def test_reggc_test_3(plugin_test_dir):
 
     #compute GridCut
     df = spooki.GridCut(src_df0,start_point=(0,0),end_point=(4,4)).compute()
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [GridCut --start_point 0,0 --end_point 4,4] >> 
+    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [GridCut --start_point 0,0 --end_point 4,4] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     #write the result
@@ -77,7 +77,7 @@ def test_reggc_test_3(plugin_test_dir):
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
-    assert(res == True)
+    assert(res)
 
 
 def test_reggc_test_4(plugin_test_dir):
@@ -113,7 +113,7 @@ def test_reggc_test_5(plugin_test_dir):
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
-    assert(res == True)
+    assert(res)
 
 
 def test_reggc_test_6(plugin_test_dir):
@@ -136,7 +136,7 @@ def test_reggc_test_6(plugin_test_dir):
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
-    assert(res == True)
+    assert(res)
 
 
 # def test_14(plugin_test_dir):
@@ -152,9 +152,9 @@ def test_reggc_test_6(plugin_test_dir):
 
 #     #compute GridCut
 #     df = spooki.GridCut(src_df,start_point=(0,0),end_point=(648,42)).compute()
-#     #[ReaderStd --input {sources[0]}] + ([ReaderStd --input {sources[1]}] >> 
-#     # ([Select --fieldName GZ --verticalLevel SURFACE] + [Select --metadataFieldName P0] )) >> 
-#     # [Select --xAxisMatrixSize 649 --yAxisMatrixSize 672] >> 
+#     #[ReaderStd --input {sources[0]}] + ([ReaderStd --input {sources[1]}] >>
+#     # ([Select --fieldName GZ --verticalLevel SURFACE] + [Select --metadataFieldName P0] )) >>
+#     # [Select --xAxisMatrixSize 649 --yAxisMatrixSize 672] >>
 #     # (([GridCut --start_point 0,0 --end_point 648,42] >> [InterpolationVertical -m FIELD_DEFINED --outputField INCLUDE_ALL_FIELDS --extrapolationType FIXED --valueAbove -300 --valueBelow -300 --referenceFieldName TT]) +([GridCut --start_point 0,43 --end_point 648,84] >> [InterpolationVertical -m FIELD_DEFINED --outputField INCLUDE_ALL_FIELDS --extrapolationType FIXED --valueAbove -300 --valueBelow -300 --referenceFieldName TT]) ) >> [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion]
 
 #     #write the result
@@ -166,7 +166,7 @@ def test_reggc_test_6(plugin_test_dir):
 
 #     #compare results
 #     res = fstpy.fstcomp(results_file,file_to_compare)
-#     assert(res == True)
+#     assert(res)
 
 
 def test_reggc_test_15(plugin_test_dir):
@@ -178,7 +178,7 @@ def test_reggc_test_15(plugin_test_dir):
 
     #compute GridCut
     df = spooki.GridCut(src_df0, start_point=(0,0), end_point=(2,3)).compute()
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    #[ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [GridCut -T 1 --start_point 0,0 --end_point 2,3] >>
     #  [WriterStd --output {destination_path} --ignoreExtended]
 
@@ -191,6 +191,4 @@ def test_reggc_test_15(plugin_test_dir):
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
-    assert(res == True)
-
-
+    assert(res)

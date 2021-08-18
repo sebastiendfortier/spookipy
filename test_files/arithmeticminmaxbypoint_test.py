@@ -41,7 +41,7 @@ class TestArithmeticMinMaxByPoint(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
@@ -64,7 +64,7 @@ class TestArithmeticMinMaxByPoint(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
@@ -87,7 +87,7 @@ class TestArithmeticMinMaxByPoint(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
@@ -110,7 +110,7 @@ class TestArithmeticMinMaxByPoint(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
@@ -133,7 +133,7 @@ class TestArithmeticMinMaxByPoint(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_6(self):
@@ -156,7 +156,7 @@ class TestArithmeticMinMaxByPoint(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_7(self):
@@ -168,7 +168,7 @@ class TestArithmeticMinMaxByPoint(unittest.TestCase):
 
         #compute ArithmeticMinMaxByPoint
         df = ArithmeticMinMaxByPoint(src_df0).compute()
-        #[ReaderStd --input {sources[0]}] >> [Select --fieldName TT] >> [ArithmeticMinMaxByPoint --minMax MIN --groupBy FORECAST_HOUR] 
+        #[ReaderStd --input {sources[0]}] >> [Select --fieldName TT] >> [ArithmeticMinMaxByPoint --minMax MIN --groupBy FORECAST_HOUR]
 
         #write the result
         results_file = TMP_PATH + "test_7.std"
@@ -179,7 +179,7 @@ class TestArithmeticMinMaxByPoint(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_8(self):
@@ -191,7 +191,7 @@ class TestArithmeticMinMaxByPoint(unittest.TestCase):
 
         #compute ArithmeticMinMaxByPoint
         df = ArithmeticMinMaxByPoint(src_df0).compute()
-        #[ReaderStd --input {sources[0]}] >> [ArithmeticMinMaxByPoint --minMax MIN --outputFieldName1 TROPLONG] 
+        #[ReaderStd --input {sources[0]}] >> [ArithmeticMinMaxByPoint --minMax MIN --outputFieldName1 TROPLONG]
 
         #write the result
         results_file = TMP_PATH + "test_8.std"
@@ -202,6 +202,4 @@ class TestArithmeticMinMaxByPoint(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

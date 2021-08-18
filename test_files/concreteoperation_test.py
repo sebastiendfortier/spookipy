@@ -41,7 +41,7 @@ class TestConcreteOperation(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
@@ -64,7 +64,7 @@ class TestConcreteOperation(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
@@ -87,7 +87,7 @@ class TestConcreteOperation(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
@@ -110,7 +110,7 @@ class TestConcreteOperation(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
@@ -133,7 +133,7 @@ class TestConcreteOperation(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_6(self):
@@ -156,7 +156,7 @@ class TestConcreteOperation(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_7(self):
@@ -168,7 +168,7 @@ class TestConcreteOperation(unittest.TestCase):
 
         #compute ConcreteOperation
         df = ConcreteOperation(src_df0).compute()
-        #[ReaderStd --ignoreExtended --input {sources[0]}] >> [AddElementsByPoint --outputFieldName ACCU] 
+        #[ReaderStd --ignoreExtended --input {sources[0]}] >> [AddElementsByPoint --outputFieldName ACCU]
 
         #write the result
         results_file = TMP_PATH + "test_7.std"
@@ -179,6 +179,4 @@ class TestConcreteOperation(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

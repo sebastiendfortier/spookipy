@@ -41,7 +41,7 @@ class TestMatchLevelIndexToValue(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_match_one_field4_full_computation_except_uv(self):
@@ -64,7 +64,7 @@ class TestMatchLevelIndexToValue(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_match_one_field4_full_computation(self):
@@ -87,7 +87,7 @@ class TestMatchLevelIndexToValue(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_match_two_fields(self):
@@ -110,7 +110,7 @@ class TestMatchLevelIndexToValue(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_match_no_fields(self):
@@ -133,7 +133,7 @@ class TestMatchLevelIndexToValue(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_match_negative_index(self):
@@ -159,6 +159,4 @@ class TestMatchLevelIndexToValue(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

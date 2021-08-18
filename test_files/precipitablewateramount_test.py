@@ -30,7 +30,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compute PrecipitableWaterAmount
         df = PrecipitableWaterAmount(src_df0).compute()
-        #[ReaderStd --input {sources[0]}] >> [PrecipitableWaterAmount --base SURFACE --top HIGHEST] 
+        #[ReaderStd --input {sources[0]}] >> [PrecipitableWaterAmount --base SURFACE --top HIGHEST]
 
         #write the result
         results_file = TMP_PATH + "test_1.std"
@@ -41,7 +41,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
@@ -64,7 +64,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
@@ -87,7 +87,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
@@ -110,7 +110,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
@@ -133,7 +133,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_5a(self):
@@ -156,7 +156,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_6(self):
@@ -179,7 +179,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_7(self):
@@ -202,7 +202,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_8(self):
@@ -225,7 +225,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_9(self):
@@ -248,7 +248,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_10(self):
@@ -271,7 +271,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_11(self):
@@ -294,7 +294,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_13(self):
@@ -317,7 +317,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_13a(self):
@@ -340,7 +340,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_14(self):
@@ -363,7 +363,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_14a(self):
@@ -386,7 +386,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_15(self):
@@ -409,7 +409,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_16(self):
@@ -432,7 +432,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_16a(self):
@@ -455,7 +455,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_17(self):
@@ -478,7 +478,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_17a(self):
@@ -501,7 +501,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_18(self):
@@ -524,7 +524,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_19(self):
@@ -547,7 +547,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_20(self):
@@ -570,7 +570,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_21(self):
@@ -593,7 +593,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_22(self):
@@ -616,7 +616,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_23(self):
@@ -639,6 +639,4 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

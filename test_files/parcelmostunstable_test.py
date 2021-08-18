@@ -36,7 +36,7 @@ class TestParcelMostUnstable(unittest.TestCase):
         results_file = TMP_PATH + "test_1.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
@@ -54,7 +54,7 @@ class TestParcelMostUnstable(unittest.TestCase):
         results_file = TMP_PATH + "test_2.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
@@ -72,7 +72,7 @@ class TestParcelMostUnstable(unittest.TestCase):
         results_file = TMP_PATH + "test_3.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
@@ -90,7 +90,7 @@ class TestParcelMostUnstable(unittest.TestCase):
         results_file = TMP_PATH + "test_4.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
@@ -108,7 +108,7 @@ class TestParcelMostUnstable(unittest.TestCase):
         results_file = TMP_PATH + "test_5.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_6(self):
@@ -126,6 +126,4 @@ class TestParcelMostUnstable(unittest.TestCase):
         results_file = TMP_PATH + "test_6.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
-
-
+        assert(res)

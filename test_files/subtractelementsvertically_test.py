@@ -30,7 +30,7 @@ class TestSubtractElementsVertically(unittest.TestCase):
 
         #compute SubtractElementsVertically
         df = SubtractElementsVertically(src_df0).compute()
-        #[ReaderStd --input {sources[0]}] >> [SubtractElementsVertically --outputFieldName TROPLONG --direction ASCENDING] 
+        #[ReaderStd --input {sources[0]}] >> [SubtractElementsVertically --outputFieldName TROPLONG --direction ASCENDING]
 
         #write the result
         results_file = TMP_PATH + "test_1.std"
@@ -41,7 +41,7 @@ class TestSubtractElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
@@ -53,7 +53,7 @@ class TestSubtractElementsVertically(unittest.TestCase):
 
         #compute SubtractElementsVertically
         df = SubtractElementsVertically(src_df0).compute()
-        #[ReaderStd --ignoreExtended --input {sources[0]}] >> [SubtractElementsVertically --outputFieldName ABCD --direction ASCENDING] 
+        #[ReaderStd --ignoreExtended --input {sources[0]}] >> [SubtractElementsVertically --outputFieldName ABCD --direction ASCENDING]
 
         #write the result
         results_file = TMP_PATH + "test_2.std"
@@ -64,7 +64,7 @@ class TestSubtractElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
@@ -87,7 +87,7 @@ class TestSubtractElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
@@ -110,7 +110,7 @@ class TestSubtractElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
@@ -133,7 +133,7 @@ class TestSubtractElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_6(self):
@@ -145,7 +145,7 @@ class TestSubtractElementsVertically(unittest.TestCase):
 
         #compute SubtractElementsVertically
         df = SubtractElementsVertically(src_df0).compute()
-        #[ReaderStd --ignoreExtended --input {sources[0]}] >> [SubtractElementsVertically --direction ASCENDING] 
+        #[ReaderStd --ignoreExtended --input {sources[0]}] >> [SubtractElementsVertically --direction ASCENDING]
 
         #write the result
         results_file = TMP_PATH + "test_6.std"
@@ -156,7 +156,7 @@ class TestSubtractElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_7(self):
@@ -179,7 +179,7 @@ class TestSubtractElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_8(self):
@@ -202,6 +202,4 @@ class TestSubtractElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

@@ -2,11 +2,11 @@
 import fstpy.all as fstpy
 import pytest
 import pandas as pd
-from test import TMP_PATH,TEST_PATH
-
+from test import TMP_PATH,TEST_PATH, convip
+import rpnpy.librmn.all as rmn
 import spookipy.all as spooki
 
-pytestmark = [pytest.mark.to_skip]
+pytestmark = [pytest.mark.regressions]
 
 @pytest.fixture
 def plugin_test_dir():
@@ -19,13 +19,13 @@ def test_1(plugin_test_dir):
     source0 = plugin_test_dir + "new_input.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    src_df0['ip1'] = 12000
     #compute Mask
-    df = spooki.Mask(src_df0, thresholds=[0.0,10.0,15.0,20.0], values=[0.0,10.0,15.0,20.0], operators=[op.ge,op.ge,op.ge,op.ge]).compute()
+    df = spooki.Mask(src_df0, thresholds=[0.0,10.0,15.0,20.0], values=[0.0,10.0,15.0,20.0], operators=['>=','>=','>=','>=']).compute()
     #[ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Mask --thresholds 0.0,10.0,15.0,20.0 --values 0.0,10.0,15.0,20.0 --operators ge,ge,ge,ge] >>
     # [WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
+    df = convip(df,'TT',rmn.CONVIP_ENCODE_OLD)
     #write the result
     results_file = TMP_PATH + "test_1.std"
     fstpy.delete_file(results_file)
@@ -36,8 +36,8 @@ def test_1(plugin_test_dir):
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
-    fstpy.delete_file(results_file)
-    assert(res == True)
+    # fstpy.delete_file(results_file)
+    assert(res)
 
 
 def test_2(plugin_test_dir):
@@ -48,11 +48,14 @@ def test_2(plugin_test_dir):
 
 
     #compute Mask
-    df = spooki.Mask(src_df0, thresholds=[-15,-15,-5,10,20], values=[-20,-15,-5,10,20], operators=[op.le,op.ge,op.ge,op.ge,op.ge]).compute()
+    df = spooki.Mask(src_df0, thresholds=[-15,-15,-5,10,20], values=[-20,-15,-5,10,20], operators=['<=','>=','>=','>=','>=']).compute()
     #[ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Mask --thresholds -15,-15,-5,10,20 --values -20,-15,-5,10,20 --operators le,ge,ge,ge,ge] >>
     # [WriterStd --output {destination_path} --noUnitConversion]
+    df.loc[:,'etiket'] = '__MASK__X'
+    df.loc[df.nomvar!='TT','etiket'] = 'G1_5_0X'
 
+    df = convip(df,'TT')
     #write the result
     results_file = TMP_PATH + "test_2.std"
     fstpy.delete_file(results_file)
@@ -64,7 +67,7 @@ def test_2(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_3(plugin_test_dir):
@@ -75,11 +78,14 @@ def test_3(plugin_test_dir):
 
 
     #compute Mask
-    df = spooki.Mask(src_df0, thresholds=[-10,0,10], values=[1,2,3], operators=[op.le,op.eq,op.gt]).compute()
+    df = spooki.Mask(src_df0, thresholds=[-10,0,10], values=[1,2,3], operators=['<=','==','>']).compute()
     #[ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Mask --thresholds -10,0,10 --values 1,2,3 --operators le,eq,gt] >>
     # [WriterStd --output {destination_path} --noUnitConversion]
+    df.loc[:,'etiket'] = '__MASK__X'
+    df.loc[df.nomvar!='TT','etiket'] = 'G1_5_0X'
 
+    df = convip(df,'TT')
     #write the result
     results_file = TMP_PATH + "test_3.std"
     fstpy.delete_file(results_file)
@@ -91,7 +97,7 @@ def test_3(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_4(plugin_test_dir):
@@ -103,7 +109,7 @@ def test_4(plugin_test_dir):
 
     with pytest.raises(spooki.MaskError):
         #compute Mask
-        _ = spooki.Mask(src_df0, thresholds=[-10,0,10], values=[1,2], operators=[op.le,op.eq]).compute()
+        _ = spooki.Mask(src_df0, thresholds=[-10,0,10], values=[1,2], operators=['<=','==']).compute()
         #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Mask --thresholds -10,0,10 --values 1,2 --operators le,eq] >>
         # [WriterStd --output {destination_path} --noUnitConversion]
 
@@ -118,7 +124,7 @@ def test_5(plugin_test_dir):
 
     with pytest.raises(spooki.MaskError):
         #compute Mask
-        _ = spooki.Mask(src_df0, thresholds=[-0,10], values=[0,10], operators=[op.le,'TT']).compute()
+        _ = spooki.Mask(src_df0, thresholds=[-0,10], values=[0,10], operators=['<=','TT']).compute()
         #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Mask --thresholds -0,10 --values 0,10 --operators le,'TT'] >>
         # [WriterStd --output {destination_path} --noUnitConversion]
 
@@ -131,11 +137,14 @@ def test_6(plugin_test_dir):
 
 
     #compute Mask
-    df = spooki.Mask(src_df0, thresholds = [-10,0,10], values=[1,2,3], operators=[op.le,op.eq,op.gt], nomvar_out='TOTO').compute()
+    df = spooki.Mask(src_df0, thresholds = [-10,0,10], values=[1,2,3], operators=['<=','==','>'], nomvar_out='TOTO').compute()
     #[ReaderStd --ignoreExtended --input {sources[0]}] >>
     #  [Mask --thresholds -10,0,10 --values 1,2,3 --operators le,eq,gt --outputFieldName TOTO] >>
     # [WriterStd --output {destination_path} --noUnitConversion]
+    df.loc[:,'etiket'] = '__MASK__X'
+    df.loc[df.nomvar!='TOTO','etiket'] = 'G1_5_0X'
 
+    df = convip(df,'TOTO')
     #write the result
     results_file = TMP_PATH + "test_6.std"
     fstpy.delete_file(results_file)
@@ -147,4 +156,4 @@ def test_6(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)

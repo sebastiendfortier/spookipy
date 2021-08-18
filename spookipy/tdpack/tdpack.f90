@@ -1,51 +1,51 @@
 module tdpack
 implicit none
-   real*8,   parameter ::  AI = 0.2864887713087e+04
-   real*8,   parameter ::  AW = 0.3135012829948e+04
-   real*8,   parameter ::  BI = 0.1660931315020e+00
-   real*8,   parameter ::  BW = 0.2367075766316e+01
-   real*8,   parameter ::  CHLF = 0.3340000000000e+06
-   real*8,   parameter ::  CHLC = 0.2501000000000e+07
-   real*8,   parameter ::  CONSOL = 0.1367000000000e+04
-   real*8,   parameter ::  CONSOL2 = 0.1361000000000e+04
-   real*8,   parameter ::  CPD = 0.1005460000000e+04
-   real*8,   parameter ::  CPV = 0.1869460000000e+04
-   real*8,   parameter ::  CPI = 0.2115300000000e+04
-   real*8,   parameter ::  CPW = 0.4218000000000e+04
-   real*8,   parameter ::  DELTA = 0.6077686814144e+00
-   real*8,   parameter ::  EPS1 = 0.6219800221014e+00
-   real*8,   parameter ::  EPS2 = 0.3780199778986e+00
-   real*8,   parameter ::  GRAV = 0.9806160000000e+01
-   real*8,   parameter ::  KARMAN = 0.4000000000000e+00
-   real*8,   parameter ::  KNAMS = 0.5147910000000e+00
-   real*8,   parameter ::  OMEGA = 0.7292000000000e-04
+   real*8,   parameter ::  AI = 0.2864887713087E4
+   real*8,   parameter ::  AW = 0.3135012829948E04
+   real*8,   parameter ::  BI = 0.1660931315020E0
+   real*8,   parameter ::  BW = 0.2367075766316E1
+   real*8,   parameter ::  CHLF = 0.3340000000000E6
+   real*8,   parameter ::  CHLC = 0.2501000000000E7
+   real*8,   parameter ::  CONSOL = 0.1367000000000E4
+   real*8,   parameter ::  CONSOL2 = 0.1361000000000E4
+   real*8,   parameter ::  CPD = 0.1005460000000E4
+   real*8,   parameter ::  CPV = 0.1869460000000E4
+   real*8,   parameter ::  CPI = 0.2115300000000E4
+   real*8,   parameter ::  CPW = 0.4218000000000E4
+   real*8,   parameter ::  DELTA = 0.6077686814144E0
+   real*8,   parameter ::  EPS1 = 0.6219800221014E0
+   real*8,   parameter ::  EPS2 = 0.3780199778986E0
+   real*8,   parameter ::  GRAV = 0.9806160000000E1
+   real*8,   parameter ::  KARMAN = 0.4000000000000E0
+   real*8,   parameter ::  KNAMS = 0.5147910000000E0
+   real*8,   parameter ::  OMEGA = 0.7292000000000E-4
    real*8,   parameter ::  PI = 3.14159265358979323846
-   real*8,   parameter ::  RAUW = 0.1000000000000e+04
-   real*8,   parameter ::  RAYT = 0.6371220000000e+07
-   real*8,   parameter ::  RGASD = 0.2870500000000e+03
-   real*8,   parameter ::  RGASV = 0.4615100000000e+03
-   real*8,   parameter ::  RIC = 0.2000000000000e+00
-   real*8,   parameter ::  SLP = 0.6666666666667e-01
-   real*8,   parameter ::  STEFAN = 0.5669800000000e-07
-   real*8,   parameter ::  STLO = 0.6628486583943e-03
-   real*8,   parameter ::  T1S = 0.2731600000000e+03
-   real*8,   parameter ::  T2S = 0.2581600000000e+03
-   real*8,   parameter ::  TCDK = 0.2731500000000e+03
-   real*8,   parameter ::  TGL = 0.2731600000000e+03
-   real*8,   parameter ::  TRPL = 0.2731600000000e+03
+   real*8,   parameter ::  RAUW = 0.1000000000000E4
+   real*8,   parameter ::  RAYT = 0.6371220000000E7
+   real*8,   parameter ::  RGASD = 0.2870500000000E3
+   real*8,   parameter ::  RGASV = 0.4615100000000E3
+   real*8,   parameter ::  RIC = 0.2000000000000E0
+   real*8,   parameter ::  SLP = 0.6666666666667E-1
+   real*8,   parameter ::  STEFAN = 0.5669800000000E-7
+   real*8,   parameter ::  STLO = 0.6628486583943E-3
+   real*8,   parameter ::  T1S = 0.2731600000000E3
+   real*8,   parameter ::  T2S = 0.2581600000000E3
+   real*8,   parameter ::  TCDK = 0.2731500000000E3
+   real*8,   parameter ::  TGL = 0.2731600000000E3
+   real*8,   parameter ::  TRPL = 0.2731600000000E3
    real*8,   parameter ::  CAPPA = (RGASD/CPD)
    real*8,   parameter ::  CVD = (CPD - RGASD)
-   real*8,   parameter :: TTNS1 = 610.78d0
-   real*8,   parameter :: TTNS3W = 17.269d0
-   real*8,   parameter :: TTNS3I = 21.875d0
-   real*8,   parameter :: TTNS4W = 35.86d0
-   real*8,   parameter :: TTNS4I = 7.66d0
-   real*8,   parameter :: AERK1W = 610.94d0
-   real*8,   parameter :: AERK2W = 17.625d0
-   real*8,   parameter :: AERK3W = 30.11d0
-   real*8,   parameter :: AERK1I = 611.21d0
-   real*8,   parameter :: AERK2I = 22.587d0
-   real*8,   parameter :: AERK3I = -0.71d0
+   real*8,   parameter :: TTNS1 = 610.78
+   real*8,   parameter :: TTNS3W = 17.269
+   real*8,   parameter :: TTNS3I = 21.875
+   real*8,   parameter :: TTNS4W = 35.86
+   real*8,   parameter :: TTNS4I = 7.66
+   real*8,   parameter :: AERK1W = 610.94
+   real*8,   parameter :: AERK2W = 17.625
+   real*8,   parameter :: AERK3W = 30.11
+   real*8,   parameter :: AERK1I = 611.21
+   real*8,   parameter :: AERK2I = 22.587
+   real*8,   parameter :: AERK3I = -0.71
    ! real,   parameter :: ai =  AI
    ! real,   parameter :: aw =  AW
    ! real,   parameter :: bi =  BI
@@ -140,20 +140,20 @@ implicit none
    REAL*8, parameter :: EPS1_ = EPS1
    REAL*8, parameter :: EPS2_ = EPS2
    REAL*8, parameter :: TRPL_ = TRPL
-   REAL*8, parameter :: CTE1_ = 17.625d0*(0.2731600000000e+03-30.11d0)
-   REAL*8, parameter :: CTE2_ = 22.587d0*(0.2731600000000e+03--0.71d0)-17.625d0*(0.2731600000000e+03-30.11d0)
-   REAL*8, parameter :: CTE3_ = 2317d0
-   REAL*8, parameter :: CTE4_ = 7.24d0
-   REAL*8, parameter :: CTE5_ = 128.4d0
+   REAL*8, parameter :: CTE1_ = 17.625*(0.2731600000000E3-30.11)
+   REAL*8, parameter :: CTE2_ = 22.587*(0.2731600000000E3+0.71)-17.625*(0.2731600000000E3-30.11)
+   REAL*8, parameter :: CTE3_ = 2317
+   REAL*8, parameter :: CTE4_ = 7.24
+   REAL*8, parameter :: CTE5_ = 128.4
 
 
-   real*8, parameter :: TDPACK_OFFSET_FIX=0.01d0
-   real*8, parameter :: AEw1 = 6.1094d0
-   real*8, parameter :: AEw2 = 17.625d0
-   real*8, parameter :: AEw3 = 243.05d0
-   real*8, parameter :: AEi1 = 6.1121d0
-   real*8, parameter :: AEi2 = 22.587d0
-   real*8, parameter :: AEi3 = 273.86d0
+   real*8, parameter :: TDPACK_OFFSET_FIX=0.01
+   real*8, parameter :: AEw1 = 6.1094
+   real*8, parameter :: AEw2 = 17.625
+   real*8, parameter :: AEw3 = 243.05
+   real*8, parameter :: AEi1 = 6.1121
+   real*8, parameter :: AEi2 = 22.587
+   real*8, parameter :: AEi3 = 273.86
 
 contains
 
@@ -168,14 +168,14 @@ function FN1_(ttt)
    implicit none
    REAL*8, intent(in) :: ttt
    REAL*8 FN1_
-   FN1_ = ttt-AERK3W+dmax1(0.d0,dsign(AERK3W-AERK3I,Dble(-DIFTRPL_(ttt))))
+   FN1_ = ttt-AERK3W+dmax1(0.,dsign(AERK3W-AERK3I,Dble(-DIFTRPL_(ttt))))
 end function
 
 function MASKT(ttt)
    implicit none
    REAL*8, intent(in) :: ttt
    REAL*8 MASKT
-   MASKT = dmax1(0.d0,dsign(1.d0,Dble(DIFTRPL_(ttt))))
+   MASKT = dmax1(0.,dsign(1d0,Dble(DIFTRPL_(ttt))))
 end function
 
 function FOMULTS(ddd,ttt)
@@ -183,7 +183,7 @@ function FOMULTS(ddd,ttt)
    REAL*8, intent(in) :: ttt
    REAL*8, intent(in) :: ddd
    REAL*8 FOMULTS
-   FOMULTS=(AERK1W*MASKT(ttt)+(1.d0-MASKT(ttt))*AERK1I)*ddd
+   FOMULTS=(AERK1W*MASKT(ttt)+(1.-MASKT(ttt))*AERK1I)*ddd
 end function
 
 function FOEWF(ttt)
@@ -218,7 +218,7 @@ function FODLE(ttt)
    implicit none
    REAL*8, intent(in) :: ttt
    REAL*8 FODLE
-   FODLE=(CTE1_+dmax1(0.d0,dsign(CTE2_,Dble(-DIFTRPL_(ttt)))))/(FN1_(ttt)**2.d0)
+   FODLE=(CTE1_+dmax1(0.,dsign(CTE2_,Dble(-DIFTRPL_(ttt)))))/(FN1_(ttt)**2.)
 end function
 
 function FOQST(ttt,prs)
@@ -226,7 +226,7 @@ function FOQST(ttt,prs)
    REAL*8, intent(in) :: ttt
    REAL*8, intent(in) :: prs
    REAL*8 FOQST
-   FOQST=EPS1_/(dmax1(1.d0,prs/FOEW(ttt))-EPS2_)
+   FOQST=EPS1_/(dmax1(1.,prs/FOEW(ttt))-EPS2_)
 end function
 
 function FOQSTX(prs,ddd)
@@ -234,7 +234,7 @@ function FOQSTX(prs,ddd)
    REAL*8, intent(in) :: prs
    REAL*8, intent(in) :: ddd
    REAL*8 FOQSTX
-   FOQSTX=EPS1_/(dmax1(1.d0,prs/ddd)-EPS2_)
+   FOQSTX=EPS1_/(dmax1(1.,prs/ddd)-EPS2_)
 end function
 
 function FOQSA(ttt,prs)
@@ -242,7 +242,7 @@ function FOQSA(ttt,prs)
    REAL*8, intent(in) :: ttt
    REAL*8, intent(in) :: prs
    REAL*8 FOQSA
-   FOQSA=EPS1_/(dmax1(1.d0,prs/FOEWA(ttt))-EPS2_)
+   FOQSA=EPS1_/(dmax1(1.,prs/FOEWA(ttt))-EPS2_)
 end function
 
 function FQSMX(ttt,prs,fff)
@@ -251,7 +251,7 @@ function FQSMX(ttt,prs,fff)
    REAL*8, intent(in) :: prs
    REAL*8, intent(in) :: fff
    REAL*8 FQSMX
-   FQSMX=EPS1_/(dmax1(1.d0,prs/FESMX(ttt,fff))-EPS2_)
+   FQSMX=EPS1_/(dmax1(1.,prs/FESMX(ttt,fff))-EPS2_)
 end function
 
 function FQSMXX(fesmx8,prs)
@@ -259,7 +259,7 @@ function FQSMXX(fesmx8,prs)
    REAL*8, intent(in) :: fesmx8
    REAL*8, intent(in) :: prs
    REAL*8 FQSMXX
-   FQSMXX = EPS1_/(dmax1(1.d0,prs/fesmx8)-EPS2_)
+   FQSMXX = EPS1_/(dmax1(1.,prs/fesmx8)-EPS2_)
 end function
 
 function FODQS(qst,ttt)
@@ -267,7 +267,7 @@ function FODQS(qst,ttt)
    REAL*8, intent(in) :: qst
    REAL*8, intent(in) :: ttt
    REAL*8 FODQS
-   FODQS = qst*(1.d0+DELTA_*Dble(qst))*FODLE(ttt)
+   FODQS = qst*(1.+DELTA_*Dble(qst))*FODLE(ttt)
 end function
 
 function FOEFQ(qqq,prs)
@@ -283,7 +283,7 @@ function FOQFE(eee,prs)
    REAL*8, intent(in) :: eee
    REAL*8, intent(in) :: prs
    REAL*8 FOQFE
-   FOQFE=dmin1(1.d0,EPS1_*eee/(Dble(prs)-EPS2_*Dble(eee)))
+   FOQFE=dmin1(1.,EPS1_*eee/(Dble(prs)-EPS2_*Dble(eee)))
 end function
 
 function FOTVT(ttt,qqq)
@@ -291,7 +291,7 @@ function FOTVT(ttt,qqq)
    REAL*8, intent(in) :: ttt
    REAL*8, intent(in) :: qqq
    REAL*8 FOTVT
-   FOTVT=ttt*(1.d0+DELTA_*Dble(qqq))
+   FOTVT=ttt*(1.+DELTA_*Dble(qqq))
 end function
 
 function FOTTV(tvi,qqq)
@@ -299,7 +299,7 @@ function FOTTV(tvi,qqq)
    REAL*8, intent(in) :: tvi
    REAL*8, intent(in) :: qqq
    REAL*8 FOTTV
-   FOTTV=tvi/(1.d0+DELTA_*Dble(qqq))
+   FOTTV=tvi/(1.+DELTA_*Dble(qqq))
 end function
 
 function FOTVHT(ttt,qqq,qqh)
@@ -308,7 +308,7 @@ function FOTVHT(ttt,qqq,qqh)
    REAL*8, intent(in) :: qqq
    REAL*8, intent(in) :: qqh
    REAL*8 FOTVHT
-   FOTVHT=ttt*(1.d0+DELTA_*Dble(qqq)-Dble(qqh))
+   FOTVHT=ttt*(1.+DELTA_*Dble(qqq)-Dble(qqh))
 end function
 
 function FOTTVH(tvi,qqq,qqh)
@@ -317,7 +317,7 @@ function FOTTVH(tvi,qqq,qqh)
    REAL*8, intent(in) :: qqq
    REAL*8, intent(in) :: qqh
    REAL*8 FOTTVH
-   FOTTVH=tvi/(1.d0+DELTA_*Dble(qqq)-Dble(qqh))
+   FOTTVH=tvi/(1.+DELTA_*Dble(qqq)-Dble(qqh))
 end function
 
 function FODQA(qst,ttt)
@@ -325,7 +325,7 @@ function FODQA(qst,ttt)
    REAL*8, intent(in) :: qst
    REAL*8, intent(in) :: ttt
    REAL*8 FODQA
-   FODQA=qst*(1.d0+DELTA_*Dble(qst))*FODLA(ttt)
+   FODQA=qst*(1.+DELTA_*Dble(qst))*FODLA(ttt)
 end function
 
 function FDQSMX(qsm,dlemx)
@@ -333,7 +333,7 @@ function FDQSMX(qsm,dlemx)
    REAL*8, intent(in) :: qsm
    REAL*8, intent(in) :: dlemx
    REAL*8 FDQSMX
-   FDQSMX=qsm*(1.d0+DELTA_*Dble(qsm))*Dble(dlemx)
+   FDQSMX=qsm*(1.+DELTA_*Dble(qsm))*Dble(dlemx)
 end function
 
 function FOHR(qqq,ttt,prs)
@@ -374,7 +374,7 @@ function FOPOIT(t00,pr0,pf)
    REAL*8, intent(in) :: pr0
    REAL*8, intent(in) :: pf
    REAL*8 FOPOIT
-   FOPOIT = t00*((Dble(pr0)/Dble(pf))**-CAPPA_)
+   FOPOIT = t00*((Dble(pr0)/Dble(pf))**-(CAPPA_))
 end function
 
 function FOPOIP(t00,tf,pr0)
@@ -428,7 +428,7 @@ function FESMX(ttt,fff)
    REAL*8, intent(in) :: ttt
    REAL*8, intent(in) :: fff
    REAL*8 FESMX
-   FESMX=(1.d0-fff)*FOEWA(ttt)+Dble(fff)*FESI(ttt)
+   FESMX=(1.-fff)*FOEWA(ttt)+Dble(fff)*FESI(ttt)
 end function
 
 function FESMXX(fff,fesi8,foewa8)
@@ -437,7 +437,7 @@ function FESMXX(fff,fesi8,foewa8)
    REAL*8, intent(in) :: fesi8
    REAL*8, intent(in) :: foewa8
    REAL*8 FESMXX
-   FESMXX=(1.d0-fff)*foewa8+Dble(fff)*fesi8
+   FESMXX=(1.-fff)*foewa8+Dble(fff)*fesi8
 end function
 
 function FDLESMX(ttt,fff,ddff)
@@ -446,7 +446,7 @@ function FDLESMX(ttt,fff,ddff)
    REAL*8, intent(in) :: fff
    REAL*8, intent(in) :: ddff
    REAL*8 FDLESMX
-   FDLESMX=((1.d0-fff)*FOEWA(ttt)*FODLA(ttt)+Dble(fff)*FESI(ttt)*FDLESI(ttt)+Dble(ddff)*(FESI(ttt)-FOEWA(ttt)))/FESMX(ttt,fff)
+   FDLESMX=((1.-fff)*FOEWA(ttt)*FODLA(ttt)+Dble(fff)*FESI(ttt)*FDLESI(ttt)+Dble(ddff)*(FESI(ttt)-FOEWA(ttt)))/FESMX(ttt,fff)
 end function
 
 function FDLESMXX(ttt,fff,ddff,foewa8,fesi8,fesmx8)
@@ -458,7 +458,7 @@ function FDLESMXX(ttt,fff,ddff,foewa8,fesi8,fesmx8)
    REAL*8, intent(in) :: fesi8
    REAL*8, intent(in) :: fesmx8
    REAL*8 FDLESMXX
-   FDLESMXX=((1.d0-fff)*foewa8*FODLA(ttt)+Dble(fff)*fesi8*FDLESI(ttt)+Dble(ddff)*(fesi8-foewa8))/fesmx8
+   FDLESMXX=((1.-fff)*foewa8*FODLA(ttt)+Dble(fff)*fesi8*FDLESI(ttt)+Dble(ddff)*(fesi8-foewa8))/fesmx8
 end function
 
 
@@ -573,11 +573,11 @@ end function
 ! @param tt  Air temperature (celsius)
 ! @return  Saturation vapour pressure, SVP (hPa)
 !
-function svp_water(tt)
+function svp_water_from_tt(tt)
    implicit none
    real,  intent(in) :: tt
-   REAL svp_water
-   svp_water = AEw1 * dexp((AEw2 * tt) / (AEw3 + tt))
+   REAL svp_water_from_tt
+   svp_water_from_tt = AEw1 * exp((AEw2 * tt) / (AEw3 + tt))
 end function
 
 !
@@ -585,11 +585,11 @@ end function
 ! @param tt  Air temperature (celsius)
 ! @return  Saturation vapour pressure, SVP (hPa)
 !/
-function svp_ice(tt)
+function svp_ice_from_tt(tt)
    implicit none
    real,  intent(in) :: tt
-   REAL svp_ice
-   svp_ice = AEi1 * dexp((AEi2 * tt) / (AEi3 + tt))
+   REAL svp_ice_from_tt
+   svp_ice_from_tt = AEi1 * exp((AEi2 * tt) / (AEi3 + tt))
 end function
 
 !
@@ -599,7 +599,7 @@ end function
 ! @param swph   A boolean representing if we consider both ice and water phase.
 ! @return  Saturation vapour pressure, SVP (hPa)
 !/
-subroutine svp(tt, ni, nj, tpl, swph, res)
+subroutine svp_from_tt(tt, ni, nj, tpl, swph, res)
    implicit none
 
    real,  intent(in)   :: tt(ni ,nj)
@@ -613,9 +613,9 @@ subroutine svp(tt, ni, nj, tpl, swph, res)
    do i=1, ni
       do j=1, nj
          if ( .not. swph .or. (swph .and. tt(i,j) > tpl) ) then
-            res(i,j) = svp_water(tt(i,j))
+            res(i,j) = svp_water_from_tt(tt(i,j))
          else
-            res(i,j) = svp_ice(tt(i,j))
+            res(i,j) = svp_ice_from_tt(tt(i,j))
          endif
       enddo
    enddo
@@ -632,7 +632,7 @@ function rpn_svp_water(tt)
    implicit none
    real,  intent(in) :: tt
    real rpn_svp_water
-   rpn_svp_water = FOEWA(Dble(tt)) / 100.0d0
+   rpn_svp_water = FOEWA(Dble(tt)) / 100.
 end function
 
 !
@@ -646,7 +646,7 @@ function rpn_svp_ice(tt)
    real rpn_svp_ice
       !RPN returns Saturation vapour pressure in Pascal and we want output to be HectoPascal.
       !return rpn::libphy::sfoew(tt) / 100.0f
-   rpn_svp_ice = FOEW(Dble(tt)) / 100.0d0
+   rpn_svp_ice = FOEW(Dble(tt)) / 100.
 end function
 
 !
@@ -692,7 +692,7 @@ subroutine vppr_from_hr(hr, svp, ni, nj, res)
    integer i,j
    do i=1, ni
       do j=1, nj
-         res(i,j) = dmax1(hr(i,j), 10d-15)
+         res(i,j) = max(hr(i,j), 10E-15)
          res(i,j) = res(i,j) * svp(i,j)
       enddo
    enddo
@@ -713,8 +713,8 @@ subroutine vppr_from_hu(hu, px, ni, nj, res)
    integer i,j
    do i=1, ni
       do j=1, nj
-         res(i,j) = dmax1(hu(i,j), 10d-15)
-         res(i,j) = (res(i,j) * px(i,j))/(EPS1 + res(i,j) * (1d0-EPS1))
+         res(i,j) = max(hu(i,j), 10E-15)
+         res(i,j) = (res(i,j) * px(i,j))/(EPS1 + res(i,j) * (1.-EPS1))
       enddo
    enddo
 end subroutine
@@ -734,7 +734,7 @@ subroutine vppr_from_qv(qv, px, ni, nj, res)
    integer i,j
    do i=1, ni
       do j=1, nj
-         res(i,j) = dmax1(qv(i,j), 10d-15)
+         res(i,j) = max(qv(i,j), 10E-15)
          res(i,j) = (res(i,j) * px(i,j))/(EPS1 + res(i,j))
       enddo
    enddo
@@ -763,7 +763,7 @@ function vppr_ice_td(td)
    implicit none
    real,  intent(in) :: td
    real vppr_ice_td
-   vppr_ice_td = AEi1 * exp((AEi2 * td) / (AEi3 + td))
+   vppr_ice_td =( AEi1 * exp((AEi2 * td)) / (AEi3 + td))
 end function
 
 !
@@ -811,7 +811,7 @@ subroutine rpn_vppr_from_hu(hu, px, ni, nj, res)
    integer i,j
    do i=1, ni
       do j=1, nj
-            res(i,j) = FOEFQ(Dble(hu(i,j)), Dble(px(i,j))) / 100.0d0
+            res(i,j) = FOEFQ(Dble(hu(i,j)), Dble(px(i,j))) / 100.
       enddo
    enddo
    !RPN returns vapour pressure in Pascal and we want output to be HectoPascal.
@@ -823,28 +823,28 @@ end subroutine
 ! Calculates the vapour pressure (water phase) as a function of temperature dew point.
 ! @param td   Temperature dew point, in kelvin
 ! @return     Vapour pressure, in hPa
-!/
-function rpn_vppr_water_td(td)
+!
+function rpn_vppr_water_from_td(td)
    implicit none
    real,  intent(in) :: td
-   real rpn_vppr_water_td
+   real rpn_vppr_water_from_td
    !RPN returns vapour pressure in Pascal and we want output to be HectoPascal.
    !return rpn::libphy::sfoewa(td) / 100.0d0f
-   rpn_vppr_water_td = FOEWA(Dble(td)) / 100.0d0
+   rpn_vppr_water_from_td = FOEWA(Dble(td)) / 100.
 end function
 
 !
 ! Calculates the vapour pressure (ice phase) as a function of temperature dew point.
 ! @param td   Temperature dew point, in kelvin
 ! @return     Vapour pressure, in hPa
-!/
-function rpn_vppr_ice_td(td)
+!
+function rpn_vppr_ice_from_td(td)
    implicit none
    real,  intent(in) :: td
-   real rpn_vppr_ice_td
+   real rpn_vppr_ice_from_td
       !RPN returns vapour pressure in Pascal and we want output to be HectoPascal.
       !return rpn::libphy::sfoew(td) / 100.0d0f
-   rpn_vppr_ice_td = FOEW(Dble(td)) / 100.0d0
+   rpn_vppr_ice_from_td = FOEW(Dble(td)) / 100.
 end function
 
 !
@@ -867,9 +867,9 @@ subroutine rpn_vppr_from_td(td, tt, ni, nj, tpl, swph, res)
    do i=1, ni
       do j=1, nj
          if ( .not. swph .or. (swph .and. tt(i,j) > tpl) ) then
-            res(i,j) = rpn_vppr_water_td(td(i,j))
+            res(i,j) = rpn_vppr_water_from_td(td(i,j))
          else
-            res(i,j) = rpn_vppr_ice_td(td(i,j))
+            res(i,j) = rpn_vppr_ice_from_td(td(i,j))
          endif
       enddo
    enddo
@@ -884,10 +884,58 @@ subroutine td_from_es(tt,es,ni,nj,res)
    integer i,j
    do i=1, ni
       do j=1, nj
-         if (es(i,j) < 0.0d0) then
+         if (es(i,j) < 0.) then
             res(i,j) = tt(i,j)
          else
             res(i,j) = tt(i,j)-es(i,j)
+         endif
+      enddo
+   enddo
+end subroutine
+
+!
+! Calculates the temperature dew point (Water Phase) as a function of vapour pressure.
+! @param vppr   Vapour pressure (hPa)
+! @return 		 Temperature dew point, TD (celsius)
+!
+function td_water_from_vppr(vppr)
+   implicit none
+   real,  intent(in) :: vppr
+   real tmpvppr,td_water_from_vppr
+   tmpvppr = max(vppr, 10E-15)
+   !RPN returns vapour pressure in Pascal and we want output to be HectoPascal.
+   !return rpn::libphy::sfoewa(td) / 100.0d0f
+   td_water_from_vppr = (AEw3 * log(tmpvppr/AEw1) ) / ( AEw2 - log(tmpvppr/AEw1))
+end function
+
+!
+! Calculates the temperature dew point (Ice Phase) as a function of vapour pressure.
+! @param vppr   Vapour pressure (hPa)
+! @return 		 Temperature dew point, TD (celsius)
+!
+function td_ice_from_vppr(vppr)
+   implicit none
+   REAL, intent(in) :: vppr
+   REAL tmpvppr,td_ice_from_vppr
+   tmpvppr = max(vppr, 10E-15)
+   td_ice_from_vppr =  (AEi3 * log(tmpvppr/AEi1) ) / ( AEi2 - log(tmpvppr/AEi1))
+end function
+
+subroutine td_from_vppr(tt,vppr,ni,nj,tpl,swph,res)
+   implicit none
+   real,  intent(in)  :: tt(ni ,nj)
+   real,  intent(in)  :: vppr(ni ,nj)
+   real,  intent(in)  :: tpl
+   logical, intent(in):: swph
+   real,  intent(out) :: res(ni ,nj)
+   integer, intent(in):: ni, nj
+   integer i,j
+   do i=1, ni
+      do j=1, nj
+         if ( .not. swph .or. (swph .and. tt(i,j) > tpl) ) then
+            res(i,j) = td_water_from_vppr(vppr(i,j))
+         else
+            res(i,j) = td_ice_from_vppr(vppr(i,j))
          endif
       enddo
    enddo
@@ -908,6 +956,56 @@ subroutine rpn_hu_from_hr(tt,hr,px,ni,nj,swph,res)
       enddo
    enddo
 end subroutine
+
+
+subroutine rpn_es_from_hr(tt,hr,px,ni,nj,swph,res)
+   implicit none
+   real,  intent(in)  :: tt(ni ,nj)
+   real,  intent(in)  :: hr(ni ,nj)
+   real,  intent(in)  :: px(ni ,nj)
+   logical, intent(in):: swph
+   real,  intent(out) :: res(ni ,nj)
+   integer, intent(in):: ni, nj
+   integer i,j
+   do i=1, ni
+      do j=1, nj
+         res(i,j) = max(shraes(Dble(hr(i,j)), Dble(tt(i,j)), Dble(px(i,j)), swph),0.)
+      enddo
+   enddo
+end subroutine
+
+subroutine rpn_es_from_hu(tt,hu,px,ni,nj,swph,res)
+   implicit none
+   real,  intent(in)  :: tt(ni ,nj)
+   real,  intent(in)  :: hu(ni ,nj)
+   real,  intent(in)  :: px(ni ,nj)
+   logical, intent(in):: swph
+   real,  intent(out) :: res(ni ,nj)
+   integer, intent(in):: ni, nj
+   integer i,j
+   do i=1, ni
+      do j=1, nj
+         res(i,j) = max(shuaes(Dble(hu(i,j)), Dble(tt(i,j)), Dble(px(i,j)), swph),0.)
+      enddo
+   enddo
+end subroutine
+
+subroutine hu_from_qv(qv,ni,nj,res)
+   implicit none
+   real,  intent(in)  :: qv(ni ,nj)
+   real,  intent(out) :: res(ni ,nj)
+   integer, intent(in):: ni, nj
+   integer i,j
+   real tmpqv
+   do i=1, ni
+      do j=1, nj
+         tmpqv= max(qv(i,j),10E-15)
+         res(i,j) = tmpqv / (tmpqv + 1.)
+      enddo
+   enddo
+end subroutine
+
+
 
 end module tdpack
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

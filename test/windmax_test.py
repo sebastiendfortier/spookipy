@@ -37,7 +37,7 @@ def test_1(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_2(plugin_test_dir):
@@ -61,9 +61,9 @@ def test_2(plugin_test_dir):
     # file_to_compare = '/fs/site4/eccc/cmd/w/sbf000/testFiles/WindMax/test_2.std'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.0003)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_3(plugin_test_dir):
@@ -88,6 +88,6 @@ def test_3(plugin_test_dir):
     # file_to_compare = '/fs/site4/eccc/cmd/w/sbf000/testFiles/WindMax/test_3.std'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)

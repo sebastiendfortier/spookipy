@@ -39,7 +39,7 @@ def test_1(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_2(plugin_test_dir):
@@ -68,7 +68,7 @@ def test_2(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_3(plugin_test_dir):
@@ -100,7 +100,7 @@ def test_3(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_4(plugin_test_dir):
@@ -131,7 +131,7 @@ def test_4(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_5(plugin_test_dir):
@@ -163,7 +163,7 @@ def test_5(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_6(plugin_test_dir):
@@ -187,14 +187,14 @@ def test_6(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "filter6_file2cmp.std"
-    # file_to_compare = plugin_test_dir + "filter6_file2cmp.std+E3220210812"
+    # file_to_compare = plugin_test_dir + "filter6_file2cmp.std"
+    file_to_compare = plugin_test_dir + "filter6_file2cmp.std+PY20210812"
     # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_6'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_7(plugin_test_dir):
@@ -218,13 +218,14 @@ def test_7(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "filter7_file2cmp.std"
+    # file_to_compare = plugin_test_dir + "filter7_file2cmp.std"
+    file_to_compare = plugin_test_dir + "filter7_file2cmp.std+PY20210812"
     # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_7'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_8(plugin_test_dir):
@@ -248,13 +249,14 @@ def test_8(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "filter8_file2cmp.std"
+    # file_to_compare = plugin_test_dir + "filter8_file2cmp.std"
+    file_to_compare = plugin_test_dir + "filter8_file2cmp.std+PY20210812"
     # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_8'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_9(plugin_test_dir):
@@ -289,7 +291,7 @@ def test_9(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_10(plugin_test_dir):
@@ -326,7 +328,7 @@ def test_10(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_11(plugin_test_dir):
@@ -357,13 +359,14 @@ def test_11(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "filteredByPgsm3_file2cmp.std"
+    # file_to_compare = plugin_test_dir + "filteredByPgsm3_file2cmp.std"
+    file_to_compare = plugin_test_dir + "filteredByPgsm3_file2cmp.std+PY20210812"
     # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_11'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_12(plugin_test_dir):
@@ -395,14 +398,14 @@ def test_12(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "filteredByPgsm4_file2cmp.std"
-    # file_to_compare = plugin_test_dir + "filteredByPgsm4_file2cmp.std+E3220210812"
+    # file_to_compare = plugin_test_dir + "filteredByPgsm4_file2cmp.std"
+    file_to_compare = plugin_test_dir + "filteredByPgsm4_file2cmp.std+PY20210812"
     # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_12'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_13(plugin_test_dir):
@@ -434,7 +437,7 @@ def test_13(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_14(plugin_test_dir):
@@ -466,4 +469,4 @@ def test_14(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)

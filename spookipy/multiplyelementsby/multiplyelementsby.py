@@ -23,4 +23,5 @@ class MultiplyElementsBy(Plugin):
         operation_name='MultiplyElementsBy',
         nomvar_out= self.nomvar_out,
         operator = mult_value,
-        exception_class = MultiplyElementsByError).compute()
+        exception_class = MultiplyElementsByError,
+        etiket='MULEBY').compute()

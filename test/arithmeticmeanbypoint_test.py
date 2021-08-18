@@ -16,7 +16,7 @@ def test_1(plugin_test_dir):
     source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    src_df0 = src_df0.query( 'nomvar == "UU"').reset_index(drop=True)
+    src_df0 = src_df0.loc[src_df0.nomvar=='UU'].reset_index(drop=True)
 
     with pytest.raises(spooki.ArithmeticMeanByPointError):
         #compute ArithmeticMeanByPoint
@@ -63,7 +63,7 @@ def test_3(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_4(plugin_test_dir):
@@ -89,7 +89,7 @@ def test_4(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_5(plugin_test_dir):
@@ -120,7 +120,7 @@ def test_5(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_6(plugin_test_dir):
@@ -148,7 +148,7 @@ def test_6(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_7(plugin_test_dir):
@@ -161,8 +161,8 @@ def test_7(plugin_test_dir):
     #compute ArithmeticMeanByPoint
     df = spooki.ArithmeticMeanByPoint(src_df0).compute()
     #[ReaderStd --input {sources[0]}] >> [ArithmeticMeanByPoint] >> [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} ]
-    df['etiket']='__MEANFIX'
-    df.loc[df.nomvar.isin(['!!','^^','>>','P0']),'etiket'] = 'R1_V700_N'
+    # df['etiket']='__MEANFIX'
+    df.loc[~df.nomvar.isin(['!!','^^','>>','P0']),'etiket'] = '__MEANFIX'
     # df['typvar']='P'
     # df['ip2']=30
     # df['deet']=300
@@ -181,4 +181,4 @@ def test_7(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)

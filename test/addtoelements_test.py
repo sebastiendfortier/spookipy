@@ -20,7 +20,7 @@ def test_1(plugin_test_dir):
     #compute AddToElements
     df = spooki.AddToElements(src_df0, value=4).compute()
     #[ReaderStd --input {sources[0]}] >> [AddToElements --value +4.0] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
-    df['etiket'] = "ADDTOE"
+
     #write the result
     results_file = TMP_PATH + "test_1.std"
     fstpy.delete_file(results_file)
@@ -32,7 +32,7 @@ def test_1(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_2(plugin_test_dir):
@@ -45,7 +45,7 @@ def test_2(plugin_test_dir):
     #compute AddToElements
     df = spooki.AddToElements(src_df0, value=-2).compute()
     #[ReaderStd --input {sources[0]}] >> [AddToElements --value -2.0] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
-    df['etiket'] = "ADDTOE"
+
     #write the result
     results_file = TMP_PATH + "test_2.std"
     fstpy.delete_file(results_file)
@@ -57,4 +57,4 @@ def test_2(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)

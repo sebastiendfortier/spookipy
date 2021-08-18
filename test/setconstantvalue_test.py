@@ -27,13 +27,12 @@ def test_1(plugin_test_dir):
 
     #compute SetConstantValue
     resvv_df = spooki.SetConstantValue(vv_df, value=0.33323, nomvar_out='VV*').compute()
-    #[ReaderStd --input {sources[0]}] >> 
-    # ( ([Select --fieldName UU] >> [SetConstantValue --value 0.33323 --outputFieldName UU*]) + 
-    # ([Select --fieldName VV] >> [SetConstantValue --value 0.33323 --outputFieldName VV*]) ) >> 
+    #[ReaderStd --input {sources[0]}] >>
+    # ( ([Select --fieldName UU] >> [SetConstantValue --value 0.33323 --outputFieldName UU*]) +
+    # ([Select --fieldName VV] >> [SetConstantValue --value 0.33323 --outputFieldName VV*]) ) >>
     # [WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     df = pd.concat([resuu_df,resvv_df],ignore_index=True)
-    df.loc[:,'etiket'] ='SETVAL'
 
     #write the result
     results_file = TMP_PATH + "test_1.std"
@@ -46,7 +45,7 @@ def test_1(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_2(plugin_test_dir):
@@ -58,8 +57,8 @@ def test_2(plugin_test_dir):
     uu_df = fstpy.select_with_meta(src_df0,['UU'])
     #compute SetConstantValue
     df = spooki.SetConstantValue(uu_df, min_index=True, bi_dimensionnal=True).compute()
-    #[ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> [SetConstantValue --value MININDEX --bidimensional] >> 
-    # [Zap --fieldName RES --pdsLabel GENERATE2D --doNotFlagAsZapped] >> 
+    #[ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> [SetConstantValue --value MININDEX --bidimensional] >>
+    # [Zap --fieldName RES --pdsLabel GENERATE2D --doNotFlagAsZapped] >>
     # [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
     df.loc[df.nomvar=='UU','nomvar'] = 'RES'
@@ -76,7 +75,7 @@ def test_2(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_3(plugin_test_dir):
@@ -86,11 +85,11 @@ def test_3(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     uu_df = fstpy.select_with_meta(src_df0,['UU'])
-    
+
     #compute SetConstantValue
     df = spooki.SetConstantValue(uu_df, max_index=True, bi_dimensionnal=True).compute()
-    #[ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> [Zap --metadataZappable --pdsLabel 580V0N] >> 
-    # [SetConstantValue --value MAXINDEX --bidimensional] >> [Zap --fieldName RES --pdsLabel GENERATE2D --doNotFlagAsZapped] >> 
+    #[ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> [Zap --metadataZappable --pdsLabel 580V0N] >>
+    # [SetConstantValue --value MAXINDEX --bidimensional] >> [Zap --fieldName RES --pdsLabel GENERATE2D --doNotFlagAsZapped] >>
     # [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
     df.loc[df.nomvar=='UU','nomvar'] = 'RES'
@@ -108,7 +107,7 @@ def test_3(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_4(plugin_test_dir):
@@ -121,8 +120,8 @@ def test_4(plugin_test_dir):
 
     #compute SetConstantValue
     df = spooki.SetConstantValue(uu_df, value=-1, bi_dimensionnal=True).compute()
-    #[ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> [SetConstantValue --value -1.0 --bidimensional] >> 
-    # [Zap --fieldName RES --pdsLabel GENERATE2D --doNotFlagAsZapped] >> 
+    #[ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> [SetConstantValue --value -1.0 --bidimensional] >>
+    # [Zap --fieldName RES --pdsLabel GENERATE2D --doNotFlagAsZapped] >>
     # [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
     df.loc[df.nomvar=='UU','nomvar'] = 'RES'
@@ -140,7 +139,7 @@ def test_4(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_5(plugin_test_dir):
@@ -158,9 +157,9 @@ def test_5(plugin_test_dir):
     df2 = spooki.SetConstantValue(uu_df, max_index=True, bi_dimensionnal=True).compute()
     df2.loc[df2.nomvar=='UU','nomvar'] = 'KTOP'
     df2.loc[df2.nomvar=='KTOP','etiket'] = 'GENERATE2D'
-    #[ReaderStd --input {sources[0]}] >> 
-    # [Select --fieldName UU] >> ( ([SetConstantValue --value MININDEX --bidimensional] >> [Zap --fieldName KBAS --pdsLabel GENERATE2D --doNotFlagAsZapped]) + 
-    # ([SetConstantValue --value MAXINDEX --bidimensional] >> [Zap --fieldName KTOP --pdsLabel GENERATE2D --doNotFlagAsZapped]) ) >> 
+    #[ReaderStd --input {sources[0]}] >>
+    # [Select --fieldName UU] >> ( ([SetConstantValue --value MININDEX --bidimensional] >> [Zap --fieldName KBAS --pdsLabel GENERATE2D --doNotFlagAsZapped]) +
+    # ([SetConstantValue --value MAXINDEX --bidimensional] >> [Zap --fieldName KTOP --pdsLabel GENERATE2D --doNotFlagAsZapped]) ) >>
     # [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
     df = pd.concat([df1,df2],ignore_index=True)
@@ -177,7 +176,7 @@ def test_5(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_6(plugin_test_dir):
@@ -189,11 +188,10 @@ def test_6(plugin_test_dir):
     uu_df = fstpy.select_with_meta(src_df0,['UU'])
     #compute SetConstantValue
     df = spooki.SetConstantValue(uu_df, nb_levels=True, bi_dimensionnal=True, nomvar_out='RES').compute()
-    #[ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> [Zap --metadataZappable --pdsLabel 580V0N] >> 
-    # [SetConstantValue --value NBLEVELS --bidimensional --outputFieldName RES] >> 
+    #[ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> [Zap --metadataZappable --pdsLabel 580V0N] >>
+    # [SetConstantValue --value NBLEVELS --bidimensional --outputFieldName RES] >>
     # [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
-    
-    df.loc[df.nomvar=='RES','etiket'] = 'SETVAL'
+
     df.loc[df.nomvar.isin(['^^','>>']),'etiket'] = '580V0N'
 
     #write the result
@@ -207,4 +205,4 @@ def test_6(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)

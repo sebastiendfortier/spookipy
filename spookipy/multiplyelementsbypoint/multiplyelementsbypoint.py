@@ -17,10 +17,11 @@ class MultiplyElementsByPoint(Plugin):
 
     def compute(self) -> pd.DataFrame:
         sys.stdout.write('MultiplyElementsByPoint - compute\n')
-        return OpElementsByPoint(self.df, 
+        return OpElementsByPoint(self.df,
         operator = np.prod,
-        operation_name='MultiplyElementsByPoint', 
-        exception_class = MultiplyElementsByPointError, 
-        group_by_forecast_hour=self.group_by_forecast_hour, 
-        group_by_level=True, 
-        nomvar_out=self.nomvar_out).compute()
+        operation_name='MultiplyElementsByPoint',
+        exception_class = MultiplyElementsByPointError,
+        group_by_forecast_hour=self.group_by_forecast_hour,
+        group_by_level=True,
+        nomvar_out=self.nomvar_out,
+        etiket='MULEPT').compute()

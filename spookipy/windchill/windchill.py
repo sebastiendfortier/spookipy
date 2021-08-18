@@ -28,7 +28,7 @@ class WindChill(Plugin):
     }
 
     plugin_result_specifications = {
-        'RE':{'nomvar':'RE','etiket':'WindChill','unit':'celsius','ip1':0}
+        'RE':{'nomvar':'RE','etiket':'WNDCHL','unit':'celsius','ip1':0}
         }
 
     def __init__(self,df:pd.DataFrame):
@@ -65,8 +65,8 @@ class WindChill(Plugin):
         df_list = []
         for _,current_fhour_group in self.fhour_groups:
             current_fhour_group = fstpy.load_data(current_fhour_group)
-            tt_df = current_fhour_group.query('nomvar == "TT"').reset_index(drop=True)
-            uv_df = current_fhour_group.query('nomvar == "UV"').reset_index(drop=True)
+            tt_df = current_fhour_group.loc[current_fhour_group.nomvar=="TT"].reset_index(drop=True)
+            uv_df = current_fhour_group.loc[current_fhour_group.nomvar=="UV"].reset_index(drop=True)
             uv_df = fstpy.unit_convert(uv_df,'kilometer_per_hour')
             re_df = create_empty_result(tt_df,self.plugin_result_specifications['RE'])
 

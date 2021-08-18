@@ -26,8 +26,6 @@ def test_1(plugin_test_dir):
     df = spooki.WindChill(uv_src_df).compute()
     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [WindChill] >> [WriterStd --output {destination_path} --ignoreExtended]
 
-    df['etiket']='WNDCHL'
-    df.loc[df.nomvar.isin(['^^','>>']),'etiket'] = 'R1558V0N'
     # df['datyp']=5
     # df['nbits']=32
     #write the result
@@ -39,9 +37,9 @@ def test_1(plugin_test_dir):
     file_to_compare = plugin_test_dir + "windChill_file2cmp.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.001)
     # fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_2(plugin_test_dir):
@@ -52,12 +50,12 @@ def test_2(plugin_test_dir):
     # print(src_df0[['nomvar','typvar','etiket','ni','nj','nk','dateo','d']])
     # print(src_df0.nomvar.unique())
 
-    uv_df = src_df0.query('nomvar in ["UU","VV"]').reset_index(drop=True)
+    uv_df = src_df0.loc[src_df0.nomvar .isin(["UU","VV"])].reset_index(drop=True)
     uv_df = spooki.WindModulus(uv_df).compute()
     uv_src_df=pd.concat([src_df0,uv_df],ignore_index=True)
 
     uv_src_df = fstpy.add_composite_columns(uv_src_df,True,'numpy', attributes_to_decode=['ip_info'])
-    src_df0 = uv_src_df.query('surface==False').reset_index(drop=True)
+    src_df0 = uv_src_df.loc[uv_src_df.surface==False].reset_index(drop=True)
     # print(src_df0[['level','surface']])
 
     #compute WindChill

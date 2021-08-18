@@ -30,12 +30,12 @@ def test_reggc_test_1(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "gc_test_1.std"
-    
+
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_reggc_test_2(plugin_test_dir):
@@ -60,7 +60,7 @@ def test_reggc_test_2(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_reggc_test_3(plugin_test_dir):
@@ -72,7 +72,7 @@ def test_reggc_test_3(plugin_test_dir):
 
     #compute GridCut
     df = spooki.GridCut(src_df0,start_point=(0,0),end_point=(4,4)).compute()
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [GridCut --start_point 0,0 --end_point 4,4] >> 
+    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [GridCut --start_point 0,0 --end_point 4,4] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     #write the result
@@ -86,7 +86,7 @@ def test_reggc_test_3(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_reggc_test_4(plugin_test_dir):
@@ -124,7 +124,7 @@ def test_reggc_test_5(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_reggc_test_6(plugin_test_dir):
@@ -139,8 +139,9 @@ def test_reggc_test_6(plugin_test_dir):
     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [GridCut --start_point 0,0 --end_point 511,399] >> [WriterStd --output {destination_path} --ignoreExtended]
 
     #temp fix for missing !!
-    toctoc = df.query('(nomvar=="!!") and (ig1==5002)').reset_index(drop=True)
-    df = df.query('nomvar!="!!"').reset_index(drop=True)
+    toctoc = df.loc[(df.nomvar=="!!") & (df.ig1==5002)].reset_index(drop=True)
+    df = df.loc[df.nomvar!="!!"].reset_index(drop=True)
+
     df = pd.concat([toctoc,df],ignore_index=True)
     #write the result
     results_file = TMP_PATH + "gc_test_6.std"
@@ -153,7 +154,7 @@ def test_reggc_test_6(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 # def test_14(plugin_test_dir):
@@ -169,13 +170,13 @@ def test_reggc_test_6(plugin_test_dir):
 
 #     #compute GridCut
 #     df = spooki.GridCut(src_df,start_point=(0,0),end_point=(648,42)).compute()
-#     #[ReaderStd --input {sources[0]}] + ([ReaderStd --input {sources[1]}] >> 
-#     # ([Select --fieldName GZ --verticalLevel SURFACE] + [Select --metadataFieldName P0] )) >> 
-#     # [Select --xAxisMatrixSize 649 --yAxisMatrixSize 672] >> 
-#     # (([GridCut --start_point 0,0 --end_point 648,42] >> 
+#     #[ReaderStd --input {sources[0]}] + ([ReaderStd --input {sources[1]}] >>
+#     # ([Select --fieldName GZ --verticalLevel SURFACE] + [Select --metadataFieldName P0] )) >>
+#     # [Select --xAxisMatrixSize 649 --yAxisMatrixSize 672] >>
+#     # (([GridCut --start_point 0,0 --end_point 648,42] >>
 # [InterpolationVertical -m FIELD_DEFINED --outputField INCLUDE_ALL_FIELDS --extrapolationType FIXED --valueAbove -300 --valueBelow -300 --referenceFieldName TT]) +
-# ([GridCut --start_point 0,43 --end_point 648,84] >> 
-# [InterpolationVertical -m FIELD_DEFINED --outputField INCLUDE_ALL_FIELDS --extrapolationType FIXED --valueAbove -300 --valueBelow -300 --referenceFieldName TT]) ) >> 
+# ([GridCut --start_point 0,43 --end_point 648,84] >>
+# [InterpolationVertical -m FIELD_DEFINED --outputField INCLUDE_ALL_FIELDS --extrapolationType FIXED --valueAbove -300 --valueBelow -300 --referenceFieldName TT]) ) >>
 # [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion]
 
 #     #write the result
@@ -187,7 +188,7 @@ def test_reggc_test_6(plugin_test_dir):
 
 #     #compare results
 #     res = fstpy.fstcomp(results_file,file_to_compare)
-#     assert(res == True)
+#     assert(res)
 
 # same as 1, no multithread in python
 # def test_reggc_test_15(plugin_test_dir):
@@ -199,7 +200,7 @@ def test_reggc_test_6(plugin_test_dir):
 
 #     #compute GridCut
 #     df = spooki.GridCut(src_df0, start_point=(0,0), end_point=(2,3)).compute()
-#     #[ReaderStd --ignoreExtended --input {sources[0]}] >> 
+#     #[ReaderStd --ignoreExtended --input {sources[0]}] >>
 #     # [GridCut -T 1 --start_point 0,0 --end_point 2,3] >>
 #     #  [WriterStd --output {destination_path} --ignoreExtended]
 #     df = convip(df)
@@ -214,6 +215,4 @@ def test_reggc_test_6(plugin_test_dir):
 #     #compare results
 #     res = fstpy.fstcomp(results_file,file_to_compare)
 #     fstpy.delete_file(results_file)
-#     assert(res == True)
-
-
+#     assert(res)

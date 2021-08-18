@@ -33,7 +33,7 @@ class SetConstantValue(Plugin):
 
         self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['unit','forecast_hour','ip_info'])
 
-        self.df = self.df.query('nomvar not in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True)
+        self.df = self.df.loc[~self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
         self.groups=self.df.groupby(by=['grid','nomvar','forecast_hour'])
 
@@ -62,7 +62,8 @@ class SetConstantValue(Plugin):
             nomvar_out= self.nomvar_out,
             operator = set_series_value,
             unit = 'scalar' ,
-            exception_class = SetConstantValueError).compute()
+            exception_class = SetConstantValueError,
+            etiket='SETVAL').compute()
             if self.bi_dimensionnal:
                 res_df.drop(res_df.index[1:], inplace=True)
                 res_df.loc[:,'ip1'] = 0

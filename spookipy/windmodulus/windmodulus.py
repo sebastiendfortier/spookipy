@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from ..plugin import Plugin
-from ..utils import create_empty_result, get_existing_result, get_intersecting_levels, get_plugin_dependencies, existing_results, final_results, remove_load_data_info
+from ..utils import create_empty_result, get_existing_result, get_intersecting_levels, get_plugin_dependencies, existing_results, final_results
 import pandas as pd
 import fstpy.all as fstpy
 import numpy as np
@@ -28,7 +28,7 @@ class WindModulus(Plugin):
         'VV':{'nomvar':'VV','unit':'knot'},
     }
     plugin_result_specifications = {
-        'UV':{'nomvar':'UV','etiket':'WindModulus','unit':'knot'}
+        'UV':{'nomvar':'UV','etiket':'WNDMOD','unit':'knot'}
         }
 
     def __init__(self,df:pd.DataFrame):
@@ -67,8 +67,8 @@ class WindModulus(Plugin):
                 sys.stderr.write('WindModulus - no intersecting levels found')
                 continue
             current_fhour_group = fstpy.load_data(current_fhour_group)
-            uu_df = current_fhour_group.query('nomvar == "UU"').reset_index(drop=True)
-            vv_df = current_fhour_group.query('nomvar == "VV"').reset_index(drop=True)
+            uu_df = current_fhour_group.loc[current_fhour_group.nomvar=="UU"].reset_index(drop=True)
+            vv_df = current_fhour_group.loc[current_fhour_group.nomvar=="VV"].reset_index(drop=True)
             uv_df = create_empty_result(vv_df,self.plugin_result_specifications['UV'],copy=True)
 
 

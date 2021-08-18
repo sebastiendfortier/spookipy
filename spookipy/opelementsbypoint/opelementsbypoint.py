@@ -15,8 +15,9 @@ class OpElementsByPoint(Plugin):
 
 
     @initializer
-    def __init__(self, df:pd.DataFrame, operator, operation_name='OpElementsByPoint', exception_class = OpElementsByPointError, group_by_forecast_hour=False, group_by_level=False, nomvar_out=None, unit='scalar'):
-
+    def __init__(self, df:pd.DataFrame, operator, operation_name='OpElementsByPoint', exception_class = OpElementsByPointError, group_by_forecast_hour=False, group_by_level=False, nomvar_out=None, unit='scalar',etiket=None):
+        if self.etiket is None:
+            self.etiket = self.operation_name
         self.validate_input()
         self.plugin_result_specifications = {
         'ALL':{'nomvar':self.nomvar_out,'etiket':self.operation_name,'unit':self.unit}
@@ -33,7 +34,7 @@ class OpElementsByPoint(Plugin):
 
         self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
-        self.df = self.df.query('nomvar not in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True)
+        self.df = self.df.loc[~self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
         if len(self.df) == 1:
             raise self.exception_class(self.operation_name + ' - not enough records to process, need at least 2')

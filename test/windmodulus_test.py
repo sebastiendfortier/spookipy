@@ -20,7 +20,7 @@ def test_1(plugin_test_dir):
     #compute WindModulus
     df = spooki.WindModulus(src_df0).compute()
     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [WindModulus] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
-
+    df.loc[:,'etiket'] = 'WINDMODULUS'
     #write the result
     results_file = TMP_PATH + "windmodulus_test_1.std"
     fstpy.delete_file(results_file)
@@ -32,7 +32,7 @@ def test_1(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_2(plugin_test_dir):
@@ -45,7 +45,7 @@ def test_2(plugin_test_dir):
     #compute WindModulus
     df = spooki.WindModulus(src_df0).compute()
     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [WindModulus] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
-
+    df.loc[:,'etiket'] = 'WINDMODULUS'
     #write the result
     results_file = TMP_PATH + "windmodulus_test_2.std"
     fstpy.delete_file(results_file)
@@ -57,8 +57,10 @@ def test_2(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
+# def test_3(plugin_test_dir):
+#     pass
 
 def test_4(plugin_test_dir):
     """Test #4 : test_read_select_write_UV_already_calculated"""
@@ -82,7 +84,7 @@ def test_4(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_5(plugin_test_dir):
@@ -107,7 +109,7 @@ def test_5(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_6(plugin_test_dir):
@@ -132,9 +134,13 @@ def test_6(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
+# def test_7(plugin_test_dir):
+#     pass
 
+# def test_8(plugin_test_dir):
+#     pass
 
 def test_9(plugin_test_dir):
     """Test #9 : test_read_select_write_UV_GRID_X"""
@@ -151,7 +157,7 @@ def test_9(plugin_test_dir):
     df = spooki.WindModulus(src_df).compute()
     #[ReaderStd --ignoreExtended --input {sources[0]} {sources[1]}] >> [WindModulus] >> [WriterStd --output {destination_path} --ignoreExtended]
     #pourquoi ca devrait pas fonctionner?
-
+    df.loc[:,'etiket'] = 'WINDMODULUS'
     #write the result
     results_file = TMP_PATH + "windmodulus_test_9.std"
     fstpy.delete_file(results_file)
@@ -163,5 +169,4 @@ def test_9(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
-
+    assert(res)

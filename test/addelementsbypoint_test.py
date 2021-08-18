@@ -33,7 +33,7 @@ def test_1(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 def test_2(plugin_test_dir):
     """Test #2 : Additionne des champs 3D."""
@@ -58,7 +58,7 @@ def test_2(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_3(plugin_test_dir):
@@ -70,22 +70,22 @@ def test_3(plugin_test_dir):
     with pytest.raises(spooki.AddElementsByPointError):
         #compute AddElementsByPoint
         df = spooki.AddElementsByPoint(src_df0, nomvar_out='TROPLONG').compute()
-        #[ReaderStd --input {sources[0]}] >> [AddElementsByPoint --outputFieldName TROPLONG] 
+        #[ReaderStd --input {sources[0]}] >> [AddElementsByPoint --outputFieldName TROPLONG]
 
 
 
 def test_4(plugin_test_dir):
     """Test #4 : Essaie d'additionner lorsqu'il y a seulement 1 champ en entrée."""
-    # open and read source 
+    # open and read source
     source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    src_df0 = src_df0.query( 'nomvar == "UU"')
-    
+    src_df0 = src_df0.loc[src_df0.nomvar=="UU"].reset_index(drop=True)
+
     with pytest.raises(spooki.AddElementsByPointError):
         #compute AddElementsByPoint
         df = spooki.AddElementsByPoint(src_df0).compute()
-        #[ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> [AddElementsByPoint] 
+        #[ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> [AddElementsByPoint]
 
 
 def test_5(plugin_test_dir):
@@ -94,9 +94,9 @@ def test_5(plugin_test_dir):
     source0 = plugin_test_dir + "tt_gz_px_2grilles.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    src_df0 = src_df0.query( 'nomvar in ["TT","GZ"]')
+    src_df0 = src_df0.loc[src_df0.nomvar.isin(["TT","GZ"])].reset_index(drop=True)
 
     with pytest.raises(spooki.AddElementsByPointError):
         #compute AddElementsByPoint
         df = spooki.AddElementsByPoint(src_df0).compute()
-        #[ReaderStd --input {sources[0]}] >> [Select --fieldName TT,GZ ] >> [AddElementsByPoint] 
+        #[ReaderStd --input {sources[0]}] >> [Select --fieldName TT,GZ ] >> [AddElementsByPoint]

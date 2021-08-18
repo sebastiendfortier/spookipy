@@ -12,7 +12,7 @@ class MinMaxLevelIndexError(Exception):
 
 class MinMaxLevelIndex(Plugin):
     # plugin_requires = '(nomvar in ["TD","TT"]) and (unit == "celsius")'
-    plugin_result_specifications = {'ALL':{'etiket':'MinMaxLevelIndex','unit':'scalar','ip1':0}}
+    plugin_result_specifications = {'ALL':{'etiket':'MMLVLI','unit':'scalar','ip1':0}}
     @initializer
     def __init__(self,df:pd.DataFrame, ascending=True, min=False, max=False, bounded=False, nomvar_min='KMIN', nomvar_max='KMAX'):
         self.validate_input()
@@ -29,7 +29,7 @@ class MinMaxLevelIndex(Plugin):
 
         self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
-        self.df = self.df.query('nomvar not in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True)
+        self.df = self.df.loc[~self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
         if (not self.min) and (not self.max):
             self.min = True
@@ -37,7 +37,7 @@ class MinMaxLevelIndex(Plugin):
 
         self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['forecast_hour'])
 
-        keep = self.df.query(f'nomvar not in ["KBAS","KTOP"]').reset_index(drop=True)
+        keep = self.df.loc[~self.df.nomvar.isin(["KBAS","KTOP"])].reset_index(drop=True)
 
         self.nomvar_groups= keep.groupby(by=['grid','forecast_hour','nomvar'])
 
@@ -46,7 +46,7 @@ class MinMaxLevelIndex(Plugin):
         df_list=[]
         for _,group in self.nomvar_groups:
             group = fstpy.load_data(group)
-
+            group.loc[:,'etiket'] = self.plugin_result_specifications['ALL']['etiket']
             kmin_df = create_empty_result(group,self.plugin_result_specifications['ALL'])
             kmin_df['nomvar']=self.nomvar_min
             # for k,v in self.plugin_result_specifications['ALL'].items():kmin_df[k] = v
@@ -66,9 +66,9 @@ class MinMaxLevelIndex(Plugin):
 
             if self.bounded:
                 # get kbas and ktop for this grid
-                kbas = self.df.query('(nomvar=="KBAS") and (grid=="%s")'%group.iloc[0]['grid']).reset_index(drop=True)
+                kbas = self.df.loc[(self.df.nomvar=="KBAS") & (self.df.grid==group.iloc[0]['grid'])].reset_index(drop=True)
                 kbas = fstpy.load_data(kbas)
-                ktop = self.df.query('(nomvar=="KTOP") and (grid=="%s")'%group.iloc[0]['grid']).reset_index(drop=True)
+                ktop = self.df.loc[(self.df.nomvar=="KTOP") & (self.df.grid==group.iloc[0]['grid'])].reset_index(drop=True)
                 ktop = fstpy.load_data(ktop)
                 kbas_arr = kbas.iloc[0]['d'].flatten().astype('int64')
                 kbas_mask = kbas_arr == -1

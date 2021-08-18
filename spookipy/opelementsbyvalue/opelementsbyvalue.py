@@ -10,7 +10,9 @@ class OpElementsByValueError(Exception):
 
 class OpElementsByValue(Plugin):
     @initializer
-    def __init__(self, df:pd.DataFrame, operator, value, operation_name='OpElementsByValue', exception_class = OpElementsByValueError, nomvar_out=None, unit=''):
+    def __init__(self, df:pd.DataFrame, operator, value, operation_name='OpElementsByValue', exception_class = OpElementsByValueError, nomvar_out=None, unit='',etiket=None):
+        if self.etiket is None:
+            self.etiket=self.operation_name
         self.validate_input()
 
     def validate_input(self):
@@ -23,12 +25,12 @@ class OpElementsByValue(Plugin):
 
         self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
-        self.df = self.df.query('nomvar not in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True)
+        self.df = self.df.loc[~self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
         if not (self.nomvar_out is None):
-            self.plugin_result_specifications = {'ALL':{'nomvar':self.nomvar_out,'etiket':self.operation_name,'unit':self.unit}}
+            self.plugin_result_specifications = {'ALL':{'nomvar':self.nomvar_out,'etiket':self.etiket,'unit':self.unit}}
         else:
-            self.plugin_result_specifications = {'ALL':{'etiket':self.operation_name,'unit':self.unit}}
+            self.plugin_result_specifications = {'ALL':{'etiket':self.etiket,'unit':self.unit}}
 
     def compute(self) -> pd.DataFrame:
         sys.stdout.write('OpElementsByValue - compute\n')

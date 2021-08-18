@@ -3,7 +3,7 @@
 
 python module stenfilt ! in 
     interface  ! in :stenfilt
-        subroutine filtre(slab,ni,nj,npass,list,l) ! in :stenfilt:stenfilt.f
+        subroutine filtre(slab,ni,nj,npass,list,l) ! in :stenfilt:stenfilt.f90
             real dimension(ni,nj),intent(inout) :: slab
             integer, optional,check(shape(slab,0)==ni),depend(slab) :: ni=shape(slab,0)
             integer, optional,check(shape(slab,1)==nj),depend(slab) :: nj=shape(slab,1)

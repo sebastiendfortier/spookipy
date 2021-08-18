@@ -18,7 +18,7 @@ class FilterDigital(Plugin):
 
         self.plugin_result_specifications = {
             'ALL':{'filtered':True}
-            # 'etiket':'FilterDigital',
+            # 'etiket':'FLTRDG',
         }
 
         self.validate_input()

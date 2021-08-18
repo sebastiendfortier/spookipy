@@ -28,7 +28,8 @@ class ApplyUnary(Plugin):
 
     def compute(self) -> pd.DataFrame:
         sys.stdout.write('ApplyUnary - compute\n')
-        in_df = self.df.query( 'nomvar=="%s"'%self.nomvar_in).reset_index(drop=True)
+
+        in_df = self.df.loc[self.df.nomvar==self.nomvar_in].reset_index(drop=True)
 
         if in_df.empty:
             raise ApplyUnaryError(f'No data to process with nomvar {self.nomvar_in}')

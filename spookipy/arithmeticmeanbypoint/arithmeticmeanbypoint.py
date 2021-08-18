@@ -16,11 +16,11 @@ class ArithmeticMeanByPoint(Plugin):
 
     def compute(self) -> pd.DataFrame:
         sys.stdout.write('ArithmeticMeanByPoint - compute\n')
-        return OpElementsByPoint(self.df, 
+        return OpElementsByPoint(self.df,
         operator = np.mean,
-        operation_name='ArithmeticMeanByPoint', 
-        exception_class = ArithmeticMeanByPointError, 
-        group_by_forecast_hour=self.group_by_forecast_hour, 
-        group_by_level=True, 
-        nomvar_out=self.nomvar_out).compute()
-
+        operation_name='ArithmeticMeanByPoint',
+        exception_class = ArithmeticMeanByPointError,
+        group_by_forecast_hour=self.group_by_forecast_hour,
+        group_by_level=True,
+        nomvar_out=self.nomvar_out,
+        etiket='MEANPT').compute()

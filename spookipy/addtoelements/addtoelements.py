@@ -25,5 +25,5 @@ class AddToElements(Plugin):
             value = self.value,
             operation_name='AddToElements',
             exception_class = AddToElementsError,
-            nomvar_out= self.nomvar_out
-            ).compute()
+            nomvar_out= self.nomvar_out,
+            etiket='ADDTOE').compute()

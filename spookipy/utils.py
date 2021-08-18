@@ -66,7 +66,11 @@ def get_plugin_dependencies(df:pd.DataFrame, plugin_params:dict=None, plugin_man
     df_list = []
     # print('before\n',df[['nomvar','unit','level','ip1_pkind']].to_string())
     # print(plugin_mandatory_dependencies)
-    for nomvar,desc in plugin_mandatory_dependencies.items():
+    for label,desc in plugin_mandatory_dependencies.items():
+        if 'nomvar' in desc.keys():
+            nomvar = desc['nomvar']
+        else:
+            nomvar = label
         # plugin_params = desc.pop('plugin_params') if 'plugin_params' in desc.keys() else None
         select_only = desc.pop('select_only') if 'select_only' in desc.keys() else False
         if (nomvar in computable_dependencies.keys()) and (df.loc[df.nomvar==nomvar].empty) and (select_only==False):

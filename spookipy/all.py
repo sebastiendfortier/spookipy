@@ -9,6 +9,7 @@ from .dewpointdepression import *
 from .filterdigital import *
 from .georgekindex import *
 from .gridcut import *
+from .helicity import *
 from .humidex import *
 from .humidityrelative import *
 from .humidityspecific import *
@@ -25,8 +26,10 @@ from .pressure import *
 from .saturationvapourpressure import *
 from .setconstantvalue import *
 from .temperaturedewpoint import *
+from .totaltotalsindex import *
 from .vapourpessure import*
 from .watervapourmixingratio import *
 from .windchill import *
+from .winddirection import *
 from .windmax import *
 from .windmodulus import *

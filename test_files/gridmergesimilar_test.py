@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"GridMergeSimilar/testsFiles/"
 class TestGridMergeSimilar(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : Test """
+        """Test """
         # open and read source
         source0 = plugin_test_dir + "2011072100_006_eta_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -45,7 +45,7 @@ class TestGridMergeSimilar(unittest.TestCase):
 
 
     def test_2(self):
-        """Test #2 : Test"""
+        """Test"""
         # open and read source
         source0 = plugin_test_dir + "2011072100_006_eta_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

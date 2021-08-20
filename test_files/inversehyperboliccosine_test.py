@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"InverseHyperbolicCosine/testsFiles/"
 class TestInverseHyperbolicCosine(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 :  Test InverseHyperbolicCosine normal"""
+        """ Test InverseHyperbolicCosine normal"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_1_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

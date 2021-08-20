@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"WindVerticalShear/testsFiles/"
 class TestWindVerticalShear(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : Calculate with a simple test data like 3x3x3 matrix for GZ, UU and VV."""
+        """Calculate with a simple test data like 3x3x3 matrix for GZ, UU and VV."""
         # open and read source
         source0 = plugin_test_dir + "GZUUVV_144_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -45,7 +45,7 @@ class TestWindVerticalShear(unittest.TestCase):
 
 
     def test_2(self):
-        """Test #2 : Calculate with pressure file."""
+        """Calculate with pressure file."""
         # open and read source
         source0 = plugin_test_dir + "2011051818_000.UUVVTTGZ.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -68,7 +68,7 @@ class TestWindVerticalShear(unittest.TestCase):
 
 
     def test_3(self):
-        """Test #3 : Test the WindVerticalShear calcul with model file."""
+        """Test the WindVerticalShear calcul with model file."""
         # open and read source
         source0 = plugin_test_dir + "2011070818_054_hyb"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -91,7 +91,7 @@ class TestWindVerticalShear(unittest.TestCase):
 
 
     def test_4(self):
-        """Test #4 : Test the WindVerticalShear plugin extended attributes with a model output file."""
+        """Test the WindVerticalShear plugin extended attributes with a model output file."""
         # open and read source
         source0 = plugin_test_dir + "2011070818_054_hyb"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

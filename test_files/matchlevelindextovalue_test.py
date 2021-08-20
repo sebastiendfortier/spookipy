@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"MatchLevelIndexToValue/testsFiles/"
 class TestMatchLevelIndexToValue(unittest.TestCase):
 
     def test_match_one_field1_full_computation(self):
-        """Test #1 : test_match_one_field1_full_computation."""
+        """test_match_one_field1_full_computation."""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -45,7 +45,7 @@ class TestMatchLevelIndexToValue(unittest.TestCase):
 
 
     def test_match_one_field4_full_computation_except_uv(self):
-        """Test #4 : test_match_one_field4_full_computation_except_uv."""
+        """test_match_one_field4_full_computation_except_uv."""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_UV_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -68,7 +68,7 @@ class TestMatchLevelIndexToValue(unittest.TestCase):
 
 
     def test_match_one_field4_full_computation(self):
-        """Test #5 : test_match_one_field4_full_computation."""
+        """test_match_one_field4_full_computation."""
         # open and read source
         source0 = plugin_test_dir + "UUVVTT5x5x2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -91,7 +91,7 @@ class TestMatchLevelIndexToValue(unittest.TestCase):
 
 
     def test_match_two_fields(self):
-        """Test #6 : Tester l'option --outputFieldName avec plus d'un type de champ en entree."""
+        """Tester l'option --outputFieldName avec plus d'un type de champ en entree."""
         # open and read source
         source0 = plugin_test_dir + "UUVVTT5x5x2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -114,7 +114,7 @@ class TestMatchLevelIndexToValue(unittest.TestCase):
 
 
     def test_match_no_fields(self):
-        """Test #7 : test_match_no_fields."""
+        """test_match_no_fields."""
         # open and read source
         source0 = plugin_test_dir + "UUVVTT5x5x2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -137,7 +137,7 @@ class TestMatchLevelIndexToValue(unittest.TestCase):
 
 
     def test_match_negative_index(self):
-        """Test #8 : test_match_negative_index."""
+        """test_match_negative_index."""
         # open and read source
         source0 = plugin_test_dir + "sortie_cpp_cld_200906290606"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

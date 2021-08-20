@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"PowerElementsByPoint/testsFiles/"
 class TestPowerElementsByPoint(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 :  Test puissance normal - grouped"""
+        """ Test puissance normal - grouped"""
         # open and read source
         source0 = plugin_test_dir + "UUPOW_5x5.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -45,7 +45,7 @@ class TestPowerElementsByPoint(unittest.TestCase):
 
 
     def test_2(self):
-        """Test #2 :  Test puissance normal, 1 forcastHour and 2 levels - grouped"""
+        """ Test puissance normal, 1 forcastHour and 2 levels - grouped"""
         # open and read source
         source0 = plugin_test_dir + "input_5x5_2fh.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -68,7 +68,7 @@ class TestPowerElementsByPoint(unittest.TestCase):
 
 
     def test_3(self):
-        """Test #3 :  Test puissance normal, 2 forcastHour and 2 levels - grouped"""
+        """ Test puissance normal, 2 forcastHour and 2 levels - grouped"""
         # open and read source
         source0 = plugin_test_dir + "input_5x5_2fh.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -91,7 +91,7 @@ class TestPowerElementsByPoint(unittest.TestCase):
 
 
     def test_4(self):
-        """Test #4 :  Test puissance normal, 1 forcastHour, 2 levels base and 1 level exponent - grouped"""
+        """ Test puissance normal, 1 forcastHour, 2 levels base and 1 level exponent - grouped"""
         # open and read source
         source0 = plugin_test_dir + "input_5x5_2fh.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -114,7 +114,7 @@ class TestPowerElementsByPoint(unittest.TestCase):
 
 
     def test_5(self):
-        """Test #5 :  Test puissance normal, 2 forcastHour, 2 levels base and 1 level exponent - grouped"""
+        """ Test puissance normal, 2 forcastHour, 2 levels base and 1 level exponent - grouped"""
         # open and read source
         source0 = plugin_test_dir + "input_5x5_2fh.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -137,7 +137,7 @@ class TestPowerElementsByPoint(unittest.TestCase):
 
 
     def test_6(self):
-        """Test #6 :  Test puissance normal, 1 forcastHour, 1 levels base, 2 level exponent - grouped"""
+        """ Test puissance normal, 1 forcastHour, 1 levels base, 2 level exponent - grouped"""
         # open and read source
         source0 = plugin_test_dir + "input_5x5_2fh.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -160,7 +160,7 @@ class TestPowerElementsByPoint(unittest.TestCase):
 
 
     def test_7(self):
-        """Test #7 :  Test puissance normal, 2 forcastHour, 1 levels base and 2 level exponent - grouped"""
+        """ Test puissance normal, 2 forcastHour, 1 levels base and 2 level exponent - grouped"""
         # open and read source
         source0 = plugin_test_dir + "input_5x5_2fh.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -183,7 +183,7 @@ class TestPowerElementsByPoint(unittest.TestCase):
 
 
     def test_8(self):
-        """Test #8 :  Test puissance normal, 2 forcastHour, 1 levels base and 2 level exponent"""
+        """ Test puissance normal, 2 forcastHour, 1 levels base and 2 level exponent"""
         # open and read source
         source0 = plugin_test_dir + "input_5x5_2fh.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -206,7 +206,7 @@ class TestPowerElementsByPoint(unittest.TestCase):
 
 
     def test_9(self):
-        """Test #9 :  Test puissance normal, 2 forcastHour, 1 levels base with one forecastHour and 1 level exponent with different forecastHour"""
+        """ Test puissance normal, 2 forcastHour, 1 levels base with one forecastHour and 1 level exponent with different forecastHour"""
         # open and read source
         source0 = plugin_test_dir + "input_5x5_2fh.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -229,7 +229,7 @@ class TestPowerElementsByPoint(unittest.TestCase):
 
 
     def test_10(self):
-        """Test #10 :  Test puissance normal, 4 forcastHour, 2 levels base with 2 forecastHour and 2 level exponent with 2 different forecastHour"""
+        """ Test puissance normal, 4 forcastHour, 2 levels base with 2 forecastHour and 2 level exponent with 2 different forecastHour"""
         # open and read source
         source0 = plugin_test_dir + "input_5x5_2fh.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -252,7 +252,7 @@ class TestPowerElementsByPoint(unittest.TestCase):
 
 
     def test_11(self):
-        """Test #11 :  Test puissance normal, 1 forcastHour, 2 levels base with 1 forecastHour and 1 level not equal to any of base"""
+        """ Test puissance normal, 1 forcastHour, 2 levels base with 1 forecastHour and 1 level not equal to any of base"""
         # open and read source
         source0 = plugin_test_dir + "input_5x5_2fh.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -275,7 +275,7 @@ class TestPowerElementsByPoint(unittest.TestCase):
 
 
     def test_12(self):
-        """Test #12 :  Test puissance normal, 4 forcastHour, 2 levels base with 2 forecastHour and 2 level exponent with 1 different forecastHour"""
+        """ Test puissance normal, 4 forcastHour, 2 levels base with 2 forecastHour and 2 level exponent with 1 different forecastHour"""
         # open and read source
         source0 = plugin_test_dir + "input_5x5_2fh.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

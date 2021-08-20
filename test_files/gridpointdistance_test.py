@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"GridPointDistance/testsFiles/"
 class TestGridPointDistance(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : test_gridPointDistance_X_centered"""
+        """test_gridPointDistance_X_centered"""
         # open and read source
         source0 = plugin_test_dir + "ps5x4_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -45,7 +45,7 @@ class TestGridPointDistance(unittest.TestCase):
 
 
     def test_2(self):
-        """Test #2 : test_gridPointDistance_Y_centered"""
+        """test_gridPointDistance_Y_centered"""
         # open and read source
         source0 = plugin_test_dir + "ps5x4_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -68,7 +68,7 @@ class TestGridPointDistance(unittest.TestCase):
 
 
     def test_3(self):
-        """Test #3 : test_gridPointDistance_X_forward"""
+        """test_gridPointDistance_X_forward"""
         # open and read source
         source0 = plugin_test_dir + "ps5x4_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -91,7 +91,7 @@ class TestGridPointDistance(unittest.TestCase):
 
 
     def test_4(self):
-        """Test #4 : test_gridPointDistance_Y_forward"""
+        """test_gridPointDistance_Y_forward"""
         # open and read source
         source0 = plugin_test_dir + "ps5x4_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -114,7 +114,7 @@ class TestGridPointDistance(unittest.TestCase):
 
 
     def test_5(self):
-        """Test #5 : test_gridPointDistance_X_backward"""
+        """test_gridPointDistance_X_backward"""
         # open and read source
         source0 = plugin_test_dir + "ps5x4_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -137,7 +137,7 @@ class TestGridPointDistance(unittest.TestCase):
 
 
     def test_6(self):
-        """Test #6 : test_gridPointDistance_Y_backward"""
+        """test_gridPointDistance_Y_backward"""
         # open and read source
         source0 = plugin_test_dir + "ps5x4_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -160,7 +160,7 @@ class TestGridPointDistance(unittest.TestCase):
 
 
     def test_7(self):
-        """Test #7 : test_gridPointDistance_XY_centered"""
+        """test_gridPointDistance_XY_centered"""
         # open and read source
         source0 = plugin_test_dir + "ps5x4_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

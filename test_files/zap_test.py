@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"Zap/testsFiles/"
 class TestZap(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : Tester l'option --typeOfField avec une valeur invalide!"""
+        """Tester l'option --typeOfField avec une valeur invalide!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -45,7 +45,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_2(self):
-        """Test #2 : Tester l'option --run avec une valeur invalide!"""
+        """Tester l'option --run avec une valeur invalide!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -68,7 +68,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_3(self):
-        """Test #3 : Tester l'option --ensembleMember avec une valeur invalide!"""
+        """Tester l'option --ensembleMember avec une valeur invalide!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -91,7 +91,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_5(self):
-        """Test #5 : Tester l'option --verticalLevel avec une valeur invalide!"""
+        """Tester l'option --verticalLevel avec une valeur invalide!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -114,7 +114,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_6(self):
-        """Test #6 : Tester l'option --verticalLevelType avec une valeur invalide!"""
+        """Tester l'option --verticalLevelType avec une valeur invalide!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -137,7 +137,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_7(self):
-        """Test #7 : Tester l'option --forecastHour avec une valeur invalide!"""
+        """Tester l'option --forecastHour avec une valeur invalide!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -160,7 +160,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_8(self):
-        """Test #8 : Tester l'option --forecastHourOnly avec une valeur invalide!"""
+        """Tester l'option --forecastHourOnly avec une valeur invalide!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -183,7 +183,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_9(self):
-        """Test #9 : Tester l'option --userDefinedIndex avec une valeur invalide!"""
+        """Tester l'option --userDefinedIndex avec une valeur invalide!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -206,7 +206,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_10(self):
-        """Test #10 : Tester l'option --nbitsForDataStorage avec une valeur invalide!"""
+        """Tester l'option --nbitsForDataStorage avec une valeur invalide!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -229,7 +229,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_11(self):
-        """Test #11 : Tester l'option --unit avec une valeur invalide!"""
+        """Tester l'option --unit avec une valeur invalide!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -252,7 +252,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_12(self):
-        """Test #12 : Tester l'option --forecastHourOnly avec une valeur invalide!"""
+        """Tester l'option --forecastHourOnly avec une valeur invalide!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -275,7 +275,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_13(self):
-        """Test #13 : Tester l'option --forecastHourOnly avec une valeur valide!"""
+        """Tester l'option --forecastHourOnly avec une valeur valide!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -298,7 +298,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_14(self):
-        """Test #14 : Tester l'option --forecastHour avec une valeur invalide!"""
+        """Tester l'option --forecastHour avec une valeur invalide!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -321,7 +321,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_15(self):
-        """Test #15 : Tester l'option --forecastHour avec une valeur invalide!"""
+        """Tester l'option --forecastHour avec une valeur invalide!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -344,7 +344,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_16(self):
-        """Test #16 : Tester l'option --forecastHour avec une valeur invalide!"""
+        """Tester l'option --forecastHour avec une valeur invalide!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -367,7 +367,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_17(self):
-        """Test #17 : Tester l'option --forecastHourOnly, --timeStepNumber et --lenghtOfTimeStep avec une valeur valide!"""
+        """Tester l'option --forecastHourOnly, --timeStepNumber et --lenghtOfTimeStep avec une valeur valide!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -390,7 +390,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_18(self):
-        """Test #18 : Tester l'option --forecastHour, --timeStepNumber et --lenghtOfTimeStep avec une valeur invalide!"""
+        """Tester l'option --forecastHour, --timeStepNumber et --lenghtOfTimeStep avec une valeur invalide!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -413,7 +413,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_19(self):
-        """Test #19 : Tester l'option --forecastHour, --timeStepNumber et --lenghtOfTimeStep avec une valeur invalide!"""
+        """Tester l'option --forecastHour, --timeStepNumber et --lenghtOfTimeStep avec une valeur invalide!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -436,7 +436,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_20(self):
-        """Test #20 : Tester l'option --forecastHour, --timeStepNumber et --lenghtOfTimeStep avec une valeur invalide!"""
+        """Tester l'option --forecastHour, --timeStepNumber et --lenghtOfTimeStep avec une valeur invalide!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -459,7 +459,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_21(self):
-        """Test #21 : Tester l'option --forecastHour et --lenghtOfTimeStep avec une valeur invalide!"""
+        """Tester l'option --forecastHour et --lenghtOfTimeStep avec une valeur invalide!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -482,7 +482,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_22(self):
-        """Test #22 : Tester l'option --forecastHour et --timeStepNumber avec une valeur invalide!"""
+        """Tester l'option --forecastHour et --timeStepNumber avec une valeur invalide!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -505,7 +505,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_23(self):
-        """Test #23 : Tester l'option --forecastHourOnly, --timeStepNumber et --lenghtOfTimeStep avec une valeur valide!"""
+        """Tester l'option --forecastHourOnly, --timeStepNumber et --lenghtOfTimeStep avec une valeur valide!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -528,7 +528,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_24(self):
-        """Test #24 : Tester l'option --forecastHourOnly, --timeStepNumber et --lenghtOfTimeStep avec une valeur valide!"""
+        """Tester l'option --forecastHourOnly, --timeStepNumber et --lenghtOfTimeStep avec une valeur valide!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -551,7 +551,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_25(self):
-        """Test #25 : Tester l'option --forecastHourOnly, --timeStepNumber et --lenghtOfTimeStep avec une valeur valide!"""
+        """Tester l'option --forecastHourOnly, --timeStepNumber et --lenghtOfTimeStep avec une valeur valide!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -574,7 +574,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_26(self):
-        """Test #26 : Tester l'option --modificationFlag, avec 2 valeurs valide!"""
+        """Tester l'option --modificationFlag, avec 2 valeurs valide!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -597,7 +597,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_27(self):
-        """Test #27 : Tester l'option --modificationFlag, avec 1 valeur valide!"""
+        """Tester l'option --modificationFlag, avec 1 valeur valide!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -620,7 +620,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_28(self):
-        """Test #28 : Tester l'option --modificationFlag, avec 1 valeur invalide!"""
+        """Tester l'option --modificationFlag, avec 1 valeur invalide!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -643,7 +643,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_29(self):
-        """Test #29 : Tester l'option --modificationFlag, avec 1 valeur invalide!"""
+        """Tester l'option --modificationFlag, avec 1 valeur invalide!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -666,7 +666,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_30(self):
-        """Test #30 : Tester l'option --modificationFlag, avec FILTERED=TRUE!"""
+        """Tester l'option --modificationFlag, avec FILTERED=TRUE!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -689,7 +689,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_31(self):
-        """Test #31 : Tester l'option --modificationFlag, avec INTERPOLATED=TRUE!"""
+        """Tester l'option --modificationFlag, avec INTERPOLATED=TRUE!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -712,7 +712,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_32(self):
-        """Test #32 : Tester l'option --modificationFlag, avec UNITCONVERTED=TRUE!"""
+        """Tester l'option --modificationFlag, avec UNITCONVERTED=TRUE!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -735,7 +735,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_33(self):
-        """Test #33 : Tester l'option --modificationFlag, avec ALL_FLAGS=TRUE!"""
+        """Tester l'option --modificationFlag, avec ALL_FLAGS=TRUE!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -758,7 +758,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_34(self):
-        """Test #34 : Tester l'option --modificationFlag, avec ZAPPED!"""
+        """Tester l'option --modificationFlag, avec ZAPPED!"""
         # open and read source
         source0 = plugin_test_dir + "resulttest_26.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -781,7 +781,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_35(self):
-        """Test #35 : Tester l'option --modificationFlag, avec ZAPPED and FILTERED!"""
+        """Tester l'option --modificationFlag, avec ZAPPED and FILTERED!"""
         # open and read source
         source0 = plugin_test_dir + "resulttest_30.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -804,7 +804,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_36(self):
-        """Test #36 : Tester l'option --modificationFlag, avec FILTERED!"""
+        """Tester l'option --modificationFlag, avec FILTERED!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -827,7 +827,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_37(self):
-        """Test #37 : Tester l'option --modificationFlag, avec INTERPOLATED!"""
+        """Tester l'option --modificationFlag, avec INTERPOLATED!"""
         # open and read source
         source0 = plugin_test_dir + "resulttest_31.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -850,7 +850,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_38(self):
-        """Test #38 : Tester l'option --modificationFlag, avec UNITCONVERTED!"""
+        """Tester l'option --modificationFlag, avec UNITCONVERTED!"""
         # open and read source
         source0 = plugin_test_dir + "resulttest_32.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -873,7 +873,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_39(self):
-        """Test #38 : Tester l'option --modificationFlag, avec ZAP et FILTERED!"""
+        """Tester l'option --modificationFlag, avec ZAP et FILTERED!"""
         # open and read source
         source0 = plugin_test_dir + "zap_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -896,7 +896,7 @@ class TestZap(unittest.TestCase):
 
 
     def test_40(self):
-        """Test #40 : Tester l'option --modificationFlag, avec ENSEMBLEEXTRAINFO!"""
+        """Tester l'option --modificationFlag, avec ENSEMBLEEXTRAINFO!"""
         # open and read source
         source0 = plugin_test_dir + "resulttest_32.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

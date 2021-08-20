@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"WindComponents/testsFiles/"
 class TestWindComponents(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : Test """
+        """Test """
         # open and read source
         source0 = plugin_test_dir + "UUVV_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

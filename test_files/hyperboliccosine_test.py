@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"HyperbolicCosine/testsFiles/"
 class TestHyperbolicCosine(unittest.TestCase):
 
     def test_function_COSH(self):
-        """Test #1 : Calcul de la fonction cosinus hyperbolique sur chaque element"""
+        """Calcul de la fonction cosinus hyperbolique sur chaque element"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_1_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

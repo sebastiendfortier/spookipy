@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"ReaderStd/testsFiles/"
 class TestReaderStd(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : Test l'option --input avec un fichier qui n'existe pas!"""
+        """Test l'option --input avec un fichier qui n'existe pas!"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -45,7 +45,7 @@ class TestReaderStd(unittest.TestCase):
 
 
     def test_2(self):
-        """Test #2 : Test avec un fichier qui possède un champ de type entier."""
+        """Test avec un fichier qui possède un champ de type entier."""
         # open and read source
         source0 = plugin_test_dir + "regdiag_2012061300_012_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -68,7 +68,7 @@ class TestReaderStd(unittest.TestCase):
 
 
     def test_3(self):
-        """Test #3 : test_read_write_small"""
+        """test_read_write_small"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -91,7 +91,7 @@ class TestReaderStd(unittest.TestCase):
 
 
     def test_5(self):
-        """Test #5 : test_read_write_big"""
+        """test_read_write_big"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -114,7 +114,7 @@ class TestReaderStd(unittest.TestCase):
 
 
     def test_6(self):
-        """Test #6 : test_read_write_sigma12000_pressure"""
+        """test_read_write_sigma12000_pressure"""
         # open and read source
         source0 = plugin_test_dir + "input_model"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -137,7 +137,7 @@ class TestReaderStd(unittest.TestCase):
 
 
     def test_7(self):
-        """Test #7 : test_read_write_big_noMetadata"""
+        """test_read_write_big_noMetadata"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -160,7 +160,7 @@ class TestReaderStd(unittest.TestCase):
 
 
     def test_8(self):
-        """Test #8 : test_read_file_with_duplicated_grid"""
+        """test_read_file_with_duplicated_grid"""
         # open and read source
         source0 = plugin_test_dir + "fstdWithDuplicatedGrid_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -183,7 +183,7 @@ class TestReaderStd(unittest.TestCase):
 
 
     def test_9(self):
-        """Test #9 : test_read_write_64bit"""
+        """test_read_write_64bit"""
         # open and read source
         source0 = plugin_test_dir + "tt_stg_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -206,7 +206,7 @@ class TestReaderStd(unittest.TestCase):
 
 
     def test_10(self):
-        """Test #10 : test_read_2_file"""
+        """test_read_2_file"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -235,7 +235,7 @@ class TestReaderStd(unittest.TestCase):
 
 
     def test_11(self):
-        """Test #11 : test_read_write_ip3"""
+        """test_read_write_ip3"""
         # open and read source
         source0 = plugin_test_dir + "ip3.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -258,7 +258,7 @@ class TestReaderStd(unittest.TestCase):
 
 
     def test_12(self):
-        """Test #12 : test_read_write_ip1_mb_newstyle"""
+        """test_read_write_ip1_mb_newstyle"""
         # open and read source
         source0 = plugin_test_dir + "UUVV93423264_hyb_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -281,7 +281,7 @@ class TestReaderStd(unittest.TestCase):
 
 
     def test_13(self):
-        """Test #13 : test for file containing 2 HY"""
+        """test for file containing 2 HY"""
         # open and read source
         source0 = plugin_test_dir + "2hy.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -304,7 +304,7 @@ class TestReaderStd(unittest.TestCase):
 
 
     def test_14(self):
-        """Test #14 : test reading fields with typvar == PZ"""
+        """test reading fields with typvar == PZ"""
         # open and read source
         source0 = plugin_test_dir + "UUVVTT5x5x2_fileSrc_PZ.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -327,7 +327,7 @@ class TestReaderStd(unittest.TestCase):
 
 
     def test_15(self):
-        """Test #15 : test reading fields with typvar == PU"""
+        """test reading fields with typvar == PU"""
         # open and read source
         source0 = plugin_test_dir + "UUVVTT5x5x2_fileSrc_PU.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -350,7 +350,7 @@ class TestReaderStd(unittest.TestCase):
 
 
     def test_16(self):
-        """Test #16 : test reading fields with typvar == PI"""
+        """test reading fields with typvar == PI"""
         # open and read source
         source0 = plugin_test_dir + "UUVVTT5x5x2_fileSrc_PI.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -373,7 +373,7 @@ class TestReaderStd(unittest.TestCase):
 
 
     def test_17(self):
-        """Test #17 : test reading fields with typvar == PF"""
+        """test reading fields with typvar == PF"""
         # open and read source
         source0 = plugin_test_dir + "UUVVTT5x5x2_fileSrc_PF.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -396,7 +396,7 @@ class TestReaderStd(unittest.TestCase):
 
 
     def test_18(self):
-        """Test #18 : test reading fields with typvar == PM"""
+        """test reading fields with typvar == PM"""
         # open and read source
         source0 = plugin_test_dir + "UUVVTT5x5x2_fileSrc_PM.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -419,7 +419,7 @@ class TestReaderStd(unittest.TestCase):
 
 
     def test_19(self):
-        """Test #19 : test if HY is put in memory and written back when we have a grid with two kind of level, one of them being hybrid"""
+        """test if HY is put in memory and written back when we have a grid with two kind of level, one of them being hybrid"""
         # open and read source
         source0 = plugin_test_dir + "mb_plus_hybrid_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -442,7 +442,7 @@ class TestReaderStd(unittest.TestCase):
 
 
     def test_20(self):
-        """Test #20 : test if HY is put in memory and written back when we have a grid with hybrid level"""
+        """test if HY is put in memory and written back when we have a grid with hybrid level"""
         # open and read source
         source0 = plugin_test_dir + "mb_plus_hybrid_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -465,7 +465,7 @@ class TestReaderStd(unittest.TestCase):
 
 
     def test_21(self):
-        """Test #21 : test that the HY is NOT written back when the final grid don't have a hybrid level"""
+        """test that the HY is NOT written back when the final grid don't have a hybrid level"""
         # open and read source
         source0 = plugin_test_dir + "mb_plus_hybrid_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -488,7 +488,7 @@ class TestReaderStd(unittest.TestCase):
 
 
     def test_22(self):
-        """Test #22 : test that PT is NOT read by the reader when the level type of the fields on the grid is not sigma"""
+        """test that PT is NOT read by the reader when the level type of the fields on the grid is not sigma"""
         # open and read source
         source0 = plugin_test_dir + "pt_with_hybrid.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -511,7 +511,7 @@ class TestReaderStd(unittest.TestCase):
 
 
     def test_23(self):
-        """Test #23 : test that PT is NOT written back when there is a PT field created in memory and the level type of the fields on the grid is not sigma"""
+        """test that PT is NOT written back when there is a PT field created in memory and the level type of the fields on the grid is not sigma"""
         # open and read source
         source0 = plugin_test_dir + "kt_ai_hybrid.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -534,7 +534,7 @@ class TestReaderStd(unittest.TestCase):
 
 
     def test_25(self):
-        """Test #25 : Test la lecture avec ip2 != deet * npas"""
+        """Test la lecture avec ip2 != deet * npas"""
         # open and read source
         source0 = plugin_test_dir + "2012121000_cancm3_m1_00_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -557,7 +557,7 @@ class TestReaderStd(unittest.TestCase):
 
 
     def test_26(self):
-        """Test #26 : Test la lecture d'un fichier pilot """
+        """Test la lecture d'un fichier pilot """
         # open and read source
         source0 = plugin_test_dir + "2015040800_030_piloteta"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -580,7 +580,7 @@ class TestReaderStd(unittest.TestCase):
 
 
     def test_28(self):
-        """Test #28 : test lecture fichiers contenant caracteres speciaux ET parametre --input n'est pas le dernier"""
+        """test lecture fichiers contenant caracteres speciaux ET parametre --input n'est pas le dernier"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_+fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -609,7 +609,7 @@ class TestReaderStd(unittest.TestCase):
 
 
     def test_29(self):
-        """Test #29 : test lecture fichiers contenant des champs de donnees manquantes"""
+        """test lecture fichiers contenant des champs de donnees manquantes"""
         # open and read source
         source0 = plugin_test_dir + "missingData.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -632,7 +632,7 @@ class TestReaderStd(unittest.TestCase):
 
 
     def test_30(self):
-        """Test #30 : test lecture fichiers contenant des membres d'ensemble differents"""
+        """test lecture fichiers contenant des membres d'ensemble differents"""
         # open and read source
         source0 = plugin_test_dir + "ensemble_members.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -655,7 +655,7 @@ class TestReaderStd(unittest.TestCase):
 
 
     def test_31(self):
-        """Test #31 : test lecture fichiers contenant des masques"""
+        """test lecture fichiers contenant des masques"""
         # open and read source
         source0 = plugin_test_dir + "data_with_mask.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -678,7 +678,7 @@ class TestReaderStd(unittest.TestCase):
 
 
     def test_32(self):
-        """Test #32 : test lecture fichiers contenant des membres d'ensemble differents"""
+        """test lecture fichiers contenant des membres d'ensemble differents"""
         # open and read source
         source0 = plugin_test_dir + "ens_data_exclamation.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -701,7 +701,7 @@ class TestReaderStd(unittest.TestCase):
 
 
     def test_33(self):
-        """Test #33 : test lecture fichiers contenant la coordonnee 5005"""
+        """test lecture fichiers contenant la coordonnee 5005"""
         # open and read source
         source0 = plugin_test_dir + "resulttest_33.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

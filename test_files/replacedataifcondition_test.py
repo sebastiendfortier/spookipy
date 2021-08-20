@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"ReplaceDataIfCondition/testsFiles/"
 class TestReplaceDataIfCondition(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : isnan"""
+        """isnan"""
         # open and read source
         source0 = plugin_test_dir + "simple_input.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -45,7 +45,7 @@ class TestReplaceDataIfCondition(unittest.TestCase):
 
 
     def test_2(self):
-        """Test #2 : < 1"""
+        """< 1"""
         # open and read source
         source0 = plugin_test_dir + "simple_input.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -68,7 +68,7 @@ class TestReplaceDataIfCondition(unittest.TestCase):
 
 
     def test_3(self):
-        """Test #3 : <= 1"""
+        """<= 1"""
         # open and read source
         source0 = plugin_test_dir + "simple_input.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -91,7 +91,7 @@ class TestReplaceDataIfCondition(unittest.TestCase):
 
 
     def test_4(self):
-        """Test #4 : > 1"""
+        """> 1"""
         # open and read source
         source0 = plugin_test_dir + "simple_input.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -114,7 +114,7 @@ class TestReplaceDataIfCondition(unittest.TestCase):
 
 
     def test_5(self):
-        """Test #5 : >=1"""
+        """>=1"""
         # open and read source
         source0 = plugin_test_dir + "simple_input.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -137,7 +137,7 @@ class TestReplaceDataIfCondition(unittest.TestCase):
 
 
     def test_6(self):
-        """Test #6 : == 2"""
+        """== 2"""
         # open and read source
         source0 = plugin_test_dir + "simple_input.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -160,7 +160,7 @@ class TestReplaceDataIfCondition(unittest.TestCase):
 
 
     def test_7(self):
-        """Test #7 : != 2"""
+        """!= 2"""
         # open and read source
         source0 = plugin_test_dir + "simple_input.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

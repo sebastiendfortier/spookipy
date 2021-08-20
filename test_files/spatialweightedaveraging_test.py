@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"SpatialWeightedAveraging/testsFiles/"
 class TestSpatialWeightedAveraging(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : SpatialWeightedAveraging --searchRadius 5 --distanceType KM --kernelType UNIFORM"""
+        """SpatialWeightedAveraging --searchRadius 5 --distanceType KM --kernelType UNIFORM"""
         # open and read source
         source0 = plugin_test_dir + "input_nat.eta"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -45,7 +45,7 @@ class TestSpatialWeightedAveraging(unittest.TestCase):
 
 
     def test_3(self):
-        """Test #3 : SpatialWeightedAveraging --searchRadius 20 --distanceType KM --kernelType GAUSSIAN --smoothingParameter 15"""
+        """SpatialWeightedAveraging --searchRadius 20 --distanceType KM --kernelType GAUSSIAN --smoothingParameter 15"""
         # open and read source
         source0 = plugin_test_dir + "input_nat.eta"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -68,7 +68,7 @@ class TestSpatialWeightedAveraging(unittest.TestCase):
 
 
     def test_5(self):
-        """Test #5 : SpatialWeightedAveraging --searchRadius 9 --distanceType KM --kernelType GAUSSIAN --smoothingParameter 4         --landFracDiffMax 0.7 """
+        """SpatialWeightedAveraging --searchRadius 9 --distanceType KM --kernelType GAUSSIAN --smoothingParameter 4         --landFracDiffMax 0.7 """
         # open and read source
         source0 = plugin_test_dir + "input_nat.eta"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -91,7 +91,7 @@ class TestSpatialWeightedAveraging(unittest.TestCase):
 
 
     def test_6(self):
-        """Test #6 : SpatialWeightedAveraging --searchRadius 15 --distanceType KM --kernelType GAUSSIAN --smoothingParameter 4        --landFracDiffMax 0.7 """
+        """SpatialWeightedAveraging --searchRadius 15 --distanceType KM --kernelType GAUSSIAN --smoothingParameter 4        --landFracDiffMax 0.7 """
         # open and read source
         source0 = plugin_test_dir + "input_nat.eta"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -114,7 +114,7 @@ class TestSpatialWeightedAveraging(unittest.TestCase):
 
 
     def test_8(self):
-        """Test #8 : test includeEdges with controlled data"""
+        """test includeEdges with controlled data"""
         # open and read source
         source0 = plugin_test_dir + "gds1_pds1_level.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -137,7 +137,7 @@ class TestSpatialWeightedAveraging(unittest.TestCase):
 
 
     def test_9(self):
-        """Test #9 : Tester fichier global"""
+        """Tester fichier global"""
         # open and read source
         source0 = plugin_test_dir + "glbpres_TT_UU_VV.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -160,7 +160,7 @@ class TestSpatialWeightedAveraging(unittest.TestCase):
 
 
     def test_10(self):
-        """Test #10 : test includeEdges with controlled data global simulation"""
+        """test includeEdges with controlled data global simulation"""
         # open and read source
         source0 = plugin_test_dir + "gds1_pds1_level.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -183,7 +183,7 @@ class TestSpatialWeightedAveraging(unittest.TestCase):
 
 
     def test_11(self):
-        """Test #11 : test excludeEdges with controlled data"""
+        """test excludeEdges with controlled data"""
         # open and read source
         source0 = plugin_test_dir + "input_nat.eta"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -206,7 +206,7 @@ class TestSpatialWeightedAveraging(unittest.TestCase):
 
 
     def test_12(self):
-        """Test #12 : test excludeEdges with controlled data global simulation, test writer with missing data"""
+        """test excludeEdges with controlled data global simulation, test writer with missing data"""
         # open and read source
         source0 = plugin_test_dir + "gds1_pds1_level.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -229,7 +229,7 @@ class TestSpatialWeightedAveraging(unittest.TestCase):
 
 
     def test_13(self):
-        """Test #13 : issue #120 expected fail with message """
+        """issue #120 expected fail with message """
         # open and read source
         source0 = plugin_test_dir + "issue120.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

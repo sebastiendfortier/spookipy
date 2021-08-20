@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"PressureOnConstantPotentialVorticity/testsFiles/"
 class TestPressureOnConstantPotentialVorticity(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : Invalid value for --PVU"""
+        """Invalid value for --PVU"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -45,7 +45,7 @@ class TestPressureOnConstantPotentialVorticity(unittest.TestCase):
 
 
     def test_2(self):
-        """Test #2 : Calculate with a small regpres file"""
+        """Calculate with a small regpres file"""
         # open and read source
         source0 = plugin_test_dir + "regpres_small.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -68,7 +68,7 @@ class TestPressureOnConstantPotentialVorticity(unittest.TestCase):
 
 
     def test_3(self):
-        """Test #3 : Calculate with a simple test data """
+        """Calculate with a simple test data """
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -91,7 +91,7 @@ class TestPressureOnConstantPotentialVorticity(unittest.TestCase):
 
 
     def test_4(self):
-        """Test #4 : Same as test 1 but in singlethread"""
+        """Same as test 1 but in singlethread"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -114,7 +114,7 @@ class TestPressureOnConstantPotentialVorticity(unittest.TestCase):
 
 
     def test_5(self):
-        """Test #5 : Calculate with more test data with multiple PVU"""
+        """Calculate with more test data with multiple PVU"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -137,7 +137,7 @@ class TestPressureOnConstantPotentialVorticity(unittest.TestCase):
 
 
     def test_6(self):
-        """Test #6 : Calculate with more test data with multiple PVU but not in order"""
+        """Calculate with more test data with multiple PVU but not in order"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

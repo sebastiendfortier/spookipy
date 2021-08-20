@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"TemperaturePotential/testsFiles/"
 class TestTemperaturePotential(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 :  Calcule de la température potentiel à partir d'un fichier standard."""
+        """ Calcule de la température potentiel à partir d'un fichier standard."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_reghyb"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -45,7 +45,7 @@ class TestTemperaturePotential(unittest.TestCase):
 
 
     def test_2(self):
-        """Test #2 :  Calcule de la température potentiel à partir d'un fichier standard."""
+        """ Calcule de la température potentiel à partir d'un fichier standard."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_reghyb"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

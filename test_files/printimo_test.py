@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"PrintIMO/testsFiles/"
 class TestPrintIMO(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : Imprime un IMO vers un fichier, forme courte."""
+        """Imprime un IMO vers un fichier, forme courte."""
         # open and read source
         source0 = plugin_test_dir + "UUVV10x10_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -45,7 +45,7 @@ class TestPrintIMO(unittest.TestCase):
 
 
     def test_2(self):
-        """Test #2 : Imprime un IMO vers un fichier, forme longue."""
+        """Imprime un IMO vers un fichier, forme longue."""
         # open and read source
         source0 = plugin_test_dir + "UUVV10x10_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -68,7 +68,7 @@ class TestPrintIMO(unittest.TestCase):
 
 
     def test_3(self):
-        """Test #3 : Imprime un IMO vers un fichier, forme courte json."""
+        """Imprime un IMO vers un fichier, forme courte json."""
         # open and read source
         source0 = plugin_test_dir + "UUVV10x10_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

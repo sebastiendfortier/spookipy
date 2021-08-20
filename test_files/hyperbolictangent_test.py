@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"HyperbolicTangent/testsFiles/"
 class TestHyperbolicTangent(unittest.TestCase):
 
     def test_function_TANH(self):
-        """Test #1 : Calcul de la fonction tangente hyperbolique sur chaque element."""
+        """Calcul de la fonction tangente hyperbolique sur chaque element."""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_1_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

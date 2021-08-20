@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"InterpolationHorizontalPoint/testsFiles/"
 class TestInterpolationHorizontalPoint(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : test_onlyscalarR1Operational"""
+        """test_onlyscalarR1Operational"""
         # open and read source
         source0 = plugin_test_dir + "4panneaux_input4_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -48,7 +48,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
 
 
     def test_2(self):
-        """Test #2 : test_onlyscalar"""
+        """test_onlyscalar"""
         # open and read source
         source0 = plugin_test_dir + "4panneaux_input4_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -74,7 +74,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
 
 
     def test_3(self):
-        """Test #3 : test_scalarvectorial"""
+        """test_scalarvectorial"""
         # open and read source
         source0 = plugin_test_dir + "tape10.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -100,7 +100,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
 
 
     def test_4(self):
-        """Test #4 : test_scalarvectorial2"""
+        """test_scalarvectorial2"""
         # open and read source
         source0 = plugin_test_dir + "2011072100_006_eta_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -126,7 +126,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
 
 
     def test_5(self):
-        """Test #5 : test_nearest"""
+        """test_nearest"""
         # open and read source
         source0 = plugin_test_dir + "tape10.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -152,7 +152,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
 
 
     def test_6(self):
-        """Test #6 : test_linear"""
+        """test_linear"""
         # open and read source
         source0 = plugin_test_dir + "tape10.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -178,7 +178,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
 
 
     def test_7(self):
-        """Test #7 : test_withGridInCsv"""
+        """test_withGridInCsv"""
         # open and read source
         source0 = plugin_test_dir + "tape10.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -204,7 +204,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
 
 
     def test_8(self):
-        """Test #8 : test_extrapolationValue"""
+        """test_extrapolationValue"""
         # open and read source
         source0 = plugin_test_dir + "tape10.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -230,7 +230,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
 
 
     def test_9(self):
-        """Test #9 : test_negativeValue"""
+        """test_negativeValue"""
         # open and read source
         source0 = plugin_test_dir + "tape10.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -256,7 +256,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
 
 
     def test_10(self):
-        """Test #10 : test_extrapolationMax"""
+        """test_extrapolationMax"""
         # open and read source
         source0 = plugin_test_dir + "tape10.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -282,7 +282,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
 
 
     def test_11(self):
-        """Test #11 : test_extrapolationMin"""
+        """test_extrapolationMin"""
         # open and read source
         source0 = plugin_test_dir + "tape10.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -308,7 +308,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
 
 
     def test_12(self):
-        """Test #12 : test_stations"""
+        """test_stations"""
         # open and read source
         source0 = plugin_test_dir + "2011072100_006_eta_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -331,7 +331,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
 
 
     def test_13(self):
-        """Test #13 : test with 2 grids and 3 fields on each grid"""
+        """test with 2 grids and 3 fields on each grid"""
         # open and read source
         source0 = plugin_test_dir + "2011110112_045_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -360,7 +360,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
 
 
     def test_14(self):
-        """Test #14 : test_DanielPoints"""
+        """test_DanielPoints"""
         # open and read source
         source0 = plugin_test_dir + "2012022712_012_glbdiag"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -386,7 +386,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
 
 
     def test_15(self):
-        """Test #15 : test_northPole_southPole"""
+        """test_northPole_southPole"""
         # open and read source
         source0 = plugin_test_dir + "2012022712_012_glbdiag"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -412,7 +412,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
 
 
     def test_16(self):
-        """Test #16 : Test avec un fichier YinYang"""
+        """Test avec un fichier YinYang"""
         # open and read source
         source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -438,7 +438,7 @@ class TestInterpolationHorizontalPoint(unittest.TestCase):
 
 
     def test_17(self):
-        """Test #17 : Test avec un fichier YinYang en entree et des lat-lon sur les grilles Yin et Yang."""
+        """Test avec un fichier YinYang en entree et des lat-lon sur les grilles Yin et Yang."""
         # open and read source
         source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

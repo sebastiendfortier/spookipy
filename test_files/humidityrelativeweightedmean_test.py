@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"HumidityRelativeWeightedMean/testsFiles/"
 class TestHumidityRelativeWeightedMean(unittest.TestCase):
 
     def test_1(self):
-        """Test #1: Test avec un petit fichier contenant des valeurs verifiees a la main."""
+        """Test avec un petit fichier contenant des valeurs verifiees a la main."""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -45,7 +45,7 @@ class TestHumidityRelativeWeightedMean(unittest.TestCase):
 
 
     def test_2(self):
-        """Test #2: Test avec une sortie de modele."""
+        """Test avec une sortie de modele."""
         # open and read source
         source0 = plugin_test_dir + "2020030412_024"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -68,7 +68,7 @@ class TestHumidityRelativeWeightedMean(unittest.TestCase):
 
 
     def test_3(self):
-        """Test #2: Test avec une sortie de modele, avec clé --capped."""
+        """Test avec une sortie de modele, avec clé --capped."""
         # open and read source
         source0 = plugin_test_dir + "2020030412_024"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

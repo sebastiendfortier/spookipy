@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"ConvectiveEnergies/testsFiles/"
 class TestConvectiveEnergies(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 :  Utilisation du parametre --liftedFrom SURFACE avec un fichier en pression. Requete invalide"""
+        """ Utilisation du parametre --liftedFrom SURFACE avec un fichier en pression. Requete invalide"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -45,7 +45,7 @@ class TestConvectiveEnergies(unittest.TestCase):
 
 
     def test_2(self):
-        """Test #2 :  Utilisation du parametre --liftedFrom MEAN_LAYER --baseMeanLayer SURFACE avec un fichier en pression. Requete invalide"""
+        """ Utilisation du parametre --liftedFrom MEAN_LAYER --baseMeanLayer SURFACE avec un fichier en pression. Requete invalide"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -68,7 +68,7 @@ class TestConvectiveEnergies(unittest.TestCase):
 
 
     def test_3(self):
-        """Test #3 :  Utilisation du parametre --liftedFrom MOST_UNSTABLE avec un fichier en pression. Requete invalide"""
+        """ Utilisation du parametre --liftedFrom MOST_UNSTABLE avec un fichier en pression. Requete invalide"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -91,7 +91,7 @@ class TestConvectiveEnergies(unittest.TestCase):
 
 
     def test_4(self):
-        """Test #4 :  Calcul des niveaux de convection a partir d'un fichier lam national de 2 points, SURFACE."""
+        """ Calcul des niveaux de convection a partir d'un fichier lam national de 2 points, SURFACE."""
         # open and read source
         source0 = plugin_test_dir + "input_point61-51.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -114,7 +114,7 @@ class TestConvectiveEnergies(unittest.TestCase):
 
 
     def test_7(self):
-        """Test #7 :  Calcul a partir d'un fichier de 2 points, liftedFrom SURFACE et outputConvectiveLevels."""
+        """ Calcul a partir d'un fichier de 2 points, liftedFrom SURFACE et outputConvectiveLevels."""
         # open and read source
         source0 = plugin_test_dir + "input_point61-51.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -137,7 +137,7 @@ class TestConvectiveEnergies(unittest.TestCase):
 
 
     def test_8(self):
-        """Test #8 :  Calcul a partir d'un fichier de 2 points, liftedFrom MEAN_LAYER et outputConvectiveLevels."""
+        """ Calcul a partir d'un fichier de 2 points, liftedFrom MEAN_LAYER et outputConvectiveLevels."""
         # open and read source
         source0 = plugin_test_dir + "input_point61-51.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -160,7 +160,7 @@ class TestConvectiveEnergies(unittest.TestCase):
 
 
     def test_9(self):
-        """Test #9 :  Calcul a partir d'un fichier de 2 points, liftedFrom MOST_UNSTABLE et outputConvectiveLevels."""
+        """ Calcul a partir d'un fichier de 2 points, liftedFrom MOST_UNSTABLE et outputConvectiveLevels."""
         # open and read source
         source0 = plugin_test_dir + "input_point61-51.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -183,7 +183,7 @@ class TestConvectiveEnergies(unittest.TestCase):
 
 
     def test_10(self):
-        """Test #10 :  Calcul a partir d'un fichier de 3 points, SURFACE et OPTIMAL_VALUE_ONLY."""
+        """ Calcul a partir d'un fichier de 3 points, SURFACE et OPTIMAL_VALUE_ONLY."""
         # open and read source
         source0 = plugin_test_dir + "Fichier3Pts_2017092900.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -206,7 +206,7 @@ class TestConvectiveEnergies(unittest.TestCase):
 
 
     def test_11(self):
-        """Test #11 :  Calcul des niveaux de convection a partir d'un fichier de 6 points, SURFACE et OPTIMAL_VALUE_ONLY."""
+        """ Calcul des niveaux de convection a partir d'un fichier de 6 points, SURFACE et OPTIMAL_VALUE_ONLY."""
         # open and read source
         source0 = plugin_test_dir + "2018052906_lam_nat_CroisementCas2.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -229,7 +229,7 @@ class TestConvectiveEnergies(unittest.TestCase):
 
 
     def test_12(self):
-        """Test #12 :  Calcul a partir d'un fichier de 6 points, SURFACE et OPTIMAL_VALUE_ONLY."""
+        """ Calcul a partir d'un fichier de 6 points, SURFACE et OPTIMAL_VALUE_ONLY."""
         # open and read source
         source0 = plugin_test_dir + "2017092900_000_CroisementCas3.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -252,7 +252,7 @@ class TestConvectiveEnergies(unittest.TestCase):
 
 
     def test_13(self):
-        """Test #13 :  Calcul a partir d'un fichier de 6 points, SURFACE et OPTIMAL_VALUE_ONLY, avec correction de temperature."""
+        """ Calcul a partir d'un fichier de 6 points, SURFACE et OPTIMAL_VALUE_ONLY, avec correction de temperature."""
         # open and read source
         source0 = plugin_test_dir + "2018060606_lam_nat_CroisementCas3.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -275,7 +275,7 @@ class TestConvectiveEnergies(unittest.TestCase):
 
 
     def test_14(self):
-        """Test #14 :  Calcul a partir d'un fichier de 18 points, SURFACE."""
+        """ Calcul a partir d'un fichier de 18 points, SURFACE."""
         # open and read source
         source0 = plugin_test_dir + "input_convection_CroisementCas4.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -298,7 +298,7 @@ class TestConvectiveEnergies(unittest.TestCase):
 
 
     def test_15(self):
-        """Test #15 :  Utilisation du parametre --capeType UNBOUNDED avec des bornes. Requete invalide"""
+        """ Utilisation du parametre --capeType UNBOUNDED avec des bornes. Requete invalide"""
         # open and read source
         source0 = plugin_test_dir + "input_point61-51.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -321,7 +321,7 @@ class TestConvectiveEnergies(unittest.TestCase):
 
 
     def test_16(self):
-        """Test #16 :  Calcul a partir d'un fichier de 2 points, liftedFrom SURFACE et outputConvectiveLevels."""
+        """ Calcul a partir d'un fichier de 2 points, liftedFrom SURFACE et outputConvectiveLevels."""
         # open and read source
         source0 = plugin_test_dir + "input_point61-51.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -344,7 +344,7 @@ class TestConvectiveEnergies(unittest.TestCase):
 
 
     def test_17(self):
-        """Test #17 :  Test avec cle pour tenir compte du LCL et calcul de l'energie bornee (Cas A,B,C,D et F)."""
+        """ Test avec cle pour tenir compte du LCL et calcul de l'energie bornee (Cas A,B,C,D et F)."""
         # open and read source
         source0 = plugin_test_dir + "2017092900_000_reduit_pourCasABCDF.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -367,7 +367,7 @@ class TestConvectiveEnergies(unittest.TestCase):
 
 
     def test_18(self):
-        """Test #18 :  Test avec cle pour tenir compte du LCL et calcul de l'energie bornee (Cas A,B,C,D et F)."""
+        """ Test avec cle pour tenir compte du LCL et calcul de l'energie bornee (Cas A,B,C,D et F)."""
         # open and read source
         source0 = plugin_test_dir + "2017092900_000_nrj"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -390,7 +390,7 @@ class TestConvectiveEnergies(unittest.TestCase):
 
 
     def test_19(self):
-        """Test #19 :  Calcul de l'energie bornee avec l'option  --liftedFrom MEAN_LAYER; la borne inferieure est sous le niveau de depart de la parcelle, donc CAPE indefini."""
+        """ Calcul de l'energie bornee avec l'option  --liftedFrom MEAN_LAYER; la borne inferieure est sous le niveau de depart de la parcelle, donc CAPE indefini."""
         # open and read source
         source0 = plugin_test_dir + "2018092112_008_reduit"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -413,7 +413,7 @@ class TestConvectiveEnergies(unittest.TestCase):
 
 
     def test_20(self):
-        """Test #20 :  Calcul de l'energie bornee avec l'option  --liftedFrom MEAN_LAYER."""
+        """ Calcul de l'energie bornee avec l'option  --liftedFrom MEAN_LAYER."""
         # open and read source
         source0 = plugin_test_dir + "2018092112_008_reduit"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -436,7 +436,7 @@ class TestConvectiveEnergies(unittest.TestCase):
 
 
     def test_21(self):
-        """Test #21 :  Calcul de l'energie bornee avec l'option  --liftedFrom MOST_UNSTABLE; la borne inferieure est sous le niveau de depart de la parcelle, donc CAPE indefini."""
+        """ Calcul de l'energie bornee avec l'option  --liftedFrom MOST_UNSTABLE; la borne inferieure est sous le niveau de depart de la parcelle, donc CAPE indefini."""
         # open and read source
         source0 = plugin_test_dir + "2018092112_008_reduit"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -459,7 +459,7 @@ class TestConvectiveEnergies(unittest.TestCase):
 
 
     def test_22(self):
-        """Test #22 :  Calcul de l'energie bornee avec l'option  --liftedFrom MOST_UNSTABLE."""
+        """ Calcul de l'energie bornee avec l'option  --liftedFrom MOST_UNSTABLE."""
         # open and read source
         source0 = plugin_test_dir + "2018092112_008_reduit"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -482,7 +482,7 @@ class TestConvectiveEnergies(unittest.TestCase):
 
 
     def test_23(self):
-        """Test #23 :  Calcul de l'energie bornee avec l'option  --liftedFrom SURFACE; la borne inferieure est au-dessus de la valeur de la 1er temperature."""
+        """ Calcul de l'energie bornee avec l'option  --liftedFrom SURFACE; la borne inferieure est au-dessus de la valeur de la 1er temperature."""
         # open and read source
         source0 = plugin_test_dir + "2017092900_000_nrj_reduit"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -505,7 +505,7 @@ class TestConvectiveEnergies(unittest.TestCase):
 
 
     def test_24(self):
-        """Test #24 :  Calcul de l'energie bornee avec l'option  --liftedFrom SURFACE; les bornes sont trouvees au milieu des temperatures."""
+        """ Calcul de l'energie bornee avec l'option  --liftedFrom SURFACE; les bornes sont trouvees au milieu des temperatures."""
         # open and read source
         source0 = plugin_test_dir + "2017092900_000_nrj_reduit"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -528,7 +528,7 @@ class TestConvectiveEnergies(unittest.TestCase):
 
 
     def test_25(self):
-        """Test #25 :  Calcul de l'energie bornee avec l'option  --liftedFrom SURFACE; on ne trouve pas de valeurs pour la borne inferieure, CAPE indefini."""
+        """ Calcul de l'energie bornee avec l'option  --liftedFrom SURFACE; on ne trouve pas de valeurs pour la borne inferieure, CAPE indefini."""
         # open and read source
         source0 = plugin_test_dir + "2017092900_000_nrj_reduit2"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -551,7 +551,7 @@ class TestConvectiveEnergies(unittest.TestCase):
 
 
     def test_26(self):
-        """Test #26 :  Calcul de l'energie bornee avec l'option  --liftedFrom SURFACE;on frole la valeur de borne inferieure sans jamais l'atteindre, donc CAPE indefini."""
+        """ Calcul de l'energie bornee avec l'option  --liftedFrom SURFACE;on frole la valeur de borne inferieure sans jamais l'atteindre, donc CAPE indefini."""
         # open and read source
         source0 = plugin_test_dir + "2017092900_000_nrj_reduit2"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -574,7 +574,7 @@ class TestConvectiveEnergies(unittest.TestCase):
 
 
     def test_27(self):
-        """Test #27 :  Calcul des niveaux de convection a partir d'un fichier 5005, SURFACE et OPTIMAL_VALUE_ONLY."""
+        """ Calcul des niveaux de convection a partir d'un fichier 5005, SURFACE et OPTIMAL_VALUE_ONLY."""
         # open and read source
         source0 = plugin_test_dir + "minimal_4conve_5005.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

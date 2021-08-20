@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"RoundToNearestInteger/testsFiles/"
 class TestRoundToNearestInteger(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 :  Test RoundToNearestInteger normal"""
+        """ Test RoundToNearestInteger normal"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

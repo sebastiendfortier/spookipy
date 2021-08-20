@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"WindDeformation/testsFiles/"
 class TestWindDeformation(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : test_wind_deformation_tape10"""
+        """test_wind_deformation_tape10"""
         # open and read source
         source0 = plugin_test_dir + "tape10.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -45,7 +45,7 @@ class TestWindDeformation(unittest.TestCase):
 
 
     def test_2(self):
-        """Test #2 : test_wind_deformation_tape10_100km"""
+        """test_wind_deformation_tape10_100km"""
         # open and read source
         source0 = plugin_test_dir + "tape10.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

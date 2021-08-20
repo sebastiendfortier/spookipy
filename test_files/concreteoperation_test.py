@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"ConcreteOperation/testsFiles/"
 class TestConcreteOperation(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 :  Test - manque 1 niveau pour UU et 2 niveaux pour VV"""
+        """ Test - manque 1 niveau pour UU et 2 niveaux pour VV"""
         # open and read source
         source0 = plugin_test_dir + "GZUUVV_144_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -45,7 +45,7 @@ class TestConcreteOperation(unittest.TestCase):
 
 
     def test_2(self):
-        """Test #2 :  Test - seulement niveau 2 pour GZ"""
+        """ Test - seulement niveau 2 pour GZ"""
         # open and read source
         source0 = plugin_test_dir + "GZUUVV_144_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -68,7 +68,7 @@ class TestConcreteOperation(unittest.TestCase):
 
 
     def test_3(self):
-        """Test #3 :  Test - seulement niveau 0 pour UU"""
+        """ Test - seulement niveau 0 pour UU"""
         # open and read source
         source0 = plugin_test_dir + "GZUUVV_144_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -91,7 +91,7 @@ class TestConcreteOperation(unittest.TestCase):
 
 
     def test_4(self):
-        """Test #4: Verifier si ca fonctionne meme s'il manque un niveau dans le milieu."""
+        """Verifier si ca fonctionne meme s'il manque un niveau dans le milieu."""
         # open and read source
         source0 = plugin_test_dir + "GZUUVV_144_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -114,7 +114,7 @@ class TestConcreteOperation(unittest.TestCase):
 
 
     def test_5(self):
-        """Test #5: Verifier si ca fonctionne lorsque 2 calculs ont besoin des mêmes données."""
+        """Verifier si ca fonctionne lorsque 2 calculs ont besoin des mêmes données."""
         # open and read source
         source0 = plugin_test_dir + "GZUUVV_144_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -137,7 +137,7 @@ class TestConcreteOperation(unittest.TestCase):
 
 
     def test_6(self):
-        """Test #6: Test avec pressure."""
+        """Test avec pressure."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -160,7 +160,7 @@ class TestConcreteOperation(unittest.TestCase):
 
 
     def test_7(self):
-        """Test #7: Test avec des données manquantes."""
+        """Test avec des données manquantes."""
         # open and read source
         source0 = plugin_test_dir + "notSameMatrixShape.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

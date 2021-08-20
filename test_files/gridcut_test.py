@@ -12,7 +12,7 @@ def plugin_test_dir():
     return TEST_PATH +"GridCut/testsFiles/"
 
 def test_reggc_test_1(plugin_test_dir):
-    """Test #1 : Tester sur une zone de 3x4 depuis une extremite de la matrice."""
+    """Tester sur une zone de 3x4 depuis une extremite de la matrice."""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -35,7 +35,7 @@ def test_reggc_test_1(plugin_test_dir):
 
 
 def test_reggc_test_2(plugin_test_dir):
-    """Test #2 : Tester sur une zone de 3x4 depuis un point quelconque de la matrice"""
+    """Tester sur une zone de 3x4 depuis un point quelconque de la matrice"""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -57,7 +57,7 @@ def test_reggc_test_2(plugin_test_dir):
 
 
 def test_reggc_test_3(plugin_test_dir):
-    """Test #3 : Test selection de toute la matrice"""
+    """Test selection de toute la matrice"""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -81,7 +81,7 @@ def test_reggc_test_3(plugin_test_dir):
 
 
 def test_reggc_test_4(plugin_test_dir):
-    """Test #4 : Tester sur une zone plus grande que la matrice d'origine"""
+    """Tester sur une zone plus grande que la matrice d'origine"""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -94,7 +94,7 @@ def test_reggc_test_4(plugin_test_dir):
 
 
 def test_reggc_test_5(plugin_test_dir):
-    """Test #5 : Tester sur une zone de 25x25 avec meta products et depuis un point quelconque de la matrice"""
+    """Tester sur une zone de 25x25 avec meta products et depuis un point quelconque de la matrice"""
     # open and read source
     source0 = plugin_test_dir + "2014031800_024_reghyb_TT.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -117,7 +117,7 @@ def test_reggc_test_5(plugin_test_dir):
 
 
 def test_reggc_test_6(plugin_test_dir):
-    """Test #6 : Tester coupure en 2 avec !! 64 bits"""
+    """Tester coupure en 2 avec !! 64 bits"""
     # open and read source
     source0 = plugin_test_dir + "glbpres_TT_UU_VV.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -140,7 +140,7 @@ def test_reggc_test_6(plugin_test_dir):
 
 
 # def test_14(plugin_test_dir):
-#     """Test #14 : Interpolation Verticale 1/16 pieces 649x672 664Mo"""
+#     """Interpolation Verticale 1/16 pieces 649x672 664Mo"""
 #     # open and read source
 #     source0 = plugin_test_dir + "2011100712_012_regpres"
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -170,7 +170,7 @@ def test_reggc_test_6(plugin_test_dir):
 
 
 def test_reggc_test_15(plugin_test_dir):
-    """Test #15 : Tester SingleThread. Comme le test 1 mais en singlethread"""
+    """Tester SingleThread. Comme le test 1 mais en singlethread"""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()

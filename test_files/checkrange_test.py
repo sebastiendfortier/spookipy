@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"CheckRange/testsFiles/"
 class TestCheckRange(unittest.TestCase):
 
     def test_cr_1(self):
-        """Test #1 : Tester avec tous les valeurs à l'intérieur du range."""
+        """Tester avec tous les valeurs à l'intérieur du range."""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -45,7 +45,7 @@ class TestCheckRange(unittest.TestCase):
 
 
     def test_cr_2(self):
-        """Test #2 : Tester avec certaines valeurs à l'extérieur du range"""
+        """Tester avec certaines valeurs à l'extérieur du range"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -68,7 +68,7 @@ class TestCheckRange(unittest.TestCase):
 
 
     def test_cr_3(self):
-        """Test #3 : Tester avec certaines valeurs sur les limites du range et l'option --strictComparisonOperator"""
+        """Tester avec certaines valeurs sur les limites du range et l'option --strictComparisonOperator"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_int_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -91,7 +91,7 @@ class TestCheckRange(unittest.TestCase):
 
 
     def test_cr_4(self):
-        """Test #4 : Tester avec certaines valeurs sur les limites du range et sans l'option --strictComparisonOperator"""
+        """Tester avec certaines valeurs sur les limites du range et sans l'option --strictComparisonOperator"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_int_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

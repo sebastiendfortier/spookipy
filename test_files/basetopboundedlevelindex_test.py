@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"BaseTopBoundedLevelIndex/testsFiles/"
 class TestBaseTopBoundedLevelIndex(unittest.TestCase):
 
     def test_base_top_1(self):
-        """Test #1 : Calcul les Base et Top d'un phenomene."""
+        """Calcul les Base et Top d'un phenomene."""
         # open and read source
         source0 = plugin_test_dir + "baseTop_fileSrc.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

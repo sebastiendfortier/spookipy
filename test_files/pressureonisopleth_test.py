@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"PressureOnIsopleth/testsFiles/"
 class TestPressureOnIsopleth(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : Calculate with a simple test data """
+        """Calculate with a simple test data """
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -45,7 +45,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
 
 
     def test_2(self):
-        """Test #2 : Utilisation de --outputFieldName avec une valeur > 4 caractères."""
+        """Utilisation de --outputFieldName avec une valeur > 4 caractères."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -68,7 +68,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
 
 
     def test_3(self):
-        """Test #3 : Utilisation de --fieldName avec une valeur > 4 caractères."""
+        """Utilisation de --fieldName avec une valeur > 4 caractères."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -91,7 +91,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
 
 
     def test_4(self):
-        """Test #4 : Calculate more test data with multiple fieldConstant, DESCENDING scandDirection and cases with larger and smaller values"""
+        """Calculate more test data with multiple fieldConstant, DESCENDING scandDirection and cases with larger and smaller values"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -114,7 +114,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
 
 
     def test_5(self):
-        """Test #5 :  Calculate more test data with multiple fieldConstant, ASCENDING scandDirection and cases with larger and smaller values"""
+        """ Calculate more test data with multiple fieldConstant, ASCENDING scandDirection and cases with larger and smaller values"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -137,7 +137,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
 
 
     def test_6(self):
-        """Test #6 : Same as test 1 but in singlethread"""
+        """Same as test 1 but in singlethread"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

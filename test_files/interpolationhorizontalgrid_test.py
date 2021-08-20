@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"InterpolationHorizontalGrid/testsFiles/"
 class TestInterpolationHorizontalGrid(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 :   Interpolation with multiple different input grid"""
+        """  Interpolation with multiple different input grid"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -45,7 +45,7 @@ class TestInterpolationHorizontalGrid(unittest.TestCase):
 
 
     def test_2(self):
-        """Test #2 :   Interpolation with scalar fields only"""
+        """  Interpolation with scalar fields only"""
         # open and read source
         source0 = plugin_test_dir + "4panneaux_input4_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -68,7 +68,7 @@ class TestInterpolationHorizontalGrid(unittest.TestCase):
 
 
     def test_3(self):
-        """Test #3 :   Interpolation with vectorial fields only"""
+        """  Interpolation with vectorial fields only"""
         # open and read source
         source0 = plugin_test_dir + "inputUUVV.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -91,7 +91,7 @@ class TestInterpolationHorizontalGrid(unittest.TestCase):
 
 
     def test_5(self):
-        """Test #5 :   Interpolation with FIELD_DEFINED"""
+        """  Interpolation with FIELD_DEFINED"""
         # open and read source
         source0 = plugin_test_dir + "TTUUVVKTRT.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -114,7 +114,7 @@ class TestInterpolationHorizontalGrid(unittest.TestCase):
 
 
     def test_6(self):
-        """Test #6 :   Interpolation with FIELD_DEFINED, make sure HY follow"""
+        """  Interpolation with FIELD_DEFINED, make sure HY follow"""
         # open and read source
         source0 = plugin_test_dir + "TT_RT_reghyb"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -137,7 +137,7 @@ class TestInterpolationHorizontalGrid(unittest.TestCase):
 
 
     def test_7(self):
-        """Test #7 :  Interpolation d'un champ scalaire (TT) d'une grille U vers une grille Z"""
+        """ Interpolation d'un champ scalaire (TT) d'une grille U vers une grille Z"""
         # open and read source
         source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -163,7 +163,7 @@ class TestInterpolationHorizontalGrid(unittest.TestCase):
 
 
     def test_8(self):
-        """Test #8 :  Interpolation d'un champ scalaire (TT) d'une grille Z vers une grille U"""
+        """ Interpolation d'un champ scalaire (TT) d'une grille Z vers une grille U"""
         # open and read source
         source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -189,7 +189,7 @@ class TestInterpolationHorizontalGrid(unittest.TestCase):
 
 
     def test_9(self):
-        """Test #9 :  Interpolation de champs vectoriels (UU,VV) d'une grille U vers une grille Z"""
+        """ Interpolation de champs vectoriels (UU,VV) d'une grille U vers une grille Z"""
         # open and read source
         source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -215,7 +215,7 @@ class TestInterpolationHorizontalGrid(unittest.TestCase):
 
 
     def test_10(self):
-        """Test #10 :  Interpolation de champs vectoriels (UU,VV) d'une grille Z vers une grille U"""
+        """ Interpolation de champs vectoriels (UU,VV) d'une grille Z vers une grille U"""
         # open and read source
         source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -241,7 +241,7 @@ class TestInterpolationHorizontalGrid(unittest.TestCase):
 
 
     def test_11(self):
-        """Test #11 :  Interpolation de champs vectoriels et scalaires d'une grille Z vers une grille U avec un fichier a interpoler contenant 2 toctocs."""
+        """ Interpolation de champs vectoriels et scalaires d'une grille Z vers une grille U avec un fichier a interpoler contenant 2 toctocs."""
         # open and read source
         source0 = plugin_test_dir + "glbpres_TT_UU_VV.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -270,7 +270,7 @@ class TestInterpolationHorizontalGrid(unittest.TestCase):
 
 
     def test_13(self):
-        """Test #13 :   test extrapolation with negative value"""
+        """  test extrapolation with negative value"""
         # open and read source
         source0 = plugin_test_dir + "TT_RT_reghyb"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

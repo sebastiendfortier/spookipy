@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"TemperatureOfLiftedParcel/testsFiles/"
 class TestTemperatureOfLiftedParcel(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 :  Calcul de la temperature d'une parcelle soulevee a partir d'un fichier pression (ascendant)."""
+        """ Calcul de la temperature d'une parcelle soulevee a partir d'un fichier pression (ascendant)."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres_TTPXHR1000.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -45,7 +45,7 @@ class TestTemperatureOfLiftedParcel(unittest.TestCase):
 
 
     def test_2(self):
-        """Test #2 :  Calcul de la temperature d'une parcelle soulevee a partir d'un fichier hybrid (ascendant)."""
+        """ Calcul de la temperature d'une parcelle soulevee a partir d'un fichier hybrid (ascendant)."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_reghyb_TTPXHR1000.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -68,7 +68,7 @@ class TestTemperatureOfLiftedParcel(unittest.TestCase):
 
 
     def test_3(self):
-        """Test #3 :  Calcul de la temperature d'une parcelle soulevee a partir d'un fichier contenant le resultat calcule a partir d'un increment different (les niveaux sont totalement differents)."""
+        """ Calcul de la temperature d'une parcelle soulevee a partir d'un fichier contenant le resultat calcule a partir d'un increment different (les niveaux sont totalement differents)."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_reghyb_from_SB_and_UD1000_end100_inc2_681.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -91,7 +91,7 @@ class TestTemperatureOfLiftedParcel(unittest.TestCase):
 
 
     def test_4(self):
-        """Test #4 :  Calcul de la temperature d'une parcelle soulevee a partir d'un fichier manquant des donnees."""
+        """ Calcul de la temperature d'une parcelle soulevee a partir d'un fichier manquant des donnees."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_reghyb_from_SB_and_UD1000_end100_inc5_missingUDParcel.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -114,7 +114,7 @@ class TestTemperatureOfLiftedParcel(unittest.TestCase):
 
 
     def test_5(self):
-        """Test #5 :  Calcul de la temperature d'une parcelle soulevee a partir d'un fichier contenant le resultat calcule a partir d'un increment different (les niveaux que l'on veut sont deja calcules)."""
+        """ Calcul de la temperature d'une parcelle soulevee a partir d'un fichier contenant le resultat calcule a partir d'un increment different (les niveaux que l'on veut sont deja calcules)."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_reghyb_from_SB_end100_inc5_file2cmp.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -137,7 +137,7 @@ class TestTemperatureOfLiftedParcel(unittest.TestCase):
 
 
     def test_6(self):
-        """Test #6 :  Calcul de la temperature d'une parcelle soulevée a partir d'un fichier pression et d'un fichier hybrid (ascendant)."""
+        """ Calcul de la temperature d'une parcelle soulevée a partir d'un fichier pression et d'un fichier hybrid (ascendant)."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres_TTPXHR1000.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -160,7 +160,7 @@ class TestTemperatureOfLiftedParcel(unittest.TestCase):
 
 
     def test_7(self):
-        """Test #7 :  Calcul de la temperature d'une parcelle soulevee MEAN_LAYER a partir d'un fichier hybrid."""
+        """ Calcul de la temperature d'une parcelle soulevee MEAN_LAYER a partir d'un fichier hybrid."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_reghyb"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -183,7 +183,7 @@ class TestTemperatureOfLiftedParcel(unittest.TestCase):
 
 
     def test_8(self):
-        """Test #8 :  Calcul de la temperature d'une parcelle soulevee MEAN_LAYER a partir d'un fichier hybrid 5005."""
+        """ Calcul de la temperature d'une parcelle soulevee MEAN_LAYER a partir d'un fichier hybrid 5005."""
         # open and read source
         source0 = plugin_test_dir + "minimal_4conve_5005.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -206,7 +206,7 @@ class TestTemperatureOfLiftedParcel(unittest.TestCase):
 
 
     def test_9(self):
-        """Test #8 :  Calcul de la temperature d'une parcelle soulevee SURFACE a partir d'un fichier hybrid 5005."""
+        """ Calcul de la temperature d'une parcelle soulevee SURFACE a partir d'un fichier hybrid 5005."""
         # open and read source
         source0 = plugin_test_dir + "minimal_TTHR_5005.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

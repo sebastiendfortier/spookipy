@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"BulletinFBPreparation/testsFiles/"
 class TestBulletinFBPreparation(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : Produit(sans les champs pressions) les informations du bulletin FBCN31_000 à partir d'un fichier eta minimal"""
+        """Produit(sans les champs pressions) les informations du bulletin FBCN31_000 à partir d'un fichier eta minimal"""
         # open and read source
         source0 = plugin_test_dir + "2011072100_006_eta_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -45,7 +45,7 @@ class TestBulletinFBPreparation(unittest.TestCase):
 
 
     def test_2(self):
-        """Test #2 : Produit les informations du bulletin FBCN31_000 à partir d'un fichier eta complet"""
+        """Produit les informations du bulletin FBCN31_000 à partir d'un fichier eta complet"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regeta"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -68,7 +68,7 @@ class TestBulletinFBPreparation(unittest.TestCase):
 
 
     def test_3(self):
-        """Test #3 : Produit les informations du bulletin FBCN31_000 à partir d'un fichier hybrid complet"""
+        """Produit les informations du bulletin FBCN31_000 à partir d'un fichier hybrid complet"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_reghyb"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -91,7 +91,7 @@ class TestBulletinFBPreparation(unittest.TestCase):
 
 
     def test_4(self):
-        """Test #4 : Produit les informations du bulletin FBCN31_000 à partir d'un fichier hybrid complet et utilise runID et implementation."""
+        """Produit les informations du bulletin FBCN31_000 à partir d'un fichier hybrid complet et utilise runID et implementation."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_reghyb"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

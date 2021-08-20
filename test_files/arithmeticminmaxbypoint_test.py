@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"ArithmeticMinMaxByPoint/testsFiles/"
 class TestArithmeticMinMaxByPoint(unittest.TestCase):
 
     def test_1(self):
-        """Test #1: Successfully find both the minimum and the maximum. Default outputFieldName1/2. Small custom file."""
+        """Successfully find both the minimum and the maximum. Default outputFieldName1/2. Small custom file."""
         # open and read source
         source0 = plugin_test_dir + "TTHRHU_3X3X2_SrcFile.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -45,7 +45,7 @@ class TestArithmeticMinMaxByPoint(unittest.TestCase):
 
 
     def test_2(self):
-        """Test #2: Successfully find the minimum, exclusively. Custom outputFieldName1. Small custom file."""
+        """Successfully find the minimum, exclusively. Custom outputFieldName1. Small custom file."""
         # open and read source
         source0 = plugin_test_dir + "TTHRHU_3X3X2_SrcFile.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

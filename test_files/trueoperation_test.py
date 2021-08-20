@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"TrueOperation/testsFiles/"
 class TestTrueOperation(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : Test qui fait un appel a TrueOperation"""
+        """Test qui fait un appel a TrueOperation"""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -45,7 +45,7 @@ class TestTrueOperation(unittest.TestCase):
 
 
     def test_2(self):
-        """Test #2 : Test simple."""
+        """Test simple."""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

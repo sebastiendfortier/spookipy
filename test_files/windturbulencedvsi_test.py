@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"WindTurbulenceDVSI/testsFiles/"
 class TestWindTurbulenceDVSI(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : Calcule la turbulence."""
+        """Calcule la turbulence."""
         # open and read source
         source0 = plugin_test_dir + "tape10.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

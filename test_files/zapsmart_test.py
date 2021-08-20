@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"ZapSmart/testsFiles/"
 class TestZapSmart(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : test_zapsmart"""
+        """test_zapsmart"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_UV_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -45,7 +45,7 @@ class TestZapSmart(unittest.TestCase):
 
 
     def test_2(self):
-        """Test #2 : test_zapsmart_vertical_level1"""
+        """test_zapsmart_vertical_level1"""
         # open and read source
         source0 = plugin_test_dir + "UUVVTT5x5x2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -68,7 +68,7 @@ class TestZapSmart(unittest.TestCase):
 
 
     def test_3(self):
-        """Test #3 : test_zapsmart_vertical_level2"""
+        """test_zapsmart_vertical_level2"""
         # open and read source
         source0 = plugin_test_dir + "UUVVTT5x5x2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -91,7 +91,7 @@ class TestZapSmart(unittest.TestCase):
 
 
     def test_4(self):
-        """Test #4 : test_zapsmart_vertical_level3"""
+        """test_zapsmart_vertical_level3"""
         # open and read source
         source0 = plugin_test_dir + "UUVVTT5x5x2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -114,7 +114,7 @@ class TestZapSmart(unittest.TestCase):
 
 
     def test_5(self):
-        """Test #5 : test_zapsmart_typeOfField"""
+        """test_zapsmart_typeOfField"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_UV_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -137,7 +137,7 @@ class TestZapSmart(unittest.TestCase):
 
 
     def test_6(self):
-        """Test #6 : test_zapsmart_dateOfOrigin"""
+        """test_zapsmart_dateOfOrigin"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_UV_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -160,7 +160,7 @@ class TestZapSmart(unittest.TestCase):
 
 
     def test_7(self):
-        """Test #7 : test_zapsmart_forecastHour"""
+        """test_zapsmart_forecastHour"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_UV_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -183,7 +183,7 @@ class TestZapSmart(unittest.TestCase):
 
 
     def test_8(self):
-        """Test #8 : test_zapsmart_userDefinedIndex"""
+        """test_zapsmart_userDefinedIndex"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_UV_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -206,7 +206,7 @@ class TestZapSmart(unittest.TestCase):
 
 
     def test_9(self):
-        """Test #9 : test_zapsmart_forecastHour"""
+        """test_zapsmart_forecastHour"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_UV_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()

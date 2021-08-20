@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from ..utils import initializer, remove_load_data_info
 from ..plugin import Plugin
-import numpy as np
 import pandas as pd
 import rpnpy.librmn.all as rmn
 import numpy as np
@@ -67,11 +66,11 @@ class InterpolationHorizontalGrid(Plugin):
             raise InterpolationHorizontalGridError('No data to process')
 
         self.df = fstpy.metadata_cleanup(self.df)
-        # self.toctoc_df = self.df.query('nomvar=="!!"').reset_index(drop=True)
+
         self.toctoc_df = self.df.loc[self.df.nomvar=="!!"].reset_index(drop=True)
-        # self.hy_df = self.df.query('nomvar=="HY"').reset_index(drop=True)
+
         self.hy_df = self.df.loc[self.df.nomvar=="HY"].reset_index(drop=True)
-        # print('self.toctoc_df\n',self.toctoc_df[['nomvar','grid']])
+
         self.validate_params()
         set_interpolation_type_options(self.interpolation_type)
         set_extrapolation_type_options(self.extrapolation_type,self.extrapolation_value)
@@ -92,7 +91,7 @@ class InterpolationHorizontalGrid(Plugin):
             if self.nomvar is None:
                 raise InterpolationHorizontalGridError('You must supply a nomvar with field defined method')
 
-            # field_df = self.df.query(f'nomvar=="{self.nomvar}"').reset_index(drop=True)
+
             field_df = self.df.loc[self.df.nomvar==self.nomvar].reset_index(drop=True)
             # print('field_df',field_df)
             #check for more than one definition for the field method
@@ -106,11 +105,11 @@ class InterpolationHorizontalGrid(Plugin):
 
             # get meta for this fields grid
             grid = field_df.iloc[0]['grid']
-            # meta_df1 = self.df.query(f"(nomvar in ['>>','^^','^>']) and (grid=='{grid}')").reset_index(drop=True)
+
             # print('meta_df1',meta_df1)
             meta_df = self.df.loc[(self.df.nomvar.isin(['>>','^^','^>'])) & (self.df.grid==grid)].reset_index(drop=True)
 
-            # self.all_meta_df = self.df.query(f"(nomvar in ['>>','^^','^>']) and (grid=='{grid}')").reset_index(drop=True)
+
             self.all_meta_df = meta_df.copy(deep=True)
             # print('meta_df',meta_df)
             # print('grid',grid)
@@ -124,7 +123,7 @@ class InterpolationHorizontalGrid(Plugin):
                     self.ig1,self.ig2,self.ig3,self.ig4 = set_output_column_values(meta_df,field_df)
 
                 elif ('^>' in meta_df.nomvar.to_list()):
-                    tictac_df = meta_df.query('nomvar=="^>"').reset_index(drop=True)
+                    tictac_df = meta_df.loc[meta_df.nomvar=="^>"].reset_index(drop=True)
                     tictac_df = fstpy.load_data(tictac_df)
                     self.output_grid = define_grid(self.grtyp,'',0,0,0,0,0,0,None,None,tictac_df.iloc[0]['d'])
                     self.ig1,self.ig2,self.ig3,self.ig4 = set_output_column_values(meta_df,field_df)
@@ -139,13 +138,13 @@ class InterpolationHorizontalGrid(Plugin):
 
             #remove all ref fields from source grid from processing
             if (self.output_fields == 'interpolated') and (self.method != 'user'):
-                to_remove = self.df.query(f'grid=="{grid}"').reset_index(drop=True)
+                to_remove = self.df.loc[self.df.grid==grid].reset_index(drop=True)
                 self.df = pd.concat([self.df, to_remove],ignore_index=True).drop_duplicates(keep=False)
 
             #remove all ref fields except ref field itself from source grid from processing
             if (self.output_fields == 'reference') and (self.method != 'user'):
-                to_remove = self.df.query(f'grid=="{grid}"').reset_index(drop=True)
-                to_remove = to_remove.query(f'(nomvar!="{self.nomvar}") and (grid=="{grid}")').reset_index(drop=True)
+                to_remove = self.df.loc[self.df.grid==grid].reset_index(drop=True)
+                to_remove = to_remove.loc[(to_remove.nomvar!=self.nomvar) & (to_remove.grid==grid)].reset_index(drop=True)
                 self.df = pd.concat([self.df, to_remove],ignore_index=True).drop_duplicates(keep=False)
 
 
@@ -174,18 +173,18 @@ class InterpolationHorizontalGrid(Plugin):
 
             keep_toctoc(current_group, results)
 
-            vect_df = current_group.query("nomvar in ['UU','VV']").reset_index(drop=True)
+            vect_df = current_group.loc[current_group.nomvar.isin(['UU','VV'])].reset_index(drop=True)
 
-            others_df = current_group.query("nomvar not in ['UU','VV','PT','>>','^^','^>','!!','HY','!!SF']").reset_index(drop=True)
+            others_df = current_group.loc[~current_group.nomvar.isin(['UU','VV','PT','>>','^^','^>','!!','HY','!!SF'])].reset_index(drop=True)
 
-            pt_df = current_group.query("nomvar=='PT'").reset_index(drop=True)
+            pt_df = current_group.loc[current_group.nomvar=='PT'].reset_index(drop=True)
 
             source_df, grtyp = select_input_grid_source_data(vect_df, others_df, pt_df)
 
             if source_df.empty:
                 continue
 
-            meta_df = current_group.query("nomvar in ['>>','^^','^>']").reset_index(drop=True)
+            meta_df = current_group.loc[current_group.nomvar.isin(['>>','^^','^>'])].reset_index(drop=True)
             input_grid = define_input_grid(grtyp,source_df,meta_df)
 
             grids_are_equal = check_in_out_grid_equality(input_grid,self.output_grid)
@@ -209,6 +208,10 @@ class InterpolationHorizontalGrid(Plugin):
         if len(results):
             res_df = pd.concat(results,ignore_index=True)
             res_df = set_new_grid_identifiers(res_df,self.grtyp,self.ni,self.nj,self.ig1,self.ig2,self.ig3,self.ig4)
+            for i in res_df.index:
+                if res_df.at[i,'nomvar'] == '!!':
+                    continue
+                res_df.at[i,'d'] = res_df.at[i,'d'].astype(np.float32)
 
         no_mod_df = pd.DataFrame(dtype=object)
 
@@ -290,8 +293,6 @@ def scalar_interpolation_pt(df,results,input_grid,output_grid):
 def vectorial_interpolation(vect_df,results,input_grid,output_grid):
     if vect_df.empty:
         return
-    # uu_df = vect_df.query('nomvar=="UU"').reset_index(drop=True)
-    # vv_df = vect_df.query('nomvar=="VV"').reset_index(drop=True)
     uu_df = vect_df.loc[vect_df.nomvar=='UU'].reset_index(drop=True)
     vv_df = vect_df.loc[vect_df.nomvar=='VV'].reset_index(drop=True)
 
@@ -343,7 +344,6 @@ def define_input_grid(grtyp,source_df,meta_df):
             input_grid = define_grid(grtyp,grref,ni,nj,ig1,ig2,ig3,ig4,ax,ay,None)
 
         elif ('^>' in meta_df.nomvar.to_list()):
-            # tictac_df = meta_df.query('nomvar=="^>"').reset_index(drop=True)
             tictac_df = meta_df.loc[meta_df.nomvar=="^>"].reset_index(drop=True)
             input_grid = define_grid(grtyp,'',0,0,0,0,0,0,None,None,tictac_df.iloc[0]['d'])
 
@@ -353,19 +353,19 @@ def define_input_grid(grtyp,source_df,meta_df):
     return input_grid
 
 def keep_intact_hy_field(current_group, no_mod):
-    hy_df = current_group.query("nomvar in ['HY']").reset_index(drop=True)
+    hy_df = current_group.loc[current_group.nomvar=='HY'].reset_index(drop=True)
     if not hy_df.empty:
         no_mod.append(hy_df)
 
 def keep_toctoc(current_group, results):
-    toctoc_df = current_group.query("nomvar in ['!!']").reset_index(drop=True)
+    toctoc_df = current_group.loc[current_group.nomvar=='!!'].reset_index(drop=True)
     # we can add toctoc from input grid
     if not toctoc_df.empty:
         results.append(toctoc_df)
 
 def get_grid_paramters_from_latlon_fields(meta_df):
-    lon_df = meta_df.query('nomvar==">>"').reset_index(drop=True)
-    lat_df = meta_df.query('nomvar=="^^"').reset_index(drop=True)
+    lon_df = meta_df.loc[meta_df.nomvar==">>"].reset_index(drop=True)
+    lat_df = meta_df.loc[meta_df.nomvar=="^^"].reset_index(drop=True)
     if lat_df.empty or lon_df.empty:
         raise InterpolationHorizontalGridError('No data in lat_df or lon_df')
     return get_grid_parameters(lat_df, lon_df)
@@ -407,7 +407,7 @@ def set_output_column_values(meta_df,field_df):
     return ig1,ig2,ig3,ig4
 
 def set_new_grid_identifiers_for_toctoc(res_df,ig1,ig2):
-    toctoc_res_df = res_df.query('nomvar == "!!"').reset_index(drop=True)
+    toctoc_res_df = res_df.loc[res_df.nomvar=="!!"].reset_index(drop=True)
     if toctoc_res_df.empty:
         return pd.DataFrame(dtype=object)
     toctoc_res_df['ip1'] = ig1
@@ -418,7 +418,7 @@ def set_new_grid_identifiers_for_toctoc(res_df,ig1,ig2):
 
 
 def set_new_grid_identifiers(res_df,grtyp,ni,nj,ig1,ig2,ig3,ig4):
-    other_res_df = res_df.query('nomvar != "!!"').reset_index(drop=True)
+    other_res_df = res_df.loc[res_df.nomvar!="!!"].reset_index(drop=True)
     if other_res_df.empty:
         return pd.DataFrame(dtype=object)
     shape_list = [(ni,nj) for _ in range(len(other_res_df.index))]
@@ -455,7 +455,7 @@ def define_grid(grtyp:str,grref:str,ni:int,nj:int,ig1:int,ig2:int,ig3:int,ig4:in
         grref = ''
         grid_params = {'grtyp':grtyp,'grref':grref,'ni':int(ni),'nj':int(2*nj),'vercode':vercode,'subgridid':(sub_grid_id_1,sub_grid_id_2)}
         # grid_id = rmn.ezgdef_supergrid(ni, 2*nj, grtyp, grref, vercode, (sub_grid_id_1,sub_grid_id_2))
-        grid_id = rmn.ezgdef_supergrid(grid_params)
+        grid_id = rmn.ezgdef_supergrid(**grid_params)
 
 
     else:

@@ -11,7 +11,7 @@ def plugin_test_dir():
     return TEST_PATH + '/ArithmeticMeanByPoint/testsFiles/'
 
 def test_1(plugin_test_dir):
-    """Test #1 : Test avec un seul champs en entrée; requête invalide."""
+    """Test avec un seul champs en entrée; requête invalide."""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -26,7 +26,7 @@ def test_1(plugin_test_dir):
 
 
 def test_2(plugin_test_dir):
-    """Test #2 : Utilisation de --outputFieldName avec une valeur > 4 caractères."""
+    """Utilisation de --outputFieldName avec une valeur > 4 caractères."""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -41,7 +41,7 @@ def test_2(plugin_test_dir):
 
 
 def test_3(plugin_test_dir):
-    """Test #3 : Fait la moyenne de champs 2D."""
+    """Fait la moyenne de champs 2D."""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -67,7 +67,7 @@ def test_3(plugin_test_dir):
 
 
 def test_4(plugin_test_dir):
-    """Test #4 : Fait la moyenne de champs 3D."""
+    """Fait la moyenne de champs 3D."""
     # open and read source
     source0 = plugin_test_dir + "UUVVTT5x5x2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -93,7 +93,7 @@ def test_4(plugin_test_dir):
 
 
 def test_5(plugin_test_dir):
-    """Test #5 : Test avec plusieurs champs sur des 2 grilles; reusssit a former un groupe."""
+    """Test avec plusieurs champs sur des 2 grilles; reusssit a former un groupe."""
     # open and read source
     source0 = plugin_test_dir + "tt_gz_px_2grilles.std"
 
@@ -124,7 +124,7 @@ def test_5(plugin_test_dir):
 
 
 def test_6(plugin_test_dir):
-    """Test #6 : Test avec plusieurs champs, differents forecastHours; calcule les resulats pour chacuns des forecastHours."""
+    """Test avec plusieurs champs, differents forecastHours; calcule les resulats pour chacuns des forecastHours."""
     # open and read source
     source0 = plugin_test_dir + "TTES2x2x4_manyForecastHours.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -152,7 +152,7 @@ def test_6(plugin_test_dir):
 
 
 def test_7(plugin_test_dir):
-    """Test #7 : Test avec plusieurs champs, differents forecastHours; fait la moyenne des champs de tous les forecastHours."""
+    """Test avec plusieurs champs, differents forecastHours; fait la moyenne des champs de tous les forecastHours."""
     # open and read source
     source0 = plugin_test_dir + "TTES2x2x4_manyForecastHours.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()

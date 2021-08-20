@@ -16,7 +16,7 @@ def plugin_test_dir():
     return TEST_PATH +"InterpolationHorizontalGrid/testsFiles/"
 
 def test_1(plugin_test_dir):
-    """Test #1 :   Interpolation with multiple different input grid"""
+    """Interpolation with multiple different input grid"""
     # open and read source
 
     source0 = plugin_test_dir + "input_big_fileSrc.std"
@@ -27,12 +27,12 @@ def test_1(plugin_test_dir):
     # [InterpolationHorizontalGrid -m USER_DEFINED --gridType TYPE_N --xyDimensions 191,141 -p 79.0,117.0,57150.0,21.0 --interpolationType BI-LINEAR --extrapolationType MAXIMUM] >>
     # [Zap --nbitsForDataStorage E32]>>
     # [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]"
-    df.loc[:,'typvar'] = 'PI'
+    # df.loc[:,'typvar'] = 'PI'
     df.loc[df.etiket == 'R1558V0N','etiket'] = 'R1558V0_N'
     df.loc[df.etiket == 'G0928V4N','etiket'] = 'G0928V4_N'
     df.loc[df.etiket  == 'MXWIND','etiket'] = 'MXWIND__X'
-    df['datyp'] = 5
-    df['nbits'] = 32
+    # df['datyp'] = 5
+    # df['nbits'] = 32
     #write the result
     results_file = TMP_PATH + "test_interpgrid_reg_1.std"
     fstpy.delete_file(results_file)
@@ -40,16 +40,16 @@ def test_1(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "interpolationHoriz_file2cmp.std"
-    file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalGrid/result_test_1"
+    # file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalGrid/result_test_1"
     # print(file_to_compare)
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.126)
     # fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 def test_2(plugin_test_dir):
-    """Test #2 :   Interpolation with scalar fields only"""
+    """Interpolation with scalar fields only"""
     # open and read source
     source0 = plugin_test_dir + "4panneaux_input4_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -65,8 +65,8 @@ def test_2(plugin_test_dir):
     df.loc[df.etiket == 'R1558V0N','etiket'] = 'R1558V0_N'
     df.loc[df.etiket == 'G0928V4N','etiket'] = 'G0928V4_N'
     df.loc[df.etiket  == 'MXWIND','etiket'] = 'MXWIND__X'
-    df['datyp'] = 5
-    df['nbits'] = 32
+    # df['datyp'] = 5
+    # df['nbits'] = 32
     #write the result
     results_file = TMP_PATH + "test_interpgrid_reg_1.std"
     fstpy.delete_file(results_file)
@@ -74,15 +74,15 @@ def test_2(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "interpolationHorizScalar_file2cmp.std"
-    file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalGrid/result_test_2"
+    # file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalGrid/result_test_2"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.001)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 def test_3(plugin_test_dir):
-    """Test #3 :   Interpolation with vectorial fields only"""
+    """Interpolation with vectorial fields only"""
     # open and read source
     source0 = plugin_test_dir + "inputUUVV.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -98,8 +98,8 @@ def test_3(plugin_test_dir):
     df.loc[df.etiket == 'R1558V0N','etiket'] = 'R1558V0_N'
     df.loc[df.etiket == 'G0928V4N','etiket'] = 'G0928V4_N'
     df.loc[df.etiket  == 'MXWIND','etiket'] = 'MXWIND__X'
-    df['datyp'] = 5
-    df['nbits'] = 32
+    # df['datyp'] = 5
+    # df['nbits'] = 32
     #write the result
     results_file = TMP_PATH + "test_interpgrid_reg_1.std"
     fstpy.delete_file(results_file)
@@ -107,15 +107,15 @@ def test_3(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "interpolationHorizVectorial_file2cmp.std"
-    file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalGrid/result_test_3"
+    # file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalGrid/result_test_3"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 def test_5(plugin_test_dir):
-    """Test #5 :   Interpolation with FIELD_DEFINED"""
+    """Interpolation with FIELD_DEFINED"""
     # open and read source
     source0 = plugin_test_dir + "TTUUVVKTRT.std"
 
@@ -129,8 +129,8 @@ def test_5(plugin_test_dir):
 
     df = convip(df,nomvar='',style=rmn.CONVIP_ENCODE_OLD)
 
-    df.loc[:,'datyp'] = 5
-    df.loc[:,'nbits'] = 32
+    # df.loc[:,'datyp'] = 5
+    # df.loc[:,'nbits'] = 32
 
     # print(df[['nomvar','etiket','ip1','ip2','ig1','ig2']].to_string())
     #write the result
@@ -140,16 +140,16 @@ def test_5(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "fieldDefined_file2cmp.std"
-    file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalGrid/result_test_5"
+    # file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalGrid/result_test_5"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_6(plugin_test_dir):
-    """Test #6 :   Interpolation with FIELD_DEFINED, make sure HY follow"""
+    """Interpolation with FIELD_DEFINED, make sure HY follow"""
     # open and read source
     source0 = plugin_test_dir + "TT_RT_reghyb"
 
@@ -162,8 +162,8 @@ def test_6(plugin_test_dir):
     # [InterpolationHorizontalGrid -m FIELD_DEFINED --fieldName RT --interpolationType NEAREST --extrapolationType NEAREST] >>
     # [WriterStd --output {destination_path} ]
 
-    df['datyp'] = 5
-    df['nbits'] = 32
+    # df['datyp'] = 5
+    # df['nbits'] = 32
     #write the result
     results_file = TMP_PATH + "test_interpgrid_reg_6.std"
     fstpy.delete_file(results_file)
@@ -171,16 +171,16 @@ def test_6(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "fieldDefinedWithHY_file2cmp.std"
-    file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalGrid/result_test_6"
+    # file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalGrid/result_test_6"
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_7(plugin_test_dir):
-    """Test #7 :  Interpolation d'un champ scalaire (TT) d'une grille U vers une grille Z"""
+    """Interpolation d'un champ scalaire (TT) d'une grille U vers une grille Z"""
     # open and read source
     source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
 
@@ -203,9 +203,9 @@ def test_7(plugin_test_dir):
     # [InterpolationHorizontalGrid -m FIELD_DEFINED --fieldName ES --interpolationType BI-CUBIC --extrapolationType NEAREST] >>
     # [WriterStd --output {destination_path}]
 
-    df['datyp'] = 5
-    df['nbits'] = 32
-    df.loc[df.nomvar=='!!','nbits']=64
+    # df['datyp'] = 5
+    # df['nbits'] = 32
+    # df.loc[df.nomvar=='!!','nbits']=64
 
     df = convip(df,nomvar='',style=rmn.CONVIP_ENCODE)
 
@@ -217,16 +217,16 @@ def test_7(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "InterpHorizGridUtoZ_rmn19_file2cmp.std+20210517"
-    file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalGrid/result_test_7"
+    # file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalGrid/result_test_7"
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare,exclude_meta=True)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_8(plugin_test_dir):
-    """Test #8 :  Interpolation d'un champ scalaire (TT) d'une grille Z vers une grille U"""
+    """Interpolation d'un champ scalaire (TT) d'une grille Z vers une grille U"""
     # open and read source
     source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
 
@@ -250,8 +250,8 @@ def test_8(plugin_test_dir):
 
     # for i in df.index:
     #     if df.at[i,'nomvar'] != 'ES':
-    df['datyp'] = 5
-    df['nbits'] = 32
+    # df['datyp'] = 5
+    # df['nbits'] = 32
     df.loc[df.nomvar=='!!','nbits']=64
     df = convip(df,nomvar='ES',style=rmn.CONVIP_ENCODE)
 
@@ -262,16 +262,16 @@ def test_8(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "InterpHorizGridZtoU_file2cmp.std"
-    file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalGrid/result_test_8"
+    # file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalGrid/result_test_8"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_9(plugin_test_dir):
-    """Test #9 :  Interpolation de champs vectoriels (UU,VV) d'une grille U vers une grille Z"""
+    """Interpolation de champs vectoriels (UU,VV) d'une grille U vers une grille Z"""
     # open and read source
     source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -292,10 +292,10 @@ def test_9(plugin_test_dir):
     # [WriterStd --output {destination_path} ]
 
 
-    # df = fstpy.select_with_meta(df,['UU','VV'])
+    df = fstpy.select_with_meta(df,['UU','VV'])
 
-    df['datyp'] = 5
-    df.loc[df.nomvar!='!!','nbits'] = 32
+    # df['datyp'] = 5
+    # df.loc[df.nomvar!='!!','nbits'] = 32
 
     df = convip(df,nomvar='',style=rmn.CONVIP_ENCODE)
     #write the result
@@ -305,16 +305,16 @@ def test_9(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "InterpHorizGridUtoZ_UUVV_file2cmp.std+20210517"
-    file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalGrid/result_test_9"
+    # file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalGrid/result_test_9"
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(False == True)
+    assert(res)
 
 
 def test_10(plugin_test_dir):
-    """Test #10 :  Interpolation de champs vectoriels (UU,VV) d'une grille Z vers une grille U"""
+    """Interpolation de champs vectoriels (UU,VV) d'une grille Z vers une grille U"""
     # open and read source
     source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -334,10 +334,10 @@ def test_10(plugin_test_dir):
     # [Select --fieldName UU,VV] >>
     # [WriterStd --output {destination_path} ]
 
-    # df = fstpy.select_with_meta(df,['UU','VV'])
+    df = fstpy.select_with_meta(df,['UU','VV'])
     # df = df.loc[df.nomvar!='P0']
-    df['datyp'] = 5
-    df.loc[df.nomvar!='!!','nbits']=32
+    # df['datyp'] = 5
+    # df.loc[df.nomvar!='!!','nbits']=32
     #write the result
     results_file = TMP_PATH + "test_interpgrid_reg_10.std"
     fstpy.delete_file(results_file)
@@ -345,16 +345,16 @@ def test_10(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "InterpHorizGridZtoU_UUVV_file2cmp.std"
-    file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalGrid/result_test_10"
+    # file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalGrid/result_test_10"
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_11(plugin_test_dir):
-    """Test #11 :  Interpolation de champs vectoriels et scalaires d'une grille Z vers une grille U avec un fichier a interpoler contenant 2 toctocs."""
+    """Interpolation de champs vectoriels et scalaires d'une grille Z vers une grille U avec un fichier a interpoler contenant 2 toctocs."""
     # open and read source
     source0 = plugin_test_dir + "glbpres_TT_UU_VV.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -376,9 +376,9 @@ def test_11(plugin_test_dir):
     # [InterpolationHorizontalGrid -m FIELD_DEFINED --fieldName ES --interpolationType BI-CUBIC --extrapolationType NEAREST] >> [WriterStd --output {destination_path} ]
 
 
-    df['datyp'] = 5
-    df['nbits'] = 32
-    df.loc[df.nomvar=='!!','nbits']=64
+    # df['datyp'] = 5
+    # df[df.nomvar!='!!','nbits'] = 32
+    # df.loc[df.nomvar=='!!','nbits']=64
     df = convip(df,nomvar='ES',style=rmn.CONVIP_ENCODE)
 
     # print('df\n',df[['nomvar', 'typvar', 'etiket', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'datyp', 'nbits', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4','grid']].to_string())
@@ -389,16 +389,16 @@ def test_11(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "InterpHorizGridUtoZ_manyToctocs_file2cmp.std"
-    file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalGrid/result_test_11"
+    # file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalGrid/result_test_11"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.6)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_13(plugin_test_dir):
-    """Test #13 :   test extrapolation with negative value"""
+    """test extrapolation with negative value"""
     # open and read source
     source0 = plugin_test_dir + "TT_RT_reghyb"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -411,9 +411,9 @@ def test_13(plugin_test_dir):
     # [InterpolationHorizontalGrid -m USER_DEFINED --gridType TYPE_N --xyDimensions 152,120 -p 52.0,120.0,50000.0,21.0 --interpolationType NEAREST --extrapolationType VALUE=-888.8] >>
     #  [WriterStd --output {destination_path} ]
 
-    df['datyp'] = 5
-    df['nbits'] = 32
-    df.loc[df.nomvar=='!!','nbits']=64
+    # df['datyp'] = 5
+    # df['nbits'] = 32
+    # df.loc[df.nomvar=='!!','nbits']=64
 
     df = df.loc[df.nomvar!='HY']
     #write the result
@@ -423,9 +423,9 @@ def test_13(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "extrapolationNegativeValue_file2cmp.std"
-    file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalGrid/result_test_13"
+    # file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalGrid/result_test_13"
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)

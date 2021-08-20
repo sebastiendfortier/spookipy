@@ -1,12 +1,19 @@
 # -*- coding: utf-8 -*-
-from spookipy.humidityutils.humidityutils import calc_vapour_pressure_td
-from numpy import float32
-from ..plugin import Plugin
-from ..utils import create_empty_result, get_existing_result, get_intersecting_levels, get_plugin_dependencies, initializer, existing_results, final_results
-from ..humidityutils import TDPACK_OFFSET_FIX, calc_temperature_dew_point_es, calc_temperature_dew_point_vppr, get_temp_phase_switch, validate_humidity_parameters
-import pandas as pd
-import fstpy.all as fstpy
 import sys
+
+import fstpy.all as fstpy
+import numpy as np
+import pandas as pd
+
+from ..humidityutils import (TDPACK_OFFSET_FIX,
+                             get_temp_phase_switch,
+                             validate_humidity_parameters)
+from ..plugin import Plugin
+from ..science.science import *
+from ..utils import (create_empty_result, existing_results, final_results,
+                     get_existing_result, get_intersecting_levels,
+                     get_plugin_dependencies, initializer)
+
 
 class TemperatureDewPointError(Exception):
     pass
@@ -106,12 +113,15 @@ class TemperatureDewPoint(Plugin):
             self.fhour_groups = self.dependencies_df.groupby(['grid','forecast_hour'])
 
     def compute(self) -> pd.DataFrame:
-        from ..all import DewPointDepression, SaturationVapourPressure, VapourPressure
+        from ..dewpointdepression.dewpointdepression import DewPointDepression
+        from ..vapourpessure.vapourpessure import VapourPressure
         if not self.existing_result_df.empty:
             return existing_results('TemperatureDewPoint',self.existing_result_df,self.meta_df)
 
         sys.stdout.write('TemperatureDewPoint - compute\n')
         df_list=[]
+        if self.ice_water_phase == 'water':
+            self.temp_phase_switch = -40.
         for _, current_fhour_group in self.fhour_groups:
             if self.rpn:
                 print('rpn')
@@ -119,94 +129,125 @@ class TemperatureDewPoint(Plugin):
                     print('option 1')
                     level_intersection_df = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies_option_rpn1)
                     level_intersection_df = fstpy.load_data(level_intersection_df)
-                    tt_df = level_intersection_df.loc[level_intersection_df.nomvar=="TT"].reset_index(drop=True)
+                    tt_df = level_intersection_df.loc[level_intersection_df.nomvar=="TT"].sort_values(by=['level']).reset_index(drop=True)
+                    hu_df = level_intersection_df.loc[level_intersection_df.nomvar=="HU"].sort_values(by=['level']).reset_index(drop=True)
+                    px_df = level_intersection_df.loc[level_intersection_df.nomvar=="PX"].sort_values(by=['level']).reset_index(drop=True)
                     td_df = create_empty_result(tt_df,self.plugin_result_specifications['TD'],copy=True)
-                    es_df = DewPointDepression(pd.concat([current_fhour_group,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,temp_phase_switch=self.temp_phase_switch,temp_phase_switch_unit=self.temp_phase_switch_unit,rpn=True).compute()
-                    es_df = es_df.loc[es_df.nomvar=='ES'].reset_index(drop=True)
+                    es_df = DewPointDepression(pd.concat([tt_df,hu_df,px_df,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,temp_phase_switch=self.temp_phase_switch,temp_phase_switch_unit=self.temp_phase_switch_unit,rpn=True).compute()
+                    es_df = es_df.loc[es_df.nomvar=='ES'].sort_values(by=['level']).reset_index(drop=True)
+                    # ttk_df = fstpy.unit_convert(tt_df,'kelvin')
                     for i in td_df.index:
-                        tt = tt_df.at[i,'d']-TDPACK_OFFSET_FIX
+                        tt = tt_df.at[i,'d']
+                        ni = tt.shape[0]
+                        nj = tt.shape[1]
                         es = es_df.at[i,'d']
-                        td_df.at[i,'d'] = calc_temperature_dew_point_es(tt, es).astype(float32)
+                        td_df.at[i,'d'] = science.td_from_es(tt=tt-TDPACK_OFFSET_FIX, es=es, ni=ni, nj=nj).astype(np.float32)
 
                 elif self.option==2:
                     print('option 2')
                     level_intersection_df = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies_option_rpn2)
                     level_intersection_df = fstpy.load_data(level_intersection_df)
-                    tt_df = level_intersection_df.loc[level_intersection_df.nomvar=="TT"].reset_index(drop=True)
+                    tt_df = level_intersection_df.loc[level_intersection_df.nomvar=="TT"].sort_values(by=['level']).reset_index(drop=True)
+                    qv_df = level_intersection_df.loc[level_intersection_df.nomvar=="QV"].sort_values(by=['level']).reset_index(drop=True)
+                    px_df = level_intersection_df.loc[level_intersection_df.nomvar=="PX"].sort_values(by=['level']).reset_index(drop=True)
                     td_df = create_empty_result(tt_df,self.plugin_result_specifications['TD'],copy=True)
-                    es_df = DewPointDepression(pd.concat([current_fhour_group,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,temp_phase_switch=self.temp_phase_switch,temp_phase_switch_unit=self.temp_phase_switch_unit,rpn=True).compute()
-                    es_df = es_df.loc[es_df.nomvar=='ES'].reset_index(drop=True)
+                    es_df = DewPointDepression(pd.concat([tt_df,qv_df,px_df,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,temp_phase_switch=self.temp_phase_switch,temp_phase_switch_unit=self.temp_phase_switch_unit,rpn=True).compute()
+                    es_df = es_df.loc[es_df.nomvar=='ES'].sort_values(by=['level']).reset_index(drop=True)
+                    # ttk_df = fstpy.unit_convert(tt_df,'kelvin')
+                    # pxpa_df = fstpy.unit_convert(px_df,'kelvin')
+                    # qvkgkg_df = fstpy.unit_convert(qv_df,'kilogram_per_kilogram')
                     for i in td_df.index:
-                        tt = tt_df.at[i,'d']-TDPACK_OFFSET_FIX
+                        tt = tt_df.at[i,'d']
+                        ni = tt.shape[0]
+                        nj = tt.shape[1]
                         es = es_df.at[i,'d']
-                        td_df.at[i,'d'] = calc_temperature_dew_point_es(tt, es).astype(float32)
+                        td_df.at[i,'d'] = science.td_from_es(tt=tt-TDPACK_OFFSET_FIX, es=es, ni=ni, nj=nj).astype(np.float32)
 
                 elif self.option==3:
                     print('option 3')
                     level_intersection_df = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies_option_rpn3)
                     level_intersection_df = fstpy.load_data(level_intersection_df)
-                    tt_df = level_intersection_df.loc[level_intersection_df.nomvar=="TT"].reset_index(drop=True)
+                    tt_df = level_intersection_df.loc[level_intersection_df.nomvar=="TT"].sort_values(by=['level']).reset_index(drop=True)
+                    hr_df = level_intersection_df.loc[level_intersection_df.nomvar=="HR"].sort_values(by=['level']).reset_index(drop=True)
+                    px_df = level_intersection_df.loc[level_intersection_df.nomvar=="PX"].sort_values(by=['level']).reset_index(drop=True)
                     td_df = create_empty_result(tt_df,self.plugin_result_specifications['TD'],copy=True)
-                    es_df = DewPointDepression(pd.concat([current_fhour_group,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,temp_phase_switch=self.temp_phase_switch,temp_phase_switch_unit=self.temp_phase_switch_unit,rpn=True).compute()
-                    es_df = es_df.loc[es_df.nomvar=='ES'].reset_index(drop=True)
+                    es_df = DewPointDepression(pd.concat([tt_df,hr_df,px_df,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,temp_phase_switch=self.temp_phase_switch,temp_phase_switch_unit=self.temp_phase_switch_unit,rpn=True).compute()
+                    es_df = es_df.loc[es_df.nomvar=='ES'].sort_values(by=['level']).reset_index(drop=True)
+                    # ttk_df = fstpy.unit_convert(tt_df,'kelvin')
+                    # pxpa_df = fstpy.unit_convert(px_df,'kelvin')
                     for i in td_df.index:
-                        tt = tt_df.at[i,'d']-TDPACK_OFFSET_FIX
+                        tt = tt_df.at[i,'d']
+                        ni = tt.shape[0]
+                        nj = tt.shape[1]
                         es = es_df.at[i,'d']
-                        td_df.at[i,'d'] = calc_temperature_dew_point_es(tt, es).astype(float32)
+                        td_df.at[i,'d'] = science.td_from_es(tt=tt-TDPACK_OFFSET_FIX, es=es, ni=ni, nj=nj).astype(np.float32)
 
                 else:
                     print('option 4')
                     level_intersection_df = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies_option_rpn4)
                     level_intersection_df = fstpy.load_data(level_intersection_df)
-                    tt_df = level_intersection_df.loc[level_intersection_df.nomvar=="TT"].reset_index(drop=True)
-                    es_df = level_intersection_df.loc[level_intersection_df.nomvar=="ES"].reset_index(drop=True)
+                    tt_df = level_intersection_df.loc[level_intersection_df.nomvar=="TT"].sort_values(by=['level']).reset_index(drop=True)
+                    es_df = level_intersection_df.loc[level_intersection_df.nomvar=="ES"].sort_values(by=['level']).reset_index(drop=True)
                     td_df = create_empty_result(tt_df,self.plugin_result_specifications['TD'],copy=True)
                     for i in td_df.index:
-                        tt = tt_df.at[i,'d']-TDPACK_OFFSET_FIX
+                        tt = tt_df.at[i,'d']#
+                        ni = tt.shape[0]
+                        nj = tt.shape[1]
                         es = es_df.at[i,'d']
-                        td_df.at[i,'d'] = calc_temperature_dew_point_es(tt, es).astype(float32)
+                        td_df.at[i,'d'] = science.td_from_es(tt=tt-TDPACK_OFFSET_FIX, es=es, ni=ni, nj=nj).astype(np.float32)
+                        # td_df.at[i,'d'] = calc_temperature_dew_point_es(tt, es).astype(float32)
 
             else:
-                if self.option==1:
+                if self.option==1: #9 12
                     print('option 1')
                     level_intersection_df = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies_option_1)
                     level_intersection_df = fstpy.load_data(level_intersection_df)
-                    tt_df = level_intersection_df.loc[level_intersection_df.nomvar=="TT"].reset_index(drop=True)
+                    tt_df = level_intersection_df.loc[level_intersection_df.nomvar=="TT"].sort_values(by=['level']).reset_index(drop=True)
+                    hu_df = level_intersection_df.loc[level_intersection_df.nomvar=="HU"].sort_values(by=['level']).reset_index(drop=True)
+                    px_df = level_intersection_df.loc[level_intersection_df.nomvar=="PX"].sort_values(by=['level']).reset_index(drop=True)
                     td_df = create_empty_result(tt_df,self.plugin_result_specifications['TD'],copy=True)
-                    vppr_df = VapourPressure(pd.concat([current_fhour_group,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,temp_phase_switch=self.temp_phase_switch,temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
-                    vppr_df = vppr_df.loc[vppr_df.nomvar=='VPPR']
+                    vppr_df = VapourPressure(pd.concat([tt_df,hu_df,px_df,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,temp_phase_switch=self.temp_phase_switch,temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
+                    vppr_df = vppr_df.loc[vppr_df.nomvar=='VPPR'].sort_values(by=['level']).reset_index(drop=True)
                     for i in td_df.index:
-                        tt = tt_df.at[i,'d']-TDPACK_OFFSET_FIX
+                        tt = tt_df.at[i,'d']
+                        ni = tt.shape[0]
+                        nj = tt.shape[1]
                         vppr = vppr_df.at[i,'d']
-                        td_df.at[i,'d'] = calc_temperature_dew_point_vppr(tt,vppr,self.temp_phase_switch,self.ice_water_phase=='both').astype(float32)
+                        td_df.at[i,'d'] = science.td_from_vppr(tt=tt-TDPACK_OFFSET_FIX,vppr=vppr,ni=ni,nj=nj,tpl=self.temp_phase_switch,swph=self.ice_water_phase=='both').astype(np.float32)
 
-                elif self.option==2:
+                elif self.option==2: # 11
                     print('option 2')
                     level_intersection_df = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies_option_2)
                     level_intersection_df = fstpy.load_data(level_intersection_df)
-                    tt_df = level_intersection_df.loc[level_intersection_df.nomvar=="TT"].reset_index(drop=True)
+                    tt_df = level_intersection_df.loc[level_intersection_df.nomvar=="TT"].sort_values(by=['level']).reset_index(drop=True)
+                    qv_df = level_intersection_df.loc[level_intersection_df.nomvar=="QV"].sort_values(by=['level']).reset_index(drop=True)
+                    px_df = level_intersection_df.loc[level_intersection_df.nomvar=="PX"].sort_values(by=['level']).reset_index(drop=True)
                     td_df = create_empty_result(tt_df,self.plugin_result_specifications['TD'],copy=True)
-                    vppr_df = VapourPressure(pd.concat([current_fhour_group,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,temp_phase_switch=self.temp_phase_switch,temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
-                    vppr_df = vppr_df.loc[vppr_df.nomvar=='VPPR']
+                    vppr_df = VapourPressure(pd.concat([tt_df,qv_df,px_df,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,temp_phase_switch=self.temp_phase_switch,temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
+                    vppr_df = vppr_df.loc[vppr_df.nomvar=='VPPR'].sort_values(by=['level']).reset_index(drop=True)
                     for i in td_df.index:
-                        tt = tt_df.at[i,'d']-TDPACK_OFFSET_FIX
+                        tt = tt_df.at[i,'d']
+                        ni = tt.shape[0]
+                        nj = tt.shape[1]
                         vppr = vppr_df.at[i,'d']
-                        td_df.at[i,'d'] = calc_temperature_dew_point_vppr(tt,vppr,self.temp_phase_switch,self.ice_water_phase=='both').astype(float32)
+                        td_df.at[i,'d'] = science.td_from_vppr(tt=tt-TDPACK_OFFSET_FIX,vppr=vppr,ni=ni,nj=nj,tpl=self.temp_phase_switch,swph=self.ice_water_phase=='both').astype(np.float32)
 
-                elif self.option==3:
+                elif self.option==3: #7
                     print('option 3')
                     level_intersection_df = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies_option_3)
                     level_intersection_df = fstpy.load_data(level_intersection_df)
-                    tt_df = level_intersection_df.loc[level_intersection_df.nomvar=="TT"].reset_index(drop=True)
+                    tt_df = level_intersection_df.loc[level_intersection_df.nomvar=="TT"].sort_values(by=['level']).reset_index(drop=True)
+                    hr_df = level_intersection_df.loc[level_intersection_df.nomvar=="HR"].sort_values(by=['level']).reset_index(drop=True)
+                    px_df = level_intersection_df.loc[level_intersection_df.nomvar=="PX"].sort_values(by=['level']).reset_index(drop=True)
                     td_df = create_empty_result(tt_df,self.plugin_result_specifications['TD'],copy=True)
-                    svp_df = SaturationVapourPressure(pd.concat([current_fhour_group,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,temp_phase_switch=self.temp_phase_switch,temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
-                    svp_df = svp_df.loc[svp_df.nomvar=='SVP']
-                    vppr_df = VapourPressure(pd.concat([current_fhour_group,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,temp_phase_switch=self.temp_phase_switch,temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
-                    vppr_df = vppr_df.loc[vppr_df.nomvar=='VPPR']
+                    vppr_df = VapourPressure(pd.concat([tt_df,hr_df,px_df,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,temp_phase_switch=self.temp_phase_switch,temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
+                    vppr_df = vppr_df.loc[vppr_df.nomvar=='VPPR'].sort_values(by=['level']).reset_index(drop=True)
                     for i in td_df.index:
-                        tt = tt_df.at[i,'d']-TDPACK_OFFSET_FIX
+                        tt = tt_df.at[i,'d']
+                        ni = tt.shape[0]
+                        nj = tt.shape[1]
                         vppr = vppr_df.at[i,'d']
-                        td_df.at[i,'d'] = calc_temperature_dew_point_vppr(tt,vppr,self.temp_phase_switch,self.ice_water_phase=='both').astype(float32)
+                        td_df.at[i,'d'] = science.td_from_vppr(tt=tt-TDPACK_OFFSET_FIX,vppr=vppr,ni=ni,nj=nj,tpl=self.temp_phase_switch,swph=self.ice_water_phase=='both').astype(np.float32)
 
                 else:
                     print('option 4')
@@ -215,14 +256,12 @@ class TemperatureDewPoint(Plugin):
                     tt_df = level_intersection_df.loc[level_intersection_df.nomvar=="TT"].reset_index(drop=True)
                     es_df = level_intersection_df.loc[level_intersection_df.nomvar=="ES"].reset_index(drop=True)
                     td_df = create_empty_result(tt_df,self.plugin_result_specifications['TD'],copy=True)
-                    vppr_df = VapourPressure(pd.concat([tt_df,es_df],ignore_index=True),ice_water_phase=self.ice_water_phase,temp_phase_switch=self.temp_phase_switch,temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
-                    vppr_df = vppr_df.loc[vppr_df.nomvar=='VPPR']
                     for i in td_df.index:
-                        tt = tt_df.at[i,'d']-TDPACK_OFFSET_FIX
+                        tt = tt_df.at[i,'d']
+                        ni = tt.shape[0]
+                        nj = tt.shape[1]
                         es = es_df.at[i,'d']
-                        # td = calc_temperature_dew_point_es(tt, es)
-                        vppr = vppr_df.at[i,'d'] #calc_vapour_pressure_td(td, tt, self.temp_phase_switch, self.ice_water_phase=='both').astype(float32)
-                        td_df.at[i,'d'] = calc_temperature_dew_point_vppr(tt,vppr,self.temp_phase_switch,self.ice_water_phase=='both').astype(float32)
+                        td_df.at[i,'d'] = science.td_from_es(tt=tt-TDPACK_OFFSET_FIX, es=es, ni=ni, nj=nj).astype(np.float32)
 
             df_list.append(td_df)
 

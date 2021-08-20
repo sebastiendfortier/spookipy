@@ -60,7 +60,8 @@ class WindMax(Plugin):
 
         self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
-        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['unit','forecast_hour'])
+        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['unit','forecast_hour','ip_info'])
+
         #check if result already exists
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
 
@@ -81,6 +82,7 @@ class WindMax(Plugin):
         for _,current_fhour_group in self.fhour_groups:
             # print('windmax current_fhour_group 1\n',current_fhour_group[['nomvar','typvar','etiket','ni','nj','nk','dateo','ip1','unit']])
             current_fhour_group = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies)
+
             if current_fhour_group.empty:
                 sys.stderr.write('WindMax - no intersecting levels found')
                 continue
@@ -89,6 +91,7 @@ class WindMax(Plugin):
             current_fhour_group = fstpy.load_data(current_fhour_group)
             # print('windmax current_fhour_group 3\n',current_fhour_group[['nomvar','typvar','etiket','ni','nj','nk','dateo','ip1','unit']])
             uu_df = current_fhour_group.loc[current_fhour_group.nomvar=='UU'].reset_index(drop=True)
+
             # print('windmax uu_df\n',uu_df[['nomvar','typvar','etiket','ni','nj','nk','dateo','ip1','unit']])
             uu_res_df = create_empty_result(uu_df,self.plugin_result_specifications['UU'])
 

@@ -5,7 +5,7 @@ import fstpy.all as fstpy
 import spookipy.all as spooki
 
 
-pytestmark = [pytest.mark.regressions]
+pytestmark = [pytest.mark.skip]
 
 @pytest.fixture
 def plugin_test_dir():
@@ -13,12 +13,12 @@ def plugin_test_dir():
 
 
 def test_1(plugin_test_dir):
-    """Test #1 : Calcul de l'indice total-total avec TT à 850 et 500 mb et ES à 850 mb."""
+    """Calcul de l'indice total-total avec TT à 850 et 500 mb et ES à 850 mb."""
     # open and read source
     source0 = plugin_test_dir + "TT850_500_ES_850_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    print(src_df0[['nomvar','ip1']])
+    # print(src_df0[['nomvar','ip1']])
     #compute TotalTotalsIndex
     df = spooki.TotalTotalsIndex(src_df0).compute()
     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [TotalTotalsIndex] >> [WriterStd --output {destination_path} --ignoreExtended]

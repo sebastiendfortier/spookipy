@@ -13,7 +13,7 @@ def plugin_test_dir():
 
 
 def test_1(plugin_test_dir):
-    """Test #1 :  Création d'un champ 3D nommé RES identique au champ UU du fichier d'entrée avec 0.33323 comme valeurs."""
+    """Création d'un champ 3D nommé RES identique au champ UU du fichier d'entrée avec 0.33323 comme valeurs."""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -49,7 +49,7 @@ def test_1(plugin_test_dir):
 
 
 def test_2(plugin_test_dir):
-    """Test #2 :  Création d'un champ 2D identique au champ UU du fichier d'entrée avec 0 comme valeur (MININDEX)."""
+    """Création d'un champ 2D identique au champ UU du fichier d'entrée avec 0 comme valeur (MININDEX)."""
     # open and read source
     source0 = plugin_test_dir + "generate2D_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -79,7 +79,7 @@ def test_2(plugin_test_dir):
 
 
 def test_3(plugin_test_dir):
-    """Test #3 :  Création d'un champ 2D identique au champ UU du fichier d'entrée avec MAXINDEX comme valeurs"""
+    """Création d'un champ 2D identique au champ UU du fichier d'entrée avec MAXINDEX comme valeurs"""
     # open and read source
     source0 = plugin_test_dir + "2011072100_006_eta_small"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -111,7 +111,7 @@ def test_3(plugin_test_dir):
 
 
 def test_4(plugin_test_dir):
-    """Test #4 :  Création d'un champ 2D identique au champ UU du fichier d'entrée avec 1.0 comme valeurs"""
+    """Création d'un champ 2D identique au champ UU du fichier d'entrée avec 1.0 comme valeurs"""
     # open and read source
     source0 = plugin_test_dir + "generate2D_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -143,7 +143,7 @@ def test_4(plugin_test_dir):
 
 
 def test_5(plugin_test_dir):
-    """Test #5 :  Création de 2 champs 2D identiques au champ UU, le premier avec MININDEX comme valeurs et le deuxième avec MAXINDEX."""
+    """Création de 2 champs 2D identiques au champ UU, le premier avec MININDEX comme valeurs et le deuxième avec MAXINDEX."""
     # open and read source
     source0 = plugin_test_dir + "generate2D_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -180,7 +180,7 @@ def test_5(plugin_test_dir):
 
 
 def test_6(plugin_test_dir):
-    """Test #6 :  Création d'un champ 2D identique au champ UU du fichier d'entrée avec NBLEVELS comme valeurs"""
+    """Création d'un champ 2D identique au champ UU du fichier d'entrée avec NBLEVELS comme valeurs"""
     # open and read source
     source0 = plugin_test_dir + "2011072100_006_eta_small"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()

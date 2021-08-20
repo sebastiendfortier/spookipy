@@ -28,7 +28,7 @@ class CoriolisParameter(Plugin):
     def __init__(self,df:pd.DataFrame):
 
         self.plugin_result_specifications = {
-            'CORP':{'nomvar':'CORP','etiket':'CoriolisParameter','unit':'divergence','ip1':0,'ip2':0,'ip3':0,'datyp':134,'nbits':12}
+            'CORP':{'nomvar':'CORP','etiket':'CORIOP','unit':'divergence','ip1':0,'ip2':0,'ip3':0,'datyp':134,'nbits':12}
         }
 
         self.df = df
@@ -61,9 +61,11 @@ class CoriolisParameter(Plugin):
             latlon_df = fstpy.get_2d_lat_lon(current_group)
             lat_df = latlon_df.loc[latlon_df.nomvar=='LA'].reset_index(drop=True)
             if lat_df.empty:
+                sys.stderr.write('Cannot find "LA" field in this group - skipping\n')
                 continue
             current_group = current_group.loc[~current_group.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
             if current_group.empty:
+                sys.stderr.write('Cannot find "LON" field in this group - skipping\n')
                 continue
 
             corp_df = create_empty_result(lat_df,self.plugin_result_specifications['CORP'])

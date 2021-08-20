@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-from numpy import float32
-from ..humidityutils import calc_humidex
+
 from ..utils import create_empty_result, get_existing_result, get_plugin_dependencies, existing_results, final_results
 from ..plugin import Plugin
 import pandas as pd
 import fstpy.all as fstpy
 import sys
-from ..saturationvapourpressure import SaturationVapourPressure
-
+import numpy as np
+from ..humidityutils import TDPACK_OFFSET_FIX
+from ..science.science import *
 
 
 class HumidexError(Exception):
@@ -17,12 +17,11 @@ class Humidex(Plugin):
 
     def __init__(self,df:pd.DataFrame):
         self.plugin_mandatory_dependencies = {
-            'TT':{'nomvar':'TT','unit':'celsius','surface':True},
-            'TD':{'nomvar':'TD','unit':'celsius','surface':True},
+            'ALL':{'surface':True},
         }
 
         self.plugin_result_specifications = {
-            'HMX':{'nomvar':'HMX','etiket':'Humidex','unit':'scalar','ip1':0,'surface':True}
+            'HMX':{'nomvar':'HMX','etiket':'HUMIDX','unit':'scalar','ip1':0,'surface':True}
         }
 
         self.df = df
@@ -51,25 +50,37 @@ class Humidex(Plugin):
             self.fhour_groups = self.dependencies_df.groupby(['grid','forecast_hour'])
 
     def compute(self) -> pd.DataFrame:
+        from ..saturationvapourpressure.saturationvapourpressure import SaturationVapourPressure
+        from ..temperaturedewpoint.temperaturedewpoint import TemperatureDewPoint
         if not self.existing_result_df.empty:
             return existing_results('Humidex',self.existing_result_df,self.meta_df)
 
         sys.stdout.write('Humidex - compute\n')
         df_list=[]
         for _, current_fhour_group in self.fhour_groups:
+
             current_fhour_group = fstpy.load_data(current_fhour_group)
             tt_df = current_fhour_group.loc[current_fhour_group.nomvar=='TT'].reset_index(drop=True)
-            td_df = current_fhour_group.loc[current_fhour_group.nomvar=='TD'].reset_index(drop=True)
-            if tt_df.empty or td_df.empty:
+            forecast_hour = tt_df.forecast_hour.unique()[0]
+            td_df = TemperatureDewPoint(current_fhour_group,ice_water_phase='water').compute()
+            rentd_df = td_df
+            rentd_df.loc[rentd_df.nomvar=='TD','nomvar'] == 'TT'
+            svp_df = SaturationVapourPressure(rentd_df,ice_water_phase='water').compute()
+            svp_df = svp_df.loc[svp_df.nomvar=='SVP'].reset_index(drop=True)
+            if tt_df.empty or svp_df.empty:
+                sys.stderr.write(f'Missing tt or svp for forecast hour {forecast_hour}\n')
+                continue
+            if len(tt_df.index) or len(svp_df.index):
+                sys.stderr.write(f'Dataframes are not of the same size for forecast hour {forecast_hour}\n')
                 continue
             hmx_df = create_empty_result(tt_df,self.plugin_result_specifications['HMX'],copy=True)
-            td_df.loc[:,'nomvar'] = 'TT'
-            svp_df = SaturationVapourPressure(pd.concat([td_df,self.meta_df],ignore_index=True),ice_water_phase='water').compute()
-            svp_df = svp_df.loc[svp_df.nomvar=='SVP'].reset_index(drop=True)
+
             for i in td_df.index:
                 tt = tt_df.at[i,'d']
+                ni= tt.shape[0]
+                nj= tt.shape[1]
                 svp = svp_df.at[i,'d']
-                hmx_df.at[i,'d'] = calc_humidex(tt,svp).astype(float32)
+                hmx_df.at[i,'d'] = science.hmx_from_svp(tt=tt,svp=svp,ni=ni,nj=nj).astype(np.float32)
 
 
             df_list.append(hmx_df)

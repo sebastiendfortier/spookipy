@@ -34,13 +34,15 @@ class Helicity(Plugin):
 
         self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
-        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['unit','forecast_hour'])
+        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['unit','forecast_hour','ip_info'])
 
          #check if result already exists
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
 
         if self.existing_result_df.empty:
             self.dependencies_df = get_plugin_dependencies(self.df,None,self.plugin_mandatory_dependencies)
+            if self.dependencies_df.empty:
+                raise HelicityError('No data to process')
             self.fhour_groups=self.dependencies_df.groupby(by=['grid','forecast_hour'])
 
 

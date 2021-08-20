@@ -15,7 +15,7 @@ def plugin_test_dir():
 
 
 def test_1(plugin_test_dir):
-    """Test #1 : Test sur un fichier sortie de modele eta avec l'option --coordinateType ETA_COORDINATE. VCODE 1002"""
+    """Test sur un fichier sortie de modele eta avec l'option --coordinateType ETA_COORDINATE. VCODE 1002"""
     # open and read source
     source0 = plugin_test_dir + "tt_eta_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -27,6 +27,7 @@ def test_1(plugin_test_dir):
     # [Zap --pdsLabel R1580V0N] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
+    df.loc[:,'etiket'] = 'R1580V0N'
     #write the result
     results_file = TMP_PATH + "test_1.std"
     fstpy.delete_file(results_file)
@@ -37,21 +38,21 @@ def test_1(plugin_test_dir):
     # file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_1"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_2(plugin_test_dir):
-    """Test #2 : Test sur un fichier sortie de modele eta avec les options --coordinateType ETA_COORDINATE --standardAtmosphere."""
+    """Test sur un fichier sortie de modele eta avec les options --coordinateType ETA_COORDINATE --standardAtmosphere."""
     # open and read source
     source0 = plugin_test_dir + "tt_eta_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     #compute spooki.Pressure
     df = spooki.Pressure(src_df0,"TT",True).compute()
-    df.loc[:,'etiket'] = 'PRESSR'
-    df.loc[df.nomvar.isin(['>>','^^','P0','PT']),'etiket'] = 'R1580V0N'
+
+    # df.loc[df.nomvar.isin(['>>','^^','P0','PT']),'etiket'] = 'R1580V0N'
     #[ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Zap --pdsLabel PRESSURE --doNotFlagAsZapped] >>
     # [Pressure --coordinateType ETA_COORDINATE --standardAtmosphere --referenceField TT] >>
@@ -69,11 +70,11 @@ def test_2(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 # # def test_3(plugin_test_dir):
-# #     """Test #3 : Test sur un fichier sortie de modele eta avec l'option --coordinateType AUTODETECT."""
+# #     """Test sur un fichier sortie de modele eta avec l'option --coordinateType AUTODETECT."""
 # #     # open and read source
 # #     source0 = plugin_test_dir + "tt_eta_fileSrc.std"
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -93,11 +94,11 @@ def test_2(plugin_test_dir):
 # #     #compare results
 # #     res = fstpy.fstcomp(results_file,file_to_compare)
 # #     fstpy.delete_file(results_file)
-# #     assert(res == True)
+# #     assert(res)
 
 
 # # def test_4(plugin_test_dir):
-# #     """Test #4 : Test sur un fichier sortie de modele eta avec les options --coordinateType AUTODETECT --standardAtmosphere."""
+# #     """Test sur un fichier sortie de modele eta avec les options --coordinateType AUTODETECT --standardAtmosphere."""
 # #     # open and read source
 # #     source0 = plugin_test_dir + "tt_eta_fileSrc.std"
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -117,24 +118,23 @@ def test_2(plugin_test_dir):
 # #     #compare results
 # #     res = fstpy.fstcomp(results_file,file_to_compare)
 # #     fstpy.delete_file(results_file)
-# #     assert(res == True)
+# #     assert(res)
 
 
 def test_5(plugin_test_dir):
-    """Test #5 : Test sur un fichier sortie de modele Sigma, avec l'option --coordinateType SIGMA_COORDINATE. VCODE 1001"""
+    """Test sur un fichier sortie de modele Sigma, avec l'option --coordinateType SIGMA_COORDINATE. VCODE 1001"""
     # open and read source
     source0 = plugin_test_dir + "hu_sig_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     #compute spooki.Pressure
     df = spooki.Pressure(src_df0,"HU").compute()
-    df.loc[:,'etiket'] = 'R1580V0N'
-    df.loc[df.nomvar=='P0','etiket'] = 'GA72A16N'
-
     #[ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Pressure --coordinateType SIGMA_COORDINATE --referenceField HU ] >>
     # [Zap --pdsLabel R1580V0N] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
+    df.loc[df.nomvar!='P0','etiket'] = 'R1580V0N'
+    # df.loc[df.nomvar=='P0','etiket'] = 'GA72A16N'
 
     #write the result
     results_file = TMP_PATH + "test_5.std"
@@ -146,13 +146,13 @@ def test_5(plugin_test_dir):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_5"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_6(plugin_test_dir):
-    """Test #6 : Test sur un fichier sortie de modele Sigma, avec les options --coordinateType SIGMA_COORDINATE --standardAtmosphere."""
+    """Test sur un fichier sortie de modele Sigma, avec les options --coordinateType SIGMA_COORDINATE --standardAtmosphere."""
     # open and read source
     source0 = plugin_test_dir + "hu_sig_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -164,8 +164,7 @@ def test_6(plugin_test_dir):
     # [Pressure --coordinateType SIGMA_COORDINATE --standardAtmosphere --referenceField HU] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
-    df.loc[:,'etiket'] = 'PRESSR'
-    df.loc[df.nomvar=='P0','etiket'] = 'GA72A16N'
+    # df.loc[df.nomvar=='P0','etiket'] = 'GA72A16N'
     #write the result
     results_file = TMP_PATH + "test_6.std"
     fstpy.delete_file(results_file)
@@ -178,11 +177,11 @@ def test_6(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 # # def test_7(plugin_test_dir):
-# #     """Test #7 : Test sur un fichier sortie de modele Sigma, avec l'option --coordinateType AUTODETECT."""
+# #     """Test sur un fichier sortie de modele Sigma, avec l'option --coordinateType AUTODETECT."""
 # #     # open and read source
 # #     source0 = plugin_test_dir + "hu_sig_fileSrc.std"
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -202,11 +201,11 @@ def test_6(plugin_test_dir):
 # #     #compare results
 # #     res = fstpy.fstcomp(results_file,file_to_compare)
 # #     fstpy.delete_file(results_file)
-# #     assert(res == True)
+# #     assert(res)
 
 
 # # def test_8(plugin_test_dir):
-# #     """Test #8 : Test sur un fichier sortie de modele Sigma, avec les options --coordinateType AUTODETECT --standardAtmosphere."""
+# #     """Test sur un fichier sortie de modele Sigma, avec les options --coordinateType AUTODETECT --standardAtmosphere."""
 # #     # open and read source
 # #     source0 = plugin_test_dir + "hu_sig_fileSrc.std"
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -226,11 +225,11 @@ def test_6(plugin_test_dir):
 # #     #compare results
 # #     res = fstpy.fstcomp(results_file,file_to_compare)
 # #     fstpy.delete_file(results_file)
-# #     assert(res == True)
+# #     assert(res)
 
 
 def test_9(plugin_test_dir):
-    """Test #9 : Test sur un fichier sortie de modele hybrid, avec l'option --coordinateType HYBRID_COORDINATE."""
+    """Test sur un fichier sortie de modele hybrid, avec l'option --coordinateType HYBRID_COORDINATE."""
     # open and read source
     source0 = plugin_test_dir + "tt_hyb_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -241,6 +240,7 @@ def test_9(plugin_test_dir):
     # [Pressure --coordinateType HYBRID_COORDINATE --referenceField TT] >>
     # [Zap --pdsLabel R1580V0N] >>
     # [WriterStd --output {destination_path} --ignoreExtended]']
+    df.loc[:,'etiket'] = 'R1580V0N'
 
     #write the result
     results_file = TMP_PATH + "test_9.std"
@@ -252,25 +252,26 @@ def test_9(plugin_test_dir):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_9"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_10(plugin_test_dir):
-    """Test #10 : Test sur un fichier sortie de modele Hybrid avec les options --coordinateType HYBRID_COORDINATE --standardAtmosphere."""
+    """Test sur un fichier sortie de modele Hybrid avec les options --coordinateType HYBRID_COORDINATE --standardAtmosphere."""
     # open and read source
     source0 = plugin_test_dir + "tt_hyb_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     #compute spooki.Pressure
     df = spooki.Pressure(src_df0,"TT",True).compute()
-    df['etiket'] = 'PRESSR'
-    df.loc[df.nomvar.isin(['>>','^^','HY','P0']),'etiket'] = 'R1580V0N'
     #[ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Zap --pdsLabel PRESSURE --doNotFlagAsZapped] >>
     # [Pressure --coordinateType HYBRID_COORDINATE --standardAtmosphere --referenceField TT] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
+
+    # df.loc[df.nomvar.isin(['>>','^^','HY','P0']),'etiket'] = 'R1580V0N'
+
 
     #write the result
     results_file = TMP_PATH + "test_10.std"
@@ -284,11 +285,11 @@ def test_10(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 # # def test_11(plugin_test_dir):
-# #     """Test #11 : Test sur un fichier sortie de modele Hybrid, avec l'option --coordinateType AUTODETECT."""
+# #     """Test sur un fichier sortie de modele Hybrid, avec l'option --coordinateType AUTODETECT."""
 # #     # open and read source
 # #     source0 = plugin_test_dir + "input_hyb_2011100712_012.std"
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -308,11 +309,11 @@ def test_10(plugin_test_dir):
 # #     #compare results
 # #     res = fstpy.fstcomp(results_file,file_to_compare)
 # #     fstpy.delete_file(results_file)
-# #     assert(res == True)
+# #     assert(res)
 
 
 # # def test_12(plugin_test_dir):
-# #     """Test #12 : Test sur un fichier sortie de modele Hybrid avec les options --coordinateType AUTODETECT --standardAtmosphere."""
+# #     """Test sur un fichier sortie de modele Hybrid avec les options --coordinateType AUTODETECT --standardAtmosphere."""
 # #     # open and read source
 # #     source0 = plugin_test_dir + "tt_hyb_fileSrc.std"
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -332,11 +333,11 @@ def test_10(plugin_test_dir):
 # #     #compare results
 # #     res = fstpy.fstcomp(results_file,file_to_compare)
 # #     fstpy.delete_file(results_file)
-# #     assert(res == True)
+# #     assert(res)
 
 
 def test_13(plugin_test_dir):
-    """Test #13 : Test sur un fichier sortie de modele Hybrid staggered, avec l'option --coordinateType HYBRID_STAGGERED_COORDINATE."""
+    """Test sur un fichier sortie de modele Hybrid staggered, avec l'option --coordinateType HYBRID_STAGGERED_COORDINATE."""
     # open and read source
     source0 = plugin_test_dir + "px_hyb_stg_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -346,7 +347,7 @@ def test_13(plugin_test_dir):
     #[ReaderStd --input {sources[0]}] >>
     # [Pressure --coordinateType HYBRID_STAGGERED_COORDINATE --referenceField UU] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
-    df['etiket'] = 'PRESSR'
+
     df.loc[df.nomvar.isin(['!!','>>','^^','P0']),'etiket'] = 'PRESS'
     # print(df[['nomvar','etiket']])
 
@@ -360,13 +361,13 @@ def test_13(plugin_test_dir):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_13"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_14(plugin_test_dir):
-    """Test #14 : Test sur un fichier sortie de modele Hybrid staggered, avec les options --coordinateType HYBRID_STAGGERED_COORDINATE --standardAtmosphere."""
+    """Test sur un fichier sortie de modele Hybrid staggered, avec les options --coordinateType HYBRID_STAGGERED_COORDINATE --standardAtmosphere."""
     # open and read source
     source0 = plugin_test_dir + "px_hyb_stg_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -376,8 +377,8 @@ def test_14(plugin_test_dir):
     #[ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Pressure --coordinateType HYBRID_STAGGERED_COORDINATE --standardAtmosphere --referenceField UU] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
-    df.loc[:,'etiket'] = 'PRESSR'
-    df.loc[df.nomvar.isin(['!!','P0','^^','>>']),'etiket'] = '__PRESSX'
+
+    # df.loc[df.nomvar.isin(['!!','P0','^^','>>']),'etiket'] = '__PRESSX'
     #write the result
     results_file = TMP_PATH + "test_14.std"
     fstpy.delete_file(results_file)
@@ -390,11 +391,11 @@ def test_14(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 # # def test_15(plugin_test_dir):
-# #     """Test #15 : Test sur un fichier sortie de modele hybrid staggered, avec l'option --coordinateType AUTODETECT."""
+# #     """Test sur un fichier sortie de modele hybrid staggered, avec l'option --coordinateType AUTODETECT."""
 # #     # open and read source
 # #     source0 = plugin_test_dir + "px_hyb_stg_fileSrc.std"
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -416,11 +417,11 @@ def test_14(plugin_test_dir):
 # #     #compare results
 # #     res = fstpy.fstcomp(results_file,file_to_compare)
 # #     fstpy.delete_file(results_file)
-# #     assert(res == True)
+# #     assert(res)
 
 
 # # def test_16(plugin_test_dir):
-# #     """Test #16 : Test sur un fichier sortie de modele Hybrid staggered, avec les options --coordinateType AUTODETECT --standardAtmosphere."""
+# #     """Test sur un fichier sortie de modele Hybrid staggered, avec les options --coordinateType AUTODETECT --standardAtmosphere."""
 # #     # open and read source
 # #     source0 = plugin_test_dir + "px_hyb_stg_fileSrc.std"
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -440,11 +441,11 @@ def test_14(plugin_test_dir):
 # #     #compare results
 # #     res = fstpy.fstcomp(results_file,file_to_compare)
 # #     fstpy.delete_file(results_file)
-# #     assert(res == True)
+# #     assert(res)
 
 
 def test_17(plugin_test_dir):
-    """Test #17 : Test sur un fichier sortie de modele en pression, avec l'option --coordinateType PRESSURE_COORDINATE."""
+    """Test sur un fichier sortie de modele en pression, avec l'option --coordinateType PRESSURE_COORDINATE."""
     # open and read source
     source0 = plugin_test_dir + "tt_pres_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -454,7 +455,7 @@ def test_17(plugin_test_dir):
     #[ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Pressure --coordinateType PRESSURE_COORDINATE --referenceField TT] >>
     # [Zap --pdsLabel R1580V0N] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
-
+    df.loc[:,'etiket'] = 'R1580V0N'
     #write the result
     results_file = TMP_PATH + "test_17.std"
     fstpy.delete_file(results_file)
@@ -467,11 +468,11 @@ def test_17(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_18(plugin_test_dir):
-    """Test #18 : Test sur un fichier sortie de modele en pression avec les options --coordinateType PRESSURE_COORDINATE --standardAtmosphere."""
+    """Test sur un fichier sortie de modele en pression avec les options --coordinateType PRESSURE_COORDINATE --standardAtmosphere."""
     # open and read source
     source0 = plugin_test_dir + "tt_pres_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -483,8 +484,7 @@ def test_18(plugin_test_dir):
     # [Pressure --coordinateType PRESSURE_COORDINATE --standardAtmosphere --referenceField TT] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
-    df.loc[:,'etiket'] = 'PRESSR'
-    df.loc[df.nomvar.isin(['^^','>>']),'etiket'] = 'R1580V0N'
+    # df.loc[df.nomvar.isin(['^^','>>']),'etiket'] = 'R1580V0N'
     #write the result
     results_file = TMP_PATH + "test_18.std"
     fstpy.delete_file(results_file)
@@ -497,11 +497,11 @@ def test_18(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 # # def test_19(plugin_test_dir):
-# #     """Test #19 : Test sur un fichier sortie de modele en pression l'option --coordinateType AUTODETECT."""
+# #     """Test sur un fichier sortie de modele en pression l'option --coordinateType AUTODETECT."""
 # #     # open and read source
 # #     source0 = plugin_test_dir + "tt_pres_fileSrc.std"
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -521,11 +521,11 @@ def test_18(plugin_test_dir):
 # #     #compare results
 # #     res = fstpy.fstcomp(results_file,file_to_compare)
 # #     fstpy.delete_file(results_file)
-# #     assert(res == True)
+# #     assert(res)
 
 
 # # def test_20(plugin_test_dir):
-# #     """Test #20 : Test sur un fichier sortie de modele en pression avec les options --coordinateType AUTODETECT --standardAtmosphere."""
+# #     """Test sur un fichier sortie de modele en pression avec les options --coordinateType AUTODETECT --standardAtmosphere."""
 # #     # open and read source
 # #     source0 = plugin_test_dir + "tt_pres_fileSrc.std"
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -545,11 +545,11 @@ def test_18(plugin_test_dir):
 # #     #compare results
 # #     res = fstpy.fstcomp(results_file,file_to_compare)
 # #     fstpy.delete_file(results_file)
-# #     assert(res == True)
+# #     assert(res)
 
 
 # # def test_21(plugin_test_dir):
-# #     """Test #21 : Test avec -- coordinateType ETA_COORDINATE alors que le fichier d'entree n'est pas en coordonnees ETA - Kind invalide."""
+# #     """Test avec -- coordinateType ETA_COORDINATE alors que le fichier d'entree n'est pas en coordonnees ETA - Kind invalide."""
 # #     # open and read source
 # #     source0 = plugin_test_dir + "tt_pres_fileSrc.std"
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -568,11 +568,11 @@ def test_18(plugin_test_dir):
 
 # #     #compare results
 # #     res = fstpy.fstcomp(results_file,file_to_compare)
-# #     assert(res == True)
+# #     assert(res)
 
 
 # # def test_22(plugin_test_dir):
-# #     """Test #22 : Test avec l'option -- coordinateType ETA_COORDINATE alors que le fichier d'entree n'est pas en coordonnees ETA - Champs PT et P0 sont absents."""
+# #     """Test avec l'option -- coordinateType ETA_COORDINATE alors que le fichier d'entree n'est pas en coordonnees ETA - Champs PT et P0 sont absents."""
 # #     # open and read source
 # #     source0 = plugin_test_dir + "input_eta_2008061012_000_model_noPTnoP0.std"
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -591,11 +591,11 @@ def test_18(plugin_test_dir):
 
 # #     #compare results
 # #     res = fstpy.fstcomp(results_file,file_to_compare)
-# #     assert(res == True)
+# #     assert(res)
 
 
 # # def test_23(plugin_test_dir):
-# #     """Test #23 : Test avec -- coordinateType SIGMA_COORDINATE alors que le fichier d'entree n'est pas en coordonnees SIGMA - Kind invalide."""
+# #     """Test avec -- coordinateType SIGMA_COORDINATE alors que le fichier d'entree n'est pas en coordonnees SIGMA - Kind invalide."""
 # #     # open and read source
 # #     source0 = plugin_test_dir + "tt_pres_fileSrc.std"
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -614,11 +614,11 @@ def test_18(plugin_test_dir):
 
 # #     #compare results
 # #     res = fstpy.fstcomp(results_file,file_to_compare)
-# #     assert(res == True)
+# #     assert(res)
 
 
 # # def test_24(plugin_test_dir):
-# #     """Test #24 : Test avec l'option -- coordinateType SIGMA_COORDINATE alors que le fichier d'entree n'est pas en coordonnees SIGMA - Champ P0 est absent."""
+# #     """Test avec l'option -- coordinateType SIGMA_COORDINATE alors que le fichier d'entree n'est pas en coordonnees SIGMA - Champ P0 est absent."""
 # #     # open and read source
 # #     source0 = plugin_test_dir + "hu_sig_noP0_fileSrc.std"
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -637,11 +637,11 @@ def test_18(plugin_test_dir):
 
 # #     #compare results
 # #     res = fstpy.fstcomp(results_file,file_to_compare)
-# #     assert(res == True)
+# #     assert(res)
 
 
 # # def test_25(plugin_test_dir):
-# #     """Test #25 : Test avec l'option -- coordinateType HYBRID_COORDINATE alors que le fichier d'entree n'est pas en coordonnees HYBRID - Kind invalide."""
+# #     """Test avec l'option -- coordinateType HYBRID_COORDINATE alors que le fichier d'entree n'est pas en coordonnees HYBRID - Kind invalide."""
 # #     # open and read source
 # #     source0 = plugin_test_dir + "tt_pres_fileSrc.std"
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -660,11 +660,11 @@ def test_18(plugin_test_dir):
 
 # #     #compare results
 # #     res = fstpy.fstcomp(results_file,file_to_compare)
-# #     assert(res == True)
+# #     assert(res)
 
 
 # # def test_26(plugin_test_dir):
-# #     """Test #26 : Test avec l'option -- coordinateType HYBRID_COORDINATE alors que le fichier d'entree n'est pas en coordonnees HYBRID - Champs P0 et HY sont absents."""
+# #     """Test avec l'option -- coordinateType HYBRID_COORDINATE alors que le fichier d'entree n'est pas en coordonnees HYBRID - Champs P0 et HY sont absents."""
 # #     # open and read source
 # #     source0 = plugin_test_dir + "tt_hyb_noP0noHYnoBB_fileSrc.std"
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -683,11 +683,11 @@ def test_18(plugin_test_dir):
 
 # #     #compare results
 # #     res = fstpy.fstcomp(results_file,file_to_compare)
-# #     assert(res == True)
+# #     assert(res)
 
 
 # # def test_27(plugin_test_dir):
-# #     """Test #27 : Test avec l'option -- coordinateType HYBRID_STAGGERED_COORDINATE alors que le fichier d'entree n'est pas en coordonnees HYBRID STAGGERED - Kind invalide."""
+# #     """Test avec l'option -- coordinateType HYBRID_STAGGERED_COORDINATE alors que le fichier d'entree n'est pas en coordonnees HYBRID STAGGERED - Kind invalide."""
 # #     # open and read source
 # #     source0 = plugin_test_dir + "tt_pres_fileSrc.std"
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -706,11 +706,11 @@ def test_18(plugin_test_dir):
 
 # #     #compare results
 # #     res = fstpy.fstcomp(results_file,file_to_compare)
-# #     assert(res == True)
+# #     assert(res)
 
 
 # # def test_28(plugin_test_dir):
-# #     """Test #28 : Test avec l'option -- coordinateType HYBRID_STAGGERED_COORDINATE alors que le fichier d'entree n'est pas en coordonnees HYBRID STAGGERED- Champs P0 et HY sont absents."""
+# #     """Test avec l'option -- coordinateType HYBRID_STAGGERED_COORDINATE alors que le fichier d'entree n'est pas en coordonnees HYBRID STAGGERED- Champs P0 et HY sont absents."""
 # #     # open and read source
 # #     source0 = plugin_test_dir + "tt_hyb_noP0noHYnoBB_fileSrc.std"
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -729,11 +729,11 @@ def test_18(plugin_test_dir):
 
 # #     #compare results
 # #     res = fstpy.fstcomp(results_file,file_to_compare)
-# #     assert(res == True)
+# #     assert(res)
 
 
 # # def test_29(plugin_test_dir):
-# #     """Test #29 : Test avec l'option -- coordinateType PRESSURE_COORDINATE alors que le fichier d'entree n'est pas en pression."""
+# #     """Test avec l'option -- coordinateType PRESSURE_COORDINATE alors que le fichier d'entree n'est pas en pression."""
 # #     # open and read source
 # #     source0 = plugin_test_dir + "tt_eta_fileSrc.std"
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -752,11 +752,11 @@ def test_18(plugin_test_dir):
 
 # #     #compare results
 # #     res = fstpy.fstcomp(results_file,file_to_compare)
-# #     assert(res == True)
+# #     assert(res)
 
 
 def test_30(plugin_test_dir):
-    """Test #30 : Test avec un fichier contenant differentes heures de prevision."""
+    """Test avec un fichier contenant differentes heures de prevision."""
     # open and read source
     source0 = plugin_test_dir + "input_vrpcp24_00_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -766,7 +766,7 @@ def test_30(plugin_test_dir):
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Pressure --coordinateType AUTODETECT --referenceField TT] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --noMetadata]
-
+    df.loc[:,'etiket'] = 'R110K80N'
     #write the result
     results_file = TMP_PATH + "test_30.std"
     fstpy.delete_file(results_file)
@@ -777,13 +777,13 @@ def test_30(plugin_test_dir):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_30"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 # # def test_31(plugin_test_dir):
-# #     """Test #31 : Test avec un fichier contenant differentes heures de prevision."""
+# #     """Test avec un fichier contenant differentes heures de prevision."""
 # #     # open and read source
 # #     source0 = plugin_test_dir + "input_test_31.std"
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -803,11 +803,11 @@ def test_30(plugin_test_dir):
 # #     #compare results
 # #     res = fstpy.fstcomp(results_file,file_to_compare)
 # #     fstpy.delete_file(results_file)
-# #     assert(res == True)
+# #     assert(res)
 
 
 # # def test_32(plugin_test_dir):
-# #     """Test #32 : Test avec un fichier glbpres avec l'option --coordinateType HYBRID_STAGGERED_COORDINATE"""
+# #     """Test avec un fichier glbpres avec l'option --coordinateType HYBRID_STAGGERED_COORDINATE"""
 # #     # open and read source
 # #     source0 = plugin_test_dir + "glbpres_TT_UU_VV.std"
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -827,11 +827,11 @@ def test_30(plugin_test_dir):
 # #     #compare results
 # #     res = fstpy.fstcomp(results_file,file_to_compare)
 # #     fstpy.delete_file(results_file)
-# #     assert(res == True)
+# #     assert(res)
 
 
 def test_33(plugin_test_dir):
-    """Test #33 : Test avec un fichier glbpres avec l'option --coordinateType PRESSURE_COORDINATE"""
+    """Test avec un fichier glbpres avec l'option --coordinateType PRESSURE_COORDINATE"""
     # open and read source
     source0 = plugin_test_dir + "glbpres_TT_UU_VV.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -845,8 +845,8 @@ def test_33(plugin_test_dir):
     #[ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Pressure --coordinateType PRESSURE_COORDINATE --referenceField TT] >>
     # [WriterStd --output {destination_path} --ignoreExtended ]
-    df['etiket'] = 'PRESSR'
-    df.loc[df.nomvar.isin(['!!','^^','>>']),'etiket'] = 'G1_4_0_0N'
+    # df['etiket'] = 'PRESSR'
+    # df.loc[df.nomvar.isin(['!!','^^','>>']),'etiket'] = 'G1_4_0_0N'
 
     #write the result
 
@@ -863,11 +863,11 @@ def test_33(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_34(plugin_test_dir):
-    """Test #34 : Test avec un fichier qui genere des artefacts dans les cartes"""
+    """Test avec un fichier qui genere des artefacts dans les cartes"""
     # open and read source
     source0 = plugin_test_dir + "2019091000_000_input.orig"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -878,7 +878,7 @@ def test_34(plugin_test_dir):
     # [Pressure --coordinateType ETA_COORDINATE --referenceField TT] >>
     # [Zap --pdsLabel G1_7_0_0N --nbitsForDataStorage e32]>>
     # [WriterStd --output {destination_path} --ignoreExtended --noMetadata --IP1EncodingStyle OLDSTYLE]
-
+    df.loc[:,'etiket'] = 'G1_7_0_0N'
     #write the result
     results_file = TMP_PATH + "test_34.std"
     fstpy.delete_file(results_file)
@@ -891,11 +891,11 @@ def test_34(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_35(plugin_test_dir):
-    """Test #35 : Test avec un fichier 5005 avec l'option --coordinateType HYBRID_5005_COORDINATE thermodynamic"""
+    """Test avec un fichier 5005 avec l'option --coordinateType HYBRID_5005_COORDINATE thermodynamic"""
     # open and read source
     source0 = plugin_test_dir + "coord_5005_big.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -907,7 +907,7 @@ def test_35(plugin_test_dir):
     # [Zap --pdsLabel R1_V710_N --metadataZappable --doNotFlagAsZapped]  >>
     # [Select --metadataFieldName P0,>>,^^ --exclude] >>
     # [WriterStd --output {destination_path} --ignoreExtended]']
-
+    df.loc[:,'etiket'] = 'R1_V710_N'
     df = df.loc[~df.nomvar.isin(["^^",">>","P0"])]
     #write the result
     results_file = TMP_PATH + "test_35.std"
@@ -921,11 +921,11 @@ def test_35(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_36(plugin_test_dir):
-    """Test #36 : Test avec un fichier 5005 avec l'option --coordinateType HYBRID_5005_COORDINATE"""
+    """Test avec un fichier 5005 avec l'option --coordinateType HYBRID_5005_COORDINATE"""
     # open and read source
     source0 = plugin_test_dir + "coord_5005_big.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -937,6 +937,7 @@ def test_36(plugin_test_dir):
     # [Zap --pdsLabel R1_V710_N --metadataZappable --doNotFlagAsZapped]  >>
     # [Select --metadataFieldName P0,>>,^^ --exclude] >>
     # [WriterStd --output {destination_path} --ignoreExtended]']
+    df.loc[:,'etiket'] = 'R1_V710_N'
     df = df.loc[~df.nomvar.isin(["^^",">>","P0"])]
     #write the result
     results_file = TMP_PATH + "test_36.std"
@@ -949,11 +950,11 @@ def test_36(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 # # def test_37(plugin_test_dir):
-# #     """Test #37 : Test avec un fichier 5005 avec l'option --coordinateType HYBRID_5005_COORDINATE thermo sub grid - attendu fail"""
+# #     """Test avec un fichier 5005 avec l'option --coordinateType HYBRID_5005_COORDINATE thermo sub grid - attendu fail"""
 # #     # open and read source
 # #     source0 = plugin_test_dir + "coord_5005_big.std"
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -972,4 +973,4 @@ def test_36(plugin_test_dir):
 
 # #     #compare results
 # #     res = fstpy.fstcomp(results_file,file_to_compare)
-# #     assert(res == True)
+# #     assert(res)

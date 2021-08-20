@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-from numpy import float32
-from ..humidityutils import calc_water_vapour_mixing_ratio_hu, calc_water_vapour_mixing_ratio_px_vppr, get_temp_phase_switch, validate_humidity_parameters
+from ..humidityutils import get_temp_phase_switch, validate_humidity_parameters
 from ..plugin import Plugin
 from ..utils import create_empty_result, get_existing_result, get_intersecting_levels, get_plugin_dependencies, initializer, existing_results, final_results
 import pandas as pd
 import fstpy.all as fstpy
 import sys
-
+import numpy as np
+from ..science.science import *
 
 class WaterVapourMixingRatioError(Exception):
     pass
@@ -24,11 +24,11 @@ class WaterVapourMixingRatio(Plugin):
             'HU':{'nomvar':'HU','unit':'kilogram_per_kilogram','select_only':True},
         }
         self.plugin_mandatory_dependencies_option_2 = {
-            'VPPR':{'nomvar':'TT','unit':'celsius'},
+            'VPPR':{'nomvar':'VPPR','unit':'hectoPascal'},
             'PX':{'nomvar':'PX','unit':'hectoPascal'},
         }
         self.plugin_result_specifications = {
-            'QV':{'nomvar':'QV','etiket':'WaterVapourMixingRatio','unit':'gram_per_kilogram','nbits':16,'datyp':1}
+            'QV':{'nomvar':'QV','etiket':'WVMXRT','unit':'gram_per_kilogram'}
             }
         self.validate_input()
 
@@ -63,8 +63,6 @@ class WaterVapourMixingRatio(Plugin):
 
 
 
-
-            #current_fhour_group by grid/forecast hour
             self.fhour_groups = self.dependencies_df.groupby(['grid','forecast_hour'])
 
 
@@ -75,30 +73,36 @@ class WaterVapourMixingRatio(Plugin):
 
         sys.stdout.write('WaterVapourMixingRatio - compute\n')
         df_list = []
+        if self.ice_water_phase == 'water':
+            self.temp_phase_switch = -40.
         for _, current_fhour_group in self.fhour_groups:
 
             if self.option==1:
                 print('option 1')
                 current_fhour_group = fstpy.load_data(current_fhour_group)
-                hu_df = current_fhour_group.loc[current_fhour_group.nomvar=='HU'].reset_index(drop=True)
+                hu_df = current_fhour_group.loc[current_fhour_group.nomvar=='HU'].sort_values(by=['level']).reset_index(drop=True)
 
                 qv_df = create_empty_result(hu_df,self.plugin_result_specifications['QV'],copy=True)
                 for i in qv_df.index:
                     hu = hu_df.at[i,'d']
-                    qv_df.at[i,'d'] = calc_water_vapour_mixing_ratio_hu(hu).astype(float32)
+                    ni = hu.shape[0]
+                    nj = hu.shape[1]
+                    qv_df.at[i,'d'] = science.qv_from_hu(hu=hu,ni=ni,nj=nj).astype(np.float32)
             else:
                 print('option 2')
                 level_intersection_df = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies_option_2)
                 current_fhour_group = fstpy.load_data(level_intersection_df)
-                vppr_df = current_fhour_group.loc[current_fhour_group.nomvar=='VPPR'].reset_index(drop=True)
-                px_df = current_fhour_group.loc[current_fhour_group.nomvar=='PX'].reset_index(drop=True)
+                vppr_df = current_fhour_group.loc[current_fhour_group.nomvar=='VPPR'].sort_values(by=['level']).reset_index(drop=True)
+                px_df = current_fhour_group.loc[current_fhour_group.nomvar=='PX'].sort_values(by=['level']).reset_index(drop=True)
                 qv_df = create_empty_result(vppr_df,self.plugin_result_specifications['QV'],copy=True)
-                vppr_df = fstpy.unit_convert(vppr_df,'pascal')
-                px_df = fstpy.unit_convert(px_df,'pascal')
+                vpprpa_df = fstpy.unit_convert(vppr_df,'pascal')
+                pxpa_df = fstpy.unit_convert(px_df,'pascal')
                 for i in qv_df.index:
-                    vppr = vppr_df.at[i,'d']
-                    px = px_df.at[i,'d']
-                    qv_df.at[i,'d'] = calc_water_vapour_mixing_ratio_px_vppr(px,vppr).astype(float32)
+                    vpprpa = vpprpa_df.at[i,'d']
+                    pxpa = pxpa_df.at[i,'d']
+                    ni = pxpa.shape[0]
+                    nj = pxpa.shape[1]
+                    qv_df.at[i,'d'] = science.qv_from_vppr(px=pxpa,vppr=vpprpa,ni=ni,nj=nj).astype(np.float32)
 
             df_list.append(qv_df)
 

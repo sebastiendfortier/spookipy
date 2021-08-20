@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
-from numpy import float32
 from ..plugin import Plugin
 import pandas as pd
 from math import exp
 from ..utils import create_empty_result, get_existing_result, get_plugin_dependencies, initializer, existing_results, final_results
-from ..humidityutils import calc_saturation_vapour_pressure, get_temp_phase_switch, TDPACK_OFFSET_FIX, rpn_calc_saturation_vapour_pressure, validate_humidity_parameters
+from ..humidityutils import get_temp_phase_switch, TDPACK_OFFSET_FIX, validate_humidity_parameters
+from ..science.science import *
 import fstpy.all as fstpy
 import sys
+import numpy as np
+
 
 
 
@@ -19,7 +21,7 @@ class SaturationVapourPressure(Plugin):
     }
 
     plugin_result_specifications = {
-        'SVP':{'nomvar':'SVP','etiket':'SaturationVapourPressure','unit':'hectoPascal','nbits':16,'datyp':1},
+        'SVP':{'nomvar':'SVP','etiket':'SVPRES','unit':'hectoPascal','nbits':16,'datyp':1},
         }
 
     @initializer
@@ -56,22 +58,29 @@ class SaturationVapourPressure(Plugin):
 
         sys.stdout.write('SaturationVapourPressure - compute\n')
         df_list=[]
+        if self.ice_water_phase != 'both':
+            self.temp_phase_switch = -40.
         for _, current_fhour_group in self.fhour_groups:
             current_fhour_group = fstpy.load_data(current_fhour_group)
             tt_df = current_fhour_group.loc[current_fhour_group.nomvar=='TT'].reset_index(drop=True)
             svp_df = create_empty_result(tt_df,self.plugin_result_specifications['SVP'],copy=True)
+
             if self.rpn:
                 print('rpn')
                 print('option 1')
-                tt_df = fstpy.unit_convert(tt_df,'kelvin')
+                ttk_df = fstpy.unit_convert(tt_df,'kelvin')
                 for i in svp_df.index:
-                    tt = tt_df.at[i,'d']
-                    svp_df.at[i,'d'] = rpn_calc_saturation_vapour_pressure(tt,self.temp_phase_switch,self.ice_water_phase=='both').astype(float32)
+                    ttk = ttk_df.at[i,'d']
+                    ni = ttk.shape[0]
+                    nj = ttk.shape[1]
+                    svp_df.at[i,'d'] = science.rpn_svp_from_tt(tt=ttk, ni=ni.shape[0], nj=nj, tpl=self.temp_phase_switch, swph=self.ice_water_phase=='both').astype(np.float32)
             else:
                 print('option 1')
                 for i in tt_df.index:
-                    tt = tt_df.at[i,'d']-TDPACK_OFFSET_FIX
-                    svp_df.at[i,'d'] = calc_saturation_vapour_pressure(tt,self.temp_phase_switch,self.ice_water_phase=='both').astype(float32)
+                    tt = tt_df.at[i,'d']
+                    ni = tt.shape[0]
+                    nj = tt.shape[1]
+                    svp_df.at[i,'d'] = science.svp_from_tt(tt=tt-TDPACK_OFFSET_FIX, ni=ni, nj=nj, tpl=self.temp_phase_switch, swph=self.ice_water_phase=='both').astype(np.float32)
 
             df_list.append(svp_df)
 

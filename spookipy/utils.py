@@ -169,7 +169,9 @@ def get_intersecting_levels(df:pd.DataFrame, plugin_mandatory_dependencies:dict)
         # df_list.append(query_res_df)
 
     # res_df = pd.concat(df_list,ignore_index=True)
-
+    if 'level' not in res_df.columns:
+        res_df = fstpy.add_composite_columns(res_df,True,'numpy', attributes_to_decode=['ip_info'])
+    res_df = res_df.sort_values(by=['level'])
     return res_df
 
 
@@ -221,6 +223,9 @@ def create_empty_result(df, plugin_result_specifications,copy=False):
     for k,v in plugin_result_specifications.items():
         if v != '':
             res_df.loc[:,k] = v
+    if 'level' not in res_df.columns:
+        res_df = fstpy.add_composite_columns(res_df,True,'numpy', attributes_to_decode=['ip_info'])
+    res_df = res_df.sort_values(by=['level'])
     return res_df
 
 def get_3d_array(df) -> np.ndarray:

@@ -12,7 +12,7 @@ def plugin_test_dir():
     return TEST_PATH + '/WindModulusAndDirection/testsFiles/'
 
 def test_1(plugin_test_dir):
-    """Test #1 : test_read_select_write_UV"""
+    """test_read_select_write_UV"""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -36,7 +36,7 @@ def test_1(plugin_test_dir):
 
 
 def test_2(plugin_test_dir):
-    """Test #2 : test_read_select_write_UV2"""
+    """test_read_select_write_UV2"""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -63,7 +63,7 @@ def test_2(plugin_test_dir):
 #     pass
 
 def test_4(plugin_test_dir):
-    """Test #4 : test_read_select_write_UV_already_calculated"""
+    """test_read_select_write_UV_already_calculated"""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5_UV_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -88,7 +88,7 @@ def test_4(plugin_test_dir):
 
 
 def test_5(plugin_test_dir):
-    """Test #5 : test_read_select_write_UV_already_calculated_without_UU_VV"""
+    """test_read_select_write_UV_already_calculated_without_UU_VV"""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5_UV_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -113,7 +113,7 @@ def test_5(plugin_test_dir):
 
 
 def test_6(plugin_test_dir):
-    """Test #6 : test_read_select_write_UV_already_calculated2"""
+    """test_read_select_write_UV_already_calculated2"""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5x2_UV_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -132,7 +132,7 @@ def test_6(plugin_test_dir):
     file_to_compare = plugin_test_dir + "windModulus3D_file2cmp.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -143,7 +143,7 @@ def test_6(plugin_test_dir):
 #     pass
 
 def test_9(plugin_test_dir):
-    """Test #9 : test_read_select_write_UV_GRID_X"""
+    """test_read_select_write_UV_GRID_X"""
     # open and read source
     source0 = plugin_test_dir + "uu_850.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()

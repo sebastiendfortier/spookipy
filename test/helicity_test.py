@@ -13,7 +13,7 @@ def plugin_test_dir():
 
 
 def test_1(plugin_test_dir):
-    """Test #1 : Test du plugin Helicity"""
+    """Test du plugin Helicity"""
     # open and read source
     source0 = plugin_test_dir + "UUVVGZ77x57x54_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()

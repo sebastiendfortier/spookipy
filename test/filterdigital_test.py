@@ -13,7 +13,7 @@ def plugin_test_dir():
 
 
 def test_1(plugin_test_dir):
-    """Test #1 :  Test 1 répétition avec un filtre standard."""
+    """Test 1 répétition avec un filtre standard."""
     # open and read source
     source0 = plugin_test_dir + "UUVVfil5x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -43,7 +43,7 @@ def test_1(plugin_test_dir):
 
 
 def test_2(plugin_test_dir):
-    """Test #2 :  Test 3 répétitions avec un filtre standard."""
+    """Test 3 répétitions avec un filtre standard."""
     # open and read source
     source0 = plugin_test_dir + "UUVVfil5x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -72,7 +72,7 @@ def test_2(plugin_test_dir):
 
 
 def test_3(plugin_test_dir):
-    """Test #3 :  Test 1 répétition avec un long filtre et un fichier provenant du site de rpn PGSM."""
+    """Test 1 répétition avec un long filtre et un fichier provenant du site de rpn PGSM."""
     # open and read source
     source0 = plugin_test_dir + "UU11x11_1_0_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -104,7 +104,7 @@ def test_3(plugin_test_dir):
 
 
 def test_4(plugin_test_dir):
-    """Test #4 :  Test 3 répétitions avec un long filtre et un fichier provenant du site de rpn PGSM."""
+    """Test 3 répétitions avec un long filtre et un fichier provenant du site de rpn PGSM."""
     # open and read source
     source0 = plugin_test_dir + "UU11x11_1_0_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -135,7 +135,7 @@ def test_4(plugin_test_dir):
 
 
 def test_5(plugin_test_dir):
-    """Test #5 :  Test 1 répétition avec un filtre à 1 chiffre."""
+    """Test 1 répétition avec un filtre à 1 chiffre."""
     # open and read source
     source0 = plugin_test_dir + "UUVVfil5x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -167,7 +167,7 @@ def test_5(plugin_test_dir):
 
 
 def test_6(plugin_test_dir):
-    """Test #6 :  Test 1 répétition avec un long filtre et un gros fichier."""
+    """Test 1 répétition avec un long filtre et un gros fichier."""
     # open and read source
     source0 = plugin_test_dir + "input_big_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -192,13 +192,13 @@ def test_6(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_6'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
+    res = fstpy.fstcomp(results_file,file_to_compare)#,e_max=0.1)
     fstpy.delete_file(results_file)
     assert(res)
 
 
 def test_7(plugin_test_dir):
-    """Test #7 :  Test 3 répétitions avec un long filtre et un gros fichier."""
+    """Test 3 répétitions avec un long filtre et un gros fichier."""
     # open and read source
     source0 = plugin_test_dir + "input_big_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -223,13 +223,13 @@ def test_7(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_7'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
+    res = fstpy.fstcomp(results_file,file_to_compare)#,e_max=0.1)
     fstpy.delete_file(results_file)
     assert(res)
 
 
 def test_8(plugin_test_dir):
-    """Test #8 :  Test 3 répétitions avec un long filtre, poids importants et un gros fichier."""
+    """Test 3 répétitions avec un long filtre, poids importants et un gros fichier."""
     # open and read source
     source0 = plugin_test_dir + "input_big_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -260,7 +260,7 @@ def test_8(plugin_test_dir):
 
 
 def test_9(plugin_test_dir):
-    """Test #9 :  Test de comparaison avec le programme pgsm FILTRE3PTS3X."""
+    """Test de comparaison avec le programme pgsm FILTRE3PTS3X."""
     # open and read source
     source0 = plugin_test_dir + "input_big_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -289,13 +289,13 @@ def test_9(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_9'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)
 
 
 def test_10(plugin_test_dir):
-    """Test #10 :  Test de comparaison avec le programme pgsm FILTRE3PTS1X."""
+    """Test de comparaison avec le programme pgsm FILTRE3PTS1X."""
     # open and read source
     source0 = plugin_test_dir + "input_big_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -332,7 +332,7 @@ def test_10(plugin_test_dir):
 
 
 def test_11(plugin_test_dir):
-    """Test #11 :  Test de comparaison avec le programme pgsm FILTRE5PTS2X."""
+    """Test de comparaison avec le programme pgsm FILTRE5PTS2X."""
     # open and read source
     source0 = plugin_test_dir + "input_big_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -370,7 +370,7 @@ def test_11(plugin_test_dir):
 
 
 def test_12(plugin_test_dir):
-    """Test #12 :  Test de comparaison avec le programme pgsm FILTRE9PTS1X."""
+    """Test de comparaison avec le programme pgsm FILTRE9PTS1X."""
     # open and read source
     source0 = plugin_test_dir + "input_big_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -409,7 +409,7 @@ def test_12(plugin_test_dir):
 
 
 def test_13(plugin_test_dir):
-    """Test #13 :  Test de comparaison."""
+    """Test de comparaison."""
     # open and read source
     source0 = plugin_test_dir + "LATLON_L_9x11_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -441,7 +441,7 @@ def test_13(plugin_test_dir):
 
 
 def test_14(plugin_test_dir):
-    """Test #14 :  Test 1 répétition avec un filtre standard et l'option outputFieldName."""
+    """Test 1 répétition avec un filtre standard et l'option outputFieldName."""
     # open and read source
     source0 = plugin_test_dir + "UUVVfil5x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()

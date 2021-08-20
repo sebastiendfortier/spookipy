@@ -14,7 +14,7 @@ def plugin_test_dir():
 
 
 def test_1(plugin_test_dir):
-    """Test #1 : Calculate with a simple test data """
+    """Calculate with a simple test data """
     # open and read source
     source0 = plugin_test_dir + "UUVVTT_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -40,13 +40,13 @@ def test_1(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/CoriolisParameter/test_1'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare)#,e_max=0.13)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_2(plugin_test_dir):
-    """Test #2 : Spooki must succeed when inputs are in millibars"""
+    """Spooki must succeed when inputs are in millibars"""
     # open and read source
     source0 = plugin_test_dir + "2011100712_012_regpres"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()

@@ -14,7 +14,7 @@ def plugin_test_dir():
 
 
 def test_1(plugin_test_dir):
-    """Test #1 : Test regulier des donnees venant avec la demande de plugin"""
+    """Test regulier des donnees venant avec la demande de plugin"""
     # open and read source
     source0 = plugin_test_dir + "HR_27_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -40,6 +40,6 @@ def test_1(plugin_test_dir):
     # file_to_compare = "/home/sbf000/data/testFiles/CloudFractionDiagnostic/result_test_cfd_1"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare)#,e_max=0.6)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)

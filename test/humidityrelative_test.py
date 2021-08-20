@@ -15,7 +15,7 @@ def plugin_test_dir():
 
 
 def test_1(plugin_test_dir):
-    """Test #1 :  Calcul de l'humidité relative; utilisation d'un unité invalide pour --temperaturePhaseSwitch."""
+    """Calcul de l'humidité relative; utilisation d'un unité invalide pour --temperaturePhaseSwitch."""
     # open and read source
     source0 = plugin_test_dir + "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -28,7 +28,7 @@ def test_1(plugin_test_dir):
 
 
 def test_2(plugin_test_dir):
-    """Test #2 :  Calcul de l'humidité relative; utilisation de valeur invalide ( < borne minimale) pour -temperaturePhaseSwitch."""
+    """Calcul de l'humidité relative; utilisation de valeur invalide ( < borne minimale) pour -temperaturePhaseSwitch."""
     # open and read source
     source0 = plugin_test_dir + "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -42,7 +42,7 @@ def test_2(plugin_test_dir):
 
 
 def test_3(plugin_test_dir):
-    """Test #3 :  Calcul de l'humidité relative; utilisation d'une valeur invalide ( > borne maximale) pour -temperaturePhaseSwitch."""
+    """Calcul de l'humidité relative; utilisation d'une valeur invalide ( > borne maximale) pour -temperaturePhaseSwitch."""
     # open and read source
     source0 = plugin_test_dir + "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -56,7 +56,7 @@ def test_3(plugin_test_dir):
 
 
 def test_4(plugin_test_dir):
-    """Test #4 :  Calcul de l'humidité relative; utilisation d'une valeur invalide pour -temperaturePhaseSwitch."""
+    """Calcul de l'humidité relative; utilisation d'une valeur invalide pour -temperaturePhaseSwitch."""
     # open and read source
     source0 = plugin_test_dir + "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -70,7 +70,7 @@ def test_4(plugin_test_dir):
 
 
 def test_5(plugin_test_dir):
-    """Test #5 :  Calcul de l'humidité relative (HR) à partir de l'humidité spécifique (HU)."""
+    """Calcul de l'humidité relative (HR) à partir de l'humidité spécifique (HU)."""
     # open and read source
     source0 = plugin_test_dir + "2011100712_012_glbhyb"
     src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
@@ -113,11 +113,11 @@ def test_5(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     # fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_7(plugin_test_dir):
-    """Test #7 :  Calcul de l'humidité relative (HR) à partir du mélange de la vapeur d'eau (QV)."""
+    """Calcul de l'humidité relative (HR) à partir du mélange de la vapeur d'eau (QV)."""
     # open and read source
     source0 = plugin_test_dir + "2011100712_012_glbhyb_QV"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -145,11 +145,11 @@ def test_7(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_9(plugin_test_dir):
-    """Test #9 :  Calcul de l'humidité relative (HR) à partir de la température du point de rosée (TD)."""
+    """Calcul de l'humidité relative (HR) à partir de la température du point de rosée (TD)."""
     # open and read source
     source0 = plugin_test_dir + "2011100712_012_glbhyb_ES"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -178,4 +178,4 @@ def test_9(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)

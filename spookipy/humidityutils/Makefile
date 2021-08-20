@@ -3,10 +3,10 @@
 all: lib interface
 
 lib:
-	f2py3 -c -m stenfilt stenfilt.f90
+	f2py3 -c -m svp svp.f90
 
 interface:
-	f2py3 -h stenfilt.pyf stenfilt.f90 -m stenfilt
+	f2py3 --overwrite-signature -h svp.pyf svp.f90 -m svp
 
 clean:
 	rm -f *.pyf *.so

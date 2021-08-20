@@ -53,30 +53,29 @@ class CloudFractionDiagnostic(Plugin):
 
         if self.existing_result_df.empty:
             self.dependencies_df = get_plugin_dependencies(self.df,None,self.plugin_mandatory_dependencies)
-
+            self.groups = self.dependencies_df.groupby(['grid','forecast_hour'])
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:
             return existing_results('CloudFractionDiagnostic',self.existing_result_df,self.meta_df)
 
         sys.stdout.write('CloudFractionDiagnostic - compute\n')
-
-        self.dependencies_df = fstpy.load_data(self.dependencies_df)
-
-        cld_df = create_empty_result(self.dependencies_df,self.plugin_result_specifications['CLD'],copy=True)
-
         df_list=[]
+        for _, group in self.groups:
+            group = fstpy.load_data(group)
 
-        if not (self.use_constant is None):
-            for  i in cld_df.index:
-                cld_df.at[i,'d'] = np.full_like(cld_df.at[i,'d'],0.8,dtype=np.float32)
-        else:
-            for  i in cld_df.index:
-                level = cld_df.at[i,'level']
-                hr = np.copy(cld_df.at[i,'d'])
-                threshold = calc_diagnostic_cloud_fraction_threshold(level)
-                cld_df.at[i,'d'] = calc_diagnostic_cloud_fraction(hr,threshold)
+            cld_df = create_empty_result(group,self.plugin_result_specifications['CLD'],copy=True)
 
-        df_list.append(cld_df)
+            if not (self.use_constant is None):
+                for  i in cld_df.index:
+                    cld_df.at[i,'d'] = np.full_like(cld_df.at[i,'d'],0.8,dtype=np.float32)
+            else:
+                for  i in cld_df.index:
+                    level = cld_df.at[i,'level']
+                    hr = np.copy(cld_df.at[i,'d'])
+                    threshold = calc_diagnostic_cloud_fraction_threshold(level)
+                    cld_df.at[i,'d'] = calc_diagnostic_cloud_fraction(hr,threshold)
+
+            df_list.append(cld_df)
 
         return final_results(df_list, CloudFractionDiagnosticError, self.meta_df)

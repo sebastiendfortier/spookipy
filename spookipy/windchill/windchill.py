@@ -53,6 +53,7 @@ class WindChill(Plugin):
 
         if self.existing_result_df.empty:
             self.dependencies_df = get_plugin_dependencies(self.df,None,self.plugin_mandatory_dependencies)
+
             self.fhour_groups=self.dependencies_df.groupby(by=['grid','forecast_hour'])
 
 

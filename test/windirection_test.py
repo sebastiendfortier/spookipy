@@ -13,7 +13,7 @@ def plugin_test_dir():
     return TEST_PATH + '/WindDirection/testsFiles/'
 
 def test_1(plugin_test_dir):
-    """Test #1 : Test l'option --orientationType avec la valeur WIND."""
+    """Test l'option --orientationType avec la valeur WIND."""
     # open and read source
     source0 = plugin_test_dir + "inputInterpolatedToStation.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -42,7 +42,7 @@ def test_1(plugin_test_dir):
 
 
 def test_2(plugin_test_dir):
-    """Test #2 : Test un fichier standard avec des champs sur une grille Y avec les tictic tactac définis sur une grille N."""
+    """Test un fichier standard avec des champs sur une grille Y avec les tictic tactac définis sur une grille N."""
     # open and read source
     source0 = plugin_test_dir + "Ygrid_Ntypetictac_UUVV.fst"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -56,7 +56,7 @@ def test_2(plugin_test_dir):
 
 
 def test_3(plugin_test_dir):
-    """Test #3 : Test un fichier standard avec des champs sur une grille autre que celle autorisé."""
+    """Test un fichier standard avec des champs sur une grille autre que celle autorisé."""
     # open and read source
     source0 = plugin_test_dir + "pm2001092012-01-00_000.fst"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -70,7 +70,7 @@ def test_3(plugin_test_dir):
 
 
 def test_4(plugin_test_dir):
-    """Test #4 : Test un fichier standard avec des champs sur une grille autre que celle autorisé."""
+    """Test un fichier standard avec des champs sur une grille autre que celle autorisé."""
     # open and read source
     source0 = plugin_test_dir + "dm2001092012-00-00_000.fst"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -85,7 +85,7 @@ def test_4(plugin_test_dir):
 
 
 def test_5(plugin_test_dir):
-    """Test #5 : Test avec une grille U le calcul de la vitesse et de la direction des vents, référentiel météorologique."""
+    """Test avec une grille U le calcul de la vitesse et de la direction des vents, référentiel météorologique."""
     # open and read source
     source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()

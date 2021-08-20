@@ -1,0 +1,528 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module science ! in 
+    interface  ! in :science
+        module science ! in :science:science.f90
+            real, parameter,optional :: ai=2864.887713087
+            real, parameter,optional :: aw=3135.012829948
+            real, parameter,optional :: bi=0.166093131502
+            real, parameter,optional :: bw=2.367075766316
+            real, parameter,optional :: chlf=334000.0
+            real, parameter,optional :: chlc=2501000.0
+            real, parameter,optional :: consol=1367.0
+            real, parameter,optional :: consol2=1361.0
+            real, parameter,optional :: cpd=1005.46
+            real, parameter,optional :: cpv=1869.46
+            real, parameter,optional :: cpi=2115.3
+            real, parameter,optional :: cpw=4218.0
+            real, parameter,optional :: delta=0.6077686814144
+            real, parameter,optional :: eps1=0.6219800221014
+            real, parameter,optional :: eps2=0.3780199778986
+            real, parameter,optional :: grav=9.80616
+            real, parameter,optional :: karman=0.4
+            real, parameter,optional :: knams=0.514791
+            real, parameter,optional :: omega=7.292e-05
+            real, parameter,optional :: pi=3.141592653589793
+            real, parameter,optional :: rauw=1000.0
+            real, parameter,optional :: rayt=6371220.0
+            real, parameter,optional :: rgasd=287.05
+            real, parameter,optional :: rgasv=461.51
+            real, parameter,optional :: ric=0.2
+            real, parameter,optional :: slp=0.06666666666667
+            real, parameter,optional :: stefan=5.6698e-08
+            real, parameter,optional :: stlo=0.0006628486583943
+            real, parameter,optional :: t1s=273.16
+            real, parameter,optional :: t2s=258.16
+            real, parameter,optional :: tcdk=273.15
+            real, parameter,optional :: tgl=273.16
+            real, parameter,optional :: trpl=273.16
+            real, parameter,optional,depend(cpd,rgasd) :: cappa=0.28549121794999305
+            real, parameter,optional,depend(cpd,rgasd) :: cvd=718.4100000000001
+            real, parameter,optional :: ttns1=610.78
+            real, parameter,optional :: ttns3w=17.269
+            real, parameter,optional :: ttns3i=21.875
+            real, parameter,optional :: ttns4w=35.86
+            real, parameter,optional :: ttns4i=7.66
+            real, parameter,optional :: aerk1w=610.94
+            real, parameter,optional :: aerk2w=17.625
+            real, parameter,optional :: aerk3w=30.11
+            real, parameter,optional :: aerk1i=611.21
+            real, parameter,optional :: aerk2i=22.587
+            real, parameter,optional :: aerk3i=-0.71
+            real, parameter,optional,depend(trpl,aerk2w,aerk3w) :: cte1=4283.75625
+            real, parameter,optional,depend(trpl,aerk2i,aerk3i,cte1) :: cte2=1902.1454399999993
+            real, parameter,optional :: cte3=2317
+            real, parameter,optional :: cte4=7.24
+            real, parameter,optional :: cte5=128.4
+            real, parameter,optional :: tdpack_offset_fix=0.01
+            real, parameter,optional :: aew1=6.1094
+            real, parameter,optional :: aew2=17.625
+            real, parameter,optional :: aew3=243.05
+            real, parameter,optional :: aei1=6.1121
+            real, parameter,optional :: aei2=22.587
+            real, parameter,optional :: aei3=273.86
+            function diftrpl_(ttt) ! in :science:science.f90:science
+                real intent(in) :: ttt
+                real :: diftrpl_
+            end function diftrpl_
+            function fn1_(ttt) ! in :science:science.f90:science
+                real intent(in) :: ttt
+                real :: fn1_
+            end function fn1_
+            function maskt(ttt) ! in :science:science.f90:science
+                real intent(in) :: ttt
+                real :: maskt
+            end function maskt
+            function fomults(ddd,ttt) ! in :science:science.f90:science
+                real intent(in) :: ddd
+                real intent(in) :: ttt
+                real :: fomults
+            end function fomults
+            function foewf(ttt) ! in :science:science.f90:science
+                real intent(in) :: ttt
+                real :: foewf
+            end function foewf
+            function foew(ttt) ! in :science:science.f90:science
+                real intent(in) :: ttt
+                real :: foew
+            end function foew
+            function foewaf(ttt) ! in :science:science.f90:science
+                real intent(in) :: ttt
+                real :: foewaf
+            end function foewaf
+            function foewa(ttt) ! in :science:science.f90:science
+                real intent(in) :: ttt
+                real :: foewa
+            end function foewa
+            function fodle(ttt) ! in :science:science.f90:science
+                real intent(in) :: ttt
+                real :: fodle
+            end function fodle
+            function foqst(ttt,prs) ! in :science:science.f90:science
+                real intent(in) :: ttt
+                real intent(in) :: prs
+                real :: foqst
+            end function foqst
+            function foqstx(prs,ddd) ! in :science:science.f90:science
+                real intent(in) :: prs
+                real intent(in) :: ddd
+                real :: foqstx
+            end function foqstx
+            function foqsa(ttt,prs) ! in :science:science.f90:science
+                real intent(in) :: ttt
+                real intent(in) :: prs
+                real :: foqsa
+            end function foqsa
+            function fqsmx(ttt,prs,fff) ! in :science:science.f90:science
+                real intent(in) :: ttt
+                real intent(in) :: prs
+                real intent(in) :: fff
+                real :: fqsmx
+            end function fqsmx
+            function fqsmxx(fesmx8,prs) ! in :science:science.f90:science
+                real intent(in) :: fesmx8
+                real intent(in) :: prs
+                real :: fqsmxx
+            end function fqsmxx
+            function fodqs(qst,ttt) ! in :science:science.f90:science
+                real intent(in) :: qst
+                real intent(in) :: ttt
+                real :: fodqs
+            end function fodqs
+            function foefq(qqq,prs) ! in :science:science.f90:science
+                real intent(in) :: qqq
+                real intent(in) :: prs
+                real :: foefq
+            end function foefq
+            function foqfe(eee,prs) ! in :science:science.f90:science
+                real intent(in) :: eee
+                real intent(in) :: prs
+                real :: foqfe
+            end function foqfe
+            function fotvt(ttt,qqq) ! in :science:science.f90:science
+                real intent(in) :: ttt
+                real intent(in) :: qqq
+                real :: fotvt
+            end function fotvt
+            function fottv(tvi,qqq) ! in :science:science.f90:science
+                real intent(in) :: tvi
+                real intent(in) :: qqq
+                real :: fottv
+            end function fottv
+            function fotvht(ttt,qqq,qqh) ! in :science:science.f90:science
+                real intent(in) :: ttt
+                real intent(in) :: qqq
+                real intent(in) :: qqh
+                real :: fotvht
+            end function fotvht
+            function fottvh(tvi,qqq,qqh) ! in :science:science.f90:science
+                real intent(in) :: tvi
+                real intent(in) :: qqq
+                real intent(in) :: qqh
+                real :: fottvh
+            end function fottvh
+            function fodqa(qst,ttt) ! in :science:science.f90:science
+                real intent(in) :: qst
+                real intent(in) :: ttt
+                real :: fodqa
+            end function fodqa
+            function fdqsmx(qsm,dlemx) ! in :science:science.f90:science
+                real intent(in) :: qsm
+                real intent(in) :: dlemx
+                real :: fdqsmx
+            end function fdqsmx
+            function fohr(qqq,ttt,prs) ! in :science:science.f90:science
+                real intent(in) :: qqq
+                real intent(in) :: ttt
+                real intent(in) :: prs
+                real :: fohr
+            end function fohr
+            function fohrx(qqq,prs,ddd) ! in :science:science.f90:science
+                real intent(in) :: qqq
+                real intent(in) :: prs
+                real intent(in) :: ddd
+                real :: fohrx
+            end function fohrx
+            function folv(ttt) ! in :science:science.f90:science
+                real intent(in) :: ttt
+                real :: folv
+            end function folv
+            function fols(ttt) ! in :science:science.f90:science
+                real intent(in) :: ttt
+                real :: fols
+            end function fols
+            function fopoit(t00,pr0,pf) ! in :science:science.f90:science
+                real intent(in) :: t00
+                real intent(in) :: pr0
+                real intent(in) :: pf
+                real :: fopoit
+            end function fopoit
+            function fopoip(t00,tf,pr0) ! in :science:science.f90:science
+                real intent(in) :: t00
+                real intent(in) :: tf
+                real intent(in) :: pr0
+                real :: fopoip
+            end function fopoip
+            function fodla(ttt) ! in :science:science.f90:science
+                real intent(in) :: ttt
+                real :: fodla
+            end function fodla
+            function fohra(qqq,ttt,prs) ! in :science:science.f90:science
+                real intent(in) :: qqq
+                real intent(in) :: ttt
+                real intent(in) :: prs
+                real :: fohra
+            end function fohra
+            function fesif(ttt) ! in :science:science.f90:science
+                real intent(in) :: ttt
+                real :: fesif
+            end function fesif
+            function fesi(ttt) ! in :science:science.f90:science
+                real intent(in) :: ttt
+                real :: fesi
+            end function fesi
+            function fdlesi(ttt) ! in :science:science.f90:science
+                real intent(in) :: ttt
+                real :: fdlesi
+            end function fdlesi
+            function fesmx(ttt,fff) ! in :science:science.f90:science
+                real intent(in) :: ttt
+                real intent(in) :: fff
+                real :: fesmx
+            end function fesmx
+            function fesmxx(fff,fesi8,foewa8) ! in :science:science.f90:science
+                real intent(in) :: fff
+                real intent(in) :: fesi8
+                real intent(in) :: foewa8
+                real :: fesmxx
+            end function fesmxx
+            function fdlesmx(ttt,fff,ddff) ! in :science:science.f90:science
+                real intent(in) :: ttt
+                real intent(in) :: fff
+                real intent(in) :: ddff
+                real :: fdlesmx
+            end function fdlesmx
+            function fdlesmxx(ttt,fff,ddff,foewa8,fesi8,fesmx8) ! in :science:science.f90:science
+                real intent(in) :: ttt
+                real intent(in) :: fff
+                real intent(in) :: ddff
+                real intent(in) :: foewa8
+                real intent(in) :: fesi8
+                real intent(in) :: fesmx8
+                real :: fdlesmxx
+            end function fdlesmxx
+            function shuahr(hu,tt,px,swph) ! in :science:science.f90:science
+                real intent(in) :: hu
+                real intent(in) :: tt
+                real intent(in) :: px
+                logical intent(in) :: swph
+                real :: shuahr
+            end function shuahr
+            function sesahu(es,tt,px,swph) ! in :science:science.f90:science
+                real intent(in) :: es
+                real intent(in) :: tt
+                real intent(in) :: px
+                logical intent(in) :: swph
+                real :: sesahu
+            end function sesahu
+            function sesahr(es,tt,px,swph) ! in :science:science.f90:science
+                real intent(in) :: es
+                real intent(in) :: tt
+                real intent(in) :: px
+                logical intent(in) :: swph
+                real :: sesahr
+            end function sesahr
+            function shrahu(hr,tt,px,swph) ! in :science:science.f90:science
+                real intent(in) :: hr
+                real intent(in) :: tt
+                real intent(in) :: px
+                logical intent(in) :: swph
+                real :: shrahu
+            end function shrahu
+            function shuaes(hu,tt,px,swph) ! in :science:science.f90:science
+                real intent(in) :: hu
+                real intent(in) :: tt
+                real intent(in) :: px
+                logical intent(in) :: swph
+                real :: shuaes
+            end function shuaes
+            function shraes(hr,tt,px,swph) ! in :science:science.f90:science
+                real intent(in) :: hr
+                real intent(in) :: tt
+                real intent(in) :: px
+                logical intent(in) :: swph
+                real :: shraes
+            end function shraes
+            function svp_water_from_tt(tt) ! in :science:science.f90:science
+                real intent(in) :: tt
+                real :: svp_water_from_tt
+            end function svp_water_from_tt
+            function svp_ice_from_tt(tt) ! in :science:science.f90:science
+                real intent(in) :: tt
+                real :: svp_ice_from_tt
+            end function svp_ice_from_tt
+            subroutine svp_from_tt(tt,ni,nj,tpl,swph,res) ! in :science:science.f90:science
+                real dimension(ni,nj),intent(in) :: tt
+                integer, optional,intent(in),check(shape(tt,0)==ni),depend(tt) :: ni=shape(tt,0)
+                integer, optional,intent(in),check(shape(tt,1)==nj),depend(tt) :: nj=shape(tt,1)
+                real intent(in) :: tpl
+                logical intent(in) :: swph
+                real dimension(ni,nj),intent(out),depend(ni,nj) :: res
+            end subroutine svp_from_tt
+            function rpn_svp_water(tt) ! in :science:science.f90:science
+                real intent(in) :: tt
+                real :: rpn_svp_water
+            end function rpn_svp_water
+            function rpn_svp_ice(tt) ! in :science:science.f90:science
+                real intent(in) :: tt
+                real :: rpn_svp_ice
+            end function rpn_svp_ice
+            subroutine rpn_svp(tt,ni,nj,tpl,swph,res) ! in :science:science.f90:science
+                real dimension(ni,nj),intent(in) :: tt
+                integer, optional,intent(in),check(shape(tt,0)==ni),depend(tt) :: ni=shape(tt,0)
+                integer, optional,intent(in),check(shape(tt,1)==nj),depend(tt) :: nj=shape(tt,1)
+                real intent(in) :: tpl
+                logical intent(in) :: swph
+                real dimension(ni,nj),intent(out),depend(ni,nj) :: res
+            end subroutine rpn_svp
+            subroutine vppr_from_hr(hr,svp,ni,nj,res) ! in :science:science.f90:science
+                real dimension(ni,nj),intent(in) :: hr
+                real dimension(ni,nj),intent(in),depend(ni,nj) :: svp
+                integer, optional,intent(in),check(shape(hr,0)==ni),depend(hr) :: ni=shape(hr,0)
+                integer, optional,intent(in),check(shape(hr,1)==nj),depend(hr) :: nj=shape(hr,1)
+                real dimension(ni,nj),intent(out),depend(ni,nj) :: res
+            end subroutine vppr_from_hr
+            subroutine vppr_from_hu(hu,px,ni,nj,res) ! in :science:science.f90:science
+                real dimension(ni,nj),intent(in) :: hu
+                real dimension(ni,nj),intent(in),depend(ni,nj) :: px
+                integer, optional,intent(in),check(shape(hu,0)==ni),depend(hu) :: ni=shape(hu,0)
+                integer, optional,intent(in),check(shape(hu,1)==nj),depend(hu) :: nj=shape(hu,1)
+                real dimension(ni,nj),intent(out),depend(ni,nj) :: res
+            end subroutine vppr_from_hu
+            subroutine vppr_from_qv(qv,px,ni,nj,res) ! in :science:science.f90:science
+                real dimension(ni,nj),intent(in) :: qv
+                real dimension(ni,nj),intent(in),depend(ni,nj) :: px
+                integer, optional,intent(in),check(shape(qv,0)==ni),depend(qv) :: ni=shape(qv,0)
+                integer, optional,intent(in),check(shape(qv,1)==nj),depend(qv) :: nj=shape(qv,1)
+                real dimension(ni,nj),intent(out),depend(ni,nj) :: res
+            end subroutine vppr_from_qv
+            function vppr_water_td(td) ! in :science:science.f90:science
+                real intent(in) :: td
+                real :: vppr_water_td
+            end function vppr_water_td
+            function vppr_ice_td(td) ! in :science:science.f90:science
+                real intent(in) :: td
+                real :: vppr_ice_td
+            end function vppr_ice_td
+            subroutine vppr_from_td(td,tt,ni,nj,tpl,swph,res) ! in :science:science.f90:science
+                real dimension(ni,nj),intent(in) :: td
+                real dimension(ni,nj),intent(in),depend(ni,nj) :: tt
+                integer, optional,intent(in),check(shape(td,0)==ni),depend(td) :: ni=shape(td,0)
+                integer, optional,intent(in),check(shape(td,1)==nj),depend(td) :: nj=shape(td,1)
+                real intent(in) :: tpl
+                logical intent(in) :: swph
+                real dimension(ni,nj),intent(out),depend(ni,nj) :: res
+            end subroutine vppr_from_td
+            subroutine rpn_vppr_from_hu(hu,px,ni,nj,res) ! in :science:science.f90:science
+                real dimension(ni,nj),intent(in) :: hu
+                real dimension(ni,nj),intent(in),depend(ni,nj) :: px
+                integer, optional,intent(in),check(shape(hu,0)==ni),depend(hu) :: ni=shape(hu,0)
+                integer, optional,intent(in),check(shape(hu,1)==nj),depend(hu) :: nj=shape(hu,1)
+                real dimension(ni,nj),intent(out),depend(ni,nj) :: res
+            end subroutine rpn_vppr_from_hu
+            function rpn_vppr_water_from_td(td) ! in :science:science.f90:science
+                real intent(in) :: td
+                real :: rpn_vppr_water_from_td
+            end function rpn_vppr_water_from_td
+            function rpn_vppr_ice_from_td(td) ! in :science:science.f90:science
+                real intent(in) :: td
+                real :: rpn_vppr_ice_from_td
+            end function rpn_vppr_ice_from_td
+            subroutine rpn_vppr_from_td(td,tt,ni,nj,tpl,swph,res) ! in :science:science.f90:science
+                real dimension(ni,nj),intent(in) :: td
+                real dimension(ni,nj),intent(in),depend(ni,nj) :: tt
+                integer, optional,intent(in),check(shape(td,0)==ni),depend(td) :: ni=shape(td,0)
+                integer, optional,intent(in),check(shape(td,1)==nj),depend(td) :: nj=shape(td,1)
+                real intent(in) :: tpl
+                logical intent(in) :: swph
+                real dimension(ni,nj),intent(out),depend(ni,nj) :: res
+            end subroutine rpn_vppr_from_td
+            subroutine td_from_es(tt,es,ni,nj,res) ! in :science:science.f90:science
+                real dimension(ni,nj),intent(in) :: tt
+                real dimension(ni,nj),intent(in),depend(ni,nj) :: es
+                integer, optional,intent(in),check(shape(tt,0)==ni),depend(tt) :: ni=shape(tt,0)
+                integer, optional,intent(in),check(shape(tt,1)==nj),depend(tt) :: nj=shape(tt,1)
+                real dimension(ni,nj),intent(out),depend(ni,nj) :: res
+            end subroutine td_from_es
+            function td_water_from_vppr(vppr) ! in :science:science.f90:science
+                real intent(in) :: vppr
+                real :: td_water_from_vppr
+            end function td_water_from_vppr
+            function td_ice_from_vppr(vppr) ! in :science:science.f90:science
+                real intent(in) :: vppr
+                real :: td_ice_from_vppr
+            end function td_ice_from_vppr
+            subroutine td_from_vppr(tt,vppr,ni,nj,tpl,swph,res) ! in :science:science.f90:science
+                real dimension(ni,nj),intent(in) :: tt
+                real dimension(ni,nj),intent(in),depend(ni,nj) :: vppr
+                integer, optional,intent(in),check(shape(tt,0)==ni),depend(tt) :: ni=shape(tt,0)
+                integer, optional,intent(in),check(shape(tt,1)==nj),depend(tt) :: nj=shape(tt,1)
+                real intent(in) :: tpl
+                logical intent(in) :: swph
+                real dimension(ni,nj),intent(out),depend(ni,nj) :: res
+            end subroutine td_from_vppr
+            subroutine rpn_hu_from_hr(tt,hr,px,ni,nj,swph,res) ! in :science:science.f90:science
+                real dimension(ni,nj),intent(in) :: tt
+                real dimension(ni,nj),intent(in),depend(ni,nj) :: hr
+                real dimension(ni,nj),intent(in),depend(ni,nj) :: px
+                integer, optional,intent(in),check(shape(tt,0)==ni),depend(tt) :: ni=shape(tt,0)
+                integer, optional,intent(in),check(shape(tt,1)==nj),depend(tt) :: nj=shape(tt,1)
+                logical intent(in) :: swph
+                real dimension(ni,nj),intent(out),depend(ni,nj) :: res
+            end subroutine rpn_hu_from_hr
+            subroutine rpn_es_from_hr(tt,hr,px,ni,nj,swph,res) ! in :science:science.f90:science
+                real dimension(ni,nj),intent(in) :: tt
+                real dimension(ni,nj),intent(in),depend(ni,nj) :: hr
+                real dimension(ni,nj),intent(in),depend(ni,nj) :: px
+                integer, optional,intent(in),check(shape(tt,0)==ni),depend(tt) :: ni=shape(tt,0)
+                integer, optional,intent(in),check(shape(tt,1)==nj),depend(tt) :: nj=shape(tt,1)
+                logical intent(in) :: swph
+                real dimension(ni,nj),intent(out),depend(ni,nj) :: res
+            end subroutine rpn_es_from_hr
+            subroutine rpn_es_from_hu(tt,hu,px,ni,nj,swph,res) ! in :science:science.f90:science
+                real dimension(ni,nj),intent(in) :: tt
+                real dimension(ni,nj),intent(in),depend(ni,nj) :: hu
+                real dimension(ni,nj),intent(in),depend(ni,nj) :: px
+                integer, optional,intent(in),check(shape(tt,0)==ni),depend(tt) :: ni=shape(tt,0)
+                integer, optional,intent(in),check(shape(tt,1)==nj),depend(tt) :: nj=shape(tt,1)
+                logical intent(in) :: swph
+                real dimension(ni,nj),intent(out),depend(ni,nj) :: res
+            end subroutine rpn_es_from_hu
+            subroutine hu_from_qv(qv,ni,nj,res) ! in :science:science.f90:science
+                real dimension(ni,nj),intent(in) :: qv
+                integer, optional,intent(in),check(shape(qv,0)==ni),depend(qv) :: ni=shape(qv,0)
+                integer, optional,intent(in),check(shape(qv,1)==nj),depend(qv) :: nj=shape(qv,1)
+                real dimension(ni,nj),intent(out),depend(ni,nj) :: res
+            end subroutine hu_from_qv
+            subroutine td_from_hr(tt,hr,ni,nj,res) ! in :science:science.f90:science
+                real dimension(ni,nj),intent(in) :: tt
+                real dimension(ni,nj),intent(in),depend(ni,nj) :: hr
+                integer, optional,intent(in),check(shape(tt,0)==ni),depend(tt) :: ni=shape(tt,0)
+                integer, optional,intent(in),check(shape(tt,1)==nj),depend(tt) :: nj=shape(tt,1)
+                real dimension(ni,nj),intent(out),depend(ni,nj) :: res
+            end subroutine td_from_hr
+            subroutine hr_from_svp_vppr(svp,vppr,ni,nj,res) ! in :science:science.f90:science
+                real dimension(ni,nj),intent(in) :: svp
+                real dimension(ni,nj),intent(in),depend(ni,nj) :: vppr
+                integer, optional,intent(in),check(shape(svp,0)==ni),depend(svp) :: ni=shape(svp,0)
+                integer, optional,intent(in),check(shape(svp,1)==nj),depend(svp) :: nj=shape(svp,1)
+                real dimension(ni,nj),intent(out),depend(ni,nj) :: res
+            end subroutine hr_from_svp_vppr
+            subroutine rpn_hr_from_es(tt,es,px,ni,nj,swph,res) ! in :science:science.f90:science
+                real dimension(ni,nj),intent(in) :: tt
+                real dimension(ni,nj),intent(in),depend(ni,nj) :: es
+                real dimension(ni,nj),intent(in),depend(ni,nj) :: px
+                integer, optional,intent(in),check(shape(tt,0)==ni),depend(tt) :: ni=shape(tt,0)
+                integer, optional,intent(in),check(shape(tt,1)==nj),depend(tt) :: nj=shape(tt,1)
+                logical intent(in) :: swph
+                real dimension(ni,nj),intent(out),depend(ni,nj) :: res
+            end subroutine rpn_hr_from_es
+            subroutine rpn_hr_from_hu(tt,hu,px,ni,nj,swph,res) ! in :science:science.f90:science
+                real dimension(ni,nj),intent(in) :: tt
+                real dimension(ni,nj),intent(in),depend(ni,nj) :: hu
+                real dimension(ni,nj),intent(in),depend(ni,nj) :: px
+                integer, optional,intent(in),check(shape(tt,0)==ni),depend(tt) :: ni=shape(tt,0)
+                integer, optional,intent(in),check(shape(tt,1)==nj),depend(tt) :: nj=shape(tt,1)
+                logical intent(in) :: swph
+                real dimension(ni,nj),intent(out),depend(ni,nj) :: res
+            end subroutine rpn_hr_from_hu
+            subroutine hu_from_vppr(vppr,px,ni,nj,res) ! in :science:science.f90:science
+                real dimension(ni,nj),intent(in) :: vppr
+                real dimension(ni,nj),intent(in),depend(ni,nj) :: px
+                integer, optional,intent(in),check(shape(vppr,0)==ni),depend(vppr) :: ni=shape(vppr,0)
+                integer, optional,intent(in),check(shape(vppr,1)==nj),depend(vppr) :: nj=shape(vppr,1)
+                real dimension(ni,nj),intent(out),depend(ni,nj) :: res
+            end subroutine hu_from_vppr
+            subroutine rpn_hu_from_es(tt,es,px,ni,nj,swph,res) ! in :science:science.f90:science
+                real dimension(ni,nj),intent(in) :: tt
+                real dimension(ni,nj),intent(in),depend(ni,nj) :: es
+                real dimension(ni,nj),intent(in),depend(ni,nj) :: px
+                integer, optional,intent(in),check(shape(tt,0)==ni),depend(tt) :: ni=shape(tt,0)
+                integer, optional,intent(in),check(shape(tt,1)==nj),depend(tt) :: nj=shape(tt,1)
+                logical intent(in) :: swph
+                real dimension(ni,nj),intent(out),depend(ni,nj) :: res
+            end subroutine rpn_hu_from_es
+            subroutine hmx_from_svp(tt,svp,ni,nj,res) ! in :science:science.f90:science
+                real dimension(ni,nj),intent(in) :: tt
+                real dimension(ni,nj),intent(in),depend(ni,nj) :: svp
+                integer, optional,intent(in),check(shape(tt,0)==ni),depend(tt) :: ni=shape(tt,0)
+                integer, optional,intent(in),check(shape(tt,1)==nj),depend(tt) :: nj=shape(tt,1)
+                real dimension(ni,nj),intent(out),depend(ni,nj) :: res
+            end subroutine hmx_from_svp
+            subroutine qv_from_hu(hu,ni,nj,res) ! in :science:science.f90:science
+                real dimension(ni,nj),intent(in) :: hu
+                integer, optional,intent(in),check(shape(hu,0)==ni),depend(hu) :: ni=shape(hu,0)
+                integer, optional,intent(in),check(shape(hu,1)==nj),depend(hu) :: nj=shape(hu,1)
+                real dimension(ni,nj),intent(out),depend(ni,nj) :: res
+            end subroutine qv_from_hu
+            subroutine qv_from_vppr(vppr,px,ni,nj,res) ! in :science:science.f90:science
+                real dimension(ni,nj),intent(in) :: vppr
+                real dimension(ni,nj),intent(in),depend(ni,nj) :: px
+                integer, optional,intent(in),check(shape(vppr,0)==ni),depend(vppr) :: ni=shape(vppr,0)
+                integer, optional,intent(in),check(shape(vppr,1)==nj),depend(vppr) :: nj=shape(vppr,1)
+                real dimension(ni,nj),intent(out),depend(ni,nj) :: res
+            end subroutine qv_from_vppr
+            subroutine es_from_td(tt,td,ni,nj,res) ! in :science:science.f90:science
+                real dimension(ni,nj),intent(in) :: tt
+                real dimension(ni,nj),intent(in),depend(ni,nj) :: td
+                integer, optional,intent(in),check(shape(tt,0)==ni),depend(tt) :: ni=shape(tt,0)
+                integer, optional,intent(in),check(shape(tt,1)==nj),depend(tt) :: nj=shape(tt,1)
+                real dimension(ni,nj),intent(out),depend(ni,nj) :: res
+            end subroutine es_from_td
+        end module science
+    end interface 
+end python module science
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/

@@ -17,14 +17,14 @@ class InterpolationHorizontalPoint(Plugin):
     :param df: Input dataframe
     :type df: pd.DataFrame
     :param lat_lon_df: dataframe containing destination LAT and LON fields, created manually of from fst file
-    lat_data = np.expand_dims(np.array([45.73,43.40,49.18],dtype='float32'),axis=-1) 
+    lat_data = np.expand_dims(np.array([45.73,43.40,49.18],dtype='float32'),axis=-1)
     lat_ni = lat_data.shape[0]
     lat_nj = lat_data.shape[1]
     lon_data = np.expand_dims(np.array([-73.75,-79.38,-123.18],dtype='float32'),axis=-1)
     lon_ni = lon_data.shape[0]
     lon_nj = lon_data.shape[1]
     pd.DataFrame([
-        {'d':lat_data, 'nomvar':'LAT','path':None,'typvar':'X', 'ni':lat_ni,'nj':lat_nj,'nk':1,'ip1':(value of your choosing or 0),'ip2':(value of your choosing or 0),'ip3':(value of your choosing or 0), 'deet':0,'npas':0,'datyp':5,'nbits':32, 'grtyp':'L','ig1':100,'ig2':100,'ig3':9000,'ig4':0}, 
+        {'d':lat_data, 'nomvar':'LAT','path':None,'typvar':'X', 'ni':lat_ni,'nj':lat_nj,'nk':1,'ip1':(value of your choosing or 0),'ip2':(value of your choosing or 0),'ip3':(value of your choosing or 0), 'deet':0,'npas':0,'datyp':5,'nbits':32, 'grtyp':'L','ig1':100,'ig2':100,'ig3':9000,'ig4':0},
         {'d':lon_data, 'nomvar':'LON','path':None,'typvar':'X', 'ni':lon_ni,'nj':lon_nj,'nk':1,'ip1':(value of your choosing or 0),'ip2':(value of your choosing or 0),'ip3':(value of your choosing or 0), 'deet':0,'npas':0,'datyp':5,'nbits':32, 'grtyp':'L','ig1':100,'ig2':100,'ig3':9000,'ig4':0}
     ])
     :type lat_lon_df: pd.DataFrame
@@ -47,11 +47,11 @@ class InterpolationHorizontalPoint(Plugin):
     def validate_input(self):
         if self.df.empty:
             raise InterpolationHorizontalPointError('No data to process')
-            
-        self.df = fstpy.metadata_cleanup(self.df)        
+
+        self.df = fstpy.metadata_cleanup(self.df)
         # print('self.df\n',self.df[['nomvar', 'typvar', 'etiket', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'datyp', 'nbits', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4','grid']].to_string())
         if self.lat_lon_df.empty:
-            raise InterpolationHorizontalPointError('Missing latitudes and longitudes')    
+            raise InterpolationHorizontalPointError('Missing latitudes and longitudes')
         self.validate_params()
         set_interpolation_type_options(self.interpolation_type)
         # set_extrapolation_type_options(self.extrapolation_type,self.extrapolation_value)
@@ -75,12 +75,12 @@ class InterpolationHorizontalPoint(Plugin):
 
     def define_output_grid(self):
         if ('LON' in self.lat_lon_df.nomvar.to_list()) and  ('LAT' in self.lat_lon_df.nomvar.to_list()):
-            self.lat_lon_df = self.lat_lon_df.query('nomvar in ["LAT","LON"]').reset_index(drop=True)
+            self.lat_lon_df = self.lat_lon_df.loc[self.lat_lon_df.nomvar.isin(["LAT","LON"])].reset_index(drop=True)
             self.lat_lon_df = fstpy.load_data(self.lat_lon_df)
-            ni,nj,_,ax,ay,ig1,ig2,ig3,ig4 = get_grid_paramters_from_latlon_fields(self.lat_lon_df) 
+            ni,nj,_,ax,ay,ig1,ig2,ig3,ig4 = get_grid_paramters_from_latlon_fields(self.lat_lon_df)
             self.output_grid = define_grid('Y','L',ni,nj,ig1,ig2,ig3,ig4,ax,ay,None)
-            self.lat = self.lat_lon_df.query('nomvar=="LAT"').reset_index(drop=True).iloc[0]['d']
-            self.lon = self.lat_lon_df.query('nomvar=="LON"').reset_index(drop=True).iloc[0]['d']
+            self.lat = self.lat_lon_df.loc[self.lat_lon_df.nomvar=="LAT"].reset_index(drop=True).iloc[0]['d']
+            self.lon = self.lat_lon_df.loc[self.lat_lon_df.nomvar=="LON"].reset_index(drop=True).iloc[0]['d']
             self.lat_lon_df.loc[self.lat_lon_df.nomvar=="LAT",'nomvar'] = '^^'
             self.lat_lon_df.loc[self.lat_lon_df.nomvar=="LON",'nomvar'] = '>>'
             self.lat_lon_df.loc[:,'grtyp'] = 'L'
@@ -88,11 +88,11 @@ class InterpolationHorizontalPoint(Plugin):
             self.lat_lon_df.loc[:,'ig2'] = 100
             self.lat_lon_df.loc[:,'ig3'] = 9000
             self.lat_lon_df.loc[:,'ig4'] = 0
-            self.lat_lon_df.loc[:,'etiket'] = 'InterpolationHorizontalPoint'
+            self.lat_lon_df.loc[:,'etiket'] = 'INTHPT'
 
-        else:    
+        else:
             raise InterpolationHorizontalPointError('Missing longitudes and/or latitudes to process')
- 
+
 
     def validate_params(self):
         if self.interpolation_type not in self.interpolation_types:
@@ -112,18 +112,18 @@ class InterpolationHorizontalPoint(Plugin):
 
             keep_toctoc(current_group, results)
 
-            vect_df = current_group.query("nomvar in ['UU','VV']").reset_index(drop=True)
+            vect_df = current_group.loc[current_group.nomvar.isin(['UU','VV'])].reset_index(drop=True)
 
-            others_df = current_group.query("nomvar not in ['UU','VV','PT','LAT','LON','>>','^^','^>','!!','HY']").reset_index(drop=True)
+            others_df = current_group.loc[~current_group.nomvar.isin(['UU','VV','PT','LAT','LON','>>','^^','^>','!!','HY'])].reset_index(drop=True)
 
-            pt_df = current_group.query("nomvar=='PT'").reset_index(drop=True)
+            pt_df = current_group.loc[current_group.nomvar=='PT'].reset_index(drop=True)
 
             source_df, grtyp = select_input_grid_source_data(vect_df, others_df, pt_df)
 
             if source_df.empty:
                 continue
 
-            meta_df = current_group.query("nomvar in ['>>','^^','^>']").reset_index(drop=True)
+            meta_df = current_group.loc[current_group.nomvar.isin(['>>','^^','^>'])].reset_index(drop=True)
 
             input_grid = define_input_grid(grtyp,source_df,meta_df)
 
@@ -142,7 +142,7 @@ class InterpolationHorizontalPoint(Plugin):
             elif not others_df.empty:
                 ni = others_df.iloc[0]['ni']
                 nj = others_df.iloc[0]['nj']
-            else:    
+            else:
                 ni = pt_df.iloc[0]['ni']
                 nj = pt_df.iloc[0]['nj']
 
@@ -158,24 +158,32 @@ class InterpolationHorizontalPoint(Plugin):
         res_df = pd.DataFrame(dtype=object)
 
         if len(results):
-            res_df = pd.concat(results,ignore_index=True)   
+            res_df = pd.concat(results,ignore_index=True)
+            # res_df.loc[:,'etiket'] = 'INTHPT'
+            for i in res_df.index:
+                if res_df.at[i,'nomvar'] == '!!':
+                    continue
+                res_df.at[i,'d'] = res_df.at[i,'d'].astype(np.float32)
 
         no_mod_df = pd.DataFrame(dtype=object)
 
-        if len(no_mod): 
+        if len(no_mod):
             no_mod_df = pd.concat(no_mod,ignore_index=True)
 
         toctoc_res_df = set_new_grid_identifiers_for_toctoc(res_df,0,0)
 
         other_res_df = set_new_grid_identifiers(res_df,'Y',len(self.lat),1,self.lat_lon_df.iloc[0]['ip1'],self.lat_lon_df.iloc[0]['ip2'],self.lat_lon_df.iloc[0]['ip3'],0)
-        
+
         if not toctoc_res_df.empty:
             other_res_df = pd.concat([other_res_df,toctoc_res_df],ignore_index=True)
 
         if not no_mod_df.empty:
             other_res_df = pd.concat([other_res_df,no_mod_df],ignore_index=True)
 
-        other_res_df = pd.concat([other_res_df,self.lat_lon_df],ignore_index=True) 
+        #official etiket
+
+        other_res_df = pd.concat([other_res_df,self.lat_lon_df],ignore_index=True)
+
 
         other_res_df.loc[other_res_df.nomvar!='HY','grid'] = '00000000'
         #make sure load_data does not execute (does nothing)
@@ -189,8 +197,8 @@ class InterpolationHorizontalPoint(Plugin):
 
 
 
-###################################################################################  
-###################################################################################  
+###################################################################################
+###################################################################################
 # def set_extrapolation_type_options(extrapolation_type,extrapolation_value):
 #     if extrapolation_type == 'value':
 #         if extrapolation_value is None:
@@ -206,7 +214,7 @@ def set_interpolation_type_options(interpolation_type):
     if interpolation_type == 'nearest':
         rmn.ezsetopt('INTERP_DEGREE', 'NEAREST')
     elif interpolation_type == 'bi-linear':
-        rmn.ezsetopt('INTERP_DEGREE', 'LINEAR')    
+        rmn.ezsetopt('INTERP_DEGREE', 'LINEAR')
     elif interpolation_type == 'bi-cubic':
         rmn.ezsetopt('INTERP_DEGREE', 'CUBIC')
 
@@ -224,7 +232,7 @@ def scalar_interpolation(df,results,input_grid,output_grid,extrapolation_type,ex
 
         int_df.at[i,'d'] = arr
 
-    results.append(int_df)     
+    results.append(int_df)
 
 
 def scalar_interpolation_pt(df,results,ni):
@@ -237,14 +245,14 @@ def scalar_interpolation_pt(df,results,ni):
     for i in df.index: # should only be one
         int_df.at[i,'d'] = arr
 
-    results.append(int_df)     
+    results.append(int_df)
 
 
 def vectorial_interpolation(vect_df,results,input_grid,output_grid,extrapolation_type,extrapolation_value,indexes=None):
     if vect_df.empty:
         return
-    uu_df = vect_df.query('nomvar=="UU"').reset_index(drop=True)
-    vv_df = vect_df.query('nomvar=="VV"').reset_index(drop=True)
+    uu_df = vect_df.loc[vect_df.nomvar=="UU"].reset_index(drop=True)
+    vv_df = vect_df.loc[vect_df.nomvar=="VV"].reset_index(drop=True)
 
     if (uu_df.empty) or (vv_df.empty):
         return
@@ -260,9 +268,9 @@ def vectorial_interpolation(vect_df,results,input_grid,output_grid,extrapolation
 
         uu_int_df.at[i,'d'] = uu
         vv_int_df.at[i,'d'] = vv
-    
-    results.append(uu_int_df)    
-    results.append(vv_int_df)    
+
+    results.append(uu_int_df)
+    results.append(vv_int_df)
 
 
 def create_grid_set(input_grid,output_grid):
@@ -283,7 +291,7 @@ def select_input_grid_source_data(vect_df, others_df, pt_df):
     elif not others_df.empty:
         grtyp = others_df.iloc[0]['grtyp']
         source_df = others_df
-    elif not pt_df.empty:    
+    elif not pt_df.empty:
         grtyp = pt_df.iloc[0]['grtyp']
         source_df = pt_df
     else:
@@ -297,35 +305,35 @@ def define_input_grid(grtyp,source_df,meta_df):
         if ('>>' in meta_df.nomvar.to_list()) and  ('^^' in meta_df.nomvar.to_list()):
             ni,nj,grref,ax,ay,ig1,ig2,ig3,ig4 = get_grid_paramters_from_tictictactac_fields(meta_df)
             input_grid = define_grid(grtyp,grref,ni,nj,ig1,ig2,ig3,ig4,ax,ay,None)
-            
+
         elif ('^>' in meta_df.nomvar.to_list()):
-            tictac_df = meta_df.query('nomvar=="^>"').reset_index(drop=True)
-            input_grid = define_grid(grtyp,'',0,0,0,0,0,0,None,None,tictac_df.iloc[0]['d'])    
+            tictac_df = meta_df.loc[meta_df.nomvar=="^>"].reset_index(drop=True)
+            input_grid = define_grid(grtyp,'',0,0,0,0,0,0,None,None,tictac_df.iloc[0]['d'])
 
     else:
-        input_grid = define_grid(grtyp,' ',ni,nj,ig1,ig2,ig3,ig4,None,None,None) 
+        input_grid = define_grid(grtyp,' ',ni,nj,ig1,ig2,ig3,ig4,None,None,None)
 
-    return input_grid       
+    return input_grid
 
 def keep_intact_hy_field(current_group, no_mod):
-    hy_df = current_group.query("nomvar in ['HY']").reset_index(drop=True)
+    hy_df = current_group.loc[current_group.nomvar=='HY'].reset_index(drop=True)
     if not hy_df.empty:
         no_mod.append(hy_df)
 
 def keep_toctoc(current_group, results):
-    toctoc_df = current_group.query("nomvar in ['!!']").reset_index(drop=True)
+    toctoc_df = current_group.loc[current_group.nomvar=='!!'].reset_index(drop=True)
     # we can add toctoc from input grid
     if not toctoc_df.empty:
         results.append(toctoc_df)
 
 def get_grid_paramters_from_tictictactac_fields(meta_df):
-    lon_df = meta_df.query('nomvar==">>"').reset_index(drop=True)
-    lat_df = meta_df.query('nomvar=="^^"').reset_index(drop=True)
+    lon_df = meta_df.loc[meta_df.nomvar==">>"].reset_index(drop=True)
+    lat_df = meta_df.loc[meta_df.nomvar=="^^"].reset_index(drop=True)
     return get_grid_parameters(lat_df, lon_df)
 
 def get_grid_paramters_from_latlon_fields(meta_df):
-    lat_df = meta_df.query('nomvar=="LAT"').reset_index(drop=True)
-    lon_df = meta_df.query('nomvar=="LON"').reset_index(drop=True)
+    lat_df = meta_df.loc[meta_df.nomvar=="LAT"].reset_index(drop=True)
+    lon_df = meta_df.loc[meta_df.nomvar=="LON"].reset_index(drop=True)
     return get_grid_parameters(lat_df, lon_df)
 
 def get_grid_parameters(lat_df, lon_df):
@@ -359,14 +367,14 @@ def set_output_column_values(meta_df,field_df):
     return ig1,ig2,ig3,ig4
 
 def set_new_grid_identifiers_for_toctoc(res_df,ig1,ig2):
-    toctoc_res_df = res_df.query('nomvar == "!!"').reset_index(drop=True)
+    toctoc_res_df = res_df.loc[res_df.nomvar=="!!"].reset_index(drop=True)
     toctoc_res_df['ip1'] = ig1
     toctoc_res_df['ip2'] = ig2
     return toctoc_res_df
 
 
 def set_new_grid_identifiers(res_df,grtyp,ni,nj,ig1,ig2,ig3,ig4):
-    other_res_df = res_df.query('nomvar != "!!"').reset_index(drop=True)
+    other_res_df = res_df.loc[res_df.nomvar!="!!"].reset_index(drop=True)
     shape_list = [(ni,nj) for _ in range(len(other_res_df.index))]
     other_res_df["shape"] = shape_list
     other_res_df['ni'] = ni
@@ -378,27 +386,27 @@ def set_new_grid_identifiers(res_df,grtyp,ni,nj,ig1,ig2,ig3,ig4):
     other_res_df['ig3'] = ig3
     other_res_df['ig4'] = ig4
     return other_res_df
-    
+
 def define_grid(grtyp:str,grref:str,ni:int,nj:int,ig1:int,ig2:int,ig3:int,ig4:int,ax:np.ndarray,ay:np.ndarray,tictac:np.ndarray) -> int:
     #longitude = X
-    
+
 
     grid_types = ['A','B','E','G','L','N','S','U','X','Y','Z','#']
     grid_id = -1
-    
+
     if grtyp not in grid_types:
         raise InterpolationHorizontalPointError(f'Grtyp {grtyp} not in {grid_types}')
 
 
     if  grtyp in ['Y','Z','#']:
         if ax.ndim == 1:
-            ax = np.expand_dims(ax,axis=-1) 
+            ax = np.expand_dims(ax,axis=-1)
 
         if ay.ndim == 1:
-            ay = np.expand_dims(ay,axis=-1) 
+            ay = np.expand_dims(ay,axis=-1)
 
-        # print('ax\n',ax)    
-        # print('ay\n',ay)    
+        # print('ax\n',ax)
+        # print('ay\n',ay)
         # print({'ni':ni,'nj':nj})
         grid_params = {'grtyp':grtyp,'grref':grref,'ni':int(ni),'nj':int(nj),'ay':ay,'ax':ax,'ig1':int(ig1),'ig2':int(ig2),'ig3':int(ig3),'ig4':int(ig4)}
         grid_id = rmn.ezgdef_fmem(grid_params)
@@ -412,7 +420,7 @@ def define_grid(grtyp:str,grref:str,ni:int,nj:int,ig1:int,ig2:int,ig3:int,ig4:in
         grtyp = 'U'
         grref = ''
 
-        grid_id = rmn.ezgdef_supergrid(ni, 2*nj, grtyp, grref, vercode, (sub_grid_id_1,sub_grid_id_2))        
+        grid_id = rmn.ezgdef_supergrid(ni, 2*nj, grtyp, grref, vercode, (sub_grid_id_1,sub_grid_id_2))
 
     else:
         grid_params = {'grtyp':grtyp,'ni':int(ni),'nj':int(nj),'ig1':int(ig1),'ig2':int(ig2),'ig3':int(ig3),'ig4':int(ig4),'iunit':0}
@@ -503,7 +511,7 @@ def find_index_of_lat_lon_not_in_grid(input_grid, grid_horizontal_dimension, gri
             # sys.stdout.write(f"ezscint value for Y is:{coords['y'][i]}\n")
             # sys.stdout.write(f"epsilon:{epsilon}\n")
             indexes.append(i)
-    return indexes        
+    return indexes
 
 
 
@@ -512,7 +520,7 @@ def do_extrapolation(interpolated_data, data_before_interpolation, indexes, extr
         # replace value at latlon outside grid by a fixed value
         for i in indexes:
             interpolated_data[i] = extrapolation_value
-        
+
     elif extrapolation_type == "maximum":
         min, max = find_min_max(data_before_interpolation)
         max = max + (max - min) * 0.05
@@ -520,7 +528,7 @@ def do_extrapolation(interpolated_data, data_before_interpolation, indexes, extr
         # replace value at latlon outside grid by the max value of the fields
         for i in indexes:
             interpolated_data[i] = max
-    
+
     elif extrapolation_type == "minimum":
         min, max = find_min_max(data_before_interpolation)
         min = min - (max - min) * 0.05
@@ -528,12 +536,12 @@ def do_extrapolation(interpolated_data, data_before_interpolation, indexes, extr
         # replace value at latlon outside grid by the min value of the fields
         for i in indexes:
             interpolated_data[i] = min
-    
+
     elif extrapolation_type == "abort":
         raise InterpolationHorizontalPointError("ABORTED AS REQUESTED BY THE USE OF THE 'extrapolation_type ABORT' OPTION.\n")
 
-    return interpolated_data    
-    
+    return interpolated_data
+
 
 def find_min_max(array):
     return np.min(array), np.max(array)

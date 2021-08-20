@@ -5,7 +5,7 @@ import fstpy.all as fstpy
 import spookipy.all as spooki
 
 
-pytestmark = [pytest.mark.skip]
+pytestmark = [pytest.mark.regressions]
 
 @pytest.fixture
 def plugin_test_dir():
@@ -35,6 +35,6 @@ def test_1(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/TotalTotalsIndex/result_test_1'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
     assert(res)

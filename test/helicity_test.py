@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-from test import TMP_PATH,TEST_PATH, convip
+from test import TMP_PATH,TEST_PATH
 import pytest
 import fstpy.all as fstpy
 import spookipy.all as spooki
-import rpnpy.librmn.all as rmn
 
 pytestmark = [pytest.mark.skip]
 

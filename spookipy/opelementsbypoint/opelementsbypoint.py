@@ -39,7 +39,7 @@ class OpElementsByPoint(Plugin):
         if len(self.df) == 1:
             raise self.exception_class(self.operation_name + ' - not enough records to process, need at least 2')
 
-        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(self.df, decode=True, columns=['forecast_hour','ip_info'])
 
         grouping = ['grid']
         if self.group_by_forecast_hour:

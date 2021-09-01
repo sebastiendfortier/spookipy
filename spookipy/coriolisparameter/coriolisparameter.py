@@ -39,7 +39,7 @@ class CoriolisParameter(Plugin):
         if self.df.empty:
             raise CoriolisParameterError('No data to process')
 
-        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['unit'])
+        self.df = fstpy.add_columns(self.df, decode=True, columns=['unit'])
 
         self.df = fstpy.metadata_cleanup(self.df)
 

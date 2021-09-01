@@ -52,7 +52,7 @@ class FilterDigital(Plugin):
 
         self.df = fstpy.load_data(self.df)
 
-        new_df = create_empty_result(self.df,self.plugin_result_specifications['ALL'],copy=True)
+        new_df = create_empty_result(self.df,self.plugin_result_specifications['ALL'],all_rows=True)
 
         df_list=[]
 

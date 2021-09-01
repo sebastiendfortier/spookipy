@@ -2,7 +2,7 @@
 import fstpy.all as fstpy
 import pytest
 import pandas as pd
-from test import TMP_PATH,TEST_PATH, convip
+from test import TMP_PATH,TEST_PATH
 
 import spookipy.all as spooki
 
@@ -247,7 +247,7 @@ def test_11(plugin_test_dir):
     # file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_11"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -269,7 +269,7 @@ def test_12(plugin_test_dir):
     # df.loc[df.nomvar=='TD','dateo']= 443004200
     # df.loc[:,'datyp'] = 5
     # df.loc[:,'nbits'] = 32
-    df = convip(df,'TD,')
+    df = spooki.convip(df)
     #write the result
     results_file = TMP_PATH + "test_12.std"
     fstpy.delete_file(results_file)

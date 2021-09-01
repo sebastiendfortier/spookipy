@@ -38,7 +38,7 @@ def test_1(plugin_test_dir):
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)#,e_max=0.001)
-    # fstpy.delete_file(results_file)
+    fstpy.delete_file(results_file)
     assert(res)
 
 
@@ -54,7 +54,7 @@ def test_2(plugin_test_dir):
     uv_df = spooki.WindModulus(uv_df).compute()
     uv_src_df=pd.concat([src_df0,uv_df],ignore_index=True)
 
-    uv_src_df = fstpy.add_composite_columns(uv_src_df,True,'numpy', attributes_to_decode=['ip_info'])
+    uv_src_df = fstpy.add_columns(uv_src_df, decode=True, columns=['ip_info'])
     src_df0 = uv_src_df.loc[uv_src_df.surface==False].reset_index(drop=True)
     # print(src_df0[['level','surface']])
 

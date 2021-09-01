@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import ctypes
 import math
-from ..utils import get_existing_result, initializer, existing_results, final_results, remove_load_data_info
+from ..utils import get_existing_result, initializer, existing_results, final_results, convip
 import sys
 
 import numpy as np
@@ -45,7 +45,7 @@ class Pressure(Plugin):
 
         self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
-        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['ip_info','forecast_hour','unit'])
+        self.df = fstpy.add_columns(self.df, decode=True, columns=['ip_info','forecast_hour','unit'])
 
         if not (self.reference_field is None):
             self.df = fstpy.select_with_meta(self.df,[self.reference_field])
@@ -80,8 +80,8 @@ class Pressure(Plugin):
                 fh_groups = vt.groupby(['forecast_hour'])
                 for _, fh in fh_groups:
                     px_df = self._compute_pressure(fh,meta_df,vctype)
-                    if not(px_df is None):
-                        df_list.append(px_df)
+                    # if not(px_df is None):
+                    df_list.append(px_df)
             df_list.append(meta_df)
 
 
@@ -100,8 +100,9 @@ class Pressure(Plugin):
         :return: pressure dataframe for all levels of the current vctype
         :rtype: pd.DataFrame
         """
+        px_df = pd.DataFrame(dtype=object)
         if vctype == "UNKNOWN":
-            px_df = None
+            px_df = pd.DataFrame(dtype=object)
 
         elif vctype == "HYBRID":
             sys.stdout.write('Found HYBRID vertical coordinate type - computing pressure\n')
@@ -121,7 +122,15 @@ class Pressure(Plugin):
 
         elif vctype == "SIGMA":
             sys.stdout.write('Found SIGMA vertical coordinate type - computing pressure\n')
+            converted=False
+            if (df.ip1.unique() > 32767).all():
+                converted=True
+                df = convip(df,rmn.CONVIP_ENCODE_OLD)
+
             px_df = compute_pressure_from_sigma_coord_df(df,meta_df,self.standard_atmosphere)
+
+            if converted:
+                px_df = convip(px_df,rmn.CONVIP_ENCODE)
 
         return px_df
 
@@ -172,7 +181,7 @@ def compute_pressure_from_pressure_coord_df(df:pd.DataFrame,standard_atmosphere:
     :rtype: pd.DataFrame
     """
     if df.empty:
-        return None
+        return pd.DataFrame(dtype=object)
     df = df.drop_duplicates('ip1')
     p = Pressure2Pressure()
     press = []
@@ -313,9 +322,9 @@ def compute_pressure_from_sigma_coord_df(df:pd.DataFrame,meta_df:pd.DataFrame,st
     datev = df.iloc[0]['datev']
     p0_data,datyp, nbits = get_sigma_metadata(meta_df,datev)
     if p0_data is None:
-        return None
+        return pd.DataFrame(dtype=object)
     if df.empty:
-        return None
+        return pd.DataFrame(dtype=object)
     df = df.drop_duplicates('ip1')
     levels = df.level.unique()
     p = Sigma2Pressure(levels,p0_data,standard_atmosphere)
@@ -493,9 +502,9 @@ def compute_pressure_from_eta_coord_df(df:pd.DataFrame,meta_df:pd.DataFrame,stan
     datev = df.iloc[0]['datev']
     p0_data, pt_data, bb_data, datyp, nbits = get_eta_metadata(meta_df,datev)
     if p0_data is None:
-        return None
+        return pd.DataFrame(dtype=object)
     if df.empty:
-        return None
+        return pd.DataFrame(dtype=object)
     df = df.drop_duplicates('ip1')
     levels = df.level.unique()
     p = Eta2Pressure(levels,pt_data,bb_data,p0_data,standard_atmosphere)
@@ -673,11 +682,11 @@ def compute_pressure_from_hyb_coord_array(hy_data:np.ndarray,hy_ig1:float,hy_ig2
 def get_hyb_metadata(meta_df,datev):
     p0_df = meta_df.loc[(meta_df.nomvar=="P0") & (meta_df.datev==datev)].reset_index(drop=True)
     if p0_df.empty:
-        return None,None,None,None
+        return None,None,None,None,None,None
     p0_data = p0_df.iloc[0]['d']
     hy_df = meta_df.loc[meta_df.nomvar=="HY"].reset_index(drop=True)
     if hy_df.empty:
-        return None,None,None,None
+        return None,None,None,None,None,None
     hy_data = hy_df.iloc[0]['d']
     hy_ig1 = hy_df.iloc[0]['ig1']
     hy_ig2 = hy_df.iloc[0]['ig2']
@@ -699,9 +708,9 @@ def compute_pressure_from_hyb_coord_df(df:pd.DataFrame,meta_df:pd.DataFrame,stan
     datev = df.iloc[0]['datev']
     p0_data,hy_data,hy_ig1,hy_ig2, datyp, nbits = get_hyb_metadata(meta_df,datev)
     if p0_data is None:
-        return None
+        return pd.DataFrame(dtype=object)
     if df.empty:
-        return None
+        return pd.DataFrame(dtype=object)
     df = df.drop_duplicates('ip1')
     levels = df.level.unique()
     p = Hybrid2Pressure(hy_data,hy_ig1,hy_ig2,p0_data,levels,standard_atmosphere)
@@ -852,9 +861,9 @@ def compute_pressure_from_hybstag_coord_df(df:pd.DataFrame,meta_df:pd.DataFrame,
     p0_data, bb_data, datyp, nbits = get_hybstag_metadata(meta_df,datev)
 
     if p0_data is None:
-        return None
+        return pd.DataFrame(dtype=object)
     if df.empty:
-        return None
+        return pd.DataFrame(dtype=object)
     df = df.drop_duplicates('ip1',ignore_index=True)
 
     p = HybridStaggered2Pressure(bb_data,p0_data,standard_atmosphere)

@@ -41,7 +41,7 @@ class CloudFractionDiagnostic(Plugin):
 
         self.df = fstpy.metadata_cleanup(self.df)
 
-        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['unit','forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(self.df, decode=True, columns=['unit','forecast_hour','ip_info'])
 
         # print(self.df[['nomvar','typvar','etiket','unit','surface','grid','forecast_hour']].sort_values(by=['grid','nomvar']).to_string())
         self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
@@ -64,7 +64,7 @@ class CloudFractionDiagnostic(Plugin):
         for _, group in self.groups:
             group = fstpy.load_data(group)
 
-            cld_df = create_empty_result(group,self.plugin_result_specifications['CLD'],copy=True)
+            cld_df = create_empty_result(group,self.plugin_result_specifications['CLD'],all_rows=True)
 
             if not (self.use_constant is None):
                 for  i in cld_df.index:

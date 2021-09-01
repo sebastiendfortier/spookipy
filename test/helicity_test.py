@@ -24,7 +24,7 @@ def test_1(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --makeIP1EncodingWorkWithTests]
 
     #write the result
-    results_file = TMP_PATH + "test_Helicity3.std"
+    results_file = TMP_PATH + "test_1.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 

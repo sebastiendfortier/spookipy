@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from ..humidityutils import get_temp_phase_switch, validate_humidity_parameters
 from ..plugin import Plugin
-from ..utils import create_empty_result, get_existing_result, get_intersecting_levels, get_plugin_dependencies, initializer, existing_results, final_results
+from ..utils import create_empty_result, get_existing_result, get_from_dataframe, get_intersecting_levels, get_plugin_dependencies, initializer, existing_results, final_results
 import pandas as pd
 import fstpy.all as fstpy
 import sys
@@ -39,7 +39,7 @@ class WaterVapourMixingRatio(Plugin):
 
         self.df = fstpy.metadata_cleanup(self.df)
 
-        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['unit','forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(self.df, decode=True, columns=['unit','forecast_hour','ip_info'])
 
         validate_humidity_parameters(WaterVapourMixingRatioError,self.ice_water_phase,self.temp_phase_switch,self.temp_phase_switch_unit)
 
@@ -73,16 +73,14 @@ class WaterVapourMixingRatio(Plugin):
 
         sys.stdout.write('WaterVapourMixingRatio - compute\n')
         df_list = []
-        if self.ice_water_phase == 'water':
-            self.temp_phase_switch = -40.
+
         for _, current_fhour_group in self.fhour_groups:
 
             if self.option==1:
                 print('option 1')
                 current_fhour_group = fstpy.load_data(current_fhour_group)
-                hu_df = current_fhour_group.loc[current_fhour_group.nomvar=='HU'].sort_values(by=['level']).reset_index(drop=True)
-
-                qv_df = create_empty_result(hu_df,self.plugin_result_specifications['QV'],copy=True)
+                hu_df = get_from_dataframe(current_fhour_group,'HU')
+                qv_df = create_empty_result(hu_df,self.plugin_result_specifications['QV'],all_rows=True)
                 for i in qv_df.index:
                     hu = hu_df.at[i,'d']
                     ni = hu.shape[0]
@@ -91,10 +89,10 @@ class WaterVapourMixingRatio(Plugin):
             else:
                 print('option 2')
                 level_intersection_df = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies_option_2)
-                current_fhour_group = fstpy.load_data(level_intersection_df)
-                vppr_df = current_fhour_group.loc[current_fhour_group.nomvar=='VPPR'].sort_values(by=['level']).reset_index(drop=True)
-                px_df = current_fhour_group.loc[current_fhour_group.nomvar=='PX'].sort_values(by=['level']).reset_index(drop=True)
-                qv_df = create_empty_result(vppr_df,self.plugin_result_specifications['QV'],copy=True)
+                level_intersection_df = fstpy.load_data(level_intersection_df)
+                vppr_df = get_from_dataframe(level_intersection_df,'VPPR')
+                px_df = get_from_dataframe(level_intersection_df,'PX')
+                qv_df = create_empty_result(vppr_df,self.plugin_result_specifications['QV'],all_rows=True)
                 vpprpa_df = fstpy.unit_convert(vppr_df,'pascal')
                 pxpa_df = fstpy.unit_convert(px_df,'pascal')
                 for i in qv_df.index:

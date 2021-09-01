@@ -35,7 +35,7 @@ class MinMaxLevelIndex(Plugin):
             self.min = True
             self.max = True
 
-        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['forecast_hour'])
+        self.df = fstpy.add_columns(self.df, decode=True, columns=['forecast_hour','ip_info'])
 
         keep = self.df.loc[~self.df.nomvar.isin(["KBAS","KTOP"])].reset_index(drop=True)
 
@@ -46,6 +46,7 @@ class MinMaxLevelIndex(Plugin):
         df_list=[]
         for _,group in self.nomvar_groups:
             group = fstpy.load_data(group)
+            group = group.sort_values(by='level',ascending=group.ascending.unique()[0])
             group.loc[:,'etiket'] = self.plugin_result_specifications['ALL']['etiket']
             kmin_df = create_empty_result(group,self.plugin_result_specifications['ALL'])
             kmin_df['nomvar']=self.nomvar_min
@@ -101,18 +102,6 @@ class MinMaxLevelIndex(Plugin):
             df_list.append(group)
 
         return final_results(df_list, MinMaxLevelIndexError, self.meta_df)
-        # if not len(df_list):
-        #     raise MinMaxLevelIndexError('No results were produced')
-
-        # self.meta_df = fstpy.load_data(self.meta_df)
-        # df_list.append(self.meta_df)
-        # # merge all results together
-        # res_df = pd.concat(df_list,ignore_index=True)
-
-        # res_df = remove_load_data_info(res_df)
-        # res_df = fstpy.metadata_cleanup(res_df)
-
-        # return res_df
 
 
 def fix_ktop(ktop, array_max_index):

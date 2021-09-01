@@ -26,7 +26,7 @@ def test_1(plugin_test_dir):
     df['nbits']=32
     df['datyp']=5
     #write the result
-    results_file = TMP_PATH + "test_straight_tti2.std"
+    results_file = TMP_PATH + "test_1.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 

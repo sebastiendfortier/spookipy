@@ -10,7 +10,7 @@
       * :ref:`search`
 
       .. #currentmodule:: spookipy
-      .. #autofuntion:: __init__  
+      .. #autofuntion:: __init__
 
 .. include:: intro.rst
 
@@ -24,6 +24,7 @@ Documentation
 * :doc:`install`
 * :doc:`usage`
 * :doc:`contributing`
+* :doc:`ssm`
 
 .. toctree::
    :maxdepth: 1
@@ -34,6 +35,7 @@ Documentation
    install
    usage
    contributing
+   ssm
 
 **Modules**
 
@@ -110,5 +112,3 @@ Documentation
 
    acknowledgements
    LICENSE
-
-     

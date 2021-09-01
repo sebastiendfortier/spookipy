@@ -35,7 +35,7 @@ class OpElementsByValue(Plugin):
     def compute(self) -> pd.DataFrame:
         sys.stdout.write('OpElementsByValue - compute\n')
         df_list = []
-        res_df = create_empty_result(self.df,self.plugin_result_specifications['ALL'],copy=True)
+        res_df = create_empty_result(self.df,self.plugin_result_specifications['ALL'],all_rows=True)
         res_df = fstpy.load_data(res_df)
         res_df['d'] = self.operator(res_df['d'], self.value)
         df_list.append(res_df)

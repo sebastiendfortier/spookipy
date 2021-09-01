@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from test import TEST_PATH, TMP_PATH, convip
+from test import TEST_PATH, TMP_PATH
 
 import pytest
 import fstpy.all as fstpy
@@ -234,7 +234,7 @@ def test_1(plugin_test_dir,latlon_df):
     # df['nbits']=32
 
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_1.std"
+    results_file = TMP_PATH + "test_1.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -271,7 +271,7 @@ def test_2(plugin_test_dir,latlon_df):
     # df['nbits']=32
 
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_2.std"
+    results_file = TMP_PATH + "test_2.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -308,7 +308,7 @@ def test_3(plugin_test_dir,latlon_df):
     df.loc[df.nomvar == 'VS','etiket'] = 'XVSHEAR_X'
 
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_3.std"
+    results_file = TMP_PATH + "test_3.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -351,7 +351,7 @@ def test_4(plugin_test_dir,latlon2_df):
 # P0   PI R1580V0_N           4       1     1 20110721 000000             0         6         0      450       48  R 16  Y     0     0     0     0
 
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_4.std"
+    results_file = TMP_PATH + "test_4.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -387,7 +387,7 @@ def test_5(plugin_test_dir,latlon_df):
     df.loc[df.nomvar == 'VS','etiket'] = 'XVSHEAR_X'
 
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_5.std"
+    results_file = TMP_PATH + "test_5.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -424,7 +424,7 @@ def test_6(plugin_test_dir,latlon_df):
     df.loc[df.nomvar == 'VS','etiket'] = 'XVSHEAR_X'
 
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_6.std"
+    results_file = TMP_PATH + "test_6.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -462,7 +462,7 @@ def test_7(plugin_test_dir,latlon_with_grid_df):
     df.loc[df.nomvar == 'VS','etiket'] = 'XVSHEAR_X'
 
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_7.std"
+    results_file = TMP_PATH + "test_7.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -500,7 +500,7 @@ def test_8(plugin_test_dir,latlon_extrapolation_df):
     df.loc[df.nomvar == 'VS','etiket'] = 'XVSHEAR_X'
 
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_8.std"
+    results_file = TMP_PATH + "test_8.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -537,7 +537,7 @@ def test_9(plugin_test_dir,latlon_extrapolation_df):
     df.loc[df.nomvar == 'VS','etiket'] = 'XVSHEAR_X'
 
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_9.std"
+    results_file = TMP_PATH + "test_9.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -576,7 +576,7 @@ def test_10(plugin_test_dir,latlon_extrapolation_df):
     # df['datyp']=5
     # df['nbits']=32
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_10.std"
+    results_file = TMP_PATH + "test_10.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -612,7 +612,7 @@ def test_11(plugin_test_dir,latlon_extrapolation_df):
     df.loc[df.nomvar == 'VS','etiket'] = 'XVSHEAR_X'
 
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_11.std"
+    results_file = TMP_PATH + "test_11.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -645,7 +645,7 @@ def test_11(plugin_test_dir,latlon_extrapolation_df):
 #     df['nbits']=32
 
 #     #write the result
-#     results_file = TMP_PATH + "test_interppoint_reg_12.std"
+#     results_file = TMP_PATH + "test_12.std"
 #     fstpy.delete_file(results_file)
 #     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -688,7 +688,7 @@ def test_13(plugin_test_dir,latlon_df):
     # df['nbits']=32
 
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_13.std"
+    results_file = TMP_PATH + "test_13.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -698,7 +698,7 @@ def test_13(plugin_test_dir,latlon_df):
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)
-    # fstpy.delete_file(results_file)
+    fstpy.delete_file(results_file)
     assert(res)
 
 # strangly the result file ni nj for lat and lon is reversed
@@ -731,7 +731,7 @@ def test_14(plugin_test_dir):
     # df['nbits']=32
 
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_14.std"
+    results_file = TMP_PATH + "test_14.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -773,7 +773,7 @@ def test_15(plugin_test_dir):
     # df['nbits']=32
     # print('df',df)
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_15.std"
+    results_file = TMP_PATH + "test_15.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -807,10 +807,10 @@ def test_16(plugin_test_dir,simple_input_df):
     # df['datyp']=5
     # df['nbits']=32
 
-    df = convip(df,nomvar='',style=rmn.CONVIP_ENCODE)
+    df = spooki.convip(df)
 
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_16.std"
+    results_file = TMP_PATH + "test_16.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -845,10 +845,10 @@ def test_17(plugin_test_dir,latlon_yy_df):
     # df['datyp']=5
     # df['nbits']=32
 
-    df = convip(df,nomvar='',style=rmn.CONVIP_ENCODE)
+    df = spooki.convip(df)
 
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_17.std"
+    results_file = TMP_PATH + "test_17.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 

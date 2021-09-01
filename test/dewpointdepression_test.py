@@ -82,7 +82,7 @@ def test_5(plugin_test_dir):
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
-    # fstpy.delete_file(results_file)
+    fstpy.delete_file(results_file)
     assert(res)
 
 
@@ -98,9 +98,9 @@ def test_6(plugin_test_dir):
 
 
     #compute spooki.DewPointDepression
-    tdp_df = spooki.TemperatureDewPoint(src_df0,ice_water_phase='water').compute()
+    td_df = spooki.TemperatureDewPoint(src_df0,ice_water_phase='water').compute()
 
-    src_df1 = pd.concat([tt_df,tdp_df],ignore_index=True)
+    src_df1 = pd.concat([tt_df,td_df],ignore_index=True)
     df = spooki.DewPointDepression(src_df1,ice_water_phase='water', rpn=True).compute()
     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName TT,HU] >>
     # ([Select --fieldName TT] + [TemperatureDewPoint --iceWaterPhase WATER])

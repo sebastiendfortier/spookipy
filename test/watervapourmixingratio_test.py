@@ -44,17 +44,20 @@ def test_1(plugin_test_dir):
     assert(res)
 
 
-def test_3(plugin_test_dir):
+def test_3(plugin_test_dir): # option 1 rpn
     """Calcul du ratio de mélange de de la vapeur d'eau à partir d'un fichier hybride. (TT et ES), option --RPN"""
     # open and read source
     source0 = plugin_test_dir + "hyb_prog_2012071312_009_1HY"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
+    # [Select --fieldName ES --exclude] >>
     src_df0 = src_df0.loc[src_df0.nomvar!='ES']
-
+    # [DewPointDepression --iceWaterPhase WATER --RPN])
     es_df = DewPointDepression(src_df0,ice_water_phase='water',rpn=True).compute()
     # print(es_df)
+    #  ([Select --fieldName TT]
     tt_df = fstpy.select_with_meta(src_df0,['TT'])
+    # ([Select --fieldName TT] + [DewPointDepression --iceWaterPhase WATER --RPN])
     df = pd.concat([tt_df,es_df],ignore_index=True)
     #compute WaterVapourMixingRatio
     # print(df)
@@ -80,7 +83,7 @@ def test_3(plugin_test_dir):
     assert(res)
 
 
-def test_4(plugin_test_dir):
+def test_4(plugin_test_dir): # option 1 rpn
     """Calcul du ratio de mélange de de la vapeur d'eau à partir d'un fichier hybride. (TT et TD), option --RPN"""
     # open and read source
     source0 = plugin_test_dir + "hyb_prog_2012071312_009_1HY"
@@ -163,7 +166,7 @@ def test_6(plugin_test_dir):
     file_to_compare = plugin_test_dir + "WaterVapourMixingRatioPXVPPR_HR_file2cmp.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)#,e_max=0.001)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -194,7 +197,7 @@ def test_7(plugin_test_dir):
     file_to_compare = plugin_test_dir + "WaterVapourMixingRatioPXVPPR_ES_file2cmp.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -222,7 +225,7 @@ def test_8(plugin_test_dir):
     file_to_compare = plugin_test_dir + "WaterVapourMixingRatioPXVPPR_TD_file2cmp.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)
 

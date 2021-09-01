@@ -6,6 +6,7 @@ import numpy as np
 import sys
 import fstpy.all as fstpy
 from inspect import signature
+import rpnpy.librmn.all as rmn
 
 def initializer(func):
     """
@@ -170,8 +171,8 @@ def get_intersecting_levels(df:pd.DataFrame, plugin_mandatory_dependencies:dict)
 
     # res_df = pd.concat(df_list,ignore_index=True)
     if 'level' not in res_df.columns:
-        res_df = fstpy.add_composite_columns(res_df,True,'numpy', attributes_to_decode=['ip_info'])
-    res_df = res_df.sort_values(by=['level'])
+        res_df = fstpy.add_columns(res_df, decode=True, columns=['ip_info'])
+    res_df = res_df.sort_values(by='level',ascending=res_df.ascending.unique()[0])
     return res_df
 
 
@@ -210,11 +211,11 @@ def remove_load_data_info(df):
 #         res_df[k] = v
 #     return res_df
 
-def create_empty_result(df, plugin_result_specifications,copy=False):
+def create_empty_result(df, plugin_result_specifications,all_rows=False):
     if df.empty:
         sys.stderr.write('cant create, model dataframe empty\n')
 
-    if copy:
+    if all_rows:
         res_df = df.copy(deep=True)
     else:
         res_df = df.iloc[0].to_dict()
@@ -224,8 +225,8 @@ def create_empty_result(df, plugin_result_specifications,copy=False):
         if v != '':
             res_df.loc[:,k] = v
     if 'level' not in res_df.columns:
-        res_df = fstpy.add_composite_columns(res_df,True,'numpy', attributes_to_decode=['ip_info'])
-    res_df = res_df.sort_values(by=['level'])
+        res_df = fstpy.add_columns(res_df, decode=True, columns=['ip_info'])
+    res_df = res_df.sort_values(by=['level'],ascending=res_df.ascending.unique()[0])
     return res_df
 
 def get_3d_array(df) -> np.ndarray:
@@ -242,7 +243,7 @@ def existing_results(plugin_name:str,df:pd.DataFrame,meta_df:pd.DataFrame):
     res_df  = remove_load_data_info(res_df)
     return res_df
 
-def final_results(df_list,error_class,meta_df):
+def final_results(df_list:"list[pd.DataFrame]",error_class,meta_df:pd.DataFrame) -> pd.DataFrame:
     new_list = []
     for df in df_list:
         if not df.empty:
@@ -259,3 +260,48 @@ def final_results(df_list,error_class,meta_df):
     res_df = remove_load_data_info(res_df)
     res_df = fstpy.metadata_cleanup(res_df)
     return res_df
+
+
+
+def convip(df:pd.DataFrame,style:int=rmn.CONVIP_ENCODE) -> pd.DataFrame:
+    """Converts ip1 column of dataframe from new style ips to old style and vice versa
+
+    :param df: A DataFrame
+    :type df: pd.DataFrame
+    :param style: either rmn.CONVIP_ENCODE or rmn.CONVIP_ENCODE_OLD, defaults to rmn.CONVIP_ENCODE
+    :type style: int, optional
+    :return: modified Dataframe
+    :rtype: pd.DataFrame
+    """
+    def convertip(ip,style):
+        (val, kind) = rmn.convertIp(rmn.CONVIP_DECODE, int(ip))
+        if kind != -1:
+            return rmn.convertIp(int(style), val, kind)
+    vconvertip = np.vectorize(convertip)
+    df.loc[~df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]),'ip1'] = vconvertip(df.loc[~df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]),'ip1'].values,style)
+
+    return df
+
+def get_from_dataframe(df:pd.DataFrame, nomvar:str) -> pd.DataFrame:
+    """Get a specific variable from a DataFrame and clears the index and sorts the levels according to kind
+
+    :param df: A DataFrame
+    :type df: pd.DataFrame
+    :param nomvar: nomvar of variable to get
+    :type nomvar: str
+    :return: Dataframe containing only the requested variable or an empty DataFrame if variable not found
+    :rtype: pd.DataFrame
+    """
+    res_df = df.loc[df.nomvar==nomvar]
+    if not(res_df.empty):
+        return res_df.sort_values(by=['level'],ascending=res_df.ascending.unique()[0]).reset_index(drop=True)
+
+    return pd.DataFrame(dtype=object)
+
+def find_matching_dependency_option(df,plugin_params,plugin_mandatory_dependencies):
+    for i in range(len(plugin_mandatory_dependencies)):
+        # print(i,len(plugin_mandatory_dependencies),plugin_mandatory_dependencies[i],(False if i+1 < len(plugin_mandatory_dependencies) else True))
+        dependencies_df = get_plugin_dependencies(df,plugin_params,plugin_mandatory_dependencies[i],throw_error=(False if i+1 < len(plugin_mandatory_dependencies) else True))
+        option=i
+        if not (dependencies_df.empty):
+            return dependencies_df, option

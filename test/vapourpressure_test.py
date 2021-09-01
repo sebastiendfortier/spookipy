@@ -227,22 +227,24 @@ def test_9(plugin_test_dir):
     fstpy.delete_file(results_file)
     assert(res)
 
-
 def test_11(plugin_test_dir):
     """Calcul de la pression de vapeur avec un fichier en pression (QV)."""
     # open and read source
     source0 = plugin_test_dir + "2011100712_012_regeta_rdiag_hu"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    px_df = spooki.Pressure(src_df0,reference_field='QV')
+    # px_df = spooki.Pressure(src_df0,reference_field='QV')
     # print(px_df)
+    # print(src_df0[['grid','nomvar','forecast_hour']].to_string())
     #compute VapourPressure
     df = spooki.VapourPressure(src_df0,ice_water_phase='both', temp_phase_switch=-40).compute()
     #[ReaderStd --input {sources[0]}] >>
     # [VapourPressure ] >>
     # [Zap --nbitsForDataStorage E32] >>
     #  [WriterStd --output {destination_path} --ignoreExtended]
-    df = df.loc[df.nomvar=='VPPR']
+    # df = df.loc[df.nomvar=='VPPR']
+    df.loc[df.nomvar.isin(['>>','^^','P0']),'etiket'] = '580V0'
+    # print(df[[]])
 
     #write the result
     results_file = TMP_PATH + "test_11.std"
@@ -253,7 +255,7 @@ def test_11(plugin_test_dir):
     file_to_compare = plugin_test_dir + "2011100712_012_regeta_file2cmp.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -270,8 +272,8 @@ def test_12(plugin_test_dir):
     #[ReaderStd --input {sources[0]}] >>
     # [VapourPressure --RPN] >> [Zap --nbitsForDataStorage E32] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
-    df = df.loc[df.nomvar=='VPPR']
-
+    # df = df.loc[df.nomvar=='VPPR']
+    df.loc[df.nomvar.isin(['>>','^^','P0']),'etiket'] = '580V0'
     #write the result
     results_file = TMP_PATH + "test_12.std"
     fstpy.delete_file(results_file)
@@ -281,7 +283,7 @@ def test_12(plugin_test_dir):
     file_to_compare = plugin_test_dir + "2011100712_012_regeta_file2cmp.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)
 

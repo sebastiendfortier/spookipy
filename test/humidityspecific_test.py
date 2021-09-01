@@ -2,7 +2,7 @@
 import fstpy.all as fstpy
 import pytest
 import pandas as pd
-from test import TMP_PATH,TEST_PATH, convip
+from test import TMP_PATH,TEST_PATH
 
 import spookipy.all as spooki
 
@@ -127,7 +127,7 @@ def test_8(plugin_test_dir):
     # [Zap --pdsLabel R1580V0N --doNotFlagAsZapped] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:,'etiket']='R1580V0N'
-    df = convip(df,nomvar='HU')
+    df = spooki.convip(df)
     # df.loc[:,'nbits']=32
     # df.loc[:,'datyp']=5
     #write the result
@@ -141,7 +141,7 @@ def test_8(plugin_test_dir):
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
-    # fstpy.delete_file(results_file)
+    fstpy.delete_file(results_file)
     assert(res)
 
 
@@ -166,7 +166,7 @@ def test_10(plugin_test_dir):
     # [Zap --pdsLabel R1580V0N --doNotFlagAsZapped] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:,'etiket']='R1580V0N'
-    df = convip(df,nomvar='HU')
+    df = spooki.convip(df)
     # df.loc[:,'nbits']=32
     # df.loc[:,'datyp']=5
     #write the result
@@ -205,7 +205,7 @@ def test_11(plugin_test_dir):
     df.loc[:,'etiket'] = 'R1580V0N'
     # df.loc[:,'nbits']=32
     # df.loc[:,'datyp']=5
-    df = convip(df,'HU')
+    df = spooki.convip(df)
 
     #write the result
     results_file = TMP_PATH + "test_11.std"
@@ -217,7 +217,7 @@ def test_11(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/HumiditySpecific/result_test_11'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)#,e_c_cor=0.0001)
+    res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -246,7 +246,7 @@ def test_12(plugin_test_dir):
     # [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:,'etiket'] = 'G133K80N'
-    # df = convip(df,'HU')
+    # df = spooki.convip(df)
     # df.loc[:,'nbits']=32
     # df.loc[:,'datyp']=5
     #write the result
@@ -329,7 +329,7 @@ def test_14(plugin_test_dir):
     # [Zap --pdsLabel R1580V0N --doNotFlagAsZapped] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:,'etiket'] = 'R1580V0N'
-    df = convip(df,'HU')
+    df = spooki.convip(df)
     # df.loc[:,'nbits']=32
     # df.loc[:,'datyp']=5
     #write the result

@@ -2,7 +2,7 @@
 import fstpy.all as fstpy
 import pytest
 import pandas as pd
-from test import TMP_PATH,TEST_PATH, convip
+from test import TMP_PATH,TEST_PATH
 import rpnpy.librmn.all as rmn
 import spookipy.all as spooki
 
@@ -25,7 +25,7 @@ def test_1(plugin_test_dir):
     # [Mask --thresholds 0.0,10.0,15.0,20.0 --values 0.0,10.0,15.0,20.0 --operators ge,ge,ge,ge] >>
     # [WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
-    df = convip(df,'TT',rmn.CONVIP_ENCODE_OLD)
+    df = spooki.convip(df,rmn.CONVIP_ENCODE_OLD)
     #write the result
     results_file = TMP_PATH + "test_1.std"
     fstpy.delete_file(results_file)
@@ -36,7 +36,7 @@ def test_1(plugin_test_dir):
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
-    # fstpy.delete_file(results_file)
+    fstpy.delete_file(results_file)
     assert(res)
 
 
@@ -55,7 +55,7 @@ def test_2(plugin_test_dir):
     df.loc[:,'etiket'] = '__MASK__X'
     df.loc[df.nomvar!='TT','etiket'] = 'G1_5_0X'
 
-    df = convip(df,'TT')
+    df = spooki.convip(df)
     #write the result
     results_file = TMP_PATH + "test_2.std"
     fstpy.delete_file(results_file)
@@ -85,7 +85,7 @@ def test_3(plugin_test_dir):
     df.loc[:,'etiket'] = '__MASK__X'
     df.loc[df.nomvar!='TT','etiket'] = 'G1_5_0X'
 
-    df = convip(df,'TT')
+    df = spooki.convip(df)
     #write the result
     results_file = TMP_PATH + "test_3.std"
     fstpy.delete_file(results_file)
@@ -144,7 +144,7 @@ def test_6(plugin_test_dir):
     df.loc[:,'etiket'] = '__MASK__X'
     df.loc[df.nomvar!='TOTO','etiket'] = 'G1_5_0X'
 
-    df = convip(df,'TOTO')
+    df = spooki.convip(df)
     #write the result
     results_file = TMP_PATH + "test_6.std"
     fstpy.delete_file(results_file)

@@ -73,7 +73,7 @@ def test_5(plugin_test_dir):
     """Calcul de l'humidité relative (HR) à partir de l'humidité spécifique (HU)."""
     # open and read source
     source0 = plugin_test_dir + "2011100712_012_glbhyb"
-    src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     src_df0 = fstpy.select_with_meta(src_df0,['TT','HU'])
 
@@ -111,10 +111,13 @@ def test_5(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/HumidityRelative/result_test_5'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)
     # fstpy.delete_file(results_file)
     assert(res)
 
+def test_6():
+    """Pour ajout de test futur"""
+    pass
 
 def test_7(plugin_test_dir):
     """Calcul de l'humidité relative (HR) à partir du mélange de la vapeur d'eau (QV)."""
@@ -143,10 +146,13 @@ def test_7(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/HumidityRelative/result_test_7'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)
 
+def test_8():
+    """Pour ajout de test futur"""
+    pass
 
 def test_9(plugin_test_dir):
     """Calcul de l'humidité relative (HR) à partir de la température du point de rosée (TD)."""
@@ -176,6 +182,6 @@ def test_9(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/HumidityRelative/result_test_9'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)

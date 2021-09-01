@@ -6,3 +6,4 @@
 #+INCLUDE:"org/install.org"
 #+INCLUDE:"org/usage.org"
 #+INCLUDE:"org/contributing.org"
+#+INCLUDE:"org/ssm.org"

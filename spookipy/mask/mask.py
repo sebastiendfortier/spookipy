@@ -63,7 +63,7 @@ class Mask(Plugin):
     def compute(self) -> pd.DataFrame:
         df_list=[]
         #holds data from all the groups
-        outdf = create_empty_result(self.df,self.plugin_result_specifications['ALL'],copy=True)
+        outdf = create_empty_result(self.df,self.plugin_result_specifications['ALL'],all_rows=True)
         if not(self.nomvar_out is None):
             outdf['nomvar'] = self.nomvar_out
 

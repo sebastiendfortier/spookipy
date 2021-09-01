@@ -87,7 +87,7 @@ def test_3(plugin_test_dir):
     df.loc[df.nomvar!='!!','nbits'] = 32
 
     #write the result
-    results_file = TMP_PATH + "test_with_TT_TD.std"
+    results_file = TMP_PATH + "test_3.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -119,7 +119,7 @@ def test_4(plugin_test_dir):
     # df.loc[df.nomvar!='!!','nbits'] = 32
 
     #write the result
-    results_file = TMP_PATH + "test_TT_ES_differentsUnites.std"
+    results_file = TMP_PATH + "test_4.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 

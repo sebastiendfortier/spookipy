@@ -7,7 +7,7 @@ import fstpy.all as fstpy
 import pandas as pd
 import spookipy.all as spooki
 
-pytestmark = [pytest.mark.to_skip]
+pytestmark = [pytest.mark.regressions]
 
 @pytest.fixture
 def plugin_test_dir():
@@ -29,7 +29,8 @@ def test_1(plugin_test_dir):
     # [WaterVapourMixingRatio --RPN] >>
     # [WriterStd --output {destination_path} --noMetadata --ignoreExtended]
 
-
+    # df.loc[df.nomvar!='!!','nbits']=32
+    # df.loc[:,'datyp']=5
     #write the result
     results_file = TMP_PATH + "test_1.std"
     fstpy.delete_file(results_file)
@@ -37,9 +38,10 @@ def test_1(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "rpnWaterVapourMixingRatio_HU_file2cmp.std"
+    # file_to_compare = '/home/sbf000/data/testFiles/WaterVapourMixingRatio/result_test_1'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -68,6 +70,8 @@ def test_3(plugin_test_dir): # option 1 rpn
     # [WaterVapourMixingRatio --RPN] >>
     # [WriterStd --output {destination_path} --noMetadata --ignoreExtended]
 
+    # df.loc[df.nomvar!='!!','nbits']=32
+    # df.loc[:,'datyp']=5
 
     #write the result
     results_file = TMP_PATH + "test_3.std"
@@ -76,9 +80,10 @@ def test_3(plugin_test_dir): # option 1 rpn
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "rpnWaterVapourMixingRatio_ES_file2cmp.std"
+    # file_to_compare = '/home/sbf000/data/testFiles/WaterVapourMixingRatio/result_test_3'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -99,6 +104,9 @@ def test_4(plugin_test_dir): # option 1 rpn
     # [WaterVapourMixingRatio --RPN] >>
     # [WriterStd --output {destination_path} --noMetadata --ignoreExtended]
 
+    # df.loc[df.nomvar!='!!','nbits']=32
+    # df.loc[:,'datyp']=5
+
     #write the result
     results_file = TMP_PATH + "test_4.std"
     fstpy.delete_file(results_file)
@@ -106,9 +114,10 @@ def test_4(plugin_test_dir): # option 1 rpn
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "rpnWaterVapourMixingRatio_TD_file2cmp.std"
+    # file_to_compare = '/home/sbf000/data/testFiles/WaterVapourMixingRatio/result_test_4'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -128,6 +137,9 @@ def test_5(plugin_test_dir):
     # [WaterVapourMixingRatio] >>
     # [WriterStd --output {destination_path} --noMetadata --ignoreExtended]
 
+    # df.loc[df.nomvar!='!!','nbits']=32
+    # df.loc[:,'datyp']=5
+
     #write the result
     results_file = TMP_PATH + "test_5.std"
     fstpy.delete_file(results_file)
@@ -135,9 +147,10 @@ def test_5(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "WaterVapourMixingRatioHU_file2cmp.std"
+    # file_to_compare = '/home/sbf000/data/testFiles/WaterVapourMixingRatio/result_test_5'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -157,6 +170,9 @@ def test_6(plugin_test_dir):
     # [WaterVapourMixingRatio] >>
     # [WriterStd --output {destination_path} --noMetadata --ignoreExtended]
 
+    # df.loc[df.nomvar!='!!','nbits']=32
+    # df.loc[:,'datyp']=5
+
     #write the result
     results_file = TMP_PATH + "test_6.std"
     fstpy.delete_file(results_file)
@@ -164,6 +180,7 @@ def test_6(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "WaterVapourMixingRatioPXVPPR_HR_file2cmp.std"
+    # file_to_compare = '/home/sbf000/data/testFiles/WaterVapourMixingRatio/result_test_6'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.001)
@@ -178,8 +195,10 @@ def test_7(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     src_df0 = src_df0.loc[src_df0.nomvar!='ES']
+
     tt_df = fstpy.select_with_meta(src_df0,['TT'])
     es_df = DewPointDepression(src_df0,ice_water_phase='water').compute()
+
     #compute WaterVapourMixingRatio
     df = spooki.WaterVapourMixingRatio(pd.concat([tt_df,es_df],ignore_index=True),ice_water_phase='both',temp_phase_switch=-40).compute()
     #[ReaderStd --input {sources[0]}] >>
@@ -188,6 +207,9 @@ def test_7(plugin_test_dir):
     # [WaterVapourMixingRatio] >>
     # [WriterStd --output {destination_path} --noMetadata --ignoreExtended]
 
+    # df.loc[df.nomvar!='!!','nbits']=32
+    # df.loc[:,'datyp']=5
+
     #write the result
     results_file = TMP_PATH + "test_7.std"
     fstpy.delete_file(results_file)
@@ -195,6 +217,7 @@ def test_7(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "WaterVapourMixingRatioPXVPPR_ES_file2cmp.std"
+    # file_to_compare = '/home/sbf000/data/testFiles/WaterVapourMixingRatio/result_test_7'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
@@ -210,11 +233,15 @@ def test_8(plugin_test_dir):
 
     tt_df = fstpy.select_with_meta(src_df0,['TT'])
     td_df = TemperatureDewPoint(src_df0,ice_water_phase='water').compute()
+
     #compute WaterVapourMixingRatio
     df = spooki.WaterVapourMixingRatio(pd.concat([tt_df,td_df],ignore_index=True),ice_water_phase='both',temp_phase_switch=-40).compute()
     #[ReaderStd --input {sources[0]}] >>
     # ([Select --fieldName TT] + [TemperatureDewPoint --iceWaterPhase WATER]) >>
     # [WaterVapourMixingRatio] >>[WriterStd --output {destination_path} --noMetadata --ignoreExtended]
+
+    # df.loc[df.nomvar!='!!','nbits']=32
+    # df.loc[:,'datyp']=5
 
     #write the result
     results_file = TMP_PATH + "test_8.std"
@@ -223,6 +250,7 @@ def test_8(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "WaterVapourMixingRatioPXVPPR_TD_file2cmp.std"
+    # file_to_compare = '/home/sbf000/data/testFiles/WaterVapourMixingRatio/result_test_8'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.001)
@@ -294,10 +322,13 @@ def test_13(plugin_test_dir):
 
     hu_df = fstpy.select_with_meta(src_df0,['HU'])
     #compute WaterVapourMixingRatio
-    df = spooki.WaterVapourMixingRatio(src_df0,ice_water_phase='both',temp_phase_switch=-40,rpn=True).compute()
+    df = spooki.WaterVapourMixingRatio(hu_df,ice_water_phase='both',temp_phase_switch=-40,rpn=True).compute()
     #['[ReaderStd --input {sources[0]}] >> ', '
     # [Select --fieldName HU] >>', '
     # [WaterVapourMixingRatio --RPN] >>', '[WriterStd --output {destination_path} --noMetadata --ignoreExtended]']
+
+    # df.loc[df.nomvar!='!!','nbits']=32
+    # df.loc[:,'datyp']=5
 
     #write the result
     results_file = TMP_PATH + "test_13.std"
@@ -306,8 +337,9 @@ def test_13(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "resulttest_13.std"
+    # file_to_compare = '/home/sbf000/data/testFiles/WaterVapourMixingRatio/result_test_13'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)

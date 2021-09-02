@@ -69,8 +69,8 @@ def test_5(plugin_test_dir):
     # [DewPointDepression --iceWaterPhase WATER ] >> [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended]
 
     df.loc[df.nomvar=='ES','etiket'] = 'G133K80N'
-    df.loc[:,'nbits']=32
-    df.loc[:,'datyp']=5
+    # df.loc[:,'nbits']=32
+    # df.loc[:,'datyp']=5
     #write the result
     results_file = TMP_PATH + "test_5.std"
     fstpy.delete_file(results_file)
@@ -78,10 +78,10 @@ def test_5(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_hr_nonRpn_file2cmp.std"
-    file_to_compare = '/home/sbf000/data/testFiles/DewPointDepression/result_test_5'
+    # file_to_compare = '/home/sbf000/data/testFiles/DewPointDepression/result_test_5'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
     assert(res)
 

@@ -1,12 +1,18 @@
 # -*- coding: utf-8 -*-
+import sys
+
+import fstpy.all as fstpy
+import numpy as np
+import pandas as pd
+
 from ..humidityutils import get_temp_phase_switch, validate_humidity_parameters
 from ..plugin import Plugin
-from ..utils import create_empty_result, get_existing_result, get_from_dataframe, get_intersecting_levels, get_plugin_dependencies, initializer, existing_results, final_results
-import pandas as pd
-import fstpy.all as fstpy
-import sys
-import numpy as np
 from ..science.science import *
+from ..utils import (create_empty_result, existing_results, final_results,
+                     find_matching_dependency_option, get_existing_result,
+                     get_from_dataframe, get_intersecting_levels,
+                     initializer)
+
 
 class WaterVapourMixingRatioError(Exception):
     pass
@@ -17,16 +23,23 @@ class WaterVapourMixingRatio(Plugin):
     @initializer
     def __init__(self,df:pd.DataFrame, ice_water_phase=None, temp_phase_switch=None,temp_phase_switch_unit='celsius', rpn=False):
         self.plugin_params={'ice_water_phase':self.ice_water_phase,'temp_phase_switch':self.temp_phase_switch,'temp_phase_switch_unit':self.temp_phase_switch_unit,'rpn':self.rpn}
-        self.plugin_mandatory_dependencies_option_rpn1 = {
-            'HU':{'nomvar':'HU','unit':'kilogram_per_kilogram'},
+
+        self.plugin_mandatory_dependencies_rpn = [
+            {
+                'HU':{'nomvar':'HU','unit':'kilogram_per_kilogram'},
             }
-        self.plugin_mandatory_dependencies_option_1 = {
-            'HU':{'nomvar':'HU','unit':'kilogram_per_kilogram','select_only':True},
-        }
-        self.plugin_mandatory_dependencies_option_2 = {
-            'VPPR':{'nomvar':'VPPR','unit':'hectoPascal'},
-            'PX':{'nomvar':'PX','unit':'hectoPascal'},
-        }
+        ]
+        self.plugin_mandatory_dependencies = [
+            {
+                'HU':{'nomvar':'HU','unit':'kilogram_per_kilogram','select_only':True},
+            },
+            {
+                'VPPR':{'nomvar':'VPPR','unit':'hectoPascal'},
+                'PX':{'nomvar':'PX','unit':'hectoPascal'},
+            }
+        ]
+
+
         self.plugin_result_specifications = {
             'QV':{'nomvar':'QV','etiket':'WVMXRT','unit':'gram_per_kilogram'}
             }
@@ -50,20 +63,11 @@ class WaterVapourMixingRatio(Plugin):
 
         #check if result already exists
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
-        if self.existing_result_df.empty:
-            if self.rpn:
-                self.dependencies_df = get_plugin_dependencies(self.df,self.plugin_params,self.plugin_mandatory_dependencies_option_rpn1)
-                self.option=1
-            else:
-                self.dependencies_df = get_plugin_dependencies(self.df,self.plugin_params,self.plugin_mandatory_dependencies_option_1,throw_error=False)
-                self.option=1
-                if self.dependencies_df.empty:
-                    self.dependencies_df = get_plugin_dependencies(self.df,self.plugin_params,self.plugin_mandatory_dependencies_option_2)
-                    self.option=2
 
-
-
-            self.fhour_groups = self.dependencies_df.groupby(['grid','forecast_hour'])
+        # remove meta data from DataFrame
+        self.df = self.df.loc[~self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
+        # print(self.df[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']].to_string())
+        self.groups = self.df.groupby(['grid','dateo','forecast_hour','ip1_kind'])
 
 
 
@@ -74,12 +78,24 @@ class WaterVapourMixingRatio(Plugin):
         sys.stdout.write('WaterVapourMixingRatio - compute\n')
         df_list = []
 
-        for _, current_fhour_group in self.fhour_groups:
+        for _, current_group in self.groups:
+            # print(current_group[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']].to_string())
+            if self.rpn:
+                sys.stdout.write('WaterVapourMixingRatio - Checking rpn dependencies\n')
+                dependencies_df, option = find_matching_dependency_option(pd.concat([current_group,self.meta_df],ignore_index=True),self.plugin_params,self.plugin_mandatory_dependencies_rpn)
+            else:
+                sys.stdout.write('WaterVapourMixingRatio - Checking dependencies\n')
+                dependencies_df, option = find_matching_dependency_option(pd.concat([current_group,self.meta_df],ignore_index=True),self.plugin_params,self.plugin_mandatory_dependencies)
+            if dependencies_df.empty:
+                sys.stdout.write('WaterVapourMixingRatio - No matching dependencies found for this group \n%s\n'%current_group[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']])
+                continue
+            else:
+                sys.stdout.write('WaterVapourMixingRatio - Matching dependencies found for this group \n%s\n'%current_group[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']])
 
-            if self.option==1:
+            if option==0:
                 print('option 1')
-                current_fhour_group = fstpy.load_data(current_fhour_group)
-                hu_df = get_from_dataframe(current_fhour_group,'HU')
+                dependencies_df = fstpy.load_data(dependencies_df)
+                hu_df = get_from_dataframe(dependencies_df,'HU')
                 qv_df = create_empty_result(hu_df,self.plugin_result_specifications['QV'],all_rows=True)
                 for i in qv_df.index:
                     hu = hu_df.at[i,'d']
@@ -88,7 +104,7 @@ class WaterVapourMixingRatio(Plugin):
                     qv_df.at[i,'d'] = science.qv_from_hu(hu=hu,ni=ni,nj=nj).astype(np.float32)
             else:
                 print('option 2')
-                level_intersection_df = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies_option_2)
+                level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
                 level_intersection_df = fstpy.load_data(level_intersection_df)
                 vppr_df = get_from_dataframe(level_intersection_df,'VPPR')
                 px_df = get_from_dataframe(level_intersection_df,'PX')

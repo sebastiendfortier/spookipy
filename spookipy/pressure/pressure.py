@@ -54,6 +54,7 @@ class Pressure(Plugin):
             self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications_option_2)
         else:
             self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications_option_1)
+        print('pressure',self.df)
 
 
         # if 'vctype' not in self.df.columns:

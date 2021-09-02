@@ -1,12 +1,19 @@
 # -*- coding: utf-8 -*-
-from ..plugin.plugin import Plugin
-from ..humidityutils.humidityutils import TDPACK_OFFSET_FIX, get_temp_phase_switch, validate_humidity_parameters
-from ..utils import create_empty_result, get_existing_result, get_from_dataframe, get_intersecting_levels, get_plugin_dependencies, initializer, existing_results, final_results
-import pandas as pd
-import fstpy.all as fstpy
 import sys
-from ..science.science import *
+
+import fstpy.all as fstpy
 import numpy as np
+import pandas as pd
+
+from ..humidityutils.humidityutils import (TDPACK_OFFSET_FIX,
+                                           get_temp_phase_switch,
+                                           validate_humidity_parameters)
+from ..plugin.plugin import Plugin
+from ..science.science import *
+from ..utils import (create_empty_result, existing_results, final_results,
+                     find_matching_dependency_option, get_existing_result,
+                     get_from_dataframe, get_intersecting_levels, initializer)
+
 
 class VapourPressureError(Exception):
     pass
@@ -17,57 +24,63 @@ class VapourPressure(Plugin):
     def __init__(self,df:pd.DataFrame, ice_water_phase=None, temp_phase_switch=None,temp_phase_switch_unit='celsius', rpn=False):
 
         self.plugin_params={'ice_water_phase':self.ice_water_phase,'temp_phase_switch':self.temp_phase_switch,'temp_phase_switch_unit':self.temp_phase_switch_unit,'rpn':self.rpn}
-        # HU + PXpa
-        self.plugin_mandatory_dependencies_option_rpn1 = {
-            'HU':{'nomvar':'HU','unit':'kilogram_per_kilogram','select_only':True},
-            'PX':{'nomvar':'PX','unit':'hectoPascal'}
-        }
-        # QVkg + PX
-        self.plugin_mandatory_dependencies_option_rpn2 = {
-            'QV':{'nomvar':'QV','unit':'gram_per_kilogram','select_only':True},
-            'PX':{'nomvar':'PX','unit':'hectoPascal'}
-        }
-        #TT + HR + PX > HUrpn + PXpa
-        self.plugin_mandatory_dependencies_option_rpn3 = {
-            'TT':{'nomvar':'TT','unit':'celsius'},
-            'HR':{'nomvar':'HR','unit':'scalar','select_only':True},
-            'PX':{'nomvar':'PX','unit':'hectoPascal'}
-        }
-        # ES + TTk
-        self.plugin_mandatory_dependencies_option_rpn4 = {
-            'TT':{'nomvar':'TT','unit':'celsius'},
-            'ES':{'nomvar':'ES','unit':'celsius','select_only':True},
-        }
-        # TDk + TTk
-        self.plugin_mandatory_dependencies_option_rpn5 = {
-            'TT':{'nomvar':'TT','unit':'celsius'},
-            'TD':{'nomvar':'TD','unit':'celsius','select_only':True},
-        }
-        # HU + PX
-        self.plugin_mandatory_dependencies_option_1 = {
-            'HU':{'nomvar':'HU','unit':'kilogram_per_kilogram','select_only':True},
-            'PX':{'nomvar':'PX','unit':'hectoPascal'}
-        }
-        # QVkg/kg + PX
-        self.plugin_mandatory_dependencies_option_2 = {
-            'QV':{'nomvar':'QV','unit':'gram_per_kilogram','select_only':True},
-            'PX':{'nomvar':'PX','unit':'hectoPascal'}
-        }
-        # HR + SVP
-        self.plugin_mandatory_dependencies_option_3 = {
-            'HR':{'nomvar':'HR','unit':'scalar','select_only':True},
-            'SVP':{'nomvar':'SVP','unit':'hectoPascal'},
-        }
-        # ES + TT
-        self.plugin_mandatory_dependencies_option_4 = {
-            'TT':{'nomvar':'TT','unit':'celsius'},
-            'ES':{'nomvar':'ES','unit':'celsius','select_only':True},
-        }
-        # TD + TT
-        self.plugin_mandatory_dependencies_option_5 = {
-            'TT':{'nomvar':'TT','unit':'celsius'},
-            'TD':{'nomvar':'TD','unit':'celsius','select_only':True},
-        }
+        self.plugin_mandatory_dependencies_rpn = [
+            # HU + PXpa
+            {
+                'HU':{'nomvar':'HU','unit':'kilogram_per_kilogram','select_only':True},
+                'PX':{'nomvar':'PX','unit':'hectoPascal'}
+            },
+            # QVkg + PX
+            {
+                'QV':{'nomvar':'QV','unit':'gram_per_kilogram','select_only':True},
+                'PX':{'nomvar':'PX','unit':'hectoPascal'}
+            },
+            #TT + HR + PX > HUrpn + PXpa
+            {
+                'TT':{'nomvar':'TT','unit':'celsius'},
+                'HR':{'nomvar':'HR','unit':'scalar','select_only':True},
+                'PX':{'nomvar':'PX','unit':'hectoPascal'}
+            },
+            # ES + TTk
+            {
+                'TT':{'nomvar':'TT','unit':'celsius'},
+                'ES':{'nomvar':'ES','unit':'celsius','select_only':True},
+            },
+            # TDk + TTk
+            {
+                'TT':{'nomvar':'TT','unit':'celsius'},
+                'TD':{'nomvar':'TD','unit':'celsius','select_only':True},
+            }
+        ]
+        self.plugin_mandatory_dependencies = [
+            # HU + PX
+            {
+                'HU':{'nomvar':'HU','unit':'kilogram_per_kilogram','select_only':True},
+                'PX':{'nomvar':'PX','unit':'hectoPascal'}
+            },
+            # QVkg/kg + PX
+            {
+                'QV':{'nomvar':'QV','unit':'gram_per_kilogram','select_only':True},
+                'PX':{'nomvar':'PX','unit':'hectoPascal'}
+            },
+            # HR + SVP
+            {
+                'HR':{'nomvar':'HR','unit':'scalar','select_only':True},
+                'SVP':{'nomvar':'SVP','unit':'hectoPascal'},
+            },
+            # ES + TT
+            {
+                'TT':{'nomvar':'TT','unit':'celsius'},
+                'ES':{'nomvar':'ES','unit':'celsius','select_only':True},
+            },
+            # TD + TT
+            {
+                'TT':{'nomvar':'TT','unit':'celsius'},
+                'TD':{'nomvar':'TD','unit':'celsius','select_only':True},
+            }
+        ]
+
+
         self.plugin_result_specifications = {
             'VPPR':{'nomvar':'VPPR','etiket':'VAPRES','unit':'hectoPascal','nbits':16,'datyp':1}
             }
@@ -92,40 +105,11 @@ class VapourPressure(Plugin):
 
         #check if result already exists
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
-        if self.existing_result_df.empty:
-            if self.rpn:
-                self.dependencies_df = get_plugin_dependencies(self.df,self.plugin_params,self.plugin_mandatory_dependencies_option_rpn1,throw_error=False)
-                self.option=1
-                if self.dependencies_df.empty:
-                    self.dependencies_df = get_plugin_dependencies(self.df,self.plugin_params,self.plugin_mandatory_dependencies_option_rpn2,throw_error=False)
-                    self.option=2
-                if self.dependencies_df.empty:
-                    self.dependencies_df = get_plugin_dependencies(self.df,self.plugin_params,self.plugin_mandatory_dependencies_option_rpn3,throw_error=False)
-                    self.option=3
-                if self.dependencies_df.empty:
-                    self.dependencies_df = get_plugin_dependencies(self.df,self.plugin_params,self.plugin_mandatory_dependencies_option_rpn4,throw_error=False)
-                    self.option=4
-                if self.dependencies_df.empty:
-                    self.dependencies_df = get_plugin_dependencies(self.df,self.plugin_params,self.plugin_mandatory_dependencies_option_rpn5)
-                    self.option=5
-            else:
-                self.dependencies_df = get_plugin_dependencies(self.df,self.plugin_params,self.plugin_mandatory_dependencies_option_1,throw_error=False)
-                self.option=1
-                if self.dependencies_df.empty:
-                    self.dependencies_df = get_plugin_dependencies(self.df,self.plugin_params,self.plugin_mandatory_dependencies_option_2,throw_error=False)
-                    self.option=2
-                if self.dependencies_df.empty:
-                    self.dependencies_df = get_plugin_dependencies(self.df,self.plugin_params,self.plugin_mandatory_dependencies_option_3,throw_error=False)
-                    self.option=3
-                if self.dependencies_df.empty:
-                    self.dependencies_df = get_plugin_dependencies(self.df,self.plugin_params,self.plugin_mandatory_dependencies_option_4,throw_error=False)
-                    self.option=4
-                if self.dependencies_df.empty:
-                    self.dependencies_df = get_plugin_dependencies(self.df,self.plugin_params,self.plugin_mandatory_dependencies_option_5)
-                    self.option=5
 
-
-            self.fhour_groups = self.dependencies_df.groupby(['grid','forecast_hour'])
+        # remove meta data from DataFrame
+        self.df = self.df.loc[~self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
+        # print(self.df[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']].to_string())
+        self.groups = self.df.groupby(['grid','dateo','forecast_hour','ip1_kind'])
 
 
     def compute(self) -> pd.DataFrame:
@@ -136,12 +120,25 @@ class VapourPressure(Plugin):
         sys.stdout.write('VapourPressure - compute\n')
         df_list=[]
 
-        for _, current_fhour_group in self.fhour_groups:
+        for _, current_group in self.groups:
+            # print(current_group[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']].to_string())
+            if self.rpn:
+                sys.stdout.write('VapourPressure - Checking rpn dependencies\n')
+                dependencies_df, option = find_matching_dependency_option(pd.concat([current_group,self.meta_df],ignore_index=True),self.plugin_params,self.plugin_mandatory_dependencies_rpn)
+            else:
+                sys.stdout.write('VapourPressure - Checking dependencies\n')
+                dependencies_df, option = find_matching_dependency_option(pd.concat([current_group,self.meta_df],ignore_index=True),self.plugin_params,self.plugin_mandatory_dependencies)
+            if dependencies_df.empty:
+                sys.stdout.write('VapourPressure - No matching dependencies found for this group \n%s\n'%current_group[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']])
+                continue
+            else:
+                sys.stdout.write('VapourPressure - Matching dependencies found for this group \n%s\n'%current_group[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']])
+
             if self.rpn:
                 print('rpn')
-                if self.option==1:
+                if option==0:
                     print('option 1')
-                    level_intersection_df = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies_option_rpn1)
+                    level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
                     level_intersection_df = fstpy.load_data(level_intersection_df)
                     hu_df = get_from_dataframe(level_intersection_df,'HU')
                     px_df = get_from_dataframe(level_intersection_df,'PX')
@@ -154,9 +151,9 @@ class VapourPressure(Plugin):
                         pxpa = pxpa_df.at[i,'d']
                         vppr_df.at[i,'d'] = science.rpn_vppr_from_hu(hu=hu, px=pxpa, ni=ni, nj=nj).astype(np.float32)
 
-                elif self.option==2:
+                elif option==1:
                     print('option 2')
-                    level_intersection_df = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies_option_rpn2)
+                    level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
                     level_intersection_df = fstpy.load_data(level_intersection_df)
                     qv_df = get_from_dataframe(level_intersection_df,'QV')
                     px_df = get_from_dataframe(level_intersection_df,'PX')
@@ -170,15 +167,14 @@ class VapourPressure(Plugin):
                         vppr_df.at[i,'d'] = science.vppr_from_qv(qv=qvkgkg, px=px, ni=ni, nj=nj).astype(np.float32)
 
 
-                elif self.option==3:
+                elif option==2:
                     print('option 3')
-                    level_intersection_df = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies_option_rpn3)
+                    level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
                     level_intersection_df = fstpy.load_data(level_intersection_df)
                     tt_df = get_from_dataframe(level_intersection_df,'TT')
-                    hr_df = get_from_dataframe(level_intersection_df,'HR')
                     px_df = get_from_dataframe(level_intersection_df,'PX')
                     vppr_df = create_empty_result(tt_df,self.plugin_result_specifications['VPPR'],all_rows=True)
-                    hu_df = HumiditySpecific(level_intersection_df,ice_water_phase=self.ice_water_phase, temp_phase_switch=self.temp_phase_switch, temp_phase_switch_unit=self.temp_phase_switch_unit,rpn=True).compute()
+                    hu_df = HumiditySpecific(pd.concat([level_intersection_df,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase, temp_phase_switch=self.temp_phase_switch, temp_phase_switch_unit=self.temp_phase_switch_unit,rpn=True).compute()
                     hu_df = get_from_dataframe(hu_df,'HU')
                     ttk_df = fstpy.unit_convert(tt_df,'kelvin')
                     pxpa_df = fstpy.unit_convert(px_df,'pascal')
@@ -189,9 +185,9 @@ class VapourPressure(Plugin):
                         nj = hu.shape[1]
                         vppr_df.at[i,'d'] = science.rpn_vppr_from_hu(hu=hu, px=pxpa, ni=ni, nj=nj).astype(np.float32)
 
-                elif self.option==4:
+                elif option==3:
                     print('option 4')
-                    level_intersection_df = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies_option_rpn4)
+                    level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
                     level_intersection_df = fstpy.load_data(level_intersection_df)
                     tt_df = get_from_dataframe(level_intersection_df,'TT')
                     es_df = get_from_dataframe(level_intersection_df,'ES')
@@ -208,7 +204,7 @@ class VapourPressure(Plugin):
                         vppr_df.at[i,'d'] = science.rpn_vppr_from_td(td=tdk, tt=ttk, ni=ni, nj=nj, tpl=(self.temp_phase_switch if self.ice_water_phase!='water' else -40), swph=self.ice_water_phase=='both').astype(np.float32)
                 else:
                     print('option 5')
-                    level_intersection_df = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies_option_rpn5)
+                    level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
                     level_intersection_df = fstpy.load_data(level_intersection_df)
                     tt_df = get_from_dataframe(level_intersection_df,'TT')
                     td_df = get_from_dataframe(level_intersection_df,'TD')
@@ -223,9 +219,9 @@ class VapourPressure(Plugin):
                         vppr_df.at[i,'d'] = science.rpn_vppr_from_td(td=tdk, tt=ttk, ni=ni, nj=nj, tpl=(self.temp_phase_switch if self.ice_water_phase!='water' else -40), swph=self.ice_water_phase=='both').astype(np.float32)
 
             else:
-                if self.option==1:
+                if option==0:
                     print('option 1')
-                    level_intersection_df = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies_option_1)
+                    level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
                     level_intersection_df = fstpy.load_data(level_intersection_df)
                     hu_df = get_from_dataframe(level_intersection_df,'HU')
                     px_df = get_from_dataframe(level_intersection_df,'PX')
@@ -237,9 +233,9 @@ class VapourPressure(Plugin):
                         px = px_df.at[i,'d']
                         vppr_df.at[i,'d'] = science.vppr_from_hu(hu=hu, px=px, ni=ni, nj=nj).astype(np.float32)
 
-                elif self.option==2:
+                elif option==1:
                     print('option 2')
-                    level_intersection_df = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies_option_2)
+                    level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
                     level_intersection_df = fstpy.load_data(level_intersection_df)
                     qv_df = get_from_dataframe(level_intersection_df,'QV')
                     px_df = get_from_dataframe(level_intersection_df,'PX')
@@ -252,9 +248,9 @@ class VapourPressure(Plugin):
                         px = px_df.at[i,'d']
                         vppr_df.at[i,'d'] = science.vppr_from_qv(qv=qv, px=px, ni=ni, nj=nj).astype(np.float32)
 
-                elif self.option==3:
+                elif option==2:
                     print('option 3')
-                    level_intersection_df = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies_option_3)
+                    level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
                     level_intersection_df = fstpy.load_data(level_intersection_df)
                     svp_df = get_from_dataframe(level_intersection_df,'SVP')
                     hr_df = get_from_dataframe(level_intersection_df,'HR')
@@ -266,9 +262,9 @@ class VapourPressure(Plugin):
                         svp = svp_df.at[i,'d']
                         vppr_df.at[i,'d'] = science.vppr_from_hr(hr=hr, svp=svp, ni=ni, nj=nj).astype(np.float32)
 
-                elif self.option==4:
+                elif option==3:
                     print('option 4')
-                    level_intersection_df = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies_option_4)
+                    level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
                     level_intersection_df = fstpy.load_data(level_intersection_df)
                     tt_df = get_from_dataframe(level_intersection_df,'TT')
                     es_df = get_from_dataframe(level_intersection_df,'ES')
@@ -283,7 +279,7 @@ class VapourPressure(Plugin):
 
                 else:
                     print('option 5')
-                    level_intersection_df = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies_option_5)
+                    level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
                     level_intersection_df = fstpy.load_data(level_intersection_df)
                     tt_df = get_from_dataframe(level_intersection_df,'TT')
                     td_df = get_from_dataframe(level_intersection_df,'TD')

@@ -94,7 +94,7 @@ def test_6(plugin_test_dir):
     df.loc[df.nomvar.isin(['HY','P0']),'etiket']='580V0'
 
     # df['datyp']=5
-    # df['nbits']=32
+    # df.loc[df.nomvar!='!!','nbits']=32
     #write the result
     results_file = TMP_PATH + "test_6.std"
     fstpy.delete_file(results_file)
@@ -105,7 +105,7 @@ def test_6(plugin_test_dir):
     # file_to_compare = '/fs/site4/eccc/cmd/w/sbf000/testFiles/SaturationVapourPressure/res_test_6.std'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)#,e_max=0.01,e_moy=0.001)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -136,6 +136,6 @@ def test_7(plugin_test_dir):
     # file_to_compare = '/fs/site4/eccc/cmd/w/sbf000/testFiles/SaturationVapourPressure/res_test_7.std'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)#,e_max=0.01)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)

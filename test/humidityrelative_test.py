@@ -81,6 +81,11 @@ def test_5(plugin_test_dir):
     # compute HumidityRelative
     df = spooki.HumidityRelative(src_df0, ice_water_phase='water').compute()
 
+    #[ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [Select --fieldName TT,HU] >> [HumidityRelative --iceWaterPhase WATER] >>
+    # [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >>
+    # [Select --verticalLevel 1@0.859,0.126@0.103,0.00153@0.125] >>
+    # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:,'etiket'] = 'G133K80N'
 
     meta_df = df.loc[df.nomvar.isin(['!!','^^','>>','P0','PT','HY'])]
@@ -93,13 +98,8 @@ def test_5(plugin_test_dir):
 
     df = pd.concat([meta_df,df1],ignore_index=True)
 
-    # df.loc[:,'nbits']=32
+    # df.loc[df.nomvar!='!!','nbits']=32
     # df.loc[:,'datyp']=5
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >>
-    # [Select --fieldName TT,HU] >> [HumidityRelative --iceWaterPhase WATER] >>
-    # [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >>
-    # [Select --verticalLevel 1@0.859,0.126@0.103,0.00153@0.125] >>
-    # [WriterStd --output {destination_path} --ignoreExtended]
 
     #write the result
     results_file = TMP_PATH + "test_5.std"
@@ -134,8 +134,10 @@ def test_7(plugin_test_dir):
     # [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:,'etiket'] = 'G133K80N'
-    # df.loc[:,'nbits']=32
+
+    # df.loc[df.nomvar!='!!','nbits']=32
     # df.loc[:,'datyp']=5
+
     #write the result
     results_file = TMP_PATH + "test_7.std"
     fstpy.delete_file(results_file)
@@ -154,6 +156,15 @@ def test_8():
     """Pour ajout de test futur"""
     pass
 
+
+
+# HumidityRelative - compute
+# option 3
+# SaturationVapourPressure - compute
+# option 1
+# VapourPressure - compute
+# option 5
+
 def test_9(plugin_test_dir):
     """Calcul de l'humidité relative (HR) à partir de la température du point de rosée (TD)."""
     # open and read source
@@ -170,8 +181,10 @@ def test_9(plugin_test_dir):
     # [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:,'etiket'] = 'G133K80N'
-    # df.loc[:,'nbits']=32
+
+    # df.loc[df.nomvar!='!!','nbits']=32
     # df.loc[:,'datyp']=5
+
     #write the result
     results_file = TMP_PATH + "test_9.std"
     fstpy.delete_file(results_file)

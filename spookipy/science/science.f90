@@ -1,380 +1,172 @@
 module science
 implicit none
-   real,   parameter ::  AI = 0.2864887713087E4
-   real,   parameter ::  AW = 0.3135012829948E0
-   real,   parameter ::  BI = 0.1660931315020E0
-   real,   parameter ::  BW = 0.2367075766316E1
-   real,   parameter ::  CHLF = 0.3340000000000E6
-   real,   parameter ::  CHLC = 0.2501000000000E7
-   real,   parameter ::  CONSOL = 0.1367000000000E4
-   real,   parameter ::  CONSOL2 = 0.1361000000000E4
-   real,   parameter ::  CPD = 0.1005460000000E4
-   real,   parameter ::  CPV = 0.1869460000000E4
-   real,   parameter ::  CPI = 0.2115300000000E4
-   real,   parameter ::  CPW = 0.4218000000000E4
-   real,   parameter ::  DELTA = 0.6077686814144E0
-   real,   parameter ::  EPS1 = 0.6219800221014E0
-   real,   parameter ::  EPS2 = 0.3780199778986E0
-   real,   parameter ::  GRAV = 0.9806160000000E1
-   real,   parameter ::  KARMAN = 0.4000000000000E0
-   real,   parameter ::  KNAMS = 0.5147910000000E0
-   real,   parameter ::  OMEGA = 0.7292000000000E-4
-   real,   parameter ::  PI = 3.14159265358979323846
-   real,   parameter ::  RAUW = 0.1000000000000E4
-   real,   parameter ::  RAYT = 0.6371220000000E7
-   real,   parameter ::  RGASD = 0.2870500000000E3
-   real,   parameter ::  RGASV = 0.4615100000000E3
-   real,   parameter ::  RIC = 0.2000000000000E0
-   real,   parameter ::  SLP = 0.6666666666667E-1
-   real,   parameter ::  STEFAN = 0.5669800000000E-7
-   real,   parameter ::  STLO = 0.6628486583943E-3
-   real,   parameter ::  T1S = 0.2731600000000E3
-   real,   parameter ::  T2S = 0.2581600000000E3
-   real,   parameter ::  TCDK = 0.2731500000000E3
-   real,   parameter ::  TGL = 0.2731600000000E3
-   real,   parameter ::  TRPL = 0.2731600000000E3
-   real,   parameter ::  CAPPA = (RGASD/CPD)
-   real,   parameter ::  CVD = (CPD - RGASD)
-   real,   parameter :: TTNS1 = 610.78
-   real,   parameter :: TTNS3W = 17.269
-   real,   parameter :: TTNS3I = 21.875
-   real,   parameter :: TTNS4W = 35.86
-   real,   parameter :: TTNS4I = 7.66
-   real,   parameter :: AERK1W = 610.94
-   real,   parameter :: AERK2W = 17.625
-   real,   parameter :: AERK3W = 30.11
-   real,   parameter :: AERK1I = 611.21
-   real,   parameter :: AERK2I = 22.587
-   real,   parameter :: AERK3I = -0.71
-   real, parameter :: CTE1 = (AERK2W*(TRPL-AERK3W))
-   real, parameter :: CTE2 = (AERK2I*(TRPL-AERK3I)-CTE1)
-   real, parameter :: CTE3 = 2317
-   real, parameter :: CTE4 = 7.24
-   real, parameter :: CTE5 = 128.4
+   ! real,   parameter ::  AI = 0.2864887713087E4
+   ! real,   parameter ::  AW = 0.3135012829948E0
+   ! real,   parameter ::  BI = 0.1660931315020E0
+   ! real,   parameter ::  BW = 0.2367075766316E1
+   ! real,   parameter ::  CHLF = 0.3340000000000E6
+   ! real,   parameter ::  CHLC = 0.2501000000000E7
+   ! real,   parameter ::  CONSOL = 0.1367000000000E4
+   ! real,   parameter ::  CONSOL2 = 0.1361000000000E4
+   ! real,   parameter ::  CPD = 0.1005460000000E4
+   ! real,   parameter ::  CPV = 0.1869460000000E4
+   ! real,   parameter ::  CPI = 0.2115300000000E4
+   ! real,   parameter ::  CPW = 0.4218000000000E4
+   ! real,   parameter ::  DELTA = 0.6077686814144E0
+   real*8,   parameter ::  EPS1 = 0.6219800221014E0
+   real*8,   parameter ::  EPS2 = 0.3780199778986E0
+   ! real,   parameter ::  GRAV = 0.9806160000000E1
+   ! real,   parameter ::  KARMAN = 0.4000000000000E0
+   ! real,   parameter ::  KNAMS = 0.5147910000000E0
+   ! real,   parameter ::  OMEGA = 0.7292000000000E-4
+   ! real,   parameter ::  PI = 3.14159265358979323846
+   ! real,   parameter ::  RAUW = 0.1000000000000E4
+   ! real,   parameter ::  RAYT = 0.6371220000000E7
+   ! real,   parameter ::  RGASD = 0.2870500000000E3
+   ! real,   parameter ::  RGASV = 0.4615100000000E3
+   ! real,   parameter ::  RIC = 0.2000000000000E0
+   ! real,   parameter ::  SLP = 0.6666666666667E-1
+   ! real,   parameter ::  STEFAN = 0.5669800000000E-7
+   ! real,   parameter ::  STLO = 0.6628486583943E-3
+   ! real,   parameter ::  T1S = 0.2731600000000E3
+   ! real,   parameter ::  T2S = 0.2581600000000E3
+   ! real,   parameter ::  TCDK = 0.2731500000000E3
+   ! real,   parameter ::  TGL = 0.2731600000000E3
+   real*8,   parameter ::  TRPL = 0.2731600000000E3
+   ! real,   parameter ::  CAPPA = (RGASD/CPD)
+   ! real,   parameter ::  CVD = (CPD - RGASD)
+   ! real,   parameter :: TTNS1 = 610.78
+   ! real,   parameter :: TTNS3W = 17.269
+   ! real,   parameter :: TTNS3I = 21.875
+   ! real,   parameter :: TTNS4W = 35.86
+   ! real,   parameter :: TTNS4I = 7.66
+   real*8,   parameter :: AERK1W = 610.94
+   real*8,   parameter :: AERK2W = 17.625
+   real*8,   parameter :: AERK3W = 30.11
+   real*8,   parameter :: AERK1I = 611.21
+   real*8,   parameter :: AERK2I = 22.587
+   real*8,   parameter :: AERK3I = -0.71
+   ! real, parameter :: CTE1 = (AERK2W*(TRPL-AERK3W))
+   ! real, parameter :: CTE2 = (AERK2I*(TRPL-AERK3I)-CTE1)
+   ! real, parameter :: CTE3 = 2317
+   ! real, parameter :: CTE4 = 7.24
+   ! real, parameter :: CTE5 = 128.4
 
 
-   real, parameter :: TDPACK_OFFSET_FIX=0.01
-   real, parameter :: AEw1 = 6.1094
-   real, parameter :: AEw2 = 17.625
-   real, parameter :: AEw3 = 243.05
-   real, parameter :: AEi1 = 6.1121
-   real, parameter :: AEi2 = 22.587
-   real, parameter :: AEi3 = 273.86
+   ! real, parameter :: TDPACK_OFFSET_FIX=0.01
+   real*8, parameter :: AEw1 = 6.1094
+   real*8, parameter :: AEw2 = 17.625
+   real*8, parameter :: AEw3 = 243.05
+   real*8, parameter :: AEi1 = 6.1121
+   real*8, parameter :: AEi2 = 22.587
+   real*8, parameter :: AEi3 = 273.86
 
 contains
 
-function DIFTRPL_(ttt)
-   implicit none
-   real, intent(in) :: ttt
-   real DIFTRPL_
-   DIFTRPL_ = ttt-TRPL
-end function
 
-function FN1_(ttt)
+function DIFTRPL(ttt)
    implicit none
-   real, intent(in) :: ttt
-   real FN1_
-   FN1_ = ttt-AERK3W+max(0.,sign(AERK3W-AERK3I,-DIFTRPL_(ttt)))
+   real*8, intent(in) :: ttt
+   real*8 DIFTRPL
+   DIFTRPL=(ttt-TRPL)
 end function
-
+! #define _FN1(ttt)              (_DBLE(ttt)-AERK3W+_DMAX1(_ZERO,_DSIGN(AERK3W-AERK3I,-_DIFTRPL(ttt))))
+function FN1(ttt)
+   implicit none
+   real*8, intent(in) :: ttt
+   real*8 FN1
+   FN1=(ttt-AERK3W+dmax1(0d0,dsign(AERK3W-AERK3I,-DIFTRPL(ttt))))
+end function
+! #define MASKT(ttt)             _DMAX1(_ZERO,_DSIGN(_ONE,_DIFTRPL(ttt)))
 function MASKT(ttt)
    implicit none
-   real, intent(in) :: ttt
-   real MASKT
-   MASKT = max(0.,sign(1.,DIFTRPL_(ttt)))
+   real*8, intent(in) :: ttt
+   real*8 MASKT
+   MASKT=dmax1(0d0,dsign(1d0,DIFTRPL(ttt)))
 end function
-
+! #define FOMULTS(ddd,ttt)       ((AERK1W*MASKT(ttt)+(_ONE-MASKT(ttt))*AERK1I)*ddd)
 function FOMULTS(ddd,ttt)
    implicit none
-   real, intent(in) :: ttt
-   real, intent(in) :: ddd
-   real FOMULTS
-   FOMULTS=(AERK1W*MASKT(ttt)+(1.-MASKT(ttt))*AERK1I)*ddd
+   real*8, intent(in) :: ddd
+   real*8, intent(in) :: ttt
+   real*8 FOMULTS
+   FOMULTS=((AERK1W*MASKT(ttt)+(1d0-MASKT(ttt))*AERK1I)*ddd)
 end function
-
+! #define FOEWF(ttt)             (_DMIN1(_DSIGN(AERK2W,_DIFTRPL(ttt)),_DSIGN(AERK2I,_DIFTRPL(ttt)))*_DABS(_DIFTRPL(ttt))/_FN1(ttt))
 function FOEWF(ttt)
    implicit none
-   real, intent(in) :: ttt
-   real FOEWF
-   FOEWF=min(sign(AERK2W,DIFTRPL_(ttt)),sign(AERK2I,DIFTRPL_(ttt)))*abs(DIFTRPL_(ttt))/FN1_(ttt)
+   real*8, intent(in) :: ttt
+   real*8 FOEWF
+   FOEWF=dmin1(dsign(AERK2W,DIFTRPL(ttt)),DSIGN(AERK2I,DIFTRPL(ttt)))*dabs(DIFTRPL(ttt))/FN1(ttt)
 end function
-
+! #define FOEW(ttt)              (FOMULTS(_DEXP(FOEWF(ttt)),ttt))
 function FOEW(ttt)
    implicit none
-   real, intent(in) :: ttt
-   real FOEW
-   FOEW=FOMULTS(exp(FOEWF(ttt)),ttt)
+   real*8, intent(in) :: ttt
+   real*8 FOEW
+   FOEW=FOMULTS(dexp(FOEWF(ttt)),ttt)
 end function
 
+! #define FOEWAF(ttt)            (AERK2W*(_DIFTRPL(ttt))/(_DBLE(ttt)-AERK3W))
 function FOEWAF(ttt)
    implicit none
-   real, intent(in) :: ttt
-   real FOEWAF
-   FOEWAF=AERK2W*(DIFTRPL_(ttt))/(ttt-AERK3W)
+   real*8, intent(in) :: ttt
+   real*8 FOEWAF
+   FOEWAF=(AERK2W*(DIFTRPL(ttt))/(ttt-AERK3W))
 end function
-
+! #define FOEWA(ttt)             (AERK1W*_DEXP(FOEWAF(ttt)))
 function FOEWA(ttt)
    implicit none
-   real, intent(in) :: ttt
-   real FOEWA
-   FOEWA=AERK1W*exp(FOEWAF(ttt))
+   real*8, intent(in) :: ttt
+   real*8 FOEWA
+   FOEWA=(AERK1W*dexp(FOEWAF(ttt)))
 end function
 
-function FODLE(ttt)
-   implicit none
-   real, intent(in) :: ttt
-   real FODLE
-   FODLE=(CTE1+max(0.,sign(CTE2,-DIFTRPL_(ttt))))/(FN1_(ttt)**2.)
-end function
-
-function FOQST(ttt,prs)
-   implicit none
-   real, intent(in) :: ttt
-   real, intent(in) :: prs
-   real FOQST
-   FOQST=EPS1/(max(1.,prs/FOEW(ttt))-EPS2)
-end function
-
-function FOQSTX(prs,ddd)
-   implicit none
-   real, intent(in) :: prs
-   real, intent(in) :: ddd
-   real FOQSTX
-   FOQSTX=EPS1/(max(1.,prs/ddd)-EPS2)
-end function
-
-function FOQSA(ttt,prs)
-   implicit none
-   real, intent(in) :: ttt
-   real, intent(in) :: prs
-   real FOQSA
-   FOQSA=EPS1/(max(1.,prs/FOEWA(ttt))-EPS2)
-end function
-
-function FQSMX(ttt,prs,fff)
-   implicit none
-   real, intent(in) :: ttt
-   real, intent(in) :: prs
-   real, intent(in) :: fff
-   real FQSMX
-   FQSMX=EPS1/(max(1.,prs/FESMX(ttt,fff))-EPS2)
-end function
-
-function FQSMXX(fesmx8,prs)
-   implicit none
-   real, intent(in) :: fesmx8
-   real, intent(in) :: prs
-   real FQSMXX
-   FQSMXX = EPS1/(max(1.,prs/fesmx8)-EPS2)
-end function
-
-function FODQS(qst,ttt)
-   implicit none
-   real, intent(in) :: qst
-   real, intent(in) :: ttt
-   real FODQS
-   FODQS = qst*(1.+DELTA*qst)*FODLE(ttt)
-end function
-
-function FOEFQ(qqq,prs)
-   implicit none
-   real, intent(in) :: qqq
-   real, intent(in) :: prs
-   real FOEFQ
-   FOEFQ=min(prs,(qqq*prs)/(EPS1+EPS2*qqq))
-end function
-
+! #define FOQFE(eee,prs)         (_DMIN1(_ONE,_EPS1*_DBLE(eee)/(_DBLE(prs)-_EPS2*_DBLE(eee))))
 function FOQFE(eee,prs)
    implicit none
-   real, intent(in) :: eee
-   real, intent(in) :: prs
-   real FOQFE
-   FOQFE=min(1.,EPS1*eee/(prs-EPS2*eee))
+   real*8, intent(in) :: eee
+   real*8, intent(in) :: prs
+   real*8 FOQFE
+   FOQFE=(dmin1(1d0,EPS1*eee/(prs-EPS2*eee)))
 end function
 
-function FOTVT(ttt,qqq)
+! #define FOEFQ(qqq,prs)         (_DMIN1(_DBLE(prs),(_DBLE(qqq)*_DBLE(prs))/(_EPS1+_EPS2*_DBLE(qqq))))
+function FOEFQ(qqq,prs)
    implicit none
-   real, intent(in) :: ttt
-   real, intent(in) :: qqq
-   real FOTVT
-   FOTVT=ttt*(1.+DELTA*qqq)
+   real*8, intent(in) :: qqq
+   real*8, intent(in) :: prs
+   real*8 FOEFQ
+   FOEFQ=(dmin1(prs,(qqq*prs)/(EPS1+EPS2*qqq)))
 end function
 
-function FOTTV(tvi,qqq)
-   implicit none
-   real, intent(in) :: tvi
-   real, intent(in) :: qqq
-   real FOTTV
-   FOTTV=tvi/(1.+DELTA*qqq)
-end function
-
-function FOTVHT(ttt,qqq,qqh)
-   implicit none
-   real, intent(in) :: ttt
-   real, intent(in) :: qqq
-   real, intent(in) :: qqh
-   real FOTVHT
-   FOTVHT=ttt*(1.+DELTA*qqq-qqh)
-end function
-
-function FOTTVH(tvi,qqq,qqh)
-   implicit none
-   real, intent(in) :: tvi
-   real, intent(in) :: qqq
-   real, intent(in) :: qqh
-   real FOTTVH
-   FOTTVH=tvi/(1.+DELTA*qqq-qqh)
-end function
-
-function FODQA(qst,ttt)
-   implicit none
-   real, intent(in) :: qst
-   real, intent(in) :: ttt
-   real FODQA
-   FODQA=qst*(1.+DELTA*qst)*FODLA(ttt)
-end function
-
-function FDQSMX(qsm,dlemx)
-   implicit none
-   real, intent(in) :: qsm
-   real, intent(in) :: dlemx
-   real FDQSMX
-   FDQSMX=qsm*(1.+DELTA*qsm)*dlemx
-end function
-
+! #define FOHR(qqq,ttt,prs)      (_DMIN1(_DBLE(prs),FOEFQ(qqq,prs))/FOEW(ttt))
 function FOHR(qqq,ttt,prs)
    implicit none
-   real, intent(in) :: qqq
-   real, intent(in) :: ttt
-   real, intent(in) :: prs
-   real FOHR
-   FOHR=min(prs,FOEFQ(qqq,prs))/FOEW(ttt)
+   real*8, intent(in) :: qqq
+   real*8, intent(in) :: ttt
+   real*8, intent(in) :: prs
+   real*8 FOHR
+   FOHR=(dmin1(prs,FOEFQ(qqq,prs))/FOEW(ttt))
 end function
 
-function FOHRX(qqq,prs,ddd)
-   implicit none
-   real, intent(in) :: qqq
-   real, intent(in) :: prs
-   real, intent(in) :: ddd
-   real FOHRX
-   FOHRX=min(prs,FOEFQ(qqq,prs))/ddd
-end function
-
-function FOLV(ttt)
-   implicit none
-   real, intent(in) :: ttt
-   real FOLV
-   FOLV=CHLC-(CTE3*DIFTRPL_(ttt))
-end function
-
-function FOLS(ttt)
-   implicit none
-   real, intent(in) :: ttt
-   real FOLS
-   FOLS = CHLC+CHLF+(CPV-(CTE4*ttt+CTE5))*DIFTRPL_(ttt)
-end function
-
-function FOPOIT(t00,pr0,pf)
-   implicit none
-   real, intent(in) :: t00
-   real, intent(in) :: pr0
-   real, intent(in) :: pf
-   real FOPOIT
-   FOPOIT = t00*((pr0/pf)**-(CAPPA))
-end function
-
-function FOPOIP(t00,tf,pr0)
-   implicit none
-   real, intent(in) :: t00
-   real, intent(in) :: tf
-   real, intent(in) :: pr0
-   real FOPOIP
-   FOPOIP=pr0*exp(-(log(t00/tf)/CAPPA))
-end function
-
-function FODLA(ttt)
-   implicit none
-   real, intent(in) :: ttt
-   real FODLA
-   FODLA = CTE1/((ttt-AERK3W)**2.)
-end function
-
+! #define FOHRA(qqq,ttt,prs)     (_DMIN1(_DBLE(prs),FOEFQ(qqq,prs))/FOEWA(ttt))
 function FOHRA(qqq,ttt,prs)
    implicit none
-   real, intent(in) :: qqq
-   real, intent(in) :: ttt
-   real, intent(in) :: prs
-   real FOHRA
-   FOHRA = min(prs,FOEFQ(qqq,prs))/FOEWA(ttt)
+   real*8, intent(in) :: qqq
+   real*8, intent(in) :: ttt
+   real*8, intent(in) :: prs
+   real*8 FOHRA
+   FOHRA=(dmin1(prs,FOEFQ(qqq,prs))/FOEWA(ttt))
 end function
-
-function FESIF(ttt)
-   implicit none
-   real, intent(in) :: ttt
-   real FESIF
-   FESIF = AERK2I*DIFTRPL_(ttt)/(ttt-AERK3I)
-end function
-
-function FESI(ttt)
-   implicit none
-   real, intent(in) :: ttt
-   real FESI
-   FESI = AERK1I*exp(FESIF(ttt))
-end function
-
-function FDLESI(ttt)
-   implicit none
-   real, intent(in) :: ttt
-   real FDLESI
-   FDLESI=AERK2I*(TRPL-AERK3I)/((ttt-AERK3I)**2.)
-end function
-
-function FESMX(ttt,fff)
-   implicit none
-   real, intent(in) :: ttt
-   real, intent(in) :: fff
-   real FESMX
-   FESMX=(1.-fff)*FOEWA(ttt)+fff*FESI(ttt)
-end function
-
-function FESMXX(fff,fesi8,foewa8)
-   implicit none
-   real, intent(in) :: fff
-   real, intent(in) :: fesi8
-   real, intent(in) :: foewa8
-   real FESMXX
-   FESMXX=(1.-fff)*foewa8+fff*fesi8
-end function
-
-function FDLESMX(ttt,fff,ddff)
-   implicit none
-   real, intent(in) :: ttt
-   real, intent(in) :: fff
-   real, intent(in) :: ddff
-   real FDLESMX
-   FDLESMX=((1.-fff)*FOEWA(ttt)*FODLA(ttt)+fff*FESI(ttt)*FDLESI(ttt)+ddff*(FESI(ttt)-FOEWA(ttt)))/FESMX(ttt,fff)
-end function
-
-function FDLESMXX(ttt,fff,ddff,foewa8,fesi8,fesmx8)
-   implicit none
-   real, intent(in) :: ttt
-   real, intent(in) :: fff
-   real, intent(in) :: ddff
-   real, intent(in) :: foewa8
-   real, intent(in) :: fesi8
-   real, intent(in) :: fesmx8
-   real FDLESMXX
-   FDLESMXX=((1.-fff)*foewa8*FODLA(ttt)+fff*fesi8*FDLESI(ttt)+ddff*(fesi8-foewa8))/fesmx8
-end function
-
 
 function shuahr(hu,tt,px,swph)
    implicit none
-   real, intent(in) :: hu
-   real, intent(in) :: tt
-   real, intent(in) :: px
+   real*8, intent(in) :: hu
+   real*8, intent(in) :: tt
+   real*8, intent(in) :: px
    logical, intent(in) :: swph
-   real shuahr
+   real*8 shuahr
    if (swph) then
       shuahr = FOHR(hu,tt,px)
    else
@@ -382,14 +174,15 @@ function shuahr(hu,tt,px,swph)
    endif
 end function
 
+
 function sesahu(es,tt,px,swph)
    implicit none
-   real, intent(in) :: es
-   real, intent(in) :: tt
-   real, intent(in) :: px
+   real*8, intent(in) :: es
+   real*8, intent(in) :: tt
+   real*8, intent(in) :: px
    logical, intent(in) :: swph
-   real e,td
-   real sesahu
+   real*8 e,td
+   real*8 sesahu
    td = tt - es
    if (swph) then
       e = FOEW(td)
@@ -399,66 +192,68 @@ function sesahu(es,tt,px,swph)
    sesahu = FOQFE(e,px)
 end function
 
+
 function sesahr(es,tt,px,swph)
    implicit none
-   real, intent(in) :: es
-   real, intent(in) :: tt
-   real, intent(in) :: px
+   real*8, intent(in) :: es
+   real*8, intent(in) :: tt
+   real*8, intent(in) :: px
    logical, intent(in) :: swph
-   real hu
-   real sesahr
+   real*8 hu
+   real*8 sesahr
    hu = sesahu(es,tt,px,swph)
    sesahr = shuahr(hu,tt,px,swph)
 end function
 
 function shrahu(hr, tt, px, swph)
    implicit none
-   real, intent(in) :: hr
-   real, intent(in) :: tt
-   real, intent(in) :: px
+   real*8, intent(in) :: hr
+   real*8, intent(in) :: tt
+   real*8, intent(in) :: px
    logical, intent(in) :: swph
-   real hrtt,e
-   real shrahu
+   real*8 hrtt,e
+   real*8 shrahu
    hrtt = hr * tt
    if (swph) then
-      e = min(px,hr * FOEW(tt))
+      e = dmin1(px,hr * FOEW(tt))
    else
-      e = min(px,hr * FOEWA(tt))
+      e = dmin1(px,hr * FOEWA(tt))
    endif
    shrahu = FOQFE(e,px)
 end function
 
 function shuaes(hu, tt, px, swph)
    implicit none
-   real, intent(in) :: hu
-   real, intent(in) :: tt
-   real, intent(in) :: px
+   real*8, intent(in) :: hu
+   real*8, intent(in) :: tt
+   real*8, intent(in) :: px
    logical, intent(in) :: swph
-   real e,cte,td,hutmp
-   real shuaes,petit
+   real*8 e,cte,td,hutmp,petit,alpha
+   real*8 shuaes
    petit = 0.0000000001
+   alpha = dlog(AERK1W/AERK1I)
    hutmp = hu
-   e = FOEFQ(max(petit,hu),px)
-   cte = alog(e/TTNS1)
-   td = (TTNS4W*CTE - TTNS3W*TRPL)/(CTE - TTNS3W)
-   if(td .lt. TRPL .and. swph) then
-      td = (TTNS4I*CTE - TTNS3I*TRPL)/(CTE - TTNS3I)
-   end if
-   shuaes = tt-td
+   e = FOEFQ(dmax1(petit,hu),px)
+   cte = dlog(e/AERK1W)
+   td = (AERK3W*cte - AERK2W*TRPL)/(cte - AERK2W)
+   If (td .LT. trpl .AND. swph) THEN
+      td = ((AERK3I*(cte + alpha) - AERK2I)*TRPL)/(cte + alpha - AERK2I)
+   END IF !
+   shuaes = (tt-td)
 end function
+
 
 function shraes(hr, tt, px, swph)
    implicit none
-   real, intent(in) :: hr
-   real, intent(in) :: tt
-   real, intent(in) :: px
+   real*8, intent(in) :: hr
+   real*8, intent(in) :: tt
+   real*8, intent(in) :: px
    logical, intent(in) :: swph
-   real hu
-   real shraes
+   real*8 hu
+   real*8 shraes
    hu = shrahu(hr,tt,px,swph)
    shraes = shuaes(hu,tt,px,swph)
 end function
-
 
 
 !
@@ -468,9 +263,9 @@ end function
 !
 function svp_water_from_tt(tt)
    implicit none
-   real,  intent(in) :: tt
-   real svp_water_from_tt
-   svp_water_from_tt = AEw1 * exp((AEw2 * tt) / (AEw3 + tt))
+   real*8,  intent(in) :: tt
+   real*8 svp_water_from_tt
+   svp_water_from_tt = AEw1 * dexp((AEw2 * tt) / (AEw3 + tt))
 end function
 
 !
@@ -480,9 +275,9 @@ end function
 !/
 function svp_ice_from_tt(tt)
    implicit none
-   real,  intent(in) :: tt
-   real svp_ice_from_tt
-   svp_ice_from_tt = AEi1 * exp((AEi2 * tt) / (AEi3 + tt))
+   real*8,  intent(in) :: tt
+   real*8 svp_ice_from_tt
+   svp_ice_from_tt = AEi1 * dexp((AEi2 * tt) / (AEi3 + tt))
 end function
 
 !
@@ -495,10 +290,10 @@ end function
 subroutine svp_from_tt(tt, ni, nj, tpl, swph, res)
    implicit none
 
-   real,  intent(in)   :: tt(ni ,nj)
-   real,  intent(out)  :: res(ni ,nj)
+   real*8,  intent(in)   :: tt(ni ,nj)
+   real*8,  intent(out)  :: res(ni ,nj)
    integer, intent(in) :: ni, nj
-   real,  intent(in)   :: tpl
+   real*8,  intent(in)   :: tpl
    logical, intent(in) :: swph
 
    integer i,j
@@ -523,8 +318,8 @@ end subroutine
 !
 function rpn_svp_water(tt)
    implicit none
-   real,  intent(in) :: tt
-   real rpn_svp_water
+   real*8,  intent(in) :: tt
+   real*8 rpn_svp_water
    rpn_svp_water = FOEWA(tt) / 100.
 end function
 
@@ -535,8 +330,8 @@ end function
 !/
 function rpn_svp_ice(tt)
    implicit none
-   real,  intent(in)    :: tt
-   real rpn_svp_ice
+   real*8,  intent(in)    :: tt
+   real*8 rpn_svp_ice
       !RPN returns Saturation vapour pressure in Pascal and we want output to be HectoPascal.
       !return rpn::libphy::sfoew(tt) / 100.0f
    rpn_svp_ice = FOEW(tt) / 100.
@@ -551,10 +346,10 @@ end function
 !/
 subroutine rpn_svp(tt, ni, nj, tpl,  swph, res)
    implicit none
-   real,    intent(in)  :: tt(ni ,nj)
-   real,    intent(out) :: res(ni ,nj)
+   real*8,    intent(in)  :: tt(ni ,nj)
+   real*8,    intent(out) :: res(ni ,nj)
    integer, intent(in)  :: ni, nj
-   real,    intent(in)  :: tpl
+   real*8,    intent(in)  :: tpl
    logical, intent(in)  :: swph
    integer i,j
 
@@ -578,14 +373,14 @@ end subroutine
 !/
 subroutine vppr_from_hr(hr, svp, ni, nj, res)
    implicit none
-   real,  intent(in)     :: hr(ni ,nj)
-   real,    intent(out)  :: res(ni ,nj)
-   real,  intent(in)     :: svp(ni ,nj)
+   real*8,  intent(in)     :: hr(ni ,nj)
+   real*8,  intent(in)     :: svp(ni ,nj)
+   real*8,    intent(out)  :: res(ni ,nj)
    integer, intent(in)   :: ni, nj
    integer i,j
    do i=1, ni
       do j=1, nj
-         res(i,j) = max(hr(i,j), 10E-15)
+         res(i,j) = dmax1(hr(i,j), 10E-15)
          res(i,j) = res(i,j) * svp(i,j)
       enddo
    enddo
@@ -599,14 +394,14 @@ end subroutine
 !/
 subroutine vppr_from_hu(hu, px, ni, nj, res)
    implicit none
-   real,    intent(in)    :: hu(ni ,nj)
-   real,    intent(out)   :: res(ni ,nj)
-   real,    intent(in)    :: px(ni ,nj)
+   real*8,    intent(in)    :: hu(ni ,nj)
+   real*8,    intent(in)    :: px(ni ,nj)
+   real*8,    intent(out)   :: res(ni ,nj)
    integer, intent(in)    :: ni, nj
    integer i,j
    do i=1, ni
       do j=1, nj
-         res(i,j) = max(hu(i,j), 10E-15)
+         res(i,j) = dmax1(hu(i,j), 10E-15)
          res(i,j) = (res(i,j) * px(i,j))/(EPS1 + res(i,j) * (1.-EPS1))
       enddo
    enddo
@@ -620,14 +415,14 @@ end subroutine
 !/
 subroutine vppr_from_qv(qv, px, ni, nj, res)
    implicit none
-   real,  intent(in)    :: qv(ni ,nj)
-   real,  intent(out)   :: res(ni ,nj)
-   real,  intent(in)    :: px(ni ,nj)
+   real*8,  intent(in)    :: qv(ni ,nj)
+   real*8,  intent(in)    :: px(ni ,nj)
+   real*8,  intent(out)   :: res(ni ,nj)
    integer, intent(in)  :: ni, nj
    integer i,j
    do i=1, ni
       do j=1, nj
-         res(i,j) = max(qv(i,j), 10E-15)
+         res(i,j) = dmax1(qv(i,j), 10E-15)
          res(i,j) = (res(i,j) * px(i,j))/(EPS1 + res(i,j))
       enddo
    enddo
@@ -640,9 +435,9 @@ end subroutine
 !/
 function vppr_water_td(td)
    implicit none
-   real,  intent(in) :: td
-   real vppr_water_td
-   vppr_water_td = AEw1 * exp(((AEw2 * td) / (AEw3 + td)))
+   real*8,  intent(in) :: td
+   real*8 vppr_water_td
+   vppr_water_td = AEw1 * dexp(((AEw2 * td) / (AEw3 + td)))
 end function
 
 
@@ -654,9 +449,9 @@ end function
 
 function vppr_ice_td(td)
    implicit none
-   real,  intent(in) :: td
-   real vppr_ice_td
-   vppr_ice_td = AEi1 * exp(((AEi2 * td) / (AEi3 + td)))
+   real*8,  intent(in) :: td
+   real*8 vppr_ice_td
+   vppr_ice_td = AEi1 * dexp(((AEi2 * td) / (AEi3 + td)))
 end function
 
 !
@@ -669,11 +464,11 @@ end function
 !/
 subroutine vppr_from_td(td, tt, ni, nj, tpl, swph, res)
    implicit none
-   real,  intent(in)     :: td(ni ,nj)
-   real,  intent(out)    :: res(ni ,nj)
-   real,  intent(in )    :: tt(ni ,nj)
+   real*8,  intent(in)     :: td(ni ,nj)
+   real*8,  intent(in )    :: tt(ni ,nj)
+   real*8,  intent(out)    :: res(ni ,nj)
    integer, intent(in)   :: ni, nj
-   real,    intent(in)   :: tpl
+   real*8,    intent(in)   :: tpl
    logical,   intent(in) :: swph
    integer i,j
 
@@ -700,9 +495,9 @@ end subroutine
 !/
 subroutine rpn_vppr_from_hu(hu, px, ni, nj, res)
    implicit none
-   real,  intent(in)    :: hu(ni ,nj)
-   real,  intent(in)    :: px(ni ,nj)
-   real,  intent(out)   :: res(ni ,nj)
+   real*8,  intent(in)    :: hu(ni ,nj)
+   real*8,  intent(in)    :: px(ni ,nj)
+   real*8,  intent(out)   :: res(ni ,nj)
    integer, intent(in)  :: ni, nj
    integer i,j
    do i=1, ni
@@ -722,8 +517,8 @@ end subroutine
 !
 function rpn_vppr_water_from_td(td)
    implicit none
-   real,  intent(in) :: td
-   real rpn_vppr_water_from_td
+   real*8,  intent(in) :: td
+   real*8 rpn_vppr_water_from_td
    !RPN returns vapour pressure in Pascal and we want output to be HectoPascal.
    !return rpn::libphy::sfoewa(td) / 100.0d0f
    rpn_vppr_water_from_td = FOEWA(td) / 100.
@@ -736,8 +531,8 @@ end function
 !
 function rpn_vppr_ice_from_td(td)
    implicit none
-   real,  intent(in) :: td
-   real rpn_vppr_ice_from_td
+   real*8,  intent(in) :: td
+   real*8 rpn_vppr_ice_from_td
       !RPN returns vapour pressure in Pascal and we want output to be HectoPascal.
       !return rpn::libphy::sfoew(td) / 100.0d0f
    rpn_vppr_ice_from_td = FOEW(td) / 100.
@@ -753,11 +548,11 @@ end function
 !/
 subroutine rpn_vppr_from_td(td, tt, ni, nj, tpl, swph, res)
    implicit none
-   real,  intent(in)    :: td(ni ,nj)
-   real,  intent(in)    :: tt(ni ,nj)
-   real,  intent(out)   :: res(ni ,nj)
+   real*8,  intent(in)    :: td(ni ,nj)
+   real*8,  intent(in)    :: tt(ni ,nj)
+   real*8,  intent(out)   :: res(ni ,nj)
    integer, intent(in)  :: ni, nj
-   real,    intent(in)  :: tpl
+   real*8,    intent(in)  :: tpl
    logical, intent(in)  :: swph
    integer i,j
    do i=1, ni
@@ -773,9 +568,9 @@ end subroutine
 
 subroutine td_from_es(tt,es,ni,nj,res)
    implicit none
-   real,  intent(in)  :: tt(ni ,nj)
-   real,  intent(in)  :: es(ni ,nj)
-   real,  intent(out) :: res(ni ,nj)
+   real*8,  intent(in)  :: tt(ni ,nj)
+   real*8,  intent(in)  :: es(ni ,nj)
+   real*8,  intent(out) :: res(ni ,nj)
    integer, intent(in):: ni, nj
    integer i,j
    do i=1, ni
@@ -796,12 +591,12 @@ end subroutine
 !
 function td_water_from_vppr(vppr)
    implicit none
-   real,  intent(in) :: vppr
-   real tmpvppr,td_water_from_vppr
-   tmpvppr = max(vppr, 10E-15)
+   real*8,  intent(in) :: vppr
+   real*8 tmpvppr,td_water_from_vppr
+   tmpvppr = dmax1(vppr, 10E-15)
    !RPN returns vapour pressure in Pascal and we want output to be HectoPascal.
    !return rpn::libphy::sfoewa(td) / 100.0d0f
-   td_water_from_vppr = ((AEw3 * log(tmpvppr/AEw1) ) / ( AEw2 - log(tmpvppr/AEw1)))
+   td_water_from_vppr = ((AEw3 * dlog(tmpvppr/AEw1) ) / ( AEw2 - dlog(tmpvppr/AEw1)))
 end function
 
 !
@@ -811,19 +606,19 @@ end function
 !
 function td_ice_from_vppr(vppr)
    implicit none
-   real, intent(in) :: vppr
-   real tmpvppr,td_ice_from_vppr
-   tmpvppr = max(vppr, 10E-15)
-   td_ice_from_vppr =  ((AEi3 * log(tmpvppr/AEi1) ) / ( AEi2 - log(tmpvppr/AEi1)))
+   real*8, intent(in) :: vppr
+   real*8 tmpvppr,td_ice_from_vppr
+   tmpvppr = dmax1(vppr, 10E-15)
+   td_ice_from_vppr =  ((AEi3 * dlog(tmpvppr/AEi1) ) / ( AEi2 - dlog(tmpvppr/AEi1)))
 end function
 
 subroutine td_from_vppr(tt,vppr,ni,nj,tpl,swph,res)
    implicit none
-   real,  intent(in)  :: tt(ni ,nj)
-   real,  intent(in)  :: vppr(ni ,nj)
-   real,  intent(in)  :: tpl
+   real*8,  intent(in)  :: tt(ni ,nj)
+   real*8,  intent(in)  :: vppr(ni ,nj)
+   real*8,  intent(in)  :: tpl
    logical, intent(in):: swph
-   real,  intent(out) :: res(ni ,nj)
+   real*8,  intent(out) :: res(ni ,nj)
    integer, intent(in):: ni, nj
    integer i,j
    do i=1, ni
@@ -839,11 +634,11 @@ end subroutine
 
 subroutine rpn_hu_from_hr(tt,hr,px,ni,nj,swph,res)
    implicit none
-   real,  intent(in)  :: tt(ni ,nj)
-   real,  intent(in)  :: hr(ni ,nj)
-   real,  intent(in)  :: px(ni ,nj)
+   real*8,  intent(in)  :: tt(ni ,nj)
+   real*8,  intent(in)  :: hr(ni ,nj)
+   real*8,  intent(in)  :: px(ni ,nj)
    logical, intent(in):: swph
-   real,  intent(out) :: res(ni ,nj)
+   real*8,  intent(out) :: res(ni ,nj)
    integer, intent(in):: ni, nj
    integer i,j
    do i=1, ni
@@ -856,46 +651,46 @@ end subroutine
 
 subroutine rpn_es_from_hr(tt,hr,px,ni,nj,swph,res)
    implicit none
-   real,  intent(in)  :: tt(ni ,nj)
-   real,  intent(in)  :: hr(ni ,nj)
-   real,  intent(in)  :: px(ni ,nj)
+   real*8,  intent(in)  :: tt(ni ,nj)
+   real*8,  intent(in)  :: hr(ni ,nj)
+   real*8,  intent(in)  :: px(ni ,nj)
    logical, intent(in):: swph
-   real,  intent(out) :: res(ni ,nj)
+   real*8,  intent(out) :: res(ni ,nj)
    integer, intent(in):: ni, nj
    integer i,j
    do i=1, ni
       do j=1, nj
-         res(i,j) = max(shraes(hr(i,j), tt(i,j), px(i,j), swph),0.)
+         res(i,j) = dmax1(shraes(hr(i,j), tt(i,j), px(i,j), swph),0.)
       enddo
    enddo
 end subroutine
 
 subroutine rpn_es_from_hu(tt,hu,px,ni,nj,swph,res)
    implicit none
-   real,  intent(in)  :: tt(ni ,nj)
-   real,  intent(in)  :: hu(ni ,nj)
-   real,  intent(in)  :: px(ni ,nj)
+   real*8,  intent(in)  :: tt(ni ,nj)
+   real*8,  intent(in)  :: hu(ni ,nj)
+   real*8,  intent(in)  :: px(ni ,nj)
    logical, intent(in):: swph
-   real,  intent(out) :: res(ni ,nj)
+   real*8,  intent(out) :: res(ni ,nj)
    integer, intent(in):: ni, nj
    integer i,j
    do i=1, ni
       do j=1, nj
-         res(i,j) = max(shuaes(hu(i,j), tt(i,j), px(i,j), swph),0.)
+         res(i,j) = dmax1(shuaes(hu(i,j), tt(i,j), px(i,j), swph),0.)
       enddo
    enddo
 end subroutine
 
 subroutine hu_from_qv(qv,ni,nj,res)
    implicit none
-   real,  intent(in)  :: qv(ni ,nj)
-   real,  intent(out) :: res(ni ,nj)
+   real*8,  intent(in)  :: qv(ni ,nj)
+   real*8,  intent(out) :: res(ni ,nj)
    integer, intent(in):: ni, nj
    integer i,j
-   real tmpqv
+   real*8 tmpqv
    do i=1, ni
       do j=1, nj
-         tmpqv= max(qv(i,j),10E-15)
+         tmpqv= dmax1(qv(i,j),10E-15)
          res(i,j) = tmpqv / (tmpqv + 1.)
       enddo
    enddo
@@ -903,14 +698,14 @@ end subroutine
 
 subroutine td_from_hr(tt,hr,ni,nj,res)
    implicit none
-   real,  intent(in)  :: tt(ni ,nj)
-   real,  intent(in)  :: hr(ni ,nj)
-   real,  intent(out) :: res(ni ,nj)
+   real*8,  intent(in)  :: tt(ni ,nj)
+   real*8,  intent(in)  :: hr(ni ,nj)
+   real*8,  intent(out) :: res(ni ,nj)
    integer, intent(in):: ni, nj
    integer i,j
-   real,   parameter :: vara = 17.625
-   real,   parameter :: varb = 243.04
-   real hrtmp,term
+   real*8,   parameter :: vara = 17.625
+   real*8,   parameter :: varb = 243.04
+   real*8 hrtmp,term
 
    do i=1, ni
       do j=1, nj
@@ -921,7 +716,7 @@ subroutine td_from_hr(tt,hr,ni,nj,res)
          if (hrtmp < 10E-15) then
             hrtmp = 10E-15
          endif
-         term = (vara * tt(i,j))/(varb + tt(i,j)) + log(hrtmp)
+         term = (vara * tt(i,j))/(varb + tt(i,j)) + dlog(hrtmp)
          res(i,j) = (varb * term) / (vara - term )
       enddo
    enddo
@@ -930,9 +725,9 @@ end subroutine
 
 subroutine hr_from_svp_vppr(svp,vppr,ni,nj,res)
    implicit none
-   real,  intent(in)  :: svp(ni ,nj)
-   real,  intent(in)  :: vppr(ni ,nj)
-   real,  intent(out) :: res(ni ,nj)
+   real*8,  intent(in)  :: svp(ni ,nj)
+   real*8,  intent(in)  :: vppr(ni ,nj)
+   real*8,  intent(out) :: res(ni ,nj)
    integer, intent(in):: ni, nj
    integer i,j
    do i=1, ni
@@ -945,11 +740,11 @@ end subroutine
 
 subroutine rpn_hr_from_es(tt,es,px,ni,nj,swph,res)
    implicit none
-   real,  intent(in)  :: tt(ni ,nj)
-   real,  intent(in)  :: es(ni ,nj)
-   real,  intent(in)  :: px(ni ,nj)
+   real*8,  intent(in)  :: tt(ni ,nj)
+   real*8,  intent(in)  :: es(ni ,nj)
+   real*8,  intent(in)  :: px(ni ,nj)
    logical, intent(in):: swph
-   real,  intent(out) :: res(ni ,nj)
+   real*8,  intent(out) :: res(ni ,nj)
    integer, intent(in):: ni, nj
    integer i,j
    do i=1, ni
@@ -961,11 +756,11 @@ end subroutine
 
 subroutine rpn_hr_from_hu(tt,hu,px,ni,nj,swph,res)
    implicit none
-   real,  intent(in)  :: tt(ni ,nj)
-   real,  intent(in)  :: hu(ni ,nj)
-   real,  intent(in)  :: px(ni ,nj)
+   real*8,  intent(in)  :: tt(ni ,nj)
+   real*8,  intent(in)  :: hu(ni ,nj)
+   real*8,  intent(in)  :: px(ni ,nj)
    logical, intent(in):: swph
-   real,  intent(out) :: res(ni ,nj)
+   real*8,  intent(out) :: res(ni ,nj)
    integer, intent(in):: ni, nj
    integer i,j
    do i=1, ni
@@ -978,9 +773,9 @@ end subroutine
 
 subroutine hu_from_vppr(vppr,px,ni,nj,res)
    implicit none
-   real,  intent(in)  :: vppr(ni ,nj)
-   real,  intent(in)  :: px(ni ,nj)
-   real,  intent(out) :: res(ni ,nj)
+   real*8,  intent(in)  :: vppr(ni ,nj)
+   real*8,  intent(in)  :: px(ni ,nj)
+   real*8,  intent(out) :: res(ni ,nj)
    integer, intent(in):: ni, nj
    integer i,j
    do i=1, ni
@@ -993,11 +788,11 @@ end subroutine
 
 subroutine rpn_hu_from_es(tt,es,px,ni,nj,swph,res)
    implicit none
-   real,  intent(in)  :: tt(ni ,nj)
-   real,  intent(in)  :: es(ni ,nj)
-   real,  intent(in)  :: px(ni ,nj)
+   real*8,  intent(in)  :: tt(ni ,nj)
+   real*8,  intent(in)  :: es(ni ,nj)
+   real*8,  intent(in)  :: px(ni ,nj)
    logical, intent(in):: swph
-   real,  intent(out) :: res(ni ,nj)
+   real*8,  intent(out) :: res(ni ,nj)
    integer, intent(in):: ni, nj
    integer i,j
    do i=1, ni
@@ -1010,11 +805,11 @@ end subroutine
 
 subroutine hmx_from_svp(tt,svp,ni,nj,res)
    implicit none
-   real,  intent(in)  :: tt(ni ,nj)
-   real,  intent(in)  :: svp(ni ,nj)
-   real,  intent(out) :: res(ni ,nj)
+   real*8,  intent(in)  :: tt(ni ,nj)
+   real*8,  intent(in)  :: svp(ni ,nj)
+   real*8,  intent(out) :: res(ni ,nj)
    integer, intent(in):: ni, nj
-   real resultat
+   real*8 resultat
    integer i,j
    do i=1, ni
       do j=1, nj
@@ -1030,24 +825,24 @@ end subroutine
 
 subroutine qv_from_hu(hu,ni,nj,res)
    implicit none
-   real,  intent(in)  :: hu(ni ,nj)
-   real,  intent(out) :: res(ni ,nj)
+   real*8,  intent(in)  :: hu(ni ,nj)
+   real*8,  intent(out) :: res(ni ,nj)
    integer, intent(in):: ni, nj
-   real hutmp
+   real*8 hutmp
    integer i,j
    do i=1, ni
       do j=1, nj
-         hutmp = max(hu(i,j),10E-15)
-         res(i,j) = (hutmp / (1. - hutmp)) * 1000.
+         hutmp = dmax1(hu(i,j),10d-15)
+         res(i,j) = (hutmp / (1. - hutmp)) * 1000d0
       enddo
    enddo
 end subroutine
 
 subroutine qv_from_vppr(vppr,px,ni,nj,res)
    implicit none
-   real,  intent(in)  :: vppr(ni ,nj)
-   real,  intent(in)  :: px(ni ,nj)
-   real,  intent(out) :: res(ni ,nj)
+   real*8,  intent(in)  :: vppr(ni ,nj)
+   real*8,  intent(in)  :: px(ni ,nj)
+   real*8,  intent(out) :: res(ni ,nj)
    integer, intent(in):: ni, nj
    integer i,j
    do i=1, ni
@@ -1063,99 +858,16 @@ end subroutine
 
 subroutine es_from_td(tt,td,ni,nj,res)
    implicit none
-   real,  intent(in)  :: tt(ni ,nj)
-   real,  intent(in)  :: td(ni ,nj)
-   real,  intent(out) :: res(ni ,nj)
+   real*8,  intent(in)  :: tt(ni ,nj)
+   real*8,  intent(in)  :: td(ni ,nj)
+   real*8,  intent(out) :: res(ni ,nj)
    integer, intent(in):: ni, nj
    integer i,j
    do i=1, ni
       do j=1, nj
-         res(i,j) = max(tt(i,j) - td(i,j), 0.)
+         res(i,j) = dmax1(tt(i,j) - td(i,j), 0.)
       enddo
    enddo
 end subroutine
 
 end module science
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-! real,   parameter :: ai =  AI
-   ! real,   parameter :: aw =  AW
-   ! real,   parameter :: bi =  BI
-   ! real,   parameter :: bw =  BW
-   ! real,   parameter :: cappa =  CAPPA
-   ! real,   parameter :: chlf =  CHLF
-   ! real,   parameter :: chlc =  CHLC
-   ! real,   parameter :: consol =  CONSOL
-   ! real,   parameter :: consol2 =  CONSOL2
-   ! real,   parameter :: cpd =  CPD
-   ! real,   parameter :: cpv =  CPV
-   ! real,   parameter :: cpi =  CPI
-   ! real,   parameter :: cpw =  CPW
-   ! real,   parameter :: cvd =  CVD
-   ! real,   parameter :: delta =  DELTA
-   ! real,   parameter :: eps1 =  EPS1
-   ! real,   parameter :: eps2 =  EPS2
-   ! real,   parameter :: grav =  GRAV
-   ! real,   parameter :: karman =  KARMAN
-   ! real,   parameter :: knams =  KNAMS
-   ! real,   parameter :: omega =  OMEGA
-   ! real,   parameter :: pi =  PI
-   ! real,   parameter :: rauw =  RAUW
-   ! real,   parameter :: rayt =  RAYT
-   ! real,   parameter :: rgasd =  RGASD
-   ! real,   parameter :: rgasv =  RGASV
-   ! real,   parameter :: ric =  RIC
-   ! real,   parameter :: slp =  SLP
-   ! real,   parameter :: stefan =  STEFAN
-   ! real,   parameter :: stlo =  STLO
-   ! real,   parameter :: t1s =  T1S
-   ! real,   parameter :: t2s =  T2S
-   ! real,   parameter :: tcdk =  TCDK
-   ! real,   parameter :: tgl =  TGL
-   ! real,   parameter :: trpl =  TRPL
-   ! real,   parameter :: ai_8 =  AI
-   ! real,   parameter :: aw_8 =  AW
-   ! real,   parameter :: bi_8 =  BI
-   ! real,   parameter :: bw_8 =  BW
-   ! real,   parameter :: cappa_8 =  CAPPA
-   ! real,   parameter :: chlf_8 =  CHLF
-   ! real,   parameter :: chlc_8 =  CHLC
-   ! real,   parameter :: consol_8 =  CONSOL
-   ! real,   parameter :: consol2_8 =  CONSOL2
-   ! real,   parameter :: cpd_8 =  CPD
-   ! real,   parameter :: cpv_8 =  CPV
-   ! real,   parameter :: cpi_8 =  CPI
-   ! real,   parameter :: cpw_8 =  CPW
-   ! real,   parameter :: cvd_8 =  CVD
-   ! real,   parameter :: delta_8 =  DELTA
-   ! real,   parameter :: eps1_8 =  EPS1
-   ! real,   parameter :: eps2_8 =  EPS2
-   ! real,   parameter :: grav_8 =  GRAV
-   ! real,   parameter :: karman_8 =  KARMAN
-   ! real,   parameter :: knams_8 =  KNAMS
-   ! real,   parameter :: omega_8 =  OMEGA
-   ! real,   parameter :: pi_8 =  PI
-   ! real,   parameter :: rauw_8 =  RAUW
-   ! real,   parameter :: rayt_8 =  RAYT
-   ! real,   parameter :: rgasd_8 =  RGASD
-   ! real,   parameter :: rgasv_8 =  RGASV
-   ! real,   parameter :: ric_8 =  RIC
-   ! real,   parameter :: slp_8 =  SLP
-   ! real,   parameter :: stefan_8 =  STEFAN
-   ! real,   parameter :: stlo_8 =  STLO
-   ! real,   parameter :: t1s_8 =  T1S
-   ! real,   parameter :: t2s_8 =  T2S
-   ! real,   parameter :: tcdk_8 =  TCDK
-   ! real,   parameter :: tgl_8 =  TGL
-   ! real,   parameter :: trpl_8 =  TRPL
-   ! real,   parameter :: ttns1 =  TTNS1
-   ! real,   parameter :: ttns3w =  TTNS3W
-   ! real,   parameter :: ttns3i =  TTNS3I
-   ! real,   parameter :: ttns4w =  TTNS4W
-   ! real,   parameter :: ttns4i =  TTNS4I
-   ! real,   parameter :: aerk1w =  AERK1W
-   ! real,   parameter :: aerk2w =  AERK2W
-   ! real,   parameter :: aerk3w =  AERK3W
-   ! real,   parameter :: aerk1i =  AERK1I
-   ! real,   parameter :: aerk2i =  AERK2I
-   ! real,   parameter :: aerk3i =  AERK3I

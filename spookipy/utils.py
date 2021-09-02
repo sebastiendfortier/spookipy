@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
+import copy
 import inspect
-from functools import wraps
-import pandas as pd
-import numpy as np
 import sys
-import fstpy.all as fstpy
+from functools import wraps
 from inspect import signature
+
+import fstpy.all as fstpy
+import numpy as np
+import pandas as pd
 import rpnpy.librmn.all as rmn
+
 
 def initializer(func):
     """
@@ -43,17 +46,31 @@ class LevelIntersectionError(Exception):
     pass
 
 def get_plugin_dependencies(df:pd.DataFrame, plugin_params:dict=None, plugin_mandatory_dependencies:dict=None,throw_error=True) -> pd.DataFrame:
-    from .windmodulus.windmodulus import WindModulus
-    from .humidityspecific.humidityspecific import HumiditySpecific
-    from .humidityrelative.humidityrelative import HumidityRelative
-    from .temperaturedewpoint.temperaturedewpoint import TemperatureDewPoint
-    from .windmodulus.windmodulus import WindModulus
-    from .pressure.pressure import Pressure
-    from .saturationvapourpressure.saturationvapourpressure import SaturationVapourPressure
-    from .vapourpessure.vapourpessure import VapourPressure
-    from .watervapourmixingratio.watervapourmixingratio import WaterVapourMixingRatio
+    from .cloudfractiondiagnostic.cloudfractiondiagnostic import \
+        CloudFractionDiagnostic
+    from .coriolisparameter.coriolisparameter import CoriolisParameter
     from .dewpointdepression.dewpointdepression import DewPointDepression
+    from .georgekindex.georgekindex import GeorgeKIndex
+    from .humidex.humidex import Humidex
+    from .humidityrelative.humidityrelative import HumidityRelative
+    from .humidityspecific.humidityspecific import HumiditySpecific
+    from .pressure.pressure import Pressure
+    from .saturationvapourpressure.saturationvapourpressure import \
+        SaturationVapourPressure
+    from .temperaturedewpoint.temperaturedewpoint import TemperatureDewPoint
+    from .totaltotalsindex.totaltotalsindex import TotalTotalsIndex
+    from .vapourpessure.vapourpessure import VapourPressure
+    from .watervapourmixingratio.watervapourmixingratio import \
+        WaterVapourMixingRatio
+    from .windchill.windchill import WindChill
+    from .windmodulus.windmodulus import WindModulus
     computable_dependencies = {
+        'RE':WindChill,
+        'TTI':TotalTotalsIndex,
+        'HMX':Humidex,
+        'KI':GeorgeKIndex,
+        'CORP':CoriolisParameter,
+        'CLD':CloudFractionDiagnostic,
         'UV':WindModulus,
         'PX':Pressure,
         'ES':DewPointDepression,
@@ -65,15 +82,18 @@ def get_plugin_dependencies(df:pd.DataFrame, plugin_params:dict=None, plugin_man
         'QV':WaterVapourMixingRatio
         }
     df_list = []
+    pdependencies = copy.deepcopy(plugin_mandatory_dependencies)
     # print('before\n',df[['nomvar','unit','level','ip1_pkind']].to_string())
     # print(plugin_mandatory_dependencies)
-    for label,desc in plugin_mandatory_dependencies.items():
+    for label,desc in pdependencies.items():
         if 'nomvar' in desc.keys():
             nomvar = desc['nomvar']
         else:
             nomvar = label
         # plugin_params = desc.pop('plugin_params') if 'plugin_params' in desc.keys() else None
+        # print(f' for {nomvar}',desc)
         select_only = desc.pop('select_only') if 'select_only' in desc.keys() else False
+        # print(f' for {nomvar} select_only:',select_only)
         if (nomvar in computable_dependencies.keys()) and (df.loc[df.nomvar==nomvar].empty) and (select_only==False):
             plugin = computable_dependencies[nomvar]
             sig = signature(plugin)
@@ -102,6 +122,7 @@ def get_plugin_dependencies(df:pd.DataFrame, plugin_params:dict=None, plugin_man
         # print(pd.Series(desc))
         #recipe, query with dict
         tmp_df = df.loc[(df[list(desc)] == pd.Series(desc)).all(axis=1)]
+
 
         if tmp_df.empty:
             if throw_error:
@@ -301,7 +322,10 @@ def get_from_dataframe(df:pd.DataFrame, nomvar:str) -> pd.DataFrame:
 def find_matching_dependency_option(df,plugin_params,plugin_mandatory_dependencies):
     for i in range(len(plugin_mandatory_dependencies)):
         # print(i,len(plugin_mandatory_dependencies),plugin_mandatory_dependencies[i],(False if i+1 < len(plugin_mandatory_dependencies) else True))
-        dependencies_df = get_plugin_dependencies(df,plugin_params,plugin_mandatory_dependencies[i],throw_error=(False if i+1 < len(plugin_mandatory_dependencies) else True))
+        # dependencies_df = get_plugin_dependencies(df,plugin_params,plugin_mandatory_dependencies[i],throw_error=(False if i+1 < len(plugin_mandatory_dependencies) else True))
+        dependencies_df = get_plugin_dependencies(df,plugin_params,plugin_mandatory_dependencies[i],throw_error=False)
         option=i
         if not (dependencies_df.empty):
+            sys.stdout.write(f'Found following depency: \n{plugin_mandatory_dependencies[i]}\n')
             return dependencies_df, option
+    return pd.DataFrame(dtype=object), 0

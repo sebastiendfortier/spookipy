@@ -6,7 +6,7 @@ from test import TMP_PATH,TEST_PATH
 
 import spookipy.all as spooki
 
-pytestmark = [pytest.mark.to_skip]
+pytestmark = [pytest.mark.regressions]
 
 @pytest.fixture
 def plugin_test_dir():
@@ -128,8 +128,10 @@ def test_8(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:,'etiket']='R1580V0N'
     df = spooki.convip(df)
-    # df.loc[:,'nbits']=32
+
+    # df.loc[df.nomvar!='!!','nbits']=32
     # df.loc[:,'datyp']=5
+
     #write the result
     results_file = TMP_PATH + "test_8.std"
     fstpy.delete_file(results_file)
@@ -167,8 +169,10 @@ def test_10(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:,'etiket']='R1580V0N'
     df = spooki.convip(df)
-    # df.loc[:,'nbits']=32
+
+    # df.loc[df.nomvar!='!!','nbits']=32
     # df.loc[:,'datyp']=5
+
     #write the result
     results_file = TMP_PATH + "test_10.std"
     fstpy.delete_file(results_file)
@@ -183,7 +187,12 @@ def test_10(plugin_test_dir):
     fstpy.delete_file(results_file)
     assert(res)
 
-
+# DewPointDepression - compute
+# rpn
+# option 1
+# HumiditySpecific - compute
+# rpn
+# option 3
 def test_11(plugin_test_dir):
     """Calcul de l'humidité spécifique (HU) à partir de ES et TT, option --RPN."""
     # open and read source
@@ -194,8 +203,11 @@ def test_11(plugin_test_dir):
 
     #compute HumiditySpecific
     es_df = spooki.DewPointDepression(tthu_df, ice_water_phase='water', rpn=True).compute()
+
     tt_df = fstpy.select_with_meta(tthu_df,['TT'])
+
     ttes_df = pd.concat([es_df,tt_df],ignore_index=True)
+
     df = spooki.HumiditySpecific(ttes_df, ice_water_phase='water', rpn=True).compute()
     #[ReaderStd --ignoreExtended --input {sources[0]}] >>
     #  [Select --fieldName TT,HU] >>
@@ -203,9 +215,11 @@ def test_11(plugin_test_dir):
     # [HumiditySpecific --iceWaterPhase WATER --RPN] >>
     # [Zap --pdsLabel R1580V0N --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:,'etiket'] = 'R1580V0N'
-    # df.loc[:,'nbits']=32
-    # df.loc[:,'datyp']=5
+
     df = spooki.convip(df)
+
+    # df.loc[df.nomvar!='!!','nbits']=32
+    # df.loc[:,'datyp']=5
 
     #write the result
     results_file = TMP_PATH + "test_11.std"
@@ -247,8 +261,10 @@ def test_12(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:,'etiket'] = 'G133K80N'
     # df = spooki.convip(df)
-    # df.loc[:,'nbits']=32
+
+    # df.loc[df.nomvar!='!!','nbits']=32
     # df.loc[:,'datyp']=5
+
     #write the result
     results_file = TMP_PATH + "test_12.std"
     fstpy.delete_file(results_file)
@@ -274,9 +290,9 @@ def test_13(plugin_test_dir):
     tt_df = fstpy.select_with_meta(src_df0,['TT'])
 
     es_df = spooki.DewPointDepression(tthu_df, ice_water_phase='water', rpn=True).compute()
-    es_df = pd.concat([es_df,tt_df],ignore_index=True)
+    estt_df = pd.concat([es_df,tt_df],ignore_index=True)
 
-    td_df = spooki.TemperatureDewPoint(es_df, ice_water_phase='water').compute()
+    td_df = spooki.TemperatureDewPoint(estt_df, ice_water_phase='water').compute()
     tttd_df = pd.concat([td_df,tt_df],ignore_index=True)
 
     #compute HumiditySpecific
@@ -289,8 +305,10 @@ def test_13(plugin_test_dir):
     # [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:,'etiket'] = 'G133K80N'
-    # df.loc[:,'nbits']=32
+
+    # df.loc[df.nomvar!='!!','nbits']=32
     # df.loc[:,'datyp']=5
+
     #write the result
     results_file = TMP_PATH + "test_13.std"
     fstpy.delete_file(results_file)
@@ -330,9 +348,10 @@ def test_14(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:,'etiket'] = 'R1580V0N'
     df = spooki.convip(df)
-    # df.loc[:,'nbits']=32
+
+    # df.loc[df.nomvar!='!!','nbits']=32
     # df.loc[:,'datyp']=5
-    #write the result
+
     results_file = TMP_PATH + "test_14.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()

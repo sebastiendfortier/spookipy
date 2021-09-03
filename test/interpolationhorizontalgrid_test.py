@@ -334,7 +334,7 @@ def test_10(plugin_test_dir):
     # [WriterStd --output {destination_path} ]
 
     df = fstpy.select_with_meta(df,['UU','VV'])
-    # df = df.loc[df.nomvar!='P0']
+    df = df.loc[df.nomvar!='P0']
     # df['datyp'] = 5
     # df.loc[df.nomvar!='!!','nbits']=32
     #write the result
@@ -347,7 +347,7 @@ def test_10(plugin_test_dir):
     # file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalGrid/result_test_10"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
     assert(res)
 

@@ -31,3 +31,7 @@ class Plugin(abc.ABC):
         :rtype: pd.DataFrame
         """
         pass
+
+    @staticmethod
+    def parse_config(**kwargs):
+        return kwargs

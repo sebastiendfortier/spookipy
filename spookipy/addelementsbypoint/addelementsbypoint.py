@@ -23,3 +23,15 @@ class AddElementsByPoint(Plugin):
         group_by_forecast_hour=self.group_by_forecast_hour, 
         group_by_level=True, 
         nomvar_out=self.nomvar_out).compute()
+
+    @staticmethod
+    def parse_config(**kwargs):
+        args = {}
+
+        if 'outputFieldName' in kwargs:
+            args['nomvar_out'] = kwargs['outputFieldName']
+
+        if 'groupBy' in kwargs and kwargs['groupBy'] == "FORECAST_HOUR":
+            args['group_by_forecast_hour'] = True
+
+        return args

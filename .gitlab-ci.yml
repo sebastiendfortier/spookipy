@@ -30,6 +30,11 @@ before_script:
 
 run_regtests:
   stage: run_regtests
+  variables:
+  JOB_MEMORY: "100G"
+  JOB_TMPFS: "10G"
+  JOB_CPUS: "20"
+  JOB_WALLCLOCK: "3600"
   script:
     - cd test
     - python3 -m pytest -v -m regressions

@@ -42,23 +42,36 @@ Documentation
 * :doc:`addelementsbypoint`
 * :doc:`addtoelements`
 * :doc:`arithmeticmeanbypoint`
+* :doc:`cloudfractiondiagnostic`
+* :doc:`coriolisparameter`
 * :doc:`dewpointdepression`
+* :doc:`filterdigital`
 * :doc:`georgekindex`
+* :doc:`gridcut`
+* :doc:`helicity`
 * :doc:`humidex`
-* :doc:`interpolationhorizontalgrid`
-* :doc:`interpolationhorizontalpoint`
+* :doc:`humidityrelative`
+* :doc:`humidityspecific`
+* :doc:`interpolationhorizontal`
+* :doc:`interpolationhorizontal`
 * :doc:`mask`
+* :doc:`matchlevelindextovalue`
 * :doc:`minmaxlevelindex`
 * :doc:`multiplyelementsby`
 * :doc:`multiplyelementsbypoint`
+* :doc:`plugin`
 * :doc:`pressure`
 * :doc:`saturationvapourpressure`
 * :doc:`setconstantvalue`
 * :doc:`temperaturedewpoint`
-* :doc:`vapourpressure`
+* :doc:`totaltotalsindex`
+* :doc:`vapourpessure`
+* :doc:`watervapourmixingratio`
 * :doc:`windchill`
+* :doc:`winddirection`
 * :doc:`windmax`
 * :doc:`windmodulus`
+
 
 .. toctree::
    :maxdepth: 1
@@ -68,21 +81,33 @@ Documentation
    addelementsbypoint
    addtoelements
    arithmeticmeanbypoint
+   cloudfractiondiagnostic
+   coriolisparameter
    dewpointdepression
+   filterdigital
    georgekindex
+   gridcut
+   helicity
    humidex
-   interpolationhorizontalgrid
-   interpolationhorizontalpoint
+   humidityrelative
+   humidityspecific
+   interpolationhorizontal
+   interpolationhorizontal
    mask
+   matchlevelindextovalue
    minmaxlevelindex
    multiplyelementsby
    multiplyelementsbypoint
+   plugin
    pressure
    saturationvapourpressure
    setconstantvalue
    temperaturedewpoint
-   vapourpressure
+   totaltotalsindex
+   vapourpessure
+   watervapourmixingratio
    windchill
+   winddirection
    windmax
    windmodulus
 

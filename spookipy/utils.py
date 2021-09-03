@@ -326,6 +326,8 @@ def find_matching_dependency_option(df,plugin_params,plugin_mandatory_dependenci
         dependencies_df = get_plugin_dependencies(df,plugin_params,plugin_mandatory_dependencies[i],throw_error=False)
         option=i
         if not (dependencies_df.empty):
-            sys.stdout.write(f'Found following depency: \n{plugin_mandatory_dependencies[i]}\n')
+            sys.stdout.write('Found following depency: \n')
+            for k,v in plugin_mandatory_dependencies[i].items():
+                sys.stdout.write(f'{k}:{v}\n')
             return dependencies_df, option
     return pd.DataFrame(dtype=object), 0

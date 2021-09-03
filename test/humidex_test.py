@@ -39,7 +39,7 @@ def test_1(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/Humidex/result_test_1'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)#,e_max=0.1)#,e_max=0.001,e_moy=0.001)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -68,6 +68,6 @@ def test_2(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/Humidex/result_test_2'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
+    res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)

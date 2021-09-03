@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from fstpy.dataframe_utils import select_meta, select_with_meta
+from fstpy.dataframe_utils import select_with_meta
 from test import TMP_PATH,TEST_PATH
 import pytest
 import fstpy.all as fstpy
@@ -24,8 +24,8 @@ def test_1(plugin_test_dir):
     df = spooki.GeorgeKIndex(src_df0).compute()
     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [GeorgeKIndex] >> [WriterStd --output {destination_path} --ignoreExtended]
 
-    df.loc[:,'datyp'] = 5
-    df.loc[df.nomvar!='!!','nbits'] = 32
+    # df.loc[:,'datyp'] = 5
+    # df.loc[df.nomvar!='!!','nbits'] = 32
 
     #write the result
     results_file = TMP_PATH + "test_1.std"
@@ -34,10 +34,10 @@ def test_1(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "TTES_GeorgeKIndex_file2cmp.std"
-    file_to_compare = '/home/sbf000/data/testFiles/GeorgeKIndex/result_test_1'
+    # file_to_compare = '/home/sbf000/data/testFiles/GeorgeKIndex/result_test_1'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -52,11 +52,13 @@ def test_2(plugin_test_dir):
     #compute GeorgeKIndex
     df = spooki.GeorgeKIndex(src_df0).compute()
     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [GeorgeKIndex] >> [WriterStd --output {destination_path} --ignoreExtended]
-    # df.loc[:,'datyp'] = 5
-    # df.loc[df.nomvar!='!!','nbits'] = 32
     # df.loc[df.nomvar=='KI','grtyp'] = 'X'
     # df.loc[df.nomvar=='KI','ig1'] = 0
     # df.loc[df.nomvar=='KI','ig2'] = 0
+
+    # df.loc[:,'datyp'] = 5
+    # df.loc[df.nomvar!='!!','nbits'] = 32
+
     #write the result
     results_file = TMP_PATH + "test_2.std"
     fstpy.delete_file(results_file)
@@ -83,8 +85,8 @@ def test_3(plugin_test_dir):
     #compute GeorgeKIndex
     df = spooki.GeorgeKIndex(src_df0).compute()
     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [GeorgeKIndex] >> [WriterStd --output {destination_path} --ignoreExtended]
-    df.loc[:,'datyp'] = 5
-    df.loc[df.nomvar!='!!','nbits'] = 32
+    # df.loc[:,'datyp'] = 5
+    # df.loc[df.nomvar!='!!','nbits'] = 32
 
     #write the result
     results_file = TMP_PATH + "test_3.std"
@@ -93,7 +95,7 @@ def test_3(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "TTTD_GeorgeKIndex_file2cmp.std"
-    file_to_compare = '/home/sbf000/data/testFiles/GeorgeKIndex/result_test_3'
+    # file_to_compare = '/home/sbf000/data/testFiles/GeorgeKIndex/result_test_3'
 
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
@@ -162,8 +164,8 @@ def test_6(plugin_test_dir):
     #compute GeorgeKIndex
     df = spooki.GeorgeKIndex(src_df).compute()
     #['[ReaderStd --ignoreExtended --input {sources[0]}] >>', '[Select --forecastHour 6] >> [GeorgeKIndex] >> ', '[WriterStd --output {destination_path} --ignoreExtended]']
-    df.loc[:,'datyp'] = 5
-    df.loc[df.nomvar!='!!','nbits'] = 32
+    # df.loc[:,'datyp'] = 5
+    # df.loc[df.nomvar!='!!','nbits'] = 32
 
     #write the result
     results_file = TMP_PATH + "test_6.std"
@@ -172,9 +174,9 @@ def test_6(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "TTES_2016122000_file2cmp.std"
-    file_to_compare = '/home/sbf000/data/testFiles/GeorgeKIndex/result_test_6'
+    # file_to_compare = '/home/sbf000/data/testFiles/GeorgeKIndex/result_test_6'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,exclude_meta=True)
     fstpy.delete_file(results_file)
     assert(res)

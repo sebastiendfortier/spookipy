@@ -69,7 +69,7 @@ def test_4(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     # df.loc[:,'datyp'] = 5
-    # df.loc[:,'nbits'] = 32
+    # df.loc[df.nomvar!='!!','nbits'] = 32
     #write the result
     results_file = TMP_PATH + "test_4.std"
     fstpy.delete_file(results_file)
@@ -80,7 +80,7 @@ def test_4(plugin_test_dir):
     # file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_4"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)#,e_max=0.1)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -111,7 +111,7 @@ def test_5(plugin_test_dir):
     # file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_5"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)#,e_max=0.1)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
     assert(res)
 

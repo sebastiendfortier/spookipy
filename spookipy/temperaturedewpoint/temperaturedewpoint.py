@@ -246,7 +246,7 @@ class TemperatureDewPoint(Plugin):
                         nj = tt.shape[1]
                         es = es_df.at[i,'d']
                         # td_df.at[i,'d'] = science.td_from_es(tt=tt-TDPACK_OFFSET_FIX, es=es, ni=ni, nj=nj).astype(np.float32)
-                        td_df.at[i,'d'] = science.td_from_es(tt=tt, es=es, ni=ni, nj=nj).astype(np.float32)
+                        td_df.at[i,'d'] = science.td_from_es(tt=tt-TDPACK_OFFSET_FIX, es=es, ni=ni, nj=nj).astype(np.float32)
 
             df_list.append(td_df)
 

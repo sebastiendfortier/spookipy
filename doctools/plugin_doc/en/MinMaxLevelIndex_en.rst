@@ -1,0 +1,100 @@
+English
+-------
+
+**Description:**
+
+-  Finds the index of the maximum, minimum value or both in the column
+   or part of it.
+
+\*Iteration method:\*
+
+-  Column by column
+
+\*Dependance:\*
+
+-  Meteorological field (3D)
+   **If** the --bounded key is activated:
+-  Field of indexes of the lower limit, KBAS
+-  Field of indexes of the upper limit, KTOP
+
+\*Result(s):\*
+
+-  The meteorological field (3D) received as input
+-  A field with the indexes where the value of the meteorological field
+   is minimum, KMIN
+   **and/or**
+-  A field with the indexes where the value of the meteorological field
+   is maximum, KMAX
+
+\*Algorithm:\*
+
+.. code:: example
+
+    If the key --bounded is not activated :
+        KBAS = lowest level in the column
+        KTOP = highest level in the column
+
+    For each column and for the levels between KBAS and KTOP:
+
+        If key --minMax = MIN or BOTH
+            Loop for k between KBAS and KTOP
+            If min > VAR[k] then 
+               min = VAR[k] and KMIN = k
+
+        If key --minMax = MAX or BOTH
+            Loop for k between KBAS and KTOP
+            If max < VAR[k] then 
+               max = VAR[k] and KMAX = k
+
+**Reference:**
+
+-  Does not apply
+
+\*Keywords:\*
+
+-  UTILITAIRE/UTILITY, minimum, maximum, niveau/level, vertical,
+   borné/bounded
+
+\*Usage:\*
+
+**Call example:**
+
+.. code:: example
+
+    ...
+    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/MinMaxLevelIndex/testsFiles/inputFile.std] >>
+                [MinMaxLevelIndex --minMax MIN --direction UPWARD] >>
+                [WriterStd --output /tmp/$USER/outputFile.std]"
+    ...
+
+==
+
+.. code:: example
+
+    ...
+    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/MinMaxLevelIndex/testsFiles/inputFile.std] >>
+                ( [Copy] + ( ([SetConstantValue --value MININDEX --bidimensional] >> [Zap --fieldName KBAS]) + ([SetConstantValue --value MAXINDEX --bidimensional] >> [Zap --fieldName KTOP]) ) ) >>
+                [MinMaxLevelIndex --bounded --minMax MIN --direction DOWNWARD] >>
+                [WriterStd --output /tmp/$USER/outputFile.std]"
+    ...
+
+**Results validation:**
+
+**Responsables:**
+
+-  Author : Daniel Figueras, `Sébastien
+   Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
+-  Coded by : `Sébastien
+   Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__, Jonathan
+   Cameron
+-  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
+   `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+
+Reference to
+
+Tests unitaires
+
+| **Uses:**
+| **Used by:**
+
+ 

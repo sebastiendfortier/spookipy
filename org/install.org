@@ -1,8 +1,0 @@
-#+TITLE_:INSTALL
-#+OPTIONS:toc:1
-
-* Installation
-Use the ssm package
-  #+BEGIN_SRC
-  . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/spookipy/0.0.0
-#+END_SRC

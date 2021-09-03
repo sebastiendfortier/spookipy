@@ -1,0 +1,126 @@
+Français
+--------
+
+**Description :**
+
+-  Calcul des caractéristiques de la parcelle la plus instable (MU) dans
+   une colonne, dans une épaisseur donnée au dessus de la surface.
+
+\*Méthode d'itération :\*
+
+-  Colonne par colonne
+
+\*Dépendances :\*
+
+-  Température de l'air dans la couche sondée , TT
+-  Hauteur géopotentielle dans la couche sondée, GZ
+   **et** un des champs suivants dans la couche sondée:
+-  Humidité spécifique, HU
+-  Humidité relative, HR
+-  Rapport de mélange de la vapeur d'eau, QV
+-  Température du point de rosée, TD
+-  Écart du point de rosée, ES
+   ***Note:*** : Assurez-vous de fournir à ce plugin les dépendances
+   ci-haut mentionnées ou alors, les résultats des
+   plugins appelés par celui-ci (Voir la section "Ce plugin utilise").
+   Pour plus de détails sur cet usage
+   alternatif, voir la page de
+   `documentation. <https://wiki.cmc.ec.gc.ca/wiki/Spooki/Documentation/Description_g%C3%A9n%C3%A9rale_du_syst%C3%A8me#RefDependances>`__
+
+\*Résultat(s) :\*
+
+-  Température de la parcelle la plus instable, MUTT (deg C)
+-  Température du point de rosée de la parcelle la plus instable, MUTD
+   (deg C)
+-  Pression de de la parcelle la plus instable, MUPX (hPa)
+-  Humidité relative de la parcelle la plus instable, MUHR (fraction)
+-  Hauteur de la parcelle la plus instable à partir du sol, MUZ (m)
+-  Température potentielle du thermomètre mouillé maximale dans la
+   colonne, TWMX (deg C)
+
+\*Algorithme :\*
+
+.. code:: example
+
+    Appeler le plugin Pressure pour obtenir PX (hPa) dans la couche sondée.
+    Appeler le plugin TemperatureWetBulb pour obtenir TTW (deg C) dans la couche sondée.
+
+    Appeler le plugin InterpolationVertical avec --verticalLevelType MILLIBARS_ABOVE_GROUND
+                                                 --verticalLevel (la valeur de --delta)
+                                                 --referenceLevel SURFACE
+                                                 --interpolationType LINEAR
+                                                 --extrapolationType ABORT
+            pour trouver les valeurs des champs d'entrée du dernier niveau de la couche sondée.
+
+    Appeler le plugin TemperatureWetBulb pour obtenir TTW (deg C) pour le dernier niveau de la couche sondée (avec TT interpolé et le champs d'humidité interpolé)
+
+    Initialiser TWMX = -999.0
+
+    Pour chaque niveau entre la surface et "delta" au dessus de la surface:
+
+        On calcule TW (deg C) avec la fonction de TemperatureWetBulbPotential (avec TTW, PX et l'increment passé à l'appel du plugin).
+
+        Si TW > TWMX:
+           TWMX = TW
+           MUZ (m) = (GZ (dam) - GZsurface (dam)) * 10 (m/dam)
+           Remplacer les valeurs des champs de sortie suivants par ceux au niveau courant: MUTT, MUPX et le champ d'humidité choisi.
+
+    Appeler les plugins TemperatureDewPoint et HumidityRelative avec TT=MUTT, PX=MUPX et le champ d'humidité choisi.
+
+    Appeler le plugin Zap pour renommer HR à MUHR et TD à MUTD.
+
+**Références :**
+
+-  Doswell, C. A. and E. N. Rasmussen, 1994: The effect of neglecting
+   the virtual temperature correction on CAPE calculations. Wea.
+   Forecasting, 9, 625-629.
+
+\*Mots clés :\*
+
+-  MÉTÉO/WEATHER, température/temperature,
+   parcellesoulevée/liftedparcel, plusinstable/mostunstable, convection
+
+\*Usage:\*
+
+    | 
+    | **Notes :**
+    | L'utilisation de données en coordonnée verticale en pression n'est
+      pas permise car ceci peut produire des résultats non fiables.
+    | Informations sur les métadonnées:
+
+    -  Le verticalLevel (IP1 dans les fichiers RPN STD) indiquera la
+       base de recherche pour la couche la plus instable.
+    -  Les caractères 2 à 4 du pdsLabel (5 à 8 de l'etiket dans les
+       fichiers RPN STD) indiqueront l'épaisseur de la couche la plus
+       instable. Le dernier de ces caractères indique l'unité (P pour
+       hPa au-dessus de la base de la couche, Z pour mètres au-dessus de
+       la base de la couche).
+
+    \*Exemple d'appel:\*
+
+    .. code:: example
+
+        ...
+        spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/ParcelMostUnstable/testsFiles/inputFile.std] >>
+                    [ParcelMostUnstable --delta 100mb --iceWaterPhase WATER] >>
+                    [WriterStd --output /tmp/$USER/outputFile.std]"
+        ...
+
+    **Validation des résultats:**
+
+    **Contacts:**
+
+    -  Auteur(e) : Neil Taylor
+    -  Codé par : `Jonathan
+       St-Cyr <https://wiki.cmc.ec.gc.ca/wiki/User:Stcyrj>`__
+    -  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
+       `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+
+    Voir la référence à
+
+    Tests unitaires
+
+    | **Ce plugin utilise:**
+    | **Ce plugin est utilisé par:**
+
+     

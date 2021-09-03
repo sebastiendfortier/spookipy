@@ -1,0 +1,91 @@
+English
+-------
+
+**Description:**
+
+-  Calculation of freezing levels, levels where the air temperature is
+   equal to 0 deg C.
+   The freezing levels are calculated in respect to the mean sea level.
+   ***Note:*** If the surface temperature is negative, the height of the
+   1st freezing level is fixed at 0 dam.
+
+\*Iteration method:\*
+
+-  Column-by-column
+
+\*Dependencies:\*
+
+-  Air température, TT
+
+| Depending on the user's choice:
+
+-  Geopotential height, GZ
+-  Pressure, PX
+   ***Note:*** These fields must have a vertical coordinate which
+   follows the topography. (Sigma, eta, hybrid, hybrid staggered and
+   meters above the ground.)
+
+\*Result(s):\*
+
+-  Number of freezing levels, NBFL (2D)
+-  Boolean variable BOVS (false if TT < 0 at the surface and true if TT
+   > 0), 2D field. Output of `VerticalScan <pluginVerticalScan.html>`__
+   plugin.
+
+-  Altitude of freezing levels:
+   FRH (3D,dam )
+   and/or
+   FRP (3D, mb)
+   **and/or**
+-  Highest freezing level:
+   FU (2D, 100\*ft)
+   and/or
+   FUP (2D, millibars)
+
+\*     Note :\* Undefined values for the freezing levels are set to
+-999.
+
+**Algorithm:**
+
+-  https://wiki.cmc.ec.gc.ca/images/8/85/Spooki_-_FreezingLevel_Algorithm.odt
+-  https://wiki.cmc.ec.gc.ca/images/0/07/Spooki_-_FreezingLevel_Algorithm.pdf
+
+\*Reference:\*
+
+-  Inspired from the operational program *eicefrz.f*.
+
+\*Keywords:\*
+
+-  MÉTÉO/WEATHER, niveaux/levels, congélation/freezing, balayage/scan,
+   vertical
+
+\*Usage:\*
+
+**Call example:**
+
+.. code:: example
+
+    ...
+    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/FreezingLevel/testsFiles/inputFile.std] >>
+                [FreezingLevel --outputVerticalRepresentation GEOPOTENTIAL ] >>
+                [WriterStd --output /tmp/$USER/outputFile.std]"
+    ...
+
+**Results validation:**
+
+**Contacts:**
+
+-  Author : Hatem Yazidi
+-  Coded by : `Guylaine
+   Hardy <https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg>`__
+-  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
+   `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+
+Reference to
+
+Unit tests
+
+| **Uses:**
+| **Ce plugin est utilisé par:**
+
+ 

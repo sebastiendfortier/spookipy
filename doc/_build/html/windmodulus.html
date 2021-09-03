@@ -1,0 +1,532 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>WindModulus &mdash; spookipy 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-rendered-html.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Tutorial" href="tutorial.html" />
+    <link rel="prev" title="WindMax" href="windmax.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html">
+          
+
+          
+            
+            <img src="_static/spookipy_logo.jpg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Start here</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using spookipy in scripts or Jupyter Lab/Notebook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Creating the developpement environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html#getting-the-source-code">Getting the source code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html#testing">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html#building-documentation">Building documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ssm.html">Creating the ssm package</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Modules</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="addelementsbypoint.html">AddElementsByPoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="addtoelements.html">AddToElements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="arithmeticmeanbypoint.html">ArithmeticMeanByPoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dewpointdepression.html">DewPointDepression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="georgekindex.html">GeorgeKIndex</a></li>
+<li class="toctree-l1"><a class="reference internal" href="humidex.html">Humidex</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interpolationhorizontalgrid.html">InterpolationHorizontalGrid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interpolationhorizontalpoint.html">InterpolationHorizontalPoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mask.html">Mask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="minmaxlevelindex.html">MinMaxLevelIndex</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiplyelementsby.html">MultiplyElementsBy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiplyelementsbypoint.html">MultiplyElementsByPoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pressure.html">Pressure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="saturationvapourpressure.html">SaturationVapourPressure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setconstantvalue.html">SetConstantValue</a></li>
+<li class="toctree-l1"><a class="reference internal" href="temperaturedewpoint.html">TemperatureDewPoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vapourpressure.html">VapourPressure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="windchill.html">WindChill</a></li>
+<li class="toctree-l1"><a class="reference internal" href="windmax.html">WindMax</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">WindModulus</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#francais">Français</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#description">Description:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#methode-d-iteration">Méthode d’itération:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dependances">Dépendances:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#resultat-s">Résultat(s):</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#algorithme">Algorithme:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#references">Références:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mots-cles">Mots clés:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage">Usage:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#validation-des-resultats">Validation des résultats:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#contacts">Contacts:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#english">English</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Description:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#iteration-method">Iteration method:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dependencies">Dependencies:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#result-s">Result(s):</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#algorithm">Algorithm:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reference">Reference:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#keywords">Keywords:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Usage:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Contacts:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">English</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-spookipy.windmodulus.windmodulus">Python Module</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugin.html">Plugin</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Misc</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="LICENSE.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">spookipy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>WindModulus</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://gitlab.science.gc.ca/cmdw-spooki/spookipy/blob/master/doc/windmodulus.rst" class="fa fa-gitlab"> Edit on GitLab</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="windmodulus">
+<h1>WindModulus<a class="headerlink" href="#windmodulus" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="francais">
+<h2>Français<a class="headerlink" href="#francais" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="description">
+<h3>Description:<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h3>
+<p>Calcul du module du vent à partir de ses 2 composantes horizontales.</p>
+</div>
+<div class="section" id="methode-d-iteration">
+<h3>Méthode d’itération:<a class="headerlink" href="#methode-d-iteration" title="Permalink to this headline">¶</a></h3>
+<p>Point par point</p>
+</div>
+<div class="section" id="dependances">
+<h3>Dépendances:<a class="headerlink" href="#dependances" title="Permalink to this headline">¶</a></h3>
+<p>Composante UU du vent (selon l’axe des X sur la grille). Composante VV
+du vent (selon l’axe des Y sur la grille).</p>
+</div>
+<div class="section" id="resultat-s">
+<h3>Résultat(s):<a class="headerlink" href="#resultat-s" title="Permalink to this headline">¶</a></h3>
+<p>Module du vent, UV, dans les mêmes unités que ses dépendances.</p>
+</div>
+<div class="section" id="algorithme">
+<h3>Algorithme:<a class="headerlink" href="#algorithme" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>UV = (UU**2 + VV**2)**.5</p>
+</div></blockquote>
+</div>
+<div class="section" id="references">
+<h3>Références:<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h3>
+<p>Ne s’applique pas</p>
+</div>
+<div class="section" id="mots-cles">
+<h3>Mots clés:<a class="headerlink" href="#mots-cles" title="Permalink to this headline">¶</a></h3>
+<p>MÉTÉO/WEATHER, module/modulus, vent/wind, vitesse/speed</p>
+</div>
+<div class="section" id="usage">
+<h3>Usage:<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p>Exemple d’appel:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>python3
+import fstpy.all as fstpy
+import spookipy.all as spooki
+records=fstpy.StandardFileReader(SPOOKI_DIR + &quot;/pluginsRelatedStuff/WindModulusAndDirection/testsFiles/inputFile.std&quot;).to_pandas()
+s=spooki.WindModulus(records).compute()
+fstpy.StandardFileWriter(&quot;/tmp/&quot;+$USER+&quot;/outputFile.std&quot;,records).to_fst()
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="validation-des-resultats">
+<h3>Validation des résultats:<a class="headerlink" href="#validation-des-resultats" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="contacts">
+<h3>Contacts:<a class="headerlink" href="#contacts" title="Permalink to this headline">¶</a></h3>
+<p>Auteur(e) : <a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/User:Beaucheminm">Maryse
+Beauchemin</a></p>
+<p>Codé par : <a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/User:Fortinf">François
+Fortin</a></p>
+<p>Support :</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/CMDW">CMDW</a></p></li>
+<li><p><a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/CMDS">CMDS</a></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="english">
+<h2>English<a class="headerlink" href="#english" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>Description:<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Calculation of the wind modulus from its 2 horizontal components.</p>
+</div>
+<div class="section" id="iteration-method">
+<h3>Iteration method:<a class="headerlink" href="#iteration-method" title="Permalink to this headline">¶</a></h3>
+<p>Point-by-point</p>
+</div>
+<div class="section" id="dependencies">
+<h3>Dependencies:<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h3>
+<p>UU component of the wind (along the X axis of the grid). VV component of
+the wind (along the Y axis of the grid).</p>
+</div>
+<div class="section" id="result-s">
+<h3>Result(s):<a class="headerlink" href="#result-s" title="Permalink to this headline">¶</a></h3>
+<p>Wind modulus, UV, in the same units as the dependencies.</p>
+</div>
+<div class="section" id="algorithm">
+<h3>Algorithm:<a class="headerlink" href="#algorithm" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>UV = (UU**2 + VV**2)**.5</p>
+</div></blockquote>
+</div>
+<div class="section" id="reference">
+<h3>Reference:<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h3>
+<p>Does not apply</p>
+</div>
+<div class="section" id="keywords">
+<h3>Keywords:<a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h3>
+<p>MÉTÉO/WEATHER, module/modulus, vent/wind, vitesse/speed</p>
+</div>
+<div class="section" id="id2">
+<h3>Usage:<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p>Call example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>python3
+import fstpy.all as fstpy
+import spookipy.all as spooki
+records=fstpy.StandardFileReader(SPOOKI_DIR + &quot;/pluginsRelatedStuff/WindModulusAndDirection/testsFiles/inputFile.std&quot;).to_pandas()
+s=spooki.WindModulus(records).compute()
+fstpy.StandardFileWriter(&quot;/tmp/&quot;+$USER+&quot;/outputFile.std&quot;,records).to_fst()
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="id3">
+<h3>Contacts:<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>Author : <a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/User:Beaucheminm">Maryse
+Beauchemin</a></p>
+<p>Coded by : <a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/User:Fortinf">François
+Fortin</a></p>
+<p>Support :</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/CMDW">CMDW</a></p></li>
+<li><p><a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/CMDS">CMDS</a></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="id4">
+<h2>English<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<p><strong>Description:</strong></p>
+<ul class="simple">
+<li><p>Calculation of the wind modulus from its 2 horizontal components.</p></li>
+</ul>
+<p>*Iteration method:*</p>
+<ul class="simple">
+<li><p>Point-by-point</p></li>
+</ul>
+<p>*Dependencies:*</p>
+<ul class="simple">
+<li><p>UU component of the wind (along the X axis of the grid).</p></li>
+<li><p>VV component of the wind (along the Y axis of the grid).</p></li>
+</ul>
+<p>*Result(s):*</p>
+<ul class="simple">
+<li><p>Wind modulus, UV, in the same units as the dependencies.</p></li>
+</ul>
+<p>*Algorithm:*</p>
+<ul class="simple">
+<li><p>Calls the
+<a class="reference external" href="pluginWindModulusAndDirection.html">WindModulusAndDirection</a>
+plug-in.</p></li>
+<li><p>The wind having 2 components, calls the
+<a class="reference external" href="pluginVectorModulusAndDirection.html">VectorModulusAndDirection</a>
+plug-in.</p></li>
+<li><p>Conserves only the result of the modulus, MOD, into the UV variable.</p></li>
+</ul>
+<p>*Reference:*</p>
+<ul class="simple">
+<li><p>Does not apply</p></li>
+</ul>
+<p>*Keywords:*</p>
+<ul class="simple">
+<li><p>MÉTÉO/WEATHER, module/modulus, vent/wind, vitesse/speed</p></li>
+</ul>
+<p>*Usage:*</p>
+<p><strong>Call example:</strong></p>
+<div class="highlight-example notranslate"><div class="highlight"><pre><span></span>...
+spooki_run &quot;[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/WindModulusAndDirection/testsFiles/inputFile.std] &gt;&gt;
+            [WindModulus] &gt;&gt;
+            [WriterStd --output /tmp/$USER/outputFile.std]&quot;
+...
+</pre></div>
+</div>
+<p><strong>Results validation:</strong></p>
+<p><strong>Contacts:</strong></p>
+<ul class="simple">
+<li><p>Author : <a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/User:Beaucheminm">Maryse
+Beauchemin</a></p></li>
+<li><p>Coded by : <a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/User:Fortinf">François
+Fortin</a></p></li>
+<li><p>Support : <a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/CMDW">CMDW</a> /
+<a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/CMDS">CMDS</a></p></li>
+</ul>
+<p>Reference to</p>
+<p>Unit tests</p>
+<div class="line-block">
+<div class="line"><strong>Uses:</strong></div>
+<div class="line"><strong>Used by:</strong></div>
+</div>
+</div>
+<div class="section" id="module-spookipy.windmodulus.windmodulus">
+<span id="python-module"></span><h2>Python Module<a class="headerlink" href="#module-spookipy.windmodulus.windmodulus" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="spookipy.windmodulus.windmodulus.WindModulus">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">spookipy.windmodulus.windmodulus.</span></span><span class="sig-name descname"><span class="pre">WindModulus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spookipy.windmodulus.windmodulus.WindModulus" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="spookipy.windmodulus.windmodulus.WindModulus.compute">
+<span class="sig-name descname"><span class="pre">compute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#spookipy.windmodulus.windmodulus.WindModulus.compute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract method that should implement the plugin’s algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dataframe with the results</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spookipy.windmodulus.windmodulus.WindModulus.validate_input">
+<span class="sig-name descname"><span class="pre">validate_input</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#spookipy.windmodulus.windmodulus.WindModulus.validate_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that the plugin’s dataframe is not empty.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="plugin.html#spookipy.plugin.plugin.EmptyDataframeError" title="spookipy.plugin.plugin.EmptyDataframeError"><strong>EmptyDataframeError</strong></a> – The plugin’s dataframe is empty, no data to process.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="spookipy.windmodulus.windmodulus.WindModulusError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">spookipy.windmodulus.windmodulus.</span></span><span class="sig-name descname"><span class="pre">WindModulusError</span></span><a class="headerlink" href="#spookipy.windmodulus.windmodulus.WindModulusError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spookipy.windmodulus.windmodulus.wind_modulus">
+<span class="sig-prename descclassname"><span class="pre">spookipy.windmodulus.windmodulus.</span></span><span class="sig-name descname"><span class="pre">wind_modulus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spookipy.windmodulus.windmodulus.wind_modulus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the wind modulus from the wind components</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uu</strong> (<em>np.ndarray</em>) – U wind component</p></li>
+<li><p><strong>vv</strong> (<em>np.ndarray</em>) – V wind component</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>wind modulus</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="tutorial.html" class="btn btn-neutral float-right" title="Tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="windmax.html" class="btn btn-neutral float-left" title="WindMax" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Sébastien Fortier.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

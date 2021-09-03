@@ -1,0 +1,136 @@
+Français
+--------
+
+**Description:**
+
+-  Trouver la pression atmosphérique pour une surface de valeur fixe du
+   tourbillon potentiel d'Ertel (PV).
+
+\*Méthode d'itération:\*
+
+-  Colonne par colonne à partir du haut de l'atmosphère
+
+\*Dépendances:\*
+
+-  Composante du vent selon l'axe des X sur la grille, UU
+
+-  Composante du vent selon l'axe des Y sur la grille, VV
+
+-  Température de l'air, TT
+
+   | ***Note:*** : Assurez-vous de fournir à ce plugin les dépendances
+     ci-haut mentionnées ou alors, les résultats des
+   | plugins appelées par celui-ci (Voir la section "Ce plugin
+     utilise"). Pour plus de détails sur cet usage
+   | alternatif, voir la page de
+     `documentation. <https://wiki.cmc.ec.gc.ca/wiki/Spooki/Documentation/Description_g%C3%A9n%C3%A9rale_du_syst%C3%A8me#RefDependances>`__
+
+\*Résultat(s):\*
+
+-  Pression de la surface du tourbillon potentiel constant, PPVU (hPa)
+
+\*Algorithme:\*
+
+.. code:: example
+
+    Soit PV (1/s),     le tourbillon potentiel d'Ertel.
+    Soit PX (hPa),     la pression du modèle.
+    Soit TH (K),       la température potentielle.
+    Soit ThetaMax (K), la température potentielle maximale.
+    Soit PXTH (hPa),   la pression du ThetaMax.
+    Soit PPVU (hPa),   la pression de la surface du tourbillon potentiel constant.
+    Soit CoriolisSign, le signe du paramètre de Coriolis selon l'hémisphère nord ou sud.
+    Soit PVU,          les valeurs de PVU désirées.
+
+    ThetaMax = 380K
+    Initialiser les points de la matrice PPVU à -1.
+
+    Boucle sur les colonnes de la matrice (i * j):
+        Boucle sur les valeurs(p) de PVU désirées:
+            Boucle sur les niveaux de la colonne (k), en ignorant le premier et le dernier niveau :
+                Si ( TH(k) <= ThetaMax )
+                    Calculer PXTH (voir ci-bas)
+                Fin si
+
+                Si (CoriolisSign * PV(k) <= PVU(p))
+                    Calculer PPVU (voir ci-bas)
+                Fin si    
+            Fin de boucle sur les niveaux (k)
+
+            Si ( PPVU(p) = -1 )
+                PPVU(p) = PXTH
+            Fin si
+        Fin de boucle sur les valeurs de PVU (p)
+    Fin de boucle sur les colonnes
+
+    Calcul de PXTH:
+          Si ( abs (TH(k) - TH(k -1) < epsilon (10e-5) )
+                 :math:`\mathrm{ PXTH = PX_{k}}`
+         Sinon
+              :math:`\mathrm{ AAA = 1 / ( TH_{k} - TH_{k -1} )}`
+             
+    :math:`\mathrm{ PXTH = AAA * ( PX_{k} * ( ThetaMax - TH_{k - 1} )
+    + PX_{k -1} * ( TH_{k} - ThetaMax ) )}`
+         Fin si
+
+    Calcul de PPVU:
+       Si ( CoriolisSign \* ( PV(k) - PV(k - 1) ) >= 0 )
+              :math:`\mathrm{ PPVU_{p} = PX_{k}}`
+       Sinon
+              :math:`\mathrm{ AAA = 1 / ( PV_{k} - PV_{k - 1} )}`
+             
+    :math:`\mathrm{ WEIGHT = AAA * ( CoriolisSign * PVU_{p} - PV_{k -
+    1} )}`
+             
+    :math:`\mathrm{ WEIGHTMINUS = AAA * ( PV_{k} - CoriolisSign *
+    PVU_{p} )}`
+              :math:`\mathrm{ PPVU_{p} = PX_{k} * WEIGHT + PX_{k - 1} *
+    WEIGHTMINUS}`
+       Fin si
+       Si ( PPVU(p) < PXTH )
+              :math:`\mathrm{ PPVU_{p} = PXTH}`
+       Fin si
+
+**Réféfrences:**
+
+-  Code Fortran d'André Plante pressure\ :sub:`onpvsurface`.F90 et
+   mod\ :sub:`pv`.F90, git clone
+   `git@g.nosp@m.itla.nosp@m.b.sci.nosp@m.ence.nosp@m..gc.c.nosp@m.a <#>`__:cmdn:sub:`utils`/utilitaires.git
+
+\*Mots clés:\*
+
+-  MÉTÉO/WEATHER, PVU, tourbillon potentiel/potential vorticity,
+   tropopause dynamique/dynamic tropopause, température
+   potentielle/potential temperature
+
+\*Usage:\*
+
+**Exemple d'appel:**
+
+.. code:: example
+
+    ...
+    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/PressureOnConstantPotentialVorticity/testsFiles/inputFile.std] >>
+                [PressureOnConstantPotentialVorticity --PVU 2.0] >>
+                [WriterStd --output /tmp/$USER/outputFile.std]"
+    ...
+
+**Validation des résultats:**
+
+**Contacts:**
+
+-  Auteur(e) : `Simon
+   Prud'Homme <https://wiki.cmc.ec.gc.ca/wiki/User:Prudhommes>`__
+-  Codé par : `Simon
+   Prud'Homme <https://wiki.cmc.ec.gc.ca/wiki/User:Prudhommes>`__
+-  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
+   `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+
+Voir la référence à
+
+Tests unitaires
+
+| **Ce plugin utilise:**
+| **Ce plugin est utilisé par:**
+
+ 

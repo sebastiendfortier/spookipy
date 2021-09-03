@@ -1,0 +1,897 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Tutorial &mdash; spookipy 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-rendered-html.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Plugin" href="plugin.html" />
+    <link rel="prev" title="Creating the ssm package" href="ssm.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html">
+          
+
+          
+            
+            <img src="_static/spookipy_logo.jpg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Start here</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using spookipy in scripts or Jupyter Lab/Notebook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Creating the developpement environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html#getting-the-source-code">Getting the source code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html#testing">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html#building-documentation">Building documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ssm.html">Creating the ssm package</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorial</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#getting-and-manipulating-the-meta-data">Getting and manipulating the meta data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#get-a-dataframe-from-a-standard-file">Get a dataframe from a standard file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#get-a-dataframe-from-multiple-standard-files">Get a dataframe from multiple standard files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#see-the-contents-of-the-dataframe">See the contents of the dataframe</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#select-sub-sets-of-data">select sub-sets of data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#selecting-by-date-range">selecting by date range</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modify-meta-data">Modify meta data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reformatting-meta-data-for-other-types-or-structures">Reformatting meta data for other types or structures</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#working-with-data">Working with data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#getting-the-associated-data-for-each-record-in-the-dataframe">Getting the associated data for each record in the dataframe</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#performing-simple-calculations">Performing simple calculations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#wind-modulus">Wind Modulus</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wind-chill">Wind Chill</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#basic-statistics-for-each-record-in-a-dataframe">Basic statistics for each record in a dataframe</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#basic-statistics-for-each-column-of-3d-matrix">Basic statistics for each column of 3d matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#getting-groups-of-data">Getting groups of data</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#exporting-the-data">Exporting the data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#formats">Formats</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="plugin.html">Plugin</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Misc</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="LICENSE.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">spookipy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Tutorial</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://gitlab.science.gc.ca/cmdw-spooki/spookipy/blob/master/doc/tutorial.rst" class="fa fa-gitlab"> Edit on GitLab</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tutorial">
+<h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="getting-and-manipulating-the-meta-data">
+<h2>Getting and manipulating the meta data<a class="headerlink" href="#getting-and-manipulating-the-meta-data" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="get-a-dataframe-from-a-standard-file">
+<h3>Get a dataframe from a standard file<a class="headerlink" href="#get-a-dataframe-from-a-standard-file" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fstpy.all</span> <span class="k">as</span> <span class="nn">fstpy</span>
+<span class="c1"># method 1 - to_pandas with explicit instance</span>
+<span class="n">std_file</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">StandardFileReader</span><span class="p">(</span><span class="s1">&#39;/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std&#39;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">std_file</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+
+<span class="c1"># method 2 - to_pandas without explicit instance</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">StandardFileReader</span><span class="p">(</span><span class="s1">&#39;/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="get-a-dataframe-from-multiple-standard-files">
+<h3>Get a dataframe from multiple standard files<a class="headerlink" href="#get-a-dataframe-from-multiple-standard-files" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fstpy.all</span> <span class="k">as</span> <span class="nn">fstpy</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">StandardFileReader</span><span class="p">([</span><span class="s1">&#39;/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std&#39;</span><span class="p">,</span><span class="n">etc</span><span class="o">...</span><span class="p">])</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="see-the-contents-of-the-dataframe">
+<h3>See the contents of the dataframe<a class="headerlink" href="#see-the-contents-of-the-dataframe" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fstpy.all</span> <span class="k">as</span> <span class="nn">fstpy</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">StandardFileReader</span><span class="p">(</span><span class="s1">&#39;/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std&#39;</span><span class="p">,</span><span class="n">load_data</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">query</span><span class="o">=</span><span class="s1">&#39;nomvar==&quot;TT&quot;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<span class="c1"># show the last rows of the dataframe</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">tail</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-example notranslate"><div class="highlight"><pre><span></span>:    nomvar typvar  ...                                               path        grid
+: 80     TT      P  ...  /fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_...  3379277761
+: 81     TT      P  ...  /fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_...  3379277761
+: 82     TT      P  ...  /fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_...  3379277761
+: 83     TT      P  ...  /fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_...  3379277761
+: 84     TT      P  ...  /fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_...  3379277761
+:
+: [5 rows x 26 columns]
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fstpy.all</span> <span class="k">as</span> <span class="nn">fstpy</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">StandardFileReader</span><span class="p">(</span><span class="s1">&#39;/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<span class="c1"># show column names of the dataframe</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-example notranslate"><div class="highlight"><pre><span></span>: Index([&#39;nomvar&#39;, &#39;typvar&#39;, &#39;etiket&#39;, &#39;ni&#39;, &#39;nj&#39;, &#39;nk&#39;, &#39;dateo&#39;, &#39;ip1&#39;, &#39;ip2&#39;,
+:        &#39;ip3&#39;, &#39;deet&#39;, &#39;npas&#39;, &#39;datyp&#39;, &#39;nbits&#39;, &#39;grtyp&#39;, &#39;ig1&#39;, &#39;ig2&#39;, &#39;ig3&#39;,
+:        &#39;ig4&#39;, &#39;grid&#39;, &#39;datev&#39;, &#39;key&#39;, &#39;path&#39;, &#39;shape&#39;,
+:        &#39;file_modification_time&#39;, &#39;d&#39;],
+:       dtype=&#39;object&#39;)
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fstpy.all</span> <span class="k">as</span> <span class="nn">fstpy</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">StandardFileReader</span><span class="p">(</span><span class="s1">&#39;/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std&#39;</span><span class="p">,</span><span class="n">decode_metadata</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<span class="c1"># show the levels contained in the dataframe</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">level</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-example notranslate"><div class="highlight"><pre><span></span>0       0.997502
+1       0.992524
+2       0.986026
+3       0.977868
+4       0.968043
+...
+1869    0.000206
+1870    0.000128
+1871   -1.000000
+1872   -1.000000
+1873   -1.000000
+Name: level, Length: 1874, dtype: float32
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fstpy.all</span> <span class="k">as</span> <span class="nn">fstpy</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">StandardFileReader</span><span class="p">(</span><span class="s1">&#39;/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std&#39;</span><span class="p">,</span><span class="n">decode_metadata</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<span class="c1"># show the unique levels contained in the dataframe</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">level</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-example notranslate"><div class="highlight"><pre><span></span>[ 9.97502e-01  9.92524e-01  9.86026e-01  9.77868e-01  9.68043e-01
+  9.56665e-01  9.43925e-01  9.30004e-01  9.14966e-01  8.98642e-01
+  8.80856e-01  8.61601e-01  8.40901e-01  8.18815e-01  7.95438e-01
+  7.70904e-01  7.45386e-01  7.19089e-01  6.92242e-01  6.64956e-01
+  ...
+  1.57240e-02  1.31560e-02  1.08590e-02  8.82800e-03  7.05400e-03
+  5.53100e-03  4.24500e-03  3.18500e-03  2.33100e-03  1.66300e-03
+  1.15700e-03  7.83000e-04  5.14000e-04  3.28000e-04  2.06000e-04
+  1.28000e-04  6.00000e+00  1.00000e+01]
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fstpy.all</span> <span class="k">as</span> <span class="nn">fstpy</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">StandardFileReader</span><span class="p">(</span><span class="s1">&#39;/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<span class="c1"># show a subset of columns of the dataframe</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;nomvar&#39;</span><span class="p">,</span><span class="s1">&#39;typvar&#39;</span><span class="p">,</span><span class="s1">&#39;etiket&#39;</span><span class="p">,</span><span class="s1">&#39;ni&#39;</span><span class="p">,</span><span class="s1">&#39;nj&#39;</span><span class="p">,</span><span class="s1">&#39;nk&#39;</span><span class="p">,</span><span class="s1">&#39;dateo&#39;</span><span class="p">,</span><span class="s1">&#39;ip1&#39;</span><span class="p">,</span><span class="s1">&#39;ip2&#39;</span><span class="p">,</span><span class="s1">&#39;ip3&#39;</span><span class="p">]])</span>
+</pre></div>
+</div>
+<div class="highlight-example notranslate"><div class="highlight"><pre><span></span> nomvar typvar     etiket    ni    nj  nk      dateo       ip1    ip2  ip3
+0        ^^      X  R1_V710_N     1  1081   1  442998800     50460  53326    4
+1        ^^      X  R1_V710_N     1  1078   1  442998800     35132  56748    1
+2        ^^      X  R1_V710_N     1  1082   1  442998800     33792  77761    1
+3        ZZ      P  R1_V710_N  1108  1082   1  442998800  95791989      6    0
+4        ZZ      P  R1_V710_N  1108  1082   1  442998800  94486466      6    0
+...     ...    ...        ...   ...   ...  ..        ...       ...    ...  ...
+1869     &gt;&gt;      X  R1_V710_N  1104     1   1  442998800     35132  56748    1
+1870     &gt;&gt;      X  R1_V710_N  1108     1   1  442998800     33792  77761    1
+1871     5P      P  R1_V710_N  1104  1078   1  442998800         0      6    0
+1872     !!      X  R1_V710_N     3   175   1          0     33792  77761    0
+1873     !!      X  R1_V710_N     3   175   1          0     35132  56748    0
+
+[1874 rows x 10 columns]
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fstpy.all</span> <span class="k">as</span> <span class="nn">fstpy</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">StandardFileReader</span><span class="p">(</span><span class="s1">&#39;/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<span class="c1"># show a voir like output of the dataframe</span>
+<span class="n">fstpy</span><span class="o">.</span><span class="n">voir</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-example notranslate"><div class="highlight"><pre><span></span>:   nomvar typvar     etiket    ni    nj  nk               dateo       ip1    ip2  ip3  deet  npas datyp  nbits grtyp    ig1    ig2    ig3    ig4     level
+: 0     ZZ      P  R1_V710_N  1108  1082   1 2020-07-14 12:00:00  95791989      6    0   300    72     f     12     Z  33792  77761      1      0  0.037157  hy
+: 1     ZZ      P  R1_V710_N  1108  1082   1 2020-07-14 12:00:00  94486466      6    0   300    72     f     12     Z  33792  77761      1      0  0.114626  hy
+: 2     ^^      X  R1_V710_N     1  1081   1 2020-07-14 12:00:00     50460  53326    4     0     0     E     32     E   1470    560  54400  46560        -1
+: 3     ^^      X  R1_V710_N     1  1078   1 2020-07-14 12:00:00     35132  56748    1     0     0     E     32     E   1470    560  54400  46560        -1
+: 4     ^^      X  R1_V710_N     1  1082   1 2020-07-14 12:00:00     33792  77761    1     0     0     E     32     E   1470    560  54400  46560        -1
+</pre></div>
+</div>
+</div>
+<div class="section" id="select-sub-sets-of-data">
+<h3>select sub-sets of data<a class="headerlink" href="#select-sub-sets-of-data" title="Permalink to this headline">¶</a></h3>
+<p><strong>Note</strong>: fstpy.select is a wrapper for pandas.DataFrame.query method</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fstpy.all</span> <span class="k">as</span> <span class="nn">fstpy</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">StandardFileReader</span><span class="p">(</span><span class="s1">&#39;/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std&#39;</span><span class="p">,</span><span class="n">load_data</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<span class="c1"># select TT</span>
+<span class="n">sel_tt_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="s1">&#39;nomvar==&quot;TT&quot;&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sel_tt_df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-example notranslate"><div class="highlight"><pre><span></span>:   nomvar typvar     etiket  ...      datev        grid  file_modification_time
+: 0     TT      P  R1_V710_N  ...  443004200  3379277761     2021-01-26 09:31:54
+: 1     TT      P  R1_V710_N  ...  443004200  3379277761     2021-01-26 09:31:54
+: 2     TT      P  R1_V710_N  ...  443004200  3379277761     2021-01-26 09:31:54
+: 3     TT      P  R1_V710_N  ...  443004200  3379277761     2021-01-26 09:31:54
+: 4     TT      P  R1_V710_N  ...  443004200  3379277761     2021-01-26 09:31:54
+:
+: [5 rows x 26 columns]
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fstpy.all</span> <span class="k">as</span> <span class="nn">fstpy</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">StandardFileReader</span><span class="p">(</span><span class="s1">&#39;/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<span class="c1"># select UU and VV</span>
+<span class="n">sel_uuvv_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="s1">&#39;nomvar in [&quot;UU&quot;,&quot;VV&quot;]&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sel_uuvv_df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sel_uuvv_df</span><span class="o">.</span><span class="n">tail</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-example notranslate"><div class="highlight"><pre><span></span>  nomvar typvar     etiket  ...  file_modification_time        grid            shape
+0     VV      P  R1_V710_N  ...     2021-01-26 09:31:54  3379277761  (1108, 1082, 1)
+1     VV      P  R1_V710_N  ...     2021-01-26 09:31:54  3379277761  (1108, 1082, 1)
+2     VV      P  R1_V710_N  ...     2021-01-26 09:31:54  3379277761  (1108, 1082, 1)
+3     VV      P  R1_V710_N  ...     2021-01-26 09:31:54  3379277761  (1108, 1082, 1)
+4     VV      P  R1_V710_N  ...     2021-01-26 09:31:54  3379277761  (1108, 1082, 1)
+
+[5 rows x 26 columns]
+nomvar typvar  ...        grid            shape
+165     UU      P  ...  3379277761  (1108, 1082, 1)
+166     UU      P  ...  3379277761  (1108, 1082, 1)
+167     UU      P  ...  3379277761  (1108, 1082, 1)
+168     UU      P  ...  3379277761  (1108, 1082, 1)
+169     UU      P  ...  3379277761  (1108, 1082, 1)
+
+[5 rows x 26 columns]
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fstpy.all</span> <span class="k">as</span> <span class="nn">fstpy</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">StandardFileReader</span><span class="p">(</span><span class="s1">&#39;/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<span class="c1"># select UU and VV with ip2 of 6</span>
+<span class="n">sel_uuvv6_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="s1">&#39;(nomvar in [&quot;UU&quot;,&quot;VV&quot;]) and (ip2==6)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sel_uuvv6_df</span><span class="o">.</span><span class="n">tail</span><span class="p">()[[</span><span class="s1">&#39;nomvar&#39;</span><span class="p">,</span><span class="s1">&#39;ip2&#39;</span><span class="p">]])</span>
+</pre></div>
+</div>
+<div class="highlight-example notranslate"><div class="highlight"><pre><span></span>:     nomvar  ip2
+: 165     UU    6
+: 166     UU    6
+: 167     UU    6
+: 168     UU    6
+: 169     UU    6
+</pre></div>
+</div>
+</div>
+<div class="section" id="selecting-by-date-range">
+<h3>selecting by date range<a class="headerlink" href="#selecting-by-date-range" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span><span class="p">,</span><span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">fstpy.all</span> <span class="k">as</span> <span class="nn">fstpy</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">StandardFileReader</span><span class="p">(</span><span class="s1">&#39;/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std&#39;</span><span class="p">,</span><span class="n">decode_metadata</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<span class="n">start_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span>
+<span class="n">end_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">start_date</span><span class="p">,</span><span class="n">end_date</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;date_of_observation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date_of_observation&#39;</span><span class="p">])</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;date_of_observation&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">inclusive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">sub_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sub_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;date_of_observation&#39;</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="modify-meta-data">
+<h3>Modify meta data<a class="headerlink" href="#modify-meta-data" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fstpy.all</span> <span class="k">as</span> <span class="nn">fstpy</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">StandardFileReader</span><span class="p">(</span><span class="s1">&#39;/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<span class="c1"># select TT</span>
+<span class="n">sel_tt_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="s1">&#39;nomvar==&quot;TT&quot;&#39;</span><span class="p">)</span>
+<span class="c1"># change nomvar from TT to TTI</span>
+<span class="n">zapped_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">zap</span><span class="p">(</span><span class="n">sel_tt_df</span><span class="p">,</span><span class="n">nomvar</span><span class="o">=</span><span class="s1">&#39;TTI&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">zapped_df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-example notranslate"><div class="highlight"><pre><span></span>:   nomvar typvar  ...      key            shape
+: 0    TTI      P  ...  1263617  (1108, 1082, 1)
+: 1    TTI      P  ...   222209  (1108, 1082, 1)
+: 2    TTI      P  ...  1092609  (1108, 1082, 1)
+: 3    TTI      P  ...  1093633  (1108, 1082, 1)
+: 4    TTI      P  ...    23553  (1108, 1082, 1)
+:
+: [5 rows x 26 columns]
+</pre></div>
+</div>
+</div>
+<div class="section" id="reformatting-meta-data-for-other-types-or-structures">
+<h3>Reformatting meta data for other types or structures<a class="headerlink" href="#reformatting-meta-data-for-other-types-or-structures" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fstpy.all</span> <span class="k">as</span> <span class="nn">fstpy</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">StandardFileReader</span><span class="p">(</span><span class="s1">&#39;/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std&#39;</span><span class="p">,</span><span class="n">decode_metadata</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<span class="c1"># changind the column names</span>
+<span class="n">translation</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;nomvar&#39;</span><span class="p">:</span><span class="s1">&#39;fieldName&#39;</span><span class="p">,</span><span class="s1">&#39;etiket&#39;</span><span class="p">:</span><span class="s1">&#39;pdsLabel&#39;</span><span class="p">,</span><span class="s1">&#39;dateo&#39;</span><span class="p">:</span><span class="s1">&#39;dateOfObservation&#39;</span><span class="p">}</span>
+<span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">translation</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;fieldName&#39;</span><span class="p">,</span><span class="s1">&#39;pdsLabel&#39;</span><span class="p">,</span><span class="s1">&#39;dateOfObservation&#39;</span><span class="p">]])</span>
+</pre></div>
+</div>
+<div class="highlight-example notranslate"><div class="highlight"><pre><span></span> fieldName   pdsLabel  dateOfObservation
+0           QR  R1_V710_N          442998800
+1           QR  R1_V710_N          442998800
+2           QR  R1_V710_N          442998800
+3           QR  R1_V710_N          442998800
+4           QR  R1_V710_N          442998800
+...        ...        ...                ...
+1869        ES  R1_V710_N          442998800
+1870        ES  R1_V710_N          442998800
+1871        ^^  R1_V710_N          442998800
+1872        &gt;&gt;  R1_V710_N          442998800
+1873        !!  R1_V710_N                  0
+
+[1874 rows x 3 columns]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="working-with-data">
+<h2>Working with data<a class="headerlink" href="#working-with-data" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="getting-the-associated-data-for-each-record-in-the-dataframe">
+<h3>Getting the associated data for each record in the dataframe<a class="headerlink" href="#getting-the-associated-data-for-each-record-in-the-dataframe" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fstpy.all</span> <span class="k">as</span> <span class="nn">fstpy</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">StandardFileReader</span><span class="p">(</span><span class="s1">&#39;/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std&#39;</span><span class="p">,</span><span class="n">decode_metadata</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<span class="c1"># we don&#39;t want to get all the data so lets get a subset</span>
+<span class="n">uuvv_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="s1">&#39;(nomvar in [&quot;UU&quot;,&quot;VV&quot;]) and (surface==True)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">uuvv_df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+<span class="n">tt_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="s1">&#39;(nomvar==&quot;TT&quot;) and (surface==True)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tt_df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+<span class="c1"># get the data for our new dataframes</span>
+<span class="c1"># after this operation the &#39;d&#39; column of each dataframe contains a numpy ndarray</span>
+<span class="n">uuvv_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">uuvv_df</span><span class="p">)</span>
+<span class="n">tt_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">tt_df</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tt_df</span><span class="p">[[</span><span class="s1">&#39;nomvar&#39;</span><span class="p">,</span><span class="s1">&#39;d&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-example notranslate"><div class="highlight"><pre><span></span>  nomvar typvar     etiket    ni  ...  zapped  ip2_dec      datev  level
+0     VV      P  R1_V710_N  1108  ...   False      6.0  443004200   10.0
+1     UU      P  R1_V710_N  1108  ...   False      6.0  443004200   10.0
+
+[2 rows x 51 columns]
+  nomvar typvar     etiket    ni  ...  zapped  ip2_dec      datev  level
+0     TT      P  R1_V710_N  1108  ...   False      6.0  443004200    1.5
+
+[1 rows x 51 columns]
+  nomvar                                                  d
+0     TT  [[26.068878, 26.084503, 26.108917, 26.167511, ...
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="performing-simple-calculations">
+<h2>Performing simple calculations<a class="headerlink" href="#performing-simple-calculations" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="wind-modulus">
+<h3>Wind Modulus<a class="headerlink" href="#wind-modulus" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fstpy.all</span> <span class="k">as</span> <span class="nn">fstpy</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">StandardFileReader</span><span class="p">(</span><span class="s1">&#39;/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std&#39;</span><span class="p">,</span><span class="n">decode_metadata</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<span class="n">uuvv_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="s1">&#39;(nomvar in [&quot;UU&quot;,&quot;VV&quot;]) and (surface==True)&#39;</span><span class="p">)</span>
+<span class="n">uuvv_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">uuvv_df</span><span class="p">)</span>
+<span class="c1"># first we need the wind modulus (we assume that we have only 1 level in each dataframe)</span>
+<span class="c1"># let&#39;s separate uu and vv from uuvv_df</span>
+<span class="n">uu_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">uuvv_df</span><span class="p">,</span><span class="s1">&#39;nomvar==&quot;UU&quot;&#39;</span><span class="p">)</span>
+<span class="n">vv_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">uuvv_df</span><span class="p">,</span><span class="s1">&#39;nomvar==&quot;VV&quot;&#39;</span><span class="p">)</span>
+
+<span class="c1">#let&#39;s create a record to hold the result and change the nomvar accordingly</span>
+<span class="n">uv_df</span> <span class="o">=</span> <span class="n">vv_df</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">uv_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">zap</span><span class="p">(</span><span class="n">uv_df</span><span class="p">,</span><span class="n">nomvar</span><span class="o">=</span><span class="s1">&#39;UV&#39;</span><span class="p">)</span>
+
+<span class="c1"># compute</span>
+<span class="n">uu</span> <span class="o">=</span> <span class="p">(</span><span class="n">uu_df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;d&#39;</span><span class="p">])</span> <span class="c1">#at[0,&#39;d&#39;] gets the first row of data from the dataframe</span>
+<span class="n">vv</span> <span class="o">=</span> <span class="p">(</span><span class="n">vv_df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;d&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;UU&#39;</span><span class="p">,</span><span class="n">uu</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;VV&#39;</span><span class="p">,</span><span class="n">vv</span><span class="p">)</span>
+
+<span class="c1"># the algorithm, after this uv_df contains our result for the wind modulus in knots</span>
+<span class="n">uv_df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;d&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">uu</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">vv</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mf">.5</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">uv_df</span><span class="p">[[</span><span class="s1">&#39;nomvar&#39;</span><span class="p">,</span><span class="s1">&#39;d&#39;</span><span class="p">]])</span>
+</pre></div>
+</div>
+<div class="highlight-example notranslate"><div class="highlight"><pre><span></span>UU [[-6.270401  -6.6483307 -6.9207916 ... -2.714737  -3.1170807 -3.4950104]
+ [-6.3768463 -6.7743073 -7.084854  ... -2.951065  -3.0487213 -3.2401276]
+ [-6.4569244 -6.8631744 -6.772354  ... -2.9207916 -2.982315  -3.0077057]
+ ...
+ [-3.9051666 -4.495987  -3.2821198 ... 16.506943  18.963974  18.807724 ]
+ [-4.511612  -4.9618073 -4.6668854 ... 19.469833  19.06163   18.809677 ]
+ [-5.322159  -5.699112  -5.058487  ... 19.53624   19.284286  18.87413  ]]
+VV [[18.56651    19.05479    19.56065    ... 16.365337   15.879009
+  15.267681  ]
+ [18.363384   18.89854    19.451275   ... 18.0919     17.53526
+  16.802837  ]
+ [18.183697   18.763775   18.240337   ... 18.511822   19.107525
+  18.328228  ]
+ ...
+ [ 3.8301811   0.42588425 -1.4159126  ... -1.7069283  -2.0233345
+  -1.9432564 ]
+ [ 3.7754936   0.9708061  -1.281147   ... -2.1014595  -2.0487251
+  -2.1034126 ]
+ [ 3.3067436   1.390728   -0.0858345  ... -2.0838814  -2.0663033
+  -2.3026314 ]]
+  nomvar                                                  d
+0     UV  [[19.596766, 20.181313, 20.748888, 21.276947, ...
+</pre></div>
+</div>
+</div>
+<div class="section" id="wind-chill">
+<h3>Wind Chill<a class="headerlink" href="#wind-chill" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fstpy.all</span> <span class="k">as</span> <span class="nn">fstpy</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">StandardFileReader</span><span class="p">(</span><span class="s1">&#39;/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std&#39;</span><span class="p">,</span><span class="n">decode_metadata</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<span class="n">uuvv_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="s1">&#39;(nomvar in [&quot;UU&quot;,&quot;VV&quot;]) and (surface==True)&#39;</span><span class="p">)</span>
+<span class="n">uuvv_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">uuvv_df</span><span class="p">)</span>
+<span class="n">uu_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">uuvv_df</span><span class="p">,</span><span class="s1">&#39;nomvar==&quot;UU&quot;&#39;</span><span class="p">)</span>
+<span class="n">vv_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">uuvv_df</span><span class="p">,</span><span class="s1">&#39;nomvar==&quot;VV&quot;&#39;</span><span class="p">)</span>
+<span class="n">uv_df</span> <span class="o">=</span> <span class="n">vv_df</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">uv_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">zap</span><span class="p">(</span><span class="n">uv_df</span><span class="p">,</span><span class="n">nomvar</span><span class="o">=</span><span class="s1">&#39;UV&#39;</span><span class="p">)</span>
+<span class="n">uu</span> <span class="o">=</span> <span class="p">(</span><span class="n">uu_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;d&#39;</span><span class="p">])</span> <span class="c1">#iloc[0][&#39;d&#39;] gets the first row of data from the dataframe</span>
+<span class="n">vv</span> <span class="o">=</span> <span class="p">(</span><span class="n">vv_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;d&#39;</span><span class="p">])</span>
+<span class="n">uv_df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;d&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">uu</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">vv</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mf">.5</span>
+<span class="n">tt_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="s1">&#39;(nomvar==&quot;TT&quot;) and (surface==True)&#39;</span><span class="p">)</span>
+<span class="n">tt_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">uuvv_df</span><span class="p">)</span>
+<span class="c1"># at this point we have uv_df and tt_df but uv_df is in knots</span>
+<span class="c1"># we need to do a unit conversion on uv_df to get it in kph</span>
+<span class="c1"># print(UNITS) to get a list of units</span>
+<span class="n">uv_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">unit_convert</span><span class="p">(</span><span class="n">uv_df</span><span class="p">,</span><span class="s1">&#39;kilometer_per_hour&#39;</span><span class="p">)</span>
+
+<span class="c1"># create a record to hold wind chill reseult</span>
+<span class="n">re_df</span> <span class="o">=</span> <span class="n">uv_df</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">re_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">zap</span><span class="p">(</span><span class="n">re_df</span><span class="p">,</span> <span class="n">nomvar</span><span class="o">=</span><span class="s1">&#39;RE&#39;</span><span class="p">)</span>
+
+<span class="c1"># compute</span>
+<span class="n">tt</span> <span class="o">=</span> <span class="p">(</span><span class="n">tt_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;d&#39;</span><span class="p">])</span>
+<span class="n">uv</span> <span class="o">=</span> <span class="p">(</span><span class="n">uv_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;d&#39;</span><span class="p">])</span>
+
+<span class="c1"># the algorithm, after this re_df contains our result for the wind chill in celsius</span>
+<span class="n">re_df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;d&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span> <span class="p">(</span><span class="n">tt</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">uv</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">),</span> <span class="mf">13.12</span> <span class="o">+</span> <span class="mf">0.6215</span> <span class="o">*</span> <span class="n">tt</span> <span class="o">+</span> <span class="p">(</span> <span class="mf">0.3965</span> <span class="o">*</span> <span class="n">tt</span> <span class="o">-</span> <span class="mf">11.37</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span> <span class="n">uv</span><span class="o">**</span><span class="mf">0.16</span> <span class="p">),</span> <span class="n">tt</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">re_df</span><span class="o">.</span><span class="n">head</span><span class="p">()[[</span><span class="s1">&#39;nomvar&#39;</span><span class="p">,</span><span class="s1">&#39;d&#39;</span><span class="p">]])</span>
+</pre></div>
+</div>
+<div class="highlight-example notranslate"><div class="highlight"><pre><span></span>:   nomvar                                                  d
+: 0     RE  [[18.566509246826172, 19.054790496826172, 19.5...
+</pre></div>
+</div>
+</div>
+<div class="section" id="basic-statistics-for-each-record-in-a-dataframe">
+<h3>Basic statistics for each record in a dataframe<a class="headerlink" href="#basic-statistics-for-each-record-in-a-dataframe" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fstpy.all</span> <span class="k">as</span> <span class="nn">fstpy</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="c1"># read</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">StandardFileReader</span><span class="p">(</span><span class="s1">&#39;/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="s1">&#39;nomvar==&quot;TT&quot;&#39;</span><span class="p">)</span>
+
+<span class="c1">#load_data</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># function to calculate stats on each row of the dataframe</span>
+<span class="c1"># function exists in std.standardfile</span>
+<span class="k">def</span> <span class="nf">compute_basic_stats</span><span class="p">(</span><span class="n">df</span><span class="p">:</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; compute for each row in a datarfame, min, max, mean, standard_deviation and the 2d indice of min and max&quot;&quot;&quot;</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;min&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;max&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;std&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;min_pos&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;max_pos&#39;</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;mean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;d&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;std&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;d&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;min&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;d&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;max&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;d&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="c1"># index (i,j) of min in record</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;min_pos&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;d&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">argmin</span><span class="p">(),</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;ni&#39;</span><span class="p">],</span><span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;nj&#39;</span><span class="p">]))</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;min_pos&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;min_pos&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;min_pos&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># index (i,j) of max in record</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;max_pos&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;d&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">argmax</span><span class="p">(),</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;ni&#39;</span><span class="p">],</span><span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;nj&#39;</span><span class="p">]))</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;max_pos&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;max_pos&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;max_pos&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span>
+
+<span class="c1"># now the dataframe contains extra columns [mean,std,min,max,min_pos,max_pos] with stats for each record in the dataframe</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">compute_basic_stats</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-example notranslate"><div class="highlight"><pre><span></span>:   nomvar typvar     etiket    ni  ...     mean      std      min_pos     max_pos
+: 0     TT      P  R1_V710_N  1108  ...  9.62213  7.16631   (905, 751)  (631, 280)
+: 1     TT      P  R1_V710_N  1108  ... -9.47461  8.59939    (131, 66)  (818, 860)
+: 2     TT      P  R1_V710_N  1108  ... -41.0226  3.84673  (1009, 231)  (815, 967)
+: 3     TT      P  R1_V710_N  1108  ...  -43.062   3.9307    (655, 96)  (814, 782)
+: 4     TT      P  R1_V710_N  1108  ... -40.4699  5.70201   (413, 863)  (108, 244)
+:
+: [5 rows x 32 columns]
+</pre></div>
+</div>
+</div>
+<div class="section" id="basic-statistics-for-each-column-of-3d-matrix">
+<h3>Basic statistics for each column of 3d matrix<a class="headerlink" href="#basic-statistics-for-each-column-of-3d-matrix" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fstpy.all</span> <span class="k">as</span> <span class="nn">fstpy</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="c1"># read</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">StandardFileReader</span><span class="p">(</span><span class="s1">&#39;/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+
+<span class="c1"># get TT</span>
+<span class="n">tt_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="s1">&#39;nomvar==&quot;TT&quot;&#39;</span><span class="p">)</span>
+
+<span class="c1">#load_data</span>
+<span class="n">tt_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">tt_df</span><span class="p">)</span>
+
+<span class="c1"># flatten arrays of the dataframe since second dimension is&#39;nt necessary</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tt_df</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+    <span class="n">tt_df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;d&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tt_df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;d&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+<span class="c1">#get a 3d array of TT</span>
+<span class="n">array_3d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">tt_df</span><span class="p">[</span><span class="s1">&#39;d&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">())</span>
+
+<span class="c1"># gets the min value of every column</span>
+<span class="n">min_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">array_3d</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># gets the max value of every column</span>
+<span class="n">max_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">array_3d</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># gets the standard deviation value of every column</span>
+<span class="n">std_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">array_3d</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># gets the mean value of every column</span>
+<span class="n">mean_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">array_3d</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># creates a 1 row dataframe based on a model dataframe</span>
+<span class="k">def</span> <span class="nf">create_result_df</span><span class="p">(</span><span class="n">df</span><span class="p">:</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">nomvar</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">operation_name</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span>  <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="n">res_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">create_1row_df_from_model</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">res_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">zap</span><span class="p">(</span><span class="n">res_df</span><span class="p">,</span> <span class="n">nomvar</span><span class="o">=</span><span class="n">nomvar</span><span class="p">,</span> <span class="n">etiket</span><span class="o">=</span><span class="n">operation_name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res_df</span>
+
+
+<span class="c1"># create result dataframes</span>
+<span class="n">min_df</span> <span class="o">=</span> <span class="n">create_result_df</span><span class="p">(</span><span class="n">tt_df</span><span class="p">,</span><span class="s1">&#39;MIN&#39;</span><span class="p">,</span><span class="s1">&#39;MINIMUM&#39;</span><span class="p">)</span>
+<span class="n">max_df</span> <span class="o">=</span> <span class="n">create_result_df</span><span class="p">(</span><span class="n">tt_df</span><span class="p">,</span><span class="s1">&#39;MAX&#39;</span><span class="p">,</span><span class="s1">&#39;MAXIMUM&#39;</span><span class="p">)</span>
+<span class="n">std_df</span> <span class="o">=</span> <span class="n">create_result_df</span><span class="p">(</span><span class="n">tt_df</span><span class="p">,</span><span class="s1">&#39;STD&#39;</span><span class="p">,</span><span class="s1">&#39;STDDEV&#39;</span><span class="p">)</span>
+<span class="n">mean_df</span> <span class="o">=</span> <span class="n">create_result_df</span><span class="p">(</span><span class="n">tt_df</span><span class="p">,</span><span class="s1">&#39;MEAN&#39;</span><span class="p">,</span><span class="s1">&#39;AVERAGE&#39;</span><span class="p">)</span>
+
+<span class="c1"># assign resulting arrays to the dataframes</span>
+<span class="c1"># .at gets the row at index in a dataframe, we have 1 row dataframes in each case and our arrays are simple 2d result arrays</span>
+<span class="n">min_df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;d&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">min_arr</span>
+<span class="n">max_df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;d&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_arr</span>
+<span class="n">std_df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;d&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">std_arr</span>
+<span class="n">mean_df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;d&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mean_arr</span>
+
+<span class="c1"># combine all results into a single dataframe</span>
+<span class="n">res_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">min_df</span><span class="p">,</span><span class="n">max_df</span><span class="p">,</span><span class="n">std_df</span><span class="p">,</span><span class="n">mean_df</span><span class="p">],</span><span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">res_df</span><span class="o">.</span><span class="n">to_string</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-example notranslate"><div class="highlight"><pre><span></span>:   nomvar typvar   etiket    ni    nj  nk      dateo       ip1  ip2  ip3  deet  npas  datyp  nbits grtyp    ig1    ig2  ig3  ig4                                                    path      datev   key                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    d        grid file_modification_time            shape
+: 0    MIN      P  MINIMUM  1108  1082   1  442998800  95178882    6    0   300    72    134     16     Z  33792  77761    1    0  /fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std  443004200  None                                                                   [-78.92189, -78.9592, -78.99924, -79.03244, -79.056854, -79.079315, -79.09396, -79.11447, -79.13791, -79.1633, -79.19357, -79.25412, -79.32443, -79.38791, -79.451385, -79.49631, -79.52463, -79.54025, -79.55295, -79.58029, -79.616425, -79.66916, -79.732635, -79.79904, -79.860565, -79.91916, -79.97287, -80.02463, -80.07248, -80.1174, -80.15256, -80.18869, -80.229706, -80.263885, -80.29318, -80.32541, -80.351776, -80.37814, -80.40451, -80.43283, -80.46408, -80.49826, -80.53732, -80.57248, -80.60275, -80.62619, -80.63986, -80.64377, -80.635956, -80.619354, -80.603226, -80.61397, -80.61592, -80.606155, -80.61447, -80.619354, -80.60959, -80.59299, -80.576385, -80.56564, -80.55002, -80.52463, -80.48361, -80.431854, -80.372284, -80.30783, -80.321976, -80.3542, -80.38643, -80.41963, -80.45772, -80.50264, -80.54854, -80.59053, -80.62471, -80.65889, -80.70772, -80.78096, -80.864944, -80.927444, -80.94893, -80.92842, -80.89424, -80.86299, -80.84639, -80.853226, -80.86104, -80.86104, -80.8669, -80.87862, -80.896194, -80.9294, -80.97334, -81.02217, -81.07686, -81.13545, -81.196976, -81.26338, -81.32979, -81.39229, ...]  3379277761                   None  (1108, 1082, 1)
+: 0    MAX      P  MAXIMUM  1108  1082   1  442998800  95178882    6    0   300    72    134     16     Z  33792  77761    1    0  /fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std  443004200  None                                                                                                             [26.068878, 26.084503, 26.108917, 26.167511, 26.257141, 26.315735, 26.308136, 26.211456, 25.935852, 25.399933, 24.629425, 24.08255, 23.844269, 23.775696, 23.76593, 23.769073, 23.780792, 23.802277, 24.026886, 24.79132, 25.70169, 26.218292, 26.405792, 26.394073, 26.24173, 26.037415, 25.847198, 25.694855, 25.592316, 25.583527, 25.693878, 25.904602, 26.14093, 26.280792, 26.328644, 26.313995, 26.299347, 26.30597, 26.320618, 26.318878, 26.283722, 26.224152, 26.167511, 26.140167, 26.090149, 25.971008, 25.77179, 25.49759, 25.252472, 25.056183, 24.901886, 24.773956, 24.689972, 24.68509, 24.772003, 24.931183, 25.116516, 25.27298, 25.36966, 25.382355, 25.390167, 25.412628, 25.364777, 25.199738, 24.9263, 24.71048, 24.62259, 24.729034, 25.169464, 25.765167, 26.27591, 26.45169, 26.317902, 25.990753, 25.506378, 24.945831, 24.410675, 24.064972, 23.92511, 23.90384, 23.918488, 23.944855, 24.023743, 24.14212, 24.317902, 24.632141, 25.02298, 25.401886, 25.559113, 25.5513, 25.448761, 25.335266, 25.23587, 25.163605, 25.118683, 25.095032, 25.081573, 25.052277, 24.986633, 24.863586, ...]  3379277761                   None  (1108, 1082, 1)
+: 0    STD      P   STDDEV  1108  1082   1  442998800  95178882    6    0   300    72    134     16     Z  33792  77761    1    0  /fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std  443004200  None                                                                                                                                [34.22977, 34.22602, 34.22484, 34.229103, 34.237286, 34.243885, 34.238552, 34.22126, 34.169865, 34.090595, 34.013687, 33.979652, 33.982372, 33.98839, 34.000988, 34.006035, 34.00653, 34.002956, 34.018955, 34.084297, 34.177204, 34.258194, 34.301727, 34.314342, 34.31075, 34.297604, 34.27965, 34.25857, 34.23795, 34.23012, 34.24451, 34.275784, 34.307976, 34.33188, 34.338326, 34.332478, 34.326862, 34.324238, 34.324715, 34.327267, 34.327152, 34.32214, 34.315323, 34.313572, 34.30869, 34.295338, 34.27449, 34.24837, 34.22067, 34.19538, 34.177017, 34.161922, 34.15302, 34.15831, 34.170414, 34.185104, 34.198624, 34.21237, 34.224995, 34.23313, 34.231167, 34.21853, 34.203033, 34.1827, 34.160732, 34.156326, 34.170128, 34.20103, 34.251003, 34.30613, 34.349556, 34.369537, 34.358547, 34.31719, 34.24424, 34.167507, 34.13415, 34.131977, 34.15164, 34.178402, 34.19677, 34.202263, 34.20206, 34.197693, 34.19628, 34.218697, 34.256077, 34.29766, 34.3214, 34.329494, 34.327774, 34.33234, 34.339035, 34.3427, 34.341774, 34.33401, 34.31786, 34.29769, 34.275074, 34.250896, ...]  3379277761                   None  (1108, 1082, 1)
+: 0   MEAN      P  AVERAGE  1108  1082   1  442998800  95178882    6    0   300    72    134     16     Z  33792  77761    1    0  /fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std  443004200  None  [-26.538721, -26.543379, -26.546425, -26.546188, -26.542845, -26.53976, -26.544678, -26.557447, -26.594276, -26.649767, -26.701962, -26.72356, -26.721125, -26.717592, -26.71, -26.707247, -26.707603, -26.709988, -26.69944, -26.657293, -26.597906, -26.54439, -26.515244, -26.506212, -26.507097, -26.514818, -26.526806, -26.541588, -26.55631, -26.562681, -26.553864, -26.53313, -26.51206, -26.496609, -26.493168, -26.498043, -26.502571, -26.50523, -26.505661, -26.504059, -26.503473, -26.506207, -26.511078, -26.512217, -26.51534, -26.524021, -26.537653, -26.554794, -26.573309, -26.59061, -26.603525, -26.614422, -26.621218, -26.618534, -26.61148, -26.602444, -26.594223, -26.585602, -26.577393, -26.571579, -26.572733, -26.581533, -26.591978, -26.605179, -26.61912, -26.620504, -26.609562, -26.587952, -26.554398, -26.519053, -26.49326, -26.480333, -26.486721, -26.515226, -26.566519, -26.620028, -26.640518, -26.640284, -26.626255, -26.608137, -26.596315, -26.593777, -26.595034, -26.601124, -26.606384, -26.591473, -26.565317, -26.536768, -26.519413, -26.512785, -26.513681, -26.508263, -26.501232, -26.497831, -26.498922, -26.505598, -26.518724, -26.53443, -26.551273, -26.568586, ...]  3379277761                   None  (1108, 1082, 1)
+</pre></div>
+</div>
+</div>
+<div class="section" id="getting-groups-of-data">
+<h3>Getting groups of data<a class="headerlink" href="#getting-groups-of-data" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fstpy.all</span> <span class="k">as</span> <span class="nn">fstpy</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">StandardFileReader</span><span class="p">(</span><span class="s1">&#39;/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std&#39;</span><span class="p">,</span><span class="n">decode_metadata</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+
+<span class="n">tt_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="s1">&#39;nomvar in [&quot;TT&quot;,&quot;QR&quot;]&#39;</span><span class="p">)</span>
+
+<span class="c1"># grouping data by grid, the usual case when you have multiple grids in a dataframe</span>
+<span class="n">grid_groups</span> <span class="o">=</span> <span class="n">tt_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;grid&#39;</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">_</span><span class="p">,</span><span class="n">grid_df</span> <span class="ow">in</span> <span class="n">grid_groups</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">grid_df</span><span class="o">.</span><span class="n">head</span><span class="p">()[[</span><span class="s1">&#39;nomvar&#39;</span><span class="p">,</span><span class="s1">&#39;grid&#39;</span><span class="p">]])</span>
+</pre></div>
+</div>
+<div class="highlight-example notranslate"><div class="highlight"><pre><span></span>nomvar        grid
+168     TT  3379277761
+167     TT  3379277761
+166     TT  3379277761
+165     TT  3379277761
+164     TT  3379277761
+nomvar        grid
+83     QR  5046053326
+82     QR  5046053326
+81     QR  5046053326
+80     QR  5046053326
+79     QR  5046053326
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fstpy.all</span> <span class="k">as</span> <span class="nn">fstpy</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">StandardFileReader</span><span class="p">(</span><span class="s1">&#39;/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std&#39;</span><span class="p">,</span><span class="n">decode_metadata</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+
+<span class="n">tt_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="s1">&#39;nomvar in [&quot;TT&quot;,&quot;&gt;&gt;&quot;]&#39;</span><span class="p">)</span>
+
+<span class="c1"># grouping data by forecast hour, the usual case when you have multiple forecast hours per grid in a dataframe</span>
+<span class="n">forecast_hour_groups</span> <span class="o">=</span> <span class="n">tt_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;grid&#39;</span><span class="p">,</span><span class="s1">&#39;forecast_hour&#39;</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">_</span><span class="p">,</span><span class="n">forecast_hour_df</span> <span class="ow">in</span> <span class="n">forecast_hour_groups</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">forecast_hour_df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-example notranslate"><div class="highlight"><pre><span></span>   nomvar typvar     etiket  ...   label  date_of_observation  ip2_kind
+87     &gt;&gt;      X  R1_V710_N  ...  _V710_  2020-07-14 12:00:00        -1
+
+[1 rows x 51 columns]
+   nomvar typvar     etiket  ...   label  date_of_observation  ip2_kind
+86     TT      P  R1_V710_N  ...  _V710_  2020-07-14 12:00:00         2
+85     TT      P  R1_V710_N  ...  _V710_  2020-07-14 12:00:00         2
+84     TT      P  R1_V710_N  ...  _V710_  2020-07-14 12:00:00         2
+83     TT      P  R1_V710_N  ...  _V710_  2020-07-14 12:00:00         2
+82     TT      P  R1_V710_N  ...  _V710_  2020-07-14 12:00:00         2
+
+[5 rows x 51 columns]
+  nomvar typvar     etiket  ...   label  date_of_observation  ip2_kind
+1     &gt;&gt;      X  R1_V710_N  ...  _V710_  2020-07-14 12:00:00        -1
+
+[1 rows x 51 columns]
+  nomvar typvar     etiket  ...   label  date_of_observation  ip2_kind
+0     &gt;&gt;      X  R1_V710_N  ...  _V710_  2020-07-14 12:00:00        -1
+
+[1 rows x 51 columns]
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fstpy.all</span> <span class="k">as</span> <span class="nn">fstpy</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">StandardFileReader</span><span class="p">(</span><span class="s1">&#39;/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std&#39;</span><span class="p">,</span><span class="n">decode_metadata</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+
+<span class="n">tt_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="s1">&#39;nomvar in [&quot;TT&quot;,&quot;UU&quot;,&quot;VV&quot;]&#39;</span><span class="p">)</span>
+
+<span class="c1"># grouping data by level, the usual case when you have multiple levels per grid in a dataframe</span>
+<span class="n">levels_groups</span> <span class="o">=</span><span class="n">tt_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;grid&#39;</span><span class="p">,</span><span class="s1">&#39;level&#39;</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">_</span><span class="p">,</span><span class="n">level_df</span> <span class="ow">in</span> <span class="n">levels_groups</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">level_df</span><span class="o">.</span><span class="n">head</span><span class="p">()[[</span><span class="s1">&#39;nomvar&#39;</span><span class="p">,</span><span class="s1">&#39;level&#39;</span><span class="p">]])</span>
+</pre></div>
+</div>
+<div class="highlight-example notranslate"><div class="highlight"><pre><span></span>nomvar     level
+169     UU  0.000101
+84      VV  0.000101
+nomvar     level
+254     TT  0.000128
+nomvar     level
+168     UU  0.000163
+83      VV  0.000163
+nomvar     level
+253     TT  0.000206
+nomvar     level
+167     UU  0.000261
+82      VV  0.000261
+...
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="exporting-the-data">
+<h2>Exporting the data<a class="headerlink" href="#exporting-the-data" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="formats">
+<h3>Formats<a class="headerlink" href="#formats" title="Permalink to this headline">¶</a></h3>
+<p>With fstpy</p>
+<ol class="arabic">
+<li><p>Rpn standard file</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fstpy.all</span> <span class="k">as</span> <span class="nn">fstpy</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">StandardFileReader</span><span class="p">(</span><span class="s1">&#39;/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+
+<span class="c1"># select TT only from input</span>
+<span class="n">tt_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="s1">&#39;nomvar==&quot;TT&quot;&#39;</span><span class="p">)</span>
+
+<span class="c1"># this will write the dataframe to the output file, if no data was fstpy.load_datad, the class will do it</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">getenv</span>
+<span class="n">USER</span> <span class="o">=</span> <span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;USER&quot;</span><span class="p">)</span>
+<span class="n">std_file</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">StandardFileWriter</span><span class="p">(</span><span class="s1">&#39;/tmp/</span><span class="si">%s</span><span class="s1">/TT.std&#39;</span><span class="o">%</span><span class="n">USER</span><span class="p">,</span> <span class="n">tt_df</span><span class="p">)</span>
+<span class="n">std_file</span><span class="o">.</span><span class="n">to_fst</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>With <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/user_guide/io.html">pandas io - many other formats
+available</a></p>
+</li>
+<li><p>Pickle</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fstpy.all</span> <span class="k">as</span> <span class="nn">fstpy</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">StandardFileReader</span><span class="p">(</span><span class="s1">&#39;/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+
+<span class="c1"># select TT only from input</span>
+<span class="n">tt_df</span> <span class="o">=</span> <span class="n">fstpy</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="s1">&#39;nomvar==&quot;TT&quot;&#39;</span><span class="p">)</span>
+
+<span class="c1"># this will write the complete dataframe to the compressed output file, if no data was fstpy.load_datad no data will be written,</span>
+<span class="c1"># &#39;d&#39; column will be None</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">getenv</span>
+<span class="n">USER</span> <span class="o">=</span> <span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;USER&quot;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_pickle</span><span class="p">(</span><span class="s2">&quot;/tmp/</span><span class="si">%s</span><span class="s2">/pickle_data.pkl.bz2&quot;</span><span class="o">%</span><span class="n">USER</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="plugin.html" class="btn btn-neutral float-right" title="Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="ssm.html" class="btn btn-neutral float-left" title="Creating the ssm package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Sébastien Fortier.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

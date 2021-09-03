@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Configuration file for the Sphinx documentation builder.
 #
 # This file only contains a selection of the most common options. For a full
@@ -36,7 +37,7 @@ release = version
 #       'sphinx.ext.coverage',
 #extensions = ['sphinx.ext.autodoc', 'sphinx.ext.napoleon']
 extensions = ['sphinx.ext.napoleon',
-              'sphinx.ext.doctest', 
+              'sphinx.ext.doctest',
               'sphinx_autodoc_typehints',
               'sphinx_gallery.gen_gallery']
 
@@ -76,16 +77,16 @@ html_logo = "spookipy_logo.jpg"
 html_theme_options = {
     'logo_only': True,
     'display_version': False,
-    'vcs_pageview_mode': 'blob' 
+    'vcs_pageview_mode': 'blob'
 }
 
-html_context = {     
-    "display_gitlab": True, # Integrate Gitlab     
-    "gitlab_host": "gitlab.science.gc.ca",     
-    "gitlab_user": "cmdw-spooki", # Username     
-    "gitlab_repo": "spookipy", # Repo name     
-    "gitlab_version": "master", # Version     
-    "conf_py_path": "/doc/", # Path in the checkout to the docs root 
+html_context = {
+    "display_gitlab": True, # Integrate Gitlab
+    "gitlab_host": "gitlab.science.gc.ca",
+    "gitlab_user": "cmdw-spooki", # Username
+    "gitlab_repo": "spookipy", # Repo name
+    "gitlab_version": "master", # Version
+    "conf_py_path": "/doc/", # Path in the checkout to the docs root
 }
 
 

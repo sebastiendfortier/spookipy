@@ -1,0 +1,472 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>InterpolationHorizontalGrid &mdash; spookipy 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-rendered-html.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="InterpolationHorizontalPoint" href="interpolationhorizontalpoint.html" />
+    <link rel="prev" title="Humidex" href="humidex.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html">
+          
+
+          
+            
+            <img src="_static/spookipy_logo.jpg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Start here</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using spookipy in scripts or Jupyter Lab/Notebook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Creating the developpement environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html#getting-the-source-code">Getting the source code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html#testing">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html#building-documentation">Building documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ssm.html">Creating the ssm package</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Modules</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="addelementsbypoint.html">AddElementsByPoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="addtoelements.html">AddToElements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="arithmeticmeanbypoint.html">ArithmeticMeanByPoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dewpointdepression.html">DewPointDepression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="georgekindex.html">GeorgeKIndex</a></li>
+<li class="toctree-l1"><a class="reference internal" href="humidex.html">Humidex</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">InterpolationHorizontalGrid</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#francais">Français</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#english">English</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#python-module">Python Module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interpolationhorizontalpoint.html">InterpolationHorizontalPoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mask.html">Mask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="minmaxlevelindex.html">MinMaxLevelIndex</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiplyelementsby.html">MultiplyElementsBy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiplyelementsbypoint.html">MultiplyElementsByPoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pressure.html">Pressure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="saturationvapourpressure.html">SaturationVapourPressure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setconstantvalue.html">SetConstantValue</a></li>
+<li class="toctree-l1"><a class="reference internal" href="temperaturedewpoint.html">TemperatureDewPoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vapourpressure.html">VapourPressure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="windchill.html">WindChill</a></li>
+<li class="toctree-l1"><a class="reference internal" href="windmax.html">WindMax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="windmodulus.html">WindModulus</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugin.html">Plugin</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Misc</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="LICENSE.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">spookipy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>InterpolationHorizontalGrid</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://gitlab.science.gc.ca/cmdw-spooki/spookipy/blob/master/doc/interpolationhorizontalgrid.rst" class="fa fa-gitlab"> Edit on GitLab</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="interpolationhorizontalgrid">
+<h1>InterpolationHorizontalGrid<a class="headerlink" href="#interpolationhorizontalgrid" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="francais">
+<h2>Français<a class="headerlink" href="#francais" title="Permalink to this headline">¶</a></h2>
+<p><strong>Description:</strong></p>
+<ul class="simple">
+<li><p>Interpolation horizontale d’un ou plusieurs champ(s) sur une grille
+cible</p></li>
+<li><p>La grille cible peut être soit définie par l’usager, selon les
+paramètres données en option, soit correspondre à la grille d’un des
+champs donnés en entrée</p></li>
+<li><p>Les champs peuvent être scalaires (ex: température) ou vectoriels
+(ex: vent horizontal)</p></li>
+</ul>
+<p>*/<a class="reference external" href="Notes:/*\">Notes:/*\</a></p>
+<ul class="simple">
+<li><p>Seul le vent peut être interpolé vectoriellement</p></li>
+<li><p>Ne traite que les grilles qui sont définies comme dans les fichiers
+standards</p></li>
+<li><p>Interpolation sur grilles de type Y ou Z, définie par l’usager, non
+disponible pour le moment</p></li>
+</ul>
+<p>*Méthode d’itération:*</p>
+<ul class="simple">
+<li><p>Point par point</p></li>
+</ul>
+<p>*Dépendances:*</p>
+<ul class="simple">
+<li><p>Un ou plusieurs champ(s) sur une ou plusieurs grille(s) source(s)</p></li>
+<li><p>Avec l’option –outputGridDefinitionMethod FIELD<sub>DEFINED</sub>: Un
+champ sur une grille cible dont le nom est différent de(s) champ(s)
+sur la/les grille(s) source(s)</p></li>
+</ul>
+<p>*Résultat(s):*</p>
+<ul class="simple">
+<li><p>Un ou plusieurs champ(s) interpolé(s) sur une grille cible</p></li>
+</ul>
+<p>*Algorithme:*</p>
+<ul class="simple">
+<li><p>Détecte la nature scalaire ou vectorielle du champ entré sur la</p></li>
+</ul>
+<p>grille source</p>
+<ul class="simple">
+<li><p>Appelle les routines scalaires ou vectorielles de la librairie</p></li>
+</ul>
+<p>EZSCINT selon la nature des champs et des clés paramétrables,
+appropriées à la grille cible</p>
+<ul class="simple">
+<li><p>Retourne le champ interpolé sur la grille cible</p></li>
+</ul>
+<p>*Références:*</p>
+<ul class="simple">
+<li><p>[[<a class="reference external" href="http://web-mrb.cmc.ec.gc.ca/science/si/eng/si/misc/grilles.html][Documentation">http://web-mrb.cmc.ec.gc.ca/science/si/eng/si/misc/grilles.html][Documentation</a></p></li>
+</ul>
+<p>sur les différents types de grilles supportées]]</p>
+<ul class="simple">
+<li><p>[[<a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/Librmn/ezscint][Librairie">https://wiki.cmc.ec.gc.ca/wiki/Librmn/ezscint][Librairie</a> EZSCINT</p></li>
+</ul>
+<p>de RMNLIB]]</p>
+<p><strong>Mots clés:</strong></p>
+<ul class="simple">
+<li><p>INTERPOLATION, extrapolation, horizontale/horizontal, grille/grid,</p></li>
+</ul>
+<p>ezscint</p>
+<p><strong>Usage:</strong></p>
+<p>*/<a class="reference external" href="Notes:/*\">Notes:/*\</a> Pour la clé
+‘–outputGridDefinitionMethod’:</p>
+<ul class="simple">
+<li><p>FIELD<sub>DEFINED</sub>: la grille cible est définie à l’aide du champ
+identifié par l’option –fieldName. Attention: le champ ainsi
+identifié ne doit être disponible que sur une grille unique.</p></li>
+<li><p>USER<sub>DEFINED</sub>: la grille cible est définie en fonction des
+valeurs des clés paramétrables –gridType, –xyDimensions et
+–gridProjectionParameters. Voir la documentation sur les fichiers
+standards et les grilles supportées dans les références, pour
+l’utilisation de ces clés</p></li>
+</ul>
+<p>Pour la clé ‘–interpolationType’:</p>
+<ul class="simple">
+<li><p>NEAREST: la valeur interpolée en un point de la grille cible est
+obtenue par la valeur du point le plus proche de la grille source</p></li>
+<li><p>BI-LINEAR: interpolation bi-linéaire</p></li>
+<li><p>BI-CUBIC: interpolation bi-cubique</p></li>
+</ul>
+<p>Pour la clé ‘–extrapolationType’:</p>
+<ul class="simple">
+<li><p>NEAREST: les valeurs à l’extérieur du domaine sont remplacées par les
+valeurs des plus proches voisins à l’intérieur du domaine</p></li>
+<li><p>LINEAR: extrapolation linéaire</p></li>
+<li><p>MAXIMUM: les valeurs à l’extérieur du domaine sont remplacées par la
+valeur maximum du champ à laquelle est ajouté 5% de sa variation
+totale</p></li>
+<li><p>MINIMUM: les valeurs à l’extérieur du domaine sont remplacées par la
+valeur minimum du champ à laquelle est soustrait 5% de sa variation
+totale</p></li>
+<li><p>VALUE: les valeurs à l’extérieur du domaine sont remplacées par une
+valeur numérique donnée (float)</p></li>
+<li><p>ABORT: abandon de la requête</p></li>
+</ul>
+<p>*Exemple d’appel:*</p>
+<div class="highlight-example notranslate"><div class="highlight"><pre><span></span>...
+spooki_run &quot;[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/InterpolationHorizontalGrid/testsFiles/inputFile.std] &gt;&gt;
+            [InterpolationHorizontalGrid --outputGridDefinitionMethod USER_DEFINED
+                                            --gridType TYPE_N
+                                            --xyDimensions 191,141
+                                            --gridProjectionParameters 79.0,117.0,57150.0,21.0
+                                            --interpolationType BI-LINEAR
+                                            --extrapolationType VALUE=99.9] &gt;&gt;
+            [WriterStd --output /tmp/$USER/outputFile.std]&quot;
+...
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/Spooki/Documentation/Exemples#Exemple_d.27interpolation_horizontale_sur_grille">Autres
+exemples</a></p></li>
+</ul>
+<p>*Validation des résultats:*</p>
+<p><strong>Contacts:</strong></p>
+<ul class="simple">
+<li><p>Auteur(e) : <a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/User:Beaucheminm">Maryse
+Beauchemin</a></p></li>
+<li><p>Codé par : <a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/User:Fortinf">François
+Fortin</a></p></li>
+<li><p>Support : <a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/CMDW">CMDW</a> /
+<a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/CMDS">CMDS</a></p></li>
+</ul>
+<p>Voir la référence à
+<a class="reference external" href="InterpolationHorizontalGrid_8cpp.html">InterpolationHorizontalGrid</a>.</p>
+<p>Tests unitaires</p>
+<div class="line-block">
+<div class="line"><strong>Ce plugin utilise:</strong></div>
+<div class="line"><strong>Ce plugin est utilisé par:</strong></div>
+</div>
+</div>
+<div class="section" id="english">
+<h2>English<a class="headerlink" href="#english" title="Permalink to this headline">¶</a></h2>
+<p><strong>Description:</strong></p>
+<ul class="simple">
+<li><p>voir
+<cite>c:sub:`ezsint</cite> &lt;<a class="reference external" href="http://web-mrb.cmc.ec.gc.ca/mrb/si/eng/si/libraries/rmnlib/ezscint/">http://web-mrb.cmc.ec.gc.ca/mrb/si/eng/si/libraries/rmnlib/ezscint/</a>&gt;`__</p></li>
+</ul>
+<p>*Iteration method:*</p>
+<ul class="simple">
+<li><p>N/A</p></li>
+</ul>
+<p>*Dependencies:*</p>
+<ul class="simple">
+<li><p>N/A</p></li>
+</ul>
+<p>*Result(s):*</p>
+<ul class="simple">
+<li><p>N/A</p></li>
+</ul>
+<p>*Algorithm:*</p>
+<ul class="simple">
+<li><p>N/A</p></li>
+</ul>
+<p>*References:*</p>
+<ul class="simple">
+<li><p><a class="reference external" href="http://web-mrb.cmc.ec.gc.ca/science/si/eng/si/misc/grilles.html">Grid types supported by RPN Standard
+Files</a></p></li>
+</ul>
+<p>*Customizable condition:*</p>
+<ul class="simple">
+<li><p>N/A</p></li>
+</ul>
+<p>*Keywords:*</p>
+<ul class="simple">
+<li><p>interpolateur/interpolator, interpolation,
+extrapolateur/extrapolator, extrapolation, horizontale/horizontal</p></li>
+</ul>
+<p>*Usage:*</p>
+<p><strong>Call example:</strong></p>
+<div class="highlight-example notranslate"><div class="highlight"><pre><span></span>...
+spooki_run &quot;[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/InterpolationHorizontalGrid/testsFiles/inputFile.std] &gt;&gt;
+            [InterpolationHorizontalGrid --outputGridDefinitionMethod USER_DEFINED
+                                            --gridType TYPE_N
+                                            --xyDimensions 191,141
+                                            --gridProjectionParameters 79.0,117.0,57150.0,21.0
+                                            --interpolationType BI-LINEAR
+                                            --extrapolationType VALUE=99.9] &gt;&gt;
+            [WriterStd --output /tmp/$USER/outputFile.std]&quot;
+...
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/Spooki/en/Documentation/Examples#Example_of_horizontal_interpolation">Other
+examples</a></p></li>
+</ul>
+<p>*Results validation:*</p>
+<ul class="simple">
+<li><p>Under construction!</p></li>
+</ul>
+<p>*Contacts:*</p>
+<ul class="simple">
+<li><p>Author : <a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/User:Beaucheminm">Maryse
+Beauchemin</a></p></li>
+<li><p>Coded by : <a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/User:Fortinf">François
+Fortin</a></p></li>
+<li><p>Support : <a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/CMDW">CMDW</a> /
+<a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/CMDS">CMDS</a></p></li>
+</ul>
+<p>Reference to</p>
+<p>Units tests</p>
+<div class="line-block">
+<div class="line"><strong>Uses:</strong></div>
+<div class="line"><strong>Used by:</strong></div>
+</div>
+</div>
+<div class="section" id="python-module">
+<h2>Python Module<a class="headerlink" href="#python-module" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="interpolationhorizontalpoint.html" class="btn btn-neutral float-right" title="InterpolationHorizontalPoint" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="humidex.html" class="btn btn-neutral float-left" title="Humidex" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Sébastien Fortier.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

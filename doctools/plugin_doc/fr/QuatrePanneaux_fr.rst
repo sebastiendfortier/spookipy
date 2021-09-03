@@ -1,0 +1,86 @@
+Français
+--------
+
+**Description:**
+
+-  Extraire et/ou calculer les champs nécessaires à la production d'une
+   image quatre panneaux.
+
+\*Méthode d'itération:\*
+
+-  N/D
+
+\*Dépendances:\*
+
+-  Sorties directes du modèle :
+   QQ : tourbillon à (IP1=) 500 mb, unité : 1/s
+   GZ : hauteur géopotentielle à (IP1=) 500mb, 700mb et 1000mb, unités :
+   dam (décamètres)
+   PN : pression au niveau moyen de la mer (IP1=0), unités : mb
+   (équivalent à hPa (hectoPascal))
+-  Post-traitement:
+   HR (pondérée) : moyenne pondérée de l'humidité relative (IP1=701),
+   unité : %
+   DZ : épaisseur des couches 1000-500mb et 1000-700mb, unités : dam
+   PR : précipitation accumulée sur une période donnée, unités : mm
+   QQ : filtré
+   PN : filtré
+
+\*Résultat(s):\*
+
+-  Tous les champs nécessaires à la production d'une image 4 panneaux
+   seront disponibles.
+
+\*Algorithme:\*
+
+-  Les calculs en post-traitement sont les suivants :
+   HR (701) = 0.22HR(850) + 0.51HR(700) + 0.27HR(500)
+   DZ (1000-500) = GZ(500mb) - GZ(1000mb)
+   DZ (1000-700) = GZ(700mb) - GZ(1000mb)
+   PR acc. = PR(t) - PR(t-dt ) ou t == temps présent et dt == delta t
+   (nombre d'heure dans le passé)
+   QQ = filtre digital 1,1,1,1,1,1,1,1,1 nombre de répétition 3
+   PN = filtre digital 1,1,1,1,1,1,1,1,1 nombre de répétition 1
+   Note : DZ et PR sont des différences sur 2 champs, l'un dans l'espace
+   (DZ) et l'autre dans le temps (PR acc.)
+
+\*Références:\*
+
+-  Dépendances et algorithmes tirés des tâches opérationnelles actuelles
+   du 4 panneaux classique : séries de tâches R1DFX02-04.
+
+\*Mots clés:\*
+
+-  PRODUIT/PRODUCT, image, map, carte, r1dfx02-04, quatre, panneaux
+
+\*Usage:\*
+
+**Exemple d'appel:**
+
+.. code:: example
+
+    ...
+    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/QuatrePanneaux/testsFiles/inputFile.std] >>
+                [QuatrePanneaux --forecastHour 12 --hourDelta 12 --jobName R1DFX03 --runId R1 --runHour 00] >>
+                [WriterStd --output /tmp/$USER/outputFile.std]"
+    ...
+
+**Validation des résultats:**
+
+**Contacts:**
+
+-  Auteur(e) : `Maryse
+   Beauchemin <https://wiki.cmc.ec.gc.ca/wiki/User:Beaucheminm>`__
+-  Codé par : `François
+   Fortin <https://wiki.cmc.ec.gc.ca/wiki/User:Fortinf>`__
+-  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
+   `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+
+Voir la référence à
+
+Tests unitaires
+
+| **Ce plugin utilise:**
+| **Ce plugin est utilisé par:**
+
+ 

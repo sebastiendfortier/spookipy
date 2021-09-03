@@ -1,0 +1,150 @@
+English
+-------
+
+`Fran?ais <../../spooki_french_doc/html/pluginSpatialWeightedAveraging.html>`__
+
+**Description:**
+
+-  It is a 2-D spatial weighted averaging based on a specific kernel
+-  The kernel can take on the shape of different functions, such as a
+   Gaussian
+-  In the specific case where it is applied to a binary field (0 ou 1),
+   the result can be interpreted as a PDF
+
+\*Iteration method:\*
+
+-  Point-by-point
+
+\*Dependencies:\*
+
+-  One or many gridded fields
+-  ME field (only at one given time forecast) if altDiffMax is used
+-  MG field (only at one given time forecast) if landFracDiffMax is used
+-  SLX field (the same time forecasts of the X field) if
+   slopeIndexDiffMax parameter is used
+
+\*Result(s):\*
+
+-  A weighted average based on a specific kernel
+
+\*Algorithm:\*
+
+.. code:: example
+
+    For each point of the grid, we calculate the average from a set of grid points defined by a search radius.
+    This average can be weighted according to a Gaussian or be uniform. In the case of a grid with limited area,
+    the calculation of the average at the grid points near the borders is calculated with a sample of points more
+    restricted than elsewhere on the grid. If the user prefers to exclude these points, since the search radius cannot
+    be fully respected, the --excludeEdges option must be used and these grid points will be set to -999.
+    This algorithm also makes it possible to restrict our sample of points to certain specific conditions such as the
+    topography, land-to-water ratio, a slope index and a certain range of values.
+
+    -----------
+    -Definition of the important variables-
+    -----------
+
+    Search radius = r
+    Distance between a grid point and the central grid point being treated = d
+    Smoothing parameter = h
+    distanceType = POINTS or KM
+    Summation of the weights = Smax
+    Summation of the weighted values = Sum
+    Moy  = Average
+    altDiffMax = Maximum threshold in absolute value of the altitude (ME) difference between the processed grid point and those used to calculate the average.
+    landFracDiffMax = Maximum threshold in absolute value of the land-fraction (MG) difference between the processed grid point and those used to calculate the average.
+    slopeIndexDiffMax = Maximum threshold in absolute value of the slope index (SLX) difference between the processed grid point and those used to calculate the average.
+    minValue = Minimum value for a grid point to be selected in the average calculation. (ex: if minValue = 3, the average will be calculated only with the points > 3)
+    maxValue = Maximum value for a grid point to be selected in the average calculation. (ex: if maxValue = 10, the average will be calculated only with the points < 10)
+    diff_me_abs = |ME(i,j)  - ME(i+a,j+b) |
+    diff_mg_abs = |MG(i,j)  - MG(i+a,j+b) |
+    diff_slx_abs = |SLX(i,j) - SLX(i+a,j+b)|
+
+    ------
+    -Definition of the 2 kernel types-
+    ------
+    If --kernelType GAUSSIAN
+    kernel(d,h) = exp((-0.5*(d^2))/h^2)
+
+    If --kernelType UNIFORM
+    kernel(d,h) = 1
+
+    Average calculation for all grid points when possible
+
+    If distanceType = POINTS, the distance d between the central grid point and those around is calculated with the equation of
+    Pythagoras and if distanceType = KM, we use the GridPointDistance plugin
+
+
+    Loop over each grid point
+
+    If the --excludeEdges option is used,
+    We make sure that the distance between this point and the border of the grid is >= r
+    Otherwise this point = -999
+
+    Smax=0
+
+    If d <= r &&  diff_me_abs <= altDiffMax && diff_mg_abs <= landFracDiffMax && diff_slx_abs <= slopeIndexDiffMax && valeur(X) > minValue & valeur(X) < maxValue
+
+    We calculate the maximum value of the summation for the points inside the search radius, with an altitude difference (ME) in absolute value <= altDiffMax,
+    with a difference in fraction of the land (MG) in absolute value <= landFracDiffMax, with a difference in slope index (SLX) in absolute value <= slopeIndexDiffMax, with a value > minValue
+    and finally with a value < maxValue
+
+
+    Only the searh radius is required.
+
+    So, for these grid points respecting these conditions, we calculate
+
+    Smax = Smax + kernel(d,h,kernelType)
+    Sum = Sum + kernel(d,h,kernelType)*value(of the grid point)
+
+    Once all the points within the search radius are counted, the average is normalized:
+    Moy = Sum/Smax
+
+**Reference:**
+
+-  `Description of the KDE
+   methode <http://fr.wikipedia.org/wiki/Kernel_density_estimation>`__
+-  `Description of the Gaussian
+   function <http://fr.wikipedia.org/wiki/Gaussian_function>`__
+-  `Doc on the Forecasting Thunderstorm project at
+   ECCC <https://wiki.cmc.ec.gc.ca/wiki/File:Forecasting_thunderstorms.pptx>`__
+-  `Doc on the KDE project at
+   ECCC <https://wiki.cmc.ec.gc.ca/wiki/File:HRDPS_EarlyResults2015_v2.pptx>`__
+
+\*Keywords:\*
+
+-  UTILITAIRE/UTILITY, statistique/statistics, noyau/kernel, estimation,
+   probabilit?robability, gaussienne/gaussian, pdf, lissage/smoothing,
+   normal, distribution
+
+\*Usage:\*
+
+**Call example:**
+
+.. code:: example
+
+    ...
+    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/SpatialWeightedAveraging/testsFiles/inputFile.std] >>
+                [SpatialWeightedAveraging --searchRadius 15 --kernelType GAUSSIAN --distanceType KM --smoothingParameter 5] >>
+                [WriterStd --output /tmp/$USER/outputFile.std]"
+    ...
+
+**Results validation:**
+
+**Contacts:**
+
+-  Author : `Marc
+   Verville <https://wiki.cmc.ec.gc.ca/wiki/Marc_Verville>`__, / `Daniel
+   Figueras <https://wiki.cmc.ec.gc.ca/wiki/Daniel_Figueras>`__
+-  Coded by : `Louise
+   Faust <https://wiki.cmc.ec.gc.ca/wiki/Louise_Faust>`__
+-  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
+   `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+
+Reference to
+
+Unit tests
+
+| **Uses:**
+| **Used by:**
+
+ 

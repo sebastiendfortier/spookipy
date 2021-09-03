@@ -1,9 +1,3 @@
-```{=org}
-#+TITLE_:SPOOKIPY
-```
-```{=org}
-#+TITLE_:INTRODUCTION
-```
 # Introduction
 
 ## What is it?
@@ -16,9 +10,7 @@ dataframes obtained with fstpy or numpy arrays.
 These algorithms are generic in nature and all share a uniform model in
 implementation. The idea is to use the interface to create new
 algorithms.
-```{=org}
-#+TITLE_:REQUIREMENTS
-```
+
 # Requirements
 
 ## packages
@@ -28,21 +20,15 @@ algorithms.
 -   pandas
 -   fstpy
 
-```{=org}
-#+TITLE_:INSTALL
-```
 # Installation
 
 Use the ssm package
 
     . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/spookipy/0.0.0
 
-```{=org}
-#+TITLE_:USAGE
-```
 ## Using spookipy in scripts or Jupyter Lab/Notebook
 
-``` {.bash org-language="sh"}
+``` {.bash}
 # activate your conda environment
 . activate spookipy_req
 # get rmn python library
@@ -50,7 +36,7 @@ Use the ssm package
 # get spookipy ssm package
 . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/spookipy/0.0.0/
 # get fstpy ssm package
-. ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/fstpy/2.1.3/
+. ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/fstpy/2.1.6/
 ```
 
 ### use spookipy
@@ -78,12 +64,9 @@ dest_path = '/tmp/out.std'
 fstpy.StandardFileWriter(dest_path,uv_df).to_fst()
 ```
 
-```{=org}
-#+TITLE_:CONTRIBUTING
-```
 ## Creating the developpement environment
 
-``` {.bash org-language="sh"}
+``` {.bash}
 # get conda if you don't already have it  
 . ssmuse-sh -x cmd/cmdm/satellite/master_u1/miniconda3_4.9.2_ubuntu-18.04-skylake-64   
 # create a conda environment for spookipy's requirements   
@@ -101,7 +84,7 @@ conda install numpy pandas dask xarray pytest
 
 ## Getting the source code
 
-``` {.bash org-language="sh"}
+``` {.bash}
 git clone git@gitlab.science.gc.ca:cmdw-spooki/spookipy.git
 # create a new branch
 git checkout -b my_change
@@ -120,7 +103,7 @@ Then create a merge request on science\'s gitlab
 
 ## Testing
 
-``` {.bash org-language="sh"}
+``` {.bash}
 # From the $project_root/test directory of the project
 . activate spookipy_dev    
 # get rmn python library      
@@ -132,9 +115,16 @@ python -m pytest
 
 ## Building documentation
 
-``` {.bash org-language="sh"}
+``` {.bash}
 # This will build documentation in docs/build and there you will find index.html 
 # make sure fstpy is in the PYTHONPATH
 make clean    
 make doc
 ```
+
+# Creating the ssm package
+
+From the \$PROJECT~ROOT~
+
+    cd misc/ssm
+    ./make_package.ssh

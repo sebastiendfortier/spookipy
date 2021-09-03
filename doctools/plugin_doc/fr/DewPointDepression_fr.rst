@@ -1,0 +1,133 @@
+Français
+--------
+
+**Description:**
+
+-  Calcul de la dépression du point de rosée, une mesure de l'humidité
+   atmosphérique.
+-  Écart entre la température d'une parcelle d'air et la température à
+   laquelle l'air de cette parcelle doit être refroidie, à pression et
+   contenu en humidité constants, pour atteindre la saturation.
+
+\*Méthode d'itération:\*
+
+-  Point par point
+
+\*Dépendances:\*
+
+-  Température de l'air, TT
+
+| \*et\* un des champs suivants :
+
+-  Température du point de rosée, TD
+-  Rapport de mélange de la vapeur d'eau, QV
+-  Humidité spécifique, HU
+-  Humidité relative, HR
+
+\*Résultat(s):\*
+
+-  Dépression du point de rosée, ES (deg C)
+
+\*Algorithme:\*
+
+.. code:: example
+
+        -Si la clé --RPN n'est pas activée:
+
+            *Si les champs d'entrée sont l'humidité spécifique, HU (kg/kg) ou
+             le rapport de mélange de la vapeur d'eau, QV (kg/kg) ou
+             l'humidité relative, HR (fraction) et la température de l'air, TT (deg C):
+
+                Calculer la température du point de rosée, TD (deg C) avec le plugin TemperatureDewPoint.
+                L'écart du point de rosée, ES (deg C ou deg K) est calculé selon :
+                   ES = TT - TD  (si ES < 0.0 , ES = 0.0)
+                où TT ou TD sont dans les mêmes unités (deg C ou deg K)
+
+            *Si les champs d'entrée sont la température du point de rosée, TD (deg C ou deg K) et la température de l'air, TT (deg C ou deg K):
+
+                L'écart du point de rosée, ES (deg C ou deg K) est calculé selon :
+                   ES = TT - TD  (si ES < 0.0 , ES = 0.0)
+                où TT ou TD sont dans les mêmes unités (deg C ou deg K)
+
+
+        -Si la clé --RPN est activée:
+
+            *Si les champs d'entrée sont l'humidité spécifique, HU (kg/kg) et la température de l'air, TT (deg K):
+
+                Calculer la pression, PX (Pa) avec le plugin Pressure.
+                Appeler la fonction shuaes.ftn90 pour obtenir l'écart du point de rosée, ES (deg C ou deg K).
+
+            *Si les champs d'entrée sont le rapport de mélange de la vapeur d'eau, QV (kg/kg) et la température de l'air, TT (deg K):
+
+                Calculer l'humidité spécifique, HU (kg/kg) avec le plugin HumiditySpecific.
+                Calculer la pression, PX (Pa) avec le plugin Pressure.
+                Appeler la fonction shuaes.ftn90 pour obtenir l'écart du point de rosée, ES (deg C ou deg K).
+
+            *Si les champs d'entrée sont l'humidité relative, HR (fraction) et la température de l'air, TT (deg K):
+
+                Calculer la pression, PX (Pa) avec le plugin Pressure.
+                Appeler la fonction shraes.ftn90 pour obtenir l'écart du point de rosée, ES (deg C ou deg K).
+
+            *Si les champs d'entrée sont la température du point de rosée, TD (deg C ou deg K) et la température de l'air, TT (deg C ou deg K):
+                ES = TT - TD  (si ES < 0.0 , ES = 0.0)
+                où l'écart du point de rosée, ES est en deg C ou deg K
+
+    Notes:  Lorsque le champ d'entrée est TD ou HR, le changement de phase sera présumé survenir au même moment dans le champ
+            d'entrée que dans le champ de sortie.
+            Lorsque plusieurs champs des dépendances et le champ TT sont disponibles en entrée, le calcul sera effectué
+            avec le champ qui a le plus de niveaux en commun avec TT dans l'ordre de préférence (en cas d'égalité)
+            avec HU suivi de QV, HR et finalement TD.
+            Lorsque la clé --RPN est activée et l'attribut de --iceWaterPhase est BOTH, --temperaturePhaseSwitch n'est
+            pas accepté et 273.16K (le point triple de l'eau) est attribué aux fonctions shuaes.ftn90 et shraes.ftn90.
+            Avec la clé --RPN activée, les fonctions shuaes.ftn90 et shraes.ftn90 comparent la température du point de
+            rosée avec 273.16K (le point triple de l'eau) pour choisir si on calcule l'écart du point de rosée par
+            rapport à l'eau ou la glace.
+            Sans la clé --RPN, on compare la température avec --temperaturePhaseSwitch pour choisir si on calcule
+            l'écart du point de rosée par rapport à l'eau ou la glace.
+
+**Références:**
+
+-  `Librairie thermodynamique de
+   RPN <https://wiki.cmc.ec.gc.ca/images/6/60/Tdpack2011.pdf>`__
+-  `Wikipédia : point de
+   rosée <http://fr.wikipedia.org/wiki/Point_de_ros%C3%A9e>`__
+-  [[http://journals.ametsoc.org/doi/pdf/10.1175/1520-0450%281996%29035%3C0601%3AIMFAOS%3E2.0.CO%3B2][Alduchov,
+   O. A., and R. E. Eskridge, 1996: Improved Magnus form approximation
+   of saturation vapor pressure. ''J. Appl. Meteor.'', '''35''',
+   601-609.]]
+
+\*Mots clés:\*
+
+-  MÉTÉO/WEATHER, température/temperature, pointderosée/dewpoint,
+   humidité/humidity
+
+\*Usage:\*
+
+**Exemple d'appel:**
+
+.. code:: example
+
+    ...
+    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/DewPointDepression/testsFiles/inputFile.std] >>
+                [DewPointDepression --iceWaterPhase BOTH --temperaturePhaseSwitch -40C] >>
+                [WriterStd --output /tmp/$USER/outputFile.std]"
+    ...
+
+**Validation des résultats:**
+
+**Contacts:**
+
+-  Auteur(e) : `Daniel Figueras <file:///wiki/Daniel_Figueras>`__
+-  Codé par : `Jonathan
+   St-Cyr <https://wiki.cmc.ec.gc.ca/wiki/User:Stcyrj>`__
+-  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
+   `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+
+Voir la référence à to
+
+Tests unitaires
+
+| **Ce plugin utilise:**
+| **Ce plugin est utilisé par:**
+
+ 

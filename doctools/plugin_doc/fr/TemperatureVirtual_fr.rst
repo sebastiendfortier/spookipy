@@ -1,0 +1,86 @@
+Français
+--------
+
+**Description :**
+
+-  Calcul de la température virtuelle en fonction de la température et
+   du rapport de mélange de la vapeur d'eau.
+-  La température virtuelle est utilisée pour tenir compte de la
+   présence de vapeur d'eau et peut être utilisée pour représenter la
+   densité.
+
+\*Méthode d'itération :\*
+
+-  Point par point
+
+\*Dépendances :\*
+
+-  Température de l'air, TT
+   **et** un des champs suivants:
+-  Humidité spécifique, HU
+-  Rapport de mélange de la vapeur d'eau, QV
+-  Température du point de rosée, TD
+-  Écart du point de rosée, ES
+-  Humidité relative, HR
+
+\*Résultat(s) :\*
+
+-  Température virtuelle, VT (deg C)
+
+\*Algorithme :\*
+
+.. code:: example
+
+    Si nécessaire, calculer le rapport de mélange de la vapeur d'eau, QV (kg/kg) avec le plugin WaterVapourMixingRatio.
+
+    Soit QV, le rapport de mélange de la vapeur d'eau (kg/kg)
+    Soit TT, la température de l'air (deg K)
+    la température virtuelle (deg K) est calculée selon:
+
+    VT(deg K)  = TT*((1+QV/epsilon)/(1+QV))
+    VT(deg C) =  VT(deg K) -273.15
+
+    Où epsilon est le rapport des constantes des gaz parfaits pour l'air sec (Rd = 287.05 J/(kg*K)) et pour
+    la vapeur d'eau (Rv = 461.51 J/(kg*K)).
+
+**Références :**
+
+-  Rogers, R. R. and M. K. Yau, 1989: A Short Course in Cloud Physics,
+   3rd Ed. Butterworth Heinemann, 290 pp.
+-  `Analyse de la température
+   virtuelle <https://wiki.cmc.ec.gc.ca/wiki/RPT/Analyse_de_la_température_virtuelle>`__
+
+\*Mots clés :\*
+
+-  MÉTÉO/WEATHER, température/temperature, humidité/humidity
+
+\*Usage:\*
+
+**Exemple d'appel:**
+
+.. code:: example
+
+    ...
+    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/TemperatureVirtual/testsFiles/inputFile.std] >>
+                [TemperatureVirtual] >>
+                [WriterStd --output /tmp/$USER/outputFile.std]"
+    ...
+
+**Validation des résultats:**
+
+**Contacts:**
+
+-  Auteur(e) : Neil Taylor
+-  Codé par : `Guylaine
+   Hardy <https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg>`__
+-  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
+   `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+
+Voir la référence à
+
+Tests unitaires
+
+| **Ce plugin utilise:**
+| **Ce plugin est utilisé par:**
+
+ 

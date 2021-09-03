@@ -9,7 +9,7 @@ from ..humidityutils import get_temp_phase_switch, validate_humidity_parameters
 from ..plugin import Plugin
 from ..science.science import *
 from ..utils import (create_empty_result, existing_results, final_results,
-                     find_matching_dependency_option, get_existing_result,
+                     get_dependencies, get_existing_result,
                      get_from_dataframe, get_intersecting_levels,
                      initializer)
 
@@ -78,20 +78,12 @@ class WaterVapourMixingRatio(Plugin):
         sys.stdout.write('WaterVapourMixingRatio - compute\n')
         df_list = []
 
-        for _, current_group in self.groups:
-            # print(current_group[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']].to_string())
-            if self.rpn:
-                sys.stdout.write('WaterVapourMixingRatio - Checking rpn dependencies\n')
-                dependencies_df, option = find_matching_dependency_option(pd.concat([current_group,self.meta_df],ignore_index=True),self.plugin_params,self.plugin_mandatory_dependencies_rpn)
-            else:
-                sys.stdout.write('WaterVapourMixingRatio - Checking dependencies\n')
-                dependencies_df, option = find_matching_dependency_option(pd.concat([current_group,self.meta_df],ignore_index=True),self.plugin_params,self.plugin_mandatory_dependencies)
-            if dependencies_df.empty:
-                sys.stdout.write('WaterVapourMixingRatio - No matching dependencies found for this group \n%s\n'%current_group[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']])
-                continue
-            else:
-                sys.stdout.write('WaterVapourMixingRatio - Matching dependencies found for this group \n%s\n'%current_group[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']])
+        if self.rpn:
+            dependencies_list = get_dependencies(self.groups,self.meta_df,'WaterVapourMixingRatio',self.plugin_mandatory_dependencies_rpn,self.plugin_params)
+        else:
+            dependencies_list = get_dependencies(self.groups,self.meta_df,'WaterVapourMixingRatio',self.plugin_mandatory_dependencies,self.plugin_params)
 
+        for dependencies_df,option in dependencies_list:
             if option==0:
                 print('option 1')
                 dependencies_df = fstpy.load_data(dependencies_df)

@@ -9,7 +9,7 @@ import pandas as pd
 import rpnpy.librmn.all as rmn
 
 
-pytestmark = [pytest.mark.to_skip]
+pytestmark = [pytest.mark.regressions]
 
 # ::::::::::::::
 # inputFile.csv

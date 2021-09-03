@@ -84,10 +84,6 @@ class GridCut(Plugin):
         return res_df
 
 
-
-
-
-
     def check_limits(self,shape):
         return (shape[0] <=  self.end_point[0]) or (shape[1] <= self.end_point[1])
 

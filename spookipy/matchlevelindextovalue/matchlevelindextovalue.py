@@ -33,7 +33,7 @@ class MatchLevelIndexToValue(Plugin):
 
         keep = self.df.loc[~self.df.nomvar.isin(["KBAS","KTOP"])].reset_index(drop=True)
 
-        self.groups= keep.groupby(by=['grid','forecast_hour'])
+        self.groups= keep.groupby(by=['grid','dateo','forecast_hour'])
 
     def compute(self) -> pd.DataFrame:
         sys.stdout.write('MatchLevelIndexToValue - compute\n')

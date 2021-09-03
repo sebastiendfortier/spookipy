@@ -78,7 +78,7 @@ class Pressure(Plugin):
             vctypes_groups = grid.groupby(['vctype'])
             for _, vt in vctypes_groups:
                 vctype = vt.vctype.iloc[0]
-                fh_groups = vt.groupby(['forecast_hour'])
+                fh_groups = vt.groupby(['dateo','forecast_hour'])
                 for _, fh in fh_groups:
                     px_df = self._compute_pressure(fh,meta_df,vctype)
                     # if not(px_df is None):

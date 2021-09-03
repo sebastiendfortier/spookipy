@@ -331,3 +331,19 @@ def find_matching_dependency_option(df,plugin_params,plugin_mandatory_dependenci
                 sys.stdout.write(f'{k}:{v}\n')
             return dependencies_df, option
     return pd.DataFrame(dtype=object), 0
+
+def get_dependencies(groups,meta_df,plugin_name,plugin_mandatory_dependencies,plugin_params=None):
+    df_list = []
+    for _,current_group in groups:
+        sys.stdout.write(f'{plugin_name} - Checking dependencies\n')
+        dependencies_df, option = find_matching_dependency_option(pd.concat([current_group,meta_df],ignore_index=True),plugin_params,plugin_mandatory_dependencies)
+        if dependencies_df.empty:
+            sys.stderr.write(f'{plugin_name} - No matching dependencies found for this group \n%s\n'%current_group[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']])
+            continue
+        else:
+            sys.stdout.write(f'{plugin_name} - Matching dependencies found for this group \n%s\n'%current_group[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']])
+        df_list.append((dependencies_df,option))
+    print('df_list',df_list)
+    if not df_list:
+        raise DependencyError(f'{plugin_name} - No matching dependencies found')
+    return df_list

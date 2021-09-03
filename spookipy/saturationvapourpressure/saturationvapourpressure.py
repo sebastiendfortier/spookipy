@@ -10,7 +10,7 @@ from ..humidityutils import (TDPACK_OFFSET_FIX, get_temp_phase_switch,
                              validate_humidity_parameters)
 from ..plugin import Plugin
 from ..science.science import *
-from ..utils import (create_empty_result, existing_results, final_results, find_matching_dependency_option,
+from ..utils import (create_empty_result, existing_results, final_results, get_dependencies,
                      get_existing_result, get_from_dataframe,
                      initializer)
 
@@ -63,16 +63,9 @@ class SaturationVapourPressure(Plugin):
         sys.stdout.write('SaturationVapourPressure - compute\n')
         df_list=[]
 
-        for _, current_group in self.groups:
-            # print(current_group[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']].to_string())
-            sys.stdout.write('SaturationVapourPressure - Checking rpn dependencies\n')
-            dependencies_df, _ = find_matching_dependency_option(pd.concat([current_group,self.meta_df],ignore_index=True),self.plugin_params,self.plugin_mandatory_dependencies)
-            if dependencies_df.empty:
-                sys.stdout.write('SaturationVapourPressure - No matching dependencies found for this group \n%s\n'%current_group[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']])
-                continue
-            else:
-                sys.stdout.write('SaturationVapourPressure - Matching dependencies found for this group \n%s\n'%current_group[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']])
+        dependencies_list = get_dependencies(self.groups,self.meta_df,'SaturationVapourPressure',self.plugin_mandatory_dependencies,self.plugin_params)
 
+        for dependencies_df,_ in dependencies_list:
 
             dependencies_df = fstpy.load_data(dependencies_df)
             tt_df = get_from_dataframe(dependencies_df,'TT')

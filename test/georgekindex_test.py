@@ -173,10 +173,10 @@ def test_6(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "TTES_2016122000_file2cmp.std"
+    file_to_compare = plugin_test_dir + "TTES_2016122000_file2cmp.std+20210517"
     # file_to_compare = '/home/sbf000/data/testFiles/GeorgeKIndex/result_test_6'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,exclude_meta=True)
+    res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)

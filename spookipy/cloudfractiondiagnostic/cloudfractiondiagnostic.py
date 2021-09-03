@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..utils import create_empty_result, get_existing_result, get_plugin_dependencies, existing_results, final_results, initializer
+from ..utils import create_empty_result, find_matching_dependency_option, get_dependencies, get_existing_result, existing_results, final_results, initializer
 from ..plugin import Plugin
 import pandas as pd
 import fstpy.all as fstpy
@@ -25,9 +25,11 @@ class CloudFractionDiagnostic(Plugin):
 
     @initializer
     def __init__(self,df:pd.DataFrame,use_constant=None):
-        self.plugin_mandatory_dependencies = {
+        self.plugin_mandatory_dependencies = [
+            {
             'HR':{'nomvar':'HR','unit':'scalar','select_only':True},
-        }
+            }
+        ]
 
         self.plugin_result_specifications = {
             'CLD':{'nomvar':'CLD','etiket':'CloudFractionDiagnostic','unit':'scalar'}
@@ -51,9 +53,10 @@ class CloudFractionDiagnostic(Plugin):
         #check if result already exists
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
 
-        if self.existing_result_df.empty:
-            self.dependencies_df = get_plugin_dependencies(self.df,None,self.plugin_mandatory_dependencies)
-            self.groups = self.dependencies_df.groupby(['grid','forecast_hour'])
+        # remove meta data from DataFrame
+        self.df = self.df.loc[~self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
+        # print(self.df[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']].to_string())
+        self.groups = self.df.groupby(['grid','dateo','forecast_hour','ip1_kind'])
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:
@@ -61,10 +64,12 @@ class CloudFractionDiagnostic(Plugin):
 
         sys.stdout.write('CloudFractionDiagnostic - compute\n')
         df_list=[]
-        for _, group in self.groups:
-            group = fstpy.load_data(group)
+        dependencies_list = get_dependencies(self.groups,self.meta_df,'CloudFractionDiagnostic',self.plugin_mandatory_dependencies)
 
-            cld_df = create_empty_result(group,self.plugin_result_specifications['CLD'],all_rows=True)
+        for dependencies_df,_ in dependencies_list:
+            dependencies_df = fstpy.load_data(dependencies_df)
+
+            cld_df = create_empty_result(dependencies_df,self.plugin_result_specifications['CLD'],all_rows=True)
 
             if not (self.use_constant is None):
                 for  i in cld_df.index:

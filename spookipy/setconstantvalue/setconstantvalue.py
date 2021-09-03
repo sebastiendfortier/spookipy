@@ -35,7 +35,7 @@ class SetConstantValue(Plugin):
 
         self.df = self.df.loc[~self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
-        self.groups=self.df.groupby(by=['grid','nomvar','forecast_hour'])
+        self.groups=self.df.groupby(by=['grid','nomvar','dateo','forecast_hour'])
 
         l = [self.min_index,self.max_index,self.nb_levels]
 

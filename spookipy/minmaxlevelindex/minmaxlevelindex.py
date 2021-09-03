@@ -39,7 +39,7 @@ class MinMaxLevelIndex(Plugin):
 
         keep = self.df.loc[~self.df.nomvar.isin(["KBAS","KTOP"])].reset_index(drop=True)
 
-        self.nomvar_groups= keep.groupby(by=['grid','forecast_hour','nomvar'])
+        self.nomvar_groups= keep.groupby(by=['grid','dateo','forecast_hour','nomvar'])
 
     def compute(self) -> pd.DataFrame:
         sys.stdout.write('MinMaxLevelIndex - compute\n')

@@ -12,15 +12,16 @@ class HelicityError(Exception):
 
 
 class Helicity(Plugin):
-    plugin_mandatory_dependencies = {
+
+
+    def __init__(self,df:pd.DataFrame,z3=0.851343,z4=0.297078):
+        self.plugin_mandatory_dependencies = [{
         'UU':{'nomvar':'UU','unit':'knot'},
         'VV':{'nomvar':'VV','unit':'knot'},
-    }
-    plugin_result_specifications = {
+        }]
+        self.plugin_result_specifications = {
         'UV':{'nomvar':'UV','etiket':'WNDMOD','unit':'knot'}
         }
-
-    def __init__(self,df:pd.DataFrame):
         self.df = df
         #ajouter forecast_hour et unit
         self.validate_input()
@@ -39,11 +40,10 @@ class Helicity(Plugin):
          #check if result already exists
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
 
-        if self.existing_result_df.empty:
-            self.dependencies_df = get_plugin_dependencies(self.df,None,self.plugin_mandatory_dependencies)
-            if self.dependencies_df.empty:
-                raise HelicityError('No data to process')
-            self.fhour_groups=self.dependencies_df.groupby(by=['grid','forecast_hour'])
+        # remove meta data from DataFrame
+        self.df = self.df.loc[~self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
+        # print(self.df[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']].to_string())
+        self.groups = self.df.groupby(['grid','dateo','forecast_hour','ip1_kind'])
 
 
     def compute(self) -> pd.DataFrame:

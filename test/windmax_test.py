@@ -88,6 +88,6 @@ def test_3(plugin_test_dir):
     # file_to_compare = '/fs/site4/eccc/cmd/w/sbf000/testFiles/WindMax/test_3.std'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)#,e_max=0.019)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)

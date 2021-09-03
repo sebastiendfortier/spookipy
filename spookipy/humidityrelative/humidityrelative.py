@@ -1,12 +1,18 @@
 # -*- coding: utf-8 -*-
+import sys
+
+import fstpy.all as fstpy
+import numpy as np
+import pandas as pd
+
 from ..humidityutils import get_temp_phase_switch, validate_humidity_parameters
 from ..plugin import Plugin
-from ..utils import create_empty_result, find_matching_dependency_option, get_existing_result, get_from_dataframe, get_intersecting_levels, get_plugin_dependencies, initializer, existing_results, final_results
-import pandas as pd
-import fstpy.all as fstpy
-import sys
-import numpy as np
 from ..science.science import *
+from ..utils import (create_empty_result, existing_results, final_results,
+                     get_dependencies, get_existing_result, get_from_dataframe,
+                     get_intersecting_levels,
+                     initializer)
+
 
 class HumidityRelativeError(Exception):
     pass
@@ -95,9 +101,10 @@ class HumidityRelative(Plugin):
 
 
     def compute(self) -> pd.DataFrame:
-        from ..humidityspecific.humidityspecific import HumiditySpecific
         from ..dewpointdepression.dewpointdepression import DewPointDepression
-        from ..saturationvapourpressure.saturationvapourpressure import SaturationVapourPressure
+        from ..humidityspecific.humidityspecific import HumiditySpecific
+        from ..saturationvapourpressure.saturationvapourpressure import \
+            SaturationVapourPressure
         from ..vapourpessure.vapourpessure import VapourPressure
         if not self.existing_result_df.empty:
             return existing_results('HumidityRelative',self.existing_result_df,self.meta_df)
@@ -105,21 +112,12 @@ class HumidityRelative(Plugin):
         sys.stdout.write('HumidityRelative - compute\n')
         df_list = []
 
-        for _, current_group in self.groups:
-            # print(current_group[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']].to_string())
-            if self.rpn:
-                sys.stdout.write('HumidityRelative - Checking rpn dependencies\n')
-                dependencies_df, option = find_matching_dependency_option(pd.concat([current_group,self.meta_df],ignore_index=True),self.plugin_params,self.plugin_mandatory_dependencies_rpn)
-            else:
-                sys.stdout.write('HumidityRelative - Checking dependencies\n')
-                dependencies_df, option = find_matching_dependency_option(pd.concat([current_group,self.meta_df],ignore_index=True),self.plugin_params,self.plugin_mandatory_dependencies)
-            if dependencies_df.empty:
-                sys.stdout.write('HumidityRelative - No matching dependencies found for this group \n%s\n'%current_group[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']])
-                continue
-            else:
-                sys.stdout.write('HumidityRelative - Matching dependencies found for this group \n%s\n'%current_group[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']])
+        if self.rpn:
+            dependencies_list = get_dependencies(self.groups,self.meta_df,'HumidityRelative',self.plugin_mandatory_dependencies_rpn,self.plugin_params)
+        else:
+            dependencies_list = get_dependencies(self.groups,self.meta_df,'HumidityRelative',self.plugin_mandatory_dependencies,self.plugin_params)
 
-
+        for dependencies_df,option in dependencies_list:
             if self.rpn:
                 if option==0:
                     print('option 1')

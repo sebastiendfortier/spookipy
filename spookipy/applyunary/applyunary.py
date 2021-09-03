@@ -38,6 +38,8 @@ class ApplyUnary(Plugin):
         res_df = in_df.copy(deep=True)
         res_df['nomvar']=self.nomvar_out
         res_df['etiket']=self.etiket
+        res_df['datyp']=5
+        res_df['npak']=32
         for i in res_df.index:
             res_df.at[i,'d'] = self.function(in_df.at[i,'d'])
 

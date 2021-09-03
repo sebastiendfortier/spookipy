@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
-from ..utils import create_empty_result, find_matching_dependency_option, get_existing_result, get_from_dataframe, get_plugin_dependencies, existing_results, final_results
-from ..plugin import Plugin
-import pandas as pd
-import fstpy.all as fstpy
-import numpy as np
 import sys
+
+import fstpy.all as fstpy
+import pandas as pd
+
+from ..plugin import Plugin
+from ..utils import (create_empty_result, existing_results, final_results,
+                     get_dependencies, get_existing_result, get_from_dataframe,
+                     get_plugin_dependencies)
+
 
 class GeorgeKIndexError(Exception):
     pass
@@ -54,15 +58,9 @@ class GeorgeKIndex(Plugin):
 
         sys.stdout.write('GeorgeKIndex - compute\n')
         df_list=[]
-        for _,current_group in self.groups:
-            sys.stdout.write('GeorgeKIndex - Checking dependencies\n')
-            dependencies_df, _ = find_matching_dependency_option(pd.concat([current_group,self.meta_df],ignore_index=True),{'ice_water_phase':'water'},self.plugin_mandatory_dependencies)
-            if dependencies_df.empty:
-                sys.stdout.write('GeorgeKIndex - No matching dependencies found for this group \n%s\n'%current_group[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']])
-                continue
-            else:
-                sys.stdout.write('GeorgeKIndex - Matching dependencies found for this group \n%s\n'%current_group[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']])
+        dependencies_list = get_dependencies(self.groups,self.meta_df,'GeorgeKIndex',self.plugin_mandatory_dependencies,{'ice_water_phase':'water'})
 
+        for dependencies_df,_ in dependencies_list:
             dependencies_df = fstpy.load_data(dependencies_df)
             tt_df = get_from_dataframe(dependencies_df,'TT')
             td_df = get_from_dataframe(dependencies_df,'TD')

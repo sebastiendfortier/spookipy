@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..utils import create_empty_result, get_existing_result, get_plugin_dependencies, existing_results, final_results
+from ..utils import create_empty_result, find_matching_dependency_option, get_dependencies, get_existing_result, get_from_dataframe, get_plugin_dependencies, existing_results, final_results
 from ..plugin import Plugin
 import pandas as pd
 import fstpy.all as fstpy
@@ -14,16 +14,17 @@ def total_totals_index(tt850:np.ndarray, tt500:np.ndarray, td850:np.ndarray) -> 
 
 
 class TotalTotalsIndex(Plugin):
-    plugin_mandatory_dependencies = {
+
+
+    def __init__(self,df:pd.DataFrame):
+        self.plugin_mandatory_dependencies = [{
         'TT1':{'nomvar':'TT','unit':'celsius','level':850,'ip1_pkind':'mb'},
         'TT2':{'nomvar':'TT','unit':'celsius','level':500,'ip1_pkind':'mb'},
         'OTHERS':{'level':850,'ip1_pkind':'mb'},
-    }
-    plugin_result_specifications = {
+        }]
+        self.plugin_result_specifications = {
         'TTI':{'nomvar':'TTI','etiket':'TOTALI','unit':'celsius','ip1':0}
         }
-
-    def __init__(self,df:pd.DataFrame):
         self.df = df
         self.validate_input()
 
@@ -39,9 +40,10 @@ class TotalTotalsIndex(Plugin):
         #check if result already exists
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
 
-        if self.existing_result_df.empty:
-            self.dependencies_df = get_plugin_dependencies(self.df,{'ice_water_phase':'water'},self.plugin_mandatory_dependencies)
-            self.fhour_groups=self.dependencies_df.groupby(by=['grid','forecast_hour'])
+        # remove meta data from DataFrame
+        self.df = self.df.loc[~self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
+        # print(self.df[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']].to_string())
+        self.groups = self.df.groupby(['grid','dateo','forecast_hour','ip1_kind'])
 
     def compute(self) -> pd.DataFrame:
         from ..all import TemperatureDewPoint
@@ -50,15 +52,16 @@ class TotalTotalsIndex(Plugin):
 
         sys.stdout.write('TotalTotalsIndex - compute\n')
         df_list=[]
-        for _,current_fhour_group in self.fhour_groups:
-            current_fhour_group = fstpy.load_data(current_fhour_group)
-            tt850_df = current_fhour_group.loc[(current_fhour_group.nomvar=='TT') & (current_fhour_group.level==850)].reset_index(drop=True)
-            tt500_df = current_fhour_group.loc[(current_fhour_group.nomvar=='TT') & (current_fhour_group.level==500)].reset_index(drop=True)
-            td850_df = TemperatureDewPoint(current_fhour_group,ice_water_phase='water').compute()
-            td850_df = td850_df.loc[(td850_df.nomvar=='TD') & (td850_df.level==850)].reset_index(drop=True)
+        dependencies_list = get_dependencies(self.groups,self.meta_df,'TotalTotalsIndex',self.plugin_mandatory_dependencies)
 
-            if tt850_df.empty or tt500_df.empty or td850_df.empty:
-                continue
+        for dependencies_df,_ in dependencies_list:
+            dependencies_df = fstpy.load_data(dependencies_df)
+            tt_df = get_from_dataframe(dependencies_df,'TT')
+            tt850_df = tt_df.loc[(tt_df.level==850)].reset_index(drop=True)
+            tt500_df = tt_df.loc[(tt_df.level==500)].reset_index(drop=True)
+            td_df = TemperatureDewPoint(dependencies_df,ice_water_phase='water').compute()
+            td_df = get_from_dataframe(td_df,'TD')
+            td850_df = td_df.loc[(td_df.level==850)].reset_index(drop=True)
 
             tti_df = create_empty_result(td850_df,self.plugin_result_specifications['TTI'])
 

@@ -9,7 +9,7 @@ import pandas as pd
 from ..plugin import Plugin
 from ..science.science import *
 from ..utils import (create_empty_result, existing_results, final_results,
-                     find_matching_dependency_option, get_existing_result,
+                     get_dependencies, get_existing_result,
                      get_from_dataframe, get_intersecting_levels)
 
 
@@ -82,16 +82,9 @@ class Humidex(Plugin):
 
         sys.stdout.write('Humidex - compute\n')
         df_list=[]
-        for _, current_group in self.groups:
-            # print('current_group\n',pd.concat([current_group,self.meta_df],ignore_index=True)[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']].to_string())
-            sys.stdout.write('Humidex - Checking dependencies\n')
-            dependencies_df, option = find_matching_dependency_option(pd.concat([current_group,self.meta_df],ignore_index=True),None,self.plugin_mandatory_dependencies)
-            if dependencies_df.empty:
-                sys.stdout.write('Humidex - No matching dependencies found for this group \n%s\n'%current_group[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']])
-                continue
-            else:
-                sys.stdout.write('Humidex - Matching dependencies found for this group \n%s\n'%current_group[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']])
+        dependencies_list = get_dependencies(self.groups,self.meta_df,'Humidex',self.plugin_mandatory_dependencies)
 
+        for dependencies_df,option in dependencies_list:
             if option==0:
                 print('option 1')
                 level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])

@@ -43,6 +43,7 @@ class OpElementsByPoint(Plugin):
 
         grouping = ['grid']
         if self.group_by_forecast_hour:
+            grouping.append('dateo')
             grouping.append('forecast_hour')
         if self.group_by_level:
             grouping.append('level')
@@ -56,7 +57,7 @@ class OpElementsByPoint(Plugin):
         df_list = []
         for _,current_group in self.groups:
             current_group = fstpy.load_data(current_group)
-            current_group.sort_values(by=['nomvar','forecast_hour'],inplace=True)
+            current_group.sort_values(by=['nomvar','dateo','forecast_hour'],inplace=True)
             if len(current_group.index) == 1:
                 sys.stderr.write('need more than one field for this operation - skipping\n')
                 continue
@@ -72,16 +73,3 @@ class OpElementsByPoint(Plugin):
             df_list.append(res_df)
 
         return final_results(df_list, self.exception_class, self.meta_df)
-        # if not len(df_list):
-        #     raise self.exception_class(self.operation_name + ' - no results where produced')
-
-        # self.meta_df = fstpy.load_data(self.meta_df)
-        # df_list.append(self.meta_df)
-
-        # # merge all results together
-        # res_df = pd.concat(df_list,ignore_index=True)
-
-        # res_df = remove_load_data_info(res_df)
-        # res_df = fstpy.metadata_cleanup(res_df)
-
-        return res_df

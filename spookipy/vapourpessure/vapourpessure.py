@@ -11,7 +11,7 @@ from ..humidityutils.humidityutils import (TDPACK_OFFSET_FIX,
 from ..plugin.plugin import Plugin
 from ..science.science import *
 from ..utils import (create_empty_result, existing_results, final_results,
-                     find_matching_dependency_option, get_existing_result,
+                     get_dependencies, get_existing_result,
                      get_from_dataframe, get_intersecting_levels, initializer)
 
 
@@ -120,20 +120,12 @@ class VapourPressure(Plugin):
         sys.stdout.write('VapourPressure - compute\n')
         df_list=[]
 
-        for _, current_group in self.groups:
-            # print(current_group[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']].to_string())
-            if self.rpn:
-                sys.stdout.write('VapourPressure - Checking rpn dependencies\n')
-                dependencies_df, option = find_matching_dependency_option(pd.concat([current_group,self.meta_df],ignore_index=True),self.plugin_params,self.plugin_mandatory_dependencies_rpn)
-            else:
-                sys.stdout.write('VapourPressure - Checking dependencies\n')
-                dependencies_df, option = find_matching_dependency_option(pd.concat([current_group,self.meta_df],ignore_index=True),self.plugin_params,self.plugin_mandatory_dependencies)
-            if dependencies_df.empty:
-                sys.stdout.write('VapourPressure - No matching dependencies found for this group \n%s\n'%current_group[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']])
-                continue
-            else:
-                sys.stdout.write('VapourPressure - Matching dependencies found for this group \n%s\n'%current_group[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']])
+        if self.rpn:
+            dependencies_list = get_dependencies(self.groups,self.meta_df,'VapourPressure',self.plugin_mandatory_dependencies_rpn,self.plugin_params)
+        else:
+            dependencies_list = get_dependencies(self.groups,self.meta_df,'VapourPressure',self.plugin_mandatory_dependencies,self.plugin_params)
 
+        for dependencies_df,option in dependencies_list:
             if self.rpn:
                 print('rpn')
                 if option==0:

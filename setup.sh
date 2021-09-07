@@ -21,7 +21,7 @@ use_spookipy(){
     use_spookipy_deps
     add_spookipy_to_pythonpath
     echo 'modifiy your PYTHONPATH to include fstpy or use the following ssm package'
-    echo '. ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/fstpy/2.1.6'
+    echo '. ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/2.1.6'
 }
 
 add_spookipy_to_pythonpath(){

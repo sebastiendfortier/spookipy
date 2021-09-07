@@ -31,7 +31,7 @@ doc: insert_version rst readme replace
 	make --no-print-directory html
 
 remove_gen_files:
-	rm `ls -I contributing.rst -I ssm.rst -I index.rst -I install.rst -I intro.rst -I LICENSE.rst -I requirements.rst -I tutorial.rst -I usage.rst -I _build -I _static -I auto_examples -I conf.py -I spookipy_logo.jpg -I Makefile`
+	rm -f `ls -I contributing.rst -I ssm.rst -I index.rst -I install.rst -I intro.rst -I LICENSE.rst -I requirements.rst -I tutorial.rst -I usage.rst -I _build -I _static -I auto_examples -I conf.py -I spookipy_logo.jpg -I Makefile`
 
 clean: remove_gen_files
 

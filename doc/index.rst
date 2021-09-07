@@ -127,7 +127,6 @@ Documentation
 
 **Misc**
 
-* :doc:`acknowledgements`
 * :doc:`LICENSE`
 
 .. toctree::
@@ -135,5 +134,4 @@ Documentation
    :hidden:
    :caption: Misc
 
-   acknowledgements
    LICENSE

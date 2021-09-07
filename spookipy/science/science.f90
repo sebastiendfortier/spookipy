@@ -686,14 +686,16 @@ subroutine hu_from_qv(qv,ni,nj,res)
    real*8,  intent(in)  :: qv(ni ,nj)
    real*8,  intent(out) :: res(ni ,nj)
    integer, intent(in):: ni, nj
-   integer i,j
-   real*8 tmpqv
-   do i=1, ni
-      do j=1, nj
-         tmpqv= dmax1(qv(i,j),10E-15)
-         res(i,j) = tmpqv / (tmpqv + 1.)
-      enddo
-   enddo
+   real*8 tmpqv(ni ,nj)
+   tmpqv= dmax1(qv,10E-15)
+   res = tmpqv / (tmpqv + 1.)
+   ! integer i,j
+   ! do i=1, ni
+   !    do j=1, nj
+   !       tmpqv= dmax1(qv(i,j),10E-15)
+   !       res(i,j) = tmpqv / (tmpqv + 1.)
+   !    enddo
+   ! enddo
 end subroutine
 
 subroutine td_from_hr(tt,hr,ni,nj,res)
@@ -702,24 +704,36 @@ subroutine td_from_hr(tt,hr,ni,nj,res)
    real*8,  intent(in)  :: hr(ni ,nj)
    real*8,  intent(out) :: res(ni ,nj)
    integer, intent(in):: ni, nj
-   integer i,j
    real*8,   parameter :: vara = 17.625
    real*8,   parameter :: varb = 243.04
-   real*8 hrtmp,term
-
-   do i=1, ni
-      do j=1, nj
-         hrtmp = hr(i,j)
-         if (hrtmp > 1.) then
-            hrtmp = 1.
-         endif
-         if (hrtmp < 10E-15) then
-            hrtmp = 10E-15
-         endif
-         term = (vara * tt(i,j))/(varb + tt(i,j)) + dlog(hrtmp)
-         res(i,j) = (varb * term) / (vara - term )
-      enddo
-   enddo
+   real*8 hrtmp(ni ,nj),term(ni ,nj)
+   hrtmp = hr
+   where (hrtmp .GT. 1.)
+      hrtmp = 1.
+   elsewhere
+      hrtmp = hrtmp
+   endwhere
+   where (hrtmp .LT. 10E-15)
+      hrtmp = 10E-15
+   elsewhere
+      hrtmp = hrtmp
+   endwhere
+   term = (vara * tt)/(varb + tt) + dlog(hrtmp)
+   res = (varb * term) / (vara - term )
+   ! integer i,j
+   ! do i=1, ni
+   !    do j=1, nj
+   !       hrtmp = hr(i,j)
+   !       if (hrtmp > 1.) then
+   !          hrtmp = 1.
+   !       endif
+   !       if (hrtmp < 10E-15) then
+   !          hrtmp = 10E-15
+   !       endif
+   !       term = (vara * tt(i,j))/(varb + tt(i,j)) + dlog(hrtmp)
+   !       res(i,j) = (varb * term) / (vara - term )
+   !    enddo
+   ! enddo
 end subroutine
 
 
@@ -729,12 +743,13 @@ subroutine hr_from_svp_vppr(svp,vppr,ni,nj,res)
    real*8,  intent(in)  :: vppr(ni ,nj)
    real*8,  intent(out) :: res(ni ,nj)
    integer, intent(in):: ni, nj
-   integer i,j
-   do i=1, ni
-      do j=1, nj
-         res(i,j) = vppr(i,j)/svp(i,j)
-      enddo
-   enddo
+   res = vppr/svp
+   ! integer i,j
+   ! do i=1, ni
+   !    do j=1, nj
+   !       res(i,j) = vppr(i,j)/svp(i,j)
+   !    enddo
+   ! enddo
 end subroutine
 
 
@@ -762,6 +777,7 @@ subroutine rpn_hr_from_hu(tt,hu,px,ni,nj,swph,res)
    logical, intent(in):: swph
    real*8,  intent(out) :: res(ni ,nj)
    integer, intent(in):: ni, nj
+
    integer i,j
    do i=1, ni
       do j=1, nj
@@ -777,12 +793,13 @@ subroutine hu_from_vppr(vppr,px,ni,nj,res)
    real*8,  intent(in)  :: px(ni ,nj)
    real*8,  intent(out) :: res(ni ,nj)
    integer, intent(in):: ni, nj
-   integer i,j
-   do i=1, ni
-      do j=1, nj
-         res(i,j) = (EPS1 * vppr(i,j)) / (px(i,j) - (1.-EPS1)*vppr(i,j))
-      enddo
-   enddo
+   res = (EPS1 * vppr) / (px - (1.-EPS1)*vppr)
+   ! integer i,j
+   ! do i=1, ni
+   !    do j=1, nj
+   !       res(i,j) = (EPS1 * vppr(i,j)) / (px(i,j) - (1.-EPS1)*vppr(i,j))
+   !    enddo
+   ! enddo
 end subroutine
 
 
@@ -795,8 +812,8 @@ subroutine rpn_hu_from_es(tt,es,px,ni,nj,swph,res)
    real*8,  intent(out) :: res(ni ,nj)
    integer, intent(in):: ni, nj
    integer i,j
-   do i=1, ni
-      do j=1, nj
+   do j=1, nj
+      do i=1, ni
          res(i,j) = sesahu(es(i,j), tt(i,j), px(i,j), swph)
       enddo
    enddo
@@ -809,18 +826,25 @@ subroutine hmx_from_svp(tt,svp,ni,nj,res)
    real*8,  intent(in)  :: svp(ni ,nj)
    real*8,  intent(out) :: res(ni ,nj)
    integer, intent(in):: ni, nj
-   real*8 resultat
-   integer i,j
-   do i=1, ni
-      do j=1, nj
-         resultat = tt(i,j) + (0.55555 * (svp(i,j) - 10.))
-         if (resultat > tt(i,j)) then
-            res(i,j) = resultat
-         else
-            res(i,j) = tt(i,j)
-         endif
-      enddo
-   enddo
+   real*8 resultat(ni,nj)
+   resultat = tt + (0.55555 * (svp - 10.))
+   where (resultat .GT. tt)
+      res = resultat
+   elsewhere
+      res = tt
+   endwhere
+
+   ! integer i,j
+   ! do i=1, ni
+   !    do j=1, nj
+   !       resultat = tt(i,j) + (0.55555 * (svp(i,j) - 10.))
+   !       if (resultat > tt(i,j)) then
+   !          res(i,j) = resultat
+   !       else
+   !          res(i,j) = tt(i,j)
+   !       endif
+   !    enddo
+   ! enddo
 end subroutine
 
 subroutine qv_from_hu(hu,ni,nj,res)
@@ -828,14 +852,16 @@ subroutine qv_from_hu(hu,ni,nj,res)
    real*8,  intent(in)  :: hu(ni ,nj)
    real*8,  intent(out) :: res(ni ,nj)
    integer, intent(in):: ni, nj
-   real*8 hutmp
-   integer i,j
-   do i=1, ni
-      do j=1, nj
-         hutmp = dmax1(hu(i,j),10d-15)
-         res(i,j) = (hutmp / (1. - hutmp)) * 1000d0
-      enddo
-   enddo
+   real*8 hutmp(ni,nj)
+   hutmp = dmax1(hu,10E-15)
+   res = (hutmp / (1. - hutmp)) * 1000.
+   ! integer i,j
+   ! do i=1, ni
+   !    do j=1, nj
+   !       hutmp = dmax1(hu(i,j),10E-15)
+   !       res(i,j) = (hutmp / (1. - hutmp)) * 1000.
+   !    enddo
+   ! enddo
 end subroutine
 
 subroutine qv_from_vppr(vppr,px,ni,nj,res)
@@ -844,16 +870,29 @@ subroutine qv_from_vppr(vppr,px,ni,nj,res)
    real*8,  intent(in)  :: px(ni ,nj)
    real*8,  intent(out) :: res(ni ,nj)
    integer, intent(in):: ni, nj
-   integer i,j
-   do i=1, ni
-      do j=1, nj
-         if (px(i,j) < 10E-15) then
-            res(i,j) = 0.
-         else
-            res(i,j) = EPS1 * (vppr(i,j) / (px(i,j) - vppr(i,j))) * 1000.
-         endif
-      enddo
-   enddo
+   where(px .LT. 10E-15)
+      res = 0.
+   elsewhere
+      res = EPS1 * (vppr / (px - vppr)) * 1000.
+   endwhere
+
+   ! px[WHERE(px LT 10E-15, /NULL)] = 0.
+   ! if (px[WHERE(px < 10E-15, /NULL)] ) then
+   !    res = 0.
+   ! else
+   !    res = EPS1 * (vppr / (px - vppr)) * 1000.
+   ! endif
+
+   ! integer i,j
+   ! do i=1, ni
+   !    do j=1, nj
+   !       if (px(i,j) < 10E-15) then
+   !          res(i,j) = 0.
+   !       else
+   !          res(i,j) = EPS1 * (vppr(i,j) / (px(i,j) - vppr(i,j))) * 1000.
+   !       endif
+   !    enddo
+   ! enddo
 end subroutine
 
 subroutine es_from_td(tt,td,ni,nj,res)
@@ -862,12 +901,13 @@ subroutine es_from_td(tt,td,ni,nj,res)
    real*8,  intent(in)  :: td(ni ,nj)
    real*8,  intent(out) :: res(ni ,nj)
    integer, intent(in):: ni, nj
-   integer i,j
-   do i=1, ni
-      do j=1, nj
-         res(i,j) = dmax1(tt(i,j) - td(i,j), 0.)
-      enddo
-   enddo
+   ! integer i,j
+   res = dmax1(tt - td, 0.)
+   ! do i=1, ni
+   !    do j=1, nj
+   !       res(i,j) = dmax1(tt(i,j) - td(i,j), 0.)
+   !    enddo
+   ! enddo
 end subroutine
 
 end module science

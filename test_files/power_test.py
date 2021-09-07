@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"Power/testsFiles/"
 class TestPower(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : Utilisation de --outputFieldName avec une valeur > 4 caractères."""
+        """Utilisation de --outputFieldName avec une valeur > 4 caractères."""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_minus2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -30,7 +30,7 @@ class TestPower(unittest.TestCase):
 
         #compute Power
         df = Power(src_df0).compute()
-        #[ReaderStd --input {sources[0]}] >> [Power --value 2 --outputFieldName ABCDEF] 
+        #[ReaderStd --input {sources[0]}] >> [Power --value 2 --outputFieldName ABCDEF]
 
         #write the result
         results_file = TMP_PATH + "test_1.std"
@@ -41,11 +41,11 @@ class TestPower(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
-        """Test #2 : Utilisation de --outputFieldName alors qu'on a plusieurs champs dans le fichier d'entrée."""
+        """Utilisation de --outputFieldName alors qu'on a plusieurs champs dans le fichier d'entrée."""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -53,7 +53,7 @@ class TestPower(unittest.TestCase):
 
         #compute Power
         df = Power(src_df0).compute()
-        #[ReaderStd --input {sources[0]}] >> [Power --value 2 --outputFieldName ABCD] 
+        #[ReaderStd --input {sources[0]}] >> [Power --value 2 --outputFieldName ABCD]
 
         #write the result
         results_file = TMP_PATH + "test_2.std"
@@ -64,11 +64,11 @@ class TestPower(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
-        """Test #3 : Calcule la valeur exponentielle d'un champ."""
+        """Calcule la valeur exponentielle d'un champ."""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -87,11 +87,11 @@ class TestPower(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
-        """Test #4 : Calcule la valeur exponentielle d'un champ et utilise --outputFieldName pour renommer le résultat."""
+        """Calcule la valeur exponentielle d'un champ et utilise --outputFieldName pour renommer le résultat."""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -110,6 +110,4 @@ class TestPower(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

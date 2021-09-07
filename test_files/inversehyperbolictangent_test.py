@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"InverseHyperbolicTangent/testsFiles/"
 class TestInverseHyperbolicTangent(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 :  Test InverseHyperbolicTangent"""
+        """ Test InverseHyperbolicTangent"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_point5_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -41,6 +41,4 @@ class TestInverseHyperbolicTangent(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

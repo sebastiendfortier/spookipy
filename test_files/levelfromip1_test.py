@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"LevelFromIp1/testsFiles/"
 class TestLevelFromIp1(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 :  Test LevelFromIp1"""
+        """ Test LevelFromIp1"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -41,6 +41,4 @@ class TestLevelFromIp1(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

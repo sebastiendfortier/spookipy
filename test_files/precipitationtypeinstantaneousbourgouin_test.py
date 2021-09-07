@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"PrecipitationTypeInstantaneousBourgouin/testsFiles/"
 class TestPrecipitationTypeInstantaneousBourgouin(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 :   Test avec une valeur invalide pour precipitationRate."""
+        """  Test avec une valeur invalide pour precipitationRate."""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -30,7 +30,7 @@ class TestPrecipitationTypeInstantaneousBourgouin(unittest.TestCase):
 
         #compute PrecipitationTypeInstantaneousBourgouin
         df = PrecipitationTypeInstantaneousBourgouin(src_df0).compute()
-        #[ReaderStd --input {sources[0]}] >> [PrecipitationTypeInstantaneousBourgouin --precipitationRate -0.2] 
+        #[ReaderStd --input {sources[0]}] >> [PrecipitationTypeInstantaneousBourgouin --precipitationRate -0.2]
 
         #write the result
         results_file = TMP_PATH + "test_1.std"
@@ -41,11 +41,11 @@ class TestPrecipitationTypeInstantaneousBourgouin(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
-        """Test #2 :   Test avec un fichier contenant les niveaux de congelation (FRP et NBFL)"""
+        """  Test avec un fichier contenant les niveaux de congelation (FRP et NBFL)"""
         # open and read source
         source0 = plugin_test_dir + "input_2010032500_012"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -64,11 +64,11 @@ class TestPrecipitationTypeInstantaneousBourgouin(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
-        """Test #3 :   Test avec un fichier dont on doit calculer au prealable les niveaux de congelation"""
+        """  Test avec un fichier dont on doit calculer au prealable les niveaux de congelation"""
         # open and read source
         source0 = plugin_test_dir + "input_2013041212_024"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -87,6 +87,4 @@ class TestPrecipitationTypeInstantaneousBourgouin(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

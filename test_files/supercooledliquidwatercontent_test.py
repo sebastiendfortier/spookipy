@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"SupercooledLiquidWaterContent/testsFiles/"
 class TestSupercooledLiquidWaterContent(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 :  Test sans la cle optionnel origin."""
+        """ Test sans la cle optionnel origin."""
         # open and read source
         source0 = plugin_test_dir + "inputFile_TT_M3_MPQC_MPQR_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -41,11 +41,11 @@ class TestSupercooledLiquidWaterContent(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
-        """Test #2 :  Test d'une mauvais valeur de la cle origin"""
+        """ Test d'une mauvais valeur de la cle origin"""
         # open and read source
         source0 = plugin_test_dir + "inputFile_TT_M3_MPQC_MPQR_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -64,11 +64,11 @@ class TestSupercooledLiquidWaterContent(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
-        """Test #3 :  Test avec mauvaises donnees pour la cle origin"""
+        """ Test avec mauvaises donnees pour la cle origin"""
         # open and read source
         source0 = plugin_test_dir + "inputFile_TT_M3_MPQC_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -87,11 +87,11 @@ class TestSupercooledLiquidWaterContent(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
-        """Test #4 :  Test des resultats pour chaque champs."""
+        """ Test des resultats pour chaque champs."""
         # open and read source
         source0 = plugin_test_dir + "inputFile_TT_M3_MPQC_MPQR_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -110,11 +110,11 @@ class TestSupercooledLiquidWaterContent(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
-        """Test #5 :  Test TT > 0."""
+        """ Test TT > 0."""
         # open and read source
         source0 = plugin_test_dir + "inputFile_TT_over_0_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -133,6 +133,4 @@ class TestSupercooledLiquidWaterContent(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

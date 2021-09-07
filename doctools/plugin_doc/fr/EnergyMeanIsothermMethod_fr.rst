@@ -1,0 +1,99 @@
+Français
+--------
+
+**Description:**
+
+-  Calcul de l'énergie disponible dans une colonne à  partir de la
+   méthode dite de "l'isotherme moyenne" (voir références). Cette
+   méthode, initialement développée en utilisant un téphigramme, est
+   basée sur la définition de l'énergie et sur le calcul de l'aire sur
+   un diagramme thermodynamique. On peut montrer que l'énergie
+   disponible dans une couche est proportionnelle à  la température
+   moyenne dans la couche ainsi qu'à  la pression à  la base et au
+   sommet de la couche. L'énergie est positive ou négative dans une
+   couche en fonction des champs de température considérés (un champ
+   pouvant être une isotherme).
+   ***Note:*** Ce plugin peut tout aussi bien être appliqué au calcul
+   d'énergie d'une parcelle d'air soulevée ou au calcul d'énergie de
+   l'environnement par rapport à  une isotherme ou entre 2 téphigrammes.
+   Il est donc bien important de définir quel est le champ de
+   température par rapport auquel on se compare.
+   ***Note2:*** Le comportement de ce plugin diffère légèrement
+   lorsqu'il est appelé par le plugin
+   `LevelOfFreeConvectionAndEquilibrium <pluginLevelOfFreeConvectionAndEquilibrium.html>`__.
+
+\*Méthode d'itération:\*
+
+-  Colonne par colonne
+
+\*Dépendances:\*
+
+-  Champ de température (ex: température de la parcelle d'air soulevée
+   dans le cas du calcul du CAPE, température de l'environnement dans le
+   cas du calcul des types de précipitation par la méthode Bourgouin,
+   etc... )
+-  Champ de température par rapport auquel on se compare (peut être une
+   constante, ex: isotherme 0 deg C)
+   ***Note:*** : Assurez-vous de fournir à  ce plugin les dépendances
+   ci-haut mentionnées ou alors, les résultats des
+   plugins appelés par celui-ci (Voir la section "Ce plugin utilise").
+   Pour plus de détails sur cet usage
+   alternatif, voir la page de
+   `documentation. <https://wiki.cmc.ec.gc.ca/wiki/Spooki/Documentation/Description_g%C3%A9n%C3%A9rale_du_syst%C3%A8me#RefDependances>`__
+
+\*Résultat(s):\*
+
+-  Le plugin sort 2 champs 3D, où la 3ième dimension est le numéro de la
+   couche délimitée par les niveaux APX :
+   ENP, énergie positive (J.Kg-1)
+   ENN, énergie négative (J.Kg-1)
+
+\*Algorithme:\*
+
+-  https://wiki.cmc.ec.gc.ca/images/0/08/Spooki_-_Algorithme_EnergyMeanIsothermMethod.odt
+-  https://wiki.cmc.ec.gc.ca/images/a/af/Spooki_-_Algorithme_EnergyMeanIsothermMethod.pdf
+
+\*Références:\*
+
+-  "Atmospheric Thermodynamics", Iribarne, J.V., and Godson, W.L.
+   (Riedel, 2nd edition, 1981)
+
+\*Mots clés:\*
+
+-  MÉTÉO/WEATHER, énergie/energy, aire/area, isotherme/isotherm,
+   méthode/method , téphigramme/tephigram
+
+\*Usage:\*
+
+**Exemple d'appel:**
+
+.. code:: example
+
+    ...
+    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/EnergyMeanIsothermMethod/testsFiles/inputFile.std] >>
+                ([Copy] + ([Select --fieldName TT] >> [SetConstantValue --value 0] >> [Zap --fieldName CF]) +
+                 [Pressure --coordinateType AUTODETECT --referenceField TT] ) >>
+                ( [Copy] + [VerticalScan --referenceField TT --comparisonValueOrField 0 --comparisonType CONSTANTVALUE --maxNbOccurrence 5 --consecutiveEvents INF --outputVerticalRepresentation PRESSURE --epsilon 1e-04]  ) >>
+                [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature CF] >>
+                [WriterStd --output /tmp/$USER/outputFile.std]"
+    ...
+
+**Validation des résultats:**
+
+**Contacts:**
+
+-  Auteur(e) : `Sandrine
+   Edouard <https://wiki.cmc.ec.gc.ca/wiki/User:Edouards>`__
+-  Codé par : `Guylaine
+   Hardy <https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg>`__
+-  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
+   `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+
+Voir la référence à  .
+
+Tests unitaires
+
+| **Ce plugin utilise:**
+| **Ce plugin est utilisé par:**
+
+ 

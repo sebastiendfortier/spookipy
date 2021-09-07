@@ -14,16 +14,16 @@ class AddToElementsError(Exception):
 
 class AddToElements(Plugin):
     @initializer
-    def __init__(self, df:pd.DataFrame, value, nomvar_out=''):
+    def __init__(self, df:pd.DataFrame, value, nomvar_out=None):
         pass
 
     def compute(self) -> pd.DataFrame:
         sys.stdout.write('AddToElements - compute\n')
         return OpElementsByValue(
             df = self.df,
-            operator = add_value, 
+            operator = add_value,
             value = self.value,
             operation_name='AddToElements',
             exception_class = AddToElementsError,
-            nomvar_out= self.nomvar_out
-            ).compute() 
+            nomvar_out= self.nomvar_out,
+            etiket='ADDTOE').compute()

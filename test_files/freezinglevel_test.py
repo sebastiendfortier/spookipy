@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"FreezingLevel/testsFiles/"
 class TestFreezingLevel(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 :  Test avec un fichier maison de 10 cas différents où la courbe de température croise le 0 deg C (matrice 10x1), avec l'option --outputVerticalRepresentation BOTH."""
+        """ Test avec un fichier maison de 10 cas différents où la courbe de température croise le 0 deg C (matrice 10x1), avec l'option --outputVerticalRepresentation BOTH."""
         # open and read source
         source0 = plugin_test_dir + "inputFileMillibar.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -41,11 +41,11 @@ class TestFreezingLevel(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
-        """Test #2 :  Test avec un fichier maison de 10 cas différents où la courbe de température croise le 0 deg C (matrice 10x1), avec l'option -maxNbFzLvl 1 et --outputVerticalRepresentation BOTH."""
+        """ Test avec un fichier maison de 10 cas différents où la courbe de température croise le 0 deg C (matrice 10x1), avec l'option -maxNbFzLvl 1 et --outputVerticalRepresentation BOTH."""
         # open and read source
         source0 = plugin_test_dir + "inputFileMillibar.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -64,11 +64,11 @@ class TestFreezingLevel(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
-        """Test #3 :  Test avec un fichier maison de 10 cas différents où la courbe de température croise le 0 deg C (matrice 10x1), avec l'option -maxNbFzLvl 1 et --outputVerticalRepresentation GEOPOTENTIAL."""
+        """ Test avec un fichier maison de 10 cas différents où la courbe de température croise le 0 deg C (matrice 10x1), avec l'option -maxNbFzLvl 1 et --outputVerticalRepresentation GEOPOTENTIAL."""
         # open and read source
         source0 = plugin_test_dir + "inputFileMillibar.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -87,11 +87,11 @@ class TestFreezingLevel(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
-        """Test #4 :  Test avec un fichier maison de 10 cas différents où la courbe de température croise le 0 deg C (matrice 10x1), avec l'option -maxNbFzLvl 3 et --outputVerticalRepresentation BOTH."""
+        """ Test avec un fichier maison de 10 cas différents où la courbe de température croise le 0 deg C (matrice 10x1), avec l'option -maxNbFzLvl 3 et --outputVerticalRepresentation BOTH."""
         # open and read source
         source0 = plugin_test_dir + "inputFileMillibar.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -110,11 +110,11 @@ class TestFreezingLevel(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
-        """Test #5 :  Test avec un fichier maison de 10 cas différents où la courbe de température croise le 0 deg C (matrice 10x1), avec l'option -maxNbFzLvl 3 et --outputVerticalRepresentation GEOPOTENTIAL."""
+        """ Test avec un fichier maison de 10 cas différents où la courbe de température croise le 0 deg C (matrice 10x1), avec l'option -maxNbFzLvl 3 et --outputVerticalRepresentation GEOPOTENTIAL."""
         # open and read source
         source0 = plugin_test_dir + "inputFileMillibar.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -133,11 +133,11 @@ class TestFreezingLevel(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_6(self):
-        """Test #6 :  Test avec un fichier sortie de modele eta, avec l'option --outputVerticalRepresentation PRESSURE."""
+        """ Test avec un fichier sortie de modele eta, avec l'option --outputVerticalRepresentation PRESSURE."""
         # open and read source
         source0 = plugin_test_dir + "inputFile2.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -156,11 +156,11 @@ class TestFreezingLevel(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_7(self):
-        """Test #7 :  Test avec un fichier sortie de modele sigma, avec l'option --outputVerticalRepresentation GEOPOTENTIAL."""
+        """ Test avec un fichier sortie de modele sigma, avec l'option --outputVerticalRepresentation GEOPOTENTIAL."""
         # open and read source
         source0 = plugin_test_dir + "inputFile2.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -179,11 +179,11 @@ class TestFreezingLevel(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_8(self):
-        """Test #8 :  Test avec un fichier sortie de modele sigma, avec l'option --outputVerticalRepresentation BOTH."""
+        """ Test avec un fichier sortie de modele sigma, avec l'option --outputVerticalRepresentation BOTH."""
         # open and read source
         source0 = plugin_test_dir + "inputFile2.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -202,11 +202,11 @@ class TestFreezingLevel(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_9(self):
-        """Test #9 :  Test avec un fichier contenant a la fois des niveaux pressions et des niveaux sigma"""
+        """ Test avec un fichier contenant a la fois des niveaux pressions et des niveaux sigma"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -225,11 +225,11 @@ class TestFreezingLevel(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_10(self):
-        """Test #10 :  Test de l'option --highestFreezingLevel (outputVerticalRepresentation == BOTH et highestFreezingLevel == BOTH)"""
+        """ Test de l'option --highestFreezingLevel (outputVerticalRepresentation == BOTH et highestFreezingLevel == BOTH)"""
         # open and read source
         source0 = plugin_test_dir + "inputFile2.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -248,11 +248,11 @@ class TestFreezingLevel(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_15(self):
-        """Test #15 :  Test de l'option --highestFreezingLevel (outputVerticalRepresentation == BOTH et highestFreezingLevel == YES)"""
+        """ Test de l'option --highestFreezingLevel (outputVerticalRepresentation == BOTH et highestFreezingLevel == YES)"""
         # open and read source
         source0 = plugin_test_dir + "inputFile2.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -271,11 +271,11 @@ class TestFreezingLevel(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_16(self):
-        """Test #16 :  Test de l'option --highestFreezingLevel (outputVerticalRepresentation == PRESSURE et highestFreezingLevel == YES)"""
+        """ Test de l'option --highestFreezingLevel (outputVerticalRepresentation == PRESSURE et highestFreezingLevel == YES)"""
         # open and read source
         source0 = plugin_test_dir + "testcases2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -294,11 +294,11 @@ class TestFreezingLevel(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_18(self):
-        """Test #18 :  Test de l'option --highestFreezingLevel (outputVerticalRepresentation == PRESSURE et highestFreezingLevel == YES)"""
+        """ Test de l'option --highestFreezingLevel (outputVerticalRepresentation == PRESSURE et highestFreezingLevel == YES)"""
         # open and read source
         source0 = plugin_test_dir + "testcases2-2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -317,11 +317,11 @@ class TestFreezingLevel(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_19(self):
-        """Test #19 :  Test de l'option --highestFreezingLevel (outputVerticalRepresentation == GEOPOTENTIAL et highestFreezingLevel == YES)"""
+        """ Test de l'option --highestFreezingLevel (outputVerticalRepresentation == GEOPOTENTIAL et highestFreezingLevel == YES)"""
         # open and read source
         source0 = plugin_test_dir + "testcases3-2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -340,11 +340,11 @@ class TestFreezingLevel(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_20(self):
-        """Test #20 :  Test de l'option --highestFreezingLevel (outputVerticalRepresentation == GEOPOTENTIAL et highestFreezingLevel == YES)"""
+        """ Test de l'option --highestFreezingLevel (outputVerticalRepresentation == GEOPOTENTIAL et highestFreezingLevel == YES)"""
         # open and read source
         source0 = plugin_test_dir + "testcases4-2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -363,11 +363,11 @@ class TestFreezingLevel(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_21(self):
-        """Test #21 :  Test de l'option --highestFreezingLevel (outputVerticalRepresentation == BOTH et highestFreezingLevel == YES)"""
+        """ Test de l'option --highestFreezingLevel (outputVerticalRepresentation == BOTH et highestFreezingLevel == YES)"""
         # open and read source
         source0 = plugin_test_dir + "testcases3-2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -386,11 +386,11 @@ class TestFreezingLevel(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_22(self):
-        """Test #22 :  Test avec un fichier 5005, avec les options --outputVerticalRepresentation BOTH --highestFreezingLevel BOTH et --maxNbFzLvl 2."""
+        """ Test avec un fichier 5005, avec les options --outputVerticalRepresentation BOTH --highestFreezingLevel BOTH et --maxNbFzLvl 2."""
         # open and read source
         source0 = plugin_test_dir + "minimal_TTHUGZ_5005.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -409,6 +409,4 @@ class TestFreezingLevel(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

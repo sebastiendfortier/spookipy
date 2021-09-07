@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"Calculator/testsFiles/"
 class TestCalculator(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : Multiplication de deux valeurs d'un fichier volumineux."""
+        """Multiplication de deux valeurs d'un fichier volumineux."""
         # open and read source
         source0 = plugin_test_dir + "srcFile1.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -41,11 +41,11 @@ class TestCalculator(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
-        """Test #2 : 6 variables impliquant plusieurs opérateurs simples (HU+HR+ES)/(VV-(TT*UU))."""
+        """6 variables impliquant plusieurs opérateurs simples (HU+HR+ES)/(VV-(TT*UU))."""
         # open and read source
         source0 = plugin_test_dir + "srcFile2.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -64,11 +64,11 @@ class TestCalculator(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
-        """Test #3 : Test de certaines fonctions typiques: abs(tt) + cos(uu) + ceil(vv) + sqrt(hu) + pow(hr,2) + log10(es)"""
+        """Test de certaines fonctions typiques: abs(tt) + cos(uu) + ceil(vv) + sqrt(hu) + pow(hr,2) + log10(es)"""
         # open and read source
         source0 = plugin_test_dir + "srcFile3.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -87,11 +87,11 @@ class TestCalculator(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
-        """Test #4 : Test avec un nombre élevé de variables. (Sommation des variables)"""
+        """Test avec un nombre élevé de variables. (Sommation des variables)"""
         # open and read source
         source0 = plugin_test_dir + "srcFile4.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -110,11 +110,11 @@ class TestCalculator(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
-        """Test #5 : Test avec un outputFieldname différent et une utilisation répétée d'une même variable. ( (TT+UU+VV)/TT )"""
+        """Test avec un outputFieldname différent et une utilisation répétée d'une même variable. ( (TT+UU+VV)/TT )"""
         # open and read source
         source0 = plugin_test_dir + "srcFile2.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -133,11 +133,11 @@ class TestCalculator(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_6(self):
-        """Test #6 : Test avec une seule variable. (TT*7)"""
+        """Test avec une seule variable. (TT*7)"""
         # open and read source
         source0 = plugin_test_dir + "srcFile2.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -156,11 +156,11 @@ class TestCalculator(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_7(self):
-        """Test #7 : Même test que test_5, mais échoue parce qu'il y n'y a pas le même nombre de variables que de PDS avec tag."""
+        """Même test que test_5, mais échoue parce qu'il y n'y a pas le même nombre de variables que de PDS avec tag."""
         # open and read source
         source0 = plugin_test_dir + "srcFile2.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -179,6 +179,4 @@ class TestCalculator(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

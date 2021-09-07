@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"Operator/testsFiles/"
 class TestOperator(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 :  Teste l'operateur logique OU lorsque c'est un succès."""
+        """ Teste l'operateur logique OU lorsque c'est un succès."""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -41,11 +41,11 @@ class TestOperator(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
-        """Test #2 :  Teste l'operateur logique OU lorsque c'est un échec."""
+        """ Teste l'operateur logique OU lorsque c'est un échec."""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -64,11 +64,11 @@ class TestOperator(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
-        """Test #3 :  Teste l'operateur logique ADD (+)."""
+        """ Teste l'operateur logique ADD (+)."""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -87,11 +87,11 @@ class TestOperator(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
-        """Test #4 :  Teste l'operateur logique ADD (+) avec plusieurs readers."""
+        """ Teste l'operateur logique ADD (+) avec plusieurs readers."""
         # open and read source
         source0 = plugin_test_dir + "addReaderUU_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -119,11 +119,11 @@ class TestOperator(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
-        """Test #5 :  Teste l'operateur logique AND (&&)."""
+        """ Teste l'operateur logique AND (&&)."""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -142,11 +142,11 @@ class TestOperator(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_6(self):
-        """Test #6 :  Teste l'utilisation de plusieurs readers."""
+        """ Teste l'utilisation de plusieurs readers."""
         # open and read source
         source0 = plugin_test_dir + "addReaderUU_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -174,11 +174,11 @@ class TestOperator(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_7(self):
-        """Test #7 :  Teste l'utilisation d'un reader entre d'autres opérations."""
+        """ Teste l'utilisation d'un reader entre d'autres opérations."""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_UV_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -200,11 +200,11 @@ class TestOperator(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_8(self):
-        """Test #8 :  Teste l'utilisation de plusieurs writers."""
+        """ Teste l'utilisation de plusieurs writers."""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -223,11 +223,11 @@ class TestOperator(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_9(self):
-        """Test #9 :  Teste l'utilisation d'un writer entre 2 opérations."""
+        """ Teste l'utilisation d'un writer entre 2 opérations."""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_UV_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -246,11 +246,11 @@ class TestOperator(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_10(self):
-        """Test #10 :  Teste l'utilisation d'un reader entre d'autres opérations."""
+        """ Teste l'utilisation d'un reader entre d'autres opérations."""
         # open and read source
         source0 = plugin_test_dir + "addcopy.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -269,6 +269,4 @@ class TestOperator(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

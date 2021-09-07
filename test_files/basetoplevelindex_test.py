@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"BaseTopLevelIndex/testsFiles/"
 class TestBaseTopLevelIndex(unittest.TestCase):
 
     def test_bt1(self):
-        """Test #1 : Lit le champ IFLD et recherche 0.6 dans les colonnes a l'aide de l'opérateur >= et retourne les indices trouvées dans BASE et TOP"""
+        """Lit le champ IFLD et recherche 0.6 dans les colonnes a l'aide de l'opérateur >= et retourne les indices trouvées dans BASE et TOP"""
         # open and read source
         source0 = plugin_test_dir + "baseTop_fileSrc.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -41,11 +41,11 @@ class TestBaseTopLevelIndex(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_operatorEqual(self):
-        """Test #2 : Lit le champ IFLD et recherche 0.5 dans les colonnes a l'aide de l'opérateur == et retourne les indices trouvées dans BASE et TOP"""
+        """Lit le champ IFLD et recherche 0.5 dans les colonnes a l'aide de l'opérateur == et retourne les indices trouvées dans BASE et TOP"""
         # open and read source
         source0 = plugin_test_dir + "baseTop_fileSrcEqual.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -64,11 +64,11 @@ class TestBaseTopLevelIndex(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_operatorLessEqual(self):
-        """Test #3 : Lit le champ IFLD et recherche 0.5 dans les colonnes a l'aide de l'opérateur <= et retourne les indices trouvées dans BASE et TOP"""
+        """Lit le champ IFLD et recherche 0.5 dans les colonnes a l'aide de l'opérateur <= et retourne les indices trouvées dans BASE et TOP"""
         # open and read source
         source0 = plugin_test_dir + "baseTop_fileSrcLessEqual.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -87,11 +87,11 @@ class TestBaseTopLevelIndex(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_operatorLessThan(self):
-        """Test #4 : Lit le champ IFLD et recherche 0.5 dans les colonnes a l'aide de l'opérateur < et retourne les indices trouvées dans BASE et TOP"""
+        """Lit le champ IFLD et recherche 0.5 dans les colonnes a l'aide de l'opérateur < et retourne les indices trouvées dans BASE et TOP"""
         # open and read source
         source0 = plugin_test_dir + "baseTop_fileSrcLessThan.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -110,11 +110,11 @@ class TestBaseTopLevelIndex(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_operatorGreaterEqual(self):
-        """Test #5 : Lit le champ IFLD et recherche 0.5 dans les colonnes a l'aide de l'opérateur >= et retourne les indices trouvées dans BASE et TOP"""
+        """Lit le champ IFLD et recherche 0.5 dans les colonnes a l'aide de l'opérateur >= et retourne les indices trouvées dans BASE et TOP"""
         # open and read source
         source0 = plugin_test_dir + "baseTop_fileSrcGreaterEqual.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -133,11 +133,11 @@ class TestBaseTopLevelIndex(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_operatorGreaterThan(self):
-        """Test #6 : Lit le champ IFLD et recherche 0.5 dans les colonnes a l'aide de l'opérateur > et retourne les indices trouvées dans BASE et TOP"""
+        """Lit le champ IFLD et recherche 0.5 dans les colonnes a l'aide de l'opérateur > et retourne les indices trouvées dans BASE et TOP"""
         # open and read source
         source0 = plugin_test_dir + "baseTop_fileSrcGreaterThan.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -156,11 +156,11 @@ class TestBaseTopLevelIndex(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_operatorNotEqual(self):
-        """Test #7 : Lit le champ IFLD et recherche 0.5 dans les colonnes a l'aide de l'opérateur != et retourne les indices trouvées dans BASE et TOP"""
+        """Lit le champ IFLD et recherche 0.5 dans les colonnes a l'aide de l'opérateur != et retourne les indices trouvées dans BASE et TOP"""
         # open and read source
         source0 = plugin_test_dir + "baseTop_fileSrcNotEqual.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -179,6 +179,4 @@ class TestBaseTopLevelIndex(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

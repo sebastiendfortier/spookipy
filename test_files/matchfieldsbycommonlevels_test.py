@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"MatchFieldsByCommonLevels/testsFiles/"
 class TestMatchFieldsByCommonLevels(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 :  Sélection du champs avec comme priorité HU,HR,TD."""
+        """ Sélection du champs avec comme priorité HU,HR,TD."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_glbhyb"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -41,11 +41,11 @@ class TestMatchFieldsByCommonLevels(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
-        """Test #2 :  Sélection du champs avec comme priorité TD,HR,HU."""
+        """ Sélection du champs avec comme priorité TD,HR,HU."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_glbhyb"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -64,11 +64,11 @@ class TestMatchFieldsByCommonLevels(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
-        """Test #3 :  Sélection du champs avec comme priorité HU,HR,TD avec un fichier contenant moins de HU que de HR."""
+        """ Sélection du champs avec comme priorité HU,HR,TD avec un fichier contenant moins de HU que de HR."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_glbhyb"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -87,11 +87,11 @@ class TestMatchFieldsByCommonLevels(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
-        """Test #4 :  Sélection du champs avec comme priorité HU,HR,TD avec un fichier contenant moins de HU que de HR et moins de HR que de TT."""
+        """ Sélection du champs avec comme priorité HU,HR,TD avec un fichier contenant moins de HU que de HR et moins de HR que de TT."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_glbhyb"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -110,11 +110,11 @@ class TestMatchFieldsByCommonLevels(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
-        """Test #5 :  Sélection du champs avec comme priorité PX,GX avec un fichier contenant plusieurs product groups de TT,PX,GZ ayant des niveaux differents."""
+        """ Sélection du champs avec comme priorité PX,GX avec un fichier contenant plusieurs product groups de TT,PX,GZ ayant des niveaux differents."""
         # open and read source
         source0 = plugin_test_dir + "input_multiple_groups.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -133,6 +133,4 @@ class TestMatchFieldsByCommonLevels(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

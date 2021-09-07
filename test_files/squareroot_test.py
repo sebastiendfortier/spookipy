@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"SquareRoot/testsFiles/"
 class TestSquareRoot(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : test_function_SQRT"""
+        """test_function_SQRT"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_4_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -41,6 +41,4 @@ class TestSquareRoot(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

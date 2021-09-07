@@ -15,7 +15,7 @@ def plugin_test_dir():
 
 
 def test_1(plugin_test_dir):
-    """Test #1 :  Calcul de l'humidité relative; utilisation d'un unité invalide pour --temperaturePhaseSwitch."""
+    """Calcul de l'humidité relative; utilisation d'un unité invalide pour --temperaturePhaseSwitch."""
     # open and read source
     source0 = plugin_test_dir + "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -28,7 +28,7 @@ def test_1(plugin_test_dir):
 
 
 def test_2(plugin_test_dir):
-    """Test #2 :  Calcul de l'humidité relative; utilisation de valeur invalide ( < borne minimale) pour -temperaturePhaseSwitch."""
+    """Calcul de l'humidité relative; utilisation de valeur invalide ( < borne minimale) pour -temperaturePhaseSwitch."""
     # open and read source
     source0 = plugin_test_dir + "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -42,7 +42,7 @@ def test_2(plugin_test_dir):
 
 
 def test_3(plugin_test_dir):
-    """Test #3 :  Calcul de l'humidité relative; utilisation d'une valeur invalide ( > borne maximale) pour -temperaturePhaseSwitch."""
+    """Calcul de l'humidité relative; utilisation d'une valeur invalide ( > borne maximale) pour -temperaturePhaseSwitch."""
     # open and read source
     source0 = plugin_test_dir + "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -56,7 +56,7 @@ def test_3(plugin_test_dir):
 
 
 def test_4(plugin_test_dir):
-    """Test #4 :  Calcul de l'humidité relative; utilisation d'une valeur invalide pour -temperaturePhaseSwitch."""
+    """Calcul de l'humidité relative; utilisation d'une valeur invalide pour -temperaturePhaseSwitch."""
     # open and read source
     source0 = plugin_test_dir + "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -70,10 +70,10 @@ def test_4(plugin_test_dir):
 
 
 def test_5(plugin_test_dir):
-    """Test #5 :  Calcul de l'humidité relative (HR) à partir de l'humidité spécifique (HU)."""
+    """Calcul de l'humidité relative (HR) à partir de l'humidité spécifique (HU)."""
     # open and read source
     source0 = plugin_test_dir + "2011100712_012_glbhyb"
-    src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     src_df0 = fstpy.select_with_meta(src_df0,['TT','HU'])
 
@@ -81,6 +81,11 @@ def test_5(plugin_test_dir):
     # compute HumidityRelative
     df = spooki.HumidityRelative(src_df0, ice_water_phase='water').compute()
 
+    #[ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [Select --fieldName TT,HU] >> [HumidityRelative --iceWaterPhase WATER] >>
+    # [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >>
+    # [Select --verticalLevel 1@0.859,0.126@0.103,0.00153@0.125] >>
+    # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:,'etiket'] = 'G133K80N'
 
     meta_df = df.loc[df.nomvar.isin(['!!','^^','>>','P0','PT','HY'])]
@@ -93,13 +98,8 @@ def test_5(plugin_test_dir):
 
     df = pd.concat([meta_df,df1],ignore_index=True)
 
-    df.loc[:,'nbits']=32
-    df.loc[:,'datyp']=5
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >>
-    # [Select --fieldName TT,HU] >> [HumidityRelative --iceWaterPhase WATER] >>
-    # [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >>
-    # [Select --verticalLevel 1@0.859,0.126@0.103,0.00153@0.125] >>
-    # [WriterStd --output {destination_path} --ignoreExtended]
+    # df.loc[df.nomvar!='!!','nbits']=32
+    # df.loc[:,'datyp']=5
 
     #write the result
     results_file = TMP_PATH + "test_5.std"
@@ -108,16 +108,19 @@ def test_5(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2011100712_glbhyb_5_file2cmp.std"
-    file_to_compare = '/home/sbf000/data/testFiles/HumidityRelative/result_test_5'
+    # file_to_compare = '/home/sbf000/data/testFiles/HumidityRelative/result_test_5'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)
     # fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
+def test_6():
+    """Pour ajout de test futur"""
+    pass
 
 def test_7(plugin_test_dir):
-    """Test #7 :  Calcul de l'humidité relative (HR) à partir du mélange de la vapeur d'eau (QV)."""
+    """Calcul de l'humidité relative (HR) à partir du mélange de la vapeur d'eau (QV)."""
     # open and read source
     source0 = plugin_test_dir + "2011100712_012_glbhyb_QV"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -131,8 +134,10 @@ def test_7(plugin_test_dir):
     # [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:,'etiket'] = 'G133K80N'
-    df.loc[:,'nbits']=32
-    df.loc[:,'datyp']=5
+
+    # df.loc[df.nomvar!='!!','nbits']=32
+    # df.loc[:,'datyp']=5
+
     #write the result
     results_file = TMP_PATH + "test_7.std"
     fstpy.delete_file(results_file)
@@ -140,16 +145,28 @@ def test_7(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2011100712_glbhyb_7_file2cmp.std"
-    file_to_compare = '/home/sbf000/data/testFiles/HumidityRelative/result_test_7'
+    # file_to_compare = '/home/sbf000/data/testFiles/HumidityRelative/result_test_7'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
+def test_8():
+    """Pour ajout de test futur"""
+    pass
+
+
+
+# HumidityRelative - compute
+# option 3
+# SaturationVapourPressure - compute
+# option 1
+# VapourPressure - compute
+# option 5
 
 def test_9(plugin_test_dir):
-    """Test #9 :  Calcul de l'humidité relative (HR) à partir de la température du point de rosée (TD)."""
+    """Calcul de l'humidité relative (HR) à partir de la température du point de rosée (TD)."""
     # open and read source
     source0 = plugin_test_dir + "2011100712_012_glbhyb_ES"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -164,8 +181,10 @@ def test_9(plugin_test_dir):
     # [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:,'etiket'] = 'G133K80N'
-    df.loc[:,'nbits']=32
-    df.loc[:,'datyp']=5
+
+    # df.loc[df.nomvar!='!!','nbits']=32
+    # df.loc[:,'datyp']=5
+
     #write the result
     results_file = TMP_PATH + "test_9.std"
     fstpy.delete_file(results_file)
@@ -173,9 +192,9 @@ def test_9(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2011100712_glbhyb_9_file2cmp.std"
-    file_to_compare = '/home/sbf000/data/testFiles/HumidityRelative/result_test_9'
+    # file_to_compare = '/home/sbf000/data/testFiles/HumidityRelative/result_test_9'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.001)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)

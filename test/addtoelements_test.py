@@ -12,7 +12,7 @@ def plugin_test_dir():
 
 
 def test_1(plugin_test_dir):
-    """Test #1 : test_offset1"""
+    """test_offset1"""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5_zeros_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -20,7 +20,7 @@ def test_1(plugin_test_dir):
     #compute AddToElements
     df = spooki.AddToElements(src_df0, value=4).compute()
     #[ReaderStd --input {sources[0]}] >> [AddToElements --value +4.0] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
-    df['etiket'] = "ADDTOE"
+
     #write the result
     results_file = TMP_PATH + "test_1.std"
     fstpy.delete_file(results_file)
@@ -32,11 +32,11 @@ def test_1(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_2(plugin_test_dir):
-    """Test #2 : test_offset2"""
+    """test_offset2"""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5_zeros_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -45,7 +45,7 @@ def test_2(plugin_test_dir):
     #compute AddToElements
     df = spooki.AddToElements(src_df0, value=-2).compute()
     #[ReaderStd --input {sources[0]}] >> [AddToElements --value -2.0] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
-    df['etiket'] = "ADDTOE"
+
     #write the result
     results_file = TMP_PATH + "test_2.std"
     fstpy.delete_file(results_file)
@@ -57,4 +57,4 @@ def test_2(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)

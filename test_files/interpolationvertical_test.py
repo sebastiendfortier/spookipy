@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"InterpolationVertical/testsFiles/"
 class TestInterpolationVertical(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : Tester l'option --outputGridDefinitionMethod avec une valeur invalide _OK_"""
+        """Tester l'option --outputGridDefinitionMethod avec une valeur invalide _OK_"""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -41,11 +41,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
-        """Test #2 : Tester l'option --interpolationType avec une valeur invalide _OK_"""
+        """Tester l'option --interpolationType avec une valeur invalide _OK_"""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -64,11 +64,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
-        """Test #3 : Tester l'option --extrapolationType avec une valeur invalide _OK_"""
+        """Tester l'option --extrapolationType avec une valeur invalide _OK_"""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -87,11 +87,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
-        """Test #4 : Tester l'option --outputGridDefinitionMethod FIELD_DEFINED sans l'option --referenceFieldName _OK_"""
+        """Tester l'option --outputGridDefinitionMethod FIELD_DEFINED sans l'option --referenceFieldName _OK_"""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -110,11 +110,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
-        """Test #5 : Tester l'option --outputGridDefinitionMethod USER_DEFINED sans l'option --verticalLevel _OK_"""
+        """Tester l'option --outputGridDefinitionMethod USER_DEFINED sans l'option --verticalLevel _OK_"""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -133,11 +133,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_6(self):
-        """Test #6 : Tester l'option --verticalLevel avec des valeurs invalides _OK_"""
+        """Tester l'option --verticalLevel avec des valeurs invalides _OK_"""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -156,11 +156,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_7(self):
-        """Test #7 : Tester l'option --verticalLevel avec un intervalle sans --verticalLevelRangeIncrement. _OK_"""
+        """Tester l'option --verticalLevel avec un intervalle sans --verticalLevelRangeIncrement. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -179,11 +179,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_8(self):
-        """Test #8 : Tester l'option --outputGridDefinitionMethod USER_DEFINED sans l'option --verticalLevelType _OK_"""
+        """Tester l'option --outputGridDefinitionMethod USER_DEFINED sans l'option --verticalLevelType _OK_"""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -202,11 +202,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_9(self):
-        """Test #9 : Tester l'option --verticalLevelType avec une valeur invalide _OK_"""
+        """Tester l'option --verticalLevelType avec une valeur invalide _OK_"""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -225,11 +225,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_10(self):
-        """Test #10 : Tester l'option --referenceFieldName avec un champ qui n'est pas dans le fichier d'input. _OK_"""
+        """Tester l'option --referenceFieldName avec un champ qui n'est pas dans le fichier d'input. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -248,11 +248,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_11(self):
-        """Test #11 : Tester l'option --referenceFieldName avec un champ sur plusieurs grilles. _OK_"""
+        """Tester l'option --referenceFieldName avec un champ sur plusieurs grilles. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -274,11 +274,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_12(self):
-        """Test #12 :  Interpolation vertical hybrid (reg) to millibars. _BETTER_"""
+        """ Interpolation vertical hybrid (reg) to millibars. _BETTER_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_reghyb_TTGZUUVV.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -300,11 +300,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_13(self):
-        """Test #13 :  Interpolation vertical millibars (reg) to hybrid. _OK_"""
+        """ Interpolation vertical millibars (reg) to hybrid. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_regpres_TTGZUUVV.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -326,11 +326,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_15(self):
-        """Test #15 :  Interpolation vertical hybrid staggered (glb) to millibars. _OK_"""
+        """ Interpolation vertical hybrid staggered (glb) to millibars. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_glbhyb_TTGZUUVV.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -349,11 +349,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_16(self):
-        """Test #16 :  Interpolation vertical eta (glb) to hybrid staggered. _OK_"""
+        """ Interpolation vertical eta (glb) to hybrid staggered. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_glbeta_TTGZUUVV.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -375,11 +375,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_18(self):
-        """Test #18 :  Interpolation vertical millibars (glb) to hybrid staggered. _OK_"""
+        """ Interpolation vertical millibars (glb) to hybrid staggered. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_glbpres_TTGZUUVV.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -401,11 +401,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_20(self):
-        """Test #20 :  Interpolation vertical hybrid (reg) to eta. _OK_"""
+        """ Interpolation vertical hybrid (reg) to eta. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_reghyb_TTGZUUVV.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -427,11 +427,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_22(self):
-        """Test #22 :  Interpolation vertical eta (reg) to millibars. _OK_"""
+        """ Interpolation vertical eta (reg) to millibars. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_regeta_TTGZUUVV.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -450,11 +450,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_24(self):
-        """Test #24 :  Interpolation vertical millibars to meter sea level. _OK_"""
+        """ Interpolation vertical millibars to meter sea level. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2011051818_000.UUVVTTGZ.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -473,11 +473,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_25(self):
-        """Test #25 :  Interpolation vertical hybrid to meter sea level. _OK_"""
+        """ Interpolation vertical hybrid to meter sea level. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2011070818_054_hyb"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -496,11 +496,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_26(self):
-        """Test #26 :  Teste l'option --verticalLevelType MILLIBARS_ABOVE_LEVEL sans l'option --referenceLevel. _OK_"""
+        """ Teste l'option --verticalLevelType MILLIBARS_ABOVE_LEVEL sans l'option --referenceLevel. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_glbeta_TTGZUUVV.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -519,11 +519,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_27(self):
-        """Test #27 :  Teste l'option --verticalLevelType MILLIBARS_ABOVE_LEVEL sans l'option --referenceLevel. _OK_"""
+        """ Teste l'option --verticalLevelType MILLIBARS_ABOVE_LEVEL sans l'option --referenceLevel. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_glbeta_TTGZUUVV.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -542,11 +542,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_28(self):
-        """Test #28 :  Interpolation vertical eta (glb) to millibars above ground. _OK_"""
+        """ Interpolation vertical eta (glb) to millibars above ground. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_glbeta_TTGZUUVV.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -565,11 +565,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_29(self):
-        """Test #29 :  Interpolation vertical with extrapolationType ABORT _OK_"""
+        """ Interpolation vertical with extrapolationType ABORT _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2011070818_054_hyb"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -588,11 +588,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_30(self):
-        """Test #30 :  Interpolation vertical with interpolationType NEAREST _OK_"""
+        """ Interpolation vertical with interpolationType NEAREST _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_glbhyb_TTGZUUVV.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -611,11 +611,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_31(self):
-        """Test #31 :  Interpolation vertical with interpolationLevelType METER_GROUND_LEVEL _OK_"""
+        """ Interpolation vertical with interpolationLevelType METER_GROUND_LEVEL _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_glbhyb_TTGZUUVV.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -634,11 +634,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_32(self):
-        """Test #32 : Tester l'option --outputField avec une valeur invalide."""
+        """Tester l'option --outputField avec une valeur invalide."""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -657,11 +657,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_33(self):
-        """Test #33 :  Interpolation vertical hybrid (reg) to eta --outputField INCLUDE_REFERENCE_FIELD. _OK_"""
+        """ Interpolation vertical hybrid (reg) to eta --outputField INCLUDE_REFERENCE_FIELD. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_reghyb_TTGZUUVV.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -683,11 +683,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_34(self):
-        """Test #34 : Interpolation vertical hybrid (reg) to eta --outputField INCLUDE_ALL_FIELDS. _OK_"""
+        """Interpolation vertical hybrid (reg) to eta --outputField INCLUDE_ALL_FIELDS. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_reghyb_TTGZUUVV.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -709,11 +709,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_35(self):
-        """Test #35 : Interpolation vertical hybrid (reg) to eta --outputField INTERPOLATED_FIELD_ONLY _OK_"""
+        """Interpolation vertical hybrid (reg) to eta --outputField INTERPOLATED_FIELD_ONLY _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_reghyb_TTGZUUVV.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -735,11 +735,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_36(self):
-        """Test #36 : Interpolation vertical hybrid (reg) to eta avec le parametre --outputField INTERPOLATED_FIELD_ONLY _OK_"""
+        """Interpolation vertical hybrid (reg) to eta avec le parametre --outputField INTERPOLATED_FIELD_ONLY _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_reghyb_TTGZUUVV.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -761,11 +761,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_37(self):
-        """Test #37 : Tester l'option --outputField INTERPOLATED_FIELD_ONLY avec pas de champs a interpole. _OK_"""
+        """Tester l'option --outputField INTERPOLATED_FIELD_ONLY avec pas de champs a interpole. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_reghyb_pres_TTGZUUVV.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -784,11 +784,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_38(self):
-        """Test #38 : Tester l'option --outputField INCLUDE_REFERENCE_FIELD avec pas de champs a interpole. _OK_"""
+        """Tester l'option --outputField INCLUDE_REFERENCE_FIELD avec pas de champs a interpole. _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_reghyb_pres_TTGZUUVV.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -807,11 +807,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_39(self):
-        """Test #39 : Interpolation vertical with a file containing many forecast hours (ens glb). _OK_"""
+        """Interpolation vertical with a file containing many forecast hours (ens glb). _OK_"""
         # open and read source
         source0 = plugin_test_dir + "2015081700_024_ensglb_shortTTGZUUVV.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -830,11 +830,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_40(self):
-        """Test #40 : Interpolation vertical avec un fichier hybrid pour les champs QC et TD. _SIMILIAR_"""
+        """Interpolation vertical avec un fichier hybrid pour les champs QC et TD. _SIMILIAR_"""
         # open and read source
         source0 = plugin_test_dir + "2011070818_054_hyb"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -853,11 +853,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_41(self):
-        """Test #41 : Interpolation vertical pour tester les parametres_--valueAbove et --valueBelow"""
+        """Interpolation vertical pour tester les parametres_--valueAbove et --valueBelow"""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_regeta_TTGZUUVV.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -876,11 +876,11 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_41(self):
-        """Test #41 : Interpolation vertical avec un fichier hybrid 5005 pour les champs QC et TD. _SIMILIAR_"""
+        """Interpolation vertical avec un fichier hybrid 5005 pour les champs QC et TD. _SIMILIAR_"""
         # open and read source
         source0 = plugin_test_dir + "coord_5005_big.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -899,6 +899,4 @@ class TestInterpolationVertical(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

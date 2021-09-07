@@ -7,30 +7,32 @@ SPHINXOPTS    ?=
 SPHINXBUILD   ?= sphinx-build
 SOURCEDIR     = .
 BUILDDIR      = _build
-ORG_DIR       = ../org
+TOOLS       = ../doctools
 
 # Put it first so that "make" without argument is like "make help".
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 insert_version:
-	@$(ORG_DIR)/insert_version.sh 	
+	echo 'hello'
+	# @$(TOOLS)/insert_version.sh
 
 rst:
-	@$(ORG_DIR)/convert_and_send_to_doc.sh 
+	@$(TOOLS)/convert_and_send_to_doc.sh
 
 readme:
-	pandoc -s ../README.org -o ../README.md
+	../make_readme.sh
 
 replace:
-	@$(ORG_DIR)/replace_modified_files.sh
+	echo 'hello'
+	# @$(TOOLS)/replace_modified_files.sh
 
 doc: insert_version rst readme replace
 	make --no-print-directory html
 
 remove_gen_files:
 	rm `ls -I acknowledgements.rst -I contributing.rst -I index.rst -I install.rst -I intro.rst -I LICENSE.rst -I requirements.rst -I tutorial.rst -I usage.rst -I _build -I _static -I auto_examples -I conf.py -I spookipy_logo.jpg -I Makefile`
-	
+
 clean: remove_gen_files
 
 .PHONY: help Makefile

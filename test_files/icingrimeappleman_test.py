@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"IcingRimeAppleman/testsFiles/"
 class TestIcingRimeAppleman(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : Test the IcingRimeAppleman function using 3 matrixes (5X4X3)"""
+        """Test the IcingRimeAppleman function using 3 matrixes (5X4X3)"""
         # open and read source
         source0 = plugin_test_dir + "inputTT_ES_WW.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -41,11 +41,11 @@ class TestIcingRimeAppleman(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
-        """Test #3 : Test the IcingRimeAppleman function using 3 matrixes (5X4X3)"""
+        """Test the IcingRimeAppleman function using 3 matrixes (5X4X3)"""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -64,6 +64,4 @@ class TestIcingRimeAppleman(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

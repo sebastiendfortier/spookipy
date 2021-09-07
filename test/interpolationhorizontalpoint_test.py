@@ -1,20 +1,15 @@
-
 # -*- coding: utf-8 -*-
-# from fstpy import STATIONSFB
-from test import TEST_PATH, TMP_PATH, convip
+from test import TEST_PATH, TMP_PATH
 
 import pytest
-from fstpy.dataframe_utils import fstcomp
-from fstpy.std_reader import StandardFileReader
-from fstpy.std_writer import StandardFileWriter
-from fstpy.utils import delete_file
+import fstpy.all as fstpy
 import spookipy.all as spooki
 import numpy as np
 import pandas as pd
 import rpnpy.librmn.all as rmn
 
 
-pytestmark = [pytest.mark.to_skip]
+pytestmark = [pytest.mark.regressions]
 
 # ::::::::::::::
 # inputFile.csv
@@ -219,10 +214,10 @@ def plugin_test_dir():
 
 
 def test_1(plugin_test_dir,latlon_df):
-    """Test #1 : test_onlyscalarR1Operational"""
+    """test_onlyscalarR1Operational"""
     # open and read source
     source0 = plugin_test_dir + "4panneaux_input4_fileSrc.std"
-    src_df0 = StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     src_df0['dateo']=368660482
     latlon_df['dateo']=368660482
@@ -239,25 +234,25 @@ def test_1(plugin_test_dir,latlon_df):
     # df['nbits']=32
 
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_1.std"
-    delete_file(results_file)
-    StandardFileWriter(results_file, df).to_fst()
+    results_file = TMP_PATH + "test_1.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "resultOnlyScalarR1Operational_file2cmp.std"
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_1"
 
     #compare results
-    res = fstcomp(results_file,file_to_compare)
-    delete_file(results_file)
-    assert(res == True)
+    res = fstpy.fstcomp(results_file,file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
 
 
 def test_2(plugin_test_dir,latlon_df):
-    """Test #2 : test_onlyscalar"""
+    """test_onlyscalar"""
     # open and read source
     source0 = plugin_test_dir + "4panneaux_input4_fileSrc.std"
-    src_df0 = StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     src_df0['dateo']=368660482
     latlon_df['dateo']=368660482
@@ -276,25 +271,25 @@ def test_2(plugin_test_dir,latlon_df):
     # df['nbits']=32
 
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_2.std"
-    delete_file(results_file)
-    StandardFileWriter(results_file, df).to_fst()
+    results_file = TMP_PATH + "test_2.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "resultOnlyScalar_file2cmp.std"
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_2"
 
     #compare results
-    res = fstcomp(results_file,file_to_compare)
-    delete_file(results_file)
-    assert(res == True)
+    res = fstpy.fstcomp(results_file,file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
 
 
 def test_3(plugin_test_dir,latlon_df):
-    """Test #3 : test_scalarvectorial"""
+    """test_scalarvectorial"""
     # open and read source
     source0 = plugin_test_dir + "tape10.std"
-    src_df0 = StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     src_df0['dateo']=368660482
     latlon_df['dateo']=368660482
@@ -313,25 +308,25 @@ def test_3(plugin_test_dir,latlon_df):
     df.loc[df.nomvar == 'VS','etiket'] = 'XVSHEAR_X'
 
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_3.std"
-    delete_file(results_file)
-    StandardFileWriter(results_file, df).to_fst()
+    results_file = TMP_PATH + "test_3.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "resultScalarVectorial_file2cmp.std"
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_3"
 
     #compare results
-    res = fstcomp(results_file,file_to_compare)
-    delete_file(results_file)
-    assert(res == True)
+    res = fstpy.fstcomp(results_file,file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
 
 
 def test_4(plugin_test_dir,latlon2_df):
-    """Test #4 : test_scalarvectorial2"""
+    """test_scalarvectorial2"""
     # open and read source
     source0 = plugin_test_dir + "2011072100_006_eta_small"
-    src_df0 = StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     src_df0.loc[src_df0.nomvar!='P0','dateo']=368660482
     latlon2_df['dateo']=368660482
@@ -350,30 +345,30 @@ def test_4(plugin_test_dir,latlon2_df):
     # print('df\n',df[['nomvar', 'typvar', 'etiket', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'datyp', 'nbits', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4','grid']].to_string())
     # df['dateo']=368660482
 
-    df['datyp']=5
-    df['nbits']=32
+    # df['datyp']=5
+    # df['nbits']=32
 # P0   P  R1580V0_N           4       1     1 20110210 215210             0         6         0      450       48  R 16  Y     0     0     0     0
 # P0   PI R1580V0_N           4       1     1 20110721 000000             0         6         0      450       48  R 16  Y     0     0     0     0
 
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_4.std"
-    delete_file(results_file)
-    StandardFileWriter(results_file, df).to_fst()
+    results_file = TMP_PATH + "test_4.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "resultScalarVectorial2_file2cmp.std"
-    file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_4"
+    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_4"
 
     #compare results
-    res = fstcomp(results_file,file_to_compare)
-    delete_file(results_file)
-    assert(res == True)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)#,e_max=0.00105,e_moy=0.001)
+    fstpy.delete_file(results_file)
+    assert(res)
 
 def test_5(plugin_test_dir,latlon_df):
-    """Test #5 : test_nearest"""
+    """test_nearest"""
     # open and read source
     source0 = plugin_test_dir + "tape10.std"
-    src_df0 = StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     src_df0['dateo']=368660482
     latlon_df['dateo']=368660482
@@ -392,25 +387,25 @@ def test_5(plugin_test_dir,latlon_df):
     df.loc[df.nomvar == 'VS','etiket'] = 'XVSHEAR_X'
 
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_5.std"
-    delete_file(results_file)
-    StandardFileWriter(results_file, df).to_fst()
+    results_file = TMP_PATH + "test_5.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "resultNearest_file2cmp.std"
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_5"
 
     #compare results
-    res = fstcomp(results_file,file_to_compare)
-    delete_file(results_file)
-    assert(res == True)
+    res = fstpy.fstcomp(results_file,file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
 
 
 def test_6(plugin_test_dir,latlon_df):
-    """Test #6 : test_linear"""
+    """test_linear"""
     # open and read source
     source0 = plugin_test_dir + "tape10.std"
-    src_df0 = StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     src_df0['dateo']=368660482
     latlon_df['dateo']=368660482
@@ -429,25 +424,25 @@ def test_6(plugin_test_dir,latlon_df):
     df.loc[df.nomvar == 'VS','etiket'] = 'XVSHEAR_X'
 
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_6.std"
-    delete_file(results_file)
-    StandardFileWriter(results_file, df).to_fst()
+    results_file = TMP_PATH + "test_6.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "resultLinear_file2cmp.std"
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_6"
 
     #compare results
-    res = fstcomp(results_file,file_to_compare)
-    delete_file(results_file)
-    assert(res == True)
+    res = fstpy.fstcomp(results_file,file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
 
 
 def test_7(plugin_test_dir,latlon_with_grid_df):
-    """Test #7 : test_withGridInCsv"""
+    """test_withGridInCsv"""
     # open and read source
     source0 = plugin_test_dir + "tape10.std"
-    src_df0 = StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     src_df0['dateo']=368660482
     latlon_with_grid_df['dateo']=368660482
@@ -467,25 +462,25 @@ def test_7(plugin_test_dir,latlon_with_grid_df):
     df.loc[df.nomvar == 'VS','etiket'] = 'XVSHEAR_X'
 
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_7.std"
-    delete_file(results_file)
-    StandardFileWriter(results_file, df).to_fst()
+    results_file = TMP_PATH + "test_7.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "result_withGridInCsv_file2cmp.std"
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_7"
 
     #compare results
-    res = fstcomp(results_file,file_to_compare)
-    delete_file(results_file)
-    assert(res == True)
+    res = fstpy.fstcomp(results_file,file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
 
 
 def test_8(plugin_test_dir,latlon_extrapolation_df):
-    """Test #8 : test_extrapolationValue"""
+    """test_extrapolationValue"""
     # open and read source
     source0 = plugin_test_dir + "tape10.std"
-    src_df0 = StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     src_df0['dateo']=368660482
     latlon_extrapolation_df['dateo']=368660482
@@ -505,25 +500,25 @@ def test_8(plugin_test_dir,latlon_extrapolation_df):
     df.loc[df.nomvar == 'VS','etiket'] = 'XVSHEAR_X'
 
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_8.std"
-    delete_file(results_file)
-    StandardFileWriter(results_file, df).to_fst()
+    results_file = TMP_PATH + "test_8.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "result_extrapolValue_file2cmp.std"
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_8"
 
     #compare results
-    res = fstcomp(results_file,file_to_compare)
-    delete_file(results_file)
-    assert(res == True)
+    res = fstpy.fstcomp(results_file,file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
 
 
 def test_9(plugin_test_dir,latlon_extrapolation_df):
-    """Test #9 : test_negativeValue"""
+    """test_negativeValue"""
     # open and read source
     source0 = plugin_test_dir + "tape10.std"
-    src_df0 = StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     src_df0['dateo']=368660482
     latlon_extrapolation_df['dateo']=368660482
@@ -542,25 +537,25 @@ def test_9(plugin_test_dir,latlon_extrapolation_df):
     df.loc[df.nomvar == 'VS','etiket'] = 'XVSHEAR_X'
 
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_9.std"
-    delete_file(results_file)
-    StandardFileWriter(results_file, df).to_fst()
+    results_file = TMP_PATH + "test_9.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "result_negativeValue_file2cmp.std"
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_9"
 
     #compare results
-    res = fstcomp(results_file,file_to_compare)
-    delete_file(results_file)
-    assert(res == True)
+    res = fstpy.fstcomp(results_file,file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
 
 
 def test_10(plugin_test_dir,latlon_extrapolation_df):
-    """Test #10 : test_extrapolationMax"""
+    """test_extrapolationMax"""
     # open and read source
     source0 = plugin_test_dir + "tape10.std"
-    src_df0 = StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     src_df0['dateo']=368660482
     latlon_extrapolation_df['dateo']=368660482
@@ -578,28 +573,28 @@ def test_10(plugin_test_dir,latlon_extrapolation_df):
 
     df.loc[df.nomvar == 'VS','etiket'] = 'XVSHEAR_X'
 
-    df['datyp']=5
-    df['nbits']=32
+    # df['datyp']=5
+    # df['nbits']=32
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_10.std"
-    delete_file(results_file)
-    StandardFileWriter(results_file, df).to_fst()
+    results_file = TMP_PATH + "test_10.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "result_extrapolMax_file2cmp.std"
-    file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_10"
+    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_10"
 
     #compare results
-    res = fstcomp(results_file,file_to_compare)
-    delete_file(results_file)
-    assert(res == True)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.001)
+    fstpy.delete_file(results_file)
+    assert(res)
 
 
 def test_11(plugin_test_dir,latlon_extrapolation_df):
-    """Test #11 : test_extrapolationMin"""
+    """test_extrapolationMin"""
     # open and read source
     source0 = plugin_test_dir + "tape10.std"
-    src_df0 = StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     src_df0['dateo']=368660482
     latlon_extrapolation_df['dateo']=368660482
@@ -617,27 +612,27 @@ def test_11(plugin_test_dir,latlon_extrapolation_df):
     df.loc[df.nomvar == 'VS','etiket'] = 'XVSHEAR_X'
 
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_11.std"
-    delete_file(results_file)
-    StandardFileWriter(results_file, df).to_fst()
+    results_file = TMP_PATH + "test_11.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "result_extrapolMin_file2cmp.std"
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_11"
 
     #compare results
-    res = fstcomp(results_file,file_to_compare)
-    delete_file(results_file)
-    assert(res == True)
+    res = fstpy.fstcomp(results_file,file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
 
 # need to fix stations order for it to work
 # def test_12(plugin_test_dir,stationsdf_df):
-#     """Test #12 : test_stations"""
+#     """test_stations"""
 #     # open and read source
 #     source0 = plugin_test_dir + "2011072100_006_eta_small"
-#     src_df0 = StandardFileReader(source0).to_pandas()
+#     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-#     src_df0 = src_df0.query('nomvar in ["GZ","UU","VV","TT",">>","^^","!!"]').reset_index(drop=True)
+#     src_df0 = src_df0.loc[src_df0.nomvar.isin(["GZ","UU","VV","TT",">>","^^","!!"])].reset_index(drop=True)
 
 #     #compute spooki.InterpolationHorizontalPoint
 #     df = spooki.InterpolationHorizontalPoint(src_df0,stationsdf_df).compute()
@@ -650,69 +645,73 @@ def test_11(plugin_test_dir,latlon_extrapolation_df):
 #     df['nbits']=32
 
 #     #write the result
-#     results_file = TMP_PATH + "test_interppoint_reg_12.std"
-#     delete_file(results_file)
-#     StandardFileWriter(results_file, df).to_fst()
+#     results_file = TMP_PATH + "test_12.std"
+#     fstpy.delete_file(results_file)
+#     fstpy.StandardFileWriter(results_file, df).to_fst()
 
 #     # open and read comparison file
 #     file_to_compare = plugin_test_dir + "result_stations_file2cmp.std"
 #     file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_12"
 
 #     #compare results
-#     res = fstcomp(results_file,file_to_compare)
-#     delete_file(results_file)
-#     assert(res == True)
+#     res = fstpy.fstcomp(results_file,file_to_compare)
+#     fstpy.delete_file(results_file)
+#     assert(res)
 
 
 def test_13(plugin_test_dir,latlon_df):
-    """Test #13 : test with 2 grids and 3 fields on each grid"""
+    """test with 2 grids and 3 fields on each grid"""
     # open and read source
     source0 = plugin_test_dir + "2011110112_045_small"
-    src_df0 = StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     source1 = plugin_test_dir + "2011110112_048_small"
-    src_df1 = StandardFileReader(source1).to_pandas()
+    src_df1 = fstpy.StandardFileReader(source1).to_pandas()
 
     src_df = pd.concat([src_df0,src_df1],ignore_index=True)
 
     src_df['dateo']=368660482
     latlon_df['dateo']=368660482
     #compute spooki.InterpolationHorizontalPoint
+
     df = spooki.InterpolationHorizontalPoint(src_df,latlon_df).compute()
-    #[ReaderStd --input {sources[0]}] >> [ReaderStd --input {sources[1]}] >> [ReaderCsv --input {sources[2]}] >> [spooki.InterpolationHorizontalPoint] >> [Zap --metadataZappable --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --makeIP1EncodingWorkWithTests]
+    #[ReaderStd --input {sources[0]}] >> [ReaderStd --input {sources[1]}] >>
+    # [ReaderCsv --input {sources[2]}] >> [spooki.InterpolationHorizontalPoint] >>
+    # [Zap --metadataZappable --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >>
+    # [WriterStd --output {destination_path} --makeIP1EncodingWorkWithTests]
 
     df.loc[df.nomvar == '^^','etiket'] = '__INTHPTX'
     df.loc[df.nomvar == '>>','etiket'] = '__INTHPTX'
     # df['dateo']=368660482
 
-    df['datyp']=5
-    df['nbits']=32
+    # df['datyp']=5
+    # df['nbits']=32
 
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_13.std"
-    delete_file(results_file)
-    StandardFileWriter(results_file, df).to_fst()
+    results_file = TMP_PATH + "test_13.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "result_2grids_3fields_file2cmp.std"
-    file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_13"
+    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_13"
 
     #compare results
-    res = fstcomp(results_file,file_to_compare)
-    delete_file(results_file)
-    assert(res == True)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)
+    fstpy.delete_file(results_file)
+    assert(res)
 
 # strangly the result file ni nj for lat and lon is reversed
 def test_14(plugin_test_dir):
-    """Test #14 : test_DanielPoints"""
+    """test_DanielPoints"""
     # open and read source
     source0 = plugin_test_dir + "2012022712_012_glbdiag"
-    src_df0 = StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    src_df0 = src_df0.query('nomvar in ["2Z",">>","^^","!!"]').reset_index(drop=True)
+    src_df0 = src_df0.loc[src_df0.nomvar.isin(["2Z",">>","^^","!!"])].reset_index(drop=True)
 
     source1 = plugin_test_dir + "latlong_stn_ALL.fst"
-    src_df1 = StandardFileReader(source1,load_data=True).to_pandas()
+    src_df1 = fstpy.StandardFileReader(source1,load_data=True).to_pandas()
     src_df1['ip1']=0
 
     src_df0.loc[:,'dateo']=368660482
@@ -732,30 +731,30 @@ def test_14(plugin_test_dir):
     # df['nbits']=32
 
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_14.std"
-    delete_file(results_file)
-    StandardFileWriter(results_file, df).to_fst()
+    results_file = TMP_PATH + "test_14.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "result_DanielPoints_file2cmp.std"
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_14"
 
     #compare results
-    res = fstcomp(results_file,file_to_compare)
-    delete_file(results_file)
-    assert(res == True)
+    res = fstpy.fstcomp(results_file,file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
 
 
 def test_15(plugin_test_dir):
-    """Test #15 : test_northPole_southPole"""
+    """test_northPole_southPole"""
     # open and read source
     source0 = plugin_test_dir + "2012022712_012_glbdiag"
-    src_df0 = StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    src_df0 = src_df0.query('nomvar in ["SN",">>","^^","!!"]').reset_index(drop=True)
+    src_df0 = src_df0.loc[src_df0.nomvar.isin(["SN",">>","^^","!!"])].reset_index(drop=True)
 
     source1 = plugin_test_dir + "latlong_stn_ALL.fst"
-    src_df1 = StandardFileReader(source1).to_pandas()
+    src_df1 = fstpy.StandardFileReader(source1).to_pandas()
     src_df1['ip1']=0
 
     src_df0.loc[:,'dateo']=368660482
@@ -772,29 +771,29 @@ def test_15(plugin_test_dir):
     df.loc[df.nomvar.isin(['^^','>>']),'nj'] = 177
     # df['datyp']=5
     # df['nbits']=32
-    print('df',df)
+    # print('df',df)
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_15.std"
-    delete_file(results_file)
-    StandardFileWriter(results_file, df).to_fst()
+    results_file = TMP_PATH + "test_15.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "northSouthPole_file2cmp.std"
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_15"
 
     #compare results
-    res = fstcomp(results_file,file_to_compare)
-    delete_file(results_file)
-    assert(res == True)
+    res = fstpy.fstcomp(results_file,file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
 
 
 def test_16(plugin_test_dir,simple_input_df):
-    """Test #16 : Test avec un fichier YinYang"""
+    """Test avec un fichier YinYang"""
     # open and read source
     source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
-    src_df0 = StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    src_df0 = src_df0.query('nomvar in ["TT","^>","!!"]').reset_index(drop=True)
+    src_df0 = src_df0.loc[src_df0.nomvar.isin(["TT","^>","!!"])].reset_index(drop=True)
 
     #zap all but !! HY
     src_df0.loc[~src_df0.nomvar.isin(['!!','HY']),'dateo']=404008736
@@ -808,30 +807,30 @@ def test_16(plugin_test_dir,simple_input_df):
     # df['datyp']=5
     # df['nbits']=32
 
-    df = convip(df,nomvar='',style=rmn.CONVIP_ENCODE)
+    df = spooki.convip(df)
 
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_16.std"
-    delete_file(results_file)
-    StandardFileWriter(results_file, df).to_fst()
+    results_file = TMP_PATH + "test_16.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "InterpGridUtoGridY_file2cmp.std"
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_16"
 
     #compare results
-    res = fstcomp(results_file,file_to_compare)
-    delete_file(results_file)
-    assert(res == True)
+    res = fstpy.fstcomp(results_file,file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
 
 
 def test_17(plugin_test_dir,latlon_yy_df):
-    """Test #17 : Test avec un fichier YinYang en entree et des lat-lon sur les grilles Yin et Yang."""
+    """Test avec un fichier YinYang en entree et des lat-lon sur les grilles Yin et Yang."""
     # open and read source
     source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
-    src_df0 = StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    src_df0 = src_df0.query('nomvar in ["TT","^>","!!"]').reset_index(drop=True)
+    src_df0 = src_df0.loc[src_df0.nomvar.isin(["TT","^>","!!"])].reset_index(drop=True)
 
     #zap all but !! HY
     src_df0.loc[~src_df0.nomvar.isin(['!!','HY']),'dateo']=404008736
@@ -846,18 +845,18 @@ def test_17(plugin_test_dir,latlon_yy_df):
     # df['datyp']=5
     # df['nbits']=32
 
-    df = convip(df,nomvar='',style=rmn.CONVIP_ENCODE)
+    df = spooki.convip(df)
 
     #write the result
-    results_file = TMP_PATH + "test_interppoint_reg_17.std"
-    delete_file(results_file)
-    StandardFileWriter(results_file, df).to_fst()
+    results_file = TMP_PATH + "test_17.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "InterpGridU_manyPts_file2cmp.std"
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_17"
 
     #compare results
-    res = fstcomp(results_file,file_to_compare)
-    delete_file(results_file)
-    assert(res == True)
+    res = fstpy.fstcomp(results_file,file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)

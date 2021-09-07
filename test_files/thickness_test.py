@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"Thickness/testsFiles/"
 class TestThickness(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : Test avec un fichier de coordonnées Sigma."""
+        """Test avec un fichier de coordonnées Sigma."""
         # open and read source
         source0 = plugin_test_dir + "GZ_12000_10346_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -41,11 +41,11 @@ class TestThickness(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
-        """Test #2 : Test avec un fichier de coordonnées Sigma avec valeur de base plus haute dans l'atmosphère que valeur de top."""
+        """Test avec un fichier de coordonnées Sigma avec valeur de base plus haute dans l'atmosphère que valeur de top."""
         # open and read source
         source0 = plugin_test_dir + "GZ_12000_10346_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -64,11 +64,11 @@ class TestThickness(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
-        """Test #3 : Test avec un fichier en pression."""
+        """Test avec un fichier en pression."""
         # open and read source
         source0 = plugin_test_dir + "GZ_1000_500_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -87,11 +87,11 @@ class TestThickness(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
-        """Test #4 : Test avec un fichier en pression avec valeur de base plus haute dans l'atmosphère que valeur de top."""
+        """Test avec un fichier en pression avec valeur de base plus haute dans l'atmosphère que valeur de top."""
         # open and read source
         source0 = plugin_test_dir + "GZ_1000_500_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -110,11 +110,11 @@ class TestThickness(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
-        """Test #5 : Test en utilisant le même niveau pour base et top; requête invalide."""
+        """Test en utilisant le même niveau pour base et top; requête invalide."""
         # open and read source
         source0 = plugin_test_dir + "GZ_1000_500_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -133,11 +133,11 @@ class TestThickness(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_6(self):
-        """Test #6 : Test avec un fichier hybride."""
+        """Test avec un fichier hybride."""
         # open and read source
         source0 = plugin_test_dir + "2016031600_024_reghyb"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -156,6 +156,4 @@ class TestThickness(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"ReaderCsv/testsFiles/"
 class TestReaderCsv(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : test_read_csv_pds1_level2"""
+        """test_read_csv_pds1_level2"""
         # open and read source
         source0 = plugin_test_dir + "pds1_level2.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -41,11 +41,11 @@ class TestReaderCsv(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
-        """Test #2 : test_read_csv_gds1_pds1_level2"""
+        """test_read_csv_gds1_pds1_level2"""
         # open and read source
         source0 = plugin_test_dir + "gds1_pds1_level2.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -64,11 +64,11 @@ class TestReaderCsv(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
-        """Test #3 : test_read_csv_missing_eol_at_last_line_of_data"""
+        """test_read_csv_missing_eol_at_last_line_of_data"""
         # open and read source
         source0 = plugin_test_dir + "missing_eol_at_last_line_of_data.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -87,11 +87,11 @@ class TestReaderCsv(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
-        """Test #4 : test_read_csv_pds1_level2_inversed_level_order"""
+        """test_read_csv_pds1_level2_inversed_level_order"""
         # open and read source
         source0 = plugin_test_dir + "pds1_level2_inversed_level_order.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -110,11 +110,11 @@ class TestReaderCsv(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
-        """Test #5 : test_read_csv_withSpace"""
+        """test_read_csv_withSpace"""
         # open and read source
         source0 = plugin_test_dir + "with_space.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -133,11 +133,11 @@ class TestReaderCsv(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_6(self):
-        """Test #6 : test_read_csv_withComments"""
+        """test_read_csv_withComments"""
         # open and read source
         source0 = plugin_test_dir + "with_comments.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -156,11 +156,11 @@ class TestReaderCsv(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_7(self):
-        """Test #7 : test_read_csv_pds2"""
+        """test_read_csv_pds2"""
         # open and read source
         source0 = plugin_test_dir + "pds2.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -179,11 +179,11 @@ class TestReaderCsv(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_8(self):
-        """Test #8 : test_read_csv_not_all_same_number_of_lines_in_a_pds"""
+        """test_read_csv_not_all_same_number_of_lines_in_a_pds"""
         # open and read source
         source0 = plugin_test_dir + "not_all_same_number_of_lines_in_a_pds.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -202,11 +202,11 @@ class TestReaderCsv(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_9(self):
-        """Test #9 : test_read_csv_not_all_same_number_of_items_in_lines_of_a_pds"""
+        """test_read_csv_not_all_same_number_of_items_in_lines_of_a_pds"""
         # open and read source
         source0 = plugin_test_dir + "not_all_same_number_of_items_in_lines_of_a_pds.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -225,11 +225,11 @@ class TestReaderCsv(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_10(self):
-        """Test #10 : test_read_csv_only_1_line_per_level"""
+        """test_read_csv_only_1_line_per_level"""
         # open and read source
         source0 = plugin_test_dir + "only_1_line_per_level.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -248,11 +248,11 @@ class TestReaderCsv(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_11(self):
-        """Test #11 : test_read_csv_only_1_item_per_line"""
+        """test_read_csv_only_1_item_per_line"""
         # open and read source
         source0 = plugin_test_dir + "only_1_item_per_line.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -271,11 +271,11 @@ class TestReaderCsv(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_12(self):
-        """Test #12 : test missing value when one data by line"""
+        """test missing value when one data by line"""
         # open and read source
         source0 = plugin_test_dir + "missingvalue.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -294,11 +294,11 @@ class TestReaderCsv(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_13(self):
-        """Test #13 : test missing value when multiple data on a line separated by comma"""
+        """test missing value when multiple data on a line separated by comma"""
         # open and read source
         source0 = plugin_test_dir + "missingvalue2.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -317,6 +317,4 @@ class TestReaderCsv(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

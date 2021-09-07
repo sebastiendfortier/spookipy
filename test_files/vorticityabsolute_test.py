@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"VorticityAbsolute/testsFiles/"
 class TestVorticityAbsolute(unittest.TestCase):
 
     def test_regvortab_test_1(self):
-        """Test #1 : Calculate with a simple test data """
+        """Calculate with a simple test data """
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -41,11 +41,11 @@ class TestVorticityAbsolute(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_regvortab_test_2(self):
-        """Test #2 : Spooki must success when input are in millibars"""
+        """Spooki must success when input are in millibars"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -64,11 +64,11 @@ class TestVorticityAbsolute(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_regvortab_test_3(self):
-        """Test #3 : SingleThread. Same as test 1 but in singlethread"""
+        """SingleThread. Same as test 1 but in singlethread"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -87,11 +87,11 @@ class TestVorticityAbsolute(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_regvortab_test_4(self):
-        """Test #4 :  Test avec une grille globale"""
+        """ Test avec une grille globale"""
         # open and read source
         source0 = plugin_test_dir + "2016031600_024_glbeta"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -110,11 +110,11 @@ class TestVorticityAbsolute(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_regvortab_test_5(self):
-        """Test #5 : Calculate with a simple test data - reconnaissance de son resultat """
+        """Calculate with a simple test data - reconnaissance de son resultat """
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -133,6 +133,4 @@ class TestVorticityAbsolute(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

@@ -28,7 +28,7 @@ interval
         *dewpointdepression
         energymeanisothermmethod
         freezinglevel
-        georgekindex
+        *georgekindex
         *humidex
         *humidityrelative
         *humidityspecific
@@ -53,10 +53,10 @@ interval
         temperaturewetbulb
         temperaturewetbulbpotential
         thickness
-        totaltotalsindex
+        *totaltotalsindex
         *vapourpressure
         *watervapourmixingratio
-        windmodulusanddirection
+        *windmodulusanddirection
     produit
         bulletinfbpreparation
     système
@@ -71,12 +71,12 @@ interval
         *multiplyelementby
         *setconstantvalue
 
-        filterdigital
+        *filterdigital
         gridmergesimilar
-        mask
+        *mask
         matchfieldsbycommonlevels
         matchlevelindextovalue
-        minmaxlevelindex
+        *minmaxlevelindex
 
 
         setlowerboundary
@@ -85,5 +85,5 @@ interval
         subtractelementsvertically
         timeintervaldifference
         timeintervalminmax
-        vectormodulusanddirection
+        *vectormodulusanddirection
         verticalscan

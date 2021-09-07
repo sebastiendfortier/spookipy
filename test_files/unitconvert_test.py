@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"UnitConvert/testsFiles/"
 class TestUnitConvert(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : test a case simple conversion"""
+        """test a case simple conversion"""
         # open and read source
         source0 = plugin_test_dir + "windModulus_file2cmp.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -41,11 +41,11 @@ class TestUnitConvert(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
-        """Test #2 : test a case with no conversion"""
+        """test a case with no conversion"""
         # open and read source
         source0 = plugin_test_dir + "windModulus_file2cmp.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -64,11 +64,11 @@ class TestUnitConvert(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
-        """Test #3 : test a case with no conversion (with extended info)"""
+        """test a case with no conversion (with extended info)"""
         # open and read source
         source0 = plugin_test_dir + "windModulus_file2cmp.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -87,11 +87,11 @@ class TestUnitConvert(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
-        """Test #4 : test a case with simple conversion and another plugin 2D"""
+        """test a case with simple conversion and another plugin 2D"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -110,11 +110,11 @@ class TestUnitConvert(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
-        """Test #5 : test a case with simple conversion and another plugin 3D"""
+        """test a case with simple conversion and another plugin 3D"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -133,11 +133,11 @@ class TestUnitConvert(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_6(self):
-        """Test #6 : test a case with complete roundtrip conversion celcius -> kelvin -> fahrenheit -> celsius"""
+        """test a case with complete roundtrip conversion celcius -> kelvin -> fahrenheit -> celsius"""
         # open and read source
         source0 = plugin_test_dir + "UUVVTT5x5_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -156,11 +156,11 @@ class TestUnitConvert(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_7(self):
-        """Test #7 : test a case for output file mode in standard format"""
+        """test a case for output file mode in standard format"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -179,11 +179,11 @@ class TestUnitConvert(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_8(self):
-        """Test #8 : test a case with complete roundtrip conversion celcius -> kelvin -> celsius"""
+        """test a case with complete roundtrip conversion celcius -> kelvin -> celsius"""
         # open and read source
         source0 = plugin_test_dir + "TTES_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -202,11 +202,11 @@ class TestUnitConvert(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_9(self):
-        """Test #9 : test a case with complete roundtrip conversion celcius -> kelvin -> fahrenheit -> celsius in GeorgeKIndex context"""
+        """test a case with complete roundtrip conversion celcius -> kelvin -> fahrenheit -> celsius in GeorgeKIndex context"""
         # open and read source
         source0 = plugin_test_dir + "TTES_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -225,11 +225,11 @@ class TestUnitConvert(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_10(self):
-        """Test #10 : test a case for output file mode in standard format"""
+        """test a case for output file mode in standard format"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -248,11 +248,11 @@ class TestUnitConvert(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_11(self):
-        """Test #11 : test --ignoremissing"""
+        """test --ignoremissing"""
         # open and read source
         source0 = plugin_test_dir + "windModulus_file2cmp.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -271,11 +271,11 @@ class TestUnitConvert(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_12(self):
-        """Test #12 : test bad unit"""
+        """test bad unit"""
         # open and read source
         source0 = plugin_test_dir + "windModulus_file2cmp.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -294,6 +294,4 @@ class TestUnitConvert(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"OperationBase/testsFiles/"
 class TestOperationBase(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 :  Test une operation de clonage"""
+        """ Test une operation de clonage"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_UV_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -41,11 +41,11 @@ class TestOperationBase(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
-        """Test #2 :  Test une autre operation de clonage"""
+        """ Test une autre operation de clonage"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_UV_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -64,11 +64,11 @@ class TestOperationBase(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
-        """Test #3 :  Test la detection de la meme grille (no deformation fields)."""
+        """ Test la detection de la meme grille (no deformation fields)."""
         # open and read source
         source0 = plugin_test_dir + "uu.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -90,11 +90,11 @@ class TestOperationBase(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
-        """Test #4 :  Test la detection de la meme grille (no deformation fields), avec operateur."""
+        """ Test la detection de la meme grille (no deformation fields), avec operateur."""
         # open and read source
         source0 = plugin_test_dir + "uu.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -116,11 +116,11 @@ class TestOperationBase(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
-        """Test #5 :  Test la detection de la meme grille (with deformation fields)."""
+        """ Test la detection de la meme grille (with deformation fields)."""
         # open and read source
         source0 = plugin_test_dir + "tt.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -142,11 +142,11 @@ class TestOperationBase(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_6(self):
-        """Test #6 :  Test la detection de la meme grille (with deformation fields), avec operateur."""
+        """ Test la detection de la meme grille (with deformation fields), avec operateur."""
         # open and read source
         source0 = plugin_test_dir + "tt.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -168,6 +168,4 @@ class TestOperationBase(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

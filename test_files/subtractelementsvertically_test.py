@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"SubtractElementsVertically/testsFiles/"
 class TestSubtractElementsVertically(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : Utilisation de --outputFieldName avec une valeur > 4 caractères - requete invalide."""
+        """Utilisation de --outputFieldName avec une valeur > 4 caractères - requete invalide."""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -30,7 +30,7 @@ class TestSubtractElementsVertically(unittest.TestCase):
 
         #compute SubtractElementsVertically
         df = SubtractElementsVertically(src_df0).compute()
-        #[ReaderStd --input {sources[0]}] >> [SubtractElementsVertically --outputFieldName TROPLONG --direction ASCENDING] 
+        #[ReaderStd --input {sources[0]}] >> [SubtractElementsVertically --outputFieldName TROPLONG --direction ASCENDING]
 
         #write the result
         results_file = TMP_PATH + "test_1.std"
@@ -41,11 +41,11 @@ class TestSubtractElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
-        """Test #2 : Effectue un test avec --outputFieldName mais plusieurs champs en entrée - requete invalide."""
+        """Effectue un test avec --outputFieldName mais plusieurs champs en entrée - requete invalide."""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -53,7 +53,7 @@ class TestSubtractElementsVertically(unittest.TestCase):
 
         #compute SubtractElementsVertically
         df = SubtractElementsVertically(src_df0).compute()
-        #[ReaderStd --ignoreExtended --input {sources[0]}] >> [SubtractElementsVertically --outputFieldName ABCD --direction ASCENDING] 
+        #[ReaderStd --ignoreExtended --input {sources[0]}] >> [SubtractElementsVertically --outputFieldName ABCD --direction ASCENDING]
 
         #write the result
         results_file = TMP_PATH + "test_2.std"
@@ -64,11 +64,11 @@ class TestSubtractElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
-        """Test #3 : Test avec 2 champs et 2 niveaux, option --direction ASCENDING"""
+        """Test avec 2 champs et 2 niveaux, option --direction ASCENDING"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -87,11 +87,11 @@ class TestSubtractElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
-        """Test #4 : Test avec un fichier de 2 champs et 2 niveaux, option --direction DESCENDING"""
+        """Test avec un fichier de 2 champs et 2 niveaux, option --direction DESCENDING"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -110,11 +110,11 @@ class TestSubtractElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
-        """Test #5 :Test avec un fichier de 2 champs; selection d'un champ et --direction ASCENDING"""
+        """Test avec un fichier de 2 champs; selection d'un champ et --direction ASCENDING"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -133,11 +133,11 @@ class TestSubtractElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_6(self):
-        """Test #6 : Test sur un fichier dont les champs possèdent des intervalles - requete invalide."""
+        """Test sur un fichier dont les champs possèdent des intervalles - requete invalide."""
         # open and read source
         source0 = plugin_test_dir + "inputTest6.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -145,7 +145,7 @@ class TestSubtractElementsVertically(unittest.TestCase):
 
         #compute SubtractElementsVertically
         df = SubtractElementsVertically(src_df0).compute()
-        #[ReaderStd --ignoreExtended --input {sources[0]}] >> [SubtractElementsVertically --direction ASCENDING] 
+        #[ReaderStd --ignoreExtended --input {sources[0]}] >> [SubtractElementsVertically --direction ASCENDING]
 
         #write the result
         results_file = TMP_PATH + "test_6.std"
@@ -156,11 +156,11 @@ class TestSubtractElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_7(self):
-        """Test #7 :Test avec 2 champs, plusieurs niveaux, differents forecastHours et --direction ASCENDING"""
+        """Test avec 2 champs, plusieurs niveaux, differents forecastHours et --direction ASCENDING"""
         # open and read source
         source0 = plugin_test_dir + "TTES2x2x4_manyForecastHours.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -179,11 +179,11 @@ class TestSubtractElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_8(self):
-        """Test #8 :Test avec 2 champs, plusieurs niveaux, differents forecastHours et --direction DESCENDING"""
+        """Test avec 2 champs, plusieurs niveaux, differents forecastHours et --direction DESCENDING"""
         # open and read source
         source0 = plugin_test_dir + "TTES2x2x4_manyForecastHours.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -202,6 +202,4 @@ class TestSubtractElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

@@ -27,7 +27,7 @@ setuptools.setup(
         "Operating System :: OS Linux",
     ],
     install_requires=[
-        'pandas>=1.1.5','fstpy>=2.1.3'
+        'pandas>=1.1.5','fstpy>=2.1.6'
     ],
     packages=setuptools.find_packages(exclude='test'),
     include_package_data=True,

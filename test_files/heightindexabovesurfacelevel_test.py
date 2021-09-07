@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"HeightIndexAboveSurfaceLevel/testsFiles/"
 class TestHeightIndexAboveSurfaceLevel(unittest.TestCase):
 
     def test_basic(self):
-        """Test #1 : test numero 1"""
+        """test numero 1"""
         # open and read source
         source0 = plugin_test_dir + "GZ_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -41,11 +41,11 @@ class TestHeightIndexAboveSurfaceLevel(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_basic_km(self):
-        """Test #2 : test numero 2"""
+        """test numero 2"""
         # open and read source
         source0 = plugin_test_dir + "GZ_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -64,11 +64,11 @@ class TestHeightIndexAboveSurfaceLevel(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_base(self):
-        """Test #3 : test numero 3"""
+        """test numero 3"""
         # open and read source
         source0 = plugin_test_dir + "GZ_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -87,6 +87,4 @@ class TestHeightIndexAboveSurfaceLevel(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

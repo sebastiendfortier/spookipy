@@ -20,21 +20,22 @@ class SetConstantValueError(Exception):
 class SetConstantValue(Plugin):
 
     @initializer
-    def __init__(self, df:pd.DataFrame, value=0, nomvar_out='', min_index=False, max_index=False, nb_levels=False, bi_dimensionnal=False):
+    def __init__(self, df:pd.DataFrame, value=0, nomvar_out=None, min_index=False, max_index=False, nb_levels=False, bi_dimensionnal=False):
         self.validate_input()
 
     def validate_input(self):
         if self.df.empty:
             raise SetConstantValueError('No data to process')
 
-        self.df = fstpy.metadata_cleanup(self.df)    
+        self.df = fstpy.metadata_cleanup(self.df)
 
-        self.meta_df = self.df.query('nomvar in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True) 
+        self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
-        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['unit','forecast_hour','ip_info'])    
-        self.df = self.df.query('nomvar not in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True) 
+        self.df = fstpy.add_columns(self.df, decode=True, columns=['unit','forecast_hour','ip_info'])
 
-        self.groups=self.df.groupby(by=['grid','nomvar','forecast_hour'])
+        self.df = self.df.loc[~self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
+
+        self.groups=self.df.groupby(by=['grid','nomvar','dateo','forecast_hour'])
 
         l = [self.min_index,self.max_index,self.nb_levels]
 
@@ -49,7 +50,7 @@ class SetConstantValue(Plugin):
     def compute(self) -> pd.DataFrame:
         sys.stdout.write('SetConstantValue - compute\n')
         df_list = []
-        for _,current_group in self.groups: 
+        for _,current_group in self.groups:
             if self.max_index:
                 self.value=len(current_group.index)-1
             if self.nb_levels:
@@ -61,23 +62,11 @@ class SetConstantValue(Plugin):
             nomvar_out= self.nomvar_out,
             operator = set_series_value,
             unit = 'scalar' ,
-            exception_class = SetConstantValueError).compute() 
+            exception_class = SetConstantValueError,
+            etiket='SETVAL').compute()
             if self.bi_dimensionnal:
                 res_df.drop(res_df.index[1:], inplace=True)
                 res_df.loc[:,'ip1'] = 0
-            df_list.append(res_df)    
+            df_list.append(res_df)
 
         return final_results(df_list,SetConstantValueError, self.meta_df)
-        # if not len(df_list):
-        #     raise SetConstantValueError('No results were produced')
-
-        # self.meta_df = fstpy.load_data(self.meta_df)
-
-        # df_list.append(self.meta_df)    
-        # # merge all results together
-        # res_df = pd.concat(df_list,ignore_index=True)
-        
-        # res_df = remove_load_data_info(res_df)
-        # res_df = fstpy.metadata_cleanup(res_df)
-        
-        # return res_df

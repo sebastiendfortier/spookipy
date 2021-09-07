@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"SetLowerBoundary/testsFiles/"
 class TestSetLowerBoundary(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : PLUSIEURS champs en entree SANS l'option --outputFieldName."""
+        """PLUSIEURS champs en entree SANS l'option --outputFieldName."""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_minus2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -41,11 +41,11 @@ class TestSetLowerBoundary(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
-        """Test #2 : UN seul champ en entree SANS l'option --outputFieldName."""
+        """UN seul champ en entree SANS l'option --outputFieldName."""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_minus2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -64,11 +64,11 @@ class TestSetLowerBoundary(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
-        """Test #3 : PLUSIEURS champs en entree AVEC l'option --outputFieldName. """
+        """PLUSIEURS champs en entree AVEC l'option --outputFieldName. """
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_minus2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -87,11 +87,11 @@ class TestSetLowerBoundary(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
-        """Test #4 : UN seul champ en entree AVEC l'option --outputFieldName. """
+        """UN seul champ en entree AVEC l'option --outputFieldName. """
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_minus2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -110,11 +110,11 @@ class TestSetLowerBoundary(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
-        """Test #5 : Valeur trop longue pour --outputFieldName. """
+        """Valeur trop longue pour --outputFieldName. """
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_minus2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -133,11 +133,11 @@ class TestSetLowerBoundary(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_6(self):
-        """Test #6 : Valeur trop courte pour --outputFieldName. """
+        """Valeur trop courte pour --outputFieldName. """
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_minus2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -156,6 +156,4 @@ class TestSetLowerBoundary(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"PrecipitableWaterAmount/testsFiles/"
 class TestPrecipitableWaterAmount(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : Test avec un fichier en pression, utilisation de --base SURFACE. Requete invalide."""
+        """Test avec un fichier en pression, utilisation de --base SURFACE. Requete invalide."""
         # open and read source
         source0 = plugin_test_dir + "HU_PX_a_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -30,7 +30,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compute PrecipitableWaterAmount
         df = PrecipitableWaterAmount(src_df0).compute()
-        #[ReaderStd --input {sources[0]}] >> [PrecipitableWaterAmount --base SURFACE --top HIGHEST] 
+        #[ReaderStd --input {sources[0]}] >> [PrecipitableWaterAmount --base SURFACE --top HIGHEST]
 
         #write the result
         results_file = TMP_PATH + "test_1.std"
@@ -41,11 +41,11 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
-        """Test #2 : Test avec un fichier simple de 3x3x3, mélange d'unités longueur et pression. Requete invalide."""
+        """Test avec un fichier simple de 3x3x3, mélange d'unités longueur et pression. Requete invalide."""
         # open and read source
         source0 = plugin_test_dir + "HU_PX_a_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -64,11 +64,11 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
-        """Test #3 : Test avec un fichier reduit de données, avec --base SURFACE et --top HIGHEST, cas 2-7-9"""
+        """Test avec un fichier reduit de données, avec --base SURFACE et --top HIGHEST, cas 2-7-9"""
         # open and read source
         source0 = plugin_test_dir + "input_point61-51.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -87,11 +87,11 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
-        """Test #4 : Test avec un fichier reduit de données, calcul de HU, avec --base SURFACE et --top HIGHEST, cas 2-7-9"""
+        """Test avec un fichier reduit de données, calcul de HU, avec --base SURFACE et --top HIGHEST, cas 2-7-9"""
         # open and read source
         source0 = plugin_test_dir + "input_point61-51.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -110,11 +110,11 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
-        """Test #5 : Test avec un fichier reduit de données, valeurs en hPa pour base et top, cas 1-5-7-9"""
+        """Test avec un fichier reduit de données, valeurs en hPa pour base et top, cas 1-5-7-9"""
         # open and read source
         source0 = plugin_test_dir + "input_point61-51.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -133,11 +133,11 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_5a(self):
-        """Test #5a : Test avec un fichier reduit de données, valeurs en metres pour base et top, cas 6"""
+        """Test avec un fichier reduit de données, valeurs en metres pour base et top, cas 6"""
         # open and read source
         source0 = plugin_test_dir + "input_point61-51.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -156,11 +156,11 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_6(self):
-        """Test #6 : Test avec un fichier reduit de données, valeurs en hPa pour base et top, cas 5-8"""
+        """Test avec un fichier reduit de données, valeurs en hPa pour base et top, cas 5-8"""
         # open and read source
         source0 = plugin_test_dir + "input_point61-51.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -179,11 +179,11 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_7(self):
-        """Test #7 : Test avec un fichier reduit de données en pression, base et top en hPa, cas 4"""
+        """Test avec un fichier reduit de données en pression, base et top en hPa, cas 4"""
         # open and read source
         source0 = plugin_test_dir + "regpres_2019100506_012.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -202,11 +202,11 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_8(self):
-        """Test #8 : Test avec un fichier reduit de données en pression, base et top en mb, cas 1 et 3"""
+        """Test avec un fichier reduit de données en pression, base et top en mb, cas 1 et 3"""
         # open and read source
         source0 = plugin_test_dir + "regpres_2019100506_012.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -225,11 +225,11 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_9(self):
-        """Test #9 : Test avec un fichier reduit de données en pression, base et top cas 2 et 8"""
+        """Test avec un fichier reduit de données en pression, base et top cas 2 et 8"""
         # open and read source
         source0 = plugin_test_dir + "regpres_2019100506_012.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -248,11 +248,11 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_10(self):
-        """Test #10 : Test avec un fichier reduit de données en pression, cas 5, 7 et 9"""
+        """Test avec un fichier reduit de données en pression, cas 5, 7 et 9"""
         # open and read source
         source0 = plugin_test_dir + "regpres_2019100506_012.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -271,11 +271,11 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_11(self):
-        """Test #11 : Test avec un fichier reduit de données en pression, cas 1 et 10"""
+        """Test avec un fichier reduit de données en pression, cas 1 et 10"""
         # open and read source
         source0 = plugin_test_dir + "regpres_2019100506_012.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -294,11 +294,11 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_13(self):
-        """Test #13 : Test avec un fichier reduit de données, valeurs en hPa pour base et top, cas 5 et 8"""
+        """Test avec un fichier reduit de données, valeurs en hPa pour base et top, cas 5 et 8"""
         # open and read source
         source0 = plugin_test_dir + "input_point61-51.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -317,11 +317,11 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_13a(self):
-        """Test #13a : Test avec un vrai fichier de données, base et top conversion mb a hPa, cas 5 et 8"""
+        """Test avec un vrai fichier de données, base et top conversion mb a hPa, cas 5 et 8"""
         # open and read source
         source0 = plugin_test_dir + "input_point61-51.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -340,11 +340,11 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_14(self):
-        """Test #14 : Test avec un vrai fichier de données, base et top conversion Pa a hPa"""
+        """Test avec un vrai fichier de données, base et top conversion Pa a hPa"""
         # open and read source
         source0 = plugin_test_dir + "input_point61-51.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -363,11 +363,11 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_14a(self):
-        """Test #14a : Test avec un vrai fichier de données, base et top conversion kPa a hPa"""
+        """Test avec un vrai fichier de données, base et top conversion kPa a hPa"""
         # open and read source
         source0 = plugin_test_dir + "input_point61-51.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -386,11 +386,11 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_15(self):
-        """Test #15 : Test avec un vrai fichier de données, toute la colonne, parametres explicites"""
+        """Test avec un vrai fichier de données, toute la colonne, parametres explicites"""
         # open and read source
         source0 = plugin_test_dir + "input_point61-51.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -409,11 +409,11 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_16(self):
-        """Test #16 : Test avec un vrai fichier de données, definition du sommet en pascal"""
+        """Test avec un vrai fichier de données, definition du sommet en pascal"""
         # open and read source
         source0 = plugin_test_dir + "input_point61-51.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -432,11 +432,11 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_16a(self):
-        """Test #16a : Test avec un vrai fichier de données, definition du sommet en metres"""
+        """Test avec un vrai fichier de données, definition du sommet en metres"""
         # open and read source
         source0 = plugin_test_dir + "input_point61-51.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -455,11 +455,11 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_17(self):
-        """Test #17 : Test avec un vrai fichier de données, parametres mixtes, definition de la base"""
+        """Test avec un vrai fichier de données, parametres mixtes, definition de la base"""
         # open and read source
         source0 = plugin_test_dir + "input_point61-51.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -478,11 +478,11 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_17a(self):
-        """Test #17a : Test avec un vrai fichier de données, definition de la base en metres"""
+        """Test avec un vrai fichier de données, definition de la base en metres"""
         # open and read source
         source0 = plugin_test_dir + "input_point61-51.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -501,11 +501,11 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_18(self):
-        """Test #18 : Test avec un vrai fichier de données, definition du sommet en km"""
+        """Test avec un vrai fichier de données, definition du sommet en km"""
         # open and read source
         source0 = plugin_test_dir + "2016031600_024_regeta_1"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -524,11 +524,11 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_19(self):
-        """Test #19 : Test avec un vrai fichier de données, parametres mixtes, definition de la base en pieds"""
+        """Test avec un vrai fichier de données, parametres mixtes, definition de la base en pieds"""
         # open and read source
         source0 = plugin_test_dir + "input_point61-51.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -547,11 +547,11 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_20(self):
-        """Test #20 : Test avec un vrai fichier de données,  definition du sommet en pieds."""
+        """Test avec un vrai fichier de données,  definition du sommet en pieds."""
         # open and read source
         source0 = plugin_test_dir + "2016031600_024_regeta_1"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -570,11 +570,11 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_21(self):
-        """Test #21 : Test avec un vrai fichier de données hybrid."""
+        """Test avec un vrai fichier de données hybrid."""
         # open and read source
         source0 = plugin_test_dir + "2016031600_024_reghyb_2pts"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -593,11 +593,11 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_22(self):
-        """Test #22 : Test avec un vrai fichier de données hybrid."""
+        """Test avec un vrai fichier de données hybrid."""
         # open and read source
         source0 = plugin_test_dir + "2016031600_024_reghyb_2pts"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -616,11 +616,11 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_23(self):
-        """Test #23 : Test avec un vrai fichier de données hybrid."""
+        """Test avec un vrai fichier de données hybrid."""
         # open and read source
         source0 = plugin_test_dir + "2016031600_024_reghyb_2pts"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -639,6 +639,4 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

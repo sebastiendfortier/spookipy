@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"VerticalScan/testsFiles/"
 class TestVerticalScan(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : Test with GEOPOTENTIAL vertical representation, consecutiveEvents = INF."""
+        """Test with GEOPOTENTIAL vertical representation, consecutiveEvents = INF."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -41,11 +41,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
-        """Test #2 :   Test with GEOPOTENTIAL vertical representation, consecutiveEvents = SUP."""
+        """  Test with GEOPOTENTIAL vertical representation, consecutiveEvents = SUP."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -64,11 +64,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
-        """Test #3 :   Test with GEOPOTENTIAL vertical representation, limited occurrences (same as input)."""
+        """  Test with GEOPOTENTIAL vertical representation, limited occurrences (same as input)."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -87,11 +87,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
-        """Test #4 :   Test with GEOPOTENTIAL vertical representation, limited occurrences (less than input)."""
+        """  Test with GEOPOTENTIAL vertical representation, limited occurrences (less than input)."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -110,11 +110,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
-        """Test #5 :   Test with GEOPOTENTIAL vertical representation, limited occurrences (one only)."""
+        """  Test with GEOPOTENTIAL vertical representation, limited occurrences (one only)."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -133,11 +133,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_6(self):
-        """Test #6 :   Test with PRESSURE vertical representation, consecutiveEvents = INF."""
+        """  Test with PRESSURE vertical representation, consecutiveEvents = INF."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -156,11 +156,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_7(self):
-        """Test #7 :   Test with PRESSURE vertical representation, consecutiveEvents = SUP."""
+        """  Test with PRESSURE vertical representation, consecutiveEvents = SUP."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -179,11 +179,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_8(self):
-        """Test #8 :   Test with BOTH vertical representations, consecutiveEvents = INF."""
+        """  Test with BOTH vertical representations, consecutiveEvents = INF."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -202,11 +202,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_9(self):
-        """Test #9 :   Test with BOTH vertical representations, consecutiveEvents = SUP."""
+        """  Test with BOTH vertical representations, consecutiveEvents = SUP."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -225,11 +225,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_10(self):
-        """Test #10 :   Test with BOTH vertical representations, with outputFieldName1, outputFieldName2, outputFieldName3, outputFieldName4 and consecutiveEvents = SUP."""
+        """  Test with BOTH vertical representations, with outputFieldName1, outputFieldName2, outputFieldName3, outputFieldName4 and consecutiveEvents = SUP."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -248,11 +248,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_11(self):
-        """Test #11 :   Test with maxNbOccurrence = -1, it should stop because of invalid value."""
+        """  Test with maxNbOccurrence = -1, it should stop because of invalid value."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -271,11 +271,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_12(self):
-        """Test #12 :   Test with epsilon = -1, it should stop because of invalid value."""
+        """  Test with epsilon = -1, it should stop because of invalid value."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -294,11 +294,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_13(self):
-        """Test #13 :   Test with BOTH vertical representations, consecutiveEvents = INF, type VARIABLEVALUE."""
+        """  Test with BOTH vertical representations, consecutiveEvents = INF, type VARIABLEVALUE."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -317,11 +317,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_14(self):
-        """Test #14 :   Test with BOTH vertical representations, crossover, consecutiveEvents = INF, type VARIABLEVALUE."""
+        """  Test with BOTH vertical representations, crossover, consecutiveEvents = INF, type VARIABLEVALUE."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -340,11 +340,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_15(self):
-        """Test #16 :  Test with direction = INVALID, it should stop because of invalid value."""
+        """ Test with direction = INVALID, it should stop because of invalid value."""
         # open and read source
         source0 = plugin_test_dir + "tests_15_16_source.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -363,11 +363,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_16(self):
-        """Test #16 :   Test with comparisonType INTERSECTIONS, consecutiveEvents = SUP."""
+        """  Test with comparisonType INTERSECTIONS, consecutiveEvents = SUP."""
         # open and read source
         source0 = plugin_test_dir + "tests_15_16_source.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -386,11 +386,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_17(self):
-        """Test #17 :   Test with comparisonField, consecutiveEvents = INF."""
+        """  Test with comparisonField, consecutiveEvents = INF."""
         # open and read source
         source0 = plugin_test_dir + "tests_15_16_source.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -409,11 +409,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_19(self):
-        """Test #19 :   Test with a file that contains only 1 level for TT."""
+        """  Test with a file that contains only 1 level for TT."""
         # open and read source
         source0 = plugin_test_dir + "verticalScan_1niveau.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -432,11 +432,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_20(self):
-        """Test #20 :   Test with a file that contains many occurences."""
+        """  Test with a file that contains many occurences."""
         # open and read source
         source0 = plugin_test_dir + "verticalScanHighOccurence.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -455,11 +455,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_21(self):
-        """Test #21 :   Test with a file that contains a first point with equalities, but no crossing and a second point with close crossing."""
+        """  Test with a file that contains a first point with equalities, but no crossing and a second point with close crossing."""
         # open and read source
         source0 = plugin_test_dir + "equalitiesWithoutCrossingAndCloseOccurences.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -478,11 +478,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_22(self):
-        """Test #22 :   Test with BOTH vertical representations, crossover, consecutiveEvents = SUP, type VARIABLEVALUE."""
+        """  Test with BOTH vertical representations, crossover, consecutiveEvents = SUP, type VARIABLEVALUE."""
         # open and read source
         source0 = plugin_test_dir + "testcases2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -501,11 +501,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_23(self):
-        """Test #23 :   Test with BOTH vertical representations, crossover, consecutiveEvents = SUP, type VARIABLEVALUE."""
+        """  Test with BOTH vertical representations, crossover, consecutiveEvents = SUP, type VARIABLEVALUE."""
         # open and read source
         source0 = plugin_test_dir + "testcases2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -524,11 +524,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_24(self):
-        """Test #24 :   Test with BOTH vertical representations, crossover, consecutiveEvents = SUP, type VARIABLEVALUE."""
+        """  Test with BOTH vertical representations, crossover, consecutiveEvents = SUP, type VARIABLEVALUE."""
         # open and read source
         source0 = plugin_test_dir + "testcases2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -547,11 +547,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_25(self):
-        """Test #25 :   Test with BOTH vertical representations, crossover, consecutiveEvents = SUP, type INTERSECTIONS."""
+        """  Test with BOTH vertical representations, crossover, consecutiveEvents = SUP, type INTERSECTIONS."""
         # open and read source
         source0 = plugin_test_dir + "testcases2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -570,11 +570,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_26(self):
-        """Test #26 : Test with GEOPOTENTIAL vertical representation, direction DESCENDING, comparisonType = CONSTANTVALUE, consecutiveEvents = INF."""
+        """Test with GEOPOTENTIAL vertical representation, direction DESCENDING, comparisonType = CONSTANTVALUE, consecutiveEvents = INF."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -593,11 +593,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_27(self):
-        """Test #27 :   Test with GEOPOTENTIAL vertical representation, direction DESCENDING, comparisonType = CONSTANTVALUE,consecutiveEvents = SUP."""
+        """  Test with GEOPOTENTIAL vertical representation, direction DESCENDING, comparisonType = CONSTANTVALUE,consecutiveEvents = SUP."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -616,11 +616,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_28(self):
-        """Test #28 :   Test with PRESSURE vertical representation,  direction = DESCENDING, comparisonType = CONSTANTVALUE,consecutiveEvents = INF."""
+        """  Test with PRESSURE vertical representation,  direction = DESCENDING, comparisonType = CONSTANTVALUE,consecutiveEvents = INF."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -639,11 +639,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_29(self):
-        """Test #29 :   Test with PRESSURE vertical representation, direction = DESCENDING, comparisonType = CONSTANTVALUE, consecutiveEvents = SUP."""
+        """  Test with PRESSURE vertical representation, direction = DESCENDING, comparisonType = CONSTANTVALUE, consecutiveEvents = SUP."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -662,11 +662,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_30(self):
-        """Test #30 :   Test with BOTH vertical representations, crossover, direction = DESCENDING, consecutiveEvents = INF, type VARIABLEVALUE."""
+        """  Test with BOTH vertical representations, crossover, direction = DESCENDING, consecutiveEvents = INF, type VARIABLEVALUE."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -685,11 +685,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_31(self):
-        """Test #31 :   Test with BOTH vertical representations, descending, crossover, consecutiveEvents = SUP, type INTERSECTIONS."""
+        """  Test with BOTH vertical representations, descending, crossover, consecutiveEvents = SUP, type INTERSECTIONS."""
         # open and read source
         source0 = plugin_test_dir + "testcases2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -708,11 +708,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_32(self):
-        """Test #32 : Test with GEOPOTENTIAL vertical representation, checkForEquality, consecutiveEvents = INF."""
+        """Test with GEOPOTENTIAL vertical representation, checkForEquality, consecutiveEvents = INF."""
         # open and read source
         source0 = plugin_test_dir + "testcases_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -731,11 +731,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_33(self):
-        """Test #33 : Test with PRESSURE vertical representation, checkForEquality, direction DESCENDING, consecutiveEvents = INF, outputFieldName5 = ABCD ."""
+        """Test with PRESSURE vertical representation, checkForEquality, direction DESCENDING, consecutiveEvents = INF, outputFieldName5 = ABCD ."""
         # open and read source
         source0 = plugin_test_dir + "testcases2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -754,11 +754,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_34(self):
-        """Test #34 : Test with GEOPOTENTIAL vertical representation, checkForEquality, consecutiveEvents = INF."""
+        """Test with GEOPOTENTIAL vertical representation, checkForEquality, consecutiveEvents = INF."""
         # open and read source
         source0 = plugin_test_dir + "testcases3_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -777,11 +777,11 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_35(self):
-        """Test #35 :   Test with BOTH vertical representations, crossover, consecutiveEvents = SUP, type VARIABLEVALUE. HYBRID_5005"""
+        """  Test with BOTH vertical representations, crossover, consecutiveEvents = SUP, type VARIABLEVALUE. HYBRID_5005"""
         # open and read source
         source0 = plugin_test_dir + "minimal_TT_5005.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -800,6 +800,4 @@ class TestVerticalScan(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

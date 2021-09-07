@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"ParcelMeanLayer/testsFiles/"
 class TestParcelMeanLayer(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : Appel à ParcelMeanLayer, unites absentes pour --base."""
+        """Appel à ParcelMeanLayer, unites absentes pour --base."""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_regpres_small.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -41,11 +41,11 @@ class TestParcelMeanLayer(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
-        """Test #2 : Appel à ParcelMeanLayer, unites invalides pour --delta."""
+        """Appel à ParcelMeanLayer, unites invalides pour --delta."""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_regpres_small.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -64,11 +64,11 @@ class TestParcelMeanLayer(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
-        """Test #3 : Appel à ParcelMeanLayer, parametre --temperaturePhaseSwitch absent alors que --iceWaterPhase est BOTH."""
+        """Appel à ParcelMeanLayer, parametre --temperaturePhaseSwitch absent alors que --iceWaterPhase est BOTH."""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_regpres_small.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -87,11 +87,11 @@ class TestParcelMeanLayer(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
-        """Test #4 : Mauvaise utilisation du parametre --temperaturePhaseSwitch alors que --iceWaterPhase est WATER."""
+        """Mauvaise utilisation du parametre --temperaturePhaseSwitch alors que --iceWaterPhase est WATER."""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_regpres_small.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -110,11 +110,11 @@ class TestParcelMeanLayer(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
-        """Test #5 : Valeurs de parametres invalides, --delta est plus grand que --base."""
+        """Valeurs de parametres invalides, --delta est plus grand que --base."""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_regpres_small.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -133,11 +133,11 @@ class TestParcelMeanLayer(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_6(self):
-        """Test #6 :  Calcul de la parcelle Mean Layer, donnees manquantes car il n'y a pas de donnees pour interpoler sur les niveaux de debut et de fin de la couche."""
+        """ Calcul de la parcelle Mean Layer, donnees manquantes car il n'y a pas de donnees pour interpoler sur les niveaux de debut et de fin de la couche."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_reghyb"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -156,11 +156,11 @@ class TestParcelMeanLayer(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_7(self):
-        """Test #7 :  Utilisation du parametre --base SURFACE avec un fichier en pression."""
+        """ Utilisation du parametre --base SURFACE avec un fichier en pression."""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_regpres_small.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -179,11 +179,11 @@ class TestParcelMeanLayer(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_8(self):
-        """Test #8 :  Calcul de la parcelle Mean Layer à partir d'un fichier pression + GZ surface d'un fichier hybrid."""
+        """ Calcul de la parcelle Mean Layer à partir d'un fichier pression + GZ surface d'un fichier hybrid."""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_regpres_small.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -205,11 +205,11 @@ class TestParcelMeanLayer(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_9(self):
-        """Test #9 :  Appel a ParcelMean Layer avec un fichier pression + GZ surface d'un fichier hybrid, valeurs de debut et de fin de la couche doivent etre interpolees."""
+        """ Appel a ParcelMean Layer avec un fichier pression + GZ surface d'un fichier hybrid, valeurs de debut et de fin de la couche doivent etre interpolees."""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_regpres_small.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -231,11 +231,11 @@ class TestParcelMeanLayer(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_10(self):
-        """Test #10 : Calcul de la parcelle Mean Layer avec un fichier pression, donnees manquantes car il n'y a pas de donnees pour interpoler sur les niveaux de debut et de fin de la couche."""
+        """Calcul de la parcelle Mean Layer avec un fichier pression, donnees manquantes car il n'y a pas de donnees pour interpoler sur les niveaux de debut et de fin de la couche."""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_regpres_small.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -257,11 +257,11 @@ class TestParcelMeanLayer(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_11(self):
-        """Test #11 :  Calcul de la parcelle Mean Layer à partir d'un fichier hybrid, utilisation du parametre --base SURFACE."""
+        """ Calcul de la parcelle Mean Layer à partir d'un fichier hybrid, utilisation du parametre --base SURFACE."""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_reghyb_small.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -280,11 +280,11 @@ class TestParcelMeanLayer(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_12(self):
-        """Test #12 :  Calcul de la parcelle Mean Layer à partir d'un fichier hybrid."""
+        """ Calcul de la parcelle Mean Layer à partir d'un fichier hybrid."""
         # open and read source
         source0 = plugin_test_dir + "2014031800_024_reghyb_small.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -303,11 +303,11 @@ class TestParcelMeanLayer(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_13(self):
-        """Test #13 :  Calcul de la parcelle Mean Layer à partir d'un fichier hybrid, utilisation du parametre --base SURFACE."""
+        """ Calcul de la parcelle Mean Layer à partir d'un fichier hybrid, utilisation du parametre --base SURFACE."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_reghyb"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -326,11 +326,11 @@ class TestParcelMeanLayer(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_14(self):
-        """Test #14 :  Calcul de la parcelle Mean Layer à partir d'un fichier hybrid 5005, utilisation du parametre --base 610mb."""
+        """ Calcul de la parcelle Mean Layer à partir d'un fichier hybrid 5005, utilisation du parametre --base 610mb."""
         # open and read source
         source0 = plugin_test_dir + "minimal_4conve_5005.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -349,11 +349,11 @@ class TestParcelMeanLayer(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_15(self):
-        """Test #15 :  Calcul de la parcelle Mean Layer à partir d'un fichier hybrid 5005, utilisation du parametre --base SURFACE."""
+        """ Calcul de la parcelle Mean Layer à partir d'un fichier hybrid 5005, utilisation du parametre --base SURFACE."""
         # open and read source
         source0 = plugin_test_dir + "minimal_TTHUGZ_5005.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -372,6 +372,4 @@ class TestParcelMeanLayer(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

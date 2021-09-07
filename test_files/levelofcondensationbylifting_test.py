@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"LevelOfCondensationByLifting/testsFiles/"
 class TestLevelOfCondensationByLifting(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 :  Calcul du niveau de condensation par ascendance(LCL); utilisation de --outputField avec une valeur invalide."""
+        """ Calcul du niveau de condensation par ascendance(LCL); utilisation de --outputField avec une valeur invalide."""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -41,11 +41,11 @@ class TestLevelOfCondensationByLifting(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
-        """Test #2 :  Calcul du niveau de condensation par ascendance(LCL); utilisation de --iceWaterPhase avec une valeur invalide."""
+        """ Calcul du niveau de condensation par ascendance(LCL); utilisation de --iceWaterPhase avec une valeur invalide."""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -64,11 +64,11 @@ class TestLevelOfCondensationByLifting(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
-        """Test #3 :  Calcul du niveau de condensation par ascendance(LCL); utilisation de --iceWaterPhase avec une valeur invalide."""
+        """ Calcul du niveau de condensation par ascendance(LCL); utilisation de --iceWaterPhase avec une valeur invalide."""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -87,11 +87,11 @@ class TestLevelOfCondensationByLifting(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
-        """Test #4 :  Calcul du niveau de condensation par ascendance(LCL); utilisation de --iceWaterPhase BOTH mais sans --temperaturePhaseSwitch."""
+        """ Calcul du niveau de condensation par ascendance(LCL); utilisation de --iceWaterPhase BOTH mais sans --temperaturePhaseSwitch."""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -110,11 +110,11 @@ class TestLevelOfCondensationByLifting(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
-        """Test #5 :  Calcul du niveau de condensation par ascendance(LCL); utilisation de --liftedFrom USER_DEFINED mais sans --verticalLevel."""
+        """ Calcul du niveau de condensation par ascendance(LCL); utilisation de --liftedFrom USER_DEFINED mais sans --verticalLevel."""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -133,11 +133,11 @@ class TestLevelOfCondensationByLifting(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_6(self):
-        """Test #6 :  Calcul du LCL; utilisation de --liftedFrom SURFACE avec un fichier en pression.  Requete invalide car le fichier ne suit pas la topographie."""
+        """ Calcul du LCL; utilisation de --liftedFrom SURFACE avec un fichier en pression.  Requete invalide car le fichier ne suit pas la topographie."""
         # open and read source
         source0 = plugin_test_dir + "2013022712_012_regpres"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -156,11 +156,11 @@ class TestLevelOfCondensationByLifting(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_7(self):
-        """Test #7 :  Calcul du LCL; utilisation d'une mauvaise combinaison de parametres."""
+        """ Calcul du LCL; utilisation d'une mauvaise combinaison de parametres."""
         # open and read source
         source0 = plugin_test_dir + "2013022712_012_regpres"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -179,11 +179,11 @@ class TestLevelOfCondensationByLifting(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_8(self):
-        """Test #8 :  Calcul du LCL - 3 champs de sortie (TLCL, PLCL et ZLCL); utilisation de --liftedFrom SURFACE."""
+        """ Calcul du LCL - 3 champs de sortie (TLCL, PLCL et ZLCL); utilisation de --liftedFrom SURFACE."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_reghyb"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -202,11 +202,11 @@ class TestLevelOfCondensationByLifting(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_9(self):
-        """Test #9 :  Calcul du LCL - 3 champs de sortie (TLCL, PLCL et ZLCL); utilisation de --liftedFrom SURFACE."""
+        """ Calcul du LCL - 3 champs de sortie (TLCL, PLCL et ZLCL); utilisation de --liftedFrom SURFACE."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_reghyb"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -225,11 +225,11 @@ class TestLevelOfCondensationByLifting(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_10(self):
-        """Test #10 :  Calcul du LCL - 3 champs de sortie (TLCL, PLCL et ZLCL); utilisation de --liftedFrom MEAN_LAYER."""
+        """ Calcul du LCL - 3 champs de sortie (TLCL, PLCL et ZLCL); utilisation de --liftedFrom MEAN_LAYER."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_reghyb"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -248,11 +248,11 @@ class TestLevelOfCondensationByLifting(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_12(self):
-        """Test #12 :  Calcul du LCL - 3 champs de sortie (TLCL, PLCL et ZLCL); utilisation de --liftedFrom USER_DEFINED."""
+        """ Calcul du LCL - 3 champs de sortie (TLCL, PLCL et ZLCL); utilisation de --liftedFrom USER_DEFINED."""
         # open and read source
         source0 = plugin_test_dir + "2015051400_012_press_gzg_2.fst"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -271,11 +271,11 @@ class TestLevelOfCondensationByLifting(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_13(self):
-        """Test #13 :  Calcul du LCL - 3 champs de sortie (TLCL, PLCL et ZLCL); utilisation de --liftedFrom USER_DEFINED. fichier 5005"""
+        """ Calcul du LCL - 3 champs de sortie (TLCL, PLCL et ZLCL); utilisation de --liftedFrom USER_DEFINED. fichier 5005"""
         # open and read source
         source0 = plugin_test_dir + "minimal_TTHUGZ_5005.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -294,6 +294,4 @@ class TestLevelOfCondensationByLifting(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

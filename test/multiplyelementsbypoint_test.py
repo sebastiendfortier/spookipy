@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from test import TMP_PATH,TEST_PATH, convip
+from test import TMP_PATH,TEST_PATH
 import pytest
 import fstpy.all as fstpy
 import spookipy.all as spooki
@@ -12,7 +12,7 @@ def plugin_test_dir():
     return TEST_PATH + '/MultiplyElementsByPoint/testsFiles/'
 
 def test_1(plugin_test_dir):
-    """Test #1 : Utilisation de --outputFieldName avec une valeur > 4 caractères."""
+    """Utilisation de --outputFieldName avec une valeur > 4 caractères."""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -21,41 +21,41 @@ def test_1(plugin_test_dir):
     #compute MultiplyElementsByPoint
     with pytest.raises(spooki.MultiplyElementsByPointError):
         df = spooki.MultiplyElementsByPoint(src_df0, nomvar_out='TROPLONG').compute()
-        #[ReaderStd --input {sources[0]}] >> [MultiplyElementsByPoint --outputFieldName TROPLONG] 
+        #[ReaderStd --input {sources[0]}] >> [MultiplyElementsByPoint --outputFieldName TROPLONG]
 
 
 
 def test_2(plugin_test_dir):
-    """Test #2 : Essaie de multiplier lorsqu'il y a seulement 1 champ en entrée."""
+    """Essaie de multiplier lorsqu'il y a seulement 1 champ en entrée."""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     src_df0 = fstpy.select_with_meta(src_df0,['UU'])
-    # src_df0 = src_df0.query( 'nomvar=="UU"').reset_index(drop=True)
+    # src_df0 = src_df0.loc[src_df0.nomvar=='UU'].reset_index(drop=True)
     #compute MultiplyElementsByPoint
     with pytest.raises(spooki.MultiplyElementsByPointError):
         df = spooki.MultiplyElementsByPoint(src_df0).compute()
-        #[ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> [MultiplyElementsByPoint] 
+        #[ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> [MultiplyElementsByPoint]
 
 
 
 def test_3(plugin_test_dir):
-    """Test #3 : Essaie de multiplier lorsqu'il y a plusieurs champs mais pas sur la même grille."""
+    """Essaie de multiplier lorsqu'il y a plusieurs champs mais pas sur la même grille."""
     # open and read source
     source0 = plugin_test_dir + "tt_gz_px_2grilles.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     src_df0 = fstpy.select_with_meta(src_df0,['TT','GZ'])
-    # src_df0 = src_df0.query( 'nomvar in ["TT","GZ"]').reset_index(drop=True)
+
     #compute MultiplyElementsByPoint
     with pytest.raises(spooki.MultiplyElementsByPointError):
         df = spooki.MultiplyElementsByPoint(src_df0).compute()
-        #[ReaderStd --input {sources[0]}] >> [Select --fieldName TT,GZ ] >> [MultiplyElementsByPoint] 
+        #[ReaderStd --input {sources[0]}] >> [Select --fieldName TT,GZ ] >> [MultiplyElementsByPoint]
 
 
 def test_4(plugin_test_dir):
-    """Test #4 : Multiplication des champs 2D."""
+    """Multiplication des champs 2D."""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -77,11 +77,11 @@ def test_4(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_5(plugin_test_dir):
-    """Test #5 : Multiplication des champs 3D."""
+    """Multiplication des champs 3D."""
     # open and read source
     source0 = plugin_test_dir + "UUVVTT5x5x2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -103,11 +103,11 @@ def test_5(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_6(plugin_test_dir):
-    """Test #6 : Test avec plusieurs champs, differents forecastHours; calcule les resulats pour chacuns des forecastHours."""
+    """Test avec plusieurs champs, differents forecastHours; calcule les resulats pour chacuns des forecastHours."""
     # open and read source
     source0 = plugin_test_dir + "TTES2x2x4_manyForecastHours.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -130,11 +130,11 @@ def test_6(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_7(plugin_test_dir):
-    """Test #7 : Test avec plusieurs champs, differents forecastHours; fait la multiplication des champs de tous les forecastHours."""
+    """Test avec plusieurs champs, differents forecastHours; fait la multiplication des champs de tous les forecastHours."""
     # open and read source
     source0 = plugin_test_dir + "TTES2x2x4_manyForecastHours.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -157,5 +157,4 @@ def test_7(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
-
+    assert(res)

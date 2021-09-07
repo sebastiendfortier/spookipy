@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"TemperatureVirtual/testsFiles/"
 class TestTemperatureVirtual(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : Calcul de la pression de vapeur saturante avec un fichier hybrid."""
+        """Calcul de la pression de vapeur saturante avec un fichier hybrid."""
         # open and read source
         source0 = plugin_test_dir + "hyb_prog_2012071312_009_1HY"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -41,11 +41,11 @@ class TestTemperatureVirtual(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
-        """Test #2 : Calcul de la pression de vapeur saturante avec un fichier hybrid 5005."""
+        """Calcul de la pression de vapeur saturante avec un fichier hybrid 5005."""
         # open and read source
         source0 = plugin_test_dir + "minimal_TTHR_5005.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -64,6 +64,4 @@ class TestTemperatureVirtual(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

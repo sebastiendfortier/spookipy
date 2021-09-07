@@ -15,3 +15,4 @@ out.std
 perf.png
 plot.png
 purge.lock
+test/out.txt

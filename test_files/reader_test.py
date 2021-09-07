@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"Reader/testsFiles/"
 class TestReader(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : test reading 2 files STD and CSV"""
+        """test reading 2 files STD and CSV"""
         # open and read source
         source0 = plugin_test_dir + "UV_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -44,6 +44,4 @@ class TestReader(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

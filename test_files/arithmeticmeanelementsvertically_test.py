@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"ArithmeticMeanElementsVertically/testsFiles/"
 class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : Calcul des moyennes verticales de chaque champ."""
+        """Calcul des moyennes verticales de chaque champ."""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -41,11 +41,11 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
-        """Test #2 : Calcul des moyennes verticales avec un niveau seulement."""
+        """Calcul des moyennes verticales avec un niveau seulement."""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -64,11 +64,11 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
-        """Test #3 : Calcul des moyennes verticales avec un seul champ et utilisation de --outputFieldName."""
+        """Calcul des moyennes verticales avec un seul champ et utilisation de --outputFieldName."""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -87,11 +87,11 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
-        """Test #5 : Calcul des moyennes verticales des champs TT, UU et VV entre 0.0102@à0.0374 et 0.0625@1 à partir d'un fichier de regeta­ pour différent intervalle de hauteurs."""
+        """Calcul des moyennes verticales des champs TT, UU et VV entre 0.0102@à0.0374 et 0.0625@1 à partir d'un fichier de regeta­ pour différent intervalle de hauteurs."""
         # open and read source
         source0 = plugin_test_dir + "2013102212_024_UUVVTTSNPRGZRNPE.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -110,11 +110,11 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_6(self):
-        """Test #6 : Calcul des moyennes verticales des champs TT, UU et VV entre 0@1 à partir d'un fichier de regeta­ pour différent intervalle de hauteurs."""
+        """Calcul des moyennes verticales des champs TT, UU et VV entre 0@1 à partir d'un fichier de regeta­ pour différent intervalle de hauteurs."""
         # open and read source
         source0 = plugin_test_dir + "2013102212_024_UUVVTTSNPRGZRNPE.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -133,11 +133,11 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_7(self):
-        """Test #7 : Calcul des moyennes verticales des champs TT, UU et VV entre 0@1 à partir d'un fichier de regeta­ pour différent intervalle de hauteurs qui contient deja des champs calcules."""
+        """Calcul des moyennes verticales des champs TT, UU et VV entre 0@1 à partir d'un fichier de regeta­ pour différent intervalle de hauteurs qui contient deja des champs calcules."""
         # open and read source
         source0 = plugin_test_dir + "2013102212_024_UUVVTT_plusOneIntervalPerField_file2cmp.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -156,11 +156,11 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_8(self):
-        """Test #8 : Effectue un test sur un fichier qui possède seulement des intervalles."""
+        """Effectue un test sur un fichier qui possède seulement des intervalles."""
         # open and read source
         source0 = plugin_test_dir + "2013102212_024_UUVVTT_OneIntervalPerField_file2cmp.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -179,11 +179,11 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_9(self):
-        """Test #9 : Effectue un test avec --outputFieldName mais plusieurs champs en entree."""
+        """Effectue un test avec --outputFieldName mais plusieurs champs en entree."""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -191,7 +191,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
         #compute ArithmeticMeanElementsVertically
         df = ArithmeticMeanElementsVertically(src_df0).compute()
-        #[ReaderStd --ignoreExtended --input {sources[0]}] >> [ArithmeticMeanElementsVertically --outputFieldName ABCD] 
+        #[ReaderStd --ignoreExtended --input {sources[0]}] >> [ArithmeticMeanElementsVertically --outputFieldName ABCD]
 
         #write the result
         results_file = TMP_PATH + "test_9.std"
@@ -202,11 +202,11 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_10(self):
-        """Test #10 : Utilisation de --outputFieldName avec une valeur > 4 caractères."""
+        """Utilisation de --outputFieldName avec une valeur > 4 caractères."""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -214,7 +214,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
         #compute ArithmeticMeanElementsVertically
         df = ArithmeticMeanElementsVertically(src_df0).compute()
-        #[ReaderStd --input {sources[0]}] >> [ArithmeticMeanElementsVertically --outputFieldName ABCDEF] 
+        #[ReaderStd --input {sources[0]}] >> [ArithmeticMeanElementsVertically --outputFieldName ABCDEF]
 
         #write the result
         results_file = TMP_PATH + "test_10.std"
@@ -225,6 +225,4 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

@@ -1,0 +1,98 @@
+Français
+--------
+
+**Description :**
+
+-  Calcul de la pression de vapeur saturante en fonction de la
+   température.
+
+\*Méthode d'itération :\*
+
+-  Point par Point
+
+\*Dépendances :\*
+
+-  Température de l'air (TT)
+
+\*Résultat(s) :\*
+
+-  Pression de vapeur saturante, SVP (hPa)
+
+\*Algorithme :\*
+
+.. code:: example
+
+    -Si la clé --RPN n'est pas activée:
+
+        Soit TT, la température de l'air (deg C)
+        Soit TPL, la température à laquelle il faut changer de la saturation par rapport à l'eau liquide à la saturation par rapport à la glace (deg C)
+        Soit SVP, la pression de vapeur saturante (hPa)
+
+        Si TT > TPL ou --iceWaterPhase WATER
+           SVP = AEw1*EXP[AEw2*TT/(AEw3 + TT)]
+        Sinon
+           SVP = AEi1*EXP[AEi2*TT/(AEi3 + TT)]
+
+        où selon Alduchov et Eskridge (1996)
+        AEw1=6.1094   AEi1=6.1121
+        AEw2=17.625   AEi2=22.587
+        AEw3=243.04   AEi3=273.86
+
+    -Si la clé --RPN est activée:
+
+        Soit TT, la température (degK)
+        Soit TPL, la température sous laquelle on calcule la pression de vapeur saturante par rapport à la glace (degK)
+
+        Si TT > TPL ou --iceWaterPhase WATER
+           Appeler la fonction sfoewa.ftn90 pour obtenir la pression de vapeur saturante, SVP (Pa).
+        Sinon
+           Appeler la fonction sfoew.ftn90 pour obtenir la pression de vapeur saturante, SVP (Pa).
+
+    Convertir SVP (Pa) en hPa:
+       SVP(hPa)=SVP(Pa)/100.0
+
+**Références :**
+
+-  [[http://journals.ametsoc.org/doi/pdf/10.1175/1520-0450%281996%29035%3C0601%3AIMFAOS%3E2.0.CO%3B2][Alduchov,
+   O. A., and R. E. Eskridge, 1996: Improved Magnus form approximation
+   of saturation vapor pressure. ''J. Appl. Meteor.'', '''35''',
+   601-609]]
+-  `Analyse de la pression de vapeur
+   saturante <https://wiki.cmc.ec.gc.ca/wiki/RPT/Analyse_de_la_pression_de_vapeur_saturante>`__
+-  `Librairie thermodynamique de
+   RPN <https://wiki.cmc.ec.gc.ca/images/6/60/Tdpack2011.pdf>`__
+
+\*Mots clés :\*
+
+-  MÉTÉO/WEATHER, humidité/humidity, pression/pressure, saturation
+
+\*Usage:\*
+
+**Exemple d'appel:**
+
+.. code:: example
+
+    ...
+    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/SaturationVapourPressure/testsFiles/inputFile.std] >>
+                [SaturationVapourPressure --iceWaterPhase BOTH --temperaturePhaseSwitch 0.01C] >>
+                [WriterStd --output /tmp/$USER/outputFile.std]"
+    ...
+
+**Validation des résultats:**
+
+**Contacts:**
+
+-  Auteur(e) : Neil Taylor
+-  Codé par : `Guylaine
+   Hardy <https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg>`__
+-  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
+   `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+
+Voir la référence à
+
+Tests unitaires
+
+| **Ce plugin utilise:**
+| **Ce plugin est utilisé par:**
+
+ 

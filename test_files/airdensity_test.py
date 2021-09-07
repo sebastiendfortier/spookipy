@@ -21,7 +21,7 @@ plugin_test_dir=TEST_PATH +"AirDensity/testsFiles/"
 class TestAirDensity(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 :  Calcul de la densite de l'air avec un fichier d'entree normal qui a des TT,HU et PX."""
+        """ Calcul de la densite de l'air avec un fichier d'entree normal qui a des TT,HU et PX."""
         # open and read source
         source0 = plugin_test_dir + "inputFile_TT_HU_PX_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -40,11 +40,11 @@ class TestAirDensity(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
-        """Test #2 :  Calcul de la densite de l'air avec un fichier d'entree VT et PX."""
+        """ Calcul de la densite de l'air avec un fichier d'entree VT et PX."""
         # open and read source
         source0 = plugin_test_dir + "inputFile_VT_PX_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -63,11 +63,11 @@ class TestAirDensity(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
-        """Test #3 :  Calcul de la densite de l'air avec un fichier d'entree TT,ES et PX."""
+        """ Calcul de la densite de l'air avec un fichier d'entree TT,ES et PX."""
         # open and read source
         source0 = plugin_test_dir + "inputFile_TT_ES_PX_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -86,11 +86,11 @@ class TestAirDensity(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
-        """Test #4 :  Calcul de la densite de l'air avec un fichier d'entree TT,QV et PX."""
+        """ Calcul de la densite de l'air avec un fichier d'entree TT,QV et PX."""
         # open and read source
         source0 = plugin_test_dir + "inputFile_TT_QV_PX_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -109,11 +109,11 @@ class TestAirDensity(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
-        """Test #5 :  Calcul de la densite de l'air avec un fichier d'entree TT,TD et PX."""
+        """ Calcul de la densite de l'air avec un fichier d'entree TT,TD et PX."""
         # open and read source
         source0 = plugin_test_dir + "inputFile_TT_TD_PX_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -132,11 +132,11 @@ class TestAirDensity(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_6(self):
-        """Test #6 :  Calcul de la densite de l'air avec un fichier d'entree TT,HR et PX."""
+        """ Calcul de la densite de l'air avec un fichier d'entree TT,HR et PX."""
         # open and read source
         source0 = plugin_test_dir + "inputFile_TT_HR_PX_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -155,11 +155,11 @@ class TestAirDensity(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_7(self):
-        """Test #7 :  Test d'une mauvais valeur de la cle virtualTemperature"""
+        """ Test d'une mauvais valeur de la cle virtualTemperature"""
         # open and read source
         source0 = plugin_test_dir + "inputFile_VT_PX_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -178,11 +178,11 @@ class TestAirDensity(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_8(self):
-        """Test #8 :  Test de la valeur par défaut de virtualTemperature"""
+        """ Test de la valeur par défaut de virtualTemperature"""
         # open and read source
         source0 = plugin_test_dir + "inputFile_VT_PX_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -201,11 +201,11 @@ class TestAirDensity(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_9(self):
-        """Test #9 :  Calcul de la densite de l'air sec avec un fichier d'entree TT et PX."""
+        """ Calcul de la densite de l'air sec avec un fichier d'entree TT et PX."""
         # open and read source
         source0 = plugin_test_dir + "inputFile_TT_PX_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -224,11 +224,11 @@ class TestAirDensity(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_10(self):
-        """Test #10 :  Calcul de la densite de l'air sec avec un fichier d'entree VT et PX."""
+        """ Calcul de la densite de l'air sec avec un fichier d'entree VT et PX."""
         # open and read source
         source0 = plugin_test_dir + "inputFile_VT_PX_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -247,11 +247,11 @@ class TestAirDensity(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_11(self):
-        """Test #11 :  Calcul de la densite de l'air reelle et sec."""
+        """ Calcul de la densite de l'air reelle et sec."""
         # open and read source
         source0 = plugin_test_dir + "inputFile_TT_HU_PX_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -270,6 +270,4 @@ class TestAirDensity(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

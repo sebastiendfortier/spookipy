@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"VorticityPotential/testsFiles/"
 class TestVorticityPotential(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : Calculate with a simple test data """
+        """Calculate with a simple test data """
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -41,11 +41,11 @@ class TestVorticityPotential(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
-        """Test #2 : Invalid value for --maxPVU"""
+        """Invalid value for --maxPVU"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -64,11 +64,11 @@ class TestVorticityPotential(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
-        """Test #3 : SingleThread. Same as test 1 but in singlethread"""
+        """SingleThread. Same as test 1 but in singlethread"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -87,6 +87,4 @@ class TestVorticityPotential(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

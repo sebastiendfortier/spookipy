@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-from ..utils import validate_nomvar
 from ..plugin import Plugin
 import pandas as pd
 from ..opelementsbyvalue import OpElementsByValue
-from ..utils import initializer, validate_nomvar
+from ..utils import initializer
 import sys
 
 def mult_value(a,v):
@@ -14,7 +13,7 @@ class MultiplyElementsByError(Exception):
 
 class MultiplyElementsBy(Plugin):
     @initializer
-    def __init__(self, df:pd.DataFrame, value, nomvar_out=''):
+    def __init__(self, df:pd.DataFrame, value, nomvar_out=None):
         pass
 
     def compute(self) -> pd.DataFrame:
@@ -23,5 +22,6 @@ class MultiplyElementsBy(Plugin):
         value = self.value,
         operation_name='MultiplyElementsBy',
         nomvar_out= self.nomvar_out,
-        operator = mult_value, 
-        exception_class = MultiplyElementsByError).compute() 
+        operator = mult_value,
+        exception_class = MultiplyElementsByError,
+        etiket='MULEBY').compute()

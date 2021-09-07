@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"Pressure/testsFiles/"
 class TestPressure(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : Test sur un fichier sortie de modele eta avec l'option --coordinateType ETA_COORDINATE. VCODE 1002"""
+        """Test sur un fichier sortie de modele eta avec l'option --coordinateType ETA_COORDINATE. VCODE 1002"""
         # open and read source
         source0 = plugin_test_dir + "tt_eta_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -41,11 +41,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
-        """Test #2 : Test sur un fichier sortie de modele eta avec les options --coordinateType ETA_COORDINATE --standardAtmosphere."""
+        """Test sur un fichier sortie de modele eta avec les options --coordinateType ETA_COORDINATE --standardAtmosphere."""
         # open and read source
         source0 = plugin_test_dir + "tt_eta_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -64,11 +64,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
-        """Test #3 : Test sur un fichier sortie de modele eta avec l'option --coordinateType AUTODETECT."""
+        """Test sur un fichier sortie de modele eta avec l'option --coordinateType AUTODETECT."""
         # open and read source
         source0 = plugin_test_dir + "tt_eta_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -87,11 +87,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
-        """Test #4 : Test sur un fichier sortie de modele eta avec les options --coordinateType AUTODETECT --standardAtmosphere."""
+        """Test sur un fichier sortie de modele eta avec les options --coordinateType AUTODETECT --standardAtmosphere."""
         # open and read source
         source0 = plugin_test_dir + "tt_eta_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -110,11 +110,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
-        """Test #5 : Test sur un fichier sortie de modele Sigma, avec l'option --coordinateType SIGMA_COORDINATE. VCODE 1001"""
+        """Test sur un fichier sortie de modele Sigma, avec l'option --coordinateType SIGMA_COORDINATE. VCODE 1001"""
         # open and read source
         source0 = plugin_test_dir + "hu_sig_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -133,11 +133,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_6(self):
-        """Test #6 : Test sur un fichier sortie de modele Sigma, avec les options --coordinateType SIGMA_COORDINATE --standardAtmosphere."""
+        """Test sur un fichier sortie de modele Sigma, avec les options --coordinateType SIGMA_COORDINATE --standardAtmosphere."""
         # open and read source
         source0 = plugin_test_dir + "hu_sig_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -156,11 +156,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_7(self):
-        """Test #7 : Test sur un fichier sortie de modele Sigma, avec l'option --coordinateType AUTODETECT."""
+        """Test sur un fichier sortie de modele Sigma, avec l'option --coordinateType AUTODETECT."""
         # open and read source
         source0 = plugin_test_dir + "hu_sig_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -179,11 +179,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_8(self):
-        """Test #8 : Test sur un fichier sortie de modele Sigma, avec les options --coordinateType AUTODETECT --standardAtmosphere."""
+        """Test sur un fichier sortie de modele Sigma, avec les options --coordinateType AUTODETECT --standardAtmosphere."""
         # open and read source
         source0 = plugin_test_dir + "hu_sig_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -202,11 +202,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_9(self):
-        """Test #9 : Test sur un fichier sortie de modele hybrid, avec l'option --coordinateType HYBRID_COORDINATE."""
+        """Test sur un fichier sortie de modele hybrid, avec l'option --coordinateType HYBRID_COORDINATE."""
         # open and read source
         source0 = plugin_test_dir + "tt_hyb_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -225,11 +225,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_10(self):
-        """Test #10 : Test sur un fichier sortie de modele Hybrid avec les options --coordinateType HYBRID_COORDINATE --standardAtmosphere."""
+        """Test sur un fichier sortie de modele Hybrid avec les options --coordinateType HYBRID_COORDINATE --standardAtmosphere."""
         # open and read source
         source0 = plugin_test_dir + "tt_hyb_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -248,11 +248,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_11(self):
-        """Test #11 : Test sur un fichier sortie de modele Hybrid, avec l'option --coordinateType AUTODETECT."""
+        """Test sur un fichier sortie de modele Hybrid, avec l'option --coordinateType AUTODETECT."""
         # open and read source
         source0 = plugin_test_dir + "input_hyb_2011100712_012.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -271,11 +271,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_12(self):
-        """Test #12 : Test sur un fichier sortie de modele Hybrid avec les options --coordinateType AUTODETECT --standardAtmosphere."""
+        """Test sur un fichier sortie de modele Hybrid avec les options --coordinateType AUTODETECT --standardAtmosphere."""
         # open and read source
         source0 = plugin_test_dir + "tt_hyb_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -294,11 +294,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_13(self):
-        """Test #13 : Test sur un fichier sortie de modele Hybrid staggered, avec l'option --coordinateType HYBRID_STAGGERED_COORDINATE."""
+        """Test sur un fichier sortie de modele Hybrid staggered, avec l'option --coordinateType HYBRID_STAGGERED_COORDINATE."""
         # open and read source
         source0 = plugin_test_dir + "px_hyb_stg_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -317,11 +317,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_14(self):
-        """Test #14 : Test sur un fichier sortie de modele Hybrid staggered, avec les options --coordinateType HYBRID_STAGGERED_COORDINATE --standardAtmosphere."""
+        """Test sur un fichier sortie de modele Hybrid staggered, avec les options --coordinateType HYBRID_STAGGERED_COORDINATE --standardAtmosphere."""
         # open and read source
         source0 = plugin_test_dir + "px_hyb_stg_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -340,11 +340,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_15(self):
-        """Test #15 : Test sur un fichier sortie de modele hybrid staggered, avec l'option --coordinateType AUTODETECT."""
+        """Test sur un fichier sortie de modele hybrid staggered, avec l'option --coordinateType AUTODETECT."""
         # open and read source
         source0 = plugin_test_dir + "px_hyb_stg_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -363,11 +363,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_16(self):
-        """Test #16 : Test sur un fichier sortie de modele Hybrid staggered, avec les options --coordinateType AUTODETECT --standardAtmosphere."""
+        """Test sur un fichier sortie de modele Hybrid staggered, avec les options --coordinateType AUTODETECT --standardAtmosphere."""
         # open and read source
         source0 = plugin_test_dir + "px_hyb_stg_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -386,11 +386,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_17(self):
-        """Test #17 : Test sur un fichier sortie de modele en pression, avec l'option --coordinateType PRESSURE_COORDINATE."""
+        """Test sur un fichier sortie de modele en pression, avec l'option --coordinateType PRESSURE_COORDINATE."""
         # open and read source
         source0 = plugin_test_dir + "tt_pres_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -409,11 +409,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_18(self):
-        """Test #18 : Test sur un fichier sortie de modele en pression avec les options --coordinateType PRESSURE_COORDINATE --standardAtmosphere."""
+        """Test sur un fichier sortie de modele en pression avec les options --coordinateType PRESSURE_COORDINATE --standardAtmosphere."""
         # open and read source
         source0 = plugin_test_dir + "tt_pres_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -432,11 +432,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_19(self):
-        """Test #19 : Test sur un fichier sortie de modele en pression l'option --coordinateType AUTODETECT."""
+        """Test sur un fichier sortie de modele en pression l'option --coordinateType AUTODETECT."""
         # open and read source
         source0 = plugin_test_dir + "tt_pres_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -455,11 +455,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_20(self):
-        """Test #20 : Test sur un fichier sortie de modele en pression avec les options --coordinateType AUTODETECT --standardAtmosphere."""
+        """Test sur un fichier sortie de modele en pression avec les options --coordinateType AUTODETECT --standardAtmosphere."""
         # open and read source
         source0 = plugin_test_dir + "tt_pres_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -478,11 +478,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_21(self):
-        """Test #21 : Test avec -- coordinateType ETA_COORDINATE alors que le fichier d'entree n'est pas en coordonnees ETA - Kind invalide."""
+        """Test avec -- coordinateType ETA_COORDINATE alors que le fichier d'entree n'est pas en coordonnees ETA - Kind invalide."""
         # open and read source
         source0 = plugin_test_dir + "tt_pres_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -501,11 +501,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_22(self):
-        """Test #22 : Test avec l'option -- coordinateType ETA_COORDINATE alors que le fichier d'entree n'est pas en coordonnees ETA - Champs PT et P0 sont absents."""
+        """Test avec l'option -- coordinateType ETA_COORDINATE alors que le fichier d'entree n'est pas en coordonnees ETA - Champs PT et P0 sont absents."""
         # open and read source
         source0 = plugin_test_dir + "input_eta_2008061012_000_model_noPTnoP0.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -524,11 +524,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_23(self):
-        """Test #23 : Test avec -- coordinateType SIGMA_COORDINATE alors que le fichier d'entree n'est pas en coordonnees SIGMA - Kind invalide."""
+        """Test avec -- coordinateType SIGMA_COORDINATE alors que le fichier d'entree n'est pas en coordonnees SIGMA - Kind invalide."""
         # open and read source
         source0 = plugin_test_dir + "tt_pres_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -547,11 +547,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_24(self):
-        """Test #24 : Test avec l'option -- coordinateType SIGMA_COORDINATE alors que le fichier d'entree n'est pas en coordonnees SIGMA - Champ P0 est absent."""
+        """Test avec l'option -- coordinateType SIGMA_COORDINATE alors que le fichier d'entree n'est pas en coordonnees SIGMA - Champ P0 est absent."""
         # open and read source
         source0 = plugin_test_dir + "hu_sig_noP0_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -570,11 +570,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_25(self):
-        """Test #25 : Test avec l'option -- coordinateType HYBRID_COORDINATE alors que le fichier d'entree n'est pas en coordonnees HYBRID - Kind invalide."""
+        """Test avec l'option -- coordinateType HYBRID_COORDINATE alors que le fichier d'entree n'est pas en coordonnees HYBRID - Kind invalide."""
         # open and read source
         source0 = plugin_test_dir + "tt_pres_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -593,11 +593,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_26(self):
-        """Test #26 : Test avec l'option -- coordinateType HYBRID_COORDINATE alors que le fichier d'entree n'est pas en coordonnees HYBRID - Champs P0 et HY sont absents."""
+        """Test avec l'option -- coordinateType HYBRID_COORDINATE alors que le fichier d'entree n'est pas en coordonnees HYBRID - Champs P0 et HY sont absents."""
         # open and read source
         source0 = plugin_test_dir + "tt_hyb_noP0noHYnoBB_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -616,11 +616,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_27(self):
-        """Test #27 : Test avec l'option -- coordinateType HYBRID_STAGGERED_COORDINATE alors que le fichier d'entree n'est pas en coordonnees HYBRID STAGGERED - Kind invalide."""
+        """Test avec l'option -- coordinateType HYBRID_STAGGERED_COORDINATE alors que le fichier d'entree n'est pas en coordonnees HYBRID STAGGERED - Kind invalide."""
         # open and read source
         source0 = plugin_test_dir + "tt_pres_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -639,11 +639,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_28(self):
-        """Test #28 : Test avec l'option -- coordinateType HYBRID_STAGGERED_COORDINATE alors que le fichier d'entree n'est pas en coordonnees HYBRID STAGGERED- Champs P0 et HY sont absents."""
+        """Test avec l'option -- coordinateType HYBRID_STAGGERED_COORDINATE alors que le fichier d'entree n'est pas en coordonnees HYBRID STAGGERED- Champs P0 et HY sont absents."""
         # open and read source
         source0 = plugin_test_dir + "tt_hyb_noP0noHYnoBB_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -662,11 +662,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_29(self):
-        """Test #29 : Test avec l'option -- coordinateType PRESSURE_COORDINATE alors que le fichier d'entree n'est pas en pression."""
+        """Test avec l'option -- coordinateType PRESSURE_COORDINATE alors que le fichier d'entree n'est pas en pression."""
         # open and read source
         source0 = plugin_test_dir + "tt_eta_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -685,11 +685,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_30(self):
-        """Test #30 : Test avec un fichier contenant differentes heures de prevision."""
+        """Test avec un fichier contenant differentes heures de prevision."""
         # open and read source
         source0 = plugin_test_dir + "input_vrpcp24_00_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -708,11 +708,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_31(self):
-        """Test #31 : Test avec un fichier contenant differentes heures de prevision."""
+        """Test avec un fichier contenant differentes heures de prevision."""
         # open and read source
         source0 = plugin_test_dir + "input_test_31.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -731,11 +731,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_32(self):
-        """Test #32 : Test avec un fichier glbpres avec l'option --coordinateType HYBRID_STAGGERED_COORDINATE"""
+        """Test avec un fichier glbpres avec l'option --coordinateType HYBRID_STAGGERED_COORDINATE"""
         # open and read source
         source0 = plugin_test_dir + "glbpres_TT_UU_VV.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -754,11 +754,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_33(self):
-        """Test #33 : Test avec un fichier glbpres avec l'option --coordinateType PRESSURE_COORDINATE"""
+        """Test avec un fichier glbpres avec l'option --coordinateType PRESSURE_COORDINATE"""
         # open and read source
         source0 = plugin_test_dir + "glbpres_TT_UU_VV.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -777,11 +777,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_34(self):
-        """Test #34 : Test avec un fichier qui genere des artefacts dans les cartes"""
+        """Test avec un fichier qui genere des artefacts dans les cartes"""
         # open and read source
         source0 = plugin_test_dir + "2019091000_000_input.orig"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -800,11 +800,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_35(self):
-        """Test #35 : Test avec un fichier 5005 avec l'option --coordinateType HYBRID_5005_COORDINATE thermodynamic"""
+        """Test avec un fichier 5005 avec l'option --coordinateType HYBRID_5005_COORDINATE thermodynamic"""
         # open and read source
         source0 = plugin_test_dir + "coord_5005_big.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -823,11 +823,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_36(self):
-        """Test #36 : Test avec un fichier 5005 avec l'option --coordinateType HYBRID_5005_COORDINATE momentum"""
+        """Test avec un fichier 5005 avec l'option --coordinateType HYBRID_5005_COORDINATE momentum"""
         # open and read source
         source0 = plugin_test_dir + "coord_5005_big.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -846,11 +846,11 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_37(self):
-        """Test #37 : Test avec un fichier 5005 avec l'option --coordinateType HYBRID_5005_COORDINATE thermo sub grid - attendu fail"""
+        """Test avec un fichier 5005 avec l'option --coordinateType HYBRID_5005_COORDINATE thermo sub grid - attendu fail"""
         # open and read source
         source0 = plugin_test_dir + "coord_5005_big.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -869,6 +869,4 @@ class TestPressure(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

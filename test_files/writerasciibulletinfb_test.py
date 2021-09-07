@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"WriterAsciiBulletinFB/testsFiles/"
 class TestWriterAsciiBulletinFB(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : Tester l'option --outputPath avec un path qui n'existe pas!"""
+        """Tester l'option --outputPath avec un path qui n'existe pas!"""
         # open and read source
         source0 = plugin_test_dir + "2011072100_006_eta_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -36,11 +36,11 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_1.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
-        """Test #2 : Tester l'option --outputPath avec un path qui existe mais qui est un nom de fichier!"""
+        """Tester l'option --outputPath avec un path qui existe mais qui est un nom de fichier!"""
         # open and read source
         source0 = plugin_test_dir + "2011072100_006_eta_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -54,11 +54,11 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_2.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_pathExisteMaisPasLesPermissions(self):
-        """Test #3 : Tester l'option --outputPath avec un path existant qui est un répertoire mais dont on n'a pas les permissions!"""
+        """Tester l'option --outputPath avec un path existant qui est un répertoire mais dont on n'a pas les permissions!"""
         # open and read source
         source0 = plugin_test_dir + "2011072100_006_eta_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -75,11 +75,11 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_pathExisteMaisPasLesPermissions.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_invalidRunHour(self):
-        """Test #4 : Tester le plugin avec une heure de run invalide!"""
+        """Tester le plugin avec une heure de run invalide!"""
         # open and read source
         source0 = plugin_test_dir + "2011072100_006_eta_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -93,11 +93,11 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_invalidRunHour.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_invalidUnitTT(self):
-        """Test #5 : Tester le plugin avec TT qui n'a pas les bonnes unités!"""
+        """Tester le plugin avec TT qui n'a pas les bonnes unités!"""
         # open and read source
         source0 = plugin_test_dir + "2011072100_006_eta_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -111,11 +111,11 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_invalidUnitTT.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_invalidUnitUV(self):
-        """Test #6 : Tester le plugin avec UV qui n'a pas les bons unités!"""
+        """Tester le plugin avec UV qui n'a pas les bons unités!"""
         # open and read source
         source0 = plugin_test_dir + "2011072100_006_eta_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -129,11 +129,11 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_invalidUnitUV.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_invalidUnitGZ(self):
-        """Test #8 : Tester le plugin avec GZ qui n'a pas les bons unités!"""
+        """Tester le plugin avec GZ qui n'a pas les bons unités!"""
         # open and read source
         source0 = plugin_test_dir + "2011072100_006_eta_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -147,11 +147,11 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_invalidUnitGZ.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_invalidUnitTerrainElevation(self):
-        """Test #9 : Tester le plugin avec TerrainElevation qui n'a pas les bonnes unités!"""
+        """Tester le plugin avec TerrainElevation qui n'a pas les bonnes unités!"""
         # open and read source
         source0 = plugin_test_dir + "2011072100_006_eta_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -165,11 +165,11 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_invalidUnitTerrainElevation.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFB000061(self):
-        """Test #10 : Produit le bulletin FBCN31_000 a comparer avec tely_fd_reg_r100_FDCN01 et ne produit aucun backup (message d'avertissement)."""
+        """Produit le bulletin FBCN31_000 a comparer avec tely_fd_reg_r100_FDCN01 et ne produit aucun backup (message d'avertissement)."""
         # open and read source
         source0 = plugin_test_dir + "2011072100_006_eta_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -183,11 +183,11 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFB000061.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFB00012(self):
-        """Test #11 : Produit le bulletin FBCN33_000 a comparer avec tely_fd_reg_r100_FDCN02, produit le backup à 6 heure et avertit que le backup 12 n'est pas produit."""
+        """Produit le bulletin FBCN33_000 a comparer avec tely_fd_reg_r100_FDCN02, produit le backup à 6 heure et avertit que le backup 12 n'est pas produit."""
         # open and read source
         source0 = plugin_test_dir + "2011072100_012_eta_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -201,11 +201,11 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFB00012.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFB00018(self):
-        """Test #12 : Donne aucun bulletin (avertir qu'aucun bulletin est produit), produit les backups à 6 et 12 heures. Le backup à 12 sera comparé avec tely_fd_012_backup_FDCN01."""
+        """Donne aucun bulletin (avertir qu'aucun bulletin est produit), produit les backups à 6 et 12 heures. Le backup à 12 sera comparé avec tely_fd_012_backup_FDCN01."""
         # open and read source
         source0 = plugin_test_dir + "2011072100_018_eta_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -219,11 +219,11 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFB00018.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFB00024(self):
-        """Test #13 : Produit le bulletin FBCN35_000 a comparer avec tely_fd_reg_r100_FDCN03, produit le backup 12 qui sera comparé avec tely_fd_012_backup_FDCN01 et avertit que le backup à 6 n'est pas produit."""
+        """Produit le bulletin FBCN35_000 a comparer avec tely_fd_reg_r100_FDCN03, produit le backup 12 qui sera comparé avec tely_fd_012_backup_FDCN01 et avertit que le backup à 6 n'est pas produit."""
         # open and read source
         source0 = plugin_test_dir + "2011072100_024_eta_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -240,11 +240,11 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFB00024.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFB00030(self):
-        """Test #14 : Avertit qu'aucun bulletin n'est produit, produit le backup à 6 et avertit que le backup à 12 n'est pas produit."""
+        """Avertit qu'aucun bulletin n'est produit, produit le backup à 6 et avertit que le backup à 12 n'est pas produit."""
         # open and read source
         source0 = plugin_test_dir + "2011072100_030_eta_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -258,11 +258,11 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFB00030.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFB00036(self):
-        """Test #15 : Avertit qu'aucun bulletin n'est produit, produit le backup à 12 qui sera comparé avec tely_fd_012_backup_FDCN03 et avertit que le backup à 6 n'est pas produit."""
+        """Avertit qu'aucun bulletin n'est produit, produit le backup à 12 qui sera comparé avec tely_fd_012_backup_FDCN03 et avertit que le backup à 6 n'est pas produit."""
         # open and read source
         source0 = plugin_test_dir + "2011072100_036_eta_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -276,11 +276,11 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFB00036.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFB00048(self):
-        """Test #16 : Avertit qu'aucun bulletin ni backup sont produits."""
+        """Avertit qu'aucun bulletin ni backup sont produits."""
         # open and read source
         source0 = plugin_test_dir + "2011072100_048_eta_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -294,11 +294,11 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFB00048.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFB12006(self):
-        """Test #17 : """
+        """"""
         # open and read source
         source0 = plugin_test_dir + "2011072112_006_eta_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -312,11 +312,11 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFB12006.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFB12012(self):
-        """Test #18 : """
+        """"""
         # open and read source
         source0 = plugin_test_dir + "2011072112_012_eta_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -330,11 +330,11 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFB12012.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFB12018(self):
-        """Test #19 : """
+        """"""
         # open and read source
         source0 = plugin_test_dir + "2011072112_018_eta_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -348,11 +348,11 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFB12018.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFB12024(self):
-        """Test #20 : """
+        """"""
         # open and read source
         source0 = plugin_test_dir + "2011072112_024_eta_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -366,11 +366,11 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFB12024.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFB12030(self):
-        """Test #21 : """
+        """"""
         # open and read source
         source0 = plugin_test_dir + "2011072112_030_eta_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -384,11 +384,11 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFB12030.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFB12036(self):
-        """Test #22 : """
+        """"""
         # open and read source
         source0 = plugin_test_dir + "2011072112_036_eta_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -402,11 +402,11 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFB12036.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFB12048(self):
-        """Test #23 : """
+        """"""
         # open and read source
         source0 = plugin_test_dir + "2011072112_048_eta_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -420,11 +420,11 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFB12048.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinGlobal(self):
-        """Test #24 : À l'aide du dictionnaire FD, produit un bulletin FBCN33_012 et un backup FBCN31_012_backup06 à partir du global eta. Permet de tester la station YJA"""
+        """À l'aide du dictionnaire FD, produit un bulletin FBCN33_012 et un backup FBCN31_012_backup06 à partir du global eta. Permet de tester la station YJA"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_glbeta"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -438,11 +438,11 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinGlobal.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFB000061b(self):
-        """Test #25 : Produit(sans les champs pressions) le bulletin FBCN31_000 a comparer avec tely_fd_reg_r100_FDCN01 et produit aucun backup (message d'avertissement)."""
+        """Produit(sans les champs pressions) le bulletin FBCN31_000 a comparer avec tely_fd_reg_r100_FDCN01 et produit aucun backup (message d'avertissement)."""
         # open and read source
         source0 = plugin_test_dir + "2011072100_006_eta_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -456,11 +456,11 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFB000061b.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFBDate(self):
-        """Test #26 : Test avec une date de fin de mois pour s'assurer que les entetes sont corrects"""
+        """Test avec une date de fin de mois pour s'assurer que les entetes sont corrects"""
         # open and read source
         source0 = plugin_test_dir + "20150228_018_eta_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -474,11 +474,11 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFBDate.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
+        assert(res)
 
 
     def test_WriterAsciiBulletinFBDate2(self):
-        """Test #27 : Test avec une date de fin de mois (annee bisextile) pour s'assurer que les entetes sont corrects"""
+        """Test avec une date de fin de mois (annee bisextile) pour s'assurer que les entetes sont corrects"""
         # open and read source
         source0 = plugin_test_dir + "20160228_024_eta_small"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -492,6 +492,4 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         results_file = TMP_PATH + "test_WriterAsciiBulletinFBDate2.std"
         StandardFileWriter(results_file, df)()
 
-        assert(res == True)
-
-
+        assert(res)

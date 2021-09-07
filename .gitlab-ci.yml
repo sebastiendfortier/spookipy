@@ -4,6 +4,7 @@ variables:
   ORD_SOUMET_CM: "20G"
   ORD_SOUMET_TMPFS: "10G"
   JOB_CPUS: "10"
+  JOB_WALLCLOCK: "3600"
   doc_install_dir: "/home/spst900/public_html/spookipy/${CI_BUILD_REF_NAME}"
   latest_doc_install_dir: "/home/spst900/public_html/spookipy/latest"
 
@@ -21,9 +22,11 @@ before_script:
   - . /fs/ssm/main/env/ordenv-boot-20201118.sh
   - export EC_ATOMIC_PROFILE_VERSION=1.12.0
   - . r.load.dot eccc/mrd/rpn/MIG/ENV/migdep/5.1.1 eccc/mrd/rpn/MIG/ENV/rpnpy/2.1.2
-  - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python_packages/python3.6/all/2021.07
-  - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmdw/PRIVATE/dev_python_packages/python3.6/all/2021.07
-  - . ssmuse-sh -d /fs/site4/eccc/cmd/w/sbf000/ssm/fstpy/2.1.5
+  - . ssmuse-sh -x cmd/cmdm/satellite/master_u1/miniconda3_4.9.2_ubuntu-18.04-skylake-64
+  - . activate fstpy_full
+  # - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python_packages/python3.6/all/2021.07
+  # - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmdw/PRIVATE/dev_python_packages/python3.6/all/2021.07
+  - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/2.1.6/
   # - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/2.1.4/
 
 

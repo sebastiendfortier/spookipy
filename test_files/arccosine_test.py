@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"ArcCosine/testsFiles/"
 class TestArcCosine(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : Calcule la valeur arc cosinus de chaque champ."""
+        """Calcule la valeur arc cosinus de chaque champ."""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_point1_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -41,6 +41,4 @@ class TestArcCosine(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

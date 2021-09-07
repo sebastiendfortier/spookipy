@@ -5,7 +5,7 @@ import fstpy.all as fstpy
 import spookipy.all as spooki
 import pandas as pd
 
-pytestmark = [pytest.mark.to_skip]
+pytestmark = [pytest.mark.skip]
 
 @pytest.fixture
 def plugin_test_dir():
@@ -13,7 +13,7 @@ def plugin_test_dir():
 
 
 def test_1(plugin_test_dir):
-    """Test #1 : Tester avec un interval=6 sur un range de 12 a 18 et a tous les sauts de 1."""
+    """Tester avec un interval=6 sur un range de 12 a 18 et a tous les sauts de 1."""
     # open and read source
     source0 = plugin_test_dir + "18_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -22,6 +22,8 @@ def test_1(plugin_test_dir):
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
 
     src_df = pd.concat([src_df0,src_df1],ignore_index=True)
+
+
     #compute TimeIntervalDifference
     df = spooki.TimeIntervalDifference(src_df , nomvar='PR' ,forecast_hour_range=[12@18] , interval=6 , step=1).compute()
     #[ReaderStd --ignoreExtended --input {sources[0]}] >>
@@ -41,11 +43,11 @@ def test_1(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_2(plugin_test_dir):
-    """Test #2 : Tester avec deux groupes d'interval."""
+    """Tester avec deux groupes d'interval."""
     # open and read source
     source0 = plugin_test_dir + "18_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -75,11 +77,11 @@ def test_2(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_3(plugin_test_dir):
-    """Test #3 : Tester avec un interval=6 sur un range de 6 a 12 et a tous les sauts de 1."""
+    """Tester avec un interval=6 sur un range de 6 a 12 et a tous les sauts de 1."""
     # open and read source
     source0 = plugin_test_dir + "PR2009051312_012_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -109,11 +111,11 @@ def test_3(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_4(plugin_test_dir):
-    """Test #4 : Tester avec un interval=6 sur un range de 12 a 18 et a tous les sauts de 1."""
+    """Tester avec un interval=6 sur un range de 12 a 18 et a tous les sauts de 1."""
     # open and read source
     source0 = plugin_test_dir + "18_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -143,11 +145,11 @@ def test_4(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_5(plugin_test_dir):
-    """Test #5 : Tester avec un fichier qui vient de regeta."""
+    """Tester avec un fichier qui vient de regeta."""
     # open and read source
     source0 = plugin_test_dir + "global20121217_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -170,11 +172,11 @@ def test_5(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_6(plugin_test_dir):
-    """Test #6 :   Test avec une valeur invalide pour interval."""
+    """Test avec une valeur invalide pour interval."""
     # open and read source
     source0 = plugin_test_dir + "global20121217_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -188,7 +190,7 @@ def test_6(plugin_test_dir):
 
 
 def test_7(plugin_test_dir):
-    """Test #7 :   Test avec une valeur invalide pour step."""
+    """Test avec une valeur invalide pour step."""
     # open and read source
     source0 = plugin_test_dir + "global20121217_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -202,7 +204,7 @@ def test_7(plugin_test_dir):
 
 
 def test_8(plugin_test_dir):
-    """Test #8 : Tester avec un fichier qui contient des champs TT et UV mais des UV qui sont a 0 et 20 dans le IP3"""
+    """Tester avec un fichier qui contient des champs TT et UV mais des UV qui sont a 0 et 20 dans le IP3"""
     # open and read source
     source0 = plugin_test_dir + "UVTT_3a24hre_delta3_IP3_20_40_0_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -225,11 +227,11 @@ def test_8(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_9(plugin_test_dir):
-    """Test #9 : Tester avec un Interval de 0@3 et de 0@9 sur un range de 3@9 avec un interval=de 6 et un saut de 9."""
+    """Tester avec un Interval de 0@3 et de 0@9 sur un range de 3@9 avec un interval=de 6 et un saut de 9."""
     # open and read source
     source0 = plugin_test_dir + "PR_Interval_012_0_3_fileSrc_encoded.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -256,11 +258,11 @@ def test_9(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_10(plugin_test_dir):
-    """Test #10 : Tester avec un Interval de 0@9 et de 6@9 sur un range de 0@6 avec un interval=de 6 et un saut de 9."""
+    """Tester avec un Interval de 0@9 et de 6@9 sur un range de 0@6 avec un interval=de 6 et un saut de 9."""
     # open and read source
     source0 = plugin_test_dir + "PR_Interval_012_6_9_fileSrc_encoded.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -287,11 +289,11 @@ def test_10(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_11(plugin_test_dir):
-    """Test #11 : Tester avec deux Interval de 0@3 et 9@12 et de 0@9 et 9@18 sur un range de 3@18 avec un interval=de 6 et un saut de 9."""
+    """Tester avec deux Interval de 0@3 et 9@12 et de 0@9 et 9@18 sur un range de 3@18 avec un interval=de 6 et un saut de 9."""
     # open and read source
     source0 = plugin_test_dir + "PR_Interval_0-3_9-12_fileSrc_encoded.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -318,11 +320,11 @@ def test_11(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_12(plugin_test_dir):
-    """Test #12 : Tester avec un Interval de 0@9 et de 6@9 sur un range de 0@6 avec un interval=de 6 et un saut de 9."""
+    """Tester avec un Interval de 0@9 et de 6@9 sur un range de 0@6 avec un interval=de 6 et un saut de 9."""
     # open and read source
     source0 = plugin_test_dir + "PR_Interval_0-9_9-18_fileSrc_encoded.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -349,11 +351,11 @@ def test_12(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_13(plugin_test_dir):
-    """Test #13 : Tester avec un Interval de 0@9 et de 6@9 sur un range de 0@6 avec un interval=de 6 et un saut de 9 en encodant la sortie."""
+    """Tester avec un Interval de 0@9 et de 6@9 sur un range de 0@6 avec un interval=de 6 et un saut de 9 en encodant la sortie."""
     # open and read source
     source0 = plugin_test_dir + "PR_Interval_012_6_9_fileSrc_encoded.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -380,11 +382,11 @@ def test_13(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_14(plugin_test_dir):
-    """Test #14 : Tester avec une valeur invalide pourforecast_hour_range=."""
+    """Tester avec une valeur invalide pourforecast_hour_range=."""
     # open and read source
     source0 = plugin_test_dir + "global20121217_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -399,7 +401,7 @@ def test_14(plugin_test_dir):
 
 
 def test_15(plugin_test_dir):
-    """Test #15 : Tester avec l'intervalle 0@9 manquant dans le fichier source."""
+    """Tester avec l'intervalle 0@9 manquant dans le fichier source."""
     # open and read source
     source0 = plugin_test_dir + "PR_exclude_interval_0A9_fileSrc_encoded.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -414,7 +416,7 @@ def test_15(plugin_test_dir):
 
 
 def test_16(plugin_test_dir):
-    """Test #16 : Tester avec un range invalide pour --interval."""
+    """Tester avec un range invalide pour --interval."""
     # open and read source
     source0 = plugin_test_dir + "global20121217_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -429,7 +431,7 @@ def test_16(plugin_test_dir):
 
 
 def test_17(plugin_test_dir):
-    """Test #17 : Tester avec la valeur du lower bound de --forecastHour plus grande que son upper bound."""
+    """Tester avec la valeur du lower bound de --forecastHour plus grande que son upper bound."""
     # open and read source
     source0 = plugin_test_dir + "global20121217_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -444,7 +446,7 @@ def test_17(plugin_test_dir):
 
 
 def test_18(plugin_test_dir):
-    """Test #18 : Tester si single thread fonctionne. Probleme potentiel avec algorithm.hpp => Segmentation fault (core dumped)"""
+    """Tester si single thread fonctionne. Probleme potentiel avec algorithm.hpp => Segmentation fault (core dumped)"""
     # open and read source
     source0 = plugin_test_dir + "SN0_SN1.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -467,11 +469,11 @@ def test_18(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_19(plugin_test_dir):
-    """Test #19 : Tester avec un fichier qui contient des champs TT et UV mais des UV qui sont a 0 et 20 dans le IP3 avec strictlyPositive switch"""
+    """Tester avec un fichier qui contient des champs TT et UV mais des UV qui sont a 0 et 20 dans le IP3 avec strictlyPositive switch"""
     # open and read source
     source0 = plugin_test_dir + "UVTT_3a24hre_delta3_IP3_20_40_0_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -494,11 +496,11 @@ def test_19(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_20(plugin_test_dir):
-    """Test #20 : Tester avec un fichier qui contient des champs TT et UV mais des UV qui sont a 0 et 20 dans le IP3 avec strictlyPositive switch"""
+    """Tester avec un fichier qui contient des champs TT et UV mais des UV qui sont a 0 et 20 dans le IP3 avec strictlyPositive switch"""
     # open and read source
     source0 = plugin_test_dir + "UVTT_3a24hre_delta3_IP3_20_40_0_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -521,11 +523,11 @@ def test_20(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_21(plugin_test_dir):
-    """Test #21 : Tester la presence de une des 2 parametres rangeForeCastHour"""
+    """Tester la presence de une des 2 parametres rangeForeCastHour"""
     # open and read source
     source0 = plugin_test_dir + "UVTT_3a24hre_delta3_IP3_20_40_0_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -541,7 +543,7 @@ def test_21(plugin_test_dir):
 
 
 def test_22(plugin_test_dir):
-    """Test #22 : Test interval=patameter"""
+    """Test interval=patameter"""
     # open and read source
     source0 = plugin_test_dir + "UVTT_3a24hre_delta3_IP3_20_40_0_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -564,11 +566,11 @@ def test_22(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_23(plugin_test_dir):
-    """Test #23 : Test step=patameter"""
+    """Test step=patameter"""
     # open and read source
     source0 = plugin_test_dir + "UVTT_3a24hre_delta3_IP3_20_40_0_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -591,11 +593,11 @@ def test_23(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)
 
 
 def test_24(plugin_test_dir):
-    """Test #24 : Test allHourMinuteSecond parameters"""
+    """Test allHourMinuteSecond parameters"""
     # open and read source
     source0 = plugin_test_dir + "UVTT_3a24hre_delta3_IP3_20_40_0_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -618,4 +620,4 @@ def test_24(plugin_test_dir):
     #compare results
     res = fstpy.fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res == True)
+    assert(res)

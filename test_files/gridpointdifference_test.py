@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"GridPointDifference/testsFiles/"
 class TestGridPointDifference(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : --axis X,Y --differenceType CENTERED"""
+        """--axis X,Y --differenceType CENTERED"""
         # open and read source
         source0 = plugin_test_dir + "6x5_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -41,11 +41,11 @@ class TestGridPointDifference(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
-        """Test #2 : test_gridPointDifference_Z_centered"""
+        """test_gridPointDifference_Z_centered"""
         # open and read source
         source0 = plugin_test_dir + "4z2x2y_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -64,11 +64,11 @@ class TestGridPointDifference(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
-        """Test #3 : test_gridPointDifference_XY_forward"""
+        """test_gridPointDifference_XY_forward"""
         # open and read source
         source0 = plugin_test_dir + "6x5_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -87,11 +87,11 @@ class TestGridPointDifference(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_4(self):
-        """Test #4 : test_gridPointDifference_Z_forward"""
+        """test_gridPointDifference_Z_forward"""
         # open and read source
         source0 = plugin_test_dir + "4z2x2y_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -110,11 +110,11 @@ class TestGridPointDifference(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_5(self):
-        """Test #5 : test_gridPointDifference_XY_backward"""
+        """test_gridPointDifference_XY_backward"""
         # open and read source
         source0 = plugin_test_dir + "6x5_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -133,11 +133,11 @@ class TestGridPointDifference(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_6(self):
-        """Test #6 : test_gridPointDifference_Z_backward"""
+        """test_gridPointDifference_Z_backward"""
         # open and read source
         source0 = plugin_test_dir + "4z2x2y_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -156,11 +156,11 @@ class TestGridPointDifference(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_7(self):
-        """Test #7 : test_gridPointDifference_XY_centered2"""
+        """test_gridPointDifference_XY_centered2"""
         # open and read source
         source0 = plugin_test_dir + "tape10_UU.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -179,11 +179,11 @@ class TestGridPointDifference(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_8(self):
-        """Test #8 : test_gridPointDifference_Z_1level"""
+        """test_gridPointDifference_Z_1level"""
         # open and read source
         source0 = plugin_test_dir + "4z2x2y_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -202,11 +202,11 @@ class TestGridPointDifference(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_9(self):
-        """Test #9 : test_gridPointDifference_Xsize1"""
+        """test_gridPointDifference_Xsize1"""
         # open and read source
         source0 = plugin_test_dir + "tictac.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -225,11 +225,11 @@ class TestGridPointDifference(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_10(self):
-        """Test #10 : test_gridPointDifference_Ysize1"""
+        """test_gridPointDifference_Ysize1"""
         # open and read source
         source0 = plugin_test_dir + "tictac.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -248,11 +248,11 @@ class TestGridPointDifference(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_11(self):
-        """Test #11 : test_gridPointDifference_moreThan1PDS"""
+        """test_gridPointDifference_moreThan1PDS"""
         # open and read source
         source0 = plugin_test_dir + "tape10.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -271,11 +271,11 @@ class TestGridPointDifference(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_12(self):
-        """Test #12 : Difference centree avec fichier YinYang en entree."""
+        """Difference centree avec fichier YinYang en entree."""
         # open and read source
         source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -294,11 +294,11 @@ class TestGridPointDifference(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_13(self):
-        """Test #13 : Difference vers l'avant (forward) avec fichier YinYang en entree."""
+        """Difference vers l'avant (forward) avec fichier YinYang en entree."""
         # open and read source
         source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -317,11 +317,11 @@ class TestGridPointDifference(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_14(self):
-        """Test #14 : Difference vers l'arriere  avec fichier YinYang en entree."""
+        """Difference vers l'arriere  avec fichier YinYang en entree."""
         # open and read source
         source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -340,6 +340,4 @@ class TestGridPointDifference(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

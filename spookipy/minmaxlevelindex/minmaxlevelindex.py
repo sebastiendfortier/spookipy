@@ -11,52 +11,53 @@ class MinMaxLevelIndexError(Exception):
     pass
 
 class MinMaxLevelIndex(Plugin):
-    # plugin_requires = '(nomvar in ["TD","TT"]) and (unit == "celsius")' 
-    plugin_result_specifications = {'ALL':{'etiket':'MinMaxLevelIndex','unit':'scalar','ip1':0}}
+    # plugin_requires = '(nomvar in ["TD","TT"]) and (unit == "celsius")'
+    plugin_result_specifications = {'ALL':{'etiket':'MMLVLI','unit':'scalar','ip1':0}}
     @initializer
     def __init__(self,df:pd.DataFrame, ascending=True, min=False, max=False, bounded=False, nomvar_min='KMIN', nomvar_max='KMAX'):
         self.validate_input()
-        
-        
+
+
     def validate_input(self):
         if self.df.empty:
-            raise MinMaxLevelIndexError('No data to process') 
-        
-        self.df = fstpy.metadata_cleanup(self.df)
-        
-        validate_nomvar(self.nomvar_min, MinMaxLevelIndex, MinMaxLevelIndexError)
-        validate_nomvar(self.nomvar_max, MinMaxLevelIndex, MinMaxLevelIndexError)
-        
-        self.meta_df = self.df.query('nomvar in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True) 
+            raise MinMaxLevelIndexError('No data to process')
 
-        self.df = self.df.query('nomvar not in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True) 
+        self.df = fstpy.metadata_cleanup(self.df)
+
+        validate_nomvar(self.nomvar_min, 'MinMaxLevelIndex', MinMaxLevelIndexError)
+        validate_nomvar(self.nomvar_max, 'MinMaxLevelIndex', MinMaxLevelIndexError)
+
+        self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
+
+        self.df = self.df.loc[~self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
         if (not self.min) and (not self.max):
             self.min = True
             self.max = True
 
-        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['forecast_hour'])
-        
-        keep = self.df.query(f'nomvar not in ["KBAS","KTOP"]').reset_index(drop=True)
+        self.df = fstpy.add_columns(self.df, decode=True, columns=['forecast_hour','ip_info'])
 
-        self.nomvar_groups= keep.groupby(by=['grid','forecast_hour','nomvar'])
+        keep = self.df.loc[~self.df.nomvar.isin(["KBAS","KTOP"])].reset_index(drop=True)
+
+        self.nomvar_groups= keep.groupby(by=['grid','dateo','forecast_hour','nomvar'])
 
     def compute(self) -> pd.DataFrame:
         sys.stdout.write('MinMaxLevelIndex - compute\n')
         df_list=[]
         for _,group in self.nomvar_groups:
             group = fstpy.load_data(group)
-
+            group = group.sort_values(by='level',ascending=group.ascending.unique()[0])
+            group.loc[:,'etiket'] = self.plugin_result_specifications['ALL']['etiket']
             kmin_df = create_empty_result(group,self.plugin_result_specifications['ALL'])
             kmin_df['nomvar']=self.nomvar_min
             # for k,v in self.plugin_result_specifications['ALL'].items():kmin_df[k] = v
 
-            
+
             kmax_df = create_empty_result(group,self.plugin_result_specifications['ALL'])
             kmax_df['nomvar']=self.nomvar_max
             # for k,v in self.plugin_result_specifications['ALL'].items():kmax_df[k] = v
-           
-            
+
+
             array_3d = get_3d_array(group)
 
             # if not ascending, reverse array
@@ -66,9 +67,9 @@ class MinMaxLevelIndex(Plugin):
 
             if self.bounded:
                 # get kbas and ktop for this grid
-                kbas = self.df.query('(nomvar=="KBAS") and (grid=="%s")'%group.iloc[0]['grid']).reset_index(drop=True)
+                kbas = self.df.loc[(self.df.nomvar=="KBAS") & (self.df.grid==group.iloc[0]['grid'])].reset_index(drop=True)
                 kbas = fstpy.load_data(kbas)
-                ktop = self.df.query('(nomvar=="KTOP") and (grid=="%s")'%group.iloc[0]['grid']).reset_index(drop=True)
+                ktop = self.df.loc[(self.df.nomvar=="KTOP") & (self.df.grid==group.iloc[0]['grid'])].reset_index(drop=True)
                 ktop = fstpy.load_data(ktop)
                 kbas_arr = kbas.iloc[0]['d'].flatten().astype('int64')
                 kbas_mask = kbas_arr == -1
@@ -79,12 +80,12 @@ class MinMaxLevelIndex(Plugin):
                 ktop_arr_missing = np.where(ktop_arr == -1, np.nan, ktop_arr)
 
                 array_3d = bound_array(array_3d, kbas_arr_missing, ktop_arr_missing)
-                
+
 
             if self.ascending:
                 kmin_df.at[0,'d'] = np.nanargmin(array_3d, axis=0).astype('float32')
                 kmax_df.at[0,'d'] = np.nanargmax(array_3d, axis=0).astype('float32')
-            
+
             else:
                 kmin_df.at[0,'d'] = (array_3d.shape[0]-1 - np.nanargmin(array_3d, axis=0)).astype('float32')
                 kmax_df.at[0,'d'] = (array_3d.shape[0]-1 - np.nanargmax(array_3d, axis=0)).astype('float32')
@@ -101,18 +102,6 @@ class MinMaxLevelIndex(Plugin):
             df_list.append(group)
 
         return final_results(df_list, MinMaxLevelIndexError, self.meta_df)
-        # if not len(df_list):
-        #     raise MinMaxLevelIndexError('No results were produced')
-
-        # self.meta_df = fstpy.load_data(self.meta_df)
-        # df_list.append(self.meta_df)    
-        # # merge all results together
-        # res_df = pd.concat(df_list,ignore_index=True)
-
-        # res_df = remove_load_data_info(res_df)
-        # res_df = fstpy.metadata_cleanup(res_df)
-
-        # return res_df
 
 
 def fix_ktop(ktop, array_max_index):
@@ -128,4 +117,3 @@ def bound_array(a, kbas, ktop):
     arr[newktop[:,None] > np.arange(arr.shape[1])] = np.nan
     arr = np.rot90(arr,k=-3)
     return arr
-

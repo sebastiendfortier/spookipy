@@ -11,7 +11,7 @@ def plugin_test_dir():
     return TEST_PATH + '/AddElementsVertically/testsFiles/'
 
 def test_1(plugin_test_dir):
-    """Test #1 : Utilisation de --outputFieldName avec une valeur > 4 caractères - requete invalide."""
+    """Utilisation de --outputFieldName avec une valeur > 4 caractères - requete invalide."""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -19,7 +19,7 @@ def test_1(plugin_test_dir):
 
     #compute AddElementsVertically
     df = AddElementsVertically(src_df0).compute()
-    #[ReaderStd --input {sources[0]}] >> [AddElementsVertically --outputFieldName TROPLONG] 
+    #[ReaderStd --input {sources[0]}] >> [AddElementsVertically --outputFieldName TROPLONG]
 
     #write the result
     results_file = TMP_PATH + "test_1.std"
@@ -30,11 +30,11 @@ def test_1(plugin_test_dir):
 
     #compare results
     res = fstcomp(results_file,file_to_compare)
-    assert(res == True)
+    assert(res)
 
 
 def test_2(plugin_test_dir):
-    """Test #2 : Effectue un test avec --outputFieldName mais plusieurs champs en entree - requete invalide."""
+    """Effectue un test avec --outputFieldName mais plusieurs champs en entree - requete invalide."""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -42,7 +42,7 @@ def test_2(plugin_test_dir):
 
     #compute AddElementsVertically
     df = AddElementsVertically(src_df0).compute()
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [AddElementsVertically --outputFieldName ABCD] 
+    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [AddElementsVertically --outputFieldName ABCD]
 
     #write the result
     results_file = TMP_PATH + "test_2.std"
@@ -53,11 +53,11 @@ def test_2(plugin_test_dir):
 
     #compare results
     res = fstcomp(results_file,file_to_compare)
-    assert(res == True)
+    assert(res)
 
 
 def test_3(plugin_test_dir):
-    """Test #3 : Test avec un fichier de deux champs et 2 niveaux."""
+    """Test avec un fichier de deux champs et 2 niveaux."""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -76,11 +76,11 @@ def test_3(plugin_test_dir):
 
     #compare results
     res = fstcomp(results_file,file_to_compare)
-    assert(res == True)
+    assert(res)
 
 
 def test_4(plugin_test_dir):
-    """Test #4 : Test avec un fichier de 2 champs; selection d'un champ et utilisation de --outputFieldName."""
+    """Test avec un fichier de 2 champs; selection d'un champ et utilisation de --outputFieldName."""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -99,11 +99,11 @@ def test_4(plugin_test_dir):
 
     #compare results
     res = fstcomp(results_file,file_to_compare)
-    assert(res == True)
+    assert(res)
 
 
 def test_5(plugin_test_dir):
-    """Test #5 : Test avec un fichier de 2 champs pour lesquels on choisit un seul niveau."""
+    """Test avec un fichier de 2 champs pour lesquels on choisit un seul niveau."""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -122,11 +122,11 @@ def test_5(plugin_test_dir):
 
     #compare results
     res = fstcomp(results_file,file_to_compare)
-    assert(res == True)
+    assert(res)
 
 
 def test_6(plugin_test_dir):
-    """Test #6 : Test sur un fichier dont les champs possèdent des intervalles - requete invalide."""
+    """Test sur un fichier dont les champs possèdent des intervalles - requete invalide."""
     # open and read source
     source0 = plugin_test_dir + "inputTest6.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -134,7 +134,7 @@ def test_6(plugin_test_dir):
 
     #compute AddElementsVertically
     df = AddElementsVertically(src_df0).compute()
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [AddElementsVertically] 
+    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [AddElementsVertically]
 
     #write the result
     results_file = TMP_PATH + "test_6.std"
@@ -145,6 +145,4 @@ def test_6(plugin_test_dir):
 
     #compare results
     res = fstcomp(results_file,file_to_compare)
-    assert(res == True)
-
-
+    assert(res)

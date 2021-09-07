@@ -1,15 +1,19 @@
 # -*- coding: utf-8 -*-
-from ..plugin import Plugin
-from ..utils import create_empty_result, get_existing_result, get_intersecting_levels, get_plugin_dependencies, existing_results, final_results, remove_load_data_info
-import pandas as pd
+import sys
+
 import fstpy.all as fstpy
 import numpy as np
-import sys
+import pandas as pd
+
+from ..plugin import Plugin
+from ..utils import (create_empty_result, existing_results, final_results,
+                     get_dependencies, get_existing_result,
+                     get_from_dataframe, get_intersecting_levels)
 
 
 class WindModulusError(Exception):
     pass
- 
+
 def wind_modulus(uu:np.ndarray,vv:np.ndarray) -> np.ndarray:
     """Computes the wind modulus from the wind components
 
@@ -20,57 +24,57 @@ def wind_modulus(uu:np.ndarray,vv:np.ndarray) -> np.ndarray:
     :return: wind modulus
     :rtype: np.ndarray
     """
-    return (uu**2 + vv**2)**.5 
+    return (uu**2 + vv**2)**.5
 
 class WindModulus(Plugin):
-    plugin_mandatory_dependencies = {
-        'UU':{'nomvar':'UU','unit':'knot'},
-        'VV':{'nomvar':'VV','unit':'knot'},
-    }
-    plugin_result_specifications = {
-        'UV':{'nomvar':'UV','etiket':'WindModulus','unit':'knot'}
-        }
 
     def __init__(self,df:pd.DataFrame):
+        self.plugin_mandatory_dependencies = [{
+        'UU':{'nomvar':'UU','unit':'knot'},
+        'VV':{'nomvar':'VV','unit':'knot'},
+        }]
+        self.plugin_result_specifications = {
+        'UV':{'nomvar':'UV','etiket':'WNDMOD','unit':'knot'}
+        }
         self.df = df
         #ajouter forecast_hour et unit
         self.validate_input()
-        
-    # might be able to move    
+
+    # might be able to move
     def validate_input(self):
         if self.df.empty:
             raise  WindModulusError('No data to process')
 
-        self.df = fstpy.metadata_cleanup(self.df)    
+        self.df = fstpy.metadata_cleanup(self.df)
 
-        self.meta_df = self.df.query('nomvar in ["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"]').reset_index(drop=True)    
+        self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
-        self.df = fstpy.add_composite_columns(self.df,True,'numpy', attributes_to_decode=['unit','forecast_hour'])    
+        self.df = fstpy.add_columns(self.df, decode=True, columns=['unit','forecast_hour','ip_info'])
 
          #check if result already exists
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
 
-        if self.existing_result_df.empty:
-            self.dependencies_df = get_plugin_dependencies(self.df,None,self.plugin_mandatory_dependencies)
-            self.fhour_groups=self.dependencies_df.groupby(by=['grid','forecast_hour'])
-           
+        # remove meta data from DataFrame
+        self.df = self.df.loc[~self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
+        # print(self.df[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']].to_string())
+        self.groups = self.df.groupby(['grid','dateo','forecast_hour','ip1_kind'])
+
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:
             return existing_results('WindModulus',self.existing_result_df,self.meta_df)
 
-        sys.stdout.write('WindModulus - compute\n')      
+        sys.stdout.write('WindModulus - compute\n')
         df_list = []
-        for _,current_fhour_group in self.fhour_groups:
-            current_fhour_group = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies)
-            if current_fhour_group.empty:
-                sys.stderr.write('WindModulus - no intersecting levels found')
-                continue
-            current_fhour_group = fstpy.load_data(current_fhour_group)
-            uu_df = current_fhour_group.query('nomvar == "UU"').reset_index(drop=True)
-            vv_df = current_fhour_group.query('nomvar == "VV"').reset_index(drop=True)
-            uv_df = create_empty_result(vv_df,self.plugin_result_specifications['UV'],copy=True)
+        dependencies_list = get_dependencies(self.groups,self.meta_df,'WindModulus',self.plugin_mandatory_dependencies)
+        for dependencies_df,option in dependencies_list:
 
+            level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
+            level_intersection_df = fstpy.load_data(level_intersection_df)
+
+            uu_df = get_from_dataframe(level_intersection_df,'UU')
+            vv_df = get_from_dataframe(level_intersection_df,'VV')
+            uv_df = create_empty_result(vv_df,self.plugin_result_specifications['UV'],all_rows=True)
 
             for i in uv_df.index:
                 uu = uu_df.at[i,'d']
@@ -80,8 +84,3 @@ class WindModulus(Plugin):
             df_list.append(uv_df)
 
         return final_results(df_list,WindModulusError, self.meta_df)
-
-
-
-    
-

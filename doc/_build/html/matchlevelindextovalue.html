@@ -1,0 +1,422 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>MatchLevelIndexToValue &mdash; spookipy 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-rendered-html.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html">
+          
+
+          
+            
+            <img src="_static/spookipy_logo.jpg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Start here</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using spookipy in scripts or Jupyter Lab/Notebook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Creating the developpement environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html#getting-the-source-code">Getting the source code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html#testing">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html#building-documentation">Building documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ssm.html">Creating the ssm package</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="addelementsbypoint.html">AddElementsByPoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="addtoelements.html">AddToElements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="arithmeticmeanbypoint.html">ArithmeticMeanByPoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dewpointdepression.html">DewPointDepression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="georgekindex.html">GeorgeKIndex</a></li>
+<li class="toctree-l1"><a class="reference internal" href="humidex.html">Humidex</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interpolationhorizontalgrid.html">InterpolationHorizontalGrid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interpolationhorizontalpoint.html">InterpolationHorizontalPoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mask.html">Mask</a></li>
+<li class="toctree-l1"><a class="reference internal" href="minmaxlevelindex.html">MinMaxLevelIndex</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiplyelementsby.html">MultiplyElementsBy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiplyelementsbypoint.html">MultiplyElementsByPoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pressure.html">Pressure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="saturationvapourpressure.html">SaturationVapourPressure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setconstantvalue.html">SetConstantValue</a></li>
+<li class="toctree-l1"><a class="reference internal" href="temperaturedewpoint.html">TemperatureDewPoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vapourpressure.html">VapourPressure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="windchill.html">WindChill</a></li>
+<li class="toctree-l1"><a class="reference internal" href="windmax.html">WindMax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="windmodulus.html">WindModulus</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugin.html">Plugin</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Misc</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="LICENSE.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">spookipy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>MatchLevelIndexToValue</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://gitlab.science.gc.ca/cmdw-spooki/spookipy/blob/master/doc/matchlevelindextovalue.rst" class="fa fa-gitlab"> Edit on GitLab</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="matchlevelindextovalue">
+<h1>MatchLevelIndexToValue<a class="headerlink" href="#matchlevelindextovalue" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="francais">
+<h2>Français<a class="headerlink" href="#francais" title="Permalink to this headline">¶</a></h2>
+<p><strong>Description:</strong></p>
+<ul class="simple">
+<li><p>Associe, à chaque indice de niveau vertical donné, la valeur d’un ou
+de plusieurs champ(s) météorologique(s) 3D donné(s) en entrée.
+<strong>*Note:*</strong> La numérotation des indices des niveaux verticaux
+commence à zéro</p></li>
+</ul>
+<p>*Méthode d’itération:*</p>
+<ul class="simple">
+<li><p>Colonne par colonne</p></li>
+</ul>
+<p>*Dépendances:*</p>
+<ul class="simple">
+<li><p>Un champ d’indices de niveaux verticaux, IND (2D)</p></li>
+<li><p>Un ou plusieurs champ(s) météorologique(s) (3D)</p></li>
+</ul>
+<p>*Résultat(s):*</p>
+<ul class="simple">
+<li><p>Champ(s) météorologique(s) (2D) dont les valeurs correspondent à
+celles des niveaux verticaux spécifiés par le champ d’indices IND</p></li>
+</ul>
+<p>*Algorithme:*</p>
+<div class="highlight-example notranslate"><div class="highlight"><pre><span></span>Soit IND, un champ 2D d&#39;indices de niveaux verticaux dont la numérotation des indice commence à 0.
+
+Pour chaque champ météorologique 3D, CHP3D, donné en entrée, faire :
+    Pour chaque i,j
+        CHP2D(i,j) = CHP3D(i,j,IND(i,j))
+    Fin boucle sur les points
+Fin boucle sur les champs
+</pre></div>
+</div>
+<p><strong>Références:</strong></p>
+<ul class="simple">
+<li><p>N/D</p></li>
+</ul>
+<p>*Mots clés:*</p>
+<ul class="simple">
+<li><p>UTILITAIRE/UTILITY, associer/match, niveau/level, vertical</p></li>
+</ul>
+<p>*Usage:*</p>
+<p><strong>Exemple d’appel:</strong></p>
+<div class="highlight-example notranslate"><div class="highlight"><pre><span></span>...
+spooki_run &quot;[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/MatchLevelIndexToValue/testsFiles/inputFile.std] &gt;&gt;
+            [MatchLevelIndexToValue] &gt;&gt;
+            [WriterStd --output /tmp/$USER/outputFile.std]&quot;
+...
+</pre></div>
+</div>
+<p><strong>Validation des résultats:</strong></p>
+<p><strong>Contacts:</strong></p>
+<ul class="simple">
+<li><p>Auteur(e) : <a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers">Sébastien
+Fortier</a></p></li>
+<li><p>Codé par : <a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers">Sébastien
+Fortier</a></p></li>
+<li><p>Support : <a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/CMDW">CMDW</a> /
+<a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/CMDS">CMDS</a></p></li>
+</ul>
+<p>Voir la référence à</p>
+<p>Tests unitaires</p>
+<div class="line-block">
+<div class="line"><strong>Ce plugin utilise:</strong></div>
+<div class="line"><strong>Ce plugin est utilisé par:</strong></div>
+</div>
+</div>
+<div class="section" id="english">
+<h2>English<a class="headerlink" href="#english" title="Permalink to this headline">¶</a></h2>
+<p><strong>Description:</strong></p>
+<ul class="simple">
+<li><p>Associates, to each vertical level index given, a value of one or
+many 3D meteorological fields given in input.
+<strong>*Note:*</strong> The numbering of the indices starts at zero</p></li>
+</ul>
+<p>*Iteration method:*</p>
+<ul class="simple">
+<li><p>Column by column</p></li>
+</ul>
+<p>*Dependencies:*</p>
+<ul class="simple">
+<li><p>A field of vertical level indexes, IND (2D)</p></li>
+<li><p>One or many meteorological field(s) (3D)</p></li>
+</ul>
+<p>*Result(s):*</p>
+<ul class="simple">
+<li><p>Meteorological field(s) (2D) which the values correspond to those of
+the vertical levels specified by the index field IND</p></li>
+</ul>
+<p>*Algorithm:*</p>
+<div class="highlight-example notranslate"><div class="highlight"><pre><span></span>For IND, a 2D field of vertical level indexes, where the index numbering starts at 0.
+
+For each 3D meteorological field, CHP3D, given in input, do :
+    For each i,j
+        CHP2D(i,j) = CHP3D(i,j,IND(i,j))
+    End loop on i,j
+End loop on the fields
+</pre></div>
+</div>
+<p><strong>Reference:</strong></p>
+<ul class="simple">
+<li><p>None</p></li>
+</ul>
+<p>*Keywords:*</p>
+<ul class="simple">
+<li><p>UTILITAIRE/UTILITY, associer/match, niveau/level, vertical</p></li>
+</ul>
+<p>*Usage:*</p>
+<p><strong>Call example:</strong></p>
+<div class="highlight-example notranslate"><div class="highlight"><pre><span></span>...
+spooki_run &quot;[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/MatchLevelIndexToValue/testsFiles/inputFile.std] &gt;&gt;
+            [MatchLevelIndexToValue] &gt;&gt;
+            [WriterStd --output /tmp/$USER/outputFile.std]&quot;
+...
+</pre></div>
+</div>
+<p><strong>Results validation:</strong></p>
+<p><strong>Contacts:</strong></p>
+<ul class="simple">
+<li><p>Author : <a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers">Sébastien
+Fortier</a></p></li>
+<li><p>Coded by : <a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers">Sébastien
+Fortier</a></p></li>
+<li><p>Support : <a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/CMDW">CMDW</a> /
+<a class="reference external" href="https://wiki.cmc.ec.gc.ca/wiki/CMDS">CMDS</a></p></li>
+</ul>
+<p>Reference to</p>
+<p>Units tests</p>
+<div class="line-block">
+<div class="line"><strong>Uses:</strong></div>
+<div class="line"><strong>Used by:</strong></div>
+</div>
+</div>
+<div class="section" id="module-spookipy.matchlevelindextovalue.matchlevelindextovalue">
+<span id="python-module"></span><h2>Python Module<a class="headerlink" href="#module-spookipy.matchlevelindextovalue.matchlevelindextovalue" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="spookipy.matchlevelindextovalue.matchlevelindextovalue.MatchLevelIndexToValue">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">spookipy.matchlevelindextovalue.matchlevelindextovalue.</span></span><span class="sig-name descname"><span class="pre">MatchLevelIndexToValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nomvar_out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nomvar_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'IND'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spookipy.matchlevelindextovalue.matchlevelindextovalue.MatchLevelIndexToValue" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="spookipy.matchlevelindextovalue.matchlevelindextovalue.MatchLevelIndexToValue.compute">
+<span class="sig-name descname"><span class="pre">compute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#spookipy.matchlevelindextovalue.matchlevelindextovalue.MatchLevelIndexToValue.compute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract method that should implement the plugin’s algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dataframe with the results</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spookipy.matchlevelindextovalue.matchlevelindextovalue.MatchLevelIndexToValue.validate_input">
+<span class="sig-name descname"><span class="pre">validate_input</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#spookipy.matchlevelindextovalue.matchlevelindextovalue.MatchLevelIndexToValue.validate_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that the plugin’s dataframe is not empty.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="plugin.html#spookipy.plugin.plugin.EmptyDataframeError" title="spookipy.plugin.plugin.EmptyDataframeError"><strong>EmptyDataframeError</strong></a> – The plugin’s dataframe is empty, no data to process.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="spookipy.matchlevelindextovalue.matchlevelindextovalue.MatchLevelIndexToValueError">
+<em class="property"><span class="pre">exception</span> </em><span class="sig-prename descclassname"><span class="pre">spookipy.matchlevelindextovalue.matchlevelindextovalue.</span></span><span class="sig-name descname"><span class="pre">MatchLevelIndexToValueError</span></span><a class="headerlink" href="#spookipy.matchlevelindextovalue.matchlevelindextovalue.MatchLevelIndexToValueError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Sébastien Fortier.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

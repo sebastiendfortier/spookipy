@@ -1,0 +1,19 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module fmask ! in 
+    interface  ! in :fmask
+        subroutine fmask(slab,ni,nj,values,operators,thresholds,n) ! in :fmask:fmask.f90
+            real dimension(ni,nj),intent(inout) :: slab
+            integer, optional,intent(in),check(shape(slab,0)==ni),depend(slab) :: ni=shape(slab,0)
+            integer, optional,intent(in),check(shape(slab,1)==nj),depend(slab) :: nj=shape(slab,1)
+            real dimension(n),intent(in) :: values
+            integer dimension(n),intent(in),depend(n) :: operators
+            real dimension(n),intent(in),depend(n) :: thresholds
+            integer, optional,intent(in),check(len(values)>=n),depend(values) :: n=len(values)
+        end subroutine fmask
+    end interface 
+end python module fmask
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/

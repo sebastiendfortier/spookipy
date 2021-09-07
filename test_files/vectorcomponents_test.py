@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"VectorComponents/testsFiles/"
 class TestVectorComponents(unittest.TestCase):
 
     def test_1(self):
-        """Test #1 : Test l'option --orientationType avec une valeur invalide."""
+        """Test l'option --orientationType avec une valeur invalide."""
         # open and read source
         source0 = plugin_test_dir + "inputFile.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -41,11 +41,11 @@ class TestVectorComponents(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_2(self):
-        """Test #2 : Test avec un fichier de grille Z."""
+        """Test avec un fichier de grille Z."""
         # open and read source
         source0 = plugin_test_dir + "2015072100_240_TTESUUVV_GridZ.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -64,11 +64,11 @@ class TestVectorComponents(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_3(self):
-        """Test #3 : Test avec un fichier de grille U."""
+        """Test avec un fichier de grille U."""
         # open and read source
         source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -87,6 +87,4 @@ class TestVectorComponents(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

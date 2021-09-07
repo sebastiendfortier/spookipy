@@ -22,7 +22,7 @@ plugin_test_dir=TEST_PATH +"SweatIndex/testsFiles/"
 class TestSweatIndex(unittest.TestCase):
 
     def test_sw_algo_1(self):
-        """Test #1 : Calcul de l'indice sweat avec TT, UU et VV  à 850 et 500 mb et ES à 850 mb."""
+        """Calcul de l'indice sweat avec TT, UU et VV  à 850 et 500 mb et ES à 850 mb."""
         # open and read source
         source0 = plugin_test_dir + "TTUUVV_850_500_ES_850_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -41,11 +41,11 @@ class TestSweatIndex(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
+        assert(res)
 
 
     def test_sw_20100823(self):
-        """Test #3 : Calcul de l'indice sweat avec ."""
+        """Calcul de l'indice sweat avec ."""
         # open and read source
         source0 = plugin_test_dir + "input_20100823.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -64,6 +64,4 @@ class TestSweatIndex(unittest.TestCase):
 
         #compare results
         res = fstcomp(results_file,file_to_compare)
-        assert(res == True)
-
-
+        assert(res)

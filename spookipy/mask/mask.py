@@ -1,81 +1,76 @@
 # -*- coding: utf-8 -*-
-from ..utils import initializer
+from ..utils import create_empty_result, final_results, initializer
 from ..plugin import Plugin
 import pandas as pd
 import numpy as np
-import operator as op
 import fstpy.all as fstpy
+from .fmask import fmask
 
-def eq(v,t):
-    if (v >= (t - 0.4) ) and (v <= (t + 0.4)):
-        return True
-    return False
 
 class MaskError(Exception):
     pass
 
-#[Mask --thresholds 0.0,10.0,15.0,20.0 --values 0.0,10.0,15.0,20.0 --operators GE,GE,GE,GE] >> 
+
 class Mask(Plugin):
 
     @initializer
-    def __init__(self, df:pd.DataFrame, thresholds=None, values=None, operators=None, nomvar_out=''):
-        # self.df = df
-        # self.thresholds = thresholds
-        # self.values = values
-        # self.operators = operators
-        # self.nomvar_out = nomvar_out
+    def __init__(self, df:pd.DataFrame, thresholds=None, values=None, operators=None, nomvar_out=None):
+        self.plugin_result_specifications = {
+            'ALL':{'etiket':'MASK'}
+        }
+        self.validate_input()
+
+    def validate_input(self):
         if self.df.empty:
             raise  MaskError('No data to process')
 
         self.df = fstpy.metadata_cleanup(self.df)
-            
-        length = len(thresholds)
-        if not all(len(lst) == length for lst in [values, operators]):
+
+        self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
+
+        self.df = self.df.loc[~self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
+
+        length = len(self.thresholds)
+        if not all(len(lst) == length for lst in [self.values, self.operators]):
             raise MaskError('Threshholds, values and operators lists, must have the same lenght')
-        ops = {op.lt,op.le,eq,op.ge,op.gt}
-        in_ops = set(self.operators)
-        
-        if not in_ops.issubset(ops):
-            raise MaskError('Operators must have values included in %s' % ops)
+
+        ops_str = ['<','<=','==','>=','>','!=']
+        self.op_list = []
+
+        for operator in self.operators:
+            if operator not in ops_str:
+                raise MaskError(f'Operators must have values included in {ops_str}\n')
+            if operator == '>':
+                self.op_list.append(0)
+            elif operator == '>=':
+                self.op_list.append(1)
+            elif operator == '==':
+                self.op_list.append(2)
+            elif operator == '<=':
+                self.op_list.append(3)
+            elif operator == '<':
+                self.op_list.append(4)
+            else:
+                self.op_list.append(5)
+
+
         self.df = fstpy.load_data(self.df)
         self.lenght = length
-        self.thresholds = np.flip(thresholds)
-        self.values = np.flip(values)
-        self.operators = np.flip(operators)
-
-
-    def get_etiket(self) -> str:
-        return str(__class__).split(__name__,1)[1][1:-2]
-
+        self.thresholds = np.flip(self.thresholds).astype(np.float32)
+        self.values = np.flip(self.values).astype(np.float32)
+        self.op_list = np.flip(self.op_list).astype(np.int32)
 
     def compute(self) -> pd.DataFrame:
+        df_list=[]
         #holds data from all the groups
-        outdf = self.df.copy(deep=True)
-        if len(self.nomvar_out):
-            # outdf = fstpy.zap(outdf, nomvar=self.nomvar_out, etiket=self.get_etiket())
+        outdf = create_empty_result(self.df,self.plugin_result_specifications['ALL'],all_rows=True)
+        if not(self.nomvar_out is None):
             outdf['nomvar'] = self.nomvar_out
-            outdf['etiket'] = self.get_etiket()
-        else:
-            outdf['etiket']=self.get_etiket()
-        vmask = np.vectorize(self.mask)
-        for i in self.df.index:
-            pds = self.df.at[i,'d'].flatten()
-            outdf.at[i,'d'] = vmask(pds)
-            outdf.at[i,'d'] = outdf.at[i,'d'].reshape(outdf.at[i,'shape'])
-        return outdf
 
-    def mask(self, value):
-        # La valeur par defaut est 0.
-        rslt = 0.0
-        res=False
-        # Verifier toutes les conditions sur 1 point, en partant de la derniere condition.
-        # Arreter lorsqu'une condition est trouvee.
+        for i in outdf.index:
+            _ = fmask(slab=outdf.at[i,'d'],ni=outdf.at[i,'d'].shape[0],nj=outdf.at[i,'d'].shape[1],values=self.values,operators=self.op_list,thresholds=self.thresholds,n=self.thresholds.size)
+            outdf.at[i,'d'] = outdf.at[i,'d'].astype(np.float32)
 
-        for i in range(len(self.values)):
-            if self.operators[i](value, self.thresholds[i]):
-                return self.values[i]
-        return rslt
+        df_list.append(outdf)
 
-
-        
-        
+        return final_results(df_list, Mask, self.meta_df)

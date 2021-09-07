@@ -1,9 +1,3 @@
-```{=org}
-#+TITLE_:SPOOKIPY
-```
-```{=org}
-#+TITLE_:INTRODUCTION
-```
 # Introduction
 
 ## What is it?
@@ -16,9 +10,7 @@ dataframes obtained with fstpy or numpy arrays.
 These algorithms are generic in nature and all share a uniform model in
 implementation. The idea is to use the interface to create new
 algorithms.
-```{=org}
-#+TITLE_:REQUIREMENTS
-```
+
 # Requirements
 
 ## packages
@@ -28,21 +20,15 @@ algorithms.
 -   pandas
 -   fstpy
 
-```{=org}
-#+TITLE_:INSTALL
-```
 # Installation
 
 Use the ssm package
 
     . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/spookipy/0.0.0
 
-```{=org}
-#+TITLE_:USAGE
-```
 ## Using spookipy in scripts or Jupyter Lab/Notebook
 
-``` {.bash org-language="sh"}
+``` {.bash}
 # activate your conda environment
 . activate spookipy_req
 # get rmn python library
@@ -50,7 +36,7 @@ Use the ssm package
 # get spookipy ssm package
 . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/spookipy/0.0.0/
 # get fstpy ssm package
-. ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/fstpy/2.1.3/
+. ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/fstpy/2.1.6/
 ```
 
 ### use spookipy
@@ -78,20 +64,17 @@ dest_path = '/tmp/out.std'
 fstpy.StandardFileWriter(dest_path,uv_df).to_fst()
 ```
 
-```{=org}
-#+TITLE_:CONTRIBUTING
-```
 ## Creating the developpement environment
 
-``` {.bash org-language="sh"}
-# get conda if you don't already have it  
-. ssmuse-sh -x cmd/cmdm/satellite/master_u1/miniconda3_4.9.2_ubuntu-18.04-skylake-64   
-# create a conda environment for spookipy's requirements   
-conda create -n spookipy_dev python=3.6   
+``` {.bash}
+# get conda if you don't already have it
+. ssmuse-sh -x cmd/cmdm/satellite/master_u1/miniconda3_4.9.2_ubuntu-18.04-skylake-64
+# create a conda environment for spookipy's requirements
+conda create -n spookipy_dev python=3.6
 # whenever you need to use this environment on science run the following (if you have'nt loaded the conda ssm, you'll need to do it everytime)
 # unless you put it in your profile
-. activate spookipy_dev   
-# installing required packages in spookipy_req environment  
+. activate spookipy_dev
+# installing required packages in spookipy_req environment
 conda install sphinx
 conda install -c conda-forge sphinx-autodoc-typehints
 conda install -c conda-forge sphinx-gallery
@@ -101,7 +84,7 @@ conda install numpy pandas dask xarray pytest
 
 ## Getting the source code
 
-``` {.bash org-language="sh"}
+``` {.bash}
 git clone git@gitlab.science.gc.ca:cmdw-spooki/spookipy.git
 # create a new branch
 git checkout -b my_change
@@ -120,21 +103,30 @@ Then create a merge request on science\'s gitlab
 
 ## Testing
 
-``` {.bash org-language="sh"}
+``` {.bash}
 # From the $project_root/test directory of the project
-. activate spookipy_dev    
-# get rmn python library      
-. r.load.dot eccc/mrd/rpn/MIG/ENV/migdep/5.1.1 eccc/mrd/rpn/MIG/ENV/rpnpy/2.1.2    
+. activate spookipy_dev
+# get rmn python library
+. r.load.dot eccc/mrd/rpn/MIG/ENV/migdep/5.1.1 eccc/mrd/rpn/MIG/ENV/rpnpy/2.1.2
 # get fstpy ssm package
-. ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/2.1.4/ 
-python -m pytest  
+. ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/2.1.6/
+python -m pytest
 ```
 
 ## Building documentation
 
-``` {.bash org-language="sh"}
-# This will build documentation in docs/build and there you will find index.html 
+``` {.bash}
+# This will build documentation in docs/build and there you will find index.html
 # make sure fstpy is in the PYTHONPATH
-make clean    
+# From the $project_root/doc directory of the project
+make clean
 make doc
+```
+
+# Creating the ssm package
+
+``` {.bash}
+# This will build the ssm package
+# From the $project_root/ssm directory of the project
+./make_package.sh
 ```

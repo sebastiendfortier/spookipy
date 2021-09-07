@@ -1,10 +1,8 @@
 Creating the ssm package
 ========================
 
-From the $PROJECT\ :sub:`ROOT`
+.. code:: bash
 
-::
-
-    cd misc/ssm
-    ./make_package.ssh
-
+    # This will build the ssm package
+    # From the $project_root/ssm directory of the project
+    ./make_package.sh

@@ -143,7 +143,7 @@ def test_6(plugin_test_dir):
     # file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_6"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)#,e_max=0.1)
+    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
     assert(res)
 

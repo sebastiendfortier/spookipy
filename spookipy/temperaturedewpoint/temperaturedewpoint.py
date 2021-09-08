@@ -165,10 +165,7 @@ class TemperatureDewPoint(Plugin):
         for i in td_df.index:
             tt = tt_df.at[i,'d']
             es = es_df.at[i,'d']
-            if rpn:
-                td_df.at[i,'d'] = td_from_es(tt=tt-TDPACK_OFFSET_FIX, es=es).astype(np.float32)
-            else:
-                td_df.at[i,'d'] = td_from_es(tt=tt, es=es).astype(np.float32)
+            td_df.at[i,'d'] = td_from_es(tt=tt-TDPACK_OFFSET_FIX, es=es).astype(np.float32)
         return td_df
 
 

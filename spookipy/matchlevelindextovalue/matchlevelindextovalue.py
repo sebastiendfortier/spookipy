@@ -10,9 +10,13 @@ class MatchLevelIndexToValueError(Exception):
     pass
 
 class MatchLevelIndexToValue(Plugin):
-    plugin_result_specifications = {'ALL':{'etiket':'MLIVAL','ip1':0}}
+
     @initializer
     def __init__(self,df:pd.DataFrame, error_value=-1, nomvar_out=None, nomvar_index='IND'):
+        self.plugin_result_specifications = \
+        {
+            'ALL':{'etiket':'MLIVAL','ip1':0}
+        }
         self.validate_input()
 
 
@@ -23,6 +27,7 @@ class MatchLevelIndexToValue(Plugin):
         self.df = fstpy.metadata_cleanup(self.df)
 
         validate_nomvar(self.nomvar_out, 'MatchLevelIndexToValue', MatchLevelIndexToValueError)
+
         validate_nomvar(self.nomvar_index, 'MatchLevelIndexToValue', MatchLevelIndexToValueError)
 
         self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
@@ -53,9 +58,7 @@ class MatchLevelIndexToValue(Plugin):
 
                 # sort values by level
                 var_df = var_df.sort_values(by='level',ascending=var_df.ascending.unique()[0]).reset_index(drop=True)
-                print(var_df.level)
-                print(var_df.d)
-                print(ind)
+
                 res_df = create_empty_result(var_df,self.plugin_result_specifications['ALL'])
 
                 if not(self.nomvar_out is None):

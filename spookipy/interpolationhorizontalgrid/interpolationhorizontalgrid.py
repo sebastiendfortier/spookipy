@@ -43,12 +43,6 @@ class InterpolationHorizontalGrid(Plugin):
     :param nomvar: Name of the field on the grid to which interpolate, defaults to None
     :type nomvar: str, optional
     """
-    methods = ['field','user']
-    grid_types = ['A','B','G','L','N','S']
-    extrapolation_types = ['nearest','linear','maximum','minimum','value','abort']
-    interpolation_types = ['nearest','bi-linear','bi-cubic']
-    output_fields_selection = ['interpolated','reference','all']
-
 
 # –outputField arg Choice of output: include interpolated fields only or include reference field with
 # interpolated
@@ -59,6 +53,11 @@ class InterpolationHorizontalGrid(Plugin):
 
     @initializer
     def __init__(self,df:pd.DataFrame, method:str, interpolation_type:str, extrapolation_type:str, grtyp:str=None, ni:int=None, nj:int=None, param1:float=None, param2:float=None, param3:float=None, param4:float=None, extrapolation_value:float=None, nomvar:str=None, output_fields='all'):
+        self.methods = ['field','user']
+        self.grid_types = ['A','B','G','L','N','S']
+        self.extrapolation_types = ['nearest','linear','maximum','minimum','value','abort']
+        self.interpolation_types = ['nearest','bi-linear','bi-cubic']
+        self.output_fields_selection = ['interpolated','reference','all']
         self.validate_input()
 
     def validate_input(self):
@@ -72,13 +71,18 @@ class InterpolationHorizontalGrid(Plugin):
         self.hy_df = self.df.loc[self.df.nomvar=="HY"].reset_index(drop=True)
 
         self.validate_params()
+
         set_interpolation_type_options(self.interpolation_type)
+
         set_extrapolation_type_options(self.extrapolation_type,self.extrapolation_value)
+
         self.define_output_grid()
+
         self.groups =  self.df.groupby(by=['grid'])
 
     def define_output_grid(self):
         self.all_meta_df = pd.DataFrame(dtype=object)
+
         if self.method == 'user':
 
             if self.grtyp in ['L','N','S']:

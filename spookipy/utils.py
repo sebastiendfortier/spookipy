@@ -4,11 +4,13 @@ import inspect
 import sys
 from functools import wraps
 from inspect import signature
+from typing import Tuple
 
 import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
 import rpnpy.librmn.all as rmn
+from pandas.core import groupby
 
 
 def initializer(func):
@@ -46,6 +48,20 @@ class LevelIntersectionError(Exception):
     pass
 
 def get_plugin_dependencies(df:pd.DataFrame, plugin_params:dict=None, plugin_mandatory_dependencies:dict=None,throw_error=True) -> pd.DataFrame:
+    """Searches for specified dependency in a dataframe. If a plugin can generate the dependency, the plugin params will be applied if not None.
+
+    :param df: dataframe to search in
+    :type df: pd.DataFrame
+    :param plugin_params: parameters to pass to plugin, defaults to None
+    :type plugin_params: dict, optional
+    :param plugin_mandatory_dependencies: dependencies to find, defaults to None
+    :type plugin_mandatory_dependencies: dict, optional
+    :param throw_error: raises an error on dependency not found, defaults to True
+    :type throw_error: bool, optional
+    :raises DependencyError: raised Exception if no dependency is found
+    :return: dataframe of results
+    :rtype: pd.DataFrame
+    """
     from .cloudfractiondiagnostic.cloudfractiondiagnostic import \
         CloudFractionDiagnostic
     from .coriolisparameter.coriolisparameter import CoriolisParameter
@@ -59,11 +75,12 @@ def get_plugin_dependencies(df:pd.DataFrame, plugin_params:dict=None, plugin_man
         SaturationVapourPressure
     from .temperaturedewpoint.temperaturedewpoint import TemperatureDewPoint
     from .totaltotalsindex.totaltotalsindex import TotalTotalsIndex
-    from .vapourpessure.vapourpessure import VapourPressure
+    from .vapourpressure.vapourpessure import VapourPressure
     from .watervapourmixingratio.watervapourmixingratio import \
         WaterVapourMixingRatio
     from .windchill.windchill import WindChill
     from .windmodulus.windmodulus import WindModulus
+    # dependencies that can be computer according to the nomvar
     computable_dependencies = {
         'RE':WindChill,
         'TTI':TotalTotalsIndex,
@@ -82,9 +99,12 @@ def get_plugin_dependencies(df:pd.DataFrame, plugin_params:dict=None, plugin_man
         'QV':WaterVapourMixingRatio
         }
     df_list = []
+    # copy the dependencies dict for modification
     pdependencies = copy.deepcopy(plugin_mandatory_dependencies)
     # print('before\n',df[['nomvar','unit','level','ip1_pkind']].to_string())
     # print(plugin_mandatory_dependencies)
+
+    # for each nomvar or label
     for label,desc in pdependencies.items():
         if 'nomvar' in desc.keys():
             nomvar = desc['nomvar']
@@ -92,51 +112,97 @@ def get_plugin_dependencies(df:pd.DataFrame, plugin_params:dict=None, plugin_man
             nomvar = label
         # plugin_params = desc.pop('plugin_params') if 'plugin_params' in desc.keys() else None
         # print(f' for {nomvar}',desc)
-        select_only = desc.pop('select_only') if 'select_only' in desc.keys() else False
-        # print(f' for {nomvar} select_only:',select_only)
-        if (nomvar in computable_dependencies.keys()) and (df.loc[df.nomvar==nomvar].empty) and (select_only==False):
-            plugin = computable_dependencies[nomvar]
-            sig = signature(plugin)
-            function_keys = []
-            for param in sig.parameters:
-                function_keys.append(param)
-            # print(function_keys)
-            # print(f'computing - {nomvar}')
 
-            if plugin_params is None:
-                # print('plugin_params is None')
-                tmp_df = plugin(df).compute()
-            else:
-                # print('plugin_params is not None')
-                if set(plugin_params.keys()).issubset(function_keys):
-                    # print('call plugin with params')
-                    tmp_df = plugin(df,**plugin_params).compute()
-                else:
-                    # print('call plugin without params')
-                    tmp_df = plugin(df).compute()
-            # print('plugin result\n',tmp_df)
-            df = pd.concat([df,tmp_df],ignore_index=True)
+        # check if select_only is specified, if not the dependency can be computed
+        select_only = desc.pop('select_only') if 'select_only' in desc.keys() else False
+
+        # print(f' for {nomvar} select_only:',select_only)
+
+        # if the dependency is computable, try and compute it
+        df = compute_dependency(nomvar, computable_dependencies, df, select_only, plugin_params)
             # print('after\n',df[['nomvar','unit','level','ip1_pkind']].to_string())
         # print(f'selecting - {nomvar}')
         # print(df[list(desc)])
         # print(pd.Series(desc))
         #recipe, query with dict
+
+        # find rows that match desc
         tmp_df = df.loc[(df[list(desc)] == pd.Series(desc)).all(axis=1)]
 
-
+        # if nothing was found
         if tmp_df.empty:
             if throw_error:
                 raise DependencyError(f'{plugin_mandatory_dependencies[nomvar]} not found!')
             else:
                 return pd.DataFrame(dtype=object)
 
+        # keep found results
         df_list.append(tmp_df)
 
     res_df = pd.concat(df_list,ignore_index=True)
     # print('res_df\n\n',res_df)
     return res_df
 
-def get_existing_result(df:pd.DataFrame, plugin_result_specifications) -> pd.DataFrame:
+def compute_dependency(nomvar:str, computable_dependencies:dict, df:pd.DataFrame, select_only:bool, plugin_params:dict) -> pd.DataFrame:
+    """IF possible, computes a dempendency from a plugin
+
+    :param nomvar: nomvar used to identify the plugin in the dictionnary of computable_dependencies
+    :type nomvar: str
+    :param computable_dependencies: dictionnary of nomvar:plugin name associations
+    :type computable_dependencies: dict
+    :param df: dataframe to add results to
+    :type df: pd.Dataframe
+    :param select_only: if True, will not compute the dependency
+    :type select_only: bool
+    :param plugin_params: parameters to pass to plugin
+    :type plugin_params: dict
+    :return: results dataframe
+    :rtype: pd.DataFrame
+    """
+    if (nomvar in computable_dependencies.keys()) and (df.loc[df.nomvar==nomvar].empty) and (select_only==False):
+
+        # get the correcponding plugin instance
+        plugin = computable_dependencies[nomvar]
+
+        #  get the plugins parameter signature
+        sig = signature(plugin)
+        function_keys = []
+        for param in sig.parameters:
+            function_keys.append(param)
+        # print(function_keys)
+        # print(f'computing - {nomvar}')
+
+        # run the plugin without parameters
+        if plugin_params is None:
+            # print('plugin_params is None')
+            tmp_df = plugin(df).compute()
+        # run the plugin with parameters
+        else:
+            # print('plugin_params is not None')
+            # check if plugin has mathing parameters to the ones defined in plugin_params
+            if set(plugin_params.keys()).issubset(function_keys):
+                # print('call plugin with params')
+                # call plugin with params
+                tmp_df = plugin(df,**plugin_params).compute()
+            else:
+                # print('call plugin without params')
+                # call plugin without params
+                tmp_df = plugin(df).compute()
+        # print('plugin result\n',tmp_df)
+        # add computed results to current dataframe
+        df = pd.concat([df,tmp_df],ignore_index=True)
+    return df
+
+def get_existing_result(df:pd.DataFrame, plugin_result_specifications:dict) -> pd.DataFrame:
+    """Looks for the plugin_result_specifications corresponding rows in a dataframe and returns them if found
+
+    :param df: dataframe to look into
+    :type df: pd.DataFrame
+    :param plugin_result_specifications: column descriptions to look for when searchin in a dataframe
+    :type plugin_result_specifications: dict
+    :return: if rows are found, returns the corresponding dataframe rows, else it returns an empty dataframe
+    :rtype: pd.DataFrame
+    """
     df_list = []
     for _,spec in plugin_result_specifications.items():
         res_df = df.loc[(df.nomvar==spec['nomvar']) & (df.unit==spec['unit'])].reset_index(drop=True)
@@ -197,7 +263,7 @@ def get_intersecting_levels(df:pd.DataFrame, plugin_mandatory_dependencies:dict)
     return res_df
 
 
-def validate_nomvar(nomvar:str, caller_class:str, error_class:Exception):
+def validate_nomvar(nomvar:str, caller_class:str, error_class:type):
     """Check that a nomvar has between 2 and 4 characters
 
     :param nomvar: nomvar string
@@ -232,7 +298,19 @@ def remove_load_data_info(df):
 #         res_df[k] = v
 #     return res_df
 
-def create_empty_result(df, plugin_result_specifications,all_rows=False):
+def create_empty_result(df:pd.DataFrame, plugin_result_specifications:dict,all_rows:bool=False) -> pd.DataFrame:
+    """Creates a one row dataframe from the model dataframe, id all_rows is True, then copies the entire dataframe.
+    The columns in the plugin_result_specifications dict will be modified accordingly.
+
+    :param df: Model dataframe to copy from
+    :type df: pd.DataFrame
+    :param plugin_result_specifications: a dictionnary of column values to change. ex to change nomvar the dict must contain {'nomvar':'TT'}
+    :type plugin_result_specifications: dict
+    :param all_rows: if True, will make a copy of the whole dataframe instead of one row, defaults to False
+    :type all_rows: bool, optional
+    :return: New dataframe modeled on df, sorted by level, if all_rows is True, all rows will be copied instead of one and column values will be changed according to plugin_result_specifications
+    :rtype: pd.DataFrame
+    """
     if df.empty:
         sys.stderr.write('cant create, model dataframe empty\n')
 
@@ -243,11 +321,14 @@ def create_empty_result(df, plugin_result_specifications,all_rows=False):
         res_df = pd.DataFrame([res_df])
 
     for k,v in plugin_result_specifications.items():
-        if v != '':
+        if (v != '') and (k in res_df.columns):
             res_df.loc[:,k] = v
+
     if 'level' not in res_df.columns:
         res_df = fstpy.add_columns(res_df, decode=True, columns=['ip_info'])
+
     res_df = res_df.sort_values(by=['level'],ascending=res_df.ascending.unique()[0])
+
     return res_df
 
 def get_3d_array(df) -> np.ndarray:
@@ -256,7 +337,18 @@ def get_3d_array(df) -> np.ndarray:
     arr_3d = np.stack(df['d'].to_list())
     return arr_3d
 
-def existing_results(plugin_name:str,df:pd.DataFrame,meta_df:pd.DataFrame):
+def existing_results(plugin_name:str,df:pd.DataFrame,meta_df:pd.DataFrame) -> pd.DataFrame:
+    """Returns a dataframe of the existing results that have been found
+
+    :param plugin_name: Display plugin name for logging
+    :type plugin_name: str
+    :param df: existing results dataframe
+    :type df: pd.DataFrame
+    :param meta_df: meta data dataframe
+    :type meta_df: pd.DataFrame
+    :return: concatenated dataframe of existing results ans meta data with its data loaded
+    :rtype: pd.DataFrame
+    """
     sys.stdout.write(''.join([plugin_name,' - found results\n']))
     df = fstpy.load_data(df)
     meta_df = fstpy.load_data(meta_df)
@@ -264,11 +356,24 @@ def existing_results(plugin_name:str,df:pd.DataFrame,meta_df:pd.DataFrame):
     res_df  = remove_load_data_info(res_df)
     return res_df
 
-def final_results(df_list:"list[pd.DataFrame]",error_class,meta_df:pd.DataFrame) -> pd.DataFrame:
+def final_results(df_list:"list[pd.DataFrame]",error_class:'type',meta_df:pd.DataFrame) -> pd.DataFrame:
+    """Returns the final results dataframe, created from the list of dataframes and the meta data
+
+    :param df_list: list of dataframes, one per grouping method in the plugin
+    :type df_list: list[pd.DataFrame]
+    :param error_class: Exception to raise if list is empty
+    :type error_class: Exception
+    :param meta_df: meta data dataframe
+    :type meta_df: pd.DataFrame
+    :raises error_class: error class to raise
+    :return: clean and sorted resulting dataframe
+    :rtype: pd.DataFrame
+    """
     new_list = []
     for df in df_list:
         if not df.empty:
             new_list.append(df)
+
     if not len(new_list):
         raise error_class('No results were produced')
 
@@ -279,7 +384,9 @@ def final_results(df_list:"list[pd.DataFrame]",error_class,meta_df:pd.DataFrame)
     res_df = pd.concat(new_list,ignore_index=True)
 
     res_df = remove_load_data_info(res_df)
+
     res_df = fstpy.metadata_cleanup(res_df)
+
     return res_df
 
 
@@ -319,7 +426,18 @@ def get_from_dataframe(df:pd.DataFrame, nomvar:str) -> pd.DataFrame:
 
     return pd.DataFrame(dtype=object)
 
-def find_matching_dependency_option(df,plugin_params,plugin_mandatory_dependencies):
+def find_matching_dependency_option(df:pd.DataFrame,plugin_params:dict,plugin_mandatory_dependencies:'list[dict]') -> 'Tuple[pd.DataFrame,int]':
+    """Searches for dependencies in a dataframe
+
+    :param df: data dataframe to search in
+    :type df: pd.DataFrame
+    :param plugin_params: plugin parameters to pass on
+    :type plugin_params: dict
+    :param plugin_mandatory_dependencies: list of dependencies (dictionnaries)
+    :type plugin_mandatory_dependencies: list
+    :return: found dataframe and its index in the list of dependencies or an empty dataframe if nothing was found
+    :rtype: tuple
+    """
     for i in range(len(plugin_mandatory_dependencies)):
         # print(i,len(plugin_mandatory_dependencies),plugin_mandatory_dependencies[i],(False if i+1 < len(plugin_mandatory_dependencies) else True))
         # dependencies_df = get_plugin_dependencies(df,plugin_params,plugin_mandatory_dependencies[i],throw_error=(False if i+1 < len(plugin_mandatory_dependencies) else True))
@@ -332,7 +450,23 @@ def find_matching_dependency_option(df,plugin_params,plugin_mandatory_dependenci
             return dependencies_df, option
     return pd.DataFrame(dtype=object), 0
 
-def get_dependencies(groups,meta_df,plugin_name,plugin_mandatory_dependencies,plugin_params=None):
+def get_dependencies(groups:groupby.generic.DataFrameGroupBy,meta_df:pd.DataFrame,plugin_name:str,plugin_mandatory_dependencies:'list[dict]',plugin_params:dict=None) -> 'list[pd.DataFrame]':
+    """For each provided grouping, tries to find the correcponding dependencies
+
+    :param groups: A DataFrameGroupBy object obtained from the groupby method
+    :type groups: DataFrameGroupBy
+    :param meta_df: meta data dataframe
+    :type meta_df: pd.DataFrame
+    :param plugin_name: plugin name for logging
+    :type plugin_name: str
+    :param plugin_mandatory_dependencies: column descriptions to look for in each group
+    :type plugin_mandatory_dependencies: list[dict]
+    :param plugin_params: plugin paramaters to pass on
+    :type plugin_params: dict
+    :raises DependencyError: if no dependencies are found, raises this error
+    :return: list of matching dataframes
+    :rtype: list[pd.DataFrame]
+    """
     df_list = []
     for _,current_group in groups:
         sys.stdout.write(f'{plugin_name} - Checking dependencies\n')
@@ -343,7 +477,7 @@ def get_dependencies(groups,meta_df,plugin_name,plugin_mandatory_dependencies,pl
         else:
             sys.stdout.write(f'{plugin_name} - Matching dependencies found for this group \n%s\n'%current_group[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']])
         df_list.append((dependencies_df,option))
-    print('df_list',df_list)
+
     if not df_list:
         raise DependencyError(f'{plugin_name} - No matching dependencies found')
     return df_list

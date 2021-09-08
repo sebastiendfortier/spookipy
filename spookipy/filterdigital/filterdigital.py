@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
-from numpy import float32
-from ..utils import create_empty_result, final_results, initializer, validate_nomvar
-from ..plugin import Plugin
-import pandas as pd
-import fstpy.all as fstpy
 import sys
+
+import fstpy.all as fstpy
 import numpy as np
+import pandas as pd
+
+from ..plugin import Plugin
+from ..utils import (create_empty_result, final_results, initializer,
+                     validate_nomvar)
 from .stenfilt import filtre
+
 
 class FilterDigitalError(Exception):
     pass
@@ -38,8 +41,6 @@ class FilterDigital(Plugin):
         if not (self.repetitions > 0):
             raise FilterDigitalError('Repetitions must be a positive integer')
 
-        # self.df = fstpy.metadata_cleanup(self.df)
-
         self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
         self.df = self.df.loc[~self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
@@ -57,7 +58,9 @@ class FilterDigital(Plugin):
         df_list=[]
 
         filter_len = len(self.filter)
+
         filter = np.array(self.filter,dtype=np.int32,order='F')
+
         for i in new_df.index:
             ni = new_df.at[i,'d'].shape[0]
             nj = new_df.at[i,'d'].shape[1]

@@ -1,25 +1,24 @@
 # -*- coding: utf-8 -*-
 import sys
-from math import exp
 
 import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
 
-from ..humidityutils import (TDPACK_OFFSET_FIX, get_temp_phase_switch,
+from ..humidityutils import (get_temp_phase_switch,
                              validate_humidity_parameters)
 from ..plugin import Plugin
-from ..science.science import *
+
 from ..utils import (create_empty_result, existing_results, final_results, get_dependencies,
                      get_existing_result, get_from_dataframe,
                      initializer)
 
+from ..science import rpn_svp_from_tt, svp_from_tt, TDPACK_OFFSET_FIX
 
 class SaturationVapourPressureError(Exception):
     pass
 
 class SaturationVapourPressure(Plugin):
-
 
     @initializer
     def __init__(self,df:pd.DataFrame, ice_water_phase=None, temp_phase_switch=None,temp_phase_switch_unit='celsius', rpn=False):
@@ -53,7 +52,7 @@ class SaturationVapourPressure(Plugin):
 
         # remove meta data from DataFrame
         self.df = self.df.loc[~self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
-        # print(self.df[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']].to_string())
+
         self.groups = self.df.groupby(['grid','dateo','forecast_hour','ip1_kind'])
 
     def compute(self) -> pd.DataFrame:
@@ -72,21 +71,16 @@ class SaturationVapourPressure(Plugin):
             svp_df = create_empty_result(tt_df,self.plugin_result_specifications['SVP'],all_rows=True)
 
             if self.rpn:
-                print('rpn')
-                print('option 1')
+                sys.stdout.write('rpn option 1\n')
                 ttk_df = fstpy.unit_convert(tt_df,'kelvin')
                 for i in svp_df.index:
                     ttk = ttk_df.at[i,'d']
-                    ni = ttk.shape[0]
-                    nj = ttk.shape[1]
-                    svp_df.at[i,'d'] = science.rpn_svp_from_tt(tt=ttk, ni=ni.shape[0], nj=nj, tpl=(self.temp_phase_switch if self.ice_water_phase!='water' else -40), swph=self.ice_water_phase=='both').astype(np.float32)
+                    svp_df.at[i,'d'] = rpn_svp_from_tt(ttk, tpl=(self.temp_phase_switch if self.ice_water_phase!='water' else -40), swph=self.ice_water_phase=='both').astype(np.float32)
             else:
-                print('option 1')
+                sys.stdout.write('option 2\n')
                 for i in tt_df.index:
                     tt = tt_df.at[i,'d']
-                    ni = tt.shape[0]
-                    nj = tt.shape[1]
-                    svp_df.at[i,'d'] = science.svp_from_tt(tt=tt-TDPACK_OFFSET_FIX, ni=ni, nj=nj, tpl=(self.temp_phase_switch if self.ice_water_phase!='water' else -40), swph=self.ice_water_phase=='both').astype(np.float32)
+                    svp_df.at[i,'d'] = svp_from_tt(tt-TDPACK_OFFSET_FIX, tpl=(self.temp_phase_switch if self.ice_water_phase!='water' else -40), swph=self.ice_water_phase=='both').astype(np.float32)
 
             df_list.append(svp_df)
 

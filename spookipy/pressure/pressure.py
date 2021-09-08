@@ -28,15 +28,16 @@ class Pressure(Plugin):
     :param standard_atmosphere: calculate pressure in standard atmosphere if specified, defaults to False
     :type standard_atmosphere: bool, optional
     """
-    plugin_result_specifications_option_1 = {
+
+    @initializer
+    def __init__(self,df:pd.DataFrame, reference_field=None, standard_atmosphere:bool=False):
+        self.plugin_result_specifications_option_1 = {
         'PX':{'nomvar':'PX','etiket':'PRESSR','unit':'hectoPascal'},
         }
 
-    plugin_result_specifications_option_2 = {
+        self.plugin_result_specifications_option_2 = {
         'PXSA':{'nomvar':'PXSA','etiket':'PRESSR','unit':'millibar'},
         }
-    @initializer
-    def __init__(self,df:pd.DataFrame, reference_field=None, standard_atmosphere:bool=False):
         self.validate_input()
 
     def validate_input(self):
@@ -54,11 +55,6 @@ class Pressure(Plugin):
             self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications_option_2)
         else:
             self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications_option_1)
-        print('pressure',self.df)
-
-
-        # if 'vctype' not in self.df.columns:
-        #     self.df = fstpy.set_vertical_coordinate_type(self.df)
 
     def compute(self) -> pd.DataFrame:
         """groups records by grid->vctype->forecast_hour then applies the appropriate algorithm to compute the pressure

@@ -63,14 +63,14 @@ class Mask(Plugin):
     def compute(self) -> pd.DataFrame:
         df_list=[]
         #holds data from all the groups
-        outdf = create_empty_result(self.df,self.plugin_result_specifications['ALL'],all_rows=True)
+        res_df = create_empty_result(self.df,self.plugin_result_specifications['ALL'],all_rows=True)
         if not(self.nomvar_out is None):
-            outdf['nomvar'] = self.nomvar_out
+            res_df['nomvar'] = self.nomvar_out
 
-        for i in outdf.index:
-            _ = fmask(slab=outdf.at[i,'d'],ni=outdf.at[i,'d'].shape[0],nj=outdf.at[i,'d'].shape[1],values=self.values,operators=self.op_list,thresholds=self.thresholds,n=self.thresholds.size)
-            outdf.at[i,'d'] = outdf.at[i,'d'].astype(np.float32)
+        for i in res_df.index:
+            _ = fmask(slab=res_df.at[i,'d'],ni=res_df.at[i,'d'].shape[0],nj=res_df.at[i,'d'].shape[1],values=self.values,operators=self.op_list,thresholds=self.thresholds,n=self.thresholds.size)
+            res_df.at[i,'d'] = res_df.at[i,'d'].astype(np.float32)
 
-        df_list.append(outdf)
+        df_list.append(res_df)
 
         return final_results(df_list, Mask, self.meta_df)

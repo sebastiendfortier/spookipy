@@ -6,8 +6,7 @@ import pandas as pd
 
 from ..plugin import Plugin
 from ..utils import (create_empty_result, existing_results, final_results,
-                     get_dependencies, get_existing_result, get_from_dataframe,
-                     get_plugin_dependencies)
+                     get_dependencies, get_existing_result, get_from_dataframe)
 
 
 class GeorgeKIndexError(Exception):
@@ -44,12 +43,13 @@ class GeorgeKIndex(Plugin):
         self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
         self.df = fstpy.add_columns(self.df, decode=True, columns=['unit','forecast_hour','ip_info'])
+
         #check if result already exists
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
 
         # remove meta data from DataFrame
         self.df = self.df.loc[~self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
-        print(self.df[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']].to_string())
+
         self.groups = self.df.groupby(['grid','dateo','forecast_hour','ip1_kind'])
 
     def compute(self) -> pd.DataFrame:

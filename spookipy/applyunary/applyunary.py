@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from ..plugin import Plugin
-from ..utils import initializer, remove_load_data_info, validate_nomvar
+from ..utils import create_empty_result, final_results, initializer, remove_load_data_info, validate_nomvar
 import pandas as pd
 import fstpy.all as fstpy
 import sys
@@ -9,15 +9,18 @@ import sys
 #https://numpy.org/doc/stable/reference/routines.math.html
 class ApplyUnaryError(Exception):
     pass
+
 class ApplyUnary(Plugin):
+
     @initializer
     def __init__(self, df:pd.DataFrame, function=None, nomvar_in=None, nomvar_out=None, etiket=None):
         self.validate_input()
 
     def validate_input(self):
-        validate_nomvar(self.nomvar_out, 'ApplyUnary', ApplyUnaryError)
         if self.df.empty:
             raise  ApplyUnaryError('No data to process')
+
+        validate_nomvar(self.nomvar_out, 'ApplyUnary', ApplyUnaryError)
 
         self.df = fstpy.metadata_cleanup(self.df)
 
@@ -35,19 +38,10 @@ class ApplyUnary(Plugin):
             raise ApplyUnaryError(f'No data to process with nomvar {self.nomvar_in}')
 
         in_df = fstpy.load_data(in_df)
-        res_df = in_df.copy(deep=True)
-        res_df['nomvar']=self.nomvar_out
-        res_df['etiket']=self.etiket
-        res_df['datyp']=5
-        res_df['npak']=32
+
+        res_df = create_empty_result(in_df,{'nomvar':self.nomvar_out, 'etiket':self.etiket, 'datyp':5, 'npak':32},all_rows=True)
+
         for i in res_df.index:
             res_df.at[i,'d'] = self.function(in_df.at[i,'d'])
 
-        self.meta_df = fstpy.load_data(self.meta_df)
-        # merge all results together
-        res_df = pd.concat([res_df,self.meta_df],ignore_index=True)
-
-        res_df = remove_load_data_info(res_df)
-        res_df = fstpy.metadata_cleanup(res_df)
-
-        return res_df
+        return final_results([res_df], ApplyUnaryError, self.meta_df)

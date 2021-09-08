@@ -1,19 +1,20 @@
 # -*- coding: utf-8 -*-
+
 import sys
 
 import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
 
-from ..humidityutils.humidityutils import (TDPACK_OFFSET_FIX,
-                                           get_temp_phase_switch,
+from ..humidityutils.humidityutils import (get_temp_phase_switch,
                                            validate_humidity_parameters)
 from ..plugin.plugin import Plugin
-from ..science.science import *
+
 from ..utils import (create_empty_result, existing_results, final_results,
                      get_dependencies, get_existing_result,
                      get_from_dataframe, get_intersecting_levels, initializer)
 
+from ..science import TDPACK_OFFSET_FIX, rpn_vppr_from_hu, rpn_vppr_from_td, td_from_es, vppr_from_hr, vppr_from_hu, vppr_from_qv, vppr_from_td
 
 class VapourPressureError(Exception):
     pass
@@ -141,7 +142,7 @@ class VapourPressure(Plugin):
                         ni = hu.shape[0]
                         nj = hu.shape[1]
                         pxpa = pxpa_df.at[i,'d']
-                        vppr_df.at[i,'d'] = science.rpn_vppr_from_hu(hu=hu, px=pxpa, ni=ni, nj=nj).astype(np.float32)
+                        vppr_df.at[i,'d'] = rpn_vppr_from_hu(hu=hu, px=pxpa).astype(np.float32)
 
                 elif option==1:
                     print('option 2')
@@ -156,7 +157,7 @@ class VapourPressure(Plugin):
                         px = px_df.at[i,'d']
                         ni = px.shape[0]
                         nj = px.shape[1]
-                        vppr_df.at[i,'d'] = science.vppr_from_qv(qv=qvkgkg, px=px, ni=ni, nj=nj).astype(np.float32)
+                        vppr_df.at[i,'d'] = vppr_from_qv(qv=qvkgkg, px=px).astype(np.float32)
 
 
                 elif option==2:
@@ -175,7 +176,7 @@ class VapourPressure(Plugin):
                         hu = hu_df.at[i,'d']
                         ni = hu.shape[0]
                         nj = hu.shape[1]
-                        vppr_df.at[i,'d'] = science.rpn_vppr_from_hu(hu=hu, px=pxpa, ni=ni, nj=nj).astype(np.float32)
+                        vppr_df.at[i,'d'] = rpn_vppr_from_hu(hu=hu, px=pxpa).astype(np.float32)
 
                 elif option==3:
                     print('option 4')
@@ -191,9 +192,9 @@ class VapourPressure(Plugin):
                         nj  =tt.shape[1]
                         ttk = ttk_df.at[i,'d']
                         es = es_df.at[i,'d']
-                        td = science.td_es(tt=tt,es=es,ni=ni,nj=nj).astype(np.float32)
+                        td = td_es(tt=tt,es=es,ni=ni,nj=nj).astype(np.float32)
                         tdk = fstpy.unit_convert_array(td,'celsius','kelvin')
-                        vppr_df.at[i,'d'] = science.rpn_vppr_from_td(td=tdk, tt=ttk, ni=ni, nj=nj, tpl=(self.temp_phase_switch if self.ice_water_phase!='water' else -40), swph=self.ice_water_phase=='both').astype(np.float32)
+                        vppr_df.at[i,'d'] = rpn_vppr_from_td(td=tdk, tt=ttk, tpl=(self.temp_phase_switch if self.ice_water_phase!='water' else -40), swph=self.ice_water_phase=='both').astype(np.float32)
                 else:
                     print('option 5')
                     level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
@@ -208,7 +209,7 @@ class VapourPressure(Plugin):
                         ni = ttk.shape[0]
                         nj = ttk.shape[1]
                         tdk = tdk_df.at[i,'d']
-                        vppr_df.at[i,'d'] = science.rpn_vppr_from_td(td=tdk, tt=ttk, ni=ni, nj=nj, tpl=(self.temp_phase_switch if self.ice_water_phase!='water' else -40), swph=self.ice_water_phase=='both').astype(np.float32)
+                        vppr_df.at[i,'d'] = rpn_vppr_from_td(td=tdk, tt=ttk, tpl=(self.temp_phase_switch if self.ice_water_phase!='water' else -40), swph=self.ice_water_phase=='both').astype(np.float32)
 
             else:
                 if option==0:
@@ -223,7 +224,7 @@ class VapourPressure(Plugin):
                         ni = hu.shape[0]
                         nj = hu.shape[1]
                         px = px_df.at[i,'d']
-                        vppr_df.at[i,'d'] = science.vppr_from_hu(hu=hu, px=px, ni=ni, nj=nj).astype(np.float32)
+                        vppr_df.at[i,'d'] = vppr_from_hu(hu=hu, px=px).astype(np.float32)
 
                 elif option==1:
                     print('option 2')
@@ -238,7 +239,7 @@ class VapourPressure(Plugin):
                         ni = qv.shape[0]
                         nj = qv.shape[1]
                         px = px_df.at[i,'d']
-                        vppr_df.at[i,'d'] = science.vppr_from_qv(qv=qv, px=px, ni=ni, nj=nj).astype(np.float32)
+                        vppr_df.at[i,'d'] = vppr_from_qv(qv=qv, px=px).astype(np.float32)
 
                 elif option==2:
                     print('option 3')
@@ -252,7 +253,7 @@ class VapourPressure(Plugin):
                         ni = hr.shape[0]
                         nj = hr.shape[1]
                         svp = svp_df.at[i,'d']
-                        vppr_df.at[i,'d'] = science.vppr_from_hr(hr=hr, svp=svp, ni=ni, nj=nj).astype(np.float32)
+                        vppr_df.at[i,'d'] = vppr_from_hr(hr=hr, svp=svp).astype(np.float32)
 
                 elif option==3:
                     print('option 4')
@@ -266,8 +267,8 @@ class VapourPressure(Plugin):
                         ni = tt.shape[0]
                         nj = tt.shape[1]
                         es = es_df.at[i,'d']
-                        td = science.td_from_es(tt=tt, es=es, ni=ni, nj=nj).astype(np.float32)
-                        vppr_df.at[i,'d'] = science.vppr_from_td(td=td-TDPACK_OFFSET_FIX, tt=tt-TDPACK_OFFSET_FIX, ni=ni, nj=nj, tpl=(self.temp_phase_switch if self.ice_water_phase!='water' else -40), swph=self.ice_water_phase=='both').astype(np.float32)
+                        td = td_from_es(tt=tt, es=es).astype(np.float32)
+                        vppr_df.at[i,'d'] = vppr_from_td(td=td-TDPACK_OFFSET_FIX, tt=tt-TDPACK_OFFSET_FIX, tpl=(self.temp_phase_switch if self.ice_water_phase!='water' else -40), swph=self.ice_water_phase=='both').astype(np.float32)
 
                 else:
                     print('option 5')
@@ -283,7 +284,7 @@ class VapourPressure(Plugin):
                         ni = tt.shape[0]
                         nj = tt.shape[1]
                         td = td_df.at[i,'d']
-                        vppr_df.at[i,'d'] = science.vppr_from_td(td=td-TDPACK_OFFSET_FIX, tt=tt-TDPACK_OFFSET_FIX, ni=ni, nj=nj, tpl=(self.temp_phase_switch if self.ice_water_phase!='water' else -40), swph=self.ice_water_phase=='both').astype(np.float32)
+                        vppr_df.at[i,'d'] = vppr_from_td(td=td-TDPACK_OFFSET_FIX, tt=tt-TDPACK_OFFSET_FIX, tpl=(self.temp_phase_switch if self.ice_water_phase!='water' else -40), swph=self.ice_water_phase=='both').astype(np.float32)
 
 
             df_list.append(vppr_df)

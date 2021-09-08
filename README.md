@@ -28,7 +28,7 @@ Use the ssm package
 
 ## Using spookipy in scripts or Jupyter Lab/Notebook
 
-``` bash
+``` {.bash}
 # activate your conda environment
 . activate spookipy_req
 # get rmn python library
@@ -41,7 +41,7 @@ Use the ssm package
 
 ### use spookipy
 
-``` python
+``` {.python}
 # inside your script
 import spookipy.all as spookipy
 uv_df = spookipy.windmodulus(df).compute()
@@ -49,7 +49,7 @@ uv_df = spookipy.windmodulus(df).compute()
 
 ### Example
 
-``` python
+``` {.python}
 data_path = prefix + '/data/'
 import fstpy.all as fstpy
 import spookipy.all as spooki
@@ -66,7 +66,7 @@ fstpy.StandardFileWriter(dest_path,uv_df).to_fst()
 
 ## Creating the developpement environment
 
-``` bash
+``` {.bash}
 # get conda if you don't already have it
 . ssmuse-sh -x cmd/cmdm/satellite/master_u1/miniconda3_4.9.2_ubuntu-18.04-skylake-64
 # create a conda environment for spookipy's requirements
@@ -84,7 +84,7 @@ conda install numpy pandas dask xarray pytest
 
 ## Getting the source code
 
-``` bash
+``` {.bash}
 git clone git@gitlab.science.gc.ca:cmdw-spooki/spookipy.git
 # create a new branch
 git checkout -b my_change
@@ -103,7 +103,7 @@ Then create a merge request on science\'s gitlab
 
 ## Testing
 
-``` bash
+``` {.bash}
 # From the $project_root/test directory of the project
 . activate spookipy_dev
 # get rmn python library
@@ -115,7 +115,7 @@ python -m pytest
 
 ## Building documentation
 
-``` bash
+``` {.bash}
 # This will build documentation in docs/build and there you will find index.html
 # make sure fstpy is in the PYTHONPATH
 # From the $project_root/doc directory of the project
@@ -125,7 +125,7 @@ make doc
 
 # Creating the ssm package
 
-``` bash
+``` {.bash}
 # This will build the ssm package
 # From the $project_root/ssm directory of the project
 ./make_package.sh

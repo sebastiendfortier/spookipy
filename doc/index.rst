@@ -65,7 +65,7 @@ Documentation
 * :doc:`setconstantvalue`
 * :doc:`temperaturedewpoint`
 * :doc:`totaltotalsindex`
-* :doc:`vapourpessure`
+* :doc:`vapourpressure`
 * :doc:`watervapourmixingratio`
 * :doc:`windchill`
 * :doc:`winddirection`
@@ -91,8 +91,8 @@ Documentation
    humidex
    humidityrelative
    humidityspecific
-   interpolationhorizontal
-   interpolationhorizontal
+   interpolationhorizontalgrid
+   interpolationhorizontalpoint
    mask
    matchlevelindextovalue
    minmaxlevelindex
@@ -104,7 +104,7 @@ Documentation
    setconstantvalue
    temperaturedewpoint
    totaltotalsindex
-   vapourpessure
+   vapourpressure
    watervapourmixingratio
    windchill
    winddirection

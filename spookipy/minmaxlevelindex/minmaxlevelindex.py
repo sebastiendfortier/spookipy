@@ -12,9 +12,13 @@ class MinMaxLevelIndexError(Exception):
 
 class MinMaxLevelIndex(Plugin):
     # plugin_requires = '(nomvar in ["TD","TT"]) and (unit == "celsius")'
-    plugin_result_specifications = {'ALL':{'etiket':'MMLVLI','unit':'scalar','ip1':0}}
+
     @initializer
     def __init__(self,df:pd.DataFrame, ascending=True, min=False, max=False, bounded=False, nomvar_min='KMIN', nomvar_max='KMAX'):
+        self.plugin_result_specifications = \
+            {
+                'ALL':{'etiket':'MMLVLI','unit':'scalar','ip1':0}
+            }
         self.validate_input()
 
 
@@ -25,6 +29,7 @@ class MinMaxLevelIndex(Plugin):
         self.df = fstpy.metadata_cleanup(self.df)
 
         validate_nomvar(self.nomvar_min, 'MinMaxLevelIndex', MinMaxLevelIndexError)
+
         validate_nomvar(self.nomvar_max, 'MinMaxLevelIndex', MinMaxLevelIndexError)
 
         self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)

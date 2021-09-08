@@ -65,12 +65,14 @@ class GridCut(Plugin):
             cp_df.at[i,'nj'] = cp_df.at[i,'d'].shape[1]
 
         cptic_df = self.tictictactac_df.loc[self.tictictactac_df.nomvar=="^^"].copy(deep=True)
+
         for i in cptic_df.index:
             cptic_df.at[i,'d'] = cptic_df.at[i,'d'][0:1,self.start_point[1]:self.end_point[1]+1]
             cptic_df.at[i,'shape'] = cptic_df.at[i,'d'].shape
             cptic_df.at[i,'nj'] = cptic_df.at[i,'d'].shape[1]
 
         cptac_df = self.tictictactac_df.loc[self.tictictactac_df.nomvar==">>"].copy(deep=True)
+
         for i in cptac_df.index:
             cptac_df.at[i,'d'] = cptac_df.at[i,'d'][self.start_point[0]:self.end_point[0]+1]
             cptac_df.at[i,'shape'] = cptac_df.at[i,'d'].shape

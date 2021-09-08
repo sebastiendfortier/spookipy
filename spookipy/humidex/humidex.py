@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 import sys
 
 import fstpy.all as fstpy
@@ -7,11 +6,12 @@ import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin
-from ..science.science import *
+
 from ..utils import (create_empty_result, existing_results, final_results,
                      get_dependencies, get_existing_result,
                      get_from_dataframe, get_intersecting_levels)
 
+from ..science import hmx_from_svp
 
 class HumidexError(Exception):
     pass
@@ -64,19 +64,17 @@ class Humidex(Plugin):
         #check if result already exists
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
 
+        # select surface only
         self.df = self.df.loc[self.df.surface==True]
+
         self.df = pd.concat([self.df,self.meta_df],ignore_index=True)
 
         # remove meta data from DataFrame
         self.df = self.df.loc[~self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
-        # print(self.df[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']].to_string())
+
         self.groups = self.df.groupby(['grid','dateo','forecast_hour','ip1_kind'])
 
     def compute(self) -> pd.DataFrame:
-        from ..saturationvapourpressure.saturationvapourpressure import \
-            SaturationVapourPressure
-        from ..temperaturedewpoint.temperaturedewpoint import \
-            TemperatureDewPoint
         if not self.existing_result_df.empty:
             return existing_results('Humidex',self.existing_result_df,self.meta_df)
 
@@ -86,105 +84,40 @@ class Humidex(Plugin):
 
         for dependencies_df,option in dependencies_list:
             if option==0:
-                print('option 1')
                 level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
-                level_intersection_df = fstpy.load_data(level_intersection_df)
-                tt_df = get_from_dataframe(level_intersection_df,'TT')
                 td_df = get_from_dataframe(level_intersection_df,'TD')
-                hmx_df = create_empty_result(tt_df,self.plugin_result_specifications['HMX'],all_rows=True)
-                # td_df = TemperatureDewPoint(level_intersection_df,ice_water_phase='water').compute()
-                rentd_df = td_df
-                rentd_df.loc[rentd_df.nomvar=='TD','nomvar'] = 'TT'
-                svp_df = SaturationVapourPressure(rentd_df,ice_water_phase='water').compute()
-                svp_df = get_from_dataframe(svp_df,'SVP')
-
-                for i in hmx_df.index:
-                    tt = tt_df.at[i,'d']
-                    ni= tt.shape[0]
-                    nj= tt.shape[1]
-                    svp = svp_df.at[i,'d']
-                    hmx_df.at[i,'d'] = science.hmx_from_svp(tt=tt,svp=svp,ni=ni,nj=nj).astype(np.float32)
-
-            elif option==1:
-                print('option 2')
-                level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
-                level_intersection_df = fstpy.load_data(level_intersection_df)
-                tt_df = get_from_dataframe(level_intersection_df,'TT')
-                hmx_df = create_empty_result(tt_df,self.plugin_result_specifications['HMX'],all_rows=True)
-                td_df = TemperatureDewPoint(pd.concat([level_intersection_df,self.meta_df],ignore_index=True),ice_water_phase='water').compute()
-                rentd_df = td_df
-                rentd_df.loc[rentd_df.nomvar=='TD','nomvar'] = 'TT'
-                svp_df = SaturationVapourPressure(rentd_df,ice_water_phase='water').compute()
-                svp_df = get_from_dataframe(svp_df,'SVP')
-
-                for i in hmx_df.index:
-                    tt = tt_df.at[i,'d']
-                    ni= tt.shape[0]
-                    nj= tt.shape[1]
-                    svp = svp_df.at[i,'d']
-                    hmx_df.at[i,'d'] = science.hmx_from_svp(tt=tt,svp=svp,ni=ni,nj=nj).astype(np.float32)
-
-
-            elif option==2:
-                print('option 3')
-                level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
-                level_intersection_df = fstpy.load_data(level_intersection_df)
-                tt_df = get_from_dataframe(level_intersection_df,'TT')
-                hmx_df = create_empty_result(tt_df,self.plugin_result_specifications['HMX'],all_rows=True)
-                td_df = TemperatureDewPoint(pd.concat([level_intersection_df,self.meta_df],ignore_index=True),ice_water_phase='water').compute()
-                rentd_df = td_df
-                rentd_df.loc[rentd_df.nomvar=='TD','nomvar'] = 'TT'
-                svp_df = SaturationVapourPressure(rentd_df,ice_water_phase='water').compute()
-                print('---SaturationVapourPressure',td_df.nomvar.unique())
-                svp_df = SaturationVapourPressure(td_df,ice_water_phase='water').compute()
-                svp_df = get_from_dataframe(svp_df,'SVP')
-
-                for i in hmx_df.index:
-                    tt = tt_df.at[i,'d']
-                    ni= tt.shape[0]
-                    nj= tt.shape[1]
-                    svp = svp_df.at[i,'d']
-                    hmx_df.at[i,'d'] = science.hmx_from_svp(tt=tt,svp=svp,ni=ni,nj=nj).astype(np.float32)
-
-
-            elif option==3:
-                print('option 4')
-                level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
-                level_intersection_df = fstpy.load_data(level_intersection_df)
-                tt_df = get_from_dataframe(level_intersection_df,'TT')
-                hmx_df = create_empty_result(tt_df,self.plugin_result_specifications['HMX'],all_rows=True)
-                td_df = TemperatureDewPoint(pd.concat([level_intersection_df,self.meta_df],ignore_index=True),ice_water_phase='water').compute()
-                rentd_df = td_df
-                rentd_df.loc[rentd_df.nomvar=='TD','nomvar'] = 'TT'
-                svp_df = SaturationVapourPressure(rentd_df,ice_water_phase='water').compute()
-                svp_df = get_from_dataframe(svp_df,'SVP')
-
-                for i in hmx_df.index:
-                    tt = tt_df.at[i,'d']
-                    ni= tt.shape[0]
-                    nj= tt.shape[1]
-                    svp = svp_df.at[i,'d']
-                    hmx_df.at[i,'d'] = science.hmx_from_svp(tt=tt,svp=svp,ni=ni,nj=nj).astype(np.float32)
+                hmx_df = self.humidex_from_tt_svp(level_intersection_df,td_df,option)
 
             else:
-                print('option 5')
                 level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
-                level_intersection_df = fstpy.load_data(level_intersection_df)
-                tt_df = get_from_dataframe(level_intersection_df,'TT')
-                hmx_df = create_empty_result(tt_df,self.plugin_result_specifications['HMX'],all_rows=True)
-                td_df = TemperatureDewPoint(pd.concat([level_intersection_df,self.meta_df],ignore_index=True),ice_water_phase='water').compute()
-                rentd_df = td_df
-                rentd_df.loc[rentd_df.nomvar=='TD','nomvar'] = 'TT'
-                svp_df = SaturationVapourPressure(rentd_df,ice_water_phase='water').compute()
-                svp_df = get_from_dataframe(svp_df,'SVP')
-
-                for i in hmx_df.index:
-                    tt = tt_df.at[i,'d']
-                    ni= tt.shape[0]
-                    nj= tt.shape[1]
-                    svp = svp_df.at[i,'d']
-                    hmx_df.at[i,'d'] = science.hmx_from_svp(tt=tt,svp=svp,ni=ni,nj=nj).astype(np.float32)
+                td_df = self.get_td(level_intersection_df)
+                hmx_df = self.humidex_from_tt_svp(level_intersection_df,td_df,option)
 
             df_list.append(hmx_df)
 
         return final_results(df_list, HumidexError, self.meta_df)
+
+    def humidex_from_tt_svp(self, level_intersection_df, td_df, option):
+        from ..saturationvapourpressure.saturationvapourpressure import \
+            SaturationVapourPressure
+        sys.stdout.write(f'option {option+1}\n')
+        td_df = fstpy.load_data(td_df)
+        level_intersection_df = fstpy.load_data(level_intersection_df)
+        tt_df = get_from_dataframe(level_intersection_df,'TT')
+        hmx_df = create_empty_result(tt_df,self.plugin_result_specifications['HMX'],all_rows=True)
+        rentd_df = td_df
+        rentd_df.loc[rentd_df.nomvar=='TD','nomvar'] = 'TT'
+        svp_df = SaturationVapourPressure(rentd_df,ice_water_phase='water').compute()
+        svp_df = get_from_dataframe(svp_df,'SVP')
+
+        for i in hmx_df.index:
+            tt = tt_df.at[i,'d']
+            svp = svp_df.at[i,'d']
+            hmx_df.at[i,'d'] = hmx_from_svp(tt=tt,svp=svp).astype(np.float32)
+        return hmx_df
+
+    def get_td(self, level_intersection_df):
+        from ..temperaturedewpoint.temperaturedewpoint import \
+            TemperatureDewPoint
+        td_df = TemperatureDewPoint(pd.concat([level_intersection_df,self.meta_df],ignore_index=True),ice_water_phase='water').compute()
+        return td_df

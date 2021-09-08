@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 import sys
 
 import fstpy.all as fstpy
@@ -7,12 +8,13 @@ import pandas as pd
 
 from ..humidityutils import get_temp_phase_switch, validate_humidity_parameters
 from ..plugin import Plugin
-from ..science.science import *
+
 from ..utils import (create_empty_result, existing_results, final_results,
                      get_dependencies, get_existing_result,
                      get_from_dataframe, get_intersecting_levels,
                      initializer)
 
+from ..science import qv_from_hu, qv_from_vppr
 
 class WaterVapourMixingRatioError(Exception):
     pass
@@ -93,7 +95,7 @@ class WaterVapourMixingRatio(Plugin):
                     hu = hu_df.at[i,'d']
                     ni = hu.shape[0]
                     nj = hu.shape[1]
-                    qv_df.at[i,'d'] = science.qv_from_hu(hu=hu,ni=ni,nj=nj).astype(np.float32)
+                    qv_df.at[i,'d'] = qv_from_hu(hu=hu).astype(np.float32)
             else:
                 print('option 2')
                 level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
@@ -108,7 +110,7 @@ class WaterVapourMixingRatio(Plugin):
                     pxpa = pxpa_df.at[i,'d']
                     ni = pxpa.shape[0]
                     nj = pxpa.shape[1]
-                    qv_df.at[i,'d'] = science.qv_from_vppr(px=pxpa,vppr=vpprpa,ni=ni,nj=nj).astype(np.float32)
+                    qv_df.at[i,'d'] = qv_from_vppr(px=pxpa,vppr=vpprpa).astype(np.float32)
 
             df_list.append(qv_df)
 

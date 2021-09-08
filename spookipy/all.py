@@ -30,7 +30,7 @@ from .setconstantvalue import *
 from .temperaturedewpoint import *
 from .totaltotalsindex import *
 from .utils import *
-from .vapourpessure import *
+from .vapourpressure import *
 from .watervapourmixingratio import *
 from .windchill import *
 from .winddirection import *

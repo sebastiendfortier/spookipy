@@ -63,13 +63,14 @@ class CoriolisParameter(Plugin):
             if lat_df.empty:
                 sys.stderr.write('Cannot find "LA" field in this group - skipping\n')
                 continue
+            # remove meta
             current_group = current_group.loc[~current_group.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
             if current_group.empty:
                 sys.stderr.write('Cannot find "LON" field in this group - skipping\n')
                 continue
 
             corp_df = create_empty_result(lat_df,self.plugin_result_specifications['CORP'])
-            corp_df = ajust_column_values(current_group, corp_df)
+            corp_df = adjust_column_values(current_group, corp_df)
 
             for i in corp_df.index:
                 corp_df.at[i,'d'] = coriolis_parameter(lat_df.at[i,'d']).astype(float32)
@@ -78,11 +79,11 @@ class CoriolisParameter(Plugin):
 
         return final_results(df_list, CoriolisParameterError, self.meta_df)
 
-def ajust_column_values(current_group, corp_df):
-    corp_df['typvar'] = current_group.typvar.unique()[0]
-    corp_df['grtyp'] = current_group.grtyp.unique()[0]
-    corp_df['ig1'] = current_group.ig1.unique()[0]
-    corp_df['ig2'] = current_group.ig2.unique()[0]
-    corp_df['ig3'] = current_group.ig3.unique()[0]
-    corp_df['ig4'] = current_group.ig4.unique()[0]
+def adjust_column_values(current_group, corp_df):
+    corp_df.loc[:,'typvar'] = current_group.typvar.unique()[0]
+    corp_df.loc[:,'grtyp'] = current_group.grtyp.unique()[0]
+    corp_df.loc[:,'ig1'] = current_group.ig1.unique()[0]
+    corp_df.loc[:,'ig2'] = current_group.ig2.unique()[0]
+    corp_df.loc[:,'ig3'] = current_group.ig3.unique()[0]
+    corp_df.loc[:,'ig4'] = current_group.ig4.unique()[0]
     return corp_df

@@ -74,7 +74,7 @@ class WindMax(Plugin):
 
         # remove meta data from DataFrame
         self.df = self.df.loc[~self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
-        # print(self.df[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']].to_string())
+
         self.groups = self.df.groupby(['grid','dateo','forecast_hour','ip1_kind'])
 
 
@@ -87,6 +87,7 @@ class WindMax(Plugin):
         df_list = []
 
         dependencies_list = get_dependencies(self.groups,self.meta_df,'WindMax',self.plugin_mandatory_dependencies)
+
         for dependencies_df,option in dependencies_list:
             level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
             level_intersection_df = fstpy.load_data(level_intersection_df)

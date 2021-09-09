@@ -1,11 +1,16 @@
 # -*- coding: utf-8 -*-
-from ..plugin import Plugin
-from ..utils import create_empty_result, get_existing_result, get_intersecting_levels, get_plugin_dependencies, existing_results, final_results
-import pandas as pd
+import math
+import sys
+
 import fstpy.all as fstpy
 import numpy as np
-import sys
-import math
+import pandas as pd
+
+from ..plugin import Plugin
+from ..utils import (create_empty_result, existing_results, final_results,
+                     get_dependencies, get_existing_result, get_from_dataframe,
+                     get_intersecting_levels)
+
 
 class WindDirectionError(Exception):
     pass
@@ -45,9 +50,9 @@ class WindDirection(Plugin):
          #check if result already exists
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
 
-        if self.existing_result_df.empty:
-            self.dependencies_df = get_plugin_dependencies(self.df,None,self.plugin_mandatory_dependencies)
-            self.fhour_groups=self.dependencies_df.groupby(by=['grid','dateo','forecast_hour','grtyp'])
+        self.df = self.df.loc[~self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
+
+        self.groups = self.df.groupby(['grid','dateo','forecast_hour','ip1_kind'])
 
 
     def compute(self) -> pd.DataFrame:
@@ -56,24 +61,30 @@ class WindDirection(Plugin):
 
         sys.stdout.write('WindDirection - compute\n')
         df_list = []
-        for _,current_fhour_group in self.fhour_groups:
-            grid = current_fhour_group.grid.unique()[0]
+        dependencies_list = get_dependencies(self.groups,self.meta_df,'WindChill',self.plugin_mandatory_dependencies)
+        for dependencies_df,_ in dependencies_list:
+            grid = dependencies_df.grid.unique()[0]
+
             pos_df = self.meta_df.loc[((self.meta_df.nomvar=='>>')|(self.meta_df.nomvar=='^>')) & (self.meta_df.grid==grid)]
+
             meta_grtyp = ''
+
             if not pos_df.empty:
                 meta_grtyp = pos_df.grtyp.unique()[0]
-            grtyp = current_fhour_group.grtyp.unique()[0]
+
+            grtyp = dependencies_df.grtyp.unique()[0]
+
             if grtyp not in ['A','B','E','G','L','N','S','U','Y','Z']:
                 raise  WindDirectionError('Cannot calculate meteorological direction for grid type {grtyp}\n')
+
             if (grtyp=='Y') and (meta_grtyp!='L'):
                 raise  WindDirectionError('Only positional records of type: L are supported with grid type: Y.\n')
-            current_fhour_group = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies)
-            if current_fhour_group.empty:
-                sys.stderr.write('WindDirection - no intersecting levels found')
-                continue
-            current_fhour_group = fstpy.load_data(current_fhour_group)
-            uu_df = current_fhour_group.loc[current_fhour_group.nomvar=="UU"].reset_index(drop=True)
-            vv_df = current_fhour_group.loc[current_fhour_group.nomvar=="VV"].reset_index(drop=True)
+
+            dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies)
+
+            dependencies_df = fstpy.load_data(dependencies_df)
+            uu_df = get_from_dataframe(dependencies_df,'UU')
+            vv_df = get_from_dataframe(dependencies_df,'VV')
             wd_df = create_empty_result(vv_df,self.plugin_result_specifications['UV'],all_rows=True)
 
             for i in wd_df.index:

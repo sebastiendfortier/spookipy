@@ -52,13 +52,12 @@ class WindChill(Plugin):
 
         self.df = fstpy.add_columns(self.df, decode=True, columns=['unit','ip_info','forecast_hour'])
 
-
         #check if result already exists
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
 
         # remove meta data from DataFrame
         self.df = self.df.loc[~self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
-        # print(self.df[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']].to_string())
+
         self.groups = self.df.groupby(['grid','dateo','forecast_hour','ip1_kind'])
 
 
@@ -78,8 +77,8 @@ class WindChill(Plugin):
             re_df = create_empty_result(tt_df,self.plugin_result_specifications['RE'])
 
             for i in re_df.index:
-                tt = (tt_df.at[i,'d'])
-                uv = (uv_df.at[i,'d'])
+                tt = tt_df.at[i,'d']
+                uv = uv_df.at[i,'d']
                 re_df.at[i,'d'] = wind_chill(tt,uv)
 
             df_list.append(re_df)

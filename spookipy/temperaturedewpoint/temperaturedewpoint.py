@@ -134,7 +134,7 @@ class TemperatureDewPoint(Plugin):
         return final_results(df_list,TemperatureDewPointError, self.meta_df)
 
     def temperaturedewpoint_from_tt_vppr(self, dependencies_df, option):
-        sys.stdout.write(f'option {option}\n')
+        sys.stdout.write(f'option {option+1}\n')
         level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
         vppr_df = self.compute_vppr(level_intersection_df)
         vppr_df = fstpy.load_data(vppr_df)
@@ -155,9 +155,9 @@ class TemperatureDewPoint(Plugin):
 
     def temperaturedewpoint_from_tt_es(self, es_df, level_intersection_df, option, rpn=False):
         if rpn:
-            sys.stdout.write(f'rpn option {option}\n')
+            sys.stdout.write(f'rpn option {option+1}\n')
         else:
-            sys.stdout.write(f'option {option}\n')
+            sys.stdout.write(f'option {option+1}\n')
         es_df = fstpy.load_data(es_df)
         level_intersection_df = fstpy.load_data(level_intersection_df)
         tt_df = get_from_dataframe(level_intersection_df,'TT')

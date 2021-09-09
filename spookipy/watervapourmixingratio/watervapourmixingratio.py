@@ -62,13 +62,12 @@ class WaterVapourMixingRatio(Plugin):
 
         self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
-
         #check if result already exists
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
 
         # remove meta data from DataFrame
         self.df = self.df.loc[~self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
-        # print(self.df[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']].to_string())
+
         self.groups = self.df.groupby(['grid','dateo','forecast_hour','ip1_kind'])
 
 
@@ -87,31 +86,36 @@ class WaterVapourMixingRatio(Plugin):
 
         for dependencies_df,option in dependencies_list:
             if option==0:
-                print('option 1')
-                dependencies_df = fstpy.load_data(dependencies_df)
-                hu_df = get_from_dataframe(dependencies_df,'HU')
-                qv_df = create_empty_result(hu_df,self.plugin_result_specifications['QV'],all_rows=True)
-                for i in qv_df.index:
-                    hu = hu_df.at[i,'d']
-                    ni = hu.shape[0]
-                    nj = hu.shape[1]
-                    qv_df.at[i,'d'] = qv_from_hu(hu=hu).astype(np.float32)
+                qv_df = self.watervapourmixingratio_from_hu(dependencies_df,option)
             else:
-                print('option 2')
-                level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
-                level_intersection_df = fstpy.load_data(level_intersection_df)
-                vppr_df = get_from_dataframe(level_intersection_df,'VPPR')
-                px_df = get_from_dataframe(level_intersection_df,'PX')
-                qv_df = create_empty_result(vppr_df,self.plugin_result_specifications['QV'],all_rows=True)
-                vpprpa_df = fstpy.unit_convert(vppr_df,'pascal')
-                pxpa_df = fstpy.unit_convert(px_df,'pascal')
-                for i in qv_df.index:
-                    vpprpa = vpprpa_df.at[i,'d']
-                    pxpa = pxpa_df.at[i,'d']
-                    ni = pxpa.shape[0]
-                    nj = pxpa.shape[1]
-                    qv_df.at[i,'d'] = qv_from_vppr(px=pxpa,vppr=vpprpa).astype(np.float32)
+                qv_df = self.watervapourmixingratio_from_vppr(dependencies_df, option)
 
             df_list.append(qv_df)
 
         return final_results(df_list, WaterVapourMixingRatioError, self.meta_df)
+
+
+    def watervapourmixingratio_from_vppr(self, dependencies_df, option):
+        sys.stdout.write(f'option {option+1}\n')
+        level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
+        level_intersection_df = fstpy.load_data(level_intersection_df)
+        vppr_df = get_from_dataframe(level_intersection_df,'VPPR')
+        px_df = get_from_dataframe(level_intersection_df,'PX')
+        qv_df = create_empty_result(vppr_df,self.plugin_result_specifications['QV'],all_rows=True)
+        vpprpa_df = fstpy.unit_convert(vppr_df,'pascal')
+        pxpa_df = fstpy.unit_convert(px_df,'pascal')
+        for i in qv_df.index:
+            vpprpa = vpprpa_df.at[i,'d']
+            pxpa = pxpa_df.at[i,'d']
+            qv_df.at[i,'d'] = qv_from_vppr(px=pxpa,vppr=vpprpa).astype(np.float32)
+        return qv_df
+
+    def watervapourmixingratio_from_hu(self, dependencies_df, option):
+        sys.stdout.write(f'option {option+1}\n')
+        dependencies_df = fstpy.load_data(dependencies_df)
+        hu_df = get_from_dataframe(dependencies_df,'HU')
+        qv_df = create_empty_result(hu_df,self.plugin_result_specifications['QV'],all_rows=True)
+        for i in qv_df.index:
+            hu = hu_df.at[i,'d']
+            qv_df.at[i,'d'] = qv_from_hu(hu=hu).astype(np.float32)
+        return qv_df

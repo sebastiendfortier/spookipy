@@ -148,7 +148,7 @@ class TemperatureDewPoint(Plugin):
         return td_df
 
     def compute_vppr(self, level_intersection_df):
-        from ..vapourpressure.vapourpessure import VapourPressure
+        from ..vapourpressure.vapourpressure import VapourPressure
         vppr_df = VapourPressure(pd.concat([level_intersection_df,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase, temp_phase_switch=self.temp_phase_switch, temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
         vppr_df = get_from_dataframe(vppr_df,'VPPR')
         return vppr_df

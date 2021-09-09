@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
-from ..utils import create_empty_result, find_matching_dependency_option, get_dependencies, get_existing_result, get_from_dataframe, get_plugin_dependencies, existing_results, final_results
-from ..plugin import Plugin
-import pandas as pd
+import sys
+
 import fstpy.all as fstpy
 import numpy as np
-import sys
+import pandas as pd
+
+from ..plugin import Plugin
+from ..utils import (create_empty_result, existing_results, final_results,
+                     get_dependencies, get_existing_result, get_from_dataframe)
+
 
 class TotalTotalsIndexError(Exception):
     pass

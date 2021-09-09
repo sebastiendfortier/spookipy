@@ -101,8 +101,6 @@ class DewPointDepression(Plugin):
 
 
     def compute(self) -> pd.DataFrame:
-
-
         if not self.existing_result_df.empty:
             return existing_results('DewPointDepression',self.existing_result_df,self.meta_df)
 

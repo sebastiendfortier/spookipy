@@ -186,7 +186,7 @@ class HumidityRelative(Plugin):
     def humidityrelative_from_svp_vppr(self, dependencies_df, option):
         from ..saturationvapourpressure.saturationvapourpressure import \
             SaturationVapourPressure
-        from ..vapourpressure.vapourpessure import VapourPressure
+        from ..vapourpressure.vapourpressure import VapourPressure
         sys.stdout.write(f'option {option+1}\n')
         level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
         level_intersection_df = fstpy.load_data(level_intersection_df)

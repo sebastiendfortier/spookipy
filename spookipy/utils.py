@@ -75,7 +75,7 @@ def get_plugin_dependencies(df:pd.DataFrame, plugin_params:dict=None, plugin_man
         SaturationVapourPressure
     from .temperaturedewpoint.temperaturedewpoint import TemperatureDewPoint
     from .totaltotalsindex.totaltotalsindex import TotalTotalsIndex
-    from .vapourpressure.vapourpessure import VapourPressure
+    from .vapourpressure.vapourpressure import VapourPressure
     from .watervapourmixingratio.watervapourmixingratio import \
         WaterVapourMixingRatio
     from .windchill.windchill import WindChill
@@ -426,7 +426,7 @@ def get_from_dataframe(df:pd.DataFrame, nomvar:str) -> pd.DataFrame:
 
     return pd.DataFrame(dtype=object)
 
-def find_matching_dependency_option(df:pd.DataFrame,plugin_params:dict,plugin_mandatory_dependencies:'list[dict]') -> 'Tuple[pd.DataFrame,int]':
+def find_matching_dependency_option(df:pd.DataFrame,plugin_params:dict,plugin_mandatory_dependencies:'list[dict]',intersect_levels:bool) -> 'Tuple[pd.DataFrame,int]':
     """Searches for dependencies in a dataframe
 
     :param df: data dataframe to search in
@@ -435,6 +435,8 @@ def find_matching_dependency_option(df:pd.DataFrame,plugin_params:dict,plugin_ma
     :type plugin_params: dict
     :param plugin_mandatory_dependencies: list of dependencies (dictionnaries)
     :type plugin_mandatory_dependencies: list
+    :param intersect_levels: finds the intersecting levels for dependencies
+    :type intersect_levels: bool, default False
     :return: found dataframe and its index in the list of dependencies or an empty dataframe if nothing was found
     :rtype: tuple
     """
@@ -447,10 +449,12 @@ def find_matching_dependency_option(df:pd.DataFrame,plugin_params:dict,plugin_ma
             sys.stdout.write('Found following depency: \n')
             for k,v in plugin_mandatory_dependencies[i].items():
                 sys.stdout.write(f'{k}:{v}\n')
+            if intersect_levels:
+                dependencies_df = get_intersecting_levels(dependencies_df,plugin_mandatory_dependencies[i])
             return dependencies_df, option
     return pd.DataFrame(dtype=object), 0
 
-def get_dependencies(groups:groupby.generic.DataFrameGroupBy,meta_df:pd.DataFrame,plugin_name:str,plugin_mandatory_dependencies:'list[dict]',plugin_params:dict=None) -> 'list[pd.DataFrame]':
+def get_dependencies(groups:groupby.generic.DataFrameGroupBy,meta_df:pd.DataFrame,plugin_name:str,plugin_mandatory_dependencies:'list[dict]',plugin_params:dict=None,intersect_levels:bool=False) -> 'list[pd.DataFrame]':
     """For each provided grouping, tries to find the correcponding dependencies
 
     :param groups: A DataFrameGroupBy object obtained from the groupby method
@@ -463,6 +467,8 @@ def get_dependencies(groups:groupby.generic.DataFrameGroupBy,meta_df:pd.DataFram
     :type plugin_mandatory_dependencies: list[dict]
     :param plugin_params: plugin paramaters to pass on
     :type plugin_params: dict
+    :param intersect_levels: finds the intersecting levels for dependencies
+    :type intersect_levels: bool, default False
     :raises DependencyError: if no dependencies are found, raises this error
     :return: list of matching dataframes
     :rtype: list[pd.DataFrame]
@@ -470,7 +476,7 @@ def get_dependencies(groups:groupby.generic.DataFrameGroupBy,meta_df:pd.DataFram
     df_list = []
     for _,current_group in groups:
         sys.stdout.write(f'{plugin_name} - Checking dependencies\n')
-        dependencies_df, option = find_matching_dependency_option(pd.concat([current_group,meta_df],ignore_index=True),plugin_params,plugin_mandatory_dependencies)
+        dependencies_df, option = find_matching_dependency_option(pd.concat([current_group,meta_df],ignore_index=True),plugin_params,plugin_mandatory_dependencies,intersect_levels)
         if dependencies_df.empty:
             sys.stderr.write(f'{plugin_name} - No matching dependencies found for this group \n%s\n'%current_group[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']])
             continue

@@ -2,7 +2,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 echo ${DIR}
 cd ${DIR}
-DOC_DIR=${DIR:0:${#DIR}-3}doc
+DOC_DIR=${DIR:0:${#DIR}-8}doc
 echo ${DOCDIR}
 # for f in `ls *.org`
 # do

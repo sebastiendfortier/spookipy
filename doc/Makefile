@@ -13,9 +13,8 @@ TOOLS       = ../doctools
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-insert_version:
-	echo 'hello'
-	# @$(TOOLS)/insert_version.sh
+ssm_package:
+	@$(TOOLS)/create_dyn_doc.sh
 
 rst:
 	@$(TOOLS)/convert_and_send_to_doc.sh
@@ -23,11 +22,7 @@ rst:
 readme:
 	../make_readme.sh
 
-replace:
-	echo 'hello'
-	# @$(TOOLS)/replace_modified_files.sh
-
-doc: insert_version rst readme replace
+doc: ssm_package rst readme
 	make --no-print-directory html
 
 remove_gen_files:

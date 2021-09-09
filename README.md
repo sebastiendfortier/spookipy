@@ -24,7 +24,7 @@ algorithms.
 
 Use the ssm package
 
-    . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/spookipy/0.0.0
+    . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/spookipy/1.0.0
 
 ## Using spookipy in scripts or Jupyter Lab/Notebook
 
@@ -34,7 +34,7 @@ Use the ssm package
 # get rmn python library
 . r.load.dot eccc/mrd/rpn/MIG/ENV/migdep/5.1.1 eccc/mrd/rpn/MIG/ENV/rpnpy/2.1.2
 # get spookipy ssm package
-. ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/spookipy/0.0.0/
+. ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/spookipy/1.0.0/
 # get fstpy ssm package
 . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/fstpy/2.1.6/
 ```

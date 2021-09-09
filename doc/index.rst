@@ -25,6 +25,7 @@ Documentation
 * :doc:`usage`
 * :doc:`contributing`
 * :doc:`ssm`
+* :doc:`plugin_anatomy`
 
 .. toctree::
    :maxdepth: 1
@@ -36,6 +37,7 @@ Documentation
    usage
    contributing
    ssm
+   plugin_anatomy
 
 **Modules**
 

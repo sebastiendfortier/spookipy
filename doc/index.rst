@@ -52,8 +52,8 @@ Documentation
 * :doc:`humidex`
 * :doc:`humidityrelative`
 * :doc:`humidityspecific`
-* :doc:`interpolationhorizontal`
-* :doc:`interpolationhorizontal`
+* :doc:`interpolationhorizontalgrid`
+* :doc:`interpolationhorizontalpoint`
 * :doc:`mask`
 * :doc:`matchlevelindextovalue`
 * :doc:`minmaxlevelindex`

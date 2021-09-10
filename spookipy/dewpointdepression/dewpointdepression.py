@@ -11,7 +11,7 @@ from ..plugin import Plugin
 
 from ..utils import (create_empty_result, existing_results, final_results,
                      get_dependencies, get_existing_result,
-                     get_from_dataframe, get_intersecting_levels, initializer)
+                     get_from_dataframe, initializer)
 
 from ..science import es_from_td, rpn_es_from_hr, rpn_es_from_hu, TDPACK_OFFSET_FIX
 
@@ -101,49 +101,47 @@ class DewPointDepression(Plugin):
 
 
     def compute(self) -> pd.DataFrame:
-
-
         if not self.existing_result_df.empty:
             return existing_results('DewPointDepression',self.existing_result_df,self.meta_df)
 
         sys.stdout.write('DewPointDepression - compute\n')
         df_list=[]
         if self.rpn:
-            dependencies_list = get_dependencies(self.groups,self.meta_df,'DewPointDepression',self.plugin_mandatory_dependencies_rpn,self.plugin_params)
+            dependencies_list = get_dependencies(self.groups,self.meta_df,'DewPointDepression',self.plugin_mandatory_dependencies_rpn,self.plugin_params,intersect_levels=True)
         else:
-            dependencies_list = get_dependencies(self.groups,self.meta_df,'DewPointDepression',self.plugin_mandatory_dependencies,self.plugin_params)
+            dependencies_list = get_dependencies(self.groups,self.meta_df,'DewPointDepression',self.plugin_mandatory_dependencies,self.plugin_params,intersect_levels=True)
 
         for dependencies_df,option in dependencies_list:
 
             if self.rpn:
                 if option==0:
-                    level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
-                    hu_df = get_from_dataframe(level_intersection_df,'HU')
-                    es_df = self.rpn_dewpointdepression_from_tt_hu_px(hu_df, level_intersection_df, option)
+                    # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
+                    hu_df = get_from_dataframe(dependencies_df,'HU')
+                    es_df = self.rpn_dewpointdepression_from_tt_hu_px(hu_df, dependencies_df, option)
 
                 elif option==1:
-                    level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
-                    hu_df = self.compute_hu(level_intersection_df)
-                    es_df = self.rpn_dewpointdepression_from_tt_hu_px(hu_df, level_intersection_df, option)
+                    # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
+                    hu_df = self.compute_hu(dependencies_df)
+                    es_df = self.rpn_dewpointdepression_from_tt_hu_px(hu_df, dependencies_df, option)
 
                 elif option==2:
                     es_df = self.rpn_dewpointdepression_from_tt_hr_px(dependencies_df, option)
 
                 else:
-                    level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
-                    td_df = get_from_dataframe(level_intersection_df,'TD')
-                    es_df = self.dewpointdepression_from_tt_td(td_df, level_intersection_df, option, True)
+                    # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
+                    td_df = get_from_dataframe(dependencies_df,'TD')
+                    es_df = self.dewpointdepression_from_tt_td(td_df, dependencies_df, option, True)
 
             else:
                 if option in range(0,3):
-                    level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
-                    td_df = self.compute_td(level_intersection_df)
-                    es_df = self.dewpointdepression_from_tt_td(td_df, level_intersection_df, option)
+                    # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
+                    td_df = self.compute_td(dependencies_df)
+                    es_df = self.dewpointdepression_from_tt_td(td_df, dependencies_df, option)
 
                 else:
-                    level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
-                    td_df = get_from_dataframe(level_intersection_df,'TD')
-                    es_df = self.dewpointdepression_from_tt_td(td_df, level_intersection_df, option)
+                    # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
+                    td_df = get_from_dataframe(dependencies_df,'TD')
+                    es_df = self.dewpointdepression_from_tt_td(td_df, dependencies_df, option)
 
             df_list.append(es_df)
 
@@ -151,11 +149,11 @@ class DewPointDepression(Plugin):
 
     def rpn_dewpointdepression_from_tt_hr_px(self, dependencies_df, option):
         sys.stdout.write(f'rpn option {option+1}\n')
-        level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
-        level_intersection_df = fstpy.load_data(level_intersection_df)
-        tt_df = get_from_dataframe(level_intersection_df,'TT')
-        hr_df = get_from_dataframe(level_intersection_df,'HR')
-        px_df = get_from_dataframe(level_intersection_df,'PX')
+        # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
+        dependencies_df = fstpy.load_data(dependencies_df)
+        tt_df = get_from_dataframe(dependencies_df,'TT')
+        hr_df = get_from_dataframe(dependencies_df,'HR')
+        px_df = get_from_dataframe(dependencies_df,'PX')
         es_df = create_empty_result(tt_df,self.plugin_result_specifications['ES'],all_rows=True)
         ttk_df = fstpy.unit_convert(tt_df,'kelvin')
         pxpa_df = fstpy.unit_convert(px_df,'pascal')
@@ -166,12 +164,12 @@ class DewPointDepression(Plugin):
             es_df.at[i,'d'] = rpn_es_from_hr(tt=ttk,hr=hr,px=pxpa,swph=self.ice_water_phase=='both').astype(np.float32)
         return es_df
 
-    def rpn_dewpointdepression_from_tt_hu_px(self, hu_df, level_intersection_df, option):
+    def rpn_dewpointdepression_from_tt_hu_px(self, hu_df, dependencies_df, option):
         sys.stdout.write(f'rpn option {option+1}\n')
         hu_df = fstpy.load_data(hu_df)
-        level_intersection_df = fstpy.load_data(level_intersection_df)
-        tt_df = get_from_dataframe(level_intersection_df,'TT')
-        px_df = get_from_dataframe(level_intersection_df,'PX')
+        dependencies_df = fstpy.load_data(dependencies_df)
+        tt_df = get_from_dataframe(dependencies_df,'TT')
+        px_df = get_from_dataframe(dependencies_df,'PX')
         es_df = create_empty_result(tt_df,self.plugin_result_specifications['ES'],all_rows=True)
         ttk_df = fstpy.unit_convert(tt_df,'kelvin')
         pxpa_df = fstpy.unit_convert(px_df,'pascal')
@@ -182,20 +180,20 @@ class DewPointDepression(Plugin):
             es_df.at[i,'d'] = rpn_es_from_hu(tt=ttk,hu=hu,px=pxpa,swph=self.ice_water_phase=='both').astype(np.float32)
         return es_df
 
-    def compute_hu(self, level_intersection_df):
+    def compute_hu(self, dependencies_df):
         from ..humidityspecific.humidityspecific import HumiditySpecific
-        hu_df = HumiditySpecific(pd.concat([level_intersection_df,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,rpn=True).compute()
+        hu_df = HumiditySpecific(pd.concat([dependencies_df,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,rpn=True).compute()
         hu_df = get_from_dataframe(hu_df,'HU')
         return hu_df
 
-    def dewpointdepression_from_tt_td(self, td_df, level_intersection_df, option, rpn=False):
+    def dewpointdepression_from_tt_td(self, td_df, dependencies_df, option, rpn=False):
         if rpn:
             sys.stdout.write(f'rpn option {option+1}\n')
         else:
             sys.stdout.write(f'option {option+1}\n')
         td_df = fstpy.load_data(td_df)
-        level_intersection_df = fstpy.load_data(level_intersection_df)
-        tt_df = get_from_dataframe(level_intersection_df,'TT')
+        dependencies_df = fstpy.load_data(dependencies_df)
+        tt_df = get_from_dataframe(dependencies_df,'TT')
         es_df = create_empty_result(tt_df,self.plugin_result_specifications['ES'],all_rows=True)
         for i in es_df.index:
             tt = tt_df.at[i,'d']
@@ -203,8 +201,8 @@ class DewPointDepression(Plugin):
             es_df.at[i,'d'] = es_from_td(tt=tt-TDPACK_OFFSET_FIX,td=td-TDPACK_OFFSET_FIX).astype(np.float32)
         return es_df
 
-    def compute_td(self, level_intersection_df):
+    def compute_td(self, dependencies_df):
         from ..temperaturedewpoint.temperaturedewpoint import TemperatureDewPoint
-        td_df = TemperatureDewPoint(pd.concat([level_intersection_df,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase, temp_phase_switch=self.temp_phase_switch, temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
+        td_df = TemperatureDewPoint(pd.concat([dependencies_df,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase, temp_phase_switch=self.temp_phase_switch, temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
         td_df = get_from_dataframe(td_df,'TD')
         return td_df

@@ -6,7 +6,7 @@ from test import TMP_PATH,TEST_PATH
 
 import spookipy.all as spooki
 
-pytestmark = [pytest.mark.regressions]
+pytestmark = [pytest.mark.regressions,pytest.mark.humidity]
 
 @pytest.fixture
 def plugin_test_dir():

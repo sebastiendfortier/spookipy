@@ -115,12 +115,10 @@ class DewPointDepression(Plugin):
 
             if self.rpn:
                 if option==0:
-                    # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
                     hu_df = get_from_dataframe(dependencies_df,'HU')
                     es_df = self.rpn_dewpointdepression_from_tt_hu_px(hu_df, dependencies_df, option)
 
                 elif option==1:
-                    # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
                     hu_df = self.compute_hu(dependencies_df)
                     es_df = self.rpn_dewpointdepression_from_tt_hu_px(hu_df, dependencies_df, option)
 
@@ -128,18 +126,15 @@ class DewPointDepression(Plugin):
                     es_df = self.rpn_dewpointdepression_from_tt_hr_px(dependencies_df, option)
 
                 else:
-                    # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
                     td_df = get_from_dataframe(dependencies_df,'TD')
                     es_df = self.dewpointdepression_from_tt_td(td_df, dependencies_df, option, True)
 
             else:
                 if option in range(0,3):
-                    # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
                     td_df = self.compute_td(dependencies_df)
                     es_df = self.dewpointdepression_from_tt_td(td_df, dependencies_df, option)
 
                 else:
-                    # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
                     td_df = get_from_dataframe(dependencies_df,'TD')
                     es_df = self.dewpointdepression_from_tt_td(td_df, dependencies_df, option)
 
@@ -149,7 +144,6 @@ class DewPointDepression(Plugin):
 
     def rpn_dewpointdepression_from_tt_hr_px(self, dependencies_df, option):
         sys.stdout.write(f'rpn option {option+1}\n')
-        # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
         dependencies_df = fstpy.load_data(dependencies_df)
         tt_df = get_from_dataframe(dependencies_df,'TT')
         hr_df = get_from_dataframe(dependencies_df,'HR')

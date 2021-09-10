@@ -452,7 +452,7 @@ def find_matching_dependency_option(df:pd.DataFrame,plugin_params:dict,plugin_ma
             
     return pd.DataFrame(dtype=object), 0
 
-def get_dependencies(groups:groupby.generic.DataFrameGroupBy,meta_df:pd.DataFrame,plugin_name:str,plugin_mandatory_dependencies:'list[dict]',plugin_params:dict=None,intersect_levels:bool=False) -> 'list[pd.DataFrame]':
+def get_dependencies(groups:groupby.generic.DataFrameGroupBy,meta_df:pd.DataFrame,plugin_name:str,plugin_mandatory_dependencies:'list[dict]',plugin_params:dict=None,intersect_levels:bool=False) -> 'list[Tuple[pd.DataFrame,int]]':
     """For each provided grouping, tries to find the correcponding dependencies
 
     :param groups: A DataFrameGroupBy object obtained from the groupby method

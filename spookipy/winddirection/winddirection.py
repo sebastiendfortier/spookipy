@@ -61,7 +61,7 @@ class WindDirection(Plugin):
 
         sys.stdout.write('WindDirection - compute\n')
         df_list = []
-        dependencies_list = get_dependencies(self.groups,self.meta_df,'WindChill',self.plugin_mandatory_dependencies)
+        dependencies_list = get_dependencies(self.groups,self.meta_df,'WindChill',self.plugin_mandatory_dependencies, intersect_levels=True)
         for dependencies_df,_ in dependencies_list:
             grid = dependencies_df.grid.unique()[0]
 
@@ -80,7 +80,7 @@ class WindDirection(Plugin):
             if (grtyp=='Y') and (meta_grtyp!='L'):
                 raise  WindDirectionError('Only positional records of type: L are supported with grid type: Y.\n')
 
-            dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies)
+            # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies)
 
             dependencies_df = fstpy.load_data(dependencies_df)
             uu_df = get_from_dataframe(dependencies_df,'UU')

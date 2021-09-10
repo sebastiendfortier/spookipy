@@ -9,7 +9,7 @@ from ..plugin import Plugin
 
 from ..utils import (create_empty_result, existing_results, final_results,
                      get_dependencies, get_existing_result,
-                     get_from_dataframe, get_intersecting_levels)
+                     get_from_dataframe)
 
 from ..science import hmx_from_svp
 
@@ -80,30 +80,30 @@ class Humidex(Plugin):
 
         sys.stdout.write('Humidex - compute\n')
         df_list=[]
-        dependencies_list = get_dependencies(self.groups,self.meta_df,'Humidex',self.plugin_mandatory_dependencies)
+        dependencies_list = get_dependencies(self.groups,self.meta_df,'Humidex',self.plugin_mandatory_dependencies,intersect_levels=True)
 
         for dependencies_df,option in dependencies_list:
             if option==0:
-                level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
-                td_df = get_from_dataframe(level_intersection_df,'TD')
-                hmx_df = self.humidex_from_tt_svp(level_intersection_df,td_df,option)
+                # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
+                td_df = get_from_dataframe(dependencies_df,'TD')
+                hmx_df = self.humidex_from_tt_svp(dependencies_df,td_df,option)
 
             else:
-                level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
-                td_df = self.get_td(level_intersection_df)
-                hmx_df = self.humidex_from_tt_svp(level_intersection_df,td_df,option)
+                # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
+                td_df = self.compute_td(dependencies_df)
+                hmx_df = self.humidex_from_tt_svp(dependencies_df,td_df,option)
 
             df_list.append(hmx_df)
 
         return final_results(df_list, HumidexError, self.meta_df)
 
-    def humidex_from_tt_svp(self, level_intersection_df, td_df, option):
+    def humidex_from_tt_svp(self, dependencies_df, td_df, option):
         from ..saturationvapourpressure.saturationvapourpressure import \
             SaturationVapourPressure
         sys.stdout.write(f'option {option+1}\n')
         td_df = fstpy.load_data(td_df)
-        level_intersection_df = fstpy.load_data(level_intersection_df)
-        tt_df = get_from_dataframe(level_intersection_df,'TT')
+        dependencies_df = fstpy.load_data(dependencies_df)
+        tt_df = get_from_dataframe(dependencies_df,'TT')
         hmx_df = create_empty_result(tt_df,self.plugin_result_specifications['HMX'],all_rows=True)
         rentd_df = td_df
         rentd_df.loc[rentd_df.nomvar=='TD','nomvar'] = 'TT'
@@ -116,8 +116,8 @@ class Humidex(Plugin):
             hmx_df.at[i,'d'] = hmx_from_svp(tt=tt,svp=svp).astype(np.float32)
         return hmx_df
 
-    def get_td(self, level_intersection_df):
+    def compute_td(self, dependencies_df):
         from ..temperaturedewpoint.temperaturedewpoint import \
             TemperatureDewPoint
-        td_df = TemperatureDewPoint(pd.concat([level_intersection_df,self.meta_df],ignore_index=True),ice_water_phase='water').compute()
+        td_df = TemperatureDewPoint(pd.concat([dependencies_df,self.meta_df],ignore_index=True),ice_water_phase='water').compute()
         return td_df

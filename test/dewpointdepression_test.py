@@ -5,7 +5,7 @@ import fstpy.all as fstpy
 import spookipy.all as spooki
 import pandas as pd
 
-pytestmark = [pytest.mark.regressions]
+pytestmark = [pytest.mark.regressions,pytest.mark.humidity]
 
 @pytest.fixture
 def plugin_test_dir():

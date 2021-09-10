@@ -12,10 +12,10 @@ from ..plugin import Plugin
 
 from ..utils import (create_empty_result, existing_results, final_results,
                      get_dependencies, get_existing_result,
-                     get_from_dataframe, get_intersecting_levels, initializer)
+                     get_from_dataframe, initializer)
 
 
-from ..science import TDPACK_OFFSET_FIX, es_from_td, hu_from_qv, hu_from_vppr, rpn_hu_from_es, rpn_hu_from_hr
+from ..science import hu_from_qv, hu_from_vppr, rpn_hu_from_es, rpn_hu_from_hr
 
 class HumiditySpecificError(Exception):
     pass
@@ -109,9 +109,9 @@ class HumiditySpecific(Plugin):
         df_list = []
 
         if self.rpn:
-            dependencies_list = get_dependencies(self.groups,self.meta_df,'HumiditySpecific',self.plugin_mandatory_dependencies_rpn,self.plugin_params)
+            dependencies_list = get_dependencies(self.groups,self.meta_df,'HumiditySpecific',self.plugin_mandatory_dependencies_rpn,self.plugin_params,intersect_levels=True)
         else:
-            dependencies_list = get_dependencies(self.groups,self.meta_df,'HumiditySpecific',self.plugin_mandatory_dependencies,self.plugin_params)
+            dependencies_list = get_dependencies(self.groups,self.meta_df,'HumiditySpecific',self.plugin_mandatory_dependencies,self.plugin_params,intersect_levels=True)
 
         for dependencies_df,option in dependencies_list:
             if self.rpn:
@@ -122,14 +122,14 @@ class HumiditySpecific(Plugin):
                     hu_df = self.rpn_humnidityspecific_from_tt_hr_px(dependencies_df, option)
 
                 elif option==2: #test 11
-                    level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
-                    es_df = get_from_dataframe(level_intersection_df,'ES')
-                    hu_df = self.rpn_humidity_specific_from_tt_es_px(es_df, level_intersection_df, option)
+                    # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
+                    es_df = get_from_dataframe(dependencies_df,'ES')
+                    hu_df = self.rpn_humidity_specific_from_tt_es_px(es_df, dependencies_df, option)
 
                 else: #test 13
-                    level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
-                    es_df = self.compute_es(level_intersection_df)
-                    hu_df = self.rpn_humidity_specific_from_tt_es_px(es_df, level_intersection_df, option)
+                    # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
+                    es_df = self.compute_es(dependencies_df)
+                    hu_df = self.rpn_humidity_specific_from_tt_es_px(es_df, dependencies_df, option)
 
             else:
                 if option==0:
@@ -144,11 +144,11 @@ class HumiditySpecific(Plugin):
 
     def rpn_humnidityspecific_from_tt_hr_px(self, dependencies_df, option):
         sys.stdout.write(f'rpn option {option+1}\n')
-        level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
-        level_intersection_df = fstpy.load_data(level_intersection_df)
-        tt_df = get_from_dataframe(level_intersection_df,'TT')
-        hr_df = get_from_dataframe(level_intersection_df,'HR')
-        px_df = get_from_dataframe(level_intersection_df,'PX')
+        # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
+        dependencies_df = fstpy.load_data(dependencies_df)
+        tt_df = get_from_dataframe(dependencies_df,'TT')
+        hr_df = get_from_dataframe(dependencies_df,'HR')
+        px_df = get_from_dataframe(dependencies_df,'PX')
         hu_df = create_empty_result(tt_df,self.plugin_result_specifications['HU'],all_rows=True)
         ttk_df = fstpy.unit_convert(tt_df,'kelvin')
         pxpa_df = fstpy.unit_convert(px_df,'pascal')
@@ -159,12 +159,12 @@ class HumiditySpecific(Plugin):
             hu_df.at[i,'d'] = rpn_hu_from_hr(tt=ttk, hr=hr, px=pxpa, swph=self.ice_water_phase=='both').astype(np.float32)
         return hu_df
 
-    def rpn_humidity_specific_from_tt_es_px(self, es_df, level_intersection_df,option):
+    def rpn_humidity_specific_from_tt_es_px(self, es_df, dependencies_df,option):
         sys.stdout.write(f'rpn option {option+1}\n')
         es_df = fstpy.load_data(es_df)
-        level_intersection_df = fstpy.load_data(level_intersection_df)
-        tt_df = get_from_dataframe(level_intersection_df,'TT')
-        px_df = get_from_dataframe(level_intersection_df,'PX')
+        dependencies_df = fstpy.load_data(dependencies_df)
+        tt_df = get_from_dataframe(dependencies_df,'TT')
+        px_df = get_from_dataframe(dependencies_df,'PX')
         hu_df = create_empty_result(tt_df,self.plugin_result_specifications['HU'],all_rows=True)
         ttk_df = fstpy.unit_convert(tt_df,'kelvin')
         pxpa_df = fstpy.unit_convert(px_df,'pascal')
@@ -175,9 +175,9 @@ class HumiditySpecific(Plugin):
             hu_df.at[i,'d'] = rpn_hu_from_es(tt=ttk, es=es, px=pxpa, swph=self.ice_water_phase=='both').astype(np.float32)
         return hu_df
 
-    def compute_es(self, level_intersection_df):
+    def compute_es(self, dependencies_df):
         from spookipy.dewpointdepression.dewpointdepression import DewPointDepression
-        es_df = DewPointDepression(pd.concat([level_intersection_df,self.meta_df],ignore_index=True),ice_water_phase='water').compute()
+        es_df = DewPointDepression(pd.concat([dependencies_df,self.meta_df],ignore_index=True),ice_water_phase='water').compute()
         es_df = get_from_dataframe(es_df,'ES')
         return es_df
 
@@ -198,11 +198,11 @@ class HumiditySpecific(Plugin):
     def humidityspecific_from_vppr_px(self, dependencies_df, option):
         from ..vapourpressure.vapourpressure import VapourPressure
         sys.stdout.write(f'option {option+1}\n')
-        level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
-        level_intersection_df = fstpy.load_data(level_intersection_df)
-        px_df = get_from_dataframe(level_intersection_df,'PX')
+        # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
+        dependencies_df = fstpy.load_data(dependencies_df)
+        px_df = get_from_dataframe(dependencies_df,'PX')
         hu_df = create_empty_result(px_df,self.plugin_result_specifications['HU'],all_rows=True)
-        vppr_df = VapourPressure(pd.concat([level_intersection_df,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase, temp_phase_switch=self.temp_phase_switch, temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
+        vppr_df = VapourPressure(pd.concat([dependencies_df,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase, temp_phase_switch=self.temp_phase_switch, temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
         vppr_df = get_from_dataframe(vppr_df,'VPPR')
         for i in hu_df.index:
             px = px_df.at[i,'d']

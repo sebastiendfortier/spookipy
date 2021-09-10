@@ -288,15 +288,6 @@ def remove_load_data_info(df):
     df.loc[:,'key'] = ''
     return df
 
-# def create_empty_result(df, plugin_result_specifications):
-#     res_d = df.iloc[0].to_dict()
-#     res_df = pd.DataFrame([res_d])
-#     res_df['file_modification_time'] = None
-#     res_df['key'] = None
-#     res_df['d'] = None
-#     for k,v in plugin_result_specifications.items():
-#         res_df[k] = v
-#     return res_df
 
 def create_empty_result(df:pd.DataFrame, plugin_result_specifications:dict,all_rows:bool=False) -> pd.DataFrame:
     """Creates a one row dataframe from the model dataframe, id all_rows is True, then copies the entire dataframe.
@@ -449,9 +440,16 @@ def find_matching_dependency_option(df:pd.DataFrame,plugin_params:dict,plugin_ma
             sys.stdout.write('Found following depency: \n')
             for k,v in plugin_mandatory_dependencies[i].items():
                 sys.stdout.write(f'{k}:{v}\n')
-            if intersect_levels:
+            if intersect_levels and len(plugin_mandatory_dependencies[i]) > 1:
                 dependencies_df = get_intersecting_levels(dependencies_df,plugin_mandatory_dependencies[i])
+                if dependencies_df.empty:
+                    sys.stdout.write('Intersecting levels requested and not found for this dataframe\n')
+                    return pd.DataFrame(dtype=object), 0
+                else:    
+                    sys.stdout.write('Intersecting levels requested and found\n')
+                
             return dependencies_df, option
+            
     return pd.DataFrame(dtype=object), 0
 
 def get_dependencies(groups:groupby.generic.DataFrameGroupBy,meta_df:pd.DataFrame,plugin_name:str,plugin_mandatory_dependencies:'list[dict]',plugin_params:dict=None,intersect_levels:bool=False) -> 'list[pd.DataFrame]':

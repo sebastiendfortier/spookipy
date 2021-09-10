@@ -11,8 +11,7 @@ from ..plugin import Plugin
 
 from ..utils import (create_empty_result, existing_results, final_results,
                      get_dependencies, get_existing_result,
-                     get_from_dataframe, get_intersecting_levels,
-                     initializer)
+                     get_from_dataframe, initializer)
 
 from ..science import qv_from_hu, qv_from_vppr
 
@@ -80,9 +79,9 @@ class WaterVapourMixingRatio(Plugin):
         df_list = []
 
         if self.rpn:
-            dependencies_list = get_dependencies(self.groups,self.meta_df,'WaterVapourMixingRatio',self.plugin_mandatory_dependencies_rpn,self.plugin_params)
+            dependencies_list = get_dependencies(self.groups,self.meta_df,'WaterVapourMixingRatio',self.plugin_mandatory_dependencies_rpn,self.plugin_params, intersect_levels=True)
         else:
-            dependencies_list = get_dependencies(self.groups,self.meta_df,'WaterVapourMixingRatio',self.plugin_mandatory_dependencies,self.plugin_params)
+            dependencies_list = get_dependencies(self.groups,self.meta_df,'WaterVapourMixingRatio',self.plugin_mandatory_dependencies,self.plugin_params, intersect_levels=True)
 
         for dependencies_df,option in dependencies_list:
             if option==0:
@@ -97,10 +96,10 @@ class WaterVapourMixingRatio(Plugin):
 
     def watervapourmixingratio_from_vppr(self, dependencies_df, option):
         sys.stdout.write(f'option {option+1}\n')
-        level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
-        level_intersection_df = fstpy.load_data(level_intersection_df)
-        vppr_df = get_from_dataframe(level_intersection_df,'VPPR')
-        px_df = get_from_dataframe(level_intersection_df,'PX')
+        # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
+        dependencies_df = fstpy.load_data(dependencies_df)
+        vppr_df = get_from_dataframe(dependencies_df,'VPPR')
+        px_df = get_from_dataframe(dependencies_df,'PX')
         qv_df = create_empty_result(vppr_df,self.plugin_result_specifications['QV'],all_rows=True)
         vpprpa_df = fstpy.unit_convert(vppr_df,'pascal')
         pxpa_df = fstpy.unit_convert(px_df,'pascal')

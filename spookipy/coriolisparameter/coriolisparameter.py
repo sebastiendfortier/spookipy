@@ -4,7 +4,7 @@ from ..utils import create_empty_result, get_existing_result, existing_results, 
 from ..plugin import Plugin
 import pandas as pd
 import fstpy.all as fstpy
-import sys
+import logging
 import math
 import numpy as np
 
@@ -55,18 +55,18 @@ class CoriolisParameter(Plugin):
         if not self.existing_result_df.empty:
             return existing_results('CoriolisParameter',self.existing_result_df,self.meta_df)
 
-        sys.stdout.write('CoriolisParameter - compute\n')
+        logging.info('CoriolisParameter - compute\n')
         df_list=[]
         for _, current_group in self.groups:
             latlon_df = fstpy.get_2d_lat_lon(current_group)
             lat_df = latlon_df.loc[latlon_df.nomvar=='LA'].reset_index(drop=True)
             if lat_df.empty:
-                sys.stderr.write('Cannot find "LA" field in this group - skipping\n')
+                logging.warning('Cannot find "LA" field in this group - skipping\n')
                 continue
             # remove meta
             current_group = current_group.loc[~current_group.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
             if current_group.empty:
-                sys.stderr.write('Cannot find "LON" field in this group - skipping\n')
+                logging.warning('Cannot find "LON" field in this group - skipping\n')
                 continue
 
             corp_df = create_empty_result(lat_df,self.plugin_result_specifications['CORP'])

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import sys
+import logging
 
 import fstpy.all as fstpy
 import pandas as pd
@@ -56,7 +56,7 @@ class GeorgeKIndex(Plugin):
         if not self.existing_result_df.empty:
             return existing_results('GeorgeKIndex',self.existing_result_df,self.meta_df)
 
-        sys.stdout.write('GeorgeKIndex - compute\n')
+        logging.info('GeorgeKIndex - compute\n')
         df_list=[]
         dependencies_list = get_dependencies(self.groups,self.meta_df,'GeorgeKIndex',self.plugin_mandatory_dependencies,{'ice_water_phase':'water'})
 

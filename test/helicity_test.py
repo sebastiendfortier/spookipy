@@ -3,6 +3,7 @@ from test import TMP_PATH,TEST_PATH
 import pytest
 import fstpy.all as fstpy
 import spookipy.all as spooki
+from ci_fstcomp import fstcomp
 
 pytestmark = [pytest.mark.skip]
 
@@ -32,6 +33,6 @@ def test_1(plugin_test_dir):
     file_to_compare = plugin_test_dir + "helicity3_file2cmp.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)

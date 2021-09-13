@@ -3,7 +3,7 @@ from test import TMP_PATH,TEST_PATH
 import pytest
 import fstpy.all as fstpy
 import spookipy.all as spooki
-import rpnpy.librmn.all as rmn
+from ci_fstcomp import fstcomp
 
 pytestmark = [pytest.mark.regressions]
 
@@ -75,7 +75,7 @@ def test_4(plugin_test_dir):
     file_to_compare = plugin_test_dir + "Multiply2d_file2cmp.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -101,7 +101,7 @@ def test_5(plugin_test_dir):
     file_to_compare = plugin_test_dir + "Multiply3d_file2cmp.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -128,7 +128,7 @@ def test_6(plugin_test_dir):
     file_to_compare = plugin_test_dir + "Multiply_test6_file2cmp.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -155,6 +155,6 @@ def test_7(plugin_test_dir):
     file_to_compare = plugin_test_dir + "Multiply_test7_file2cmp.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)

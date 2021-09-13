@@ -2,6 +2,7 @@
 import fstpy.all as fstpy
 import pytest
 from test import TMP_PATH,TEST_PATH
+from ci_fstcomp import fstcomp
 
 import spookipy.all as spooki
 
@@ -39,7 +40,7 @@ def test_1(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/Humidex/result_test_1'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
+    res = fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -68,6 +69,6 @@ def test_2(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/Humidex/result_test_2'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)

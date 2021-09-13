@@ -30,7 +30,7 @@ def test_reggc_test_1(plugin_test_dir):
     file_to_compare = plugin_test_dir + "gc_test_1.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     assert(res)
 
 
@@ -52,7 +52,7 @@ def test_reggc_test_2(plugin_test_dir):
     file_to_compare = plugin_test_dir + "gc_test_2.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     assert(res)
 
 
@@ -76,7 +76,7 @@ def test_reggc_test_3(plugin_test_dir):
     file_to_compare = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     assert(res)
 
 
@@ -112,7 +112,7 @@ def test_reggc_test_5(plugin_test_dir):
     file_to_compare = plugin_test_dir + "gc_test_5.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     assert(res)
 
 
@@ -135,7 +135,7 @@ def test_reggc_test_6(plugin_test_dir):
     file_to_compare = plugin_test_dir + "gc_test_6.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     assert(res)
 
 
@@ -165,7 +165,7 @@ def test_reggc_test_6(plugin_test_dir):
 #     file_to_compare = plugin_test_dir + "2011100712_012_regpres_ud850_file2cmp.std"
 
 #     #compare results
-#     res = fstpy.fstcomp(results_file,file_to_compare)
+#     res = fstcomp(results_file,file_to_compare)
 #     assert(res)
 
 
@@ -190,5 +190,5 @@ def test_reggc_test_15(plugin_test_dir):
     file_to_compare = plugin_test_dir + "gc_test_1.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     assert(res)

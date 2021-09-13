@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import sys
+import logging
 from typing import Tuple
 
 import fstpy.all as fstpy
@@ -9,8 +9,7 @@ import pandas as pd
 from ..plugin import Plugin
 from ..utils import (create_empty_result, existing_results, final_results,
                      get_3d_array, get_dependencies,
-                     get_existing_result, get_from_dataframe,
-                     get_intersecting_levels)
+                     get_existing_result, get_from_dataframe)
 
 
 class WindMaxError(Exception):
@@ -82,26 +81,26 @@ class WindMax(Plugin):
         if not self.existing_result_df.empty:
             return existing_results('WindMax',self.existing_result_df,self.meta_df)
 
-        sys.stdout.write('WindMax - compute\n')
+        logging.info('WindMax - compute\n')
         #holds data from all the groups
         df_list = []
 
-        dependencies_list = get_dependencies(self.groups,self.meta_df,'WindMax',self.plugin_mandatory_dependencies)
+        dependencies_list = get_dependencies(self.groups,self.meta_df,'WindMax',self.plugin_mandatory_dependencies,intersect_levels=True)
 
-        for dependencies_df,option in dependencies_list:
-            level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
-            level_intersection_df = fstpy.load_data(level_intersection_df)
+        for dependencies_df,_ in dependencies_list:
 
-            uu_df = get_from_dataframe(level_intersection_df,'UU')
+            dependencies_df = fstpy.load_data(dependencies_df)
+
+            uu_df = get_from_dataframe(dependencies_df,'UU')
             uu_res_df = create_empty_result(uu_df,self.plugin_result_specifications['UU'])
 
-            vv_df = get_from_dataframe(level_intersection_df,'VV')
+            vv_df = get_from_dataframe(dependencies_df,'VV')
             vv_res_df = create_empty_result(vv_df,self.plugin_result_specifications['VV'])
 
-            uv_df = get_from_dataframe(level_intersection_df,'UV')
+            uv_df = get_from_dataframe(dependencies_df,'UV')
             uv_res_df = create_empty_result(uv_df,self.plugin_result_specifications['UV'])
 
-            px_df = get_from_dataframe(level_intersection_df,'PX')
+            px_df = get_from_dataframe(dependencies_df,'PX')
             px_res_df = create_empty_result(px_df,self.plugin_result_specifications['PX'])
 
             uu_3d = get_3d_array(uu_df)

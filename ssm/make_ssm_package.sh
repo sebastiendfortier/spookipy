@@ -24,16 +24,16 @@ echo '}' >> control.json
 
 
 echo 'Building package '${PKGNAME}
-mkdir -p ${PKGNAME}/lib/packages/spookipy
+mkdir -p ${PKGNAME}/lib/python/spookipy
 mkdir -p ${PKGNAME}/.ssm.d
 mkdir -p ${PKGNAME}/bin
 mkdir -p ${PKGNAME}/etc/profile.d
 
 PROJECT_ROOT=../spookipy/
 echo 'Copying files to '${PKGNAME}' directory'
-cp package_setup.sh ${PKGNAME}/etc/profile.d/${PKGNAME}.sh
+cp ssm_package_setup.sh ${PKGNAME}/etc/profile.d/${PKGNAME}.sh
 cp control.json ${PKGNAME}/.ssm.d/.
-cp -rf ${PROJECT_ROOT}/* ${PKGNAME}/lib/packages/spookipy/.
+cp -rf ${PROJECT_ROOT}/* ${PKGNAME}/lib/python/spookipy/.
 echo 'Creating ssm archive '${PKGNAME}'.ssm'
 tar -zcvf ${PKGNAME}.ssm ${PKGNAME}
 echo 'Cleaning up '${PKGNAME}' directory'
@@ -65,5 +65,3 @@ rm /tmp/${USER}/${PKGNAME}.ssm
 echo 'Execute . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/'${name}'/'${VERSION}'/ to use official package'
 # echo 'Execute . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/'${name}'/'${VERSION}'/ to use official package'
 echo 'Execute . ssmuse-sh -d '${SSM_BASE}'/'${name}'/'${VERSION}' to use this package'
-
-

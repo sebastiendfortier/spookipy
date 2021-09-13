@@ -29,7 +29,9 @@ before_script:
   # - . ssmuse-sh -d /fs/site4/eccc/cmd/w/for000/ssm/dev_python_packages/python3.6/all/2021.07
   - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmdw/PRIVATE/dev_python_packages/python3.6/all/2021.09
   # - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmdw/PRIVATE/dev_python_packages/python3.6/all/2021.07
+  - . ssmuse-sh -d /fs/site4/eccc/cmd/w/sbf000/ssm/cifstcomp/1.0.0
   - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/2.1.6/
+  
   # - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/2.1.4/
 
 
@@ -77,4 +79,4 @@ ssm_package:
   stage: ssm_package
   script:
     - cd ssm
-    - ./make_package.sh
+    - ./make_ssm_package.sh

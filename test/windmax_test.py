@@ -2,7 +2,7 @@
 import fstpy.all as fstpy
 import pytest
 from test import TMP_PATH,TEST_PATH
-
+from ci_fstcomp import fstcomp
 import spookipy.all as spooki
 
 pytestmark = [pytest.mark.regressions]
@@ -35,7 +35,7 @@ def test_1(plugin_test_dir):
     # file_to_compare = '/fs/site4/eccc/cmd/w/sbf000/testFiles/WindMax/test_1.std'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -61,7 +61,7 @@ def test_2(plugin_test_dir):
     # file_to_compare = '/fs/site4/eccc/cmd/w/sbf000/testFiles/WindMax/test_2.std'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.001)#,e_max=0.0003)
+    res = fstcomp(results_file,file_to_compare,e_max=0.001)#,e_max=0.0003)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -88,6 +88,6 @@ def test_3(plugin_test_dir):
     # file_to_compare = '/fs/site4/eccc/cmd/w/sbf000/testFiles/WindMax/test_3.std'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)
+    res = fstcomp(results_file,file_to_compare,e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)

@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 from ..plugin import Plugin
-from ..utils import create_empty_result, get_3d_array, initializer, final_results, remove_load_data_info, validate_nomvar
+from ..utils import create_empty_result, get_3d_array, initializer, final_results, validate_nomvar
 import pandas as pd
-import numpy as np
-import sys
+import logging
 import fstpy.all as fstpy
 
 
@@ -52,14 +51,14 @@ class OpElementsByPoint(Plugin):
 
 
     def compute(self) -> pd.DataFrame:
-        sys.stdout.write('OpElementsByPoint - compute\n')
+        logging.info('OpElementsByPoint - compute\n')
         #holds data from all the groups
         df_list = []
         for _,current_group in self.groups:
             current_group = fstpy.load_data(current_group)
             current_group.sort_values(by=['nomvar','dateo','forecast_hour'],inplace=True)
             if len(current_group.index) == 1:
-                sys.stderr.write('need more than one field for this operation - skipping\n')
+                logging.warning('need more than one field for this operation - skipping\n')
                 continue
 
             res_df = create_empty_result(current_group,self.plugin_result_specifications['ALL'])

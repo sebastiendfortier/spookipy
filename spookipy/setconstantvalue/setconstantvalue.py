@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from ..utils import initializer, final_results, remove_load_data_info
+from ..utils import initializer, final_results
 from ..opelementsbyvalue import OpElementsByValue
 from ..plugin import Plugin
 import pandas as pd
 import fstpy.all as fstpy
-import sys
+import logging
 
 
 def set_value(a,v):
@@ -48,7 +48,7 @@ class SetConstantValue(Plugin):
 
 
     def compute(self) -> pd.DataFrame:
-        sys.stdout.write('SetConstantValue - compute\n')
+        logging.info('SetConstantValue - compute\n')
         df_list = []
         for _,current_group in self.groups:
             if self.max_index:

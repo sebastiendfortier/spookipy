@@ -4,7 +4,7 @@ import sys
 import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
-
+import logging
 from ..plugin import Plugin
 from ..utils import (create_empty_result, existing_results, final_results,
                      get_dependencies, get_existing_result, get_from_dataframe)
@@ -54,7 +54,7 @@ class TotalTotalsIndex(Plugin):
         if not self.existing_result_df.empty:
             return existing_results('TotalTotalsIndex',self.existing_result_df,self.meta_df)
 
-        sys.stdout.write('TotalTotalsIndex - compute\n')
+        logging.info('TotalTotalsIndex - compute\n')
         df_list=[]
         dependencies_list = get_dependencies(self.groups,self.meta_df,'TotalTotalsIndex',self.plugin_mandatory_dependencies)
 

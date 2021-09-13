@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-
-import sys
+import logging
 
 import fstpy.all as fstpy
 import numpy as np
@@ -105,7 +104,7 @@ class HumiditySpecific(Plugin):
         if not self.existing_result_df.empty:
             return existing_results('HumiditySpecific',self.existing_result_df,self.meta_df)
 
-        sys.stdout.write('HumiditySpecific - compute\n')
+        logging.info('HumiditySpecific - compute\n')
         df_list = []
 
         if self.rpn:
@@ -143,7 +142,7 @@ class HumiditySpecific(Plugin):
         return final_results(df_list, HumiditySpecificError, self.meta_df)
 
     def rpn_humnidityspecific_from_tt_hr_px(self, dependencies_df, option):
-        sys.stdout.write(f'rpn option {option+1}\n')
+        logging.info(f'rpn option {option+1}\n')
         # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
         dependencies_df = fstpy.load_data(dependencies_df)
         tt_df = get_from_dataframe(dependencies_df,'TT')
@@ -160,7 +159,7 @@ class HumiditySpecific(Plugin):
         return hu_df
 
     def rpn_humidity_specific_from_tt_es_px(self, es_df, dependencies_df,option):
-        sys.stdout.write(f'rpn option {option+1}\n')
+        logging.info(f'rpn option {option+1}\n')
         es_df = fstpy.load_data(es_df)
         dependencies_df = fstpy.load_data(dependencies_df)
         tt_df = get_from_dataframe(dependencies_df,'TT')
@@ -183,9 +182,9 @@ class HumiditySpecific(Plugin):
 
     def humidityspecific_from_qv(self, dependencies_df,option,rpn=False):
         if rpn:
-            sys.stdout.write(f'rpn option {option+1}\n')
+            logging.info(f'rpn option {option+1}\n')
         else:
-            sys.stdout.write(f'option {option+1}\n')
+            logging.info(f'option {option+1}\n')
         dependencies_df = fstpy.load_data(dependencies_df)
         qv_df = get_from_dataframe(dependencies_df,'QV')
         hu_df = create_empty_result(qv_df,self.plugin_result_specifications['HU'],all_rows=True)
@@ -197,7 +196,7 @@ class HumiditySpecific(Plugin):
 
     def humidityspecific_from_vppr_px(self, dependencies_df, option):
         from ..vapourpressure.vapourpressure import VapourPressure
-        sys.stdout.write(f'option {option+1}\n')
+        logging.info(f'option {option+1}\n')
         # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
         dependencies_df = fstpy.load_data(dependencies_df)
         px_df = get_from_dataframe(dependencies_df,'PX')

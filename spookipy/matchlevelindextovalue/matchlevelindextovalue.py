@@ -3,7 +3,7 @@ from ..plugin import Plugin
 from ..utils import create_empty_result, get_3d_array, initializer, final_results, validate_nomvar
 import pandas as pd
 import numpy as np
-import sys
+import logging
 import fstpy.all as fstpy
 
 class MatchLevelIndexToValueError(Exception):
@@ -41,7 +41,7 @@ class MatchLevelIndexToValue(Plugin):
         self.groups= keep.groupby(by=['grid','dateo','forecast_hour'])
 
     def compute(self) -> pd.DataFrame:
-        sys.stdout.write('MatchLevelIndexToValue - compute\n')
+        logging.info('MatchLevelIndexToValue - compute\n')
         df_list=[]
         for _,group in self.groups:
             group = fstpy.load_data(group)
@@ -79,7 +79,7 @@ class MatchLevelIndexToValue(Plugin):
                 error_row['d'] = np.full_like(error_row['d'],self.error_value)
 
                 var_df = var_df.append(error_row).reset_index(drop=True)
-                print(var_df[['ascending','level']])
+                # print(var_df[['ascending','level']])
                 arr_3d = get_3d_array(var_df)
 
                 res_df.at[0,'d'] = np.take_along_axis(arr_3d,valid_ind,axis=0)

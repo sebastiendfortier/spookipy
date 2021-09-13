@@ -3,7 +3,7 @@ from ..plugin import Plugin
 import pandas as pd
 from ..opelementsbyvalue import OpElementsByValue
 from ..utils import initializer
-import sys
+import logging
 
 def mult_value(a,v):
     return a * v
@@ -17,7 +17,7 @@ class MultiplyElementsBy(Plugin):
         pass
 
     def compute(self) -> pd.DataFrame:
-        sys.stdout.write('MultiplyElementsBy - compute\n')
+        logging.info('MultiplyElementsBy - compute\n')
         return OpElementsByValue(self.df,
         value = self.value,
         operation_name='MultiplyElementsBy',

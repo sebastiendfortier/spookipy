@@ -7,13 +7,13 @@ SPHINXOPTS    ?=
 SPHINXBUILD   ?= sphinx-build
 SOURCEDIR     = .
 BUILDDIR      = _build
-TOOLS       = ../doctools
+TOOLS         = ../doctools
 
 # Put it first so that "make" without argument is like "make help".
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-ssm_package:
+dyn_doc:
 	@$(TOOLS)/create_dyn_doc.sh
 
 rst:
@@ -22,7 +22,7 @@ rst:
 readme:
 	../make_readme.sh
 
-doc: ssm_package rst readme
+doc: dyn_doc rst readme
 	make --no-print-directory html
 
 remove_gen_files:

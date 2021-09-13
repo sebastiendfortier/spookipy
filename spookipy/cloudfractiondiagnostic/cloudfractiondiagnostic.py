@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import math
-import sys
+import logging
 
 import fstpy.all as fstpy
 import numpy as np
@@ -78,7 +78,7 @@ class CloudFractionDiagnostic(Plugin):
         if not self.existing_result_df.empty:
             return existing_results('CloudFractionDiagnostic',self.existing_result_df,self.meta_df)
 
-        sys.stdout.write('CloudFractionDiagnostic - compute\n')
+        logging.info('CloudFractionDiagnostic - compute\n')
         df_list=[]
         dependencies_list = get_dependencies(self.groups,self.meta_df,'CloudFractionDiagnostic',self.plugin_mandatory_dependencies)
 

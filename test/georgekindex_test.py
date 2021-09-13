@@ -5,6 +5,7 @@ import pytest
 import fstpy.all as fstpy
 import spookipy.all as spooki
 import pandas as pd
+from ci_fstcomp import fstcomp
 
 pytestmark = [pytest.mark.regressions]
 
@@ -37,7 +38,7 @@ def test_1(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/GeorgeKIndex/result_test_1'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
+    res = fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -70,7 +71,7 @@ def test_2(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/GeorgeKIndex/result_test_2'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)#,e_max=0.01)
+    res = fstcomp(results_file,file_to_compare)#,e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -98,7 +99,7 @@ def test_3(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/GeorgeKIndex/result_test_3'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -131,7 +132,7 @@ def test_4(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/GeorgeKIndex/result_test_4'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)#,e_max=0.001)
+    res = fstcomp(results_file,file_to_compare)#,e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -177,6 +178,6 @@ def test_6(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/GeorgeKIndex/result_test_6'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)

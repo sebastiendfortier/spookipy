@@ -4,6 +4,7 @@ import pytest
 from test import TMP_PATH,TEST_PATH
 
 import spookipy.all as spooki
+from ci_fstcomp import fstcomp
 
 pytestmark = [pytest.mark.regressions,pytest.mark.humidity]
 
@@ -105,7 +106,7 @@ def test_6(plugin_test_dir):
     # file_to_compare = '/fs/site4/eccc/cmd/w/sbf000/testFiles/SaturationVapourPressure/res_test_6.std'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
+    res = fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -136,6 +137,6 @@ def test_7(plugin_test_dir):
     # file_to_compare = '/fs/site4/eccc/cmd/w/sbf000/testFiles/SaturationVapourPressure/res_test_7.std'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)
+    res = fstcomp(results_file,file_to_compare,e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)

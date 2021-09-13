@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-import sys
 
 import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
-
+import logging
 from ..plugin import Plugin
 from ..utils import (create_empty_result, existing_results, final_results,
                      get_dependencies, get_existing_result,
@@ -64,16 +63,14 @@ class WindModulus(Plugin):
         if not self.existing_result_df.empty:
             return existing_results('WindModulus',self.existing_result_df,self.meta_df)
 
-        sys.stdout.write('WindModulus - compute\n')
+        logging.info('WindModulus - compute\n')
         df_list = []
-        dependencies_list = get_dependencies(self.groups,self.meta_df,'WindModulus',self.plugin_mandatory_dependencies)
-        for dependencies_df,option in dependencies_list:
+        dependencies_list = get_dependencies(self.groups,self.meta_df,'WindModulus',self.plugin_mandatory_dependencies,intersect_levels=True)
+        for dependencies_df,_ in dependencies_list:
+            dependencies_df = fstpy.load_data(dependencies_df)
 
-            level_intersection_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
-            level_intersection_df = fstpy.load_data(level_intersection_df)
-
-            uu_df = get_from_dataframe(level_intersection_df,'UU')
-            vv_df = get_from_dataframe(level_intersection_df,'VV')
+            uu_df = get_from_dataframe(dependencies_df,'UU')
+            vv_df = get_from_dataframe(dependencies_df,'VV')
             uv_df = create_empty_result(vv_df,self.plugin_result_specifications['UV'],all_rows=True)
 
             for i in uv_df.index:

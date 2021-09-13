@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-
-import sys
+import logging
 
 import fstpy.all as fstpy
 import numpy as np
@@ -75,7 +74,7 @@ class WaterVapourMixingRatio(Plugin):
         if not self.existing_result_df.empty:
             return existing_results('WaterVapourMixingRatio',self.existing_result_df,self.meta_df)
 
-        sys.stdout.write('WaterVapourMixingRatio - compute\n')
+        logging.info('WaterVapourMixingRatio - compute\n')
         df_list = []
 
         if self.rpn:
@@ -95,7 +94,7 @@ class WaterVapourMixingRatio(Plugin):
 
 
     def watervapourmixingratio_from_vppr(self, dependencies_df, option):
-        sys.stdout.write(f'option {option+1}\n')
+        logging.info(f'option {option+1}\n')
         # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
         dependencies_df = fstpy.load_data(dependencies_df)
         vppr_df = get_from_dataframe(dependencies_df,'VPPR')
@@ -110,7 +109,7 @@ class WaterVapourMixingRatio(Plugin):
         return qv_df
 
     def watervapourmixingratio_from_hu(self, dependencies_df, option):
-        sys.stdout.write(f'option {option+1}\n')
+        logging.info(f'option {option+1}\n')
         dependencies_df = fstpy.load_data(dependencies_df)
         hu_df = get_from_dataframe(dependencies_df,'HU')
         qv_df = create_empty_result(hu_df,self.plugin_result_specifications['QV'],all_rows=True)

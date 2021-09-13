@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import sys
+import logging
 
 import fstpy.all as fstpy
 import numpy as np
@@ -65,7 +65,7 @@ class WindChill(Plugin):
         if not self.existing_result_df.empty:
             return existing_results('WindChill',self.existing_result_df,self.meta_df)
 
-        sys.stdout.write('WindChill - compute\n')
+        logging.info('WindChill - compute\n')
         #holds data from all the groups
         df_list = []
         dependencies_list = get_dependencies(self.groups,self.meta_df,'WindChill',self.plugin_mandatory_dependencies)

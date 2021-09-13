@@ -5,4 +5,4 @@ Creating the ssm package
 
     # This will build the ssm package
     # From the $project_root/ssm directory of the project
-    ./make_package.sh
+    ./make_ssm_package.sh

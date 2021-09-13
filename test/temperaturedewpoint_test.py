@@ -2,7 +2,7 @@
 import fstpy.all as fstpy
 import pytest
 from test import TMP_PATH,TEST_PATH
-
+from ci_fstcomp import fstcomp
 import spookipy.all as spooki
 
 pytestmark = [pytest.mark.regressions,pytest.mark.humidity]
@@ -80,7 +80,7 @@ def test_4(plugin_test_dir):
     # file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_4"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
+    res = fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -111,7 +111,7 @@ def test_5(plugin_test_dir):
     # file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_5"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
+    res = fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -143,7 +143,7 @@ def test_6(plugin_test_dir):
     # file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_6"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
+    res = fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -175,7 +175,7 @@ def test_7(plugin_test_dir):
     # file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_7"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)
+    res = fstcomp(results_file,file_to_compare,e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -208,7 +208,7 @@ def test_9(plugin_test_dir):
     # file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_9"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)
+    res = fstcomp(results_file,file_to_compare,e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -239,7 +239,7 @@ def test_11(plugin_test_dir):
     # file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_11"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)
+    res = fstcomp(results_file,file_to_compare,e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -272,6 +272,6 @@ def test_12(plugin_test_dir):
     # file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_12"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)
+    res = fstcomp(results_file,file_to_compare,e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)

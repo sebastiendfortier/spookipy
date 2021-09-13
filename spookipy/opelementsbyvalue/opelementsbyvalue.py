@@ -3,7 +3,7 @@ from ..plugin import Plugin
 from ..utils import create_empty_result, initializer, final_results, validate_nomvar
 import pandas as pd
 import fstpy.all as fstpy
-import sys
+import logging
 
 class OpElementsByValueError(Exception):
     pass
@@ -33,7 +33,7 @@ class OpElementsByValue(Plugin):
             self.plugin_result_specifications = {'ALL':{'etiket':self.etiket,'unit':self.unit}}
 
     def compute(self) -> pd.DataFrame:
-        sys.stdout.write('OpElementsByValue - compute\n')
+        logging.info('OpElementsByValue - compute\n')
         df_list = []
         res_df = create_empty_result(self.df,self.plugin_result_specifications['ALL'],all_rows=True)
         res_df = fstpy.load_data(res_df)

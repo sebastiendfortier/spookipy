@@ -3,7 +3,7 @@ from test import TMP_PATH,TEST_PATH
 import pytest
 import fstpy.all as fstpy
 import spookipy.all as spooki
-
+from ci_fstcomp import fstcomp
 
 pytestmark = [pytest.mark.regressions]
 
@@ -35,6 +35,6 @@ def test_1(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/TotalTotalsIndex/result_test_1'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
+    res = fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
     assert(res)

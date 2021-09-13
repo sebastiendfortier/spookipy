@@ -5,6 +5,7 @@ import pytest
 import fstpy.all as fstpy
 import pandas as pd
 import spookipy.all as spooki
+from ci_fstcomp import fstcomp
 
 pytestmark = [pytest.mark.regressions]
 
@@ -37,7 +38,7 @@ def test_1(plugin_test_dir):
     file_to_compare = plugin_test_dir + "windChill_file2cmp.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)#,e_max=0.001)
+    res = fstcomp(results_file,file_to_compare,e_max=0.01)#,e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import sys
+import logging
 
 import fstpy.all as fstpy
 import numpy as np
@@ -78,7 +78,7 @@ class Humidex(Plugin):
         if not self.existing_result_df.empty:
             return existing_results('Humidex',self.existing_result_df,self.meta_df)
 
-        sys.stdout.write('Humidex - compute\n')
+        logging.info('Humidex - compute\n')
         df_list=[]
         dependencies_list = get_dependencies(self.groups,self.meta_df,'Humidex',self.plugin_mandatory_dependencies,intersect_levels=True)
 
@@ -100,7 +100,7 @@ class Humidex(Plugin):
     def humidex_from_tt_svp(self, dependencies_df, td_df, option):
         from ..saturationvapourpressure.saturationvapourpressure import \
             SaturationVapourPressure
-        sys.stdout.write(f'option {option+1}\n')
+        logging.info(f'option {option+1}\n')
         td_df = fstpy.load_data(td_df)
         dependencies_df = fstpy.load_data(dependencies_df)
         tt_df = get_from_dataframe(dependencies_df,'TT')

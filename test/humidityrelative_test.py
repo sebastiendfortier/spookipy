@@ -3,6 +3,7 @@ import fstpy.all as fstpy
 import pytest
 import pandas as pd
 from test import TMP_PATH,TEST_PATH
+from ci_fstcomp import fstcomp
 
 import spookipy.all as spooki
 
@@ -111,7 +112,7 @@ def test_5(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/HumidityRelative/result_test_5'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)
+    res = fstcomp(results_file,file_to_compare,e_max=0.01)
     # fstpy.delete_file(results_file)
     assert(res)
 
@@ -148,7 +149,7 @@ def test_7(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/HumidityRelative/result_test_7'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)
+    res = fstcomp(results_file,file_to_compare,e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -195,6 +196,6 @@ def test_9(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/HumidityRelative/result_test_9'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.001)
+    res = fstcomp(results_file,file_to_compare,e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)

@@ -3,7 +3,7 @@ from ..plugin import Plugin
 from ..utils import create_empty_result, get_3d_array, initializer, final_results, validate_nomvar
 import pandas as pd
 import numpy as np
-import sys
+import logging
 import fstpy.all as fstpy
 
 class MatchLevelIndexToValueError(Exception):

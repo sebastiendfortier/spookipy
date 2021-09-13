@@ -4,6 +4,7 @@ import pytest
 import fstpy.all as fstpy
 import spookipy.all as spooki
 import pandas as pd
+from ci_fstcomp import fstcomp
 
 
 pytestmark = [pytest.mark.regressions]
@@ -33,7 +34,7 @@ def test_1(plugin_test_dir):
 
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -58,7 +59,7 @@ def test_2(plugin_test_dir):
     file_to_compare = plugin_test_dir + "gc_test_2.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -84,7 +85,7 @@ def test_3(plugin_test_dir):
     file_to_compare = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -122,7 +123,7 @@ def test_5(plugin_test_dir):
     file_to_compare = plugin_test_dir + "gc_test_5.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -152,7 +153,7 @@ def test_6(plugin_test_dir):
     file_to_compare = plugin_test_dir + "gc_test_6.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -187,7 +188,7 @@ def test_6(plugin_test_dir):
 #     file_to_compare = plugin_test_dir + "2011100712_012_regpres_ud850_file2cmp.std+20210517"
 
 #     #compare results
-#     res = fstpy.fstcomp(results_file,file_to_compare)
+#     res = fstcomp(results_file,file_to_compare)
 #     assert(res)
 
 # same as 1, no multithread in python
@@ -213,6 +214,6 @@ def test_6(plugin_test_dir):
 #     file_to_compare = plugin_test_dir + "gc_test_1.std"
 
 #     #compare results
-#     res = fstpy.fstcomp(results_file,file_to_compare)
+#     res = fstcomp(results_file,file_to_compare)
 #     fstpy.delete_file(results_file)
 #     assert(res)

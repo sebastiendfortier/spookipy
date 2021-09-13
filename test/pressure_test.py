@@ -4,7 +4,7 @@ from test import TEST_PATH, TMP_PATH
 import pytest
 import spookipy.all as spooki
 import fstpy.all as fstpy
-import pandas as pd
+from ci_fstcomp import fstcomp
 
 pytestmark = [pytest.mark.regressions]
 
@@ -38,7 +38,7 @@ def test_1(plugin_test_dir):
     # file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_1"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)
+    res = fstcomp(results_file,file_to_compare,e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -68,7 +68,7 @@ def test_2(plugin_test_dir):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_2"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -92,7 +92,7 @@ def test_2(plugin_test_dir):
 # #     file_to_compare = plugin_test_dir + "px_eta_file2cmp.std"
 
 # #     #compare results
-# #     res = fstpy.fstcomp(results_file,file_to_compare)
+# #     res = fstcomp(results_file,file_to_compare)
 # #     fstpy.delete_file(results_file)
 # #     assert(res)
 
@@ -116,7 +116,7 @@ def test_2(plugin_test_dir):
 # #     file_to_compare = plugin_test_dir + "px_eta_std_file2cmp.std"
 
 # #     #compare results
-# #     res = fstpy.fstcomp(results_file,file_to_compare)
+# #     res = fstcomp(results_file,file_to_compare)
 # #     fstpy.delete_file(results_file)
 # #     assert(res)
 
@@ -146,7 +146,7 @@ def test_5(plugin_test_dir):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_5"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
+    res = fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -175,7 +175,7 @@ def test_6(plugin_test_dir):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_6"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -199,7 +199,7 @@ def test_6(plugin_test_dir):
 # #     file_to_compare = plugin_test_dir + "px_sig_file2cmp.std"
 
 # #     #compare results
-# #     res = fstpy.fstcomp(results_file,file_to_compare)
+# #     res = fstcomp(results_file,file_to_compare)
 # #     fstpy.delete_file(results_file)
 # #     assert(res)
 
@@ -223,7 +223,7 @@ def test_6(plugin_test_dir):
 # #     file_to_compare = plugin_test_dir + "px_sig_std_file2cmp.std"
 
 # #     #compare results
-# #     res = fstpy.fstcomp(results_file,file_to_compare)
+# #     res = fstcomp(results_file,file_to_compare)
 # #     fstpy.delete_file(results_file)
 # #     assert(res)
 
@@ -252,7 +252,7 @@ def test_9(plugin_test_dir):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_9"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)
+    res = fstcomp(results_file,file_to_compare,e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -283,7 +283,7 @@ def test_10(plugin_test_dir):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_10"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -307,7 +307,7 @@ def test_10(plugin_test_dir):
 # #     file_to_compare = plugin_test_dir + "px_hyb2_file2cmp.std"
 
 # #     #compare results
-# #     res = fstpy.fstcomp(results_file,file_to_compare)
+# #     res = fstcomp(results_file,file_to_compare)
 # #     fstpy.delete_file(results_file)
 # #     assert(res)
 
@@ -331,7 +331,7 @@ def test_10(plugin_test_dir):
 # #     file_to_compare = plugin_test_dir + "px_hyb_std_file2cmp.std"
 
 # #     #compare results
-# #     res = fstpy.fstcomp(results_file,file_to_compare)
+# #     res = fstcomp(results_file,file_to_compare)
 # #     fstpy.delete_file(results_file)
 # #     assert(res)
 
@@ -361,7 +361,7 @@ def test_13(plugin_test_dir):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_13"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)
+    res = fstcomp(results_file,file_to_compare,e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -389,7 +389,7 @@ def test_14(plugin_test_dir):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_14"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -415,7 +415,7 @@ def test_14(plugin_test_dir):
 # #     file_to_compare = plugin_test_dir + "px_hyb_stg_file2cmp.std"
 
 # #     #compare results
-# #     res = fstpy.fstcomp(results_file,file_to_compare)
+# #     res = fstcomp(results_file,file_to_compare)
 # #     fstpy.delete_file(results_file)
 # #     assert(res)
 
@@ -439,7 +439,7 @@ def test_14(plugin_test_dir):
 # #     file_to_compare = plugin_test_dir + "px_hyb_stg_std_file2cmp.std"
 
 # #     #compare results
-# #     res = fstpy.fstcomp(results_file,file_to_compare)
+# #     res = fstcomp(results_file,file_to_compare)
 # #     fstpy.delete_file(results_file)
 # #     assert(res)
 
@@ -466,7 +466,7 @@ def test_17(plugin_test_dir):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_17"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -495,7 +495,7 @@ def test_18(plugin_test_dir):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_18"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -519,7 +519,7 @@ def test_18(plugin_test_dir):
 # #     file_to_compare = plugin_test_dir + "px_pres_file2cmp.std"
 
 # #     #compare results
-# #     res = fstpy.fstcomp(results_file,file_to_compare)
+# #     res = fstcomp(results_file,file_to_compare)
 # #     fstpy.delete_file(results_file)
 # #     assert(res)
 
@@ -543,7 +543,7 @@ def test_18(plugin_test_dir):
 # #     file_to_compare = plugin_test_dir + "px_pres_std_file2cmp.std"
 
 # #     #compare results
-# #     res = fstpy.fstcomp(results_file,file_to_compare)
+# #     res = fstcomp(results_file,file_to_compare)
 # #     fstpy.delete_file(results_file)
 # #     assert(res)
 
@@ -567,7 +567,7 @@ def test_18(plugin_test_dir):
 # #     file_to_compare = plugin_test_dir + "nan"
 
 # #     #compare results
-# #     res = fstpy.fstcomp(results_file,file_to_compare)
+# #     res = fstcomp(results_file,file_to_compare)
 # #     assert(res)
 
 
@@ -590,7 +590,7 @@ def test_18(plugin_test_dir):
 # #     file_to_compare = plugin_test_dir + "nan"
 
 # #     #compare results
-# #     res = fstpy.fstcomp(results_file,file_to_compare)
+# #     res = fstcomp(results_file,file_to_compare)
 # #     assert(res)
 
 
@@ -613,7 +613,7 @@ def test_18(plugin_test_dir):
 # #     file_to_compare = plugin_test_dir + "nan"
 
 # #     #compare results
-# #     res = fstpy.fstcomp(results_file,file_to_compare)
+# #     res = fstcomp(results_file,file_to_compare)
 # #     assert(res)
 
 
@@ -636,7 +636,7 @@ def test_18(plugin_test_dir):
 # #     file_to_compare = plugin_test_dir + "nan"
 
 # #     #compare results
-# #     res = fstpy.fstcomp(results_file,file_to_compare)
+# #     res = fstcomp(results_file,file_to_compare)
 # #     assert(res)
 
 
@@ -659,7 +659,7 @@ def test_18(plugin_test_dir):
 # #     file_to_compare = plugin_test_dir + "nan"
 
 # #     #compare results
-# #     res = fstpy.fstcomp(results_file,file_to_compare)
+# #     res = fstcomp(results_file,file_to_compare)
 # #     assert(res)
 
 
@@ -682,7 +682,7 @@ def test_18(plugin_test_dir):
 # #     file_to_compare = plugin_test_dir + "nan"
 
 # #     #compare results
-# #     res = fstpy.fstcomp(results_file,file_to_compare)
+# #     res = fstcomp(results_file,file_to_compare)
 # #     assert(res)
 
 
@@ -705,7 +705,7 @@ def test_18(plugin_test_dir):
 # #     file_to_compare = plugin_test_dir + "nan"
 
 # #     #compare results
-# #     res = fstpy.fstcomp(results_file,file_to_compare)
+# #     res = fstcomp(results_file,file_to_compare)
 # #     assert(res)
 
 
@@ -728,7 +728,7 @@ def test_18(plugin_test_dir):
 # #     file_to_compare = plugin_test_dir + "nan"
 
 # #     #compare results
-# #     res = fstpy.fstcomp(results_file,file_to_compare)
+# #     res = fstcomp(results_file,file_to_compare)
 # #     assert(res)
 
 
@@ -751,7 +751,7 @@ def test_18(plugin_test_dir):
 # #     file_to_compare = plugin_test_dir + "nan"
 
 # #     #compare results
-# #     res = fstpy.fstcomp(results_file,file_to_compare)
+# #     res = fstcomp(results_file,file_to_compare)
 # #     assert(res)
 
 
@@ -777,7 +777,7 @@ def test_30(plugin_test_dir):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_30"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)
+    res = fstcomp(results_file,file_to_compare,e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -801,7 +801,7 @@ def test_30(plugin_test_dir):
 # #     file_to_compare = plugin_test_dir + "resulttest_31_TT.std"
 
 # #     #compare results
-# #     res = fstpy.fstcomp(results_file,file_to_compare)
+# #     res = fstcomp(results_file,file_to_compare)
 # #     fstpy.delete_file(results_file)
 # #     assert(res)
 
@@ -825,7 +825,7 @@ def test_30(plugin_test_dir):
 # #     file_to_compare = plugin_test_dir + "glbpres_hybrid_staggered_coordinate_file2cmp.std"
 
 # #     #compare results
-# #     res = fstpy.fstcomp(results_file,file_to_compare)
+# #     res = fstcomp(results_file,file_to_compare)
 # #     fstpy.delete_file(results_file)
 # #     assert(res)
 
@@ -861,7 +861,7 @@ def test_33(plugin_test_dir):
     # !!   X  G1_4_0_0N           3     164     1 00000000 000000         52341     87193         0        0        0  E 64  X  5002    75   450   450 spookipy
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -889,7 +889,7 @@ def test_34(plugin_test_dir):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_34"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -919,7 +919,7 @@ def test_35(plugin_test_dir):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_35"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -948,7 +948,7 @@ def test_36(plugin_test_dir):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_36"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -972,5 +972,5 @@ def test_36(plugin_test_dir):
 # #     file_to_compare = plugin_test_dir + "nan"
 
 # #     #compare results
-# #     res = fstpy.fstcomp(results_file,file_to_compare)
+# #     res = fstcomp(results_file,file_to_compare)
 # #     assert(res)

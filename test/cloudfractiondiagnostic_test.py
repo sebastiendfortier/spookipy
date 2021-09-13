@@ -4,6 +4,7 @@ import pytest
 from test import TMP_PATH,TEST_PATH
 
 import spookipy.all as spooki
+from ci_fstcomp import fstcomp
 
 pytestmark = [pytest.mark.regressions]
 
@@ -40,6 +41,6 @@ def test_1(plugin_test_dir):
     # file_to_compare = "/home/sbf000/data/testFiles/CloudFractionDiagnostic/result_test_cfd_1"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)#,e_max=0.6)
+    res = fstcomp(results_file,file_to_compare)#,e_max=0.6)
     fstpy.delete_file(results_file)
     assert(res)

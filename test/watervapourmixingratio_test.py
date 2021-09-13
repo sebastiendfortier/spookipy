@@ -6,6 +6,7 @@ import pytest
 import fstpy.all as fstpy
 import pandas as pd
 import spookipy.all as spooki
+from ci_fstcomp import fstcomp
 
 pytestmark = [pytest.mark.regressions,pytest.mark.humidity]
 
@@ -41,7 +42,7 @@ def test_1(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/WaterVapourMixingRatio/result_test_1'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.001)
+    res = fstcomp(results_file,file_to_compare,e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -83,7 +84,7 @@ def test_3(plugin_test_dir): # option 1 rpn
     # file_to_compare = '/home/sbf000/data/testFiles/WaterVapourMixingRatio/result_test_3'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
+    res = fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -117,7 +118,7 @@ def test_4(plugin_test_dir): # option 1 rpn
     # file_to_compare = '/home/sbf000/data/testFiles/WaterVapourMixingRatio/result_test_4'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
+    res = fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -150,7 +151,7 @@ def test_5(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/WaterVapourMixingRatio/result_test_5'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.001)
+    res = fstcomp(results_file,file_to_compare,e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -183,7 +184,7 @@ def test_6(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/WaterVapourMixingRatio/result_test_6'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.001)
+    res = fstcomp(results_file,file_to_compare,e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -220,7 +221,7 @@ def test_7(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/WaterVapourMixingRatio/result_test_7'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
+    res = fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -253,7 +254,7 @@ def test_8(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/WaterVapourMixingRatio/result_test_8'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.001)
+    res = fstcomp(results_file,file_to_compare,e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -340,6 +341,6 @@ def test_13(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/WaterVapourMixingRatio/result_test_13'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.001)
+    res = fstcomp(results_file,file_to_compare,e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)

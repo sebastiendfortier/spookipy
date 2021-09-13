@@ -4,6 +4,7 @@ import pytest
 import fstpy.all as fstpy
 import spookipy.all as spooki
 import pandas as pd
+from ci_fstcomp import fstcomp
 
 pytestmark = [pytest.mark.skip]
 
@@ -41,7 +42,7 @@ def test_1(plugin_test_dir):
     file_to_compare = plugin_test_dir + "18_12_diff_file2cmp_noEncoding.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -75,7 +76,7 @@ def test_2(plugin_test_dir):
     file_to_compare = plugin_test_dir + "18_15_12_diff_file2cmp_noEncoding.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -109,7 +110,7 @@ def test_3(plugin_test_dir):
     file_to_compare = plugin_test_dir + "12_06_diff_file2cmp_noEncoding.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -143,7 +144,7 @@ def test_4(plugin_test_dir):
     file_to_compare = plugin_test_dir + "18_12_threshold0.02_diff_file2cmp_noEncoding.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -170,7 +171,7 @@ def test_5(plugin_test_dir):
     file_to_compare = plugin_test_dir + "global20121217_file2cmp_noEncoding.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -225,7 +226,7 @@ def test_8(plugin_test_dir):
     file_to_compare = plugin_test_dir + "UV_15a36_delta_3et12_file2cmp.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -256,7 +257,7 @@ def test_9(plugin_test_dir):
     file_to_compare = plugin_test_dir + "03_09_interval_lb_file2cmp_noEncoding.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -287,7 +288,7 @@ def test_10(plugin_test_dir):
     file_to_compare = plugin_test_dir + "00_06_interval_ub_diff_file2cmp_noEncoding.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -318,7 +319,7 @@ def test_11(plugin_test_dir):
     file_to_compare = plugin_test_dir + "03-09_12-18_intervals_lb_diff_file2cmp_noEncoding.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -349,7 +350,7 @@ def test_12(plugin_test_dir):
     file_to_compare = plugin_test_dir + "00-06_09-15_intervals_ub_diff_file2cmp_noEncoding.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -380,7 +381,7 @@ def test_13(plugin_test_dir):
     file_to_compare = plugin_test_dir + "00_06_interval_ub_diff_file2cmp_encoded.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -467,7 +468,7 @@ def test_18(plugin_test_dir):
     file_to_compare = plugin_test_dir + "sn0_sn1_diff_file2cmp.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -494,7 +495,7 @@ def test_19(plugin_test_dir):
     file_to_compare = plugin_test_dir + "UV_15a36_delta_3et12_positive_file2cmp.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -521,7 +522,7 @@ def test_20(plugin_test_dir):
     file_to_compare = plugin_test_dir + "UV_15a36_delta_3et12_positive_file2cmp.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -564,7 +565,7 @@ def test_22(plugin_test_dir):
     file_to_compare = plugin_test_dir + "UV_15a36_delta_3et12_positive_file2cmp.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -591,7 +592,7 @@ def test_23(plugin_test_dir):
     file_to_compare = plugin_test_dir + "UV_15a36_delta_3et12_positive_file2cmp.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -618,6 +619,6 @@ def test_24(plugin_test_dir):
     file_to_compare = plugin_test_dir + "UV_15a36_delta_3et12_positive_file2cmp.std"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)

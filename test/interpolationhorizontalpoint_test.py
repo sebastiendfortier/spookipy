@@ -6,8 +6,7 @@ import fstpy.all as fstpy
 import spookipy.all as spooki
 import numpy as np
 import pandas as pd
-import rpnpy.librmn.all as rmn
-
+from ci_fstcomp import fstcomp
 
 pytestmark = [pytest.mark.regressions]
 
@@ -243,7 +242,7 @@ def test_1(plugin_test_dir,latlon_df):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_1"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -280,7 +279,7 @@ def test_2(plugin_test_dir,latlon_df):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_2"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -317,7 +316,7 @@ def test_3(plugin_test_dir,latlon_df):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_3"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -360,7 +359,7 @@ def test_4(plugin_test_dir,latlon2_df):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_4"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)#,e_max=0.00105,e_moy=0.001)
+    res = fstcomp(results_file,file_to_compare,e_max=0.01)#,e_max=0.00105,e_moy=0.001)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -396,7 +395,7 @@ def test_5(plugin_test_dir,latlon_df):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_5"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -433,7 +432,7 @@ def test_6(plugin_test_dir,latlon_df):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_6"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -471,7 +470,7 @@ def test_7(plugin_test_dir,latlon_with_grid_df):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_7"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -509,7 +508,7 @@ def test_8(plugin_test_dir,latlon_extrapolation_df):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_8"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -546,7 +545,7 @@ def test_9(plugin_test_dir,latlon_extrapolation_df):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_9"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -585,7 +584,7 @@ def test_10(plugin_test_dir,latlon_extrapolation_df):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_10"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.001)
+    res = fstcomp(results_file,file_to_compare,e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -621,7 +620,7 @@ def test_11(plugin_test_dir,latlon_extrapolation_df):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_11"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -654,7 +653,7 @@ def test_11(plugin_test_dir,latlon_extrapolation_df):
 #     file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_12"
 
 #     #compare results
-#     res = fstpy.fstcomp(results_file,file_to_compare)
+#     res = fstcomp(results_file,file_to_compare)
 #     fstpy.delete_file(results_file)
 #     assert(res)
 
@@ -697,7 +696,7 @@ def test_13(plugin_test_dir,latlon_df):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_13"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)
+    res = fstcomp(results_file,file_to_compare,e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -740,7 +739,7 @@ def test_14(plugin_test_dir):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_14"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -782,7 +781,7 @@ def test_15(plugin_test_dir):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_15"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -819,7 +818,7 @@ def test_16(plugin_test_dir,simple_input_df):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_16"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -857,6 +856,6 @@ def test_17(plugin_test_dir,latlon_yy_df):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_17"
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)

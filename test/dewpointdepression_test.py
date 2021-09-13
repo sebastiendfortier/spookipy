@@ -4,6 +4,7 @@ import pytest
 import fstpy.all as fstpy
 import spookipy.all as spooki
 import pandas as pd
+from ci_fstcomp import fstcomp
 
 pytestmark = [pytest.mark.regressions,pytest.mark.humidity]
 
@@ -51,7 +52,7 @@ def test_3(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/DewPointDepression/result_test_3'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)
+    res = fstcomp(results_file,file_to_compare,e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -81,7 +82,7 @@ def test_5(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/DewPointDepression/result_test_5'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.1)
+    res = fstcomp(results_file,file_to_compare,e_max=0.1)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -119,7 +120,7 @@ def test_6(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/DewPointDepression/result_test_6'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)
+    res = fstcomp(results_file,file_to_compare,e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -159,7 +160,7 @@ def test_7(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/DewPointDepression/result_test_7'
 
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)
+    res = fstcomp(results_file,file_to_compare,e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -188,6 +189,6 @@ def test_9(plugin_test_dir):
     file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_qv_nonRpn_file2cmp.std"
     # file_to_compare = '/home/sbf000/data/testFiles/DewPointDepression/result_test_9'
     #compare results
-    res = fstpy.fstcomp(results_file,file_to_compare,e_max=0.01)#,e_max=)
+    res = fstcomp(results_file,file_to_compare,e_max=0.01)#,e_max=)
     fstpy.delete_file(results_file)
     assert(res)

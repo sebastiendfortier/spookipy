@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 import rpnpy.librmn.all as rmn
 from pandas.core import groupby
-
+import logging
 
 def initializer(func):
     """
@@ -303,7 +303,7 @@ def create_empty_result(df:pd.DataFrame, plugin_result_specifications:dict,all_r
     :rtype: pd.DataFrame
     """
     if df.empty:
-        sys.stderr.write('cant create, model dataframe empty\n')
+        logging.warning('cant create, model dataframe empty\n')
 
     if all_rows:
         res_df = df.copy(deep=True)
@@ -340,7 +340,7 @@ def existing_results(plugin_name:str,df:pd.DataFrame,meta_df:pd.DataFrame) -> pd
     :return: concatenated dataframe of existing results ans meta data with its data loaded
     :rtype: pd.DataFrame
     """
-    sys.stdout.write(''.join([plugin_name,' - found results\n']))
+    logging.info(''.join([plugin_name,' - found results\n']))
     df = fstpy.load_data(df)
     meta_df = fstpy.load_data(meta_df)
     res_df = pd.concat([meta_df,df],ignore_index=True)
@@ -437,16 +437,16 @@ def find_matching_dependency_option(df:pd.DataFrame,plugin_params:dict,plugin_ma
         dependencies_df = get_plugin_dependencies(df,plugin_params,plugin_mandatory_dependencies[i],throw_error=False)
         option=i
         if not (dependencies_df.empty):
-            sys.stdout.write('Found following depency: \n')
+            logging.info('Found following depency: \n')
             for k,v in plugin_mandatory_dependencies[i].items():
-                sys.stdout.write(f'{k}:{v}\n')
+                logging.info(f'{k}:{v}\n')
             if intersect_levels and len(plugin_mandatory_dependencies[i]) > 1:
                 dependencies_df = get_intersecting_levels(dependencies_df,plugin_mandatory_dependencies[i])
                 if dependencies_df.empty:
-                    sys.stdout.write('Intersecting levels requested and not found for this dataframe\n')
+                    logging.warning('Intersecting levels requested and not found for this dataframe\n')
                     return pd.DataFrame(dtype=object), 0
                 else:    
-                    sys.stdout.write('Intersecting levels requested and found\n')
+                    logging.info('Intersecting levels requested and found\n')
                 
             return dependencies_df, option
             
@@ -473,13 +473,13 @@ def get_dependencies(groups:groupby.generic.DataFrameGroupBy,meta_df:pd.DataFram
     """
     df_list = []
     for _,current_group in groups:
-        sys.stdout.write(f'{plugin_name} - Checking dependencies\n')
+        logging.info(f'{plugin_name} - Checking dependencies\n')
         dependencies_df, option = find_matching_dependency_option(pd.concat([current_group,meta_df],ignore_index=True),plugin_params,plugin_mandatory_dependencies,intersect_levels)
         if dependencies_df.empty:
-            sys.stderr.write(f'{plugin_name} - No matching dependencies found for this group \n%s\n'%current_group[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']])
+            logging.warning(f'{plugin_name} - No matching dependencies found for this group \n%s\n'%current_group[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']])
             continue
         else:
-            sys.stdout.write(f'{plugin_name} - Matching dependencies found for this group \n%s\n'%current_group[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']])
+            logging.info(f'{plugin_name} - Matching dependencies found for this group \n%s\n'%current_group[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']])
         df_list.append((dependencies_df,option))
 
     if not df_list:

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import math
-import sys
+import logging
 
 import fstpy.all as fstpy
 import numpy as np
@@ -8,8 +8,7 @@ import pandas as pd
 
 from ..plugin import Plugin
 from ..utils import (create_empty_result, existing_results, final_results,
-                     get_dependencies, get_existing_result, get_from_dataframe,
-                     get_intersecting_levels)
+                     get_dependencies, get_existing_result, get_from_dataframe)
 
 
 class WindDirectionError(Exception):
@@ -59,7 +58,7 @@ class WindDirection(Plugin):
         if not self.existing_result_df.empty:
             return existing_results('WindDirection',self.existing_result_df,self.meta_df)
 
-        sys.stdout.write('WindDirection - compute\n')
+        logging.info('WindDirection - compute\n')
         df_list = []
         dependencies_list = get_dependencies(self.groups,self.meta_df,'WindChill',self.plugin_mandatory_dependencies, intersect_levels=True)
         for dependencies_df,_ in dependencies_list:

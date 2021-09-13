@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from ..plugin import Plugin
-from ..utils import create_empty_result, get_3d_array, initializer, final_results, remove_load_data_info, validate_nomvar
+from ..utils import create_empty_result, get_3d_array, initializer, final_results, validate_nomvar
 import pandas as pd
 import numpy as np
-import sys
+import logging
 import fstpy.all as fstpy
 
 
@@ -47,7 +47,7 @@ class MinMaxLevelIndex(Plugin):
         self.nomvar_groups= keep.groupby(by=['grid','dateo','forecast_hour','nomvar'])
 
     def compute(self) -> pd.DataFrame:
-        sys.stdout.write('MinMaxLevelIndex - compute\n')
+        logging.info('MinMaxLevelIndex - compute\n')
         df_list=[]
         for _,group in self.nomvar_groups:
             group = fstpy.load_data(group)

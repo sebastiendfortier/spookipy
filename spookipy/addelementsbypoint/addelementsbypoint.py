@@ -3,7 +3,7 @@ from ..plugin import Plugin
 from ..utils import initializer
 import pandas as pd
 import numpy as np
-import sys
+import logging
 from ..opelementsbypoint import OpElementsByPoint
 
 class AddElementsByPointError(Exception):
@@ -15,7 +15,7 @@ class AddElementsByPoint(Plugin):
         pass
 
     def compute(self) -> pd.DataFrame:
-        sys.stdout.write('AddElementsByPoint - compute\n')
+        logging.info('AddElementsByPoint - compute\n')
         return OpElementsByPoint(self.df,
         operator = np.sum,
         operation_name='AddElementsByPoint',

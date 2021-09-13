@@ -5,7 +5,7 @@ import sys
 import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
-
+import logging
 from ..humidityutils import (get_temp_phase_switch,
                              validate_humidity_parameters)
 from ..plugin import Plugin
@@ -99,7 +99,7 @@ class TemperatureDewPoint(Plugin):
         if not self.existing_result_df.empty:
             return existing_results('TemperatureDewPoint',self.existing_result_df,self.meta_df)
 
-        sys.stdout.write('TemperatureDewPoint - compute\n')
+        logging.info('TemperatureDewPoint - compute\n')
         df_list=[]
 
         if self.rpn:
@@ -133,7 +133,7 @@ class TemperatureDewPoint(Plugin):
         return final_results(df_list,TemperatureDewPointError, self.meta_df)
 
     def temperaturedewpoint_from_tt_vppr(self, dependencies_df, option):
-        sys.stdout.write(f'option {option+1}\n')
+        logging.info(f'option {option+1}\n')
         # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
         vppr_df = self.compute_vppr(dependencies_df)
         vppr_df = fstpy.load_data(vppr_df)
@@ -154,9 +154,9 @@ class TemperatureDewPoint(Plugin):
 
     def temperaturedewpoint_from_tt_es(self, es_df, dependencies_df, option, rpn=False):
         if rpn:
-            sys.stdout.write(f'rpn option {option+1}\n')
+            logging.info(f'rpn option {option+1}\n')
         else:
-            sys.stdout.write(f'option {option+1}\n')
+            logging.info(f'option {option+1}\n')
         es_df = fstpy.load_data(es_df)
         dependencies_df = fstpy.load_data(dependencies_df)
         tt_df = get_from_dataframe(dependencies_df,'TT')

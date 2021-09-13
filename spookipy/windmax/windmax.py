@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import sys
+import logging
 from typing import Tuple
 
 import fstpy.all as fstpy
@@ -81,7 +81,7 @@ class WindMax(Plugin):
         if not self.existing_result_df.empty:
             return existing_results('WindMax',self.existing_result_df,self.meta_df)
 
-        sys.stdout.write('WindMax - compute\n')
+        logging.info('WindMax - compute\n')
         #holds data from all the groups
         df_list = []
 

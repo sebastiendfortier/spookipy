@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-import sys
 
 import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
-
+import logging
 from ..plugin import Plugin
 from ..utils import (create_empty_result, existing_results, final_results,
                      get_dependencies, get_existing_result,
@@ -64,7 +63,7 @@ class WindModulus(Plugin):
         if not self.existing_result_df.empty:
             return existing_results('WindModulus',self.existing_result_df,self.meta_df)
 
-        sys.stdout.write('WindModulus - compute\n')
+        logging.info('WindModulus - compute\n')
         df_list = []
         dependencies_list = get_dependencies(self.groups,self.meta_df,'WindModulus',self.plugin_mandatory_dependencies,intersect_levels=True)
         for dependencies_df,_ in dependencies_list:

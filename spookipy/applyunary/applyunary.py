@@ -3,7 +3,7 @@ from ..plugin import Plugin
 from ..utils import create_empty_result, final_results, initializer, remove_load_data_info, validate_nomvar
 import pandas as pd
 import fstpy.all as fstpy
-import sys
+import logging
 
 #see functions without arguments from numpy lib
 #https://numpy.org/doc/stable/reference/routines.math.html
@@ -30,7 +30,7 @@ class ApplyUnary(Plugin):
 
 
     def compute(self) -> pd.DataFrame:
-        sys.stdout.write('ApplyUnary - compute\n')
+        logging.info('ApplyUnary - compute\n')
 
         in_df = self.df.loc[self.df.nomvar==self.nomvar_in].reset_index(drop=True)
 

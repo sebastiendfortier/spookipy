@@ -3,8 +3,7 @@ from ..plugin import Plugin
 from ..utils import create_empty_result, get_existing_result, get_intersecting_levels, get_plugin_dependencies, existing_results, final_results
 import pandas as pd
 import fstpy.all as fstpy
-import numpy as np
-import sys
+import logging
 
 
 class HelicityError(Exception):
@@ -50,12 +49,12 @@ class Helicity(Plugin):
         if not self.existing_result_df.empty:
             return existing_results('Helicity',self.existing_result_df,self.meta_df)
 
-        sys.stdout.write('Helicity - compute\n')
+        logging.info('Helicity - compute\n')
         df_list = []
         for _,current_fhour_group in self.fhour_groups:
             current_fhour_group = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies)
             if current_fhour_group.empty:
-                sys.stderr.write('Helicity - no intersecting levels found')
+                logging.warning('Helicity - no intersecting levels found')
                 continue
             current_fhour_group = fstpy.load_data(current_fhour_group)
             uu_df = current_fhour_group.loc[current_fhour_group.nomvar=="UU"].reset_index(drop=True)

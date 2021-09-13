@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 from ..opelementsbypoint import OpElementsByPoint
 from ..utils import initializer
-import sys
+import logging
 
 class MultiplyElementsByPointError(Exception):
     pass
@@ -16,7 +16,7 @@ class MultiplyElementsByPoint(Plugin):
         pass
 
     def compute(self) -> pd.DataFrame:
-        sys.stdout.write('MultiplyElementsByPoint - compute\n')
+        logging.info('MultiplyElementsByPoint - compute\n')
         return OpElementsByPoint(self.df,
         operator = np.prod,
         operation_name='MultiplyElementsByPoint',

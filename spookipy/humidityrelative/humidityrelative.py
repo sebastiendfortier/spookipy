@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import sys
+import logging
 
 import fstpy.all as fstpy
 import numpy as np
@@ -103,7 +103,7 @@ class HumidityRelative(Plugin):
         if not self.existing_result_df.empty:
             return existing_results('HumidityRelative',self.existing_result_df,self.meta_df)
 
-        sys.stdout.write('HumidityRelative - compute\n')
+        logging.info('HumidityRelative - compute\n')
         df_list = []
 
         if self.rpn:
@@ -141,7 +141,7 @@ class HumidityRelative(Plugin):
         return final_results(df_list, HumidityRelativeError, self.meta_df)
 
     def rpn_humidityrelative_from_tt_hu_px(self, dependencies_df, hu_df, option):
-        sys.stdout.write(f'rpn option {option+1}\n')
+        logging.info(f'rpn option {option+1}\n')
         hu_df = fstpy.load_data(hu_df)
         dependencies_df = fstpy.load_data(dependencies_df)
         tt_df = get_from_dataframe(dependencies_df,'TT')
@@ -162,7 +162,7 @@ class HumidityRelative(Plugin):
         return hu_df
 
     def rpn_humidityrelative_from_tt_es_px(self, dependencies_df, es_df, option):
-        sys.stdout.write(f'rpn option {option+1}\n')
+        logging.info(f'rpn option {option+1}\n')
         es_df = fstpy.load_data(es_df)
         dependencies_df = fstpy.load_data(dependencies_df)
         tt_df = get_from_dataframe(dependencies_df,'TT')
@@ -186,7 +186,7 @@ class HumidityRelative(Plugin):
         from ..saturationvapourpressure.saturationvapourpressure import \
             SaturationVapourPressure
         from ..vapourpressure.vapourpressure import VapourPressure
-        sys.stdout.write(f'option {option+1}\n')
+        logging.info(f'option {option+1}\n')
         # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
         dependencies_df = fstpy.load_data(dependencies_df)
         tt_df = get_from_dataframe(dependencies_df,'TT')

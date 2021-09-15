@@ -506,7 +506,8 @@ Basic statistics for each column of 3d matrix
     # creates a 1 row dataframe based on a model dataframe
     def create_result_df(df:pd.DataFrame, nomvar:str, operation_name:str) ->  pd.DataFrame:
         res_df = fstpy.create_1row_df_from_model(df)
-        res_df = fstpy.zap(res_df, nomvar=nomvar, etiket=operation_name)
+        res_df = res_df.loc[:,'nomvar'] = nomvar
+        res_df = res_df.loc[:,'etiket'] = operation_name
         return res_df
 
 

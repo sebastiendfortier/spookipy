@@ -46,7 +46,7 @@ class FilterDigital(Plugin):
         self.df = self.df.loc[~self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
     def compute(self) -> pd.DataFrame:
-        logging.info('FilterDigital - compute\n')
+        logging.info('FilterDigital - compute')
 
         if not (self.nomvar_out is None):
             self.plugin_result_specifications['ALL']['nomvar'] = self.nomvar_out

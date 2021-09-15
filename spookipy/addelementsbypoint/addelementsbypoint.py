@@ -15,7 +15,7 @@ class AddElementsByPoint(Plugin):
         pass
 
     def compute(self) -> pd.DataFrame:
-        logging.info('AddElementsByPoint - compute\n')
+        logging.info('AddElementsByPoint - compute')
         return OpElementsByPoint(self.df,
         operator = np.sum,
         operation_name='AddElementsByPoint',

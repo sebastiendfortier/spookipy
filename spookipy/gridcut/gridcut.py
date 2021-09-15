@@ -51,7 +51,7 @@ class GridCut(Plugin):
             raise GridCutError('Start point must be inferior on all axes to end point')
 
     def compute(self) -> pd.DataFrame:
-        logging.info('GridCut - compute\n')
+        logging.info('GridCut - compute')
         cp_df = self.df.copy(deep=True)
 
         # cp_df["shape"].map(lambda nix, njy: (nix <=  self.end_point[0]) or (njy <= self.end_point[1])).any()

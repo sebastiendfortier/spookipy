@@ -18,7 +18,7 @@ class AddToElements(Plugin):
         pass
 
     def compute(self) -> pd.DataFrame:
-        logging.info('AddToElements - compute\n')
+        logging.info('AddToElements - compute')
         return OpElementsByValue(
             df = self.df,
             operator = add_value,

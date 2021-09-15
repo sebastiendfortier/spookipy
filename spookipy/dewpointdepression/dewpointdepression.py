@@ -84,7 +84,7 @@ class DewPointDepression(Plugin):
 
         self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
-        self.df = fstpy.add_columns(self.df, decode=True, columns=['unit','forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(self.df, columns=['unit','forecast_hour','ip_info'])
 
         validate_humidity_parameters(DewPointDepressionError,self.ice_water_phase,self.temp_phase_switch,self.temp_phase_switch_unit)
 
@@ -104,7 +104,7 @@ class DewPointDepression(Plugin):
         if not self.existing_result_df.empty:
             return existing_results('DewPointDepression',self.existing_result_df,self.meta_df)
 
-        logging.info('DewPointDepression - compute\n')
+        logging.info('DewPointDepression - compute')
         df_list=[]
         if self.rpn:
             dependencies_list = get_dependencies(self.groups,self.meta_df,'DewPointDepression',self.plugin_mandatory_dependencies_rpn,self.plugin_params,intersect_levels=True)
@@ -143,7 +143,7 @@ class DewPointDepression(Plugin):
         return final_results(df_list, DewPointDepression, self.meta_df)
 
     def rpn_dewpointdepression_from_tt_hr_px(self, dependencies_df, option):
-        logging.info(f'rpn option {option+1}\n')
+        logging.info(f'rpn option {option+1}')
         dependencies_df = fstpy.load_data(dependencies_df)
         tt_df = get_from_dataframe(dependencies_df,'TT')
         hr_df = get_from_dataframe(dependencies_df,'HR')
@@ -159,7 +159,7 @@ class DewPointDepression(Plugin):
         return es_df
 
     def rpn_dewpointdepression_from_tt_hu_px(self, hu_df, dependencies_df, option):
-        logging.info(f'rpn option {option+1}\n')
+        logging.info(f'rpn option {option+1}')
         hu_df = fstpy.load_data(hu_df)
         dependencies_df = fstpy.load_data(dependencies_df)
         tt_df = get_from_dataframe(dependencies_df,'TT')
@@ -182,9 +182,9 @@ class DewPointDepression(Plugin):
 
     def dewpointdepression_from_tt_td(self, td_df, dependencies_df, option, rpn=False):
         if rpn:
-            logging.info(f'rpn option {option+1}\n')
+            logging.info(f'rpn option {option+1}')
         else:
-            logging.info(f'option {option+1}\n')
+            logging.info(f'option {option+1}')
         td_df = fstpy.load_data(td_df)
         dependencies_df = fstpy.load_data(dependencies_df)
         tt_df = get_from_dataframe(dependencies_df,'TT')

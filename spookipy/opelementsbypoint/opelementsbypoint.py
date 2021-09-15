@@ -38,7 +38,7 @@ class OpElementsByPoint(Plugin):
         if len(self.df) == 1:
             raise self.exception_class(self.operation_name + ' - not enough records to process, need at least 2')
 
-        self.df = fstpy.add_columns(self.df, decode=True, columns=['forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(self.df, columns=['forecast_hour','ip_info'])
 
         grouping = ['grid']
         if self.group_by_forecast_hour:
@@ -51,14 +51,14 @@ class OpElementsByPoint(Plugin):
 
 
     def compute(self) -> pd.DataFrame:
-        logging.info('OpElementsByPoint - compute\n')
+        logging.info('OpElementsByPoint - compute')
         #holds data from all the groups
         df_list = []
         for _,current_group in self.groups:
             current_group = fstpy.load_data(current_group)
             current_group.sort_values(by=['nomvar','dateo','forecast_hour'],inplace=True)
             if len(current_group.index) == 1:
-                logging.warning('need more than one field for this operation - skipping\n')
+                logging.warning('need more than one field for this operation - skipping')
                 continue
 
             res_df = create_empty_result(current_group,self.plugin_result_specifications['ALL'])

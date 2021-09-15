@@ -34,7 +34,7 @@ class Helicity(Plugin):
 
         self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
-        self.df = fstpy.add_columns(self.df, decode=True, columns=['unit','forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(self.df, columns=['unit','forecast_hour','ip_info'])
 
          #check if result already exists
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
@@ -49,7 +49,7 @@ class Helicity(Plugin):
         if not self.existing_result_df.empty:
             return existing_results('Helicity',self.existing_result_df,self.meta_df)
 
-        logging.info('Helicity - compute\n')
+        logging.info('Helicity - compute')
         df_list = []
         for _,current_fhour_group in self.fhour_groups:
             current_fhour_group = get_intersecting_levels(current_fhour_group,self.plugin_mandatory_dependencies)

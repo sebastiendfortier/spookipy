@@ -15,7 +15,7 @@ class ArithmeticMeanByPoint(Plugin):
         pass
 
     def compute(self) -> pd.DataFrame:
-        logging.info('ArithmeticMeanByPoint - compute\n')
+        logging.info('ArithmeticMeanByPoint - compute')
         return OpElementsByPoint(self.df,
         operator = np.mean,
         operation_name='ArithmeticMeanByPoint',

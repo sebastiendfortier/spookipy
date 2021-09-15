@@ -66,7 +66,7 @@ class WindMax(Plugin):
 
         self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
-        self.df = fstpy.add_columns(self.df, decode=True, columns=['unit','forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(self.df, columns=['unit','forecast_hour','ip_info'])
 
         #check if result already exists
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
@@ -81,7 +81,7 @@ class WindMax(Plugin):
         if not self.existing_result_df.empty:
             return existing_results('WindMax',self.existing_result_df,self.meta_df)
 
-        logging.info('WindMax - compute\n')
+        logging.info('WindMax - compute')
         #holds data from all the groups
         df_list = []
 

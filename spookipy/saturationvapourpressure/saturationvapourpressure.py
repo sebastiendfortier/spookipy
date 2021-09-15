@@ -39,7 +39,7 @@ class SaturationVapourPressure(Plugin):
 
         self.df = fstpy.metadata_cleanup(self.df)
 
-        self.df = fstpy.add_columns(self.df, decode=True, columns=['unit','forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(self.df, columns=['unit','forecast_hour','ip_info'])
 
         validate_humidity_parameters(SaturationVapourPressureError,self.ice_water_phase,self.temp_phase_switch,self.temp_phase_switch_unit)
 
@@ -59,7 +59,7 @@ class SaturationVapourPressure(Plugin):
         if not self.existing_result_df.empty:
             return existing_results('SaturationVapourPressure',self.existing_result_df,self.meta_df)
 
-        logging.info('SaturationVapourPressure - compute\n')
+        logging.info('SaturationVapourPressure - compute')
         df_list=[]
 
         dependencies_list = get_dependencies(self.groups,self.meta_df,'SaturationVapourPressure',self.plugin_mandatory_dependencies,self.plugin_params)
@@ -71,13 +71,13 @@ class SaturationVapourPressure(Plugin):
             svp_df = create_empty_result(tt_df,self.plugin_result_specifications['SVP'],all_rows=True)
 
             if self.rpn:
-                logging.info('rpn option 1\n')
+                logging.info('rpn option 1')
                 ttk_df = fstpy.unit_convert(tt_df,'kelvin')
                 for i in svp_df.index:
                     ttk = ttk_df.at[i,'d']
                     svp_df.at[i,'d'] = rpn_svp_from_tt(ttk, tpl=(self.temp_phase_switch if self.ice_water_phase!='water' else -40), swph=self.ice_water_phase=='both').astype(np.float32)
             else:
-                logging.info('option 2\n')
+                logging.info('option 2')
                 for i in tt_df.index:
                     tt = tt_df.at[i,'d']
                     svp_df.at[i,'d'] = svp_from_tt(tt-TDPACK_OFFSET_FIX, tpl=(self.temp_phase_switch if self.ice_water_phase!='water' else -40), swph=self.ice_water_phase=='both').astype(np.float32)

@@ -56,7 +56,7 @@ class Humidex(Plugin):
 
         self.df = fstpy.metadata_cleanup(self.df)
 
-        self.df = fstpy.add_columns(self.df, decode=True, columns=['unit','forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(self.df, columns=['unit','forecast_hour','ip_info'])
 
         # print(self.df[['nomvar','typvar','etiket','unit','surface','grid','forecast_hour']].sort_values(by=['grid','nomvar']).to_string())
         self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
@@ -78,7 +78,7 @@ class Humidex(Plugin):
         if not self.existing_result_df.empty:
             return existing_results('Humidex',self.existing_result_df,self.meta_df)
 
-        logging.info('Humidex - compute\n')
+        logging.info('Humidex - compute')
         df_list=[]
         dependencies_list = get_dependencies(self.groups,self.meta_df,'Humidex',self.plugin_mandatory_dependencies,intersect_levels=True)
 
@@ -100,7 +100,7 @@ class Humidex(Plugin):
     def humidex_from_tt_svp(self, dependencies_df, td_df, option):
         from ..saturationvapourpressure.saturationvapourpressure import \
             SaturationVapourPressure
-        logging.info(f'option {option+1}\n')
+        logging.info(f'option {option+1}')
         td_df = fstpy.load_data(td_df)
         dependencies_df = fstpy.load_data(dependencies_df)
         tt_df = get_from_dataframe(dependencies_df,'TT')

@@ -44,7 +44,7 @@ class WindDirection(Plugin):
         self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
 
-        self.df = fstpy.add_columns(self.df, decode=True, columns=['unit','forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(self.df, columns=['unit','forecast_hour','ip_info'])
 
          #check if result already exists
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
@@ -58,7 +58,7 @@ class WindDirection(Plugin):
         if not self.existing_result_df.empty:
             return existing_results('WindDirection',self.existing_result_df,self.meta_df)
 
-        logging.info('WindDirection - compute\n')
+        logging.info('WindDirection - compute')
         df_list = []
         dependencies_list = get_dependencies(self.groups,self.meta_df,'WindChill',self.plugin_mandatory_dependencies, intersect_levels=True)
         for dependencies_df,_ in dependencies_list:

@@ -40,14 +40,14 @@ class MinMaxLevelIndex(Plugin):
             self.min = True
             self.max = True
 
-        self.df = fstpy.add_columns(self.df, decode=True, columns=['forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(self.df, columns=['forecast_hour','ip_info'])
 
         keep = self.df.loc[~self.df.nomvar.isin(["KBAS","KTOP"])].reset_index(drop=True)
 
         self.nomvar_groups= keep.groupby(by=['grid','dateo','forecast_hour','nomvar'])
 
     def compute(self) -> pd.DataFrame:
-        logging.info('MinMaxLevelIndex - compute\n')
+        logging.info('MinMaxLevelIndex - compute')
         df_list=[]
         for _,group in self.nomvar_groups:
             group = fstpy.load_data(group)

@@ -46,7 +46,7 @@ class Pressure(Plugin):
 
         self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
-        self.df = fstpy.add_columns(self.df, decode=True, columns=['ip_info','forecast_hour','unit'])
+        self.df = fstpy.add_columns(self.df, columns=['ip_info','forecast_hour','unit'])
 
         if not (self.reference_field is None):
             self.df = fstpy.select_with_meta(self.df,[self.reference_field])
@@ -66,7 +66,7 @@ class Pressure(Plugin):
         if not self.existing_result_df.empty:
             return existing_results('Pressure',self.existing_result_df,self.meta_df)
 
-        logging.info('Pressure - compute\n')
+        logging.info('Pressure - compute')
         df_list=[]
         for _,grid in self.df.groupby(['grid']):
             meta_df = grid.loc[grid.nomvar.isin(["!!","HY","P0","PT"])].reset_index(drop=True)
@@ -102,23 +102,23 @@ class Pressure(Plugin):
             px_df = pd.DataFrame(dtype=object)
 
         elif vctype == "HYBRID":
-            logging.info('Found HYBRID vertical coordinate type - computing pressure\n')
+            logging.info('Found HYBRID vertical coordinate type - computing pressure')
             px_df = compute_pressure_from_hyb_coord_df(df,meta_df,self.standard_atmosphere)
 
         elif (vctype == "HYBRID_5005") or( vctype == "HYBRID_STAGGERED"):
-            logging.info('Found HYBRID STAGGERED (5005,5002) vertical coordinate type - computing pressure\n')
+            logging.info('Found HYBRID STAGGERED (5005,5002) vertical coordinate type - computing pressure')
             px_df = compute_pressure_from_hybstag_coord_df(df,meta_df,self.standard_atmosphere)
 
         elif vctype == "PRESSURE":
-            logging.info('Found PRESSURE vertical coordinate type - computing pressure\n')
+            logging.info('Found PRESSURE vertical coordinate type - computing pressure')
             px_df = compute_pressure_from_pressure_coord_df(df,self.standard_atmosphere)
 
         elif vctype == "ETA":
-            logging.info('Found ETA vertical coordinate type - computing pressure\n')
+            logging.info('Found ETA vertical coordinate type - computing pressure')
             px_df = compute_pressure_from_eta_coord_df(df,meta_df,self.standard_atmosphere)
 
         elif vctype == "SIGMA":
-            logging.info('Found SIGMA vertical coordinate type - computing pressure\n')
+            logging.info('Found SIGMA vertical coordinate type - computing pressure')
             converted=False
             if (df.ip1.unique() > 32767).all():
                 converted=True

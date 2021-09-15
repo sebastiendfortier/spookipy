@@ -55,7 +55,7 @@ def test_2(plugin_test_dir):
     uv_df = spooki.WindModulus(uv_df).compute()
     uv_src_df=pd.concat([src_df0,uv_df],ignore_index=True)
 
-    uv_src_df = fstpy.add_columns(uv_src_df, decode=True, columns=['ip_info'])
+    uv_src_df = fstpy.add_columns(uv_src_df, columns=['ip_info'])
     src_df0 = uv_src_df.loc[uv_src_df.surface==False].reset_index(drop=True)
     # print(src_df0[['level','surface']])
 

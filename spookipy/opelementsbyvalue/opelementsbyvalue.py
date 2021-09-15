@@ -33,7 +33,7 @@ class OpElementsByValue(Plugin):
             self.plugin_result_specifications = {'ALL':{'etiket':self.etiket,'unit':self.unit}}
 
     def compute(self) -> pd.DataFrame:
-        logging.info('OpElementsByValue - compute\n')
+        logging.info('OpElementsByValue - compute')
         df_list = []
         res_df = create_empty_result(self.df,self.plugin_result_specifications['ALL'],all_rows=True)
         res_df = fstpy.load_data(res_df)

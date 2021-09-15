@@ -39,7 +39,7 @@ class CoriolisParameter(Plugin):
         if self.df.empty:
             raise CoriolisParameterError('No data to process')
 
-        self.df = fstpy.add_columns(self.df, decode=True, columns=['unit'])
+        self.df = fstpy.add_columns(self.df, columns=['unit'])
 
         self.df = fstpy.metadata_cleanup(self.df)
 
@@ -55,18 +55,18 @@ class CoriolisParameter(Plugin):
         if not self.existing_result_df.empty:
             return existing_results('CoriolisParameter',self.existing_result_df,self.meta_df)
 
-        logging.info('CoriolisParameter - compute\n')
+        logging.info('CoriolisParameter - compute')
         df_list=[]
         for _, current_group in self.groups:
             latlon_df = fstpy.get_2d_lat_lon(current_group)
             lat_df = latlon_df.loc[latlon_df.nomvar=='LA'].reset_index(drop=True)
             if lat_df.empty:
-                logging.warning('Cannot find "LA" field in this group - skipping\n')
+                logging.warning('Cannot find "LA" field in this group - skipping')
                 continue
             # remove meta
             current_group = current_group.loc[~current_group.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
             if current_group.empty:
-                logging.warning('Cannot find "LON" field in this group - skipping\n')
+                logging.warning('Cannot find "LON" field in this group - skipping')
                 continue
 
             corp_df = create_empty_result(lat_df,self.plugin_result_specifications['CORP'])

@@ -16,7 +16,7 @@ class MultiplyElementsByPoint(Plugin):
         pass
 
     def compute(self) -> pd.DataFrame:
-        logging.info('MultiplyElementsByPoint - compute\n')
+        logging.info('MultiplyElementsByPoint - compute')
         return OpElementsByPoint(self.df,
         operator = np.prod,
         operation_name='MultiplyElementsByPoint',

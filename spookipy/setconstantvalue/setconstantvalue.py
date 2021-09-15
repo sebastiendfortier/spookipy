@@ -31,7 +31,7 @@ class SetConstantValue(Plugin):
 
         self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
-        self.df = fstpy.add_columns(self.df, decode=True, columns=['unit','forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(self.df, columns=['unit','forecast_hour','ip_info'])
 
         self.df = self.df.loc[~self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
@@ -48,7 +48,7 @@ class SetConstantValue(Plugin):
 
 
     def compute(self) -> pd.DataFrame:
-        logging.info('SetConstantValue - compute\n')
+        logging.info('SetConstantValue - compute')
         df_list = []
         for _,current_group in self.groups:
             if self.max_index:

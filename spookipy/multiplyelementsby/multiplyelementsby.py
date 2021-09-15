@@ -17,7 +17,7 @@ class MultiplyElementsBy(Plugin):
         pass
 
     def compute(self) -> pd.DataFrame:
-        logging.info('MultiplyElementsBy - compute\n')
+        logging.info('MultiplyElementsBy - compute')
         return OpElementsByValue(self.df,
         value = self.value,
         operation_name='MultiplyElementsBy',

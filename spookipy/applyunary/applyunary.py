@@ -30,7 +30,7 @@ class ApplyUnary(Plugin):
 
 
     def compute(self) -> pd.DataFrame:
-        logging.info('ApplyUnary - compute\n')
+        logging.info('ApplyUnary - compute')
 
         in_df = self.df.loc[self.df.nomvar==self.nomvar_in].reset_index(drop=True)
 

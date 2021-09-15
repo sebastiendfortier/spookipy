@@ -63,7 +63,7 @@ class CloudFractionDiagnostic(Plugin):
 
         self.df = fstpy.metadata_cleanup(self.df)
 
-        self.df = fstpy.add_columns(self.df, decode=True, columns=['unit','forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(self.df, columns=['unit','forecast_hour','ip_info'])
 
         self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
@@ -78,7 +78,7 @@ class CloudFractionDiagnostic(Plugin):
         if not self.existing_result_df.empty:
             return existing_results('CloudFractionDiagnostic',self.existing_result_df,self.meta_df)
 
-        logging.info('CloudFractionDiagnostic - compute\n')
+        logging.info('CloudFractionDiagnostic - compute')
         df_list=[]
         dependencies_list = get_dependencies(self.groups,self.meta_df,'CloudFractionDiagnostic',self.plugin_mandatory_dependencies)
 

@@ -46,7 +46,7 @@ class Pressure(Plugin):
 
         self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
-        self.df = fstpy.add_columns(self.df, columns=['ip_info','forecast_hour','unit'])
+        self.df = fstpy.add_columns(self.df,True, columns=['ip_info','forecast_hour','unit'])
 
         if not (self.reference_field is None):
             self.df = fstpy.select_with_meta(self.df,[self.reference_field])

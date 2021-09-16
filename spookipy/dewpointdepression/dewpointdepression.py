@@ -84,7 +84,7 @@ class DewPointDepression(Plugin):
 
         self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
-        self.df = fstpy.add_columns(self.df, columns=['unit','forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(self.df,True, columns=['unit','forecast_hour','ip_info'])
 
         validate_humidity_parameters(DewPointDepressionError,self.ice_water_phase,self.temp_phase_switch,self.temp_phase_switch_unit)
 

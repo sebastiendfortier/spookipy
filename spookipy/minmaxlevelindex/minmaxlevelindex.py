@@ -40,7 +40,7 @@ class MinMaxLevelIndex(Plugin):
             self.min = True
             self.max = True
 
-        self.df = fstpy.add_columns(self.df, columns=['forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(self.df,True, columns=['forecast_hour','ip_info'])
 
         keep = self.df.loc[~self.df.nomvar.isin(["KBAS","KTOP"])].reset_index(drop=True)
 

@@ -275,7 +275,7 @@ def get_intersecting_levels(df:pd.DataFrame, plugin_mandatory_dependencies:dict)
 
     # res_df = pd.concat(df_list,ignore_index=True)
     if 'level' not in res_df.columns:
-        res_df = fstpy.add_columns(res_df, columns=['ip_info'])
+        res_df = fstpy.add_columns(res_df,True, columns=['ip_info'])
     res_df = res_df.sort_values(by='level',ascending=res_df.ascending.unique()[0])
     return res_df
 
@@ -333,7 +333,7 @@ def create_empty_result(df:pd.DataFrame, plugin_result_specifications:dict,all_r
             res_df.loc[:,k] = v
 
     if 'level' not in res_df.columns:
-        res_df = fstpy.add_columns(res_df, columns=['ip_info'])
+        res_df = fstpy.add_columns(res_df,True, columns=['ip_info'])
 
     res_df = res_df.sort_values(by=['level'],ascending=res_df.ascending.unique()[0])
 

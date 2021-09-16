@@ -34,7 +34,7 @@ class MatchLevelIndexToValue(Plugin):
 
         self.df = self.df.loc[~self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
-        self.df = fstpy.add_columns(self.df, columns=['forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(self.df,True, columns=['forecast_hour','ip_info'])
 
         keep = self.df.loc[~self.df.nomvar.isin(["KBAS","KTOP"])].reset_index(drop=True)
 

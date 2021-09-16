@@ -63,7 +63,7 @@ class ExamplePlugin(Plugin):
 
         self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)   # keep the metadata to be added at the end
 
-        self.df = fstpy.add_columns(self.df, columns=['unit','forecast_hour','ip_info'])   # add some columns if they are not already in the dataframe
+        self.df = fstpy.add_columns(self.df,True, columns=['unit','forecast_hour','ip_info'])   # add some columns if they are not already in the dataframe
                                                                                            # this helps with sorting and grouping the data
                                                                                            # ip_info tag includes the decoding (gets the kind and value) of ip1, ip2 ip3
                                                                                            # the virtical coordinate type, the surface flag, the virtical coordinate type 

@@ -63,7 +63,7 @@ class CloudFractionDiagnostic(Plugin):
 
         self.df = fstpy.metadata_cleanup(self.df)
 
-        self.df = fstpy.add_columns(self.df, columns=['unit','forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(self.df,True, columns=['unit','forecast_hour','ip_info'])
 
         self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 

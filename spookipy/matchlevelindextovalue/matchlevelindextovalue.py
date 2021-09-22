@@ -34,7 +34,7 @@ class MatchLevelIndexToValue(Plugin):
 
         self.df = self.df.loc[~self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
-        self.df = fstpy.add_columns(self.df,True, columns=['forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(self.df, columns=['forecast_hour','ip_info'])
 
         keep = self.df.loc[~self.df.nomvar.isin(["KBAS","KTOP"])].reset_index(drop=True)
 
@@ -44,9 +44,9 @@ class MatchLevelIndexToValue(Plugin):
         logging.info('MatchLevelIndexToValue - compute')
         df_list=[]
         for _,group in self.groups:
-            group = fstpy.load_data(group)
+
             ind_df = group.loc[group.nomvar==self.nomvar_index].reset_index(drop=True)
-            ind = np.expand_dims(ind_df.iloc[0]['d'].flatten().astype(np.int32),axis=0)
+            ind = np.expand_dims(ind_df.iloc[0]['d'].ravel(order='F').astype(dtype=np.int32),axis=0)
             others_df = group.loc[group.nomvar!=self.nomvar_index].reset_index(drop=True)
             nomvars = others_df.nomvar.unique()
             if not(self.nomvar_out is None) and (len(nomvars)>1):

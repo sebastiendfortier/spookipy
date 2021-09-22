@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from numpy import float32
-from ..utils import create_empty_result, get_existing_result, existing_results, final_results
+from ..utils import create_empty_result, get_existing_result, existing_results, final_results, get_from_dataframe
 from ..plugin import Plugin
 import pandas as pd
 import fstpy.all as fstpy
@@ -39,8 +39,8 @@ class CoriolisParameter(Plugin):
         if self.df.empty:
             raise CoriolisParameterError('No data to process')
 
-        self.df = fstpy.add_columns(self.df,True, columns=['unit'])
-
+        self.df = fstpy.add_columns(self.df, columns=['unit','ip_info'])
+        
         self.df = fstpy.metadata_cleanup(self.df)
 
         # print(self.df[['nomvar','typvar','etiket','unit','surface','grid','forecast_hour']].sort_values(by=['grid','nomvar']).to_string())
@@ -58,6 +58,7 @@ class CoriolisParameter(Plugin):
         logging.info('CoriolisParameter - compute')
         df_list=[]
         for _, current_group in self.groups:
+
             latlon_df = fstpy.get_2d_lat_lon(current_group)
             lat_df = latlon_df.loc[latlon_df.nomvar=='LA'].reset_index(drop=True)
             if lat_df.empty:

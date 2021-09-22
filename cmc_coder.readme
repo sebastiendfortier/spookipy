@@ -7,7 +7,8 @@ SETTING YOUR DEV ENVIRONMENT
 [sbf000@eccc2-ppp4 ~] $ cd src
 [sbf000@eccc2-ppp4 ~] $ git clone git@gitlab.science.gc.ca:cmdw-spooki/spookipy.git
 [sbf000@eccc2-ppp4 ~] $ cd spookipy
-[sbf000@eccc2-ppp4 ~] $ .setup.sh
+[sbf000@eccc2-ppp4 ~] $ git checkout -b your_work_branch
+[sbf000@eccc2-ppp4 ~] $ . setup.sh
 
 
 
@@ -38,6 +39,7 @@ Run jupter lab
 This script starts jupyter lab ans gives me the info for the port fowarding. 
 Make a copy for yourself and change the port to something else than 5053 
 In doubt, just increment it
+Also change the pythonpath for fstpy and spookiy for your personal work directories
 
 [sbf000@cs4be-197p34 ~] $ public/start_jupyter_dev.sh 
 

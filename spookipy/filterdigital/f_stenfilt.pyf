@@ -1,18 +1,18 @@
 !    -*- f90 -*-
 ! Note: the context of this file is case sensitive.
 
-python module stenfilt ! in 
-    interface  ! in :stenfilt
-        subroutine filtre(slab,ni,nj,npass,list,l) ! in :stenfilt:stenfilt.f90
+python module f_stenfilt ! in 
+    interface  ! in :f_stenfilt
+        subroutine f_stenfilt(slab,ni,nj,npass,list,l) ! in :f_stenfilt:f_stenfilt.f90
             real dimension(ni,nj),intent(inout) :: slab
             integer, optional,check(shape(slab,0)==ni),depend(slab) :: ni=shape(slab,0)
             integer, optional,check(shape(slab,1)==nj),depend(slab) :: nj=shape(slab,1)
             integer :: npass
             integer dimension(l) :: list
             integer, optional,check(len(list)>=l),depend(list) :: l=len(list)
-        end subroutine filtre
+        end subroutine f_stenfilt
     end interface 
-end python module stenfilt
+end python module f_stenfilt
 
 ! This file was auto-generated with f2py (version:2).
 ! See http://cens.ioc.ee/projects/f2py2e/

@@ -9,7 +9,9 @@ import pandas as pd
 from ..plugin import Plugin
 from ..utils import (create_empty_result, existing_results, final_results,
                      get_dependencies, get_existing_result, initializer)
-
+                     
+import dask.array as da                     
+import copy
 
 def diagnostic_cloud_fraction_threshold(level:float) -> float:
     """calcultes thresholds for a given level
@@ -63,7 +65,7 @@ class CloudFractionDiagnostic(Plugin):
 
         self.df = fstpy.metadata_cleanup(self.df)
 
-        self.df = fstpy.add_columns(self.df,True, columns=['unit','forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(self.df, columns=['unit','forecast_hour','ip_info'])
 
         self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
@@ -83,7 +85,7 @@ class CloudFractionDiagnostic(Plugin):
         dependencies_list = get_dependencies(self.groups,self.meta_df,'CloudFractionDiagnostic',self.plugin_mandatory_dependencies)
 
         for dependencies_df,_ in dependencies_list:
-            dependencies_df = fstpy.load_data(dependencies_df)
+
 
             cld_df = create_empty_result(dependencies_df,self.plugin_result_specifications['CLD'],all_rows=True)
 
@@ -93,7 +95,7 @@ class CloudFractionDiagnostic(Plugin):
             else:
                 for  i in cld_df.index:
                     level = cld_df.at[i,'level']
-                    hr = np.copy(cld_df.at[i,'d'])
+                    hr = copy.deepcopy(cld_df.at[i,'d'])
                     threshold = diagnostic_cloud_fraction_threshold(level)
                     cld_df.at[i,'d'] = diagnostic_cloud_fraction(hr,threshold)
 

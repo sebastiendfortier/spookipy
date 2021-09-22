@@ -12,7 +12,7 @@
 !     *         IN/OUT/  slab  : les donnees a filtrer              *
 !     *                                                             *
 !     ***************************************************************
-      subroutine filtre (slab, NI, NJ, Npass, list, L)
+      subroutine f_stenfilt (slab, NI, NJ, Npass, list, L)
       implicit none
 
       integer NI, NJ

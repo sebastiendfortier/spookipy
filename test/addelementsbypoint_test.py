@@ -16,7 +16,7 @@ def test_1(plugin_test_dir):
     """Additionne des champs 2D."""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
-    src_df0 = fstpy.StandardFileReader(source0,load_data=True).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     #compute AddElementsByPoint
     df = spooki.AddElementsByPoint(src_df0, nomvar_out='ACCU').compute()

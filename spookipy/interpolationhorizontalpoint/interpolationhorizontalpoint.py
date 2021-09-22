@@ -6,7 +6,7 @@ import rpnpy.librmn.all as rmn
 import numpy as np
 import sys
 import fstpy.all as fstpy
-from ..utils import initializer, remove_load_data_info
+from ..utils import initializer
 
 class InterpolationHorizontalPointError(Exception):
     pass
@@ -17,10 +17,10 @@ class InterpolationHorizontalPoint(Plugin):
     :param df: Input dataframe
     :type df: pd.DataFrame
     :param lat_lon_df: dataframe containing destination LAT and LON fields, created manually of from fst file
-    lat_data = np.expand_dims(np.array([45.73,43.40,49.18],dtype='float32'),axis=-1)
+    lat_data = np.expand_dims(np.array([45.73,43.40,49.18],dtype=np.float32),axis=-1)
     lat_ni = lat_data.shape[0]
     lat_nj = lat_data.shape[1]
-    lon_data = np.expand_dims(np.array([-73.75,-79.38,-123.18],dtype='float32'),axis=-1)
+    lon_data = np.expand_dims(np.array([-73.75,-79.38,-123.18],dtype=np.float32),axis=-1)
     lon_ni = lon_data.shape[0]
     lon_nj = lon_data.shape[1]
     pd.DataFrame([
@@ -76,7 +76,7 @@ class InterpolationHorizontalPoint(Plugin):
     def define_output_grid(self):
         if ('LON' in self.lat_lon_df.nomvar.to_list()) and  ('LAT' in self.lat_lon_df.nomvar.to_list()):
             self.lat_lon_df = self.lat_lon_df.loc[self.lat_lon_df.nomvar.isin(["LAT","LON"])].reset_index(drop=True)
-            self.lat_lon_df = fstpy.load_data(self.lat_lon_df)
+
             ni,nj,_,ax,ay,ig1,ig2,ig3,ig4 = get_grid_paramters_from_latlon_fields(self.lat_lon_df)
             self.output_grid = define_grid('Y','L',ni,nj,ig1,ig2,ig3,ig4,ax,ay,None)
             self.lat = self.lat_lon_df.loc[self.lat_lon_df.nomvar=="LAT"].reset_index(drop=True).iloc[0]['d']
@@ -106,7 +106,7 @@ class InterpolationHorizontalPoint(Plugin):
         no_mod = []
         for _,current_group in self.groups:
 
-            current_group = fstpy.load_data(current_group)
+
 
             keep_intact_hy_field(current_group, no_mod)
 
@@ -186,8 +186,7 @@ class InterpolationHorizontalPoint(Plugin):
 
 
         other_res_df.loc[other_res_df.nomvar!='HY','grid'] = '00000000'
-        #make sure load_data does not execute (does nothing)
-        other_res_df = remove_load_data_info(other_res_df)
+
         other_res_df = fstpy.metadata_cleanup(other_res_df)
 
         return other_res_df
@@ -241,7 +240,7 @@ def scalar_interpolation_pt(df,results,ni):
     # scalar except PT
     int_df = df.copy(deep=True)
 
-    arr = np.expand_dims(np.full(ni, df.iloc[0]['d'].flat[0], dtype='float32', order='F'),axis=-1)
+    arr = np.expand_dims(np.full(ni, df.iloc[0]['d'].flat[0], dtype=np.float32, order='F'),axis=-1)
     for i in df.index: # should only be one
         int_df.at[i,'d'] = arr
 
@@ -337,8 +336,8 @@ def get_grid_paramters_from_latlon_fields(meta_df):
     return get_grid_parameters(lat_df, lon_df)
 
 def get_grid_parameters(lat_df, lon_df):
-    lat_df = fstpy.load_data(lat_df)
-    lon_df = fstpy.load_data(lon_df)
+
+
     nj = lat_df.iloc[0]['nj']
     ni = lon_df.iloc[0]['ni']
     grref = lat_df.iloc[0]['grtyp']
@@ -431,7 +430,7 @@ def define_grid(grtyp:str,grref:str,ni:int,nj:int,ig1:int,ig2:int,ig3:int,ig4:in
 
 def create_type_u_sub_grids(tictac, ni, nj, ig1, ig2, ig3, ig4, ax, ay):
     start_pos = 5
-    tictac = tictac.flatten()
+    tictac = tictac.ravel(order='F')
 
     ni, nj, ig1, ig2, ig3, ig4, ay, ax, next_pos = get_grid_parameters_from_tictac_offset(tictac, start_pos, ni, nj, ig1, ig2, ig3, ig4, ax, ay)
 
@@ -475,7 +474,7 @@ def find_index_of_lat_lon_not_in_grid(input_grid, grid_horizontal_dimension, gri
     #        'x'  : list of points x-coor (numpy.ndarray)
     #        'y'  : list of points y-coor (numpy.ndarray)
     #    }
-    coords = rmn.gdxyfll(input_grid, latitudes.flatten(), longitudes.flatten())
+    coords = rmn.gdxyfll(input_grid, latitudes.ravel(order='F'), longitudes.ravel(order='F'))
     # print('coords',coords)
     # print(coords['x'][0])
     # print(coords['y'][0])

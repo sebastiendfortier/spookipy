@@ -31,7 +31,7 @@ See the contents of the dataframe
 .. code:: python
 
     import fstpy.all as fstpy
-    df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std',load_data=True,query='nomvar=="TT"').to_pandas()
+    df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std',query='nomvar=="TT"').to_pandas()
     # show the last rows of the dataframe
     print(df.tail())
 
@@ -145,14 +145,14 @@ See the contents of the dataframe
 select sub-sets of data
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-**Note**: fstpy.select is a wrapper for pandas.DataFrame.query method
+
 
 .. code:: python
 
     import fstpy.all as fstpy
-    df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std',load_data=True).to_pandas()
+    df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std').to_pandas()
     # select TT
-    sel_tt_df = fstpy.select(df,'nomvar=="TT"')
+    sel_tt_df = df.query('nomvar=="TT"')
     print(sel_tt_df.head())
 
 .. code:: example
@@ -171,7 +171,7 @@ select sub-sets of data
     import fstpy.all as fstpy
     df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std').to_pandas()
     # select UU and VV
-    sel_uuvv_df = fstpy.select(df,'nomvar in ["UU","VV"]')
+    sel_uuvv_df = df.query('nomvar in ["UU","VV"]')
     print(sel_uuvv_df.head())
     print(sel_uuvv_df.tail())
 
@@ -199,7 +199,7 @@ select sub-sets of data
     import fstpy.all as fstpy
     df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std').to_pandas()
     # select UU and VV with ip2 of 6
-    sel_uuvv6_df = fstpy.select(df,'(nomvar in ["UU","VV"]) and (ip2==6)')
+    sel_uuvv6_df = df.query('(nomvar in ["UU","VV"]) and (ip2==6)')
     print(sel_uuvv6_df.tail()[['nomvar','ip2']])
 
 .. code:: example
@@ -236,7 +236,7 @@ Modify meta data
     import fstpy.all as fstpy
     df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std').to_pandas()
     # select TT
-    sel_tt_df = fstpy.select(df,'nomvar=="TT"')
+    sel_tt_df = df.query('nomvar=="TT"')
     # change nomvar from TT to TTI
     zapped_df = fstpy.zap(sel_tt_df,nomvar='TTI')
     print(zapped_df.head())
@@ -292,14 +292,14 @@ Getting the associated data for each record in the dataframe
     import fstpy.all as fstpy
     df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std',decode_metadata=True).to_pandas()
     # we don't want to get all the data so lets get a subset
-    uuvv_df = fstpy.select(df,'(nomvar in ["UU","VV"]) and (surface==True)')
+    uuvv_df = df.query('(nomvar in ["UU","VV"]) and (surface==True)')
     print(uuvv_df.head())
-    tt_df = fstpy.select(df,'(nomvar=="TT") and (surface==True)')
+    tt_df = df.query('(nomvar=="TT") and (surface==True)')
     print(tt_df.head())
     # get the data for our new dataframes
     # after this operation the 'd' column of each dataframe contains a numpy ndarray
-    uuvv_df = fstpy.load_data(uuvv_df)
-    tt_df = fstpy.load_data(tt_df)
+    uuvv_df = fstpy.compute(uuvv_df)
+    tt_df = fstpy.compute(tt_df)
     print(tt_df[['nomvar','d']].head())
 
 .. code:: example
@@ -326,12 +326,12 @@ Wind Modulus
 
     import fstpy.all as fstpy
     df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std',decode_metadata=True).to_pandas()
-    uuvv_df = fstpy.select(df,'(nomvar in ["UU","VV"]) and (surface==True)')
-    uuvv_df = fstpy.load_data(uuvv_df)
+    uuvv_df = df.query('(nomvar in ["UU","VV"]) and (surface==True)')
+    uuvv_df = fstpy.compute(uuvv_df)
     # first we need the wind modulus (we assume that we have only 1 level in each dataframe)
     # let's separate uu and vv from uuvv_df
-    uu_df = fstpy.select(uuvv_df,'nomvar=="UU"')
-    vv_df = fstpy.select(uuvv_df,'nomvar=="VV"')
+    uu_df = uuvv_df.query('nomvar=="UU"')
+    vv_df = uuvv_df.query('nomvar=="VV"')
 
     #let's create a record to hold the result and change the nomvar accordingly
     uv_df = vv_df.copy(deep=True)
@@ -380,17 +380,17 @@ Wind Chill
     import fstpy.all as fstpy
     import numpy as np
     df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std',decode_metadata=True).to_pandas()
-    uuvv_df = fstpy.select(df,'(nomvar in ["UU","VV"]) and (surface==True)')
-    uuvv_df = fstpy.load_data(uuvv_df)
-    uu_df = fstpy.select(uuvv_df,'nomvar=="UU"')
-    vv_df = fstpy.select(uuvv_df,'nomvar=="VV"')
+    uuvv_df = df.query('(nomvar in ["UU","VV"]) and (surface==True)')
+    uuvv_df = fstpy.compute(uuvv_df)
+    uu_df = uuvv_df.query('nomvar=="UU"')
+    vv_df = uuvv_df.query('nomvar=="VV"')
     uv_df = vv_df.copy(deep=True)
     uv_df = fstpy.zap(uv_df,nomvar='UV')
     uu = (uu_df.iloc[0]['d']) #iloc[0]['d'] gets the first row of data from the dataframe
     vv = (vv_df.iloc[0]['d'])
     uv_df.at[0,'d'] = (uu**2 + vv**2)**.5
-    tt_df = fstpy.select(df,'(nomvar=="TT") and (surface==True)')
-    tt_df = fstpy.load_data(uuvv_df)
+    tt_df = df.query('(nomvar=="TT") and (surface==True)')
+    tt_df = fstpy.compute(uuvv_df)
     # at this point we have uv_df and tt_df but uv_df is in knots
     # we need to do a unit conversion on uv_df to get it in kph
     # print(UNITS) to get a list of units
@@ -424,10 +424,10 @@ Basic statistics for each record in a dataframe
     # read
     df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std').to_pandas()
 
-    df = fstpy.select(df,'nomvar=="TT"')
+    df = df.query('nomvar=="TT"')
 
     #load_data
-    df = fstpy.load_data(df)
+    df = fstpy.compute(df)
 
     # function to calculate stats on each row of the dataframe
     # function exists in std.standardfile
@@ -479,14 +479,14 @@ Basic statistics for each column of 3d matrix
     df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std').to_pandas()
 
     # get TT
-    tt_df = fstpy.select(df,'nomvar=="TT"')
+    tt_df = df.query('nomvar=="TT"')
 
     #load_data
-    tt_df = fstpy.load_data(tt_df)
+    tt_df = fstpy.compute(tt_df)
 
     # flatten arrays of the dataframe since second dimension is'nt necessary
     for i in tt_df.index:
-        tt_df.at[i,'d'] = tt_df.at[i,'d'].flatten()
+        tt_df.at[i,'d'] = tt_df.at[i,'d'].ravel(order='F')
 
     #get a 3d array of TT
     array_3d = np.stack(tt_df['d'].to_list())
@@ -505,7 +505,8 @@ Basic statistics for each column of 3d matrix
 
     # creates a 1 row dataframe based on a model dataframe
     def create_result_df(df:pd.DataFrame, nomvar:str, operation_name:str) ->  pd.DataFrame:
-        res_df = fstpy.create_1row_df_from_model(df)
+        res_df = df.iloc[0].to_dict()
+        res_df = pd.DataFrame([res_df])
         res_df = res_df.loc[:,'nomvar'] = nomvar
         res_df = res_df.loc[:,'etiket'] = operation_name
         return res_df
@@ -545,7 +546,7 @@ Getting groups of data
 
     df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std',decode_metadata=True).to_pandas()
 
-    tt_df = fstpy.select(df,'nomvar in ["TT","QR"]')
+    tt_df = df.query('nomvar in ["TT","QR"]')
 
     # grouping data by grid, the usual case when you have multiple grids in a dataframe
     grid_groups = tt_df.groupby(by=['grid'])
@@ -574,7 +575,7 @@ Getting groups of data
 
     df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std',decode_metadata=True).to_pandas()
 
-    tt_df = fstpy.select(df,'nomvar in ["TT",">>"]')
+    tt_df = df.query('nomvar in ["TT",">>"]')
 
     # grouping data by forecast hour, the usual case when you have multiple forecast hours per grid in a dataframe
     forecast_hour_groups = tt_df.groupby(by=['grid','forecast_hour'])
@@ -611,7 +612,7 @@ Getting groups of data
 
     df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std',decode_metadata=True).to_pandas()
 
-    tt_df = fstpy.select(df,'nomvar in ["TT","UU","VV"]')
+    tt_df = df.query('nomvar in ["TT","UU","VV"]')
 
     # grouping data by level, the usual case when you have multiple levels per grid in a dataframe
     levels_groups =tt_df.groupby(by=['grid','level'])
@@ -653,9 +654,9 @@ With fstpy
        df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std').to_pandas()
 
        # select TT only from input
-       tt_df = fstpy.select(df,'nomvar=="TT"')
+       tt_df = df.query('nomvar=="TT"')
 
-       # this will write the dataframe to the output file, if no data was fstpy.load_datad, the class will do it
+       # this will write the dataframe to the output file, if no data was loaded, the class will do it
        from os import getenv
        USER = getenv("USER")
        std_file = fstpy.StandardFileWriter('/tmp/%s/TT.std'%USER, tt_df)
@@ -673,9 +674,9 @@ With fstpy
        df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std').to_pandas()
 
        # select TT only from input
-       tt_df = fstpy.select(df,'nomvar=="TT"')
+       tt_df = df.query('nomvar=="TT"')
 
-       # this will write the complete dataframe to the compressed output file, if no data was fstpy.load_datad no data will be written,
+       # this will write the complete dataframe to the compressed output file, if no data was loaded no data will be written,
        # 'd' column will be None
        from os import getenv
        USER = getenv("USER")

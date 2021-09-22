@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from ..utils import initializer, remove_load_data_info
+from ..utils import initializer
 from ..plugin import Plugin
 import pandas as pd
 import rpnpy.librmn.all as rmn
 import numpy as np
-
+import dask.array as da
 import fstpy.all as fstpy
 
 
@@ -128,11 +128,11 @@ class InterpolationHorizontalGrid(Plugin):
 
                 elif ('^>' in meta_df.nomvar.to_list()):
                     tictac_df = meta_df.loc[meta_df.nomvar=="^>"].reset_index(drop=True)
-                    tictac_df = fstpy.load_data(tictac_df)
+
                     self.output_grid = define_grid(self.grtyp,'',0,0,0,0,0,0,None,None,tictac_df.iloc[0]['d'])
                     self.ig1,self.ig2,self.ig3,self.ig4 = set_output_column_values(meta_df,field_df)
                 # meta_data present, load it
-                self.all_meta_df = fstpy.load_data(self.all_meta_df)
+
 
             # define grid from field
             else:
@@ -171,7 +171,7 @@ class InterpolationHorizontalGrid(Plugin):
         no_mod = []
         for _,current_group in self.groups:
 
-            current_group = fstpy.load_data(current_group)
+
 
             keep_intact_hy_field(current_group, no_mod)
 
@@ -232,16 +232,14 @@ class InterpolationHorizontalGrid(Plugin):
             res_df = pd.concat([res_df,self.all_meta_df],ignore_index=True)
 
         if not self.toctoc_df.empty:
-            self.toctoc_df = fstpy.load_data(self.toctoc_df)
+
             self.toctoc_df = set_new_grid_identifiers_for_toctoc(self.toctoc_df,self.ig1,self.ig2)
             res_df = pd.concat([res_df,self.toctoc_df],ignore_index=True)
 
         if not self.hy_df.empty:
-            self.hy_df = fstpy.load_data(self.hy_df)
+
             res_df = pd.concat([res_df,self.hy_df],ignore_index=True)
 
-        #make sure load_data does not execute (does nothing)
-        res_df = remove_load_data_info(res_df)
         res_df = fstpy.metadata_cleanup(res_df)
 
         return res_df
@@ -377,8 +375,8 @@ def get_grid_paramters_from_latlon_fields(meta_df):
 def get_grid_parameters(lat_df, lon_df):
     if lat_df.empty or lon_df.empty:
         raise InterpolationHorizontalGridError('No data in lat_df or lon_df')
-    lat_df = fstpy.load_data(lat_df)
-    lon_df = fstpy.load_data(lon_df)
+
+
     nj = lat_df.iloc[0]['nj']
     ni = lon_df.iloc[0]['ni']
     grref = lat_df.iloc[0]['grtyp']
@@ -471,7 +469,7 @@ def define_grid(grtyp:str,grref:str,ni:int,nj:int,ig1:int,ig2:int,ig3:int,ig4:in
 
 def create_type_u_sub_grids(tictac, ni, nj, ig1, ig2, ig3, ig4, ax, ay):
     start_pos = 5
-    tictac = tictac.flatten()
+    tictac = tictac.ravel(order='F')
 
     ni, nj, ig1, ig2, ig3, ig4, ay, ax, next_pos = get_grid_parameters_from_tictac_offset(tictac, start_pos, ni, nj, ig1, ig2, ig3, ig4, ax, ay)
 

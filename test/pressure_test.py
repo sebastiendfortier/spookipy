@@ -909,6 +909,7 @@ def test_35(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]']
     df.loc[:,'etiket'] = 'R1_V710_N'
     df = df.loc[~df.nomvar.isin(["^^",">>","P0"])]
+
     #write the result
     results_file = TMP_PATH + "test_35.std"
     fstpy.delete_file(results_file)
@@ -919,7 +920,7 @@ def test_35(plugin_test_dir):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_35"
 
     #compare results
-    res = fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare,exclude_meta=True)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -948,7 +949,7 @@ def test_36(plugin_test_dir):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_36"
 
     #compare results
-    res = fstcomp(results_file,file_to_compare)
+    res = fstcomp(results_file,file_to_compare,exclude_meta=True)
     fstpy.delete_file(results_file)
     assert(res)
 

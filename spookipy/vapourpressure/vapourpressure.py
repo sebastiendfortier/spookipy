@@ -95,7 +95,7 @@ class VapourPressure(Plugin):
 
         self.df = fstpy.metadata_cleanup(self.df)
 
-        self.df = fstpy.add_columns(self.df,True, columns=['unit','forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(self.df, columns=['unit','forecast_hour','ip_info'])
 
         validate_humidity_parameters(VapourPressureError,self.ice_water_phase,self.temp_phase_switch,self.temp_phase_switch_unit)
 
@@ -179,8 +179,8 @@ class VapourPressure(Plugin):
         logging.info(f'rpn option {option+1}')
         # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
         hu_df = get_from_dataframe(dependencies_df,'HU')
-        hu_df = fstpy.load_data(hu_df)
-        dependencies_df = fstpy.load_data(dependencies_df)
+
+
         px_df = get_from_dataframe(dependencies_df,'PX')
         vppr_df = create_empty_result(hu_df,self.plugin_result_specifications['VPPR'],all_rows=True)
         for i in vppr_df.index:
@@ -192,7 +192,7 @@ class VapourPressure(Plugin):
     def vapourpressure_from_hr_svp(self, dependencies_df, option):
         logging.info(f'rpn option {option+1}')
         # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
-        dependencies_df = fstpy.load_data(dependencies_df)
+
         svp_df = get_from_dataframe(dependencies_df,'SVP')
         hr_df = get_from_dataframe(dependencies_df,'HR')
         vppr_df = create_empty_result(svp_df,self.plugin_result_specifications['VPPR'],all_rows=True)
@@ -204,8 +204,8 @@ class VapourPressure(Plugin):
 
     def rpn_vapourpressure_from_tt_td(self, td_df, dependencies_df, option):
         logging.info(f'rpn option {option+1}')
-        td_df = fstpy.load_data(td_df)
-        dependencies_df = fstpy.load_data(dependencies_df)
+
+
         tt_df = get_from_dataframe(dependencies_df,'TT')
         vppr_df = create_empty_result(tt_df,self.plugin_result_specifications['VPPR'],all_rows=True)
         ttk_df = fstpy.unit_convert(tt_df,'kelvin')
@@ -222,7 +222,7 @@ class VapourPressure(Plugin):
         else:
             logging.info(f'option {option+1}')
         # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
-        dependencies_df = fstpy.load_data(dependencies_df)
+
         qv_df = get_from_dataframe(dependencies_df,'QV')
         px_df = get_from_dataframe(dependencies_df,'PX')
         vppr_df = create_empty_result(qv_df,self.plugin_result_specifications['VPPR'],all_rows=True)
@@ -235,8 +235,8 @@ class VapourPressure(Plugin):
 
     def vapourpressure_from_tt_td(self, td_df, dependencies_df, option):
         logging.info(f'option {option+1}')
-        td_df = fstpy.load_data(td_df)
-        dependencies_df = fstpy.load_data(dependencies_df)
+
+
         tt_df = get_from_dataframe(dependencies_df,'TT')
         vppr_df = create_empty_result(tt_df,self.plugin_result_specifications['VPPR'],all_rows=True)
         for i in vppr_df.index:
@@ -247,8 +247,8 @@ class VapourPressure(Plugin):
 
     def rpn_vapourpressure_from_hu_px(self, hu_df, dependencies_df,option):
         logging.info(f'rpn option {option+1}')
-        hu_df = fstpy.load_data(hu_df)
-        dependencies_df = fstpy.load_data(dependencies_df)
+
+
         px_df = get_from_dataframe(dependencies_df,'PX')
         vppr_df = create_empty_result(px_df,self.plugin_result_specifications['VPPR'],all_rows=True)
         pxpa_df = fstpy.unit_convert(px_df,'pascal')

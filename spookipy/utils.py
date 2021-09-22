@@ -12,6 +12,8 @@ import pandas as pd
 import rpnpy.librmn.all as rmn
 from pandas.core import groupby
 import logging
+import dask.array as da
+import copy
 
 def initializer(func):
     """
@@ -275,7 +277,7 @@ def get_intersecting_levels(df:pd.DataFrame, plugin_mandatory_dependencies:dict)
 
     # res_df = pd.concat(df_list,ignore_index=True)
     if 'level' not in res_df.columns:
-        res_df = fstpy.add_columns(res_df,True, columns=['ip_info'])
+        res_df = fstpy.add_columns(res_df, columns=['ip_info'])
     res_df = res_df.sort_values(by='level',ascending=res_df.ascending.unique()[0])
     return res_df
 
@@ -298,13 +300,6 @@ def validate_nomvar(nomvar:str, caller_class:str, error_class:type):
     if len(nomvar) > 4:
         raise error_class(caller_class + ' - max 4 char for nomvar')
 
-def remove_load_data_info(df):
-    #make sure load_data does not execute (does nothing)
-    df.loc[:,'file_modification_time'] = None
-    df.loc[:,'path'] = None
-    df.loc[:,'key'] = ''
-    return df
-
 
 def create_empty_result(df:pd.DataFrame, plugin_result_specifications:dict,all_rows:bool=False) -> pd.DataFrame:
     """Creates a one row dataframe from the model dataframe, id all_rows is True, then copies the entire dataframe.
@@ -322,26 +317,27 @@ def create_empty_result(df:pd.DataFrame, plugin_result_specifications:dict,all_r
     if df.empty:
         logging.warning('cant create, model dataframe empty')
 
+    # df = df.drop('d', axis=1)
     if all_rows:
-        res_df = df.copy(deep=True)
+        res_df = copy.deepcopy(df)
     else:
         res_df = df.iloc[0].to_dict()
         res_df = pd.DataFrame([res_df])
-
+    
     for k,v in plugin_result_specifications.items():
         if (v != '') and (k in res_df.columns):
             res_df.loc[:,k] = v
 
     if 'level' not in res_df.columns:
-        res_df = fstpy.add_columns(res_df,True, columns=['ip_info'])
+        res_df = fstpy.add_columns(res_df, columns=['ip_info'])
 
-    res_df = res_df.sort_values(by=['level'],ascending=res_df.ascending.unique()[0])
+    res_df = res_df.sort_values(by=['level'],ascending=res_df.ascending.unique()[0]).reset_index(drop=True)
 
     return res_df
 
 def get_3d_array(df) -> np.ndarray:
     for i in df.index:
-        df.at[i,'d'] = df.at[i,'d'].flatten()
+        df.at[i,'d'] = df.at[i,'d'].ravel()
     arr_3d = np.stack(df['d'].to_list())
     return arr_3d
 
@@ -358,10 +354,10 @@ def existing_results(plugin_name:str,df:pd.DataFrame,meta_df:pd.DataFrame) -> pd
     :rtype: pd.DataFrame
     """
     logging.info(''.join([plugin_name,' - found results']))
-    df = fstpy.load_data(df)
-    meta_df = fstpy.load_data(meta_df)
+
+
     res_df = pd.concat([meta_df,df],ignore_index=True)
-    res_df  = remove_load_data_info(res_df)
+    
     return res_df
 
 def final_results(df_list:"list[pd.DataFrame]",error_class:'type',meta_df:pd.DataFrame) -> pd.DataFrame:
@@ -385,13 +381,11 @@ def final_results(df_list:"list[pd.DataFrame]",error_class:'type',meta_df:pd.Dat
     if not len(new_list):
         raise error_class('No results were produced')
 
-    meta_df = fstpy.load_data(meta_df)
+
 
     new_list.append(meta_df)
     # merge all results together
     res_df = pd.concat(new_list,ignore_index=True)
-
-    res_df = remove_load_data_info(res_df)
 
     res_df = fstpy.metadata_cleanup(res_df)
 

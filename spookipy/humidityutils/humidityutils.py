@@ -22,9 +22,9 @@ def get_temp_phase_switch(error_class:type, ice_water_phase_both:bool, temp_phas
         validate_temp_phase_switch(error_class,temp_phase_switch)
         if rpn:
             if temp_phase_switch_unit == 'celsius':
-                temp_phase_switch = fstpy.unit_convert_array(np.array([temp_phase_switch],dtype='float32'), 'celsius','kelvin')[0]
+                temp_phase_switch = fstpy.unit_convert_array(np.array([temp_phase_switch],dtype=np.float32), 'celsius','kelvin')[0]
         elif temp_phase_switch_unit == 'kelvin':
-            temp_phase_switch = fstpy.unit_convert_array(np.array([temp_phase_switch],dtype='float32'), 'kelvin','celsius')[0]
+            temp_phase_switch = fstpy.unit_convert_array(np.array([temp_phase_switch],dtype=np.float32), 'kelvin','celsius')[0]
     return temp_phase_switch
 
 def validate_temp_phase_switch_unit(error_class:type,temp_phase_switch_unit:str):
@@ -55,7 +55,7 @@ def validate_temp_phase_switch(error_class:type,temp_phase_switch:float):
     :raises error_class: raised exception
     """
     if temp_phase_switch < -273.15 or temp_phase_switch > 273.16:
-        raise error_class('Temp_phase_switch {temp_phase_switch} not within range [-273.15,273.16]')
+        raise error_class(f'Temp_phase_switch {temp_phase_switch} not within range [-273.15,273.16]\n')
 
 def validate_parameter_combinations(error_class:type,ice_water_phase:str,temp_phase_switch:float):
     """Validate the paramter combinations

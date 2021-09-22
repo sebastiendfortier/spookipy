@@ -39,7 +39,7 @@ class SaturationVapourPressure(Plugin):
 
         self.df = fstpy.metadata_cleanup(self.df)
 
-        self.df = fstpy.add_columns(self.df,True, columns=['unit','forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(self.df, columns=['unit','forecast_hour','ip_info'])
 
         validate_humidity_parameters(SaturationVapourPressureError,self.ice_water_phase,self.temp_phase_switch,self.temp_phase_switch_unit)
 
@@ -66,7 +66,7 @@ class SaturationVapourPressure(Plugin):
 
         for dependencies_df,_ in dependencies_list:
 
-            dependencies_df = fstpy.load_data(dependencies_df)
+
             tt_df = get_from_dataframe(dependencies_df,'TT')
             svp_df = create_empty_result(tt_df,self.plugin_result_specifications['SVP'],all_rows=True)
 

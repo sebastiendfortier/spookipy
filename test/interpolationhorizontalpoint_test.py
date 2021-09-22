@@ -37,15 +37,15 @@ def base_dict():
 @pytest.fixture
 def simple_input_df():
     lat,lon = base_dict()
-    lat['d'] = np.expand_dims(np.array([45.73,43.40,49.18],dtype='float32'),axis=-1)
+    lat['d'] = np.expand_dims(np.array([45.73,43.40,49.18],dtype=np.float32),axis=-1)
     lat['ni'] = lat['d'].shape[0]
     lat['nj'] = lat['d'].shape[1]
-    lon['d'] = np.expand_dims(np.array([-73.75,-79.38,-123.18],dtype='float32'),axis=-1)
+    lon['d'] = np.expand_dims(np.array([-73.75,-79.38,-123.18],dtype=np.float32),axis=-1)
     lon['ni'] = lon['d'].shape[0]
     lon['nj'] = lon['d'].shape[1]
     latlon = [lat,lon]
-        # {'nomvar':'LAT','etiket':'LATLON','level':'1.0','d':np.array([45.73,43.40,49.18],dtype='float32'),axis=-1),'date_of_origin':date_of_origin},
-        # {'nomvar':'LON','etiket':'LATLON','level':'1.0','d':np.array([-73.75,-79.38,-123.18],dtype='float32'),axis=-1),'date_of_origin':date_of_origin}
+        # {'nomvar':'LAT','etiket':'LATLON','level':'1.0','d':np.array([45.73,43.40,49.18],dtype=np.float32),axis=-1),'date_of_origin':date_of_origin},
+        # {'nomvar':'LON','etiket':'LATLON','level':'1.0','d':np.array([-73.75,-79.38,-123.18],dtype=np.float32),axis=-1),'date_of_origin':date_of_origin}
         # ]
     return pd.DataFrame(latlon)
 
@@ -63,15 +63,15 @@ def simple_input_df():
 @pytest.fixture
 def latlon_extrapolation_df():
     lat,lon = base_dict()
-    lat['d'] = np.expand_dims(np.array([43.86,-43.4,43.61,43.47,43.22,-44.0],dtype='float32'),axis=-1)
+    lat['d'] = np.expand_dims(np.array([43.86,-43.4,43.61,43.47,43.22,-44.0],dtype=np.float32),axis=-1)
     lat['ni'] = lat['d'].shape[0]
     lat['nj'] = lat['d'].shape[1]
-    lon['d'] = np.expand_dims(np.array([-78.926,77.7,-78.380,-79.26,-78.72,70.0],dtype='float32'),axis=-1)
+    lon['d'] = np.expand_dims(np.array([-78.926,77.7,-78.380,-79.26,-78.72,70.0],dtype=np.float32),axis=-1)
     lon['ni'] = lon['d'].shape[0]
     lon['nj'] = lon['d'].shape[1]
     latlon = [lat,lon]
-        # {'nomvar':'LAT','etiket':'LATLON','level':'1.0','d':np.array([43.86,-43.4,43.61,43.47,43.22,-44.0],dtype='float32'),axis=-1),'date_of_origin':date_of_origin},
-        # {'nomvar':'LON','etiket':'LATLON','level':'1.0','d':np.array([-78.926,77.7,-78.380,-79.26,-78.72,70.0],dtype='float32'),axis=-1),'date_of_origin':date_of_origin},
+        # {'nomvar':'LAT','etiket':'LATLON','level':'1.0','d':np.array([43.86,-43.4,43.61,43.47,43.22,-44.0],dtype=np.float32),axis=-1),'date_of_origin':date_of_origin},
+        # {'nomvar':'LON','etiket':'LATLON','level':'1.0','d':np.array([-78.926,77.7,-78.380,-79.26,-78.72,70.0],dtype=np.float32),axis=-1),'date_of_origin':date_of_origin},
         # ]
     return pd.DataFrame(latlon)
 
@@ -90,15 +90,15 @@ def latlon_extrapolation_df():
 @pytest.fixture
 def latlon_with_grid_df():
     lat,lon = base_dict()
-    lat['d'] = np.expand_dims(np.array([45.73,43.40,49.18],dtype='float32'),axis=-1)
+    lat['d'] = np.expand_dims(np.array([45.73,43.40,49.18],dtype=np.float32),axis=-1)
     lat['ni'] = lat['d'].shape[0]
     lat['nj'] = lat['d'].shape[1]
-    lon['d'] = np.expand_dims(np.array([-73.75,-79.38,-123.18],dtype='float32'),axis=-1)
+    lon['d'] = np.expand_dims(np.array([-73.75,-79.38,-123.18],dtype=np.float32),axis=-1)
     lon['ni'] = lon['d'].shape[0]
     lon['nj'] = lon['d'].shape[1]
     latlon = [lat,lon]
-        # {'nomvar':'LAT','etiket':'LATLON','level':'1.0','grtyp':'L','d':np.array([45.73,43.40,49.18],dtype='float32'),axis=-1),'date_of_origin':date_of_origin},
-        # {'nomvar':'LON','etiket':'LATLON','level':'1.0','grtyp':'L','d':np.array([-73.75,-79.38,-123.18],dtype='float32'),axis=-1),'date_of_origin':date_of_origin},
+        # {'nomvar':'LAT','etiket':'LATLON','level':'1.0','grtyp':'L','d':np.array([45.73,43.40,49.18],dtype=np.float32),axis=-1),'date_of_origin':date_of_origin},
+        # {'nomvar':'LON','etiket':'LATLON','level':'1.0','grtyp':'L','d':np.array([-73.75,-79.38,-123.18],dtype=np.float32),axis=-1),'date_of_origin':date_of_origin},
         # ]
     latlon_df = pd.DataFrame(latlon)
     latlon_df['ip2'] = 2
@@ -118,15 +118,15 @@ def latlon_with_grid_df():
 @pytest.fixture
 def latlon_yy_df():
     lat,lon = base_dict()
-    lat['d'] = np.expand_dims(np.array([46.60,14.098,-45.828,-13.458,51.048,-8.49,56.056,-43.81,-4.7,-51.8,-80.11,-14.034,-15.68,34.63,36.22,76.28],dtype='float32'),axis=-1)
+    lat['d'] = np.expand_dims(np.array([46.60,14.098,-45.828,-13.458,51.048,-8.49,56.056,-43.81,-4.7,-51.8,-80.11,-14.034,-15.68,34.63,36.22,76.28],dtype=np.float32),axis=-1)
     lat['ni'] = lat['d'].shape[0]
     lat['nj'] = lat['d'].shape[1]
-    lon['d'] = np.expand_dims(np.array([-67.368,-44.74,-33.34,38.155,31.50,116.93,158.32,170.64,-52.73,-59.236,100.28,127.28,40.56,-140.24,-30.495,-99.63],dtype='float32'),axis=-1)
+    lon['d'] = np.expand_dims(np.array([-67.368,-44.74,-33.34,38.155,31.50,116.93,158.32,170.64,-52.73,-59.236,100.28,127.28,40.56,-140.24,-30.495,-99.63],dtype=np.float32),axis=-1)
     lon['ni'] = lon['d'].shape[0]
     lon['nj'] = lon['d'].shape[1]
     latlon = [lat,lon]
-        # {'nomvar':'LAT','etiket':'LATLON','level':'1000.0','d':np.array([46.60,14.098,-45.828,-13.458,51.048,-8.49,56.056,-43.81,-4.7,-51.8,-80.11,-14.034,-15.68,34.63,36.22,76.28],dtype='float32'),axis=-1),'date_of_origin':date_of_origin},
-        # {'nomvar':'LON','etiket':'LATLON','level':'1000.0','d':np.array([-67.368,-44.74,-33.34,38.155,31.50,116.93,158.32,170.64,-52.73,-59.236,100.28,127.28,40.56,-140.24,-30.495,-99.63],dtype='float32'),axis=-1),'date_of_origin':date_of_origin},
+        # {'nomvar':'LAT','etiket':'LATLON','level':'1000.0','d':np.array([46.60,14.098,-45.828,-13.458,51.048,-8.49,56.056,-43.81,-4.7,-51.8,-80.11,-14.034,-15.68,34.63,36.22,76.28],dtype=np.float32),axis=-1),'date_of_origin':date_of_origin},
+        # {'nomvar':'LON','etiket':'LATLON','level':'1000.0','d':np.array([-67.368,-44.74,-33.34,38.155,31.50,116.93,158.32,170.64,-52.73,-59.236,100.28,127.28,40.56,-140.24,-30.495,-99.63],dtype=np.float32),axis=-1),'date_of_origin':date_of_origin},
         # ]
     return pd.DataFrame(latlon)
 # ::::::::::::::
@@ -152,15 +152,15 @@ def latlon_df():
 # -73.75,-79.38,-123.18
 
     lat,lon = base_dict()
-    lat['d'] = np.expand_dims(np.array([45.73,43.40,49.18],dtype='float32'),axis=-1)
+    lat['d'] = np.expand_dims(np.array([45.73,43.40,49.18],dtype=np.float32),axis=-1)
     lat['ni'] = lat['d'].shape[0]
     lat['nj'] = lat['d'].shape[1]
-    lon['d'] = np.expand_dims(np.array([-73.75,-79.38,-123.18],dtype='float32'),axis=-1)
+    lon['d'] = np.expand_dims(np.array([-73.75,-79.38,-123.18],dtype=np.float32),axis=-1)
     lon['ni'] = lon['d'].shape[0]
     lon['nj'] = lon['d'].shape[1]
     latlon = [lat,lon]
-        # {'nomvar':'LAT','etiket':'LATLON','level':'1.0','d':np.array([45.73,43.40,49.18],dtype='float32'),axis=-1),'date_of_origin':date_of_origin},
-        # {'nomvar':'LON','etiket':'LATLON','level':'1.0','d':np.array([-73.75,-79.38,-123.18],dtype='float32'),axis=-1),'date_of_origin':date_of_origin},
+        # {'nomvar':'LAT','etiket':'LATLON','level':'1.0','d':np.array([45.73,43.40,49.18],dtype=np.float32),axis=-1),'date_of_origin':date_of_origin},
+        # {'nomvar':'LON','etiket':'LATLON','level':'1.0','d':np.array([-73.75,-79.38,-123.18],dtype=np.float32),axis=-1),'date_of_origin':date_of_origin},
         # ]
     return pd.DataFrame(latlon)
 
@@ -177,30 +177,30 @@ def latlon_df():
 @pytest.fixture
 def latlon2_df():
     lat,lon = base_dict()
-    lat['d'] = np.expand_dims(np.array([45.73,43.40,49.18,53.13],dtype='float32'),axis=-1)
+    lat['d'] = np.expand_dims(np.array([45.73,43.40,49.18,53.13],dtype=np.float32),axis=-1)
     lat['ni'] = lat['d'].shape[0]
     lat['nj'] = lat['d'].shape[1]
-    lon['d'] = np.expand_dims(np.array([-73.75,-79.38,-123.18,-108.15],dtype='float32'),axis=-1)
+    lon['d'] = np.expand_dims(np.array([-73.75,-79.38,-123.18,-108.15],dtype=np.float32),axis=-1)
     lon['ni'] = lon['d'].shape[0]
     lon['nj'] = lon['d'].shape[1]
     latlon = [lat,lon]
-        # {'nomvar':'LAT','etiket':'LATLON','level':'1.0','d':np.array([45.73,43.40,49.18,53.13],dtype='float32'),'date_of_origin':date_of_origin},
-        # {'nomvar':'LON','etiket':'LATLON','level':'1.0','d':np.array([-73.75,-79.38,-123.18,-108.15],dtype='float32'),'date_of_origin':date_of_origin},
+        # {'nomvar':'LAT','etiket':'LATLON','level':'1.0','d':np.array([45.73,43.40,49.18,53.13],dtype=np.float32),'date_of_origin':date_of_origin},
+        # {'nomvar':'LON','etiket':'LATLON','level':'1.0','d':np.array([-73.75,-79.38,-123.18,-108.15],dtype=np.float32),'date_of_origin':date_of_origin},
         # ]
     return pd.DataFrame(latlon)
 
 # @pytest.fixture
 # def stationsdf_df():
 #     lat,lon = base_dict()
-#     lat['d'] = np.expand_dims(STATIONSFB['Latitude'].to_numpy().astype('float32'),axis=-1)
+#     lat['d'] = np.expand_dims(STATIONSFB['Latitude'].to_numpy().astype(np.float32),axis=-1)
 #     lat['ni'] = lat['d'].shape[0]
 #     lat['nj'] = lat['d'].shape[1]
-#     lon['d'] = np.expand_dims(STATIONSFB['Longitude'].to_numpy().astype('float32'),axis=-1)
+#     lon['d'] = np.expand_dims(STATIONSFB['Longitude'].to_numpy().astype(np.float32),axis=-1)
 #     lon['ni'] = lon['d'].shape[0]
 #     lon['nj'] = lon['d'].shape[1]
 #     latlon = [lat,lon]
-#         # {'nomvar':'LAT','etiket':'LATLON','level':'1.0','d':STATIONSFB['Latitude'].to_numpy().astype('float32'),'date_of_origin':date_of_origin},
-#         # {'nomvar':'LON','etiket':'LATLON','level':'1.0','d':STATIONSFB['Longitude'].to_numpy().astype('float32'),'date_of_origin':date_of_origin},
+#         # {'nomvar':'LAT','etiket':'LATLON','level':'1.0','d':STATIONSFB['Latitude'].to_numpy().astype(np.float32),'date_of_origin':date_of_origin},
+#         # {'nomvar':'LON','etiket':'LATLON','level':'1.0','d':STATIONSFB['Longitude'].to_numpy().astype(np.float32),'date_of_origin':date_of_origin},
 #         # ]
 #     latlon_df =  pd.DataFrame(latlon)
 #     latlon_df['ip2'] = 222
@@ -710,7 +710,7 @@ def test_14(plugin_test_dir):
     src_df0 = src_df0.loc[src_df0.nomvar.isin(["2Z",">>","^^","!!"])].reset_index(drop=True)
 
     source1 = plugin_test_dir + "latlong_stn_ALL.fst"
-    src_df1 = fstpy.StandardFileReader(source1,load_data=True).to_pandas()
+    src_df1 = fstpy.StandardFileReader(source1).to_pandas()
     src_df1['ip1']=0
 
     src_df0.loc[:,'dateo']=368660482

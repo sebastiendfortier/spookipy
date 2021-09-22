@@ -80,7 +80,7 @@ class HumidityRelative(Plugin):
 
         self.df = fstpy.metadata_cleanup(self.df)
 
-        self.df = fstpy.add_columns(self.df,True, columns=['unit','forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(self.df, columns=['unit','forecast_hour','ip_info'])
 
         validate_humidity_parameters(HumidityRelativeError,self.ice_water_phase,self.temp_phase_switch,self.temp_phase_switch_unit)
 
@@ -142,8 +142,8 @@ class HumidityRelative(Plugin):
 
     def rpn_humidityrelative_from_tt_hu_px(self, dependencies_df, hu_df, option):
         logging.info(f'rpn option {option+1}')
-        hu_df = fstpy.load_data(hu_df)
-        dependencies_df = fstpy.load_data(dependencies_df)
+
+
         tt_df = get_from_dataframe(dependencies_df,'TT')
         px_df = get_from_dataframe(dependencies_df,'PX')
         hr_df = create_empty_result(tt_df,self.plugin_result_specifications['HR'],all_rows=True)
@@ -163,8 +163,8 @@ class HumidityRelative(Plugin):
 
     def rpn_humidityrelative_from_tt_es_px(self, dependencies_df, es_df, option):
         logging.info(f'rpn option {option+1}')
-        es_df = fstpy.load_data(es_df)
-        dependencies_df = fstpy.load_data(dependencies_df)
+
+
         tt_df = get_from_dataframe(dependencies_df,'TT')
         px_df = get_from_dataframe(dependencies_df,'PX')
         hr_df = create_empty_result(tt_df,self.plugin_result_specifications['HR'],all_rows=True)
@@ -188,7 +188,7 @@ class HumidityRelative(Plugin):
         from ..vapourpressure.vapourpressure import VapourPressure
         logging.info(f'option {option+1}')
         # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
-        dependencies_df = fstpy.load_data(dependencies_df)
+
         tt_df = get_from_dataframe(dependencies_df,'TT')
         hr_df = create_empty_result(tt_df,self.plugin_result_specifications['HR'],all_rows=True)
         svp_df = SaturationVapourPressure(pd.concat([dependencies_df,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,temp_phase_switch=(self.temp_phase_switch if self.ice_water_phase!='water' else None)).compute()

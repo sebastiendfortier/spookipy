@@ -4,7 +4,7 @@ from ..utils import create_empty_result, get_3d_array, initializer, final_result
 import pandas as pd
 import logging
 import fstpy.all as fstpy
-
+import numpy as np
 
 
 class OpElementsByPointError(Exception):
@@ -38,7 +38,7 @@ class OpElementsByPoint(Plugin):
         if len(self.df) == 1:
             raise self.exception_class(self.operation_name + ' - not enough records to process, need at least 2')
 
-        self.df = fstpy.add_columns(self.df,True, columns=['forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(self.df, columns=['forecast_hour','ip_info'])
 
         grouping = ['grid']
         if self.group_by_forecast_hour:
@@ -55,7 +55,7 @@ class OpElementsByPoint(Plugin):
         #holds data from all the groups
         df_list = []
         for _,current_group in self.groups:
-            current_group = fstpy.load_data(current_group)
+
             current_group.sort_values(by=['nomvar','dateo','forecast_hour'],inplace=True)
             if len(current_group.index) == 1:
                 logging.warning('need more than one field for this operation - skipping')
@@ -65,9 +65,7 @@ class OpElementsByPoint(Plugin):
 
             array_3d = get_3d_array(current_group)
 
-            res = self.operator(array_3d, axis=0)
-
-            res_df.at[0,'d'] = res
+            res_df.at[0,'d'] = self.operator(array_3d, axis=0).astype(np.float32)
 
             df_list.append(res_df)
 

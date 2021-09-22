@@ -52,7 +52,7 @@ class WaterVapourMixingRatio(Plugin):
 
         self.df = fstpy.metadata_cleanup(self.df)
 
-        self.df = fstpy.add_columns(self.df,True, columns=['unit','forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(self.df, columns=['unit','forecast_hour','ip_info'])
 
         validate_humidity_parameters(WaterVapourMixingRatioError,self.ice_water_phase,self.temp_phase_switch,self.temp_phase_switch_unit)
 
@@ -96,7 +96,7 @@ class WaterVapourMixingRatio(Plugin):
     def watervapourmixingratio_from_vppr(self, dependencies_df, option):
         logging.info(f'option {option+1}')
         # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
-        dependencies_df = fstpy.load_data(dependencies_df)
+
         vppr_df = get_from_dataframe(dependencies_df,'VPPR')
         px_df = get_from_dataframe(dependencies_df,'PX')
         qv_df = create_empty_result(vppr_df,self.plugin_result_specifications['QV'],all_rows=True)
@@ -110,7 +110,7 @@ class WaterVapourMixingRatio(Plugin):
 
     def watervapourmixingratio_from_hu(self, dependencies_df, option):
         logging.info(f'option {option+1}')
-        dependencies_df = fstpy.load_data(dependencies_df)
+
         hu_df = get_from_dataframe(dependencies_df,'HU')
         qv_df = create_empty_result(hu_df,self.plugin_result_specifications['QV'],all_rows=True)
         for i in qv_df.index:

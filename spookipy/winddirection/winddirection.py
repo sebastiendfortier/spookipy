@@ -44,7 +44,7 @@ class WindDirection(Plugin):
         self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
 
-        self.df = fstpy.add_columns(self.df,True, columns=['unit','forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(self.df, columns=['unit','forecast_hour','ip_info'])
 
          #check if result already exists
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
@@ -81,7 +81,7 @@ class WindDirection(Plugin):
 
             # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies)
 
-            dependencies_df = fstpy.load_data(dependencies_df)
+
             uu_df = get_from_dataframe(dependencies_df,'UU')
             vv_df = get_from_dataframe(dependencies_df,'VV')
             wd_df = create_empty_result(vv_df,self.plugin_result_specifications['UV'],all_rows=True)

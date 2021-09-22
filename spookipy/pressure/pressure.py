@@ -1,22 +1,26 @@
 # -*- coding: utf-8 -*-
 import ctypes
-import math
-from ..utils import get_existing_result, initializer, existing_results, final_results, convip
 import logging
+import math
 
+import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
 import rpnpy.librmn.all as rmn
 import rpnpy.vgd.proto as vgdp
 
-import fstpy.all as fstpy
-
 from ..plugin import Plugin
+from ..utils import (convip, existing_results, final_results,
+                     get_existing_result, initializer)
+
+import dask.array as da
 
 STANDARD_ATMOSPHERE = 1013.25
 
+
 class PressureError(Exception):
     pass
+
 
 class Pressure(Plugin):
     """creates a pressure field associated to a level for each identified vertical coordinate type
@@ -30,13 +34,13 @@ class Pressure(Plugin):
     """
 
     @initializer
-    def __init__(self,df:pd.DataFrame, reference_field=None, standard_atmosphere:bool=False):
+    def __init__(self, df: pd.DataFrame, reference_field=None, standard_atmosphere: bool = False):
         self.plugin_result_specifications_option_1 = {
-        'PX':{'nomvar':'PX','etiket':'PRESSR','unit':'hectoPascal'},
+            'PX': {'nomvar': 'PX', 'etiket': 'PRESSR', 'unit': 'hectoPascal'},
         }
 
         self.plugin_result_specifications_option_2 = {
-        'PXSA':{'nomvar':'PXSA','etiket':'PRESSR','unit':'millibar'},
+            'PXSA': {'nomvar': 'PXSA', 'etiket': 'PRESSR', 'unit': 'millibar'},
         }
         self.validate_input()
 
@@ -44,17 +48,21 @@ class Pressure(Plugin):
         if self.df.empty:
             raise PressureError('No data to process')
 
-        self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
+        self.meta_df = self.df.loc[self.df.nomvar.isin(
+            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
 
-        self.df = fstpy.add_columns(self.df,True, columns=['ip_info','forecast_hour','unit'])
+        self.df = fstpy.add_columns(
+            self.df, columns=['ip_info', 'forecast_hour', 'unit'])
 
         if not (self.reference_field is None):
-            self.df = fstpy.select_with_meta(self.df,[self.reference_field])
+            self.df = fstpy.select_with_meta(self.df, [self.reference_field])
 
         if self.standard_atmosphere:
-            self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications_option_2)
+            self.existing_result_df = get_existing_result(
+                self.df, self.plugin_result_specifications_option_2)
         else:
-            self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications_option_1)
+            self.existing_result_df = get_existing_result(
+                self.df, self.plugin_result_specifications_option_1)
 
     def compute(self) -> pd.DataFrame:
         """groups records by grid->vctype->forecast_hour then applies the appropriate algorithm to compute the pressure
@@ -64,28 +72,27 @@ class Pressure(Plugin):
         """
 
         if not self.existing_result_df.empty:
-            return existing_results('Pressure',self.existing_result_df,self.meta_df)
+            return existing_results('Pressure', self.existing_result_df, self.meta_df)
 
         logging.info('Pressure - compute')
-        df_list=[]
-        for _,grid in self.df.groupby(['grid']):
-            meta_df = grid.loc[grid.nomvar.isin(["!!","HY","P0","PT"])].reset_index(drop=True)
-            meta_df = fstpy.load_data(meta_df)
+        df_list = []
+        for _, grid in self.df.groupby(['grid']):
+            meta_df = grid.loc[grid.nomvar.isin(
+                ["!!", "HY", "P0", "PT"])].reset_index(drop=True)
+
             vctypes_groups = grid.groupby(['vctype'])
             for _, vt in vctypes_groups:
                 vctype = vt.vctype.iloc[0]
-                fh_groups = vt.groupby(['dateo','forecast_hour'])
+                fh_groups = vt.groupby(['dateo', 'forecast_hour'])
                 for _, fh in fh_groups:
-                    px_df = self._compute_pressure(fh,meta_df,vctype)
+                    px_df = self._compute_pressure(fh, meta_df, vctype)
                     # if not(px_df is None):
                     df_list.append(px_df)
             df_list.append(meta_df)
 
+        return final_results(df_list, PressureError, self.meta_df)
 
-        return final_results(df_list,PressureError, self.meta_df)
-
-
-    def _compute_pressure(self,df:pd.DataFrame,meta_df:pd.DataFrame,vctype:str) -> pd.DataFrame:
+    def _compute_pressure(self, df: pd.DataFrame, meta_df: pd.DataFrame, vctype: str) -> pd.DataFrame:
         """select approprite algorithm according to vctype
 
         :param df: input dataframe containing a single grid
@@ -102,49 +109,65 @@ class Pressure(Plugin):
             px_df = pd.DataFrame(dtype=object)
 
         elif vctype == "HYBRID":
-            logging.info('Found HYBRID vertical coordinate type - computing pressure')
-            px_df = compute_pressure_from_hyb_coord_df(df,meta_df,self.standard_atmosphere)
+            logging.info(
+                'Found HYBRID vertical coordinate type - computing pressure')
+            px_df = compute_pressure_from_hyb_coord_df(
+                df, meta_df, self.standard_atmosphere)
 
-        elif (vctype == "HYBRID_5005") or( vctype == "HYBRID_STAGGERED"):
-            logging.info('Found HYBRID STAGGERED (5005,5002) vertical coordinate type - computing pressure')
-            px_df = compute_pressure_from_hybstag_coord_df(df,meta_df,self.standard_atmosphere)
+        elif (vctype == "HYBRID_5005") or (vctype == "HYBRID_STAGGERED"):
+            logging.info(
+                'Found HYBRID STAGGERED (5005,5002) vertical coordinate type - computing pressure')
+            px_df = compute_pressure_from_hybstag_coord_df(
+                df, meta_df, self.standard_atmosphere)
 
         elif vctype == "PRESSURE":
-            logging.info('Found PRESSURE vertical coordinate type - computing pressure')
-            px_df = compute_pressure_from_pressure_coord_df(df,self.standard_atmosphere)
+            logging.info(
+                'Found PRESSURE vertical coordinate type - computing pressure')
+            px_df = compute_pressure_from_pressure_coord_df(
+                df, self.standard_atmosphere)
 
         elif vctype == "ETA":
-            logging.info('Found ETA vertical coordinate type - computing pressure')
-            px_df = compute_pressure_from_eta_coord_df(df,meta_df,self.standard_atmosphere)
+            logging.info(
+                'Found ETA vertical coordinate type - computing pressure')
+            px_df = compute_pressure_from_eta_coord_df(
+                df, meta_df, self.standard_atmosphere)
 
         elif vctype == "SIGMA":
-            logging.info('Found SIGMA vertical coordinate type - computing pressure')
-            converted=False
+            logging.info(
+                'Found SIGMA vertical coordinate type - computing pressure')
+            converted = False
             if (df.ip1.unique() > 32767).all():
-                converted=True
-                df = convip(df,rmn.CONVIP_ENCODE_OLD)
+                converted = True
+                df = convip(df, rmn.CONVIP_ENCODE_OLD)
 
-            px_df = compute_pressure_from_sigma_coord_df(df,meta_df,self.standard_atmosphere)
+            px_df = compute_pressure_from_sigma_coord_df(
+                df, meta_df, self.standard_atmosphere)
 
             if converted:
-                px_df = convip(px_df,rmn.CONVIP_ENCODE)
+                px_df = convip(px_df, rmn.CONVIP_ENCODE)
 
         return px_df
 
 ###################################################################################
 ###################################################################################
+
+
 class Pressure2Pressure:
     """Encompasses information and algorithms to compute pressure for PRESSURE vertical coordinate type
 
     """
+
     def __init__(self) -> None:
         pass
-    def pressure(self,level,shape):
-        pres = np.full(shape,level,dtype=np.float32,order='F')
+
+    def pressure(self, level, shape):
+        pres = np.full(shape, level, dtype=np.float32, order='F')
         return pres
 
 ###################################################################################
-def compute_pressure_from_pressure_coord_array(levels:list,shape:tuple) -> list:
+
+
+def compute_pressure_from_pressure_coord_array(levels: list, shape: tuple) -> list:
     """compute pressure array for a PRESSURE vertical coordinate type
 
     :param levels: list of pressure levels in millibar
@@ -155,18 +178,19 @@ def compute_pressure_from_pressure_coord_array(levels:list,shape:tuple) -> list:
     :rtype: list
     """
     p = Pressure2Pressure()
-    pressures=[]
+    pressures = []
 
     for lvl in levels:
         mydict = {}
-        pres = p.pressure(lvl,shape)
+        pres = p.pressure(lvl, shape)
         if pres is None:
             continue
-        mydict[lvl]=pres
+        mydict[lvl] = pres
         pressures.append(mydict)
     return pressures
 
-def compute_pressure_from_pressure_coord_df(df:pd.DataFrame,standard_atmosphere:bool=False) -> pd.DataFrame:
+
+def compute_pressure_from_pressure_coord_df(df: pd.DataFrame, standard_atmosphere: bool = False) -> pd.DataFrame:
     """Compute the pressure matrix for a dataframe containing one vertical coordinate type (vctype) of type PRESSURE
        and only one forecast hour
 
@@ -183,23 +207,26 @@ def compute_pressure_from_pressure_coord_df(df:pd.DataFrame,standard_atmosphere:
     p = Pressure2Pressure()
     press = []
     for i in df.index:
-        lvl = df.at[i,'level']
-        datyp = 5 # E
+        lvl = df.at[i, 'level']
+        datyp = 5  # E
         nbits = 32
-        px_s = create_px_record(df, i, datyp, nbits,standard_atmosphere)
-        pres = p.pressure(lvl,(df.at[i,'ni'],df.at[i,'nj']))
+        px_s = create_px_record(df, i, datyp, nbits, standard_atmosphere)
+        pres = p.pressure(lvl, (df.at[i, 'ni'], df.at[i, 'nj']))
         if pres is None:
             continue
-        px_s['d'] = pres
+        px_s['d'] = da.from_array(pres).astype(np.float32)
         press.append(px_s)
     pressure_df = pd.DataFrame(press)
     # pressure_df = unit_convert(pressure_df,to_unit_name='hectoPascal')
     return pressure_df
 
+
 ###################################################################################
 ###################################################################################
 SIGMA_KIND = 1
 SIGMA_VERSION = 1
+
+
 class Sigma2Pressure:
     """Encompasses information and algorithms to compute pressure for SIGMA vertical coordinate type
 
@@ -210,9 +237,10 @@ class Sigma2Pressure:
     :param standard_atmosphere: use standard atmosphere algorithm, defaults to False
     :type standard_atmosphere: bool, optional
     """
-    def __init__(self,levels:list,p0_data:np.ndarray,standard_atmosphere:bool=False) -> None:
+
+    def __init__(self, levels: list, p0_data, standard_atmosphere: bool = False) -> None:
         self.levels = np.sort(levels)
-        self.p0_data = p0_data
+        self.p0_data = p0_data.compute() if (not (p0_data is None)) and (not isinstance(p0_data,np.ndarray)) else p0_data
         self.standard_atmosphere = standard_atmosphere
         if not self.standard_atmosphere:
             self.create_vgrid_descriptor()
@@ -224,23 +252,27 @@ class Sigma2Pressure:
     def create_vgrid_descriptor(self):
         myvgd = vgdp.c_vgd_construct()
         # see https://wiki.cmc.ec.gc.ca/wiki/Vgrid/C_interface/Cvgd_new_gen for kind and version
-        status = vgdp.c_vgd_new_gen(myvgd, SIGMA_KIND, SIGMA_VERSION, self.levels, len(self.levels), None,None,None,None,None,0,0,None,None)
+        status = vgdp.c_vgd_new_gen(myvgd, SIGMA_KIND, SIGMA_VERSION, self.levels, len(
+            self.levels), None, None, None, None, None, 0, 0, None, None)
         if status:
-            raise PressureError("Sigma2Pressure - There was a problem creating the VGridDescriptor\n")
+            raise PressureError(
+                "Sigma2Pressure - There was a problem creating the VGridDescriptor\n")
         self.myvgd = myvgd
 
-
-    def std_atm_pressure(self,level:float):
+    def std_atm_pressure(self, level: float):
         pres = self.sigma_to_pres(level)
         return pres
 
-    def vgrid_pressure(self,ip1:int):
+    def vgrid_pressure(self, ip1: int):
         ip = ctypes.c_int(ip1)
-        pres = np.empty((self.p0_data.shape[0],self.p0_data.shape[1],1),dtype='float32', order='F')
+        pres = np.empty(
+            (self.p0_data.shape[0], self.p0_data.shape[1], 1), dtype=np.float32, order='F')
         # p0 = unit_convert_array(self.p0_data,from_unit_name='millibar',to_unit_name='pascal') equals * 100.
-        status = vgdp.c_vgd_levels(self.myvgd, self.p0_data.shape[0], self.p0_data.shape[1], 1, ip, pres, self.p0_data*100.0, 0)
+        status = vgdp.c_vgd_levels(
+            self.myvgd, self.p0_data.shape[0], self.p0_data.shape[1], 1, ip, pres, self.p0_data*100.0, 0)
         if status:
-            raise PressureError("Sigma2Pressure - There was a problem creating the pressure\n")
+            raise PressureError(
+                "Sigma2Pressure - There was a problem creating the pressure\n")
             # sys.stderr.write("Sigma2Pressure - There was a problem creating the pressure\n")
             # pres = None
         else:
@@ -249,7 +281,7 @@ class Sigma2Pressure:
 
         return pres/100.0
 
-    def sigma_to_pres(self,level:float) -> np.ndarray:
+    def sigma_to_pres(self, level: float) -> np.ndarray:
         """sigma to pressure conversion function
 
         :param levels: current level
@@ -258,10 +290,13 @@ class Sigma2Pressure:
         :rtype: np.ndarray
         """
         pres_value = STANDARD_ATMOSPHERE * level
-        pres = np.full(self.p0_data.shape,pres_value,dtype=np.float32,order='F')
+        pres = np.full(self.p0_data.shape, pres_value,
+                       dtype=np.float32, order='F')
         return pres
 ###################################################################################
-def compute_pressure_from_sigma_coord_array(levels:list,p0_data:np.ndarray,standard_atmosphere:bool=False) -> list:
+
+
+def compute_pressure_from_sigma_coord_array(levels: list, p0_data:np.ndarray, standard_atmosphere: bool = False) -> list:
     """compute pressure array for a SIGMA vertical coordinate type
 
     :param levels: list of pressure levels in sigma coord
@@ -273,17 +308,17 @@ def compute_pressure_from_sigma_coord_array(levels:list,p0_data:np.ndarray,stand
     :return: list of dictionnaries {level:np.ndarray}
     :rtype: list
     """
-    p = Sigma2Pressure(levels,p0_data,standard_atmosphere)
+    p = Sigma2Pressure(levels, p0_data, standard_atmosphere)
     ips = convert_levels_to_ips(levels, SIGMA_KIND)
 
-    pressures=[]
+    pressures = []
     if standard_atmosphere:
-        for lvl,ip in zip(levels,ips):
+        for lvl, ip in zip(levels, ips):
             mydict = {}
             pres = p.std_atm_pressure(lvl)
             if pres is None:
                 continue
-            mydict[ip]=pres
+            mydict[ip] = pres
             pressures.append(mydict)
     else:
         for ip in ips:
@@ -291,18 +326,21 @@ def compute_pressure_from_sigma_coord_array(levels:list,p0_data:np.ndarray,stand
             pres = p.vgrid_pressure(ip)
             if pres is None:
                 continue
-            mydict[ip]=pres
+            mydict[ip] = pres
             pressures.append(mydict)
     return pressures
 
-def get_sigma_metadata(meta_df,datev):
-    p0_df = meta_df.loc[(meta_df.nomvar=="P0") & (meta_df.datev==datev)].reset_index(drop=True)
+
+def get_sigma_metadata(meta_df, datev):
+    p0_df = meta_df.loc[(meta_df.nomvar == "P0") & (
+        meta_df.datev == datev)].reset_index(drop=True)
     if p0_df.empty:
-        return None,None,None
+        return None, None, None
     p0_data = p0_df.iloc[0]['d']
     return p0_data, p0_df.iloc[0]['datyp'], p0_df.iloc[0]['nbits']
 
-def compute_pressure_from_sigma_coord_df(df:pd.DataFrame,meta_df:pd.DataFrame,standard_atmosphere:bool=False) -> pd.DataFrame:
+
+def compute_pressure_from_sigma_coord_df(df: pd.DataFrame, meta_df: pd.DataFrame, standard_atmosphere: bool = False) -> pd.DataFrame:
     """Compute the pressure matrix for a dataframe containing one vertical coordinate type (vctype) of type SIGMA
        and only one forecast hour
 
@@ -317,18 +355,18 @@ def compute_pressure_from_sigma_coord_df(df:pd.DataFrame,meta_df:pd.DataFrame,st
     """
 
     datev = df.iloc[0]['datev']
-    p0_data,datyp, nbits = get_sigma_metadata(meta_df,datev)
+    p0_data, datyp, nbits = get_sigma_metadata(meta_df, datev)
     if p0_data is None:
         return pd.DataFrame(dtype=object)
     if df.empty:
         return pd.DataFrame(dtype=object)
     df = df.drop_duplicates('ip1')
     levels = df.level.unique()
-    p = Sigma2Pressure(levels,p0_data,standard_atmosphere)
+    p = Sigma2Pressure(levels, p0_data, standard_atmosphere)
     press = []
     for i in df.index:
-        ip = df.at[i,'ip1']
-        lvl = df.at[i,'level']
+        ip = df.at[i, 'ip1']
+        lvl = df.at[i, 'level']
         px_s = create_px_record(df, i, datyp, nbits, standard_atmosphere)
         if standard_atmosphere:
             pres = p.std_atm_pressure(lvl)
@@ -336,15 +374,19 @@ def compute_pressure_from_sigma_coord_df(df:pd.DataFrame,meta_df:pd.DataFrame,st
             pres = p.vgrid_pressure(ip)
         if pres is None:
             continue
-        px_s['d'] = pres
+        px_s['d'] = da.from_array(pres).astype(np.float32)
         press.append(px_s)
     pressure_df = pd.DataFrame(press)
     # pressure_df = unit_convert(pressure_df,to_unit_name='hectoPascal')
     return pressure_df
+
+
 ###################################################################################
 ###################################################################################
 ETA_KIND = 1
 ETA_VERSION = 2
+
+
 class Eta2Pressure:
     """Encompasses information and algorithms to compute pressure for SIGMA vertical coordinate type
 
@@ -359,13 +401,17 @@ class Eta2Pressure:
     :param standard_atmosphere: use standard atmosphere algorithm, defaults to False
     :type standard_atmosphere: bool, optional
     """
-    def __init__(self,levels:list,pt_data:np.ndarray,bb_data:np.ndarray,p0_data:np.ndarray,standard_atmosphere:bool=False) -> None:
+
+    def __init__(self, levels: list, pt_data, bb_data, p0_data, standard_atmosphere: bool = False) -> None:
         self.levels = np.sort(levels)
         self.levels = self.levels[self.levels <= 1.0]
-        self.pt_data = pt_data
-        self.bb_data = bb_data
-        self.p0_data = p0_data
+        
+        self.pt_data = pt_data.compute() if (not (pt_data is None)) and (not isinstance(pt_data,np.ndarray)) else pt_data
+        self.bb_data = bb_data.compute() if (not (bb_data is None)) and (not isinstance(bb_data,np.ndarray)) else bb_data
+        self.p0_data = p0_data.compute() if (not (p0_data is None)) and (not isinstance(p0_data,np.ndarray)) else p0_data
+        
         self.standard_atmosphere = standard_atmosphere
+        
         if not self.standard_atmosphere:
             self.create_vgrid_descriptor()
 
@@ -378,33 +424,36 @@ class Eta2Pressure:
         myvgd = vgdp.c_vgd_construct()
         # see https://wiki.cmc.ec.gc.ca/wiki/Vgrid/C_interface/Cvgd_new_gen for kind and version
         ptop = ctypes.pointer(ctypes.c_double(self.ptop))
-        status = vgdp.c_vgd_new_gen(myvgd, ETA_KIND, ETA_VERSION, self.levels.astype('float32'), len(self.levels), None,None,ptop,None,None,0,0,None,None)
+        status = vgdp.c_vgd_new_gen(myvgd, ETA_KIND, ETA_VERSION, self.levels.astype(
+            np.float32), len(self.levels), None, None, ptop, None, None, 0, 0, None, None)
         if status:
-            raise PressureError("Eta2Pressure - There was a problem creating the VGridDescriptor\n")
+            raise PressureError(
+                "Eta2Pressure - There was a problem creating the VGridDescriptor\n")
             # sys.stderr.write("Eta2Pressure - There was a problem creating the VGridDescriptor\n")
         self.myvgd = myvgd
 
     def get_ptop(self):
-        if  not(self.pt_data is None):
-            self.ptop = self.pt_data.flatten()[0]*100.0
+        if not(self.pt_data is None):
+            self.ptop = self.pt_data.ravel(order='F')[0]*100.0
 
         elif not(self.bb_data is None):
             # get value from !!
             self.ptop = self.bb_data[0]
 
-
-    def std_atm_pressure(self,level):
+    def std_atm_pressure(self, level):
         pres = self.eta_to_pres(level)
         return pres
 
-
-    def vgrid_pressure(self,ip1):
+    def vgrid_pressure(self, ip1):
         ip = ctypes.c_int(ip1)
-        pres = np.empty((self.p0_data.shape[0],self.p0_data.shape[1],1),dtype='float32', order='F')
+        pres = np.empty(
+            (self.p0_data.shape[0], self.p0_data.shape[1], 1), dtype=np.float32, order='F')
 
-        status = vgdp.c_vgd_levels(self.myvgd, self.p0_data.shape[0], self.p0_data.shape[1], 1, ip, pres, self.p0_data*100.0, 0)
+        status = vgdp.c_vgd_levels(
+            self.myvgd, self.p0_data.shape[0], self.p0_data.shape[1], 1, ip, pres, self.p0_data*100.0, 0)
         if status:
-            raise PressureError("Eta2Pressure - There was a problem creating the pressure\n")
+            raise PressureError(
+                "Eta2Pressure - There was a problem creating the pressure\n")
             # sys.stderr.write("Eta2Pressure - There was a problem creating the pressure\n")
             # pres = None
         else:
@@ -412,7 +461,7 @@ class Eta2Pressure:
 
         return pres/100.0
 
-    def eta_to_pres(self,level:float) -> np.ndarray:
+    def eta_to_pres(self, level: float) -> np.ndarray:
         """eta to pressure conversion function
 
         :param level: current level
@@ -422,11 +471,14 @@ class Eta2Pressure:
         """
         self.get_ptop()
         ptop = self.ptop/100.0
-        pres_value = (ptop * ( 1.0 - level)) + level * STANDARD_ATMOSPHERE
-        pres = np.full(self.p0_data.shape,pres_value,dtype=np.float32,order='F')
+        pres_value = (ptop * (1.0 - level)) + level * STANDARD_ATMOSPHERE
+        pres = np.full(self.p0_data.shape, pres_value,
+                       dtype=np.float32, order='F')
         return pres
 ###################################################################################
-def compute_pressure_from_eta_coord_array(levels:list,pt_data:np.ndarray,bb_data:np.ndarray,p0_data:np.ndarray,standard_atmosphere:bool=False) -> list:
+
+
+def compute_pressure_from_eta_coord_array(levels: list, pt_data: np.ndarray, bb_data: np.ndarray, p0_data: np.ndarray, standard_atmosphere: bool = False) -> list:
     """compute pressure array for a ETA vertical coordinate type
 
     :param levels: list of pressure levels in ETA coord
@@ -442,17 +494,17 @@ def compute_pressure_from_eta_coord_array(levels:list,pt_data:np.ndarray,bb_data
     :return: list of dictionnaries {level:np.ndarray}
     :rtype: list
     """
-    p = Eta2Pressure(levels,pt_data,bb_data,p0_data,standard_atmosphere)
+    p = Eta2Pressure(levels, pt_data, bb_data, p0_data, standard_atmosphere)
     ips = convert_levels_to_ips(levels, ETA_KIND)
 
-    pressures=[]
+    pressures = []
     if standard_atmosphere:
-        for lvl,ip in zip(levels,ips):
+        for lvl, ip in zip(levels, ips):
             mydict = {}
             pres = p.std_atm_pressure(lvl)
             if pres is None:
                 continue
-            mydict[ip]=pres
+            mydict[ip] = pres
             pressures.append(mydict)
     else:
         for ip in ips:
@@ -460,30 +512,35 @@ def compute_pressure_from_eta_coord_array(levels:list,pt_data:np.ndarray,bb_data
             pres = p.vgrid_pressure(ip)
             if pres is None:
                 continue
-            mydict[ip]=pres
+            mydict[ip] = pres
             pressures.append(mydict)
     return pressures
 
-def get_eta_metadata(meta_df,datev):
-    p0_df = meta_df.loc[(meta_df.nomvar=="P0") & (meta_df.datev==datev)].reset_index(drop=True)
+
+def get_eta_metadata(meta_df, datev):
+    p0_df = meta_df.loc[(meta_df.nomvar == "P0") & (
+        meta_df.datev == datev)].reset_index(drop=True)
     if p0_df.empty:
-        return None,None,None,None,None
+        return None, None, None, None, None
     p0_data = p0_df.iloc[0]['d']
-    pt_df = meta_df.loc[(meta_df.nomvar=="PT") & (meta_df.datev==datev)].reset_index(drop=True)
+    pt_df = meta_df.loc[(meta_df.nomvar == "PT") & (
+        meta_df.datev == datev)].reset_index(drop=True)
     if not pt_df.empty:
         pt_data = pt_df.iloc[0]['d']
     else:
-        pt_data = None,None,None,None,None
-    bb_df = meta_df.loc[(meta_df.nomvar=="!!") & (meta_df.ig1==1002)].reset_index(drop=True)
+        pt_data = None
+    bb_df = meta_df.loc[(meta_df.nomvar == "!!") & (
+        meta_df.ig1 == 1002)].reset_index(drop=True)
     if not bb_df.empty:
         bb_data = bb_df.iloc[0]['d']
     else:
-        bb_data = None,None,None,None,None
+        bb_data = None
     if bb_df.empty and pt_df.empty:
-        return None,None,None,None,None
+        return None, None, None, None, None
     return p0_data, pt_data, bb_data, p0_df.iloc[0]['datyp'], p0_df.iloc[0]['nbits']
 
-def compute_pressure_from_eta_coord_df(df:pd.DataFrame,meta_df:pd.DataFrame,standard_atmosphere:bool=False) -> pd.DataFrame:
+
+def compute_pressure_from_eta_coord_df(df: pd.DataFrame, meta_df: pd.DataFrame, standard_atmosphere: bool = False) -> pd.DataFrame:
     """Compute the pressure matrix for a dataframe containing one vertical coordinate type (vctype) of type ETA
        and only one forecast hour
 
@@ -497,33 +554,39 @@ def compute_pressure_from_eta_coord_df(df:pd.DataFrame,meta_df:pd.DataFrame,stan
     :rtype: pd.DataFrame
     """
     datev = df.iloc[0]['datev']
-    p0_data, pt_data, bb_data, datyp, nbits = get_eta_metadata(meta_df,datev)
+    p0_data, pt_data, bb_data, datyp, nbits = get_eta_metadata(meta_df, datev)
+
     if p0_data is None:
         return pd.DataFrame(dtype=object)
     if df.empty:
         return pd.DataFrame(dtype=object)
     df = df.drop_duplicates('ip1')
     levels = df.level.unique()
-    p = Eta2Pressure(levels,pt_data,bb_data,p0_data,standard_atmosphere)
+    
+    p = Eta2Pressure(levels, pt_data, bb_data, p0_data, standard_atmosphere)
     press = []
     for i in df.index:
-        ip = df.at[i,'ip1']
-        lvl = df.at[i,'level']
-        px_s = create_px_record(df, i, datyp, nbits,standard_atmosphere)
+        ip = df.at[i, 'ip1']
+        lvl = df.at[i, 'level']
+        px_s = create_px_record(df, i, datyp, nbits, standard_atmosphere)
         if standard_atmosphere:
             pres = p.std_atm_pressure(lvl)
         else:
             pres = p.vgrid_pressure(ip)
         if pres is None:
             continue
-        px_s['d'] = pres
+        px_s['d'] = da.from_array(pres).astype(np.float32)
         press.append(px_s)
     pressure_df = pd.DataFrame(press)
     return pressure_df
+
+
 ###################################################################################
 ###################################################################################
-HYBRID_KIND=5
-HYBRID_VERSION=1
+HYBRID_KIND = 5
+HYBRID_VERSION = 1
+
+
 class Hybrid2Pressure:
     """Encompasses information and algorithms to compute pressure for HYBRID vertical coordinate type
 
@@ -542,15 +605,16 @@ class Hybrid2Pressure:
     :param standard_atmosphere: use standard atmosphere algorithm, defaults to False
     :type standard_atmosphere: bool, optional
     """
-    def __init__(self,hy_data:np.ndarray,hy_ig1:float,hy_ig2:float,p0_data:np.ndarray,levels:list,standard_atmosphere:bool=False) -> None:
-        self.hy_data = hy_data
+
+    def __init__(self, hy_data, hy_ig1: float, hy_ig2: float, p0_data, levels: list, standard_atmosphere: bool = False) -> None:
+        self.hy_data = hy_data.compute() if (not (hy_data is None)) and (not isinstance(hy_data,np.ndarray)) else hy_data
         self.hy_ig1 = hy_ig1
         self.hy_ig2 = hy_ig2
-        self.p0_data = p0_data
+        self.p0_data = p0_data.compute() if (not (p0_data is None)) and (not isinstance(p0_data,np.ndarray)) else p0_data
         self.levels = levels
         # self.levels = np.append(self.levels,1.0)
         self.levels.sort()
-        self.levels = self.levels.astype('float32')
+        self.levels = self.levels.astype(np.float32)
         self.standard_atmosphere = standard_atmosphere
         if not self.standard_atmosphere:
             self.create_vgrid_descriptor()
@@ -559,7 +623,6 @@ class Hybrid2Pressure:
         if not self.standard_atmosphere:
             vgdp.c_vgd_free(self.myvgd)
 
-
     def create_vgrid_descriptor(self):
         self.get_hybrid_coord_info()
         myvgd = vgdp.c_vgd_construct()
@@ -567,29 +630,33 @@ class Hybrid2Pressure:
         ptop = ctypes.pointer(ctypes.c_double(self.ptop*100.0))
         pref = ctypes.pointer(ctypes.c_double(self.pref*100.0))
         rcoef = ctypes.pointer(ctypes.c_float(self.rcoef))
-        status = vgdp.c_vgd_new_gen(myvgd, HYBRID_KIND, HYBRID_VERSION, self.levels, len(self.levels), rcoef,None,ptop,pref,None,0,0,None,None)
+        status = vgdp.c_vgd_new_gen(myvgd, HYBRID_KIND, HYBRID_VERSION, self.levels, len(
+            self.levels), rcoef, None, ptop, pref, None, 0, 0, None, None)
         if status:
-            raise PressureError("Hybrid2Pressure - There was a problem creating the VGridDescriptor\n")
+            raise PressureError(
+                "Hybrid2Pressure - There was a problem creating the VGridDescriptor\n")
             # sys.stderr.write("Hybrid2Pressure - There was a problem creating the VGridDescriptor\n")
         self.myvgd = myvgd
-
 
     def get_hybrid_coord_info(self):
         self.ptop = self.hy_data[0]
         self.pref = self.hy_ig1
         self.rcoef = self.hy_ig2/1000.0
 
-    def std_atm_pressure(self,lvl):
+    def std_atm_pressure(self, lvl):
         self.get_ptop_pref_rcoef()
         pres = self.hyb_to_pres(lvl)
         return pres
 
-    def vgrid_pressure(self,ip1):
+    def vgrid_pressure(self, ip1):
         ip = ctypes.c_int(ip1)
-        pres = np.empty((self.p0_data.shape[0],self.p0_data.shape[1],1),dtype='float32', order='F')
-        status = vgdp.c_vgd_levels(self.myvgd, self.p0_data.shape[0], self.p0_data.shape[1], 1, ip, pres, self.p0_data*100.0, 0)
+        pres = np.empty(
+            (self.p0_data.shape[0], self.p0_data.shape[1], 1), dtype=np.float32, order='F')
+        status = vgdp.c_vgd_levels(
+            self.myvgd, self.p0_data.shape[0], self.p0_data.shape[1], 1, ip, pres, self.p0_data*100.0, 0)
         if status:
-            raise PressureError("Hybrid2Pressure - There was a problem creating the pressure\n")
+            raise PressureError(
+                "Hybrid2Pressure - There was a problem creating the pressure\n")
             # sys.stderr.write("Hybrid2Pressure - There was a problem creating the pressure\n")
             # pres = None
         else:
@@ -610,8 +677,7 @@ class Hybrid2Pressure:
         self.pref = self.hy_ig1
         self.rcoef = self.hy_ig2 / 1000.0
 
-
-    def hyb_to_pres(self,level):
+    def hyb_to_pres(self, level):
         """hybrid to pressure conversion function
 
         :param level: current level
@@ -620,23 +686,25 @@ class Hybrid2Pressure:
         :rtype: np.ndarray
         """
 
-        term0 =  (self.ptop / self.pref)
+        term0 = (self.ptop / self.pref)
         # term1 = (level + (1.0 - level) * term0)
         # term2 = (term1 - term0)
         term3 = (1.0 / (1.0 - term0))
         term4 = (level - term0)
         # evalTerm0 = (0.0 if term2 < 0 else term2 )
-        evalTerm1 = (0.0 if term4 < 0 else term4 )
+        evalTerm1 = (0.0 if term4 < 0 else term4)
         # term5 = (math.pow( evalTerm0 * term3, self.rcoef))
-        term6 = (math.pow( evalTerm1 * term3, self.rcoef))
+        term6 = (math.pow(evalTerm1 * term3, self.rcoef))
 
-        pres_value = ( self.pref * ( level - term6 )) + term6 * STANDARD_ATMOSPHERE
-        pres = np.full(self.p0_data.shape,pres_value,dtype=np.float32,order='F')
+        pres_value = (self.pref * (level - term6)) + \
+            term6 * STANDARD_ATMOSPHERE
+        pres = np.full(self.p0_data.shape, pres_value,
+                       dtype=np.float32, order='F')
         return pres
 
 
 ###################################################################################
-def compute_pressure_from_hyb_coord_array(hy_data:np.ndarray,hy_ig1:float,hy_ig2:float,p0_data:np.ndarray,levels:list,standard_atmosphere:bool=False) -> list:
+def compute_pressure_from_hyb_coord_array(hy_data: np.ndarray, hy_ig1: float, hy_ig2: float, p0_data: np.ndarray, levels: list, standard_atmosphere: bool = False) -> list:
     """compute pressure array for a HYBRID vertical coordinate type
 
     :param hy_data:  GEM hybrid vertical coordinate descriptor array
@@ -654,17 +722,18 @@ def compute_pressure_from_hyb_coord_array(hy_data:np.ndarray,hy_ig1:float,hy_ig2
     :return: list of dictionnaries {level:np.ndarray}
     :rtype: list
     """
-    p = Hybrid2Pressure(hy_data,hy_ig1,hy_ig2,p0_data,levels,standard_atmosphere)
+    p = Hybrid2Pressure(hy_data, hy_ig1, hy_ig2, p0_data,
+                        levels, standard_atmosphere)
     ips = convert_levels_to_ips(levels, HYBRID_KIND)
 
-    pressures=[]
+    pressures = []
     if standard_atmosphere:
-        for lvl,ip in zip(levels,ips):
+        for lvl, ip in zip(levels, ips):
             mydict = {}
             pres = p.std_atm_pressure(lvl)
             if pres is None:
                 continue
-            mydict[ip]=pres
+            mydict[ip] = pres
             pressures.append(mydict)
     else:
         for ip in ips:
@@ -672,24 +741,27 @@ def compute_pressure_from_hyb_coord_array(hy_data:np.ndarray,hy_ig1:float,hy_ig2
             pres = p.vgrid_pressure(ip)
             if pres is None:
                 continue
-            mydict[ip]=pres
+            mydict[ip] = pres
             pressures.append(mydict)
     return pressures
 
-def get_hyb_metadata(meta_df,datev):
-    p0_df = meta_df.loc[(meta_df.nomvar=="P0") & (meta_df.datev==datev)].reset_index(drop=True)
+
+def get_hyb_metadata(meta_df, datev):
+    p0_df = meta_df.loc[(meta_df.nomvar == "P0") & (
+        meta_df.datev == datev)].reset_index(drop=True)
     if p0_df.empty:
-        return None,None,None,None,None,None
+        return None, None, None, None, None, None
     p0_data = p0_df.iloc[0]['d']
-    hy_df = meta_df.loc[meta_df.nomvar=="HY"].reset_index(drop=True)
+    hy_df = meta_df.loc[meta_df.nomvar == "HY"].reset_index(drop=True)
     if hy_df.empty:
-        return None,None,None,None,None,None
+        return None, None, None, None, None, None
     hy_data = hy_df.iloc[0]['d']
     hy_ig1 = hy_df.iloc[0]['ig1']
     hy_ig2 = hy_df.iloc[0]['ig2']
-    return p0_data,hy_data,hy_ig1,hy_ig2, p0_df.iloc[0]['datyp'], p0_df.iloc[0]['nbits']
+    return p0_data, hy_data, hy_ig1, hy_ig2, p0_df.iloc[0]['datyp'], p0_df.iloc[0]['nbits']
 
-def compute_pressure_from_hyb_coord_df(df:pd.DataFrame,meta_df:pd.DataFrame,standard_atmosphere:bool=False) -> pd.DataFrame:
+
+def compute_pressure_from_hyb_coord_df(df: pd.DataFrame, meta_df: pd.DataFrame, standard_atmosphere: bool = False) -> pd.DataFrame:
     """Compute the pressure matrix for a dataframe containing one vertical coordinate type (vctype) of type HYBRID
        and only one forecast hour
 
@@ -703,31 +775,37 @@ def compute_pressure_from_hyb_coord_df(df:pd.DataFrame,meta_df:pd.DataFrame,stan
     :rtype: pd.DataFrame
     """
     datev = df.iloc[0]['datev']
-    p0_data,hy_data,hy_ig1,hy_ig2, datyp, nbits = get_hyb_metadata(meta_df,datev)
+    p0_data, hy_data, hy_ig1, hy_ig2, datyp, nbits = get_hyb_metadata(
+        meta_df, datev)
     if p0_data is None:
         return pd.DataFrame(dtype=object)
     if df.empty:
         return pd.DataFrame(dtype=object)
     df = df.drop_duplicates('ip1')
     levels = df.level.unique()
-    p = Hybrid2Pressure(hy_data,hy_ig1,hy_ig2,p0_data,levels,standard_atmosphere)
+    p = Hybrid2Pressure(hy_data, hy_ig1, hy_ig2, p0_data,
+                        levels, standard_atmosphere)
     press = []
     for i in df.index:
-        ip = df.at[i,'ip1']
-        lvl = df.at[i,'level']
-        px_s = create_px_record(df, i, datyp, nbits,standard_atmosphere)
+        ip = df.at[i, 'ip1']
+        lvl = df.at[i, 'level']
+        px_s = create_px_record(df, i, datyp, nbits, standard_atmosphere)
         if standard_atmosphere:
             pres = p.std_atm_pressure(lvl)
         else:
             pres = p.vgrid_pressure(ip)
         if pres is None:
             continue
-        px_s['d'] = pres
+
+        px_s['d'] = da.from_array(pres).astype(np.float32)
+
         press.append(px_s)
     pressure_df = pd.DataFrame(press)
     return pressure_df
 ###################################################################################
 ###################################################################################
+
+
 class HybridStaggered2Pressure:
     """Encompasses information and algorithms to compute pressure for HYBRID_STAGGERED vertical coordinate type
 
@@ -738,9 +816,10 @@ class HybridStaggered2Pressure:
     :param standard_atmosphere: use standard atmosphere algorithm, defaults to False
     :type standard_atmosphere: bool, optional
     """
-    def __init__(self,bb_data:np.ndarray,p0_data:np.ndarray,standard_atmosphere:bool=False) -> None:
-        self.bb_data = bb_data
-        self.p0_data = p0_data
+
+    def __init__(self, bb_data, p0_data, standard_atmosphere: bool = False) -> None:
+        self.bb_data = bb_data.compute() if (not (bb_data is None)) and (not isinstance(bb_data,np.ndarray)) else bb_data
+        self.p0_data = p0_data.compute() if (not (p0_data is None)) and (not isinstance(p0_data,np.ndarray)) else p0_data
         self.standard_atmosphere = standard_atmosphere
         if not self.standard_atmosphere:
             self.create_vgrid_descriptor()
@@ -751,14 +830,17 @@ class HybridStaggered2Pressure:
 
     def create_vgrid_descriptor(self):
         myvgd = vgdp.c_vgd_construct()
-        bb_dataptr = self.bb_data.ctypes.data_as(ctypes.POINTER(ctypes.c_double))
-        status = vgdp.c_vgd_new_from_table(myvgd,bb_dataptr,self.bb_data.shape[0],self.bb_data.shape[1],1)
+        bb_dataptr = self.bb_data.ctypes.data_as(
+            ctypes.POINTER(ctypes.c_double))
+        status = vgdp.c_vgd_new_from_table(
+            myvgd, bb_dataptr, self.bb_data.shape[0], self.bb_data.shape[1], 1)
         if status:
-            raise PressureError("HybridStaggered2Pressure - There was a problem creating the VGridDescriptor\n")
+            raise PressureError(
+                "HybridStaggered2Pressure - There was a problem creating the VGridDescriptor\n")
             # sys.stderr.write("HybridStaggered2Pressure - There was a problem creating the VGridDescriptor\n")
         self.myvgd = myvgd
 
-    def get_std_atm_pressure(self, a:float, b:float, pref:float) -> np.ndarray:
+    def get_std_atm_pressure(self, a: float, b: float, pref: float) -> np.ndarray:
         """ hybrid staggered to pressure conversion function
         Formule utilisee:  Px en Pa = exp( a + b * ln(p0*100.0/ pref)).
         On doit diviser le resultat par 100 pour le ramener en hPa.
@@ -773,25 +855,31 @@ class HybridStaggered2Pressure:
         :return pressure for current level
         :rtype: float
         """
-        pres_value = ( math.exp( a + b * math.log(STANDARD_ATMOSPHERE*100.0 / pref))/100.0)
-        pres = np.full(self.p0_data.shape,pres_value,dtype=np.float32,order='F')
+        pres_value = (
+            math.exp(a + b * math.log(STANDARD_ATMOSPHERE*100.0 / pref))/100.0)
+        pres = np.full(self.p0_data.shape, pres_value,
+                       dtype=np.float32, order='F')
         return pres
 
-    def std_atm_pressure(self,ip1):
+    def std_atm_pressure(self, ip1):
         ips = self.bb_data[0][3:].astype(int)
-        ipindex = np.where(ips==ip1)
+        ipindex = np.where(ips == ip1)
         a_8 = self.bb_data[1][3:]
         b_8 = self.bb_data[2][3:]
         pref = self.bb_data[1][1]
-        pres = self.get_std_atm_pressure(a_8[ipindex][0], b_8[ipindex][0], pref)
+        pres = self.get_std_atm_pressure(
+            a_8[ipindex][0], b_8[ipindex][0], pref)
         return pres
 
-    def vgrid_pressure(self,ip1):
+    def vgrid_pressure(self, ip1):
         ip = ctypes.c_int(ip1)
-        pres = np.empty((self.p0_data.shape[0],self.p0_data.shape[1],1),dtype='float32', order='F')
-        status = vgdp.c_vgd_levels(self.myvgd, self.p0_data.shape[0], self.p0_data.shape[1], 1, ip, pres, self.p0_data*100.0, 0)
+        pres = np.empty(
+            (self.p0_data.shape[0], self.p0_data.shape[1], 1), dtype=np.float32, order='F')
+        status = vgdp.c_vgd_levels(
+            self.myvgd, self.p0_data.shape[0], self.p0_data.shape[1], 1, ip, pres, self.p0_data*100.0, 0)
         if status:
-            raise PressureError("HybridStaggered2Pressure - There was a problem creating the pressure\n")
+            raise PressureError(
+                "HybridStaggered2Pressure - There was a problem creating the pressure\n")
             # sys.stderr.write("HybridStaggered2Pressure - There was a problem creating the pressure\n")
             # pres = None
         else:
@@ -806,7 +894,9 @@ class HybridStaggered2Pressure:
             press_func = self.vgrid_pressure
         return press_func
 ###################################################################################
-def compute_pressure_from_hybstag_coord_array(ip1s:list,bb_data:np.ndarray,p0_data:np.ndarray,standard_atmosphere:bool=False) -> np.ndarray:
+
+
+def compute_pressure_from_hybstag_coord_array(ip1s: list, bb_data: np.ndarray, p0_data: np.ndarray, standard_atmosphere: bool = False) -> np.ndarray:
     """compute pressure array for a HYBRID_STAGGERED vertical coordinate type
 
     :param bb_data: vertical coordinate descriptor table
@@ -818,8 +908,8 @@ def compute_pressure_from_hybstag_coord_array(ip1s:list,bb_data:np.ndarray,p0_da
     :return: list of dictionnaries {level:np.ndarray}
     :rtype: list
     """
-    p = HybridStaggered2Pressure(bb_data,p0_data,standard_atmosphere)
-    pressures=[]
+    p = HybridStaggered2Pressure(bb_data, p0_data, standard_atmosphere)
+    pressures = []
     for ip in ip1s:
         mydict = {}
         pres = p.get_pressure()(ip)
@@ -829,19 +919,23 @@ def compute_pressure_from_hybstag_coord_array(ip1s:list,bb_data:np.ndarray,p0_da
         pressures.append(mydict)
     return pressures
 
-def get_hybstag_metadata(meta_df,datev):
-    p0_df = meta_df.loc[(meta_df.nomvar=='P0') & (meta_df.datev==datev)].reset_index(drop=True)
+
+def get_hybstag_metadata(meta_df, datev):
+    p0_df = meta_df.loc[(meta_df.nomvar == 'P0') & (
+        meta_df.datev == datev)].reset_index(drop=True)
     if p0_df.empty:
-        return None,None,None,None
+        return None, None, None, None
     p0_data = p0_df.iloc[0]['d']
-    bb_df = meta_df.loc[(meta_df.nomvar=='!!') & (meta_df.ig1.isin([5002,5005]))].reset_index(drop=True)
+    bb_df = meta_df.loc[(meta_df.nomvar == '!!') & (
+        meta_df.ig1.isin([5002, 5005]))].reset_index(drop=True)
     if bb_df.empty:
-        return None,None,None,None
+        return None, None, None, None
     bb_data = bb_df.iloc[0]['d']
 
-    return  p0_data, bb_data, p0_df.iloc[0]['datyp'], p0_df.iloc[0]['nbits']
+    return p0_data, bb_data, p0_df.iloc[0]['datyp'], p0_df.iloc[0]['nbits']
 
-def compute_pressure_from_hybstag_coord_df(df:pd.DataFrame,meta_df:pd.DataFrame,standard_atmosphere:bool=False) -> pd.DataFrame:
+
+def compute_pressure_from_hybstag_coord_df(df: pd.DataFrame, meta_df: pd.DataFrame, standard_atmosphere: bool = False) -> pd.DataFrame:
     """Compute the pressure matrix for a dataframe containing one vertical coordinate type (vctype) of type HYBRID_STAGGERED
        and only one forecast hour
 
@@ -855,25 +949,25 @@ def compute_pressure_from_hybstag_coord_df(df:pd.DataFrame,meta_df:pd.DataFrame,
     :rtype: pd.DataFrame
     """
     datev = df.iloc[0]['datev']
-    p0_data, bb_data, datyp, nbits = get_hybstag_metadata(meta_df,datev)
+    p0_data, bb_data, datyp, nbits = get_hybstag_metadata(meta_df, datev)
 
     if p0_data is None:
         return pd.DataFrame(dtype=object)
     if df.empty:
         return pd.DataFrame(dtype=object)
-    df = df.drop_duplicates('ip1',ignore_index=True)
+    df = df.drop_duplicates('ip1', ignore_index=True)
 
-    p = HybridStaggered2Pressure(bb_data,p0_data,standard_atmosphere)
+    p = HybridStaggered2Pressure(bb_data, p0_data, standard_atmosphere)
     press = []
     for i in df.index:
-        ip = df.at[i,'ip1']
+        ip = df.at[i, 'ip1']
         if ip == 0:
             continue
-        px_s = create_px_record(df, i, datyp, nbits,standard_atmosphere)
+        px_s = create_px_record(df, i, datyp, nbits, standard_atmosphere)
         pres = p.get_pressure()(ip)
         if pres is None:
             continue
-        px_s['d'] = pres
+        px_s['d'] = da.from_array(pres).astype(np.float32)
         press.append(px_s)
     pressure_df = pd.DataFrame(press)
 
@@ -881,7 +975,9 @@ def compute_pressure_from_hybstag_coord_df(df:pd.DataFrame,meta_df:pd.DataFrame,
 
 ###################################################################################
 ###################################################################################
-def create_px_record(df, i, datyp, nbits,standard_atmosphere:bool):
+
+
+def create_px_record(df, i, datyp, nbits, standard_atmosphere: bool):
     nomvar = 'PX'
     etiket = 'PRESSR'
     unit = 'hectoPascal'
@@ -900,7 +996,8 @@ def create_px_record(df, i, datyp, nbits,standard_atmosphere:bool):
     px_s['key'] = None
     return px_s
 
+
 def convert_levels_to_ips(levels, kind):
     vip1_all = np.vectorize(rmn.ip1_all)
-    ips = vip1_all(levels,kind)
+    ips = vip1_all(levels, kind)
     return ips

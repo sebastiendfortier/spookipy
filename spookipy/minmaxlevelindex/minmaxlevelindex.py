@@ -40,7 +40,7 @@ class MinMaxLevelIndex(Plugin):
             self.min = True
             self.max = True
 
-        self.df = fstpy.add_columns(self.df,True, columns=['forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(self.df, columns=['forecast_hour','ip_info'])
 
         keep = self.df.loc[~self.df.nomvar.isin(["KBAS","KTOP"])].reset_index(drop=True)
 
@@ -50,7 +50,7 @@ class MinMaxLevelIndex(Plugin):
         logging.info('MinMaxLevelIndex - compute')
         df_list=[]
         for _,group in self.nomvar_groups:
-            group = fstpy.load_data(group)
+
             group = group.sort_values(by='level',ascending=group.ascending.unique()[0])
             group.loc[:,'etiket'] = self.plugin_result_specifications['ALL']['etiket']
             kmin_df = create_empty_result(group,self.plugin_result_specifications['ALL'])
@@ -73,14 +73,14 @@ class MinMaxLevelIndex(Plugin):
             if self.bounded:
                 # get kbas and ktop for this grid
                 kbas = self.df.loc[(self.df.nomvar=="KBAS") & (self.df.grid==group.iloc[0]['grid'])].reset_index(drop=True)
-                kbas = fstpy.load_data(kbas)
+
                 ktop = self.df.loc[(self.df.nomvar=="KTOP") & (self.df.grid==group.iloc[0]['grid'])].reset_index(drop=True)
-                ktop = fstpy.load_data(ktop)
-                kbas_arr = kbas.iloc[0]['d'].flatten().astype('int64')
+
+                kbas_arr = kbas.iloc[0]['d'].ravel(order='F').astype('int64')
                 kbas_mask = kbas_arr == -1
 
                 kbas_arr_missing = np.where(kbas_arr == -1 , np.nan, kbas_arr)
-                ktop_arr = ktop.iloc[0]['d'].flatten().astype('int64')
+                ktop_arr = ktop.iloc[0]['d'].ravel(order='F').astype('int64')
                 ktop_mask = kbas_arr == -1
                 ktop_arr_missing = np.where(ktop_arr == -1, np.nan, ktop_arr)
 
@@ -88,12 +88,12 @@ class MinMaxLevelIndex(Plugin):
 
 
             if self.ascending:
-                kmin_df.at[0,'d'] = np.nanargmin(array_3d, axis=0).astype('float32')
-                kmax_df.at[0,'d'] = np.nanargmax(array_3d, axis=0).astype('float32')
+                kmin_df.at[0,'d'] = np.nanargmin(array_3d, axis=0).astype(np.float32)
+                kmax_df.at[0,'d'] = np.nanargmax(array_3d, axis=0).astype(np.float32)
 
             else:
-                kmin_df.at[0,'d'] = (array_3d.shape[0]-1 - np.nanargmin(array_3d, axis=0)).astype('float32')
-                kmax_df.at[0,'d'] = (array_3d.shape[0]-1 - np.nanargmax(array_3d, axis=0)).astype('float32')
+                kmin_df.at[0,'d'] = (array_3d.shape[0]-1 - np.nanargmin(array_3d, axis=0)).astype(np.float32)
+                kmax_df.at[0,'d'] = (array_3d.shape[0]-1 - np.nanargmax(array_3d, axis=0)).astype(np.float32)
 
             if self.bounded:
                 mask = kbas_mask | ktop_mask

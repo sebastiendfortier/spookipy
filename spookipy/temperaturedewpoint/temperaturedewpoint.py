@@ -79,7 +79,7 @@ class TemperatureDewPoint(Plugin):
 
         self.df = fstpy.metadata_cleanup(self.df)
 
-        self.df = fstpy.add_columns(self.df,True, columns=['unit','forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(self.df, columns=['unit','forecast_hour','ip_info'])
 
         validate_humidity_parameters(TemperatureDewPointError,self.ice_water_phase,self.temp_phase_switch,self.temp_phase_switch_unit)
 
@@ -136,8 +136,8 @@ class TemperatureDewPoint(Plugin):
         logging.info(f'option {option+1}')
         # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
         vppr_df = self.compute_vppr(dependencies_df)
-        vppr_df = fstpy.load_data(vppr_df)
-        dependencies_df = fstpy.load_data(dependencies_df)
+
+
         tt_df = get_from_dataframe(dependencies_df,'TT')
         td_df = create_empty_result(tt_df,self.plugin_result_specifications['TD'],all_rows=True)
         for i in td_df.index:
@@ -157,8 +157,8 @@ class TemperatureDewPoint(Plugin):
             logging.info(f'rpn option {option+1}')
         else:
             logging.info(f'option {option+1}')
-        es_df = fstpy.load_data(es_df)
-        dependencies_df = fstpy.load_data(dependencies_df)
+
+
         tt_df = get_from_dataframe(dependencies_df,'TT')
         td_df = create_empty_result(tt_df,self.plugin_result_specifications['TD'],all_rows=True)
         for i in td_df.index:

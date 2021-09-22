@@ -30,7 +30,8 @@ def wind_max(uu_3d:np.ndarray,vv_3d:np.ndarray,uv_3d:np.ndarray,px_3d:np.ndarray
     :rtype: Tuple[np.ndarray,np.ndarray,np.ndarray,np.ndarray]
     """
     # max index
-    uvmax = np.expand_dims(np.argmax(uv_3d,axis=0),axis=0)
+    # uvmax = np.expand_dims(np.argmax(uv_3d,axis=0),axis=0)
+    uvmax = np.argmax(uv_3d,axis=0)[np.newaxis]
     # match index
     uu_max = np.take_along_axis(uu_3d,uvmax,axis=0)
     vv_max = np.take_along_axis(vv_3d,uvmax,axis=0)
@@ -66,7 +67,7 @@ class WindMax(Plugin):
 
         self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
-        self.df = fstpy.add_columns(self.df,True, columns=['unit','forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(self.df, columns=['unit','forecast_hour','ip_info'])
 
         #check if result already exists
         self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
@@ -89,7 +90,7 @@ class WindMax(Plugin):
 
         for dependencies_df,_ in dependencies_list:
 
-            dependencies_df = fstpy.load_data(dependencies_df)
+
 
             uu_df = get_from_dataframe(dependencies_df,'UU')
             uu_res_df = create_empty_result(uu_df,self.plugin_result_specifications['UU'])

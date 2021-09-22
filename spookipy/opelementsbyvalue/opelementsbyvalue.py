@@ -4,6 +4,7 @@ from ..utils import create_empty_result, initializer, final_results, validate_no
 import pandas as pd
 import fstpy.all as fstpy
 import logging
+import numpy as np
 
 class OpElementsByValueError(Exception):
     pass
@@ -36,8 +37,8 @@ class OpElementsByValue(Plugin):
         logging.info('OpElementsByValue - compute')
         df_list = []
         res_df = create_empty_result(self.df,self.plugin_result_specifications['ALL'],all_rows=True)
-        res_df = fstpy.load_data(res_df)
-        res_df['d'] = self.operator(res_df['d'], self.value)
+
+        res_df['d'] = self.operator(res_df['d'], self.value).astype(np.float32)
         df_list.append(res_df)
 
         return final_results(df_list, self.exception_class, self.meta_df)

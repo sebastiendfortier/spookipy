@@ -63,7 +63,7 @@ class ExamplePlugin(Plugin):
 
         self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)   # keep the metadata to be added at the end
 
-        self.df = fstpy.add_columns(self.df,True, columns=['unit','forecast_hour','ip_info'])   # add some columns if they are not already in the dataframe
+        self.df = fstpy.add_columns(self.df, columns=['unit','forecast_hour','ip_info'])   # add some columns if they are not already in the dataframe
                                                                                            # this helps with sorting and grouping the data
                                                                                            # ip_info tag includes the decoding (gets the kind and value) of ip1, ip2 ip3
                                                                                            # the virtical coordinate type, the surface flag, the virtical coordinate type 
@@ -87,7 +87,7 @@ class ExamplePlugin(Plugin):
         dependencies_list = get_dependencies(self.groups,self.meta_df,'ExamplePlugin',self.plugin_mandatory_dependencies,intersect_levels=True)
                                                                                             # search in every group for the dependencies and create a list of matching dataframes
         for dependencies_df,_ in dependencies_list:
-            dependencies_df = fstpy.load_data(dependencies_df)                              # get the 'd' (numpy.ndarray) part from the file if data wasnn't already loaded
+
 
             uu_df = get_from_dataframe(dependencies_df,'UU')                                # get a specific field (as a dataframe) from the dataframe, make sure is sorted and reindexed
             vv_df = get_from_dataframe(dependencies_df,'VV')

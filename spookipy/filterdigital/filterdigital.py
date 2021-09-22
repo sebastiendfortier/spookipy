@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 import logging
 
-import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
+import dask.array as da
 
 from ..plugin import Plugin
-from ..utils import (create_empty_result, final_results, initializer,
-                     validate_nomvar)
-from .stenfilt import filtre
+from ..utils import (final_results, initializer, validate_nomvar)
+from .f_stenfilt import f_stenfilt
 
 
 class FilterDigitalError(Exception):
@@ -48,24 +47,33 @@ class FilterDigital(Plugin):
     def compute(self) -> pd.DataFrame:
         logging.info('FilterDigital - compute')
 
+        # if not (self.nomvar_out is None):
+        #     self.plugin_result_specifications['ALL']['nomvar'] = self.nomvar_out
+
+        # self.df = fstpy.compute(self.df)
+        
         if not (self.nomvar_out is None):
-            self.plugin_result_specifications['ALL']['nomvar'] = self.nomvar_out
+            self.df['nomvar'] = self.nomvar_out    
+        self.df['filtered'] = True
+        
 
-        self.df = fstpy.load_data(self.df)
+        # new_df = create_empty_result(self.df,self.plugin_result_specifications['ALL'],all_rows=True)
 
-        new_df = create_empty_result(self.df,self.plugin_result_specifications['ALL'],all_rows=True)
-
-        df_list=[]
+        
 
         filter_len = len(self.filter)
 
         filter = np.array(self.filter,dtype=np.int32,order='F')
 
-        for i in new_df.index:
-            ni = new_df.at[i,'d'].shape[0]
-            nj = new_df.at[i,'d'].shape[1]
-            filtre(slab=new_df.at[i,'d'],ni=ni,nj=nj,npass=self.repetitions,list=filter,l=filter_len)
+        df_list=[]
+        for i in self.df.index:
+            ni = self.df.at[i,'d'].shape[0]
+            nj = self.df.at[i,'d'].shape[1]
+            if not isinstance(self.df.at[i,'d'],np.ndarray):
+                self.df.at[i,'d'] = self.df.at[i,'d'].compute()
+            f_stenfilt(slab=self.df.at[i,'d'],ni=ni,nj=nj,npass=self.repetitions,list=filter,l=filter_len)
+            self.df.at[i,'d'] = da.from_array(self.df.at[i,'d'].astype(np.float32))
 
-        df_list.append(new_df)
+        df_list.append(self.df)
 
         return final_results(df_list, FilterDigitalError, self.meta_df)

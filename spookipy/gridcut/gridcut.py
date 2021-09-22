@@ -3,7 +3,7 @@ from ..plugin import Plugin
 import pandas as pd
 import logging
 import fstpy.all as fstpy
-from ..utils import initializer, remove_load_data_info
+from ..utils import initializer
 
 
 class GridCutError(Exception):
@@ -22,7 +22,7 @@ class GridCut(Plugin):
 
         self.validate_coords()
 
-        self.df = fstpy.load_data(self.df)
+
 
         self.tictictactac_df = self.df.loc[self.df.nomvar.isin(["^^", ">>"])].reset_index(drop=True)
 
@@ -80,7 +80,6 @@ class GridCut(Plugin):
 
         res_df = pd.concat([cp_df,self.meta_df,cptic_df,cptac_df],ignore_index=True)
 
-        res_df = remove_load_data_info(res_df)
         res_df = fstpy.metadata_cleanup(res_df)
 
         return res_df

@@ -84,7 +84,7 @@ class DewPointDepression(Plugin):
 
         self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
 
-        self.df = fstpy.add_columns(self.df,True, columns=['unit','forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(self.df, columns=['unit','forecast_hour','ip_info'])
 
         validate_humidity_parameters(DewPointDepressionError,self.ice_water_phase,self.temp_phase_switch,self.temp_phase_switch_unit)
 
@@ -144,7 +144,7 @@ class DewPointDepression(Plugin):
 
     def rpn_dewpointdepression_from_tt_hr_px(self, dependencies_df, option):
         logging.info(f'rpn option {option+1}')
-        dependencies_df = fstpy.load_data(dependencies_df)
+
         tt_df = get_from_dataframe(dependencies_df,'TT')
         hr_df = get_from_dataframe(dependencies_df,'HR')
         px_df = get_from_dataframe(dependencies_df,'PX')
@@ -160,8 +160,8 @@ class DewPointDepression(Plugin):
 
     def rpn_dewpointdepression_from_tt_hu_px(self, hu_df, dependencies_df, option):
         logging.info(f'rpn option {option+1}')
-        hu_df = fstpy.load_data(hu_df)
-        dependencies_df = fstpy.load_data(dependencies_df)
+
+
         tt_df = get_from_dataframe(dependencies_df,'TT')
         px_df = get_from_dataframe(dependencies_df,'PX')
         es_df = create_empty_result(tt_df,self.plugin_result_specifications['ES'],all_rows=True)
@@ -185,8 +185,8 @@ class DewPointDepression(Plugin):
             logging.info(f'rpn option {option+1}')
         else:
             logging.info(f'option {option+1}')
-        td_df = fstpy.load_data(td_df)
-        dependencies_df = fstpy.load_data(dependencies_df)
+
+
         tt_df = get_from_dataframe(dependencies_df,'TT')
         es_df = create_empty_result(tt_df,self.plugin_result_specifications['ES'],all_rows=True)
         for i in es_df.index:

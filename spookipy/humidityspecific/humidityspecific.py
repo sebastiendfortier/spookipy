@@ -81,7 +81,7 @@ class HumiditySpecific(Plugin):
 
         self.df = fstpy.metadata_cleanup(self.df)
 
-        self.df = fstpy.add_columns(self.df,True, columns=['unit','forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(self.df, columns=['unit','forecast_hour','ip_info'])
 
         validate_humidity_parameters(HumiditySpecificError,self.ice_water_phase,self.temp_phase_switch,self.temp_phase_switch_unit)
 
@@ -144,7 +144,7 @@ class HumiditySpecific(Plugin):
     def rpn_humnidityspecific_from_tt_hr_px(self, dependencies_df, option):
         logging.info(f'rpn option {option+1}')
         # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
-        dependencies_df = fstpy.load_data(dependencies_df)
+
         tt_df = get_from_dataframe(dependencies_df,'TT')
         hr_df = get_from_dataframe(dependencies_df,'HR')
         px_df = get_from_dataframe(dependencies_df,'PX')
@@ -160,8 +160,8 @@ class HumiditySpecific(Plugin):
 
     def rpn_humidity_specific_from_tt_es_px(self, es_df, dependencies_df,option):
         logging.info(f'rpn option {option+1}')
-        es_df = fstpy.load_data(es_df)
-        dependencies_df = fstpy.load_data(dependencies_df)
+
+
         tt_df = get_from_dataframe(dependencies_df,'TT')
         px_df = get_from_dataframe(dependencies_df,'PX')
         hu_df = create_empty_result(tt_df,self.plugin_result_specifications['HU'],all_rows=True)
@@ -185,7 +185,7 @@ class HumiditySpecific(Plugin):
             logging.info(f'rpn option {option+1}')
         else:
             logging.info(f'option {option+1}')
-        dependencies_df = fstpy.load_data(dependencies_df)
+
         qv_df = get_from_dataframe(dependencies_df,'QV')
         hu_df = create_empty_result(qv_df,self.plugin_result_specifications['HU'],all_rows=True)
         qvkgkg_df = fstpy.unit_convert(qv_df,'kilogram_per_kilogram')
@@ -198,7 +198,7 @@ class HumiditySpecific(Plugin):
         from ..vapourpressure.vapourpressure import VapourPressure
         logging.info(f'option {option+1}')
         # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
-        dependencies_df = fstpy.load_data(dependencies_df)
+
         px_df = get_from_dataframe(dependencies_df,'PX')
         hu_df = create_empty_result(px_df,self.plugin_result_specifications['HU'],all_rows=True)
         vppr_df = VapourPressure(pd.concat([dependencies_df,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase, temp_phase_switch=self.temp_phase_switch, temp_phase_switch_unit=self.temp_phase_switch_unit).compute()

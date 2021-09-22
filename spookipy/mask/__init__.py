@@ -1,2 +1,2 @@
 from .mask import Mask, MaskError
-from .fmask import fmask
+from .f_mask import f_mask

@@ -195,4 +195,3 @@ def test_10(plugin_test_dir):
     res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
-    assert False

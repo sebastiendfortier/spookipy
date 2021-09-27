@@ -14,12 +14,8 @@ struct calc_wind_modulus : std::binary_function<float, float, float>
 
 extern "C" float* wind_modulus_cpp (const float* a, const float* b, const int size)
 {
-    std::cout << __PRETTY_FUNCTION__ <<std::endl;
     float* results = new float[size];
     transform(a, a + size, b, results, calc_wind_modulus());
-    // for(int i = 0; i < size; i++){
-    //     std::cout << a[i] << "\t" << b[i] << "\t" << results[i] <<std::endl;
-    // }
     return results;
 }
 

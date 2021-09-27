@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import logging
 from ..plugin import Plugin
-from windmoduluscpp import wind_modulus_cpp
+from .windmoduluscpp import wind_modulus_cpp
 from ..utils import (create_empty_result, existing_results, final_results,
                      get_dependencies, get_existing_result,
                      get_from_dataframe, get_intersecting_levels)

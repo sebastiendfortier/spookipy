@@ -73,6 +73,28 @@ Text to copy in the test file
         assert(True)
     
     
+
+Directory structure
+-------------------
+
+In $project_root/templates 
+- You will find a sample with the correct directory structure
+
+Foreign language support
+------------------------
+
+    **Fortran**
+
+    In $project_root/spookipy/filterdigital
+    - You will find an example of fortran code integration
+
+    **C++**
+
+    In $project_root/spookipy/windmodulus
+    - You will find an example of c++ code integration
+
+
+
     
 Description of the parts of the plugin
 --------------------------------------

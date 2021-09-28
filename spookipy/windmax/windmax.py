@@ -7,15 +7,15 @@ import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin
-from ..utils import (create_empty_result, existing_results, final_results,
-                     get_3d_array, get_dependencies,
-                     get_existing_result, get_from_dataframe)
+from ..utils import (create_result_container, existing_results, final_results,
+                     get_dependencies, get_existing_result, to_dask)
 
 
 class WindMaxError(Exception):
     pass
 
-def wind_max(uu_3d:np.ndarray,vv_3d:np.ndarray,uv_3d:np.ndarray,px_3d:np.ndarray) -> Tuple[np.ndarray,np.ndarray,np.ndarray,np.ndarray]:
+
+def wind_max(uu_3d: np.ndarray,vv_3d: np.ndarray,uv_3d: np.ndarray,px_3d: np.ndarray) -> Tuple[np.ndarray,np.ndarray,np.ndarray,np.ndarray]:
     """Computes the maximum values by column for uu,vv,uv and px.
 
     :param uu_3d: flattened then stacked uu wind component arrays. the array is actually 2d (rows(flattened 2d grid) by levels)
@@ -31,89 +31,98 @@ def wind_max(uu_3d:np.ndarray,vv_3d:np.ndarray,uv_3d:np.ndarray,px_3d:np.ndarray
     """
     # max index
     # uvmax = np.expand_dims(np.argmax(uv_3d,axis=0),axis=0)
-    uvmax = np.argmax(uv_3d,axis=0)[np.newaxis]
+    uvmax = np.argmax(uv_3d, axis=0)[np.newaxis]
     # match index
-    uu_max = np.take_along_axis(uu_3d,uvmax,axis=0)
-    vv_max = np.take_along_axis(vv_3d,uvmax,axis=0)
-    uv_max = np.take_along_axis(uv_3d,uvmax,axis=0)
-    px_max = np.take_along_axis(px_3d,uvmax,axis=0)
-    return uu_max,vv_max,uv_max,px_max
+    uu_max = np.take_along_axis(uu_3d, uvmax, axis=0)
+    vv_max = np.take_along_axis(vv_3d, uvmax, axis=0)
+    uv_max = np.take_along_axis(uv_3d, uvmax, axis=0)
+    px_max = np.take_along_axis(px_3d, uvmax, axis=0)
+    return uu_max, vv_max, uv_max, px_max
+
 
 class WindMax(Plugin):
 
-
-    def __init__(self,df:pd.DataFrame):
+    def __init__(self, df: pd.DataFrame):
         self.plugin_mandatory_dependencies = [{
-            'UV':{'nomvar':'UV','unit':'knot'},
-            'UU':{'nomvar':'UU','unit':'knot'},
-            'VV':{'nomvar':'VV','unit':'knot'},
-            'PX':{'nomvar':'PX','unit':'hectoPascal'},
+            'UV': {'nomvar': 'UV', 'unit': 'knot'},
+            'UU': {'nomvar': 'UU', 'unit': 'knot'},
+            'VV': {'nomvar': 'VV', 'unit': 'knot'},
+            'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'},
         }]
         self.plugin_result_specifications = {
-            'UV':{'nomvar':'UV','etiket':'WindMax','unit':'knot','ip1':0},
-            'UU':{'nomvar':'UU','etiket':'WindMax','unit':'knot','ip1':0},
-            'VV':{'nomvar':'VV','etiket':'WindMax','unit':'knot','ip1':0},
-            'PX':{'nomvar':'PX','etiket':'WindMax','unit':'hectoPascal','ip1':0},
-            }
+            'UV': {'nomvar': 'UV', 'etiket': 'WindMax', 'unit': 'knot', 'ip1': 0},
+            'UU': {'nomvar': 'UU', 'etiket': 'WindMax', 'unit': 'knot', 'ip1': 0},
+            'VV': {'nomvar': 'VV', 'etiket': 'WindMax', 'unit': 'knot', 'ip1': 0},
+            'PX': {'nomvar': 'PX', 'etiket': 'WindMax', 'unit': 'hectoPascal', 'ip1': 0},
+        }
         self.df = df
         self.validate_input()
 
     # might be able to move
     def validate_input(self):
         if self.df.empty:
-            raise  WindMaxError('No data to process')
+            raise WindMaxError('No data to process')
 
         self.df = fstpy.metadata_cleanup(self.df)
 
-        self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
+        self.meta_df = self.df.loc[self.df.nomvar.isin(
+            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
 
-        self.df = fstpy.add_columns(self.df, columns=['unit','forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(
+            self.df, columns=[
+                'unit', 'forecast_hour', 'ip_info'])
 
-        #check if result already exists
-        self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
+        # check if result already exists
+        self.existing_result_df = get_existing_result(
+            self.df, self.plugin_result_specifications)
 
         # remove meta data from DataFrame
-        self.df = self.df.loc[~self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
+        self.df = self.df.loc[~self.df.nomvar.isin(
+            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
 
-        self.groups = self.df.groupby(['grid','dateo','forecast_hour','ip1_kind'])
-
+        self.groups = self.df.groupby(
+            ['grid', 'dateo', 'forecast_hour', 'ip1_kind'])
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:
-            return existing_results('WindMax',self.existing_result_df,self.meta_df)
+            return existing_results(
+                'WindMax', self.existing_result_df, self.meta_df)
 
         logging.info('WindMax - compute')
-        #holds data from all the groups
+        # holds data from all the groups
         df_list = []
 
-        dependencies_list = get_dependencies(self.groups,self.meta_df,'WindMax',self.plugin_mandatory_dependencies,intersect_levels=True)
+        dependencies_list = get_dependencies(
+            self.groups,
+            self.meta_df,
+            'WindMax',
+            self.plugin_mandatory_dependencies,
+            intersect_levels=True)
 
-        for dependencies_df,_ in dependencies_list:
+        for dependencies_df, _ in dependencies_list:
 
+            dependencies_df.sort_values(by='level',ascending=dependencies_df.ascending.unique()[0],inplace=True)
+            ds = fstpy.to_cmc_xarray(dependencies_df)
 
-
-            uu_df = get_from_dataframe(dependencies_df,'UU')
-            uu_res_df = create_empty_result(uu_df,self.plugin_result_specifications['UU'])
-
-            vv_df = get_from_dataframe(dependencies_df,'VV')
-            vv_res_df = create_empty_result(vv_df,self.plugin_result_specifications['VV'])
-
-            uv_df = get_from_dataframe(dependencies_df,'UV')
-            uv_res_df = create_empty_result(uv_df,self.plugin_result_specifications['UV'])
-
-            px_df = get_from_dataframe(dependencies_df,'PX')
-            px_res_df = create_empty_result(px_df,self.plugin_result_specifications['PX'])
-
-            uu_3d = get_3d_array(uu_df)
-            vv_3d = get_3d_array(vv_df)
-            px_3d = get_3d_array(px_df)
-            uv_3d = get_3d_array(uv_df)
-
-            uu_res_df.at[0,'d'],vv_res_df.at[0,'d'],uv_res_df.at[0,'d'],px_res_df.at[0,'d'] = wind_max(uu_3d,vv_3d,uv_3d,px_3d)
-
+            uvmaxpos = ds.UV.compute().argmax(dim='level') # if no compute xarray and dask dont work atm
+            uumax = ds.UU.isel({'level':uvmaxpos})
+            vvmax = ds.VV.isel({'level':uvmaxpos})
+            uvmax = ds.UV.isel({'level':uvmaxpos})
+            pxmax = ds.PX.isel({'level':uvmaxpos})
+            
+            uu_res_df = create_result_container(dependencies_df,self.plugin_result_specifications, 'UU')
+            vv_res_df = create_result_container(dependencies_df,self.plugin_result_specifications, 'VV')
+            uv_res_df = create_result_container(dependencies_df,self.plugin_result_specifications, 'UV')
+            px_res_df = create_result_container(dependencies_df,self.plugin_result_specifications, 'PX')
+            
+            uu_res_df.at[0, 'd'] = to_dask(uumax.values)
+            vv_res_df.at[0, 'd'] = to_dask(vvmax.values)
+            uv_res_df.at[0, 'd'] = to_dask(uvmax.values)
+            px_res_df.at[0, 'd'] = to_dask(pxmax.values)
+            
             df_list.append(uu_res_df)
             df_list.append(vv_res_df)
             df_list.append(uv_res_df)
             df_list.append(px_res_df)
 
-        return final_results(df_list,WindMaxError, self.meta_df)
+        return final_results(df_list, WindMaxError, self.meta_df)

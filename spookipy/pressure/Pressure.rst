@@ -1,73 +1,97 @@
-Français
---------
+================
+Spooki: Pressure
+================
 
-**Description:**
+.. raw:: html
 
--  Calcul du champ de pression pour une coordonnée verticale donnée.
--  La définition des différentes coordonnées est disponible dans `ce
-   document. <https://wiki.cmc.ec.gc.ca/images/0/01/Spooki_-_Definitions_coordvert.pdf>`__
--  Possibilité de calculer la pression dans le cas d'une `atmosphère
-   normalisée <http://fr.wikipedia.org/wiki/Atmosph%C3%A8re_normalis%C3%A9eatmosphère%20normalisée>`__
-   (pression constante).
--  D'autres types de coordonnées verticales pourront être ajoutées et
-   documentées dans le futur.
+   <div id="top">
 
-\*Méthode d'itération:\*
+.. raw:: html
 
--  niveau par niveau
+   <div id="titlearea">
 
-\*Dépendances:\*
++--------------------------------------------------------------------------+
+| .. raw:: html                                                            |
+|                                                                          |
+|    <div id="projectname">                                                |
+|                                                                          |
+| Spooki                                                                   |
+|                                                                          |
+| .. raw:: html                                                            |
+|                                                                          |
+|    </div>                                                                |
++--------------------------------------------------------------------------+
 
--  Un champ quelconque sur un ensemble de niveaux verticaux donnés
+.. raw:: html
 
-\*Résultat(s):\*
+   </div>
 
--  Champ de pression PX (hPa, ou mb), sur l'ensemble des niveaux donnés
+.. raw:: html
 
-\*Algorithme:\*
+   <div id="main-nav">
 
--  https://wiki.cmc.ec.gc.ca/images/5/5c/Spooki_-_Algorithme_du_plugin_Pressure.pdf
+.. raw:: html
 
-\*Références:\*
+   </div>
 
--  Inspiré de l'utilitaire r.hy2pres de la librairie RMNLIB de RPN
+.. raw:: html
 
-\*Mots clés:\*
+   <div id="MSearchSelectWindow"
+   onmouseover="return searchBox.OnSearchSelectShow()"
+   onmouseout="return searchBox.OnSearchSelectHide()"
+   onkeydown="return searchBox.OnSearchSelectKey(event)">
 
--  MÉTÉO/WEATHER, pression/pressure, niveau/level,
-   coordonnée/coordinate, r.hy2pres
+.. raw:: html
 
-\*Usage:\*
+   </div>
 
-**Exemple d'appel:**
+.. raw:: html
 
-.. code:: example
+   <div id="MSearchResultsWindow">
 
-    ...
-    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/Pressure/testsFiles/inputFile.std] >>
-                [Pressure --coordinateType ETA_COORDINATE --referenceField TT] >>
-                [WriterStd --output /tmp/$USER/outputFile.std]"
-    ...
+.. raw:: html
 
-**Validation des résultats:**
+   </div>
 
-**Contacts:**
+.. raw:: html
 
--  Auteur(e) : `Sandrine
-   Edouard <https://wiki.cmc.ec.gc.ca/wiki/User:Edouards>`__
--  Codé par : `Sébastien
-   Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
--  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
-   `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+   </div>
 
-| \*Ce plugin utilise:\*
-| **Ce plugin est utilisé par:**
-| Voir la référence à
+.. raw:: html
 
-Tests Unitaires  
+   <div class="header">
 
-English
--------
+.. raw:: html
+
+   <div class="headertitle">
+
+.. raw:: html
+
+   <div class="title">
+
+`Pressure <classPressure.html>`__
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div class="contents">
+
+.. raw:: html
+
+   <div class="textblock">
+
+`Français <../../spooki_french_doc/html/pluginPressure.html>`__
 
 **Description:**
 
@@ -75,47 +99,48 @@ English
 -  The definition of the different coordinates are available in this
    `document. <https://wiki.cmc.ec.gc.ca/images/0/01/Spooki_-_Definitions_coordvert.pdf>`__
 -  Possibility to calculate the pressure in the case of a `standard
-   atmosphere <http://fr.wikipedia.org/wiki/Atmosph%C3%A8re_normalis%C3%A9eatmosphère%20normalisée>`__
+   atmosphere <https://en.wikipedia.org/wiki/International_Standard_Atmosphere>`__
    (constant pression ).
 -  Others types of vertical coordinates could be added and documented in
    the future.
 
-\*Iteration method:\*
+**Iteration method:**
 
--  level by level
+-  Point-by-point
 
-\*Dependencies:\*
+**Dependencies:**
 
 -  Any field on a set of given vertical levels
 
-\*Result(s):\*
+**Result(s):**
 
 -  Pressure field PX (hPa or mb), on all the given levels
 
-\*Algorithm:\*
+**Algorithm:**
 
 -  https://wiki.cmc.ec.gc.ca/images/5/5c/Spooki_-_Algorithme_du_plugin_Pressure.pdf
 
-\*Reference:\*
+**Reference:**
 
 -  Inspired from the r.hy2pres utility of the RMNLIB library of RPN
 
-\*Keywords:\*
+**Keywords:**
 
 -  MÉTÉO/WEATHER, pression/pressure, niveau/level,
    coordonnée/coordinate, r.hy2pres
 
-\*Usage:\*
+**Usage:**
 
-**Call example:**
+**Call example:** ````
 
-.. code:: example
+::
 
-    ...
-    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/Pressure/testsFiles/inputFile.std] >>
-                [Pressure --coordinateType ETA_COORDINATE --referenceField TT] >>
-                [WriterStd --output /tmp/$USER/outputFile.std]"
-    ...
+        ...
+        spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/Pressure/testsFiles/inputFile.std] >>
+                    [Pressure --coordinateType ETA_COORDINATE --referenceField TT] >>
+                    [WriterStd --output /tmp/$USER/outputFile.std]"
+        ...
+        
 
 **Results validation:**
 
@@ -128,11 +153,29 @@ English
 -  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
    `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
 
-Reference to .
+Reference to `Pressure <classPressure.html>`__.
+:sup:``[code] <Pressure_8cpp_source.html>`__`
 
 Unit tests
 
+`Evaluation tree <Pressure_graph.png>`__
+
 | **Uses:**
+
 | **Used by:**
 
- 
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+--------------
+
+Generated by  |doxygen| 1.8.13
+
+.. |doxygen| image:: doxygen.png
+   :class: footer
+   :target: http://www.doxygen.org/index.html

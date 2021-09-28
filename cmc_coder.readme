@@ -12,6 +12,31 @@ SETTING YOUR DEV ENVIRONMENT
 
 
 
+RUNNING TESTS
+-------------
+# cd to test dir
+[sbf000@eccc2-ppp4 ~] $ cd src/spookipy/test    or where you have put your clone directory
+# get the file comparison tool
+[sbf000@eccc2-ppp4 ~] $ . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/apps/ci_fstcomp/1.0.2
+# get surgepy conda environment
+[sbf000@eccc2-ppp4 ~] $ . ssmuse-sh -d /fs/ssm/eccc/cmd/cmde/surge/surgepy/1.0.8/
+# load rmn libraries
+[sbf000@eccc2-ppp4 ~] $ . r.load.dot eccc/mrd/rpn/MIG/ENV/migdep/5.1.1 eccc/mrd/rpn/MIG/ENV/rpnpy/2.1.2
+# run all tests 
+[sbf000@eccc2-ppp4 ~] $ pytest -v
+# run a suite
+[sbf000@eccc2-ppp4 ~] $ pytest -v windmodulus_test.py
+# run a specific test
+[sbf000@eccc2-ppp4 ~] $ pytest -v windmodulus_test.py::test_1
+# run a group of tests - see pytest.ini for names of groups
+[sbf000@eccc2-ppp4 ~] $ pytest -v -m regressions
+
+
+CREATING THE DOC
+----------------
+# cd to doc dir
+[sbf000@eccc2-ppp4 ~] $ cd src/spookipy/doc    or where you have put your clone directory
+[sbf000@eccc2-ppp4 ~] $ . ssmuse-sh -d /fs/ssm/eccc/cmd/cmde/surge/surgepy/1.0.8/
 
 RUNNING JUPYTER LAB
 -------------------
@@ -19,20 +44,14 @@ From my ec laptop in mobaxterm
 
 /home/mobaxterm $ ssh ppp[3|4]
 
-If you dont have these links in your ~/.conda/envs, make them
-
-[sbf000@eccc2-ppp4 ~] $ cd .conda/envs
-[sbf000@eccc2-ppp4 ~] $ ln -s /home/sgci800/.conda/envs/fstpy_full
-[sbf000@eccc2-ppp4 ~] $ ln -s /home/sgci800/.conda/envs/vscode
-
 Get a computing node
 
 [sbf000@eccc2-ppp4 ~] $ ~for000/bin/g2cm
 
 Get jupyterlab and all other necessary python packages 
 
-[sbf000@cs4be-197p34 ~] $ . ssmuse-sh -x cmd/cmdm/satellite/master_u1/miniconda3_4.9.2_ubuntu-18.04-skylake-64
-[sbf000@cs4be-197p34 ~] $ . activate fstpy_full
+[sbf000@cs4be-197p34 ~] $ . ssmuse-sh -d /fs/ssm/eccc/cmd/cmde/surge/surgepy/1.0.8/
+
 
 Run jupter lab
 

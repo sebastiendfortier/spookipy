@@ -1,23 +1,25 @@
 
 
 # -*- coding: utf-8 -*-
-import os, sys
+import os
+import sys
 
 
+import unittest
+import pytest
 
-import unittest, pytest
 
-
-prefix="/".join(os.getcwd().split("/")[0:-1])
+prefix = "/".join(os.getcwd().split("/")[0:-1])
 
 HOST_NUM = os.getenv("TRUE_HOST")[-1]
 USER = os.getenv("USER")
 
-TEST_PATH = "/fs/site%s/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/"%HOST_NUM
-TMP_PATH = "/fs/site%s/eccc/cmd/w/%s/spooki_tmpdir/"%(HOST_NUM,USER)
+TEST_PATH = "/fs/site%s/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/" % HOST_NUM
+TMP_PATH = "/fs/site%s/eccc/cmd/w/%s/spooki_tmpdir/" % (HOST_NUM, USER)
 
 
-plugin_test_dir=TEST_PATH +"Operator/testsFiles/"
+plugin_test_dir = TEST_PATH + "Operator/testsFiles/"
+
 
 class TestOperator(unittest.TestCase):
 
@@ -27,22 +29,20 @@ class TestOperator(unittest.TestCase):
         source0 = plugin_test_dir + "input_big_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-
-        #compute Operator
+        # compute Operator
         df = Operator(src_df0).compute()
-        #[ReaderStd --ignoreExtended --input {sources[0]}] >> ([FalseOperation] || [Select --fieldName TT]) >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
+        # [ReaderStd --ignoreExtended --input {sources[0]}] >> ([FalseOperation] || [Select --fieldName TT]) >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
-        #write the result
+        # write the result
         results_file = TMP_PATH + "test_1.std"
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
         file_to_compare = plugin_test_dir + "or_file2cmp.std"
 
-        #compare results
-        res = fstcomp(results_file,file_to_compare)
+        # compare results
+        res = fstcomp(results_file, file_to_compare)
         assert(res)
-
 
     def test_2(self):
         """ Teste l'operateur logique OU lorsque c'est un échec."""
@@ -50,22 +50,20 @@ class TestOperator(unittest.TestCase):
         source0 = plugin_test_dir + "input_big_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-
-        #compute Operator
+        # compute Operator
         df = Operator(src_df0).compute()
-        #[ReaderStd --ignoreExtended --input {sources[0]}] >> ([FalseOperation] || [Select --fieldName FF]) >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
+        # [ReaderStd --ignoreExtended --input {sources[0]}] >> ([FalseOperation] || [Select --fieldName FF]) >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
-        #write the result
+        # write the result
         results_file = TMP_PATH + "test_2.std"
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
         file_to_compare = plugin_test_dir + "nan"
 
-        #compare results
-        res = fstcomp(results_file,file_to_compare)
+        # compare results
+        res = fstcomp(results_file, file_to_compare)
         assert(res)
-
 
     def test_3(self):
         """ Teste l'operateur logique ADD (+)."""
@@ -73,22 +71,20 @@ class TestOperator(unittest.TestCase):
         source0 = plugin_test_dir + "input_big_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-
-        #compute Operator
+        # compute Operator
         df = Operator(src_df0).compute()
-        #[ReaderStd --ignoreExtended --input {sources[0]}] >> ([Select --fieldName UU] + [Select --fieldName GZ]) >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
+        # [ReaderStd --ignoreExtended --input {sources[0]}] >> ([Select --fieldName UU] + [Select --fieldName GZ]) >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
-        #write the result
+        # write the result
         results_file = TMP_PATH + "test_3.std"
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
         file_to_compare = plugin_test_dir + "add_file2cmp.std"
 
-        #compare results
-        res = fstcomp(results_file,file_to_compare)
+        # compare results
+        res = fstcomp(results_file, file_to_compare)
         assert(res)
-
 
     def test_4(self):
         """ Teste l'operateur logique ADD (+) avec plusieurs readers."""
@@ -105,22 +101,20 @@ class TestOperator(unittest.TestCase):
         source3 = plugin_test_dir + "addReaderGZ_fileSrc.std"
         src_df3 = fstpy.StandardFileReader(source3)
 
-
-        #compute Operator
+        # compute Operator
         df = Operator(src_df0).compute()
-        #([ReaderStd --ignoreExtended --input {sources[0]}] + [ReaderStd --ignoreExtended --input {sources[1]}] + [ReaderStd --ignoreExtended --input {sources[2]}] + [ReaderStd --ignoreExtended --input {sources[3]}]) >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
+        # ([ReaderStd --ignoreExtended --input {sources[0]}] + [ReaderStd --ignoreExtended --input {sources[1]}] + [ReaderStd --ignoreExtended --input {sources[2]}] + [ReaderStd --ignoreExtended --input {sources[3]}]) >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
-        #write the result
+        # write the result
         results_file = TMP_PATH + "test_4.std"
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
         file_to_compare = plugin_test_dir + "input_big_fileSrc.std"
 
-        #compare results
-        res = fstcomp(results_file,file_to_compare)
+        # compare results
+        res = fstcomp(results_file, file_to_compare)
         assert(res)
-
 
     def test_5(self):
         """ Teste l'operateur logique AND (&&)."""
@@ -128,22 +122,20 @@ class TestOperator(unittest.TestCase):
         source0 = plugin_test_dir + "input_big_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-
-        #compute Operator
+        # compute Operator
         df = Operator(src_df0).compute()
-        #[ReaderStd --ignoreExtended --input {sources[0]}] >> ( ( [Select --fieldName UU] ) && ( [Select --fieldName VV] ) && ( [Select --fieldName TT] ) && ( [Select --fieldName GZ] ) ) >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
+        # [ReaderStd --ignoreExtended --input {sources[0]}] >> ( ( [Select --fieldName UU] ) && ( [Select --fieldName VV] ) && ( [Select --fieldName TT] ) && ( [Select --fieldName GZ] ) ) >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
-        #write the result
+        # write the result
         results_file = TMP_PATH + "test_5.std"
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
         file_to_compare = plugin_test_dir + "nan"
 
-        #compare results
-        res = fstcomp(results_file,file_to_compare)
+        # compare results
+        res = fstcomp(results_file, file_to_compare)
         assert(res)
-
 
     def test_6(self):
         """ Teste l'utilisation de plusieurs readers."""
@@ -160,22 +152,20 @@ class TestOperator(unittest.TestCase):
         source3 = plugin_test_dir + "addReaderGZ_fileSrc.std"
         src_df3 = fstpy.StandardFileReader(source3)
 
-
-        #compute Operator
+        # compute Operator
         df = Operator(src_df0).compute()
-        #([ReaderStd --ignoreExtended --input {sources[0]}] >> [ReaderStd --ignoreExtended --input {sources[1]}] >> [ReaderStd --ignoreExtended --input {sources[2]}] >> [ReaderStd --ignoreExtended --input {sources[3]}]) >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
+        # ([ReaderStd --ignoreExtended --input {sources[0]}] >> [ReaderStd --ignoreExtended --input {sources[1]}] >> [ReaderStd --ignoreExtended --input {sources[2]}] >> [ReaderStd --ignoreExtended --input {sources[3]}]) >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
-        #write the result
+        # write the result
         results_file = TMP_PATH + "test_6.std"
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
         file_to_compare = plugin_test_dir + "input_big_fileSrc.std"
 
-        #compare results
-        res = fstcomp(results_file,file_to_compare)
+        # compare results
+        res = fstcomp(results_file, file_to_compare)
         assert(res)
-
 
     def test_7(self):
         """ Teste l'utilisation d'un reader entre d'autres opérations."""
@@ -186,22 +176,20 @@ class TestOperator(unittest.TestCase):
         source1 = plugin_test_dir + "addReaderGZ_fileSrc.std"
         src_df1 = fstpy.StandardFileReader(source1)
 
-
-        #compute Operator
+        # compute Operator
         df = Operator(src_df0).compute()
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName UV] >> [ReaderStd --ignoreExtended --input {sources[1]}] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
-        #write the result
+        # write the result
         results_file = TMP_PATH + "test_7.std"
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
         file_to_compare = plugin_test_dir + "readerMiddle_file2cmp.std"
 
-        #compare results
-        res = fstcomp(results_file,file_to_compare)
+        # compare results
+        res = fstcomp(results_file, file_to_compare)
         assert(res)
-
 
     def test_8(self):
         """ Teste l'utilisation de plusieurs writers."""
@@ -209,22 +197,20 @@ class TestOperator(unittest.TestCase):
         source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-
-        #compute Operator
+        # compute Operator
         df = Operator(src_df0).compute()
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WriterStd --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_8dEso2T/resultWriter2.std --ignoreExtended --IP1EncodingStyle OLDSTYLE] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
-        #write the result
+        # write the result
         results_file = TMP_PATH + "test_8.std"
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
         file_to_compare = plugin_test_dir + "nan"
 
-        #compare results
-        res = fstcomp(results_file,file_to_compare)
+        # compare results
+        res = fstcomp(results_file, file_to_compare)
         assert(res)
-
 
     def test_9(self):
         """ Teste l'utilisation d'un writer entre 2 opérations."""
@@ -232,22 +218,20 @@ class TestOperator(unittest.TestCase):
         source0 = plugin_test_dir + "UUVV5x5_UV_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-
-        #compute Operator
+        # compute Operator
         df = Operator(src_df0).compute()
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WriterStd --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_9vqeiNX/resultWriterUUVV.std --ignoreExtended --IP1EncodingStyle OLDSTYLE] >> [Select --fieldName UU,VV] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
-        #write the result
+        # write the result
         results_file = TMP_PATH + "test_9.std"
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
         file_to_compare = plugin_test_dir + "nan"
 
-        #compare results
-        res = fstcomp(results_file,file_to_compare)
+        # compare results
+        res = fstcomp(results_file, file_to_compare)
         assert(res)
-
 
     def test_10(self):
         """ Teste l'utilisation d'un reader entre d'autres opérations."""
@@ -255,18 +239,17 @@ class TestOperator(unittest.TestCase):
         source0 = plugin_test_dir + "addcopy.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-
-        #compute Operator
+        # compute Operator
         df = Operator(src_df0).compute()
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> ( [Copy] + ([Select --fieldName GZ] >> [Zap --fieldName GI --doNotFlagAsZapped]) + ([Select --fieldName TT] >> [Zap --fieldName TI --doNotFlagAsZapped]) ) >> [WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
-        #write the result
+        # write the result
         results_file = TMP_PATH + "test_10.std"
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
         file_to_compare = plugin_test_dir + "add_copy_file2cmp.std"
 
-        #compare results
-        res = fstcomp(results_file,file_to_compare)
+        # compare results
+        res = fstcomp(results_file, file_to_compare)
         assert(res)

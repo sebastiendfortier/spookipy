@@ -1,23 +1,25 @@
 
 
 # -*- coding: utf-8 -*-
-import os, sys
+import os
+import sys
 
 
+import unittest
+import pytest
 
-import unittest, pytest
 
-
-prefix="/".join(os.getcwd().split("/")[0:-1])
+prefix = "/".join(os.getcwd().split("/")[0:-1])
 
 HOST_NUM = os.getenv("TRUE_HOST")[-1]
 USER = os.getenv("USER")
 
-TEST_PATH = "/fs/site%s/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/"%HOST_NUM
-TMP_PATH = "/fs/site%s/eccc/cmd/w/%s/spooki_tmpdir/"%(HOST_NUM,USER)
+TEST_PATH = "/fs/site%s/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/" % HOST_NUM
+TMP_PATH = "/fs/site%s/eccc/cmd/w/%s/spooki_tmpdir/" % (HOST_NUM, USER)
 
 
-plugin_test_dir=TEST_PATH +"ArcTangent/testsFiles/"
+plugin_test_dir = TEST_PATH + "ArcTangent/testsFiles/"
+
 
 class TestArcTangent(unittest.TestCase):
 
@@ -27,18 +29,17 @@ class TestArcTangent(unittest.TestCase):
         source0 = plugin_test_dir + "UUVV5x5_1_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-
-        #compute ArcTangent
+        # compute ArcTangent
         df = ArcTangent(src_df0).compute()
-        #[ReaderStd --input {sources[0]}] >> [ArcTangent] >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE --ignoreExtended]
+        # [ReaderStd --input {sources[0]}] >> [ArcTangent] >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE --ignoreExtended]
 
-        #write the result
+        # write the result
         results_file = TMP_PATH + "test_1.std"
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
         file_to_compare = plugin_test_dir + "atan_file2cmp.std"
 
-        #compare results
-        res = fstcomp(results_file,file_to_compare)
+        # compare results
+        res = fstcomp(results_file, file_to_compare)
         assert(res)

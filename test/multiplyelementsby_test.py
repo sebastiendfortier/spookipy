@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from test import TMP_PATH,TEST_PATH
+from test import TMP_PATH, TEST_PATH
 import pytest
 import fstpy.all as fstpy
 import spookipy.all as spooki
@@ -7,6 +7,7 @@ import rpnpy.librmn.all as rmn
 from ci_fstcomp import fstcomp
 
 pytestmark = [pytest.mark.regressions]
+
 
 @pytest.fixture
 def plugin_test_dir():
@@ -19,12 +20,12 @@ def test_1(plugin_test_dir):
     source0 = plugin_test_dir + "UUVV5x5_1_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    #compute MultiplyElementsBy
+    # compute MultiplyElementsBy
     df = spooki.MultiplyElementsBy(src_df0, value=3).compute()
-    #[ReaderStd --input {sources[0]}] >> [MultiplyElementsBy --value 3.0] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
+    # [ReaderStd --input {sources[0]}] >> [MultiplyElementsBy --value 3.0] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
-    df = spooki.convip(df,style=rmn.CONVIP_ENCODE_OLD)
-    #write the result
+    df = spooki.convip(df, style=rmn.CONVIP_ENCODE_OLD)
+    # write the result
     results_file = TMP_PATH + "test_1.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
@@ -32,8 +33,8 @@ def test_1(plugin_test_dir):
     # open and read comparison file
     file_to_compare = plugin_test_dir + "factor_file2cmp.std"
 
-    #compare results
-    res = fstcomp(results_file,file_to_compare)
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -44,12 +45,12 @@ def test_2(plugin_test_dir):
     source0 = plugin_test_dir + "UUVV5x5_1_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    #compute MultiplyElementsBy
+    # compute MultiplyElementsBy
     df = spooki.MultiplyElementsBy(src_df0, value=0.333).compute()
-    #[ReaderStd --input {sources[0]}] >> [MultiplyElementsBy --value 0.333] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
+    # [ReaderStd --input {sources[0]}] >> [MultiplyElementsBy --value 0.333] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
-    df = spooki.convip(df,style=rmn.CONVIP_ENCODE_OLD)
-    #write the result
+    df = spooki.convip(df, style=rmn.CONVIP_ENCODE_OLD)
+    # write the result
     results_file = TMP_PATH + "test_2.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
@@ -57,7 +58,7 @@ def test_2(plugin_test_dir):
     # open and read comparison file
     file_to_compare = plugin_test_dir + "factor2_file2cmp.std"
 
-    #compare results
-    res = fstcomp(results_file,file_to_compare)
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)

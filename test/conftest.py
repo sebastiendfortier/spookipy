@@ -2,6 +2,7 @@
 
 import re
 
+
 def pytest_itemcollected(item):
     node = item.obj
     doc = str(node.__doc__.strip()) if node.__doc__ else str('')
@@ -17,4 +18,4 @@ def pytest_itemcollected(item):
     doc = re.sub('[îï]', 'i', doc)
     doc = re.sub('[ôö]', 'o', doc)
     doc = re.sub('[ùû]', 'u', doc)
-    item._nodeid = ' : '.join([item._nodeid,doc])
+    item._nodeid = ' : '.join([item._nodeid, doc])

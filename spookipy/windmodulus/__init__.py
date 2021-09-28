@@ -1,1 +1,1 @@
-from .windmodulus import WindModulus,WindModulusError,wind_modulus
+from .windmodulus import WindModulus, WindModulusError, wind_modulus

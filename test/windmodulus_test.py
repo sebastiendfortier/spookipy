@@ -172,3 +172,27 @@ def test_9(plugin_test_dir):
     res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
+
+
+def test_10(plugin_test_dir):
+    """test_read_select_write_UV with wind_modulus_cpp"""
+    # open and read source
+    source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    #compute WindModulus
+    df = spooki.WindModulus(src_df0,True).compute()
+    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [WindModulus] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
+    df.loc[:,'etiket'] = 'WINDMODULUS'
+    #write the result
+    results_file = TMP_PATH + "test_1.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "windModulus_file2cmp.std"
+
+    #compare results
+    res = fstcomp(results_file,file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)

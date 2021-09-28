@@ -27,7 +27,10 @@ before_script:
   - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/apps/ci_fstcomp/1.0.2
   - . ssmuse-sh -d /home/olh001/ssm/surgepy/1.0.8
   - . ssmuse-sh -d /fs/site4/eccc/cmd/w/sbf000/ssm/fstpy/2.1.7
-
+  - cd spookipy/windmodulus
+  - cmake .
+  - make
+  - cd ../..
   
 
 

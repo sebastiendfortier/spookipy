@@ -1,25 +1,18 @@
 # -*- coding: utf-8 -*-
 
+import logging
 import sys
 
 import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
-import logging
-from ..humidityutils import (get_temp_phase_switch,
-                             validate_humidity_parameters)
+
+from ..humidityutils import get_temp_phase_switch, validate_humidity_parameters
 from ..plugin import Plugin
-
-from ..utils import (
-    create_empty_result,
-    existing_results,
-    final_results,
-    get_dependencies,
-    get_existing_result,
-    get_from_dataframe,
-    initializer)
-
 from ..science import TDPACK_OFFSET_FIX, td_from_es, td_from_vppr
+from ..utils import (create_empty_result, existing_results, final_results,
+                     get_dependencies, get_existing_result, get_from_dataframe,
+                     initializer)
 
 
 class TemperatureDewPointError(Exception):

@@ -5,16 +5,12 @@ import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
 
-from ..humidityutils import (get_temp_phase_switch,
-                             validate_humidity_parameters)
+from ..humidityutils import get_temp_phase_switch, validate_humidity_parameters
 from ..plugin import Plugin
-
-from ..utils import (create_empty_result, existing_results, final_results,
-                     get_dependencies, get_existing_result,
-                     get_from_dataframe, initializer)
-
-
 from ..science import hu_from_qv, hu_from_vppr, rpn_hu_from_es, rpn_hu_from_hr
+from ..utils import (create_empty_result, existing_results, final_results,
+                     get_dependencies, get_existing_result, get_from_dataframe,
+                     initializer)
 
 
 class HumiditySpecificError(Exception):
@@ -228,7 +224,8 @@ class HumiditySpecific(Plugin):
         return hu_df
 
     def compute_es(self, dependencies_df):
-        from spookipy.dewpointdepression.dewpointdepression import DewPointDepression
+        from spookipy.dewpointdepression.dewpointdepression import \
+            DewPointDepression
         es_df = DewPointDepression(pd.concat(
             [dependencies_df, self.meta_df], ignore_index=True), ice_water_phase='water').compute()
         es_df = get_from_dataframe(es_df, 'ES')

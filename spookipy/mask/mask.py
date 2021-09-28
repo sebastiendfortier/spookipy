@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-from ..utils import final_results, initializer, to_dask, to_numpy
-from ..plugin import Plugin
-import pandas as pd
-import numpy as np
-import fstpy.all as fstpy
-from .f_mask import f_mask
 import dask.array as da
+import fstpy.all as fstpy
+import numpy as np
+import pandas as pd
+
+from ..plugin import Plugin
+from ..utils import final_results, initializer, to_dask, to_numpy
+from .f_mask import f_mask
 
 
 class MaskError(Exception):

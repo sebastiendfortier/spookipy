@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
-from fstpy.std_reader import to_cmc_xarray
-from ..plugin import Plugin
-from ..utils import create_empty_result, get_3d_array, initializer, final_results, to_numpy, validate_nomvar
-import pandas as pd
-import numpy as np
 import logging
-import fstpy.all as fstpy
 import sys
+
+import fstpy.all as fstpy
+import numpy as np
+import pandas as pd
+from fstpy.std_reader import to_cmc_xarray
+
+from ..plugin import Plugin
+from ..utils import (create_empty_result, final_results, get_3d_array,
+                     initializer, to_numpy, validate_nomvar)
+
 
 class MinMaxLevelIndexError(Exception):
     pass

@@ -5,20 +5,12 @@ import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
 
-from ..humidityutils import (get_temp_phase_switch,
-                             validate_humidity_parameters)
+from ..humidityutils import get_temp_phase_switch, validate_humidity_parameters
 from ..plugin import Plugin
-
-from ..utils import (
-    create_empty_result,
-    existing_results,
-    final_results,
-    get_dependencies,
-    get_existing_result,
-    get_from_dataframe,
-    initializer)
-
-from ..science import rpn_svp_from_tt, svp_from_tt, TDPACK_OFFSET_FIX
+from ..science import TDPACK_OFFSET_FIX, rpn_svp_from_tt, svp_from_tt
+from ..utils import (create_empty_result, existing_results, final_results,
+                     get_dependencies, get_existing_result, get_from_dataframe,
+                     initializer)
 
 
 class SaturationVapourPressureError(Exception):

@@ -7,12 +7,10 @@ import pandas as pd
 
 from ..humidityutils import get_temp_phase_switch, validate_humidity_parameters
 from ..plugin import Plugin
-
+from ..science import hr_from_svp_vppr, rpn_hr_from_es, rpn_hr_from_hu
 from ..utils import (create_empty_result, existing_results, final_results,
                      get_dependencies, get_existing_result, get_from_dataframe,
                      initializer)
-
-from ..science import hr_from_svp_vppr, rpn_hr_from_es, rpn_hr_from_hu
 
 
 class HumidityRelativeError(Exception):

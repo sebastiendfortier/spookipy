@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-import math
+import copy
 import logging
+import math
 
+import dask.array as da
 import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
@@ -9,9 +11,6 @@ import pandas as pd
 from ..plugin import Plugin
 from ..utils import (create_empty_result, existing_results, final_results,
                      get_dependencies, get_existing_result, initializer)
-
-import dask.array as da
-import copy
 
 
 def diagnostic_cloud_fraction_threshold(level: float) -> float:

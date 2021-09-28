@@ -7,8 +7,7 @@ import pandas as pd
 
 from ..plugin import Plugin
 from ..utils import (create_empty_result, existing_results, final_results,
-                     get_dependencies, get_existing_result,
-                     get_from_dataframe)
+                     get_dependencies, get_existing_result, get_from_dataframe)
 
 
 class WindChillError(Exception):

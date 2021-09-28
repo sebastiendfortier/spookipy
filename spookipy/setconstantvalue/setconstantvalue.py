@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
-from ..utils import create_empty_result, initializer, final_results
+import logging
+
+import dask.array as da
+import fstpy.all as fstpy
+import numpy as np
+import pandas as pd
+
 from ..opelementsbyvalue import OpElementsByValue
 from ..plugin import Plugin
-import pandas as pd
-import fstpy.all as fstpy
-import logging
-import dask.array as da
-import numpy as np
+from ..utils import create_empty_result, final_results, initializer
 
 
 def set_value(a, v):

@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
-from ..utils import initializer
-from ..plugin import Plugin
-import pandas as pd
 import logging
+
+import pandas as pd
+
 from ..opelementsbyvalue import OpElementsByValue
+from ..plugin import Plugin
+from ..utils import initializer
 
 
 def add_value(a, v):

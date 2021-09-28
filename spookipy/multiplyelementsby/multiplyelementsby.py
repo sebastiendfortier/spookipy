@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
-from ..plugin import Plugin
-import pandas as pd
-from ..opelementsbyvalue import OpElementsByValue
-from ..utils import initializer
 import logging
+
+import pandas as pd
+
+from ..opelementsbyvalue import OpElementsByValue
+from ..plugin import Plugin
+from ..utils import initializer
 
 
 def mult_value(a, v):

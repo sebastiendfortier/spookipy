@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-from test import TMP_PATH, TEST_PATH
-import pytest
+from test import TEST_PATH, TMP_PATH
+
 import fstpy.all as fstpy
-import spookipy.all as spooki
 import pandas as pd
+import pytest
+import spookipy.all as spooki
 from ci_fstcomp import fstcomp
 
 pytestmark = [pytest.mark.regressions, pytest.mark.humidity]

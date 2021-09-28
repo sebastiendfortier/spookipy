@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
-from ..plugin import Plugin
-from ..utils import create_empty_result, get_3d_array, initializer, final_results, validate_nomvar
-import pandas as pd
-import numpy as np
 import logging
+
 import fstpy.all as fstpy
+import numpy as np
+import pandas as pd
+
+from ..plugin import Plugin
+from ..utils import (create_empty_result, final_results, get_3d_array,
+                     initializer, validate_nomvar)
 
 
 class MatchLevelIndexToValueError(Exception):

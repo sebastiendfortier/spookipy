@@ -6,12 +6,9 @@ import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin
-
-from ..utils import (create_empty_result, existing_results, final_results,
-                     get_dependencies, get_existing_result,
-                     get_from_dataframe)
-
 from ..science import hmx_from_svp
+from ..utils import (create_empty_result, existing_results, final_results,
+                     get_dependencies, get_existing_result, get_from_dataframe)
 
 
 class HumidexError(Exception):

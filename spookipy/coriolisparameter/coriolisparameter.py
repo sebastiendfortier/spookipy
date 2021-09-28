@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
-from numpy import float32
-from ..utils import create_empty_result, get_existing_result, existing_results, final_results, get_from_dataframe
-from ..plugin import Plugin
-import pandas as pd
-import fstpy.all as fstpy
 import logging
 import math
+
+import fstpy.all as fstpy
 import numpy as np
+import pandas as pd
+from numpy import float32
+
+from ..plugin import Plugin
+from ..utils import (create_empty_result, existing_results, final_results,
+                     get_existing_result, get_from_dataframe)
 
 
 def coriolis_parameter(lat_2d: np.ndarray) -> np.ndarray:

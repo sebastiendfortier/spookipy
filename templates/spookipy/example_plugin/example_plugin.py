@@ -1,17 +1,19 @@
 # -*- coding: utf-8 -*-                                 # always use utf8 encoding when editing files
 
-from spookipy.utils import initializer
-import fstpy.all as fstpy
-import numpy as np
-import pandas as pd
 # use logging for console output, logging.debug, logging.info,
 # logging.warning, logging.critical
 import logging
+
+import fstpy.all as fstpy
+import numpy as np
+import pandas as pd
+from spookipy.utils import initializer
+
 # ex.: logging.info('ExamplePlugin - compute')
 # interface class for all plugins
 from ..plugin import Plugin
-from ..utils import (create_empty_result, existing_results, final_results,   # plugin tools
-                     get_dependencies, get_existing_result,
+from ..utils import (create_empty_result, existing_results,  # plugin tools
+                     final_results, get_dependencies, get_existing_result,
                      get_from_dataframe)
 from .fortran_function import fortran_function
 

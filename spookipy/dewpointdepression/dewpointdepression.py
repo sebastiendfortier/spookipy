@@ -5,15 +5,13 @@ import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
 
-from ..humidityutils import (get_temp_phase_switch,
-                             validate_humidity_parameters)
+from ..humidityutils import get_temp_phase_switch, validate_humidity_parameters
 from ..plugin import Plugin
-
+from ..science import (TDPACK_OFFSET_FIX, es_from_td, rpn_es_from_hr,
+                       rpn_es_from_hu)
 from ..utils import (create_empty_result, existing_results, final_results,
-                     get_dependencies, get_existing_result,
-                     get_from_dataframe, initializer)
-
-from ..science import es_from_td, rpn_es_from_hr, rpn_es_from_hu, TDPACK_OFFSET_FIX
+                     get_dependencies, get_existing_result, get_from_dataframe,
+                     initializer)
 
 
 class DewPointDepressionError(Exception):
@@ -267,7 +265,8 @@ class DewPointDepression(Plugin):
         return es_df
 
     def compute_td(self, dependencies_df):
-        from ..temperaturedewpoint.temperaturedewpoint import TemperatureDewPoint
+        from ..temperaturedewpoint.temperaturedewpoint import \
+            TemperatureDewPoint
         td_df = TemperatureDewPoint(
             pd.concat(
                 [

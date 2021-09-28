@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 # get the test directory definitions
-from test import TMP_PATH, TEST_PATH
-import pytest                                   # pytest is used to manage tests
+from test import TEST_PATH, TMP_PATH
+
 # fstpy is used to get dataframes from fst files
 import fstpy.all as fstpy
-import spookipy.all as spooki                   # refers to this library
+import pytest  # pytest is used to manage tests
+import spookipy.all as spooki  # refers to this library
 # tool used to compare fst files, just like fstcomp but in python
 from ci_fstcomp import fstcomp
 

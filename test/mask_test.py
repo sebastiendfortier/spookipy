@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
+from test import TEST_PATH, TMP_PATH
+
 import fstpy.all as fstpy
-import pytest
 import pandas as pd
-from test import TMP_PATH, TEST_PATH
+import pytest
 import rpnpy.librmn.all as rmn
 import spookipy.all as spooki
 from ci_fstcomp import fstcomp

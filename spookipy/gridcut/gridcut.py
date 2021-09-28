@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
-from ..plugin import Plugin
-import pandas as pd
 import logging
+
 import fstpy.all as fstpy
+import pandas as pd
+
+from ..plugin import Plugin
 from ..utils import initializer, to_numpy
 
 

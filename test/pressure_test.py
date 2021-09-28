@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from test import TEST_PATH, TMP_PATH
 
+import fstpy.all as fstpy
 import pytest
 import spookipy.all as spooki
-import fstpy.all as fstpy
 from ci_fstcomp import fstcomp
 
 pytestmark = [pytest.mark.regressions]

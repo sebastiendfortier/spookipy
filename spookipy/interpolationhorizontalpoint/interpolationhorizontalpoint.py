@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-from ..plugin import Plugin
+import sys
+
+import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
 import rpnpy.librmn.all as rmn
-import numpy as np
-import sys
-import fstpy.all as fstpy
+
+from ..plugin import Plugin
 from ..utils import initializer, to_dask, to_numpy
 
 

@@ -3,6 +3,7 @@ import ctypes
 import logging
 import math
 
+import dask.array as da
 import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
@@ -12,8 +13,6 @@ import rpnpy.vgd.proto as vgdp
 from ..plugin import Plugin
 from ..utils import (convip, existing_results, final_results,
                      get_existing_result, initializer, to_dask, to_numpy)
-
-import dask.array as da
 
 STANDARD_ATMOSPHERE = 1013.25
 

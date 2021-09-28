@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 import logging
 
-import numpy as np
-import pandas as pd
 import dask.array as da
 import fstpy.all as fstpy
+import numpy as np
+import pandas as pd
+
 from ..plugin import Plugin
-from ..utils import (final_results, initializer, to_dask, to_numpy, validate_nomvar)
+from ..utils import (final_results, initializer, to_dask, to_numpy,
+                     validate_nomvar)
 from .f_stenfilt import f_stenfilt
 
 

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-import spookipy.all as spooki
 from test import TEST_PATH, TMP_PATH
 
-import pytest
 import fstpy.all as fstpy
 import pandas as pd
+import pytest
 import rpnpy.librmn.all as rmn
+import spookipy.all as spooki
 from ci_fstcomp import fstcomp
 
 pytestmark = [pytest.mark.to_skip]

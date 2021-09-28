@@ -45,7 +45,7 @@ Creating the neccesary files and folders
 
 
 Text to copy in the __init__.py file
------------------------------
+------------------------------------
 
 ::
 

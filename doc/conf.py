@@ -16,7 +16,6 @@ import sys
 sys.path.insert(0, os.path.abspath('..'))
 
 
-
 # -- Project information -----------------------------------------------------
 
 project = 'spookipy'
@@ -52,10 +51,10 @@ templates_path = ['_templates']
 exclude_patterns = ['build', '_build', 'Thumbs.db', '.DS_Store']
 
 
-#options for gallery
+# options for gallery
 sphinx_gallery_conf = {
-     'examples_dirs': '../examples',   # path to your example scripts
-     'gallery_dirs': 'auto_examples',  # path where to save gallery generated examples
+    'examples_dirs': '../examples',   # path to your example scripts
+    'gallery_dirs': 'auto_examples',  # path where to save gallery generated examples
 }
 
 
@@ -81,25 +80,27 @@ html_theme_options = {
 }
 
 html_context = {
-    "display_gitlab": True, # Integrate Gitlab
+    "display_gitlab": True,  # Integrate Gitlab
     "gitlab_host": "gitlab.science.gc.ca",
-    "gitlab_user": "cmdw-spooki", # Username
-    "gitlab_repo": "spookipy", # Repo name
-    "gitlab_version": "master", # Version
-    "conf_py_path": "/doc/", # Path in the checkout to the docs root
+    "gitlab_user": "cmdw-spooki",  # Username
+    "gitlab_repo": "spookipy",  # Repo name
+    "gitlab_version": "master",  # Version
+    "conf_py_path": "/doc/",  # Path in the checkout to the docs root
 }
 
+exclude_patterns = ['_build', '**.ipynb_checkpoints']
 
 # No longer using LFD on github tu to paywall restrictions
 # I am keeping this as a reference
 #
-### Workaround to install and execute git-lfs on Read the Docs
-### from https://github.com/readthedocs/readthedocs.org/issues/1846
-### may not be needed in the future
+# Workaround to install and execute git-lfs on Read the Docs
+# from https://github.com/readthedocs/readthedocs.org/issues/1846
+# may not be needed in the future
 ##on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
-##if on_rtd :
+# if on_rtd :
 ##    os.system('wget https://github.com/git-lfs/git-lfs/releases/download/v2.7.1/git-lfs-linux-amd64-v2.7.1.tar.gz')
 ##    os.system('tar xvfz git-lfs-linux-amd64-v2.7.1.tar.gz')
-##    os.system('./git-lfs install')  # make lfs available in current repository
-##    os.system('./git-lfs fetch')    # download content from remote
-##    os.system('./git-lfs checkout') # make local files to have the real content on them
+# os.system('./git-lfs install')  # make lfs available in current repository
+# os.system('./git-lfs fetch')    # download content from remote
+# os.system('./git-lfs checkout') # make local files to have the real
+# content on them

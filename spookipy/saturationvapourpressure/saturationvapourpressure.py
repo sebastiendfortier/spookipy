@@ -9,27 +9,49 @@ from ..humidityutils import (get_temp_phase_switch,
                              validate_humidity_parameters)
 from ..plugin import Plugin
 
-from ..utils import (create_empty_result, existing_results, final_results, get_dependencies,
-                     get_existing_result, get_from_dataframe,
-                     initializer)
+from ..utils import (
+    create_empty_result,
+    existing_results,
+    final_results,
+    get_dependencies,
+    get_existing_result,
+    get_from_dataframe,
+    initializer)
 
 from ..science import rpn_svp_from_tt, svp_from_tt, TDPACK_OFFSET_FIX
+
 
 class SaturationVapourPressureError(Exception):
     pass
 
+
 class SaturationVapourPressure(Plugin):
 
     @initializer
-    def __init__(self,df:pd.DataFrame, ice_water_phase=None, temp_phase_switch=None,temp_phase_switch_unit='celsius', rpn=False):
-        self.plugin_params={'ice_water_phase':self.ice_water_phase,'temp_phase_switch':self.temp_phase_switch,'temp_phase_switch_unit':self.temp_phase_switch_unit,'rpn':self.rpn}
+    def __init__(
+            self,
+            df: pd.DataFrame,
+            ice_water_phase=None,
+            temp_phase_switch=None,
+            temp_phase_switch_unit='celsius',
+            rpn=False):
+        self.plugin_params = {
+            'ice_water_phase': self.ice_water_phase,
+            'temp_phase_switch': self.temp_phase_switch,
+            'temp_phase_switch_unit': self.temp_phase_switch_unit,
+            'rpn': self.rpn}
         self.plugin_mandatory_dependencies = [
             {
-            'TT':{'nomvar':'TT','unit':'celsius'}
+                'TT': {'nomvar': 'TT', 'unit': 'celsius'}
             }
         ]
         self.plugin_result_specifications = {
-            'SVP':{'nomvar':'SVP','etiket':'SVPRES','unit':'hectoPascal','nbits':16,'datyp':1},
+            'SVP': {
+                'nomvar': 'SVP',
+                'etiket': 'SVPRES',
+                'unit': 'hectoPascal',
+                'nbits': 16,
+                'datyp': 1},
         }
         self.validate_input()
 
@@ -39,50 +61,81 @@ class SaturationVapourPressure(Plugin):
 
         self.df = fstpy.metadata_cleanup(self.df)
 
-        self.df = fstpy.add_columns(self.df, columns=['unit','forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(
+            self.df, columns=[
+                'unit', 'forecast_hour', 'ip_info'])
 
-        validate_humidity_parameters(SaturationVapourPressureError,self.ice_water_phase,self.temp_phase_switch,self.temp_phase_switch_unit)
+        validate_humidity_parameters(
+            SaturationVapourPressureError,
+            self.ice_water_phase,
+            self.temp_phase_switch,
+            self.temp_phase_switch_unit)
 
-        self.temp_phase_switch = get_temp_phase_switch(SaturationVapourPressureError, self.ice_water_phase=='both', self.temp_phase_switch, self.temp_phase_switch_unit, self.rpn)
+        self.temp_phase_switch = get_temp_phase_switch(
+            SaturationVapourPressureError,
+            self.ice_water_phase == 'both',
+            self.temp_phase_switch,
+            self.temp_phase_switch_unit,
+            self.rpn)
 
-        self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
+        self.meta_df = self.df.loc[self.df.nomvar.isin(
+            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
 
-        #check if result already exists
-        self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
+        # check if result already exists
+        self.existing_result_df = get_existing_result(
+            self.df, self.plugin_result_specifications)
 
         # remove meta data from DataFrame
-        self.df = self.df.loc[~self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
+        self.df = self.df.loc[~self.df.nomvar.isin(
+            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
 
-        self.groups = self.df.groupby(['grid','dateo','forecast_hour','ip1_kind'])
+        self.groups = self.df.groupby(
+            ['grid', 'dateo', 'forecast_hour', 'ip1_kind'])
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:
-            return existing_results('SaturationVapourPressure',self.existing_result_df,self.meta_df)
+            return existing_results(
+                'SaturationVapourPressure',
+                self.existing_result_df,
+                self.meta_df)
 
         logging.info('SaturationVapourPressure - compute')
-        df_list=[]
+        df_list = []
 
-        dependencies_list = get_dependencies(self.groups,self.meta_df,'SaturationVapourPressure',self.plugin_mandatory_dependencies,self.plugin_params)
+        dependencies_list = get_dependencies(
+            self.groups,
+            self.meta_df,
+            'SaturationVapourPressure',
+            self.plugin_mandatory_dependencies,
+            self.plugin_params)
 
-        for dependencies_df,_ in dependencies_list:
+        for dependencies_df, _ in dependencies_list:
 
-
-            tt_df = get_from_dataframe(dependencies_df,'TT')
-            svp_df = create_empty_result(tt_df,self.plugin_result_specifications['SVP'],all_rows=True)
+            tt_df = get_from_dataframe(dependencies_df, 'TT')
+            svp_df = create_empty_result(
+                tt_df, self.plugin_result_specifications['SVP'], all_rows=True)
 
             if self.rpn:
                 logging.info('rpn option 1')
-                ttk_df = fstpy.unit_convert(tt_df,'kelvin')
+                ttk_df = fstpy.unit_convert(tt_df, 'kelvin')
                 for i in svp_df.index:
-                    ttk = ttk_df.at[i,'d']
-                    svp_df.at[i,'d'] = rpn_svp_from_tt(ttk, tpl=(self.temp_phase_switch if self.ice_water_phase!='water' else -40), swph=self.ice_water_phase=='both').astype(np.float32)
+                    ttk = ttk_df.at[i, 'd']
+                    svp_df.at[i,
+                              'd'] = rpn_svp_from_tt(ttk,
+                                                     tpl=(self.temp_phase_switch if self.ice_water_phase != 'water' else -40),
+                                                     swph=self.ice_water_phase == 'both').astype(np.float32)
             else:
                 logging.info('option 2')
                 for i in tt_df.index:
-                    tt = tt_df.at[i,'d']
-                    svp_df.at[i,'d'] = svp_from_tt(tt-TDPACK_OFFSET_FIX, tpl=(self.temp_phase_switch if self.ice_water_phase!='water' else -40), swph=self.ice_water_phase=='both').astype(np.float32)
+                    tt = tt_df.at[i, 'd']
+                    svp_df.at[i,
+                              'd'] = svp_from_tt(tt - TDPACK_OFFSET_FIX,
+                                                 tpl=(self.temp_phase_switch if self.ice_water_phase != 'water' else -40),
+                                                 swph=self.ice_water_phase == 'both').astype(np.float32)
 
             df_list.append(svp_df)
 
-
-        return final_results(df_list,SaturationVapourPressureError, self.meta_df)
+        return final_results(
+            df_list,
+            SaturationVapourPressureError,
+            self.meta_df)

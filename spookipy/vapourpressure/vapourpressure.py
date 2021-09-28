@@ -18,158 +18,209 @@ from ..utils import (create_empty_result, existing_results, final_results,
 class VapourPressureError(Exception):
     pass
 
+
 class VapourPressure(Plugin):
 
     @initializer
-    def __init__(self,df:pd.DataFrame, ice_water_phase=None, temp_phase_switch=None,temp_phase_switch_unit='celsius', rpn=False):
+    def __init__(
+            self,
+            df: pd.DataFrame,
+            ice_water_phase=None,
+            temp_phase_switch=None,
+            temp_phase_switch_unit='celsius',
+            rpn=False):
 
-        self.plugin_params={'ice_water_phase':self.ice_water_phase,'temp_phase_switch':self.temp_phase_switch,'temp_phase_switch_unit':self.temp_phase_switch_unit,'rpn':self.rpn}
+        self.plugin_params = {
+            'ice_water_phase': self.ice_water_phase,
+            'temp_phase_switch': self.temp_phase_switch,
+            'temp_phase_switch_unit': self.temp_phase_switch_unit,
+            'rpn': self.rpn}
         self.plugin_mandatory_dependencies_rpn = [
             # HU + PXpa
             {
-                'HU':{'nomvar':'HU','unit':'kilogram_per_kilogram','select_only':True},
-                'PX':{'nomvar':'PX','unit':'hectoPascal'}
+                'HU': {'nomvar': 'HU', 'unit': 'kilogram_per_kilogram', 'select_only': True},
+                'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'}
             },
             # QVkg + PX
             {
-                'QV':{'nomvar':'QV','unit':'gram_per_kilogram','select_only':True},
-                'PX':{'nomvar':'PX','unit':'hectoPascal'}
+                'QV': {'nomvar': 'QV', 'unit': 'gram_per_kilogram', 'select_only': True},
+                'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'}
             },
             #TT + HR + PX > HUrpn + PXpa
             {
-                'TT':{'nomvar':'TT','unit':'celsius'},
-                'HR':{'nomvar':'HR','unit':'scalar','select_only':True},
-                'PX':{'nomvar':'PX','unit':'hectoPascal'}
+                'TT': {'nomvar': 'TT', 'unit': 'celsius'},
+                'HR': {'nomvar': 'HR', 'unit': 'scalar', 'select_only': True},
+                'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'}
             },
             # ES + TTk
             {
-                'TT':{'nomvar':'TT','unit':'celsius'},
-                'ES':{'nomvar':'ES','unit':'celsius','select_only':True},
+                'TT': {'nomvar': 'TT', 'unit': 'celsius'},
+                'ES': {'nomvar': 'ES', 'unit': 'celsius', 'select_only': True},
             },
             # TDk + TTk
             {
-                'TT':{'nomvar':'TT','unit':'celsius'},
-                'TD':{'nomvar':'TD','unit':'celsius','select_only':True},
+                'TT': {'nomvar': 'TT', 'unit': 'celsius'},
+                'TD': {'nomvar': 'TD', 'unit': 'celsius', 'select_only': True},
             }
         ]
         self.plugin_mandatory_dependencies = [
             # HU + PX
             {
-                'HU':{'nomvar':'HU','unit':'kilogram_per_kilogram','select_only':True},
-                'PX':{'nomvar':'PX','unit':'hectoPascal'}
+                'HU': {'nomvar': 'HU', 'unit': 'kilogram_per_kilogram', 'select_only': True},
+                'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'}
             },
             # QVkg/kg + PX
             {
-                'QV':{'nomvar':'QV','unit':'gram_per_kilogram','select_only':True},
-                'PX':{'nomvar':'PX','unit':'hectoPascal'}
+                'QV': {'nomvar': 'QV', 'unit': 'gram_per_kilogram', 'select_only': True},
+                'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'}
             },
             # HR + SVP
             {
-                'HR':{'nomvar':'HR','unit':'scalar','select_only':True},
-                'SVP':{'nomvar':'SVP','unit':'hectoPascal'},
+                'HR': {'nomvar': 'HR', 'unit': 'scalar', 'select_only': True},
+                'SVP': {'nomvar': 'SVP', 'unit': 'hectoPascal'},
             },
             # ES + TT
             {
-                'TT':{'nomvar':'TT','unit':'celsius'},
-                'ES':{'nomvar':'ES','unit':'celsius','select_only':True},
+                'TT': {'nomvar': 'TT', 'unit': 'celsius'},
+                'ES': {'nomvar': 'ES', 'unit': 'celsius', 'select_only': True},
             },
             # TD + TT
             {
-                'TT':{'nomvar':'TT','unit':'celsius'},
-                'TD':{'nomvar':'TD','unit':'celsius','select_only':True},
+                'TT': {'nomvar': 'TT', 'unit': 'celsius'},
+                'TD': {'nomvar': 'TD', 'unit': 'celsius', 'select_only': True},
             }
         ]
 
-
         self.plugin_result_specifications = {
-            'VPPR':{'nomvar':'VPPR','etiket':'VAPRES','unit':'hectoPascal','nbits':16,'datyp':1}
-            }
+            'VPPR': {
+                'nomvar': 'VPPR',
+                'etiket': 'VAPRES',
+                'unit': 'hectoPascal',
+                'nbits': 16,
+                'datyp': 1}}
         self.validate_input()
 
-
     # might be able to move
+
     def validate_input(self):
         if self.df.empty:
-            raise  VapourPressureError('No data to process')
-
+            raise VapourPressureError('No data to process')
 
         self.df = fstpy.metadata_cleanup(self.df)
 
-        self.df = fstpy.add_columns(self.df, columns=['unit','forecast_hour','ip_info'])
+        self.df = fstpy.add_columns(
+            self.df, columns=[
+                'unit', 'forecast_hour', 'ip_info'])
 
-        validate_humidity_parameters(VapourPressureError,self.ice_water_phase,self.temp_phase_switch,self.temp_phase_switch_unit)
+        validate_humidity_parameters(
+            VapourPressureError,
+            self.ice_water_phase,
+            self.temp_phase_switch,
+            self.temp_phase_switch_unit)
 
-        self.temp_phase_switch = get_temp_phase_switch(VapourPressureError, self.ice_water_phase=='both', self.temp_phase_switch, self.temp_phase_switch_unit, self.rpn)
+        self.temp_phase_switch = get_temp_phase_switch(
+            VapourPressureError,
+            self.ice_water_phase == 'both',
+            self.temp_phase_switch,
+            self.temp_phase_switch_unit,
+            self.rpn)
 
-        self.meta_df = self.df.loc[self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].sort_values(by=['level']).reset_index(drop=True)
+        self.meta_df = self.df.loc[self.df.nomvar.isin(
+            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].sort_values(by=['level']).reset_index(drop=True)
 
-        #check if result already exists
-        self.existing_result_df = get_existing_result(self.df,self.plugin_result_specifications)
+        # check if result already exists
+        self.existing_result_df = get_existing_result(
+            self.df, self.plugin_result_specifications)
 
         # remove meta data from DataFrame
-        self.df = self.df.loc[~self.df.nomvar.isin(["^^",">>","^>", "!!", "!!SF", "HY","P0","PT"])].reset_index(drop=True)
+        self.df = self.df.loc[~self.df.nomvar.isin(
+            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
 
-        self.groups = self.df.groupby(['grid','dateo','forecast_hour','ip1_kind'])
-
+        self.groups = self.df.groupby(
+            ['grid', 'dateo', 'forecast_hour', 'ip1_kind'])
 
     def compute(self) -> pd.DataFrame:
 
         if not self.existing_result_df.empty:
-            return existing_results('VapourPressure',self.existing_result_df,self.meta_df)
+            return existing_results(
+                'VapourPressure',
+                self.existing_result_df,
+                self.meta_df)
 
         logging.info('VapourPressure - compute')
-        df_list=[]
+        df_list = []
 
         if self.rpn:
-            dependencies_list = get_dependencies(self.groups,self.meta_df,'VapourPressure',self.plugin_mandatory_dependencies_rpn,self.plugin_params, intersect_levels=True)
+            dependencies_list = get_dependencies(
+                self.groups,
+                self.meta_df,
+                'VapourPressure',
+                self.plugin_mandatory_dependencies_rpn,
+                self.plugin_params,
+                intersect_levels=True)
         else:
-            dependencies_list = get_dependencies(self.groups,self.meta_df,'VapourPressure',self.plugin_mandatory_dependencies,self.plugin_params, intersect_levels=True)
+            dependencies_list = get_dependencies(
+                self.groups,
+                self.meta_df,
+                'VapourPressure',
+                self.plugin_mandatory_dependencies,
+                self.plugin_params,
+                intersect_levels=True)
 
-        for dependencies_df,option in dependencies_list:
+        for dependencies_df, option in dependencies_list:
             if self.rpn:
-                if option==0:
+                if option == 0:
                     # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
-                    hu_df = get_from_dataframe(dependencies_df,'HU')
-                    vppr_df = self.rpn_vapourpressure_from_hu_px(hu_df, dependencies_df, option)
+                    hu_df = get_from_dataframe(dependencies_df, 'HU')
+                    vppr_df = self.rpn_vapourpressure_from_hu_px(
+                        hu_df, dependencies_df, option)
 
-                elif option==1:
-                    vppr_df = self.vapourpressure_from_qv_px(dependencies_df, option, True)
+                elif option == 1:
+                    vppr_df = self.vapourpressure_from_qv_px(
+                        dependencies_df, option, True)
 
-                elif option==2:
+                elif option == 2:
                     # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
                     hu_df = self.compute_hu(dependencies_df)
-                    vppr_df = self.rpn_vapourpressure_from_hu_px(hu_df, dependencies_df, option)
+                    vppr_df = self.rpn_vapourpressure_from_hu_px(
+                        hu_df, dependencies_df, option)
 
-                elif option==3:
+                elif option == 3:
                     # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
                     td_df = self.compute_td(dependencies_df)
-                    vppr_df = self.rpn_vapourpressure_from_tt_td(td_df, dependencies_df, option)
+                    vppr_df = self.rpn_vapourpressure_from_tt_td(
+                        td_df, dependencies_df, option)
 
                 else:
                     # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
-                    td_df = get_from_dataframe(dependencies_df,'TD')
-                    vppr_df = self.rpn_vapourpressure_from_tt_td(td_df, dependencies_df, option)
+                    td_df = get_from_dataframe(dependencies_df, 'TD')
+                    vppr_df = self.rpn_vapourpressure_from_tt_td(
+                        td_df, dependencies_df, option)
 
             else:
-                if option==0:
-                    vppr_df = self.vapourpressure_from_hu_px(dependencies_df, option)
+                if option == 0:
+                    vppr_df = self.vapourpressure_from_hu_px(
+                        dependencies_df, option)
 
-                elif option==1:
-                    vppr_df = self.vapourpressure_from_qv_px(dependencies_df, option)
+                elif option == 1:
+                    vppr_df = self.vapourpressure_from_qv_px(
+                        dependencies_df, option)
 
-                elif option==2:
-                    vppr_df = self.vapourpressure_from_hr_svp(dependencies_df, option)
+                elif option == 2:
+                    vppr_df = self.vapourpressure_from_hr_svp(
+                        dependencies_df, option)
 
-                elif option==3:
+                elif option == 3:
                     # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
                     td_df = self.compute_td(dependencies_df)
-                    vppr_df = self.vapourpressure_from_tt_td(td_df, dependencies_df, option)
+                    vppr_df = self.vapourpressure_from_tt_td(
+                        td_df, dependencies_df, option)
 
                 else:
                     # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
-                    td_df = get_from_dataframe(dependencies_df,'TD')
-                    vppr_df = self.vapourpressure_from_tt_td(td_df, dependencies_df, option)
-
+                    td_df = get_from_dataframe(dependencies_df, 'TD')
+                    vppr_df = self.vapourpressure_from_tt_td(
+                        td_df, dependencies_df, option)
 
             df_list.append(vppr_df)
 
@@ -178,42 +229,50 @@ class VapourPressure(Plugin):
     def vapourpressure_from_hu_px(self, dependencies_df, option):
         logging.info(f'rpn option {option+1}')
         # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
-        hu_df = get_from_dataframe(dependencies_df,'HU')
+        hu_df = get_from_dataframe(dependencies_df, 'HU')
 
-
-        px_df = get_from_dataframe(dependencies_df,'PX')
-        vppr_df = create_empty_result(hu_df,self.plugin_result_specifications['VPPR'],all_rows=True)
+        px_df = get_from_dataframe(dependencies_df, 'PX')
+        vppr_df = create_empty_result(
+            hu_df, self.plugin_result_specifications['VPPR'], all_rows=True)
         for i in vppr_df.index:
-            hu = hu_df.at[i,'d']
-            px = px_df.at[i,'d']
-            vppr_df.at[i,'d'] = vppr_from_hu(hu=hu, px=px).astype(np.float32)
+            hu = hu_df.at[i, 'd']
+            px = px_df.at[i, 'd']
+            vppr_df.at[i, 'd'] = vppr_from_hu(hu=hu, px=px).astype(np.float32)
         return vppr_df
 
     def vapourpressure_from_hr_svp(self, dependencies_df, option):
         logging.info(f'rpn option {option+1}')
         # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
 
-        svp_df = get_from_dataframe(dependencies_df,'SVP')
-        hr_df = get_from_dataframe(dependencies_df,'HR')
-        vppr_df = create_empty_result(svp_df,self.plugin_result_specifications['VPPR'],all_rows=True)
+        svp_df = get_from_dataframe(dependencies_df, 'SVP')
+        hr_df = get_from_dataframe(dependencies_df, 'HR')
+        vppr_df = create_empty_result(
+            svp_df,
+            self.plugin_result_specifications['VPPR'],
+            all_rows=True)
         for i in vppr_df.index:
-            hr = hr_df.at[i,'d']
-            svp = svp_df.at[i,'d']
-            vppr_df.at[i,'d'] = vppr_from_hr(hr=hr, svp=svp).astype(np.float32)
+            hr = hr_df.at[i, 'd']
+            svp = svp_df.at[i, 'd']
+            vppr_df.at[i, 'd'] = vppr_from_hr(
+                hr=hr, svp=svp).astype(np.float32)
         return vppr_df
 
     def rpn_vapourpressure_from_tt_td(self, td_df, dependencies_df, option):
         logging.info(f'rpn option {option+1}')
 
-
-        tt_df = get_from_dataframe(dependencies_df,'TT')
-        vppr_df = create_empty_result(tt_df,self.plugin_result_specifications['VPPR'],all_rows=True)
-        ttk_df = fstpy.unit_convert(tt_df,'kelvin')
-        tdk_df = fstpy.unit_convert(td_df,'kelvin')
+        tt_df = get_from_dataframe(dependencies_df, 'TT')
+        vppr_df = create_empty_result(
+            tt_df, self.plugin_result_specifications['VPPR'], all_rows=True)
+        ttk_df = fstpy.unit_convert(tt_df, 'kelvin')
+        tdk_df = fstpy.unit_convert(td_df, 'kelvin')
         for i in vppr_df.index:
-            ttk = ttk_df.at[i,'d']
-            tdk = tdk_df.at[i,'d']
-            vppr_df.at[i,'d'] = rpn_vppr_from_td(td=tdk, tt=ttk, tpl=(self.temp_phase_switch if self.ice_water_phase!='water' else -40), swph=self.ice_water_phase=='both').astype(np.float32)
+            ttk = ttk_df.at[i, 'd']
+            tdk = tdk_df.at[i, 'd']
+            vppr_df.at[i,
+                       'd'] = rpn_vppr_from_td(td=tdk,
+                                               tt=ttk,
+                                               tpl=(self.temp_phase_switch if self.ice_water_phase != 'water' else -40),
+                                               swph=self.ice_water_phase == 'both').astype(np.float32)
         return vppr_df
 
     def vapourpressure_from_qv_px(self, dependencies_df, option, rpn=False):
@@ -223,49 +282,72 @@ class VapourPressure(Plugin):
             logging.info(f'option {option+1}')
         # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
 
-        qv_df = get_from_dataframe(dependencies_df,'QV')
-        px_df = get_from_dataframe(dependencies_df,'PX')
-        vppr_df = create_empty_result(qv_df,self.plugin_result_specifications['VPPR'],all_rows=True)
-        qv_df = fstpy.unit_convert(qv_df,'kilogram_per_kilogram')
+        qv_df = get_from_dataframe(dependencies_df, 'QV')
+        px_df = get_from_dataframe(dependencies_df, 'PX')
+        vppr_df = create_empty_result(
+            qv_df, self.plugin_result_specifications['VPPR'], all_rows=True)
+        qv_df = fstpy.unit_convert(qv_df, 'kilogram_per_kilogram')
         for i in vppr_df.index:
-            qv = qv_df.at[i,'d']
-            px = px_df.at[i,'d']
-            vppr_df.at[i,'d'] = vppr_from_qv(qv=qv, px=px).astype(np.float32)
+            qv = qv_df.at[i, 'd']
+            px = px_df.at[i, 'd']
+            vppr_df.at[i, 'd'] = vppr_from_qv(qv=qv, px=px).astype(np.float32)
         return vppr_df
 
     def vapourpressure_from_tt_td(self, td_df, dependencies_df, option):
         logging.info(f'option {option+1}')
 
-
-        tt_df = get_from_dataframe(dependencies_df,'TT')
-        vppr_df = create_empty_result(tt_df,self.plugin_result_specifications['VPPR'],all_rows=True)
+        tt_df = get_from_dataframe(dependencies_df, 'TT')
+        vppr_df = create_empty_result(
+            tt_df, self.plugin_result_specifications['VPPR'], all_rows=True)
         for i in vppr_df.index:
-            tt = tt_df.at[i,'d']
-            td = td_df.at[i,'d']
-            vppr_df.at[i,'d'] = vppr_from_td(td=td-TDPACK_OFFSET_FIX, tt=tt-TDPACK_OFFSET_FIX, tpl=(self.temp_phase_switch if self.ice_water_phase!='water' else -40), swph=self.ice_water_phase=='both').astype(np.float32)
+            tt = tt_df.at[i, 'd']
+            td = td_df.at[i, 'd']
+            vppr_df.at[i,
+                       'd'] = vppr_from_td(td=td - TDPACK_OFFSET_FIX,
+                                           tt=tt - TDPACK_OFFSET_FIX,
+                                           tpl=(self.temp_phase_switch if self.ice_water_phase != 'water' else -40),
+                                           swph=self.ice_water_phase == 'both').astype(np.float32)
         return vppr_df
 
-    def rpn_vapourpressure_from_hu_px(self, hu_df, dependencies_df,option):
+    def rpn_vapourpressure_from_hu_px(self, hu_df, dependencies_df, option):
         logging.info(f'rpn option {option+1}')
 
-
-        px_df = get_from_dataframe(dependencies_df,'PX')
-        vppr_df = create_empty_result(px_df,self.plugin_result_specifications['VPPR'],all_rows=True)
-        pxpa_df = fstpy.unit_convert(px_df,'pascal')
+        px_df = get_from_dataframe(dependencies_df, 'PX')
+        vppr_df = create_empty_result(
+            px_df, self.plugin_result_specifications['VPPR'], all_rows=True)
+        pxpa_df = fstpy.unit_convert(px_df, 'pascal')
         for i in vppr_df.index:
-            pxpa = pxpa_df.at[i,'d']
-            hu = hu_df.at[i,'d']
-            vppr_df.at[i,'d'] = rpn_vppr_from_hu(hu=hu, px=pxpa).astype(np.float32)
+            pxpa = pxpa_df.at[i, 'd']
+            hu = hu_df.at[i, 'd']
+            vppr_df.at[i, 'd'] = rpn_vppr_from_hu(
+                hu=hu, px=pxpa).astype(np.float32)
         return vppr_df
 
     def compute_hu(self, dependencies_df):
         from ..humidityspecific import HumiditySpecific
-        hu_df = HumiditySpecific(pd.concat([dependencies_df,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase, temp_phase_switch=self.temp_phase_switch, temp_phase_switch_unit=self.temp_phase_switch_unit,rpn=True).compute()
-        hu_df = get_from_dataframe(hu_df,'HU')
+        hu_df = HumiditySpecific(
+            pd.concat(
+                [
+                    dependencies_df,
+                    self.meta_df],
+                ignore_index=True),
+            ice_water_phase=self.ice_water_phase,
+            temp_phase_switch=self.temp_phase_switch,
+            temp_phase_switch_unit=self.temp_phase_switch_unit,
+            rpn=True).compute()
+        hu_df = get_from_dataframe(hu_df, 'HU')
         return hu_df
 
     def compute_td(self, dependencies_df):
         from ..temperaturedewpoint import TemperatureDewPoint
-        td_df = TemperatureDewPoint(pd.concat([dependencies_df,self.meta_df],ignore_index=True),ice_water_phase=self.ice_water_phase,temp_phase_switch=self.temp_phase_switch,temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
-        td_df = get_from_dataframe(td_df,'TD')
+        td_df = TemperatureDewPoint(
+            pd.concat(
+                [
+                    dependencies_df,
+                    self.meta_df],
+                ignore_index=True),
+            ice_water_phase=self.ice_water_phase,
+            temp_phase_switch=self.temp_phase_switch,
+            temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
+        td_df = get_from_dataframe(td_df, 'TD')
         return td_df

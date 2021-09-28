@@ -1,81 +1,97 @@
-Français
---------
+==============================
+Spooki: MatchLevelIndexToValue
+==============================
 
-**Description:**
+.. raw:: html
 
--  Associe, à chaque indice de niveau vertical donné, la valeur d'un ou
-   de plusieurs champ(s) météorologique(s) 3D donné(s) en entrée.
-   ***Note:*** La numérotation des indices des niveaux verticaux
-   commence à zéro
+   <div id="top">
 
-\*Méthode d'itération:\*
+.. raw:: html
 
--  Colonne par colonne
+   <div id="titlearea">
 
-\*Dépendances:\*
++--------------------------------------------------------------------------+
+| .. raw:: html                                                            |
+|                                                                          |
+|    <div id="projectname">                                                |
+|                                                                          |
+| Spooki                                                                   |
+|                                                                          |
+| .. raw:: html                                                            |
+|                                                                          |
+|    </div>                                                                |
++--------------------------------------------------------------------------+
 
--  Un champ d'indices de niveaux verticaux, IND (2D)
--  Un ou plusieurs champ(s) météorologique(s) (3D)
+.. raw:: html
 
-\*Résultat(s):\*
+   </div>
 
--  Champ(s) météorologique(s) (2D) dont les valeurs correspondent à
-   celles des niveaux verticaux spécifiés par le champ d'indices IND
+.. raw:: html
 
-\*Algorithme:\*
+   <div id="main-nav">
 
-.. code:: example
+.. raw:: html
 
-    Soit IND, un champ 2D d'indices de niveaux verticaux dont la numérotation des indice commence à 0.
+   </div>
 
-    Pour chaque champ météorologique 3D, CHP3D, donné en entrée, faire :
-        Pour chaque i,j
-            CHP2D(i,j) = CHP3D(i,j,IND(i,j))
-        Fin boucle sur les points
-    Fin boucle sur les champs
+.. raw:: html
 
-**Références:**
+   <div id="MSearchSelectWindow"
+   onmouseover="return searchBox.OnSearchSelectShow()"
+   onmouseout="return searchBox.OnSearchSelectHide()"
+   onkeydown="return searchBox.OnSearchSelectKey(event)">
 
--  N/D
+.. raw:: html
 
-\*Mots clés:\*
+   </div>
 
--  UTILITAIRE/UTILITY, associer/match, niveau/level, vertical
+.. raw:: html
 
-\*Usage:\*
+   <div id="MSearchResultsWindow">
 
-**Exemple d'appel:**
+.. raw:: html
 
-.. code:: example
+   </div>
 
-    ...
-    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/MatchLevelIndexToValue/testsFiles/inputFile.std] >>
-                [MatchLevelIndexToValue] >>
-                [WriterStd --output /tmp/$USER/outputFile.std]"
-    ...
+.. raw:: html
 
-**Validation des résultats:**
+   </div>
 
-**Contacts:**
+.. raw:: html
 
--  Auteur(e) : `Sébastien
-   Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
--  Codé par : `Sébastien
-   Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
--  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
-   `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+   <div class="header">
 
-Voir la référence à
+.. raw:: html
 
-Tests unitaires
+   <div class="headertitle">
 
-| **Ce plugin utilise:**
-| **Ce plugin est utilisé par:**
+.. raw:: html
 
- 
+   <div class="title">
 
-English
--------
+`MatchLevelIndexToValue <classMatchLevelIndexToValue.html>`__
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div class="contents">
+
+.. raw:: html
+
+   <div class="textblock">
+
+`Français <../../spooki_french_doc/html/pluginMatchLevelIndexToValue.html>`__
 
 **Description:**
 
@@ -83,51 +99,57 @@ English
    many 3D meteorological fields given in input.
    ***Note:*** The numbering of the indices starts at zero
 
-\*Iteration method:\*
+**Iteration method:**
 
 -  Column by column
 
-\*Dependencies:\*
+**Dependencies:**
 
--  A field of vertical level indexes, IND (2D)
+-  A field of vertical level indexes (2D)
 -  One or many meteorological field(s) (3D)
 
-\*Result(s):\*
+**Result(s):**
 
 -  Meteorological field(s) (2D) which the values correspond to those of
-   the vertical levels specified by the index field IND
+   the vertical levels specified by the index field
 
-\*Algorithm:\*
+**Algorithm:**
 
-.. code:: example
+.. code:: fragment
 
     For IND, a 2D field of vertical level indexes, where the index numbering starts at 0.
 
     For each 3D meteorological field, CHP3D, given in input, do :
         For each i,j
-            CHP2D(i,j) = CHP3D(i,j,IND(i,j))
+            If IND(i,j) = -1
+               CHP2D(i,j) = -1
+            Else If IND(i,j) is valid
+               CHP2D(i,j) = CHP3D(i,j,IND(i,j))
+            Else
+               Error message:  INVALID INDEX TO MATCH - OUT OF RANGE!
+            End if
         End loop on i,j
     End loop on the fields
 
 **Reference:**
 
--  None
+-  Does not apply
 
-\*Keywords:\*
+**Keywords:**
 
 -  UTILITAIRE/UTILITY, associer/match, niveau/level, vertical
 
-\*Usage:\*
+**Usage:**
 
-**Call example:**
+**Call example:** ````
 
-.. code:: example
+::
 
-    ...
-    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/MatchLevelIndexToValue/testsFiles/inputFile.std] >>
-                [MatchLevelIndexToValue] >>
-                [WriterStd --output /tmp/$USER/outputFile.std]"
-    ...
+        ...
+        spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/MatchLevelIndexToValue/testsFiles/inputFile.std] >>
+                    [MatchLevelIndexToValue] >>
+                    [WriterStd --output /tmp/$USER/outputFile.std]"
+        ...
 
 **Results validation:**
 
@@ -136,15 +158,35 @@ English
 -  Author : `Sébastien
    Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
 -  Coded by : `Sébastien
-   Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
+   Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__, `Guylaine
+   Hardy <https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg>`__
 -  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
    `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
 
 Reference to
+`MatchLevelIndexToValue <classMatchLevelIndexToValue.html>`__
+:sup:``[code] <MatchLevelIndexToValue_8cpp_source.html>`__`
 
 Units tests
 
+`Evaluation tree <MatchLevelIndexToValue_graph.png>`__
+
 | **Uses:**
+
 | **Used by:**
 
- 
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+--------------
+
+Generated by  |doxygen| 1.8.13
+
+.. |doxygen| image:: doxygen.png
+   :class: footer
+   :target: http://www.doxygen.org/index.html

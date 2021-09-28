@@ -1,96 +1,97 @@
-Français
---------
+========================
+Spooki: TotalTotalsIndex
+========================
 
-**Description:**
+.. raw:: html
 
--  Calcul de l'indice total-total, un indice de temps violent utilisé
-   comme prédicteur d'orages (Miller, 1972).
--  Cet indice combiné est une mesure du gradient thermique vertical et
-   de l'humidité à bas niveaux.
+   <div id="top">
 
-\*Méthode d'itération:\*
+.. raw:: html
 
--  Point par point
+   <div id="titlearea">
 
-\*Dépendances:\*
++--------------------------------------------------------------------------+
+| .. raw:: html                                                            |
+|                                                                          |
+|    <div id="projectname">                                                |
+|                                                                          |
+| Spooki                                                                   |
+|                                                                          |
+| .. raw:: html                                                            |
+|                                                                          |
+|    </div>                                                                |
++--------------------------------------------------------------------------+
 
--  Température de l'air (TT) à 850 mb et 500 mb
-   **et** un des champs suivants à 850 mb:
--  Humidité spécifique, HU
--  Rapport de mélange de la vapeur d'eau, QV
--  Humidité relative, HR
--  Température du point de rosée, TD
--  Écart du point de rosée (ES)
+.. raw:: html
 
-\*Résultat(s):\*
+   </div>
 
--  Indice "Total-Total", TTI (scalaire, sans unité)
+.. raw:: html
 
-\*Algorithme:\*
+   <div id="main-nav">
 
-.. code:: example
+.. raw:: html
 
-    Soit TT850 et TT500, la température de l'air (deg C) à 850 mb et 500 mb respectivement.
-    Soit TD850, la température du point de rosée (deg C) à 850 mb
+   </div>
 
-    *Si les champs d'entrée sont l'humidité spécifique, HU (kg/kg) ou
-        le rapport de mélange de la vapeur d'eau, QV (kg/kg) ou
-        l'humidité relative, HR (fraction) ou
-        l'écart du point de rosée, ES (deg C ou deg K) et la température de l'air, TT (deg C):
+.. raw:: html
 
-        Calculer la température du point de rosée, TD (deg C) avec le plugin TemperatureDewPoint avec --iceWaterPhase WATER.
+   <div id="MSearchSelectWindow"
+   onmouseover="return searchBox.OnSearchSelectShow()"
+   onmouseout="return searchBox.OnSearchSelectHide()"
+   onkeydown="return searchBox.OnSearchSelectKey(event)">
 
-        L'indice total-total est calculé selon :
-          TTI = TT850 + TD850 - 2*(TT500)
+.. raw:: html
 
-    *Si les champs d'entrée sont la température du point de rosée, TD (deg C) et la température de l'air, TT (deg C):
+   </div>
 
-        L'indice total-total est calculé selon :
-          TTI = TT850 + TD850 - 2*(TT500)
+.. raw:: html
 
-**Références:**
+   <div id="MSearchResultsWindow">
 
--  Djurik,D 1994:Weather Analysis, Prentice-Hall
--  `Wikipedia: indice
-   total-total <http://fr.wikipedia.org/wiki/Indice_total-total>`__
+.. raw:: html
 
-\*Mots clés:\*
+   </div>
 
--  MÉTÉO/WEATHER, stabilité/stability, indice/index, total,
-   violent/severe, orage/thunderstorm, convection
+.. raw:: html
 
-\*Usage:\*
+   </div>
 
-**Exemple d'appel:**
+.. raw:: html
 
-.. code:: example
+   <div class="header">
 
-    ...
-    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/TotalTotalsIndex/testsFiles/inputFile.std] >>
-                [TotalTotalsIndex] >>
-                [WriterStd --output /tmp/$USER/outputFile.std]"
-    ...
+.. raw:: html
 
-**Validation des résultats:**
+   <div class="headertitle">
 
-**Contacts:**
+.. raw:: html
 
--  Auteur(e) : `George
-   Karaganis <https://wiki.cmc.ec.gc.ca/wiki/User:Karaganisg>`__
--  Codé par : `Sébastien
-   Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
--  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
-   `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+   <div class="title">
 
-Voir la référence à
+`TotalTotalsIndex <classTotalTotalsIndex.html>`__
 
-Tests unitaires
+.. raw:: html
 
-| **Ce plugin utilise:**
-| **Ce plugin est utilisé par:**
+   </div>
 
-English
--------
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div class="contents">
+
+.. raw:: html
+
+   <div class="textblock">
+
+`Francais <../../spooki_french_doc/html/pluginTotalTotalsIndex.html>`__
 
 **Description:**
 
@@ -99,11 +100,11 @@ English
 -  This combined index is a measure of the vertical lapse rate and of
    the humidity at low levels.
 
-\*Iteration method:\*
+**Iteration method:**
 
 -  Point-by-point
 
-\*Dependencies:\*
+**Dependencies:**
 
 -  Air temperature (TT) at 850 mb and 500 mb
    **and** one of the following fields at 850 mb:
@@ -113,31 +114,31 @@ English
 -  Dew point temperature, TD
 -  Dew point depression, ES
 
-\*Result(s):\*
+**Result(s):**
 
 -  Total Totals index, TTI (scalar, without units)
 
-\*Algorithm:\*
+**Algorithm:**
 
-.. code:: example
+.. code:: fragment
 
-    For TT850 and TT500, the air temperature (deg C) at 850 mb and 500 mb respectively.
-    For TD850, the dew point temperature (deg C) at 850 mb.
+          For TT850 and TT500, the air temperature (deg C) at 850 mb and 500 mb respectively.
+          For TD850, the dew point temperature (deg C) at 850 mb.
 
-    *If the input fields are the specific humidity, HU (kg/kg) or
-        the water vapour mixing ratio, QV (kg/kg) or
-        the relative humidity, HR (fraction) or
-        the dew point depression, ES (deg C or deg K) and the air temperature, TT (deg C):
+          *If the input fields are the specific humidity, HU (kg/kg) or
+              the water vapour mixing ratio, QV (kg/kg) or
+              the relative humidity, HR (fraction) or
+              the dew point depression, ES (deg C or deg K) and the air temperature, TT (deg C):
 
-        Calculate the dew point temperature, TD (deg C) with TemperatureDewPoint plug-in with --iceWaterPhase WATER.
+              Calculate the dew point temperature, TD (deg C) with TemperatureDewPoint plug-in with --iceWaterPhase WATER.
 
-        The Total Totals index is calculated as :
-          TTI = TT850 + TD850 - 2*(TT500)
+              The Total Totals index is calculated as :
+                TTI = TT850 + TD850 - 2*(TT500)
 
-    *If the input fields are the dew point temperature, TD (deg C) and the air temperature, TT (deg C):
+          *If the input fields are the dew point temperature, TD (deg C) and the air temperature, TT (deg C):
 
-        The Total Totals index is calculated as :
-          TTI = TT850 + TD850 - 2*(TT500)
+              The Total Totals index is calculated as :
+                TTI = TT850 + TD850 - 2*(TT500)
 
 **Reference:**
 
@@ -145,26 +146,26 @@ English
 -  `Wikipedia : Total Totals index (link only in
    French) <http://fr.wikipedia.org/wiki/Indice_total-total>`__
 
-\*Customizable condition:\*
+**Customizable condition:**
 
 -  Height for bottom and top levels in mb
 
-\*Keywords:\*
+**Keywords:**
 
 -  MÉTÉO/WEATHER, stabilité/stability, indice/index, total,
    violent/severe, orage/thunderstorm, convection
 
-\*Usage:\*
+**Usage:**
 
-**Call example:**
+**Call example:** ````
 
-.. code:: example
+::
 
-    ...
-    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/TotalTotalsIndex/testsFiles/inputFile.std] >>
-                [TotalTotalsIndex] >>
-                [WriterStd --output /tmp/$USER/outputFile.std]"
-    ...
+        ...
+        spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/TotalTotalsIndex/testsFiles/inputFile.std] >>
+                    [TotalTotalsIndex] >>
+                    [WriterStd --output /tmp/$USER/outputFile.std]"
+        ...
 
 **Results validation:**
 
@@ -177,13 +178,29 @@ English
 -  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
    `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
 
-Reference to
+Reference to `TotalTotalsIndex <classTotalTotalsIndex.html>`__
+:sup:``[code] <TotalTotalsIndex_8cpp_source.html>`__`
 
 Units tests
 
+`Evaluation tree <TotalTotalsIndex_graph.png>`__
+
 | **Uses:**
+
 | **Used by:**
 
- 
+.. raw:: html
 
- 
+   </div>
+
+.. raw:: html
+
+   </div>
+
+--------------
+
+Generated by  |doxygen| 1.8.13
+
+.. |doxygen| image:: doxygen.png
+   :class: footer
+   :target: http://www.doxygen.org/index.html

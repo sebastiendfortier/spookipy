@@ -1,99 +1,108 @@
-\*\* Français
+=================
+Spooki: WindChill
+=================
 
-**Description:**
+.. raw:: html
 
--  Calcul de la température équivalente associée à l'indice de
-   refroidissement éolien au niveau du sol.
+   <div id="top">
 
-\*Méthode d'itération:\*
+.. raw:: html
 
--  Point par point
+   <div id="titlearea">
 
-\*Dépendances:\*
++--------------------------------------------------------------------------+
+| .. raw:: html                                                            |
+|                                                                          |
+|    <div id="projectname">                                                |
+|                                                                          |
+| Spooki                                                                   |
+|                                                                          |
+| .. raw:: html                                                            |
+|                                                                          |
+|    </div>                                                                |
++--------------------------------------------------------------------------+
 
--  Température de l'air (TT) à la surface
--  Composante UU du vent (selon l'axe des X sur la grille), à la surface
--  Composante VV du vent (selon l'axe des Y sur la grille), à la surface
-   ***Note:*** : Assurez-vous de fournir à ce plugin les dépendances
-   ci-haut mentionnées ou alors, les résultats des
-   plugins appelés par celui-ci (Voir la section "Ce plugin utilise").
-   Pour plus de détails sur cet usage
-   alternatif, voir la page de
-   `documentation. <https://wiki.cmc.ec.gc.ca/wiki/Spooki/Documentation/Description_g%C3%A9n%C3%A9rale_du_syst%C3%A8me#RefDependances>`__
+.. raw:: html
 
-\*Résultat(s):\*
+   </div>
 
--  Indice de refroidissement éolien, RE (deg C)
+.. raw:: html
 
-\*Algorithme:\*
+   <div id="main-nav">
 
-    Soit TT(1), la température de l'air (deg C) à la surface (2 mètres)
-    et UV(1), le module du vent (km.h-1) à la surface (10 mètres).
-    L'indice de refroidissement, RE (sans unité), se calcule selon
-    l'équation de Osczevski-Bluestein:
-    si TT(1) <= 0 et UV(1) >= 5 alors :
-        RE = :math:`\mathrm{13.1200 + 0.6215*TT(1) + (0.3965*TT(1) -
-    11.3700)*UV(1)^{0.16}}`
-    sinon
-        RE = TT
+.. raw:: html
 
-**Références:**
+   </div>
 
--  [[http://journals.ametsoc.org/doi/abs/10.1175/BAMS-86-10-1453][The
-   new wind chill equivalent temperature chart. Osczevski, R. and
-   Bluestein, M., Amer. Meteor. Soc., 2005]]
--  `Wikipédia : indice de refroidissement
-   éolien <http://fr.wikipedia.org/wiki/Refroidissement_%C3%A9olien>`__
+.. raw:: html
 
-\*Mots clés:\*
+   <div id="MSearchSelectWindow"
+   onmouseover="return searchBox.OnSearchSelectShow()"
+   onmouseout="return searchBox.OnSearchSelectHide()"
+   onkeydown="return searchBox.OnSearchSelectKey(event)">
 
--  MÉTÉO/WEATHER, vent/wind, facteuréolien/windchill, facteur/factor,
-   refroidissement/chill
+.. raw:: html
 
-\*Usage:\*
+   </div>
 
-**Exemple d'appel:**
+.. raw:: html
 
-.. code:: example
+   <div id="MSearchResultsWindow">
 
-    ...
-    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/WindChill/testsFiles/inputFile.std] >>
-                [WindChill] >>
-                [WriterStd --output /tmp/$USER/outputFile.std]"
-    ...
+.. raw:: html
 
-**Validation des résultats:**
+   </div>
 
-**Contacts:**
+.. raw:: html
 
--  Auteur(e) : `Marc
-   Besner <https://wiki.cmc.ec.gc.ca/wiki/User:Besnerm>`__
--  Codé par : `François
-   Fortin <https://wiki.cmc.ec.gc.ca/wiki/User:Fortinf>`__, `Sébastien
-   Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
--  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
-   `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+   </div>
 
-Voir la référence à
+.. raw:: html
 
-Tests unitaires
+   <div class="header">
 
-| **Ce plugin utilise:**
-| **Ce plugin est utilisé par:**
+.. raw:: html
 
-English
--------
+   <div class="headertitle">
+
+.. raw:: html
+
+   <div class="title">
+
+`WindChill <classWindChill.html>`__
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div class="contents">
+
+.. raw:: html
+
+   <div class="textblock">
+
+`Français <../../spooki_french_doc/html/pluginWindChill.html>`__
 
 **Description:**
 
 -  Calculation of the equivalent temperature associated to the wind
    chill factor at the surface.
 
-\*Iteration method:\*
+**Iteration method:**
 
 -  Point-by-point
 
-\*Dependencies:\*
+**Dependencies:**
 
 -  Air temperature, TT, at the surface
 -  UU wind component (along the X axis of the grid), at the surface
@@ -106,46 +115,46 @@ English
    `documentation <https://wiki.cmc.ec.gc.ca/wiki/Spooki/Documentation/Description_g%C3%A9n%C3%A9rale_du_syst%C3%A8me#RefDependances>`__
    page.
 
-\*Result(s):\*
+**Result(s):**
 
 -  Wind chill factor, RE (deg C)
 
-\*Algorithm:\*
+**Algorithm:**
 
     For TT(1), the surface temperature (deg C) and UV(1), the surface
     wind modulus (km.h-1) (respectively, at 2 meters and 10 meters),
     the wind chill factor RE (no units) is calculated according to the
     Osczevski-Bluestein equation, as :
     if TT(1) <= 0 et UV(1) >= 5 then :
-        RE = :math:`\mathrm{13.1200 + 0.6215*TT(1) + (0.3965*TT(1) -
-    11.3700)*UV(1)^{0.16}}`
+        RE = \\(\\mathrm{13.1200 + 0.6215\*TT(1) + (0.3965\*TT(1) -
+    11.3700)\*UV(1)^{0.16}}\\)
     else
         RE = TT
 
 **Reference:**
 
--  [[http://journals.ametsoc.org/doi/abs/10.1175/BAMS-86-10-1453][The
-   new wind chill equivalent temperature chart. Osczevski, R. and
-   Bluestein, M., Amer. Meteor. Soc., 2005]]
+-  `The new wind chill equivalent temperature chart. Osczevski, R. and
+   Bluestein, M., Amer. Meteor. Soc.,
+   2005 <http://journals.ametsoc.org/doi/abs/10.1175/BAMS-86-10-1453>`__
 -  `Wikipédia : wind chill
    factor <http://en.wikipedia.org/wiki/Wind_chill>`__
 
-\*Keywords:\*
+**Keywords:**
 
 -  MÉTÉO/WEATHER, vent/wind, facteuréolien/windchill, facteur/factor,
    refroidissement/chill
 
-\*Usage:\*
+**Usage:**
 
-**Call example:**
+**Call example:** ````
 
-.. code:: example
+::
 
-    ...
-    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/WindChill/testsFiles/inputFile.std] >>
-                [WindChill] >>
-                [WriterStd --output /tmp/$USER/outputFile.std]"
-    ...
+        ...
+        spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/WindChill/testsFiles/inputFile.std] >>
+                    [WindChill] >>
+                    [WriterStd --output /tmp/$USER/outputFile.std]"
+        ...
 
 **Results validation:**
 
@@ -159,13 +168,29 @@ English
 -  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
    `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
 
-Reference to
+Reference to `WindChill <classWindChill.html>`__
+:sup:``[code] <WindChill_8cpp_source.html>`__`
 
 Unit tests
 
+`Evaluation tree <WindChill_graph.png>`__
+
 | **Uses:**
+
 | **Used by:**
 
- 
+.. raw:: html
 
- 
+   </div>
+
+.. raw:: html
+
+   </div>
+
+--------------
+
+Generated by  |doxygen| 1.8.13
+
+.. |doxygen| image:: doxygen.png
+   :class: footer
+   :target: http://www.doxygen.org/index.html

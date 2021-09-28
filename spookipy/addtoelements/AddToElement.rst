@@ -1,6 +1,6 @@
-==========================
-Spooki: AddElementsByPoint
-==========================
+====================
+Spooki: AddToElement
+====================
 
 .. raw:: html
 
@@ -69,7 +69,7 @@ Spooki: AddElementsByPoint
 
    <div class="title">
 
-`AddElementsByPoint <classAddElementsByPoint.html>`__
+`AddToElement <classAddToElement.html>`__
 
 .. raw:: html
 
@@ -91,11 +91,11 @@ Spooki: AddElementsByPoint
 
    <div class="textblock">
 
-`Français <../../spooki_french_doc/html/pluginAddElementsByPoint.html>`__
+`Français <../../spooki_french_doc/html/pluginAddToElement.html>`__
 
 **Description:**
 
--  Add, for each point, the values of all the fields received
+-  Add a given number to each element of a field
 
 **Iteration method:**
 
@@ -103,16 +103,26 @@ Spooki: AddElementsByPoint
 
 **Dependencies:**
 
--  At least 2 different fields
+-  A meteorological field
 
 **Result(s):**
 
--  A field named "ADEP" with the result of the sum of the fields
-   received from input
+-  The meteorological field to which the given value has been added to
+   each element
 
 **Algorithm:**
 
--  ADEP[i,j,k] = A[i,j,k] + B[i,j,k] + ...
+.. code:: fragment
+
+         For F, a field of n elements
+
+         For z, a value given by the "value" key
+
+         for each point do
+
+             F(n) = F(n) + z        n >= 1
+
+         end do
 
 **Reference:**
 
@@ -120,7 +130,7 @@ Spooki: AddElementsByPoint
 
 **Keywords:**
 
--  UTILITAIRE/UTILITY, accumuler/accumulate, ajout/add, somme/sum
+-  UTILITAIRE/UTILITY, ajout/add
 
 **Usage:**
 
@@ -128,13 +138,16 @@ Spooki: AddElementsByPoint
 
 ::
 
-        ...
-        spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/AddElementsByPoint/testsFiles/inputFile.std] >>
-                    [AddElementsByPoint] >>
-                    [WriterStd --output /tmp/$USER/outputFile.std]"
-        ...
+         ...
+         spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/AddToElement/testsFiles/inputFile.std] >>
+                     [AddToElement --value 1 ] >>
+                     [WriterStd --output /tmp/$USER/outputFile.std]"
+         ...
+     
 
 **Results validation:**
+
+-  
 
 **Contacts:**
 
@@ -145,12 +158,12 @@ Spooki: AddElementsByPoint
 -  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
    `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
 
-Reference to `AddElementsByPoint <classAddElementsByPoint.html>`__
-:sup:``[code] <AddElementsByPoint_8cpp_source.html>`__`
+Reference to `AddToElement <classAddToElement.html>`__
+:sup:``[code] <AddToElement_8cpp_source.html>`__`
 
 Units tests
 
-`Evaluation tree <AddElementsByPoint_graph.png>`__
+`Evaluation tree <AddToElement_graph.png>`__
 
 | **Uses:**
 

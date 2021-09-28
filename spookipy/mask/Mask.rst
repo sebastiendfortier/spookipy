@@ -1,147 +1,194 @@
-Français
---------
+============
+Spooki: Mask
+============
 
-Description:
-~~~~~~~~~~~~
+.. raw:: html
 
-Ce plugin crée un masque selon la(les) valeur(s) et seuil(s) demandés.
+   <div id="top">
 
-Méthode d'itération:
-~~~~~~~~~~~~~~~~~~~~
+.. raw:: html
 
-Point par point
+   <div id="titlearea">
 
-Dépendances:
-~~~~~~~~~~~~
++--------------------------------------------------------------------------+
+| .. raw:: html                                                            |
+|                                                                          |
+|    <div id="projectname">                                                |
+|                                                                          |
+| Spooki                                                                   |
+|                                                                          |
+| .. raw:: html                                                            |
+|                                                                          |
+|    </div>                                                                |
++--------------------------------------------------------------------------+
 
-Un champ
+.. raw:: html
 
-Résultat(s):
-~~~~~~~~~~~~
+   </div>
 
-Champ MASK
+.. raw:: html
 
-Algorithme:
-~~~~~~~~~~~
+   <div id="main-nav">
 
-Soit F, un champ d'entrée Soit opérateur[j], j ième valeur donnée dans
-la liste de la clé ,operators= Soit seuil[j], j ième valeur donnée dans
-la liste de la clé ,thresholds= Soit valeur[j], j ième valeur donnée
-dans la liste de la clé ,values= Soit MASK, le champ en sortie Soit
-nbTrios, le nombre total de trios de seuil, opérateur, valeur Pour
-chaque point du champ d'entrée (i) Initialiser le champ MASK[i] = 0.0
-Pour j de 0 à (nbTrios-1) Si F[i] opérateur[j] seuil[j] MASK[i] =
-valeur[j] Fin Si Fin Pour Fin Pour
+.. raw:: html
 
-Références:
-~~~~~~~~~~~
+   </div>
 
-Ne s'applique pas
+.. raw:: html
 
-Mots clés:
-~~~~~~~~~~
+   <div id="MSearchSelectWindow"
+   onmouseover="return searchBox.OnSearchSelectShow()"
+   onmouseout="return searchBox.OnSearchSelectHide()"
+   onkeydown="return searchBox.OnSearchSelectKey(event)">
 
-UTILITAIRE/UTILITY, masque/mask
+.. raw:: html
 
-Usage:
-~~~~~~
+   </div>
 
-#. Exemple d'appel:
+.. raw:: html
 
-   .. code:: python
+   <div id="MSearchResultsWindow">
 
-       python3
-       import fstpy.all as fstpy
-       import spookipy.all as spooki
-       records=fstpy.StandardFileReader(SPOOKI_DIR + "/pluginsRelatedStuff/Mask/testsFiles/inputFile.std") ()
-       records=Mask(records ,thresholds=0.0,10.0,15.0,20.0 ,values=0.0,10.0,15.0,20.0 ,operators=GE,GE,GE,GE)()
-       StandardFileWriter("/tmp/"+USER+"/outputFile.std --noUnitConversion",records).compute()
+.. raw:: html
 
-Validation des résultats:
-~~~~~~~~~~~~~~~~~~~~~~~~~
+   </div>
 
-Contacts:
-~~~~~~~~~
+.. raw:: html
 
-Auteur(e) :
+   </div>
 
--  `Marc Verville <https://wiki.cmc.ec.gc.ca/wiki/Marc_Verville>`__
--  `Daniel Figueras <https://wiki.cmc.ec.gc.ca/wiki/Daniel_Figueras>`__
+.. raw:: html
 
-Codé par : `Louise Faust <https://wiki.cmc.ec.gc.ca/wiki/User:Faustl>`__
-Support :
+   <div class="header">
 
--  `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__
--  `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+.. raw:: html
 
-English
--------
+   <div class="headertitle">
 
-Description:
-~~~~~~~~~~~~
+.. raw:: html
 
-This plug-in creates a mask according to the threshold value(s) given.
+   <div class="title">
 
-Iteration method:
-~~~~~~~~~~~~~~~~~
+`Mask <classMask.html>`__
 
-Point-by-point
+.. raw:: html
 
-Dependencies:
-~~~~~~~~~~~~~
+   </div>
 
-A field
+.. raw:: html
 
-Result(s):
-~~~~~~~~~~
+   </div>
 
-MASK field
+.. raw:: html
 
-Algorithm:
-~~~~~~~~~~
+   </div>
 
-For F, an input field For thresholds[j], jth value given in the list of
-,thresholds=option For operator[j], jth value given in the list of
-,operators=option For value[j], jth value given in the list of
-,values=option For nbTrios, the total number of threshold, operator and
-value trios For each point of the input field (i) Initialize MASK = 0.0
-For j = 0 to (nbTrios1) If F[i] Operators[j] Thresholds[j]
-MASK[i]=Value[j] Endif End for End for
+.. raw:: html
 
-Reference:
-~~~~~~~~~~
+   <div class="contents">
 
-Does not apply
+.. raw:: html
 
-Keywords:
-~~~~~~~~~
+   <div class="textblock">
 
-UTILITAIRE/UTILITY, masque/mask
+`Français <../../spooki_french_doc/html/pluginMask.html>`__
 
-Usage:
-~~~~~~
+**Description:**
 
-#. Call example:
+-  This plug-in creates a mask according to the threshold value(s)
+   given.
 
-   .. code:: python
+**Iteration method:**
 
-       python3
-       import fstpy.all as fstpy
-       import spookipy.all as spooki
-       records=fstpy.StandardFileReader(SPOOKI_DIR + "/pluginsRelatedStuff/Mask/testsFiles/inputFile.std") ()
-       records=Mask(records ,thresholds=0.0,10.0,15.0,20.0 ,values=0.0,10.0,15.0,20.0 ,operators=GE,GE,GE,GE)()
-       StandardFileWriter("/tmp/"+USER+"/outputFile.std --noUnitConversion",records).compute()
+-  Point-by-point
 
-Contacts:
-~~~~~~~~~
+**Dependencies:**
 
-Auteur(e) :
+-  A field
 
--  `Marc Verville <https://wiki.cmc.ec.gc.ca/wiki/Marc_Verville>`__
--  `Daniel Figueras <https://wiki.cmc.ec.gc.ca/wiki/Daniel_Figueras>`__
+**Result(s):**
 
-Codé par : `Louise Faust <https://wiki.cmc.ec.gc.ca/wiki/User:Faustl>`__
-Support :
+-  MASK field
 
--  `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__
--  `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+**Algorithm:**
+
+.. code:: fragment
+
+        For F,             an input field
+        For thresholds[j], jth value given in the list of --thresholds option
+        For operator[j],   jth value given in the list of --operators option
+        For value[j],      jth value given in the list of --values option
+        For nbTrios,       the total number of threshold, operator and value trios
+
+        For each point of the input field (i)
+
+          Initialize MASK = 0.0
+
+          For j = 0 to (nbTrios - 1)
+
+            If F[i]  Operators[j]  Thresholds[j]
+               MASK[i]=Value[j]
+            Endif
+
+          End for
+
+        End for
+
+**Reference:**
+
+-  Does not apply
+
+**Keywords:**
+
+-  UTILITAIRE/UTILITY, masque/mask
+
+**Usage:**
+
+**Call example:** ````
+
+::
+
+        ...
+        spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/Mask/testsFiles/inputFile.std] >> 
+                    [Mask --thresholds 0.0,10.0,15.0,20.0 --values 0.0,10.0,15.0,20.0 --operators GE,GE,GE,GE] >> 
+                    [WriterStd --output /tmp/$USER/outputFile.std --noUnitConversion]"
+        ...
+
+**Results validation:**
+
+**Contacts:**
+
+-  Auteur(e) : `Marc
+   Verville <https://wiki.cmc.ec.gc.ca/wiki/Marc_Verville>`__, / `Daniel
+   Figueras <https://wiki.cmc.ec.gc.ca/wiki/Daniel_Figueras>`__
+-  Codé par : `Louise
+   Faust <https://wiki.cmc.ec.gc.ca/wiki/User:Faustl>`__
+-  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
+   `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+
+Reference to `Mask <classMask.html>`__.
+:sup:``[code] <Mask_8cpp_source.html>`__`
+
+Units tests
+
+`Evaluation tree <Mask_graph.png>`__
+
+| **Uses:**
+
+| **Used by:**
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+--------------
+
+Generated by  |doxygen| 1.8.13
+
+.. |doxygen| image:: doxygen.png
+   :class: footer
+   :target: http://www.doxygen.org/index.html

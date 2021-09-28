@@ -1,138 +1,97 @@
-Français
---------
+===========================
+Spooki: TemperatureDewPoint
+===========================
 
-**Description:**
+.. raw:: html
 
--  Calcul de la température thermodynamique du point de rosée, une
-   mesure de l'humidité atmosphérique.
--  Température à laquelle l'air doit être refroidi, à pression et
-   contenu en humidité constants, pour atteindre la saturation.
+   <div id="top">
 
-\*Méthode d'itération:\*
+.. raw:: html
 
--  Point par point
+   <div id="titlearea">
 
-\*Dépendances:\*
++--------------------------------------------------------------------------+
+| .. raw:: html                                                            |
+|                                                                          |
+|    <div id="projectname">                                                |
+|                                                                          |
+| Spooki                                                                   |
+|                                                                          |
+| .. raw:: html                                                            |
+|                                                                          |
+|    </div>                                                                |
++--------------------------------------------------------------------------+
 
--  Température de l'air, TT
-   **et** un des champs suivants:
--  Écart du point de rosée, ES
--  Humidité spécifique, HU
--  Humidité relative, HR
--  Rapport de mélange de la vapeur d'eau, QV
+.. raw:: html
 
-\*Résultat(s):\*
+   </div>
 
--  Température du point de rosée, TD (deg C)
+.. raw:: html
 
-\*Algorithme:\*
+   <div id="main-nav">
 
-.. code:: example
+.. raw:: html
 
-        -Si la clé --RPN n'est pas activée:
+   </div>
 
-            *Si les champs d'entrée sont l'humidité spécifique, HU (kg/kg) ou
-             le rapport de mélange de la vapeur d'eau, QV (kg/kg) ou
-             l'humidité relative, HR (fraction) et la température de l'air, TT (deg C):
+.. raw:: html
 
-                 Soit TPL, la température à laquelle il faut changer de la saturation par rapport à l'eau à la saturation par rapport à la glace (deg C).
-                 Calculer la pression de vapeur, VPPR (hPa) avec le plugin VapourPressure.
-                 Calculer la température du point de rosée, TD (deg C):
+   <div id="MSearchSelectWindow"
+   onmouseover="return searchBox.OnSearchSelectShow()"
+   onmouseout="return searchBox.OnSearchSelectHide()"
+   onkeydown="return searchBox.OnSearchSelectKey(event)">
 
-                 Si TT > TPL ou --iceWaterPhase WATER
-                   TD= ( AEw3 * ln(VPPR/AEw1) ) / ( AEw2 - ln (VPPR/AEw1) )
-                 Sinon
-                   TD= ( AEi3 * ln(VPPR/AEi1) ) / ( AEi2 - ln (VPPR/AEi1)
+.. raw:: html
 
-                 où selon Alduchov et Eskridge (1996)
-                  AEw1=6.1094   AEi1=6.1121
-                  AEw2=17.625   AEi2=22.587
-                  AEw3=243.04   AEi3=273.86
+   </div>
 
-            *Si les champs d'entrée sont l'écart du point de rosée, ES (deg C ou deg K) et la température de l'air, TT (deg C):
+.. raw:: html
 
-                TD = TT - ES   (si ES < 0.0 , ES = 0.0)
-                où TD est la température du point de rosée (deg C)
+   <div id="MSearchResultsWindow">
 
-        -Si la clé --RPN est activée:
+.. raw:: html
 
-            *Si les champs d'entrée sont l'humidité spécifique, HU (kg/kg) ou
-             le rapport de mélange de la vapeur d'eau, QV (kg/kg) ou
-             l'humidité relative, HR (fraction), et la température de l'air TT (deg C):
+   </div>
 
-                Calculer l'écart du point de rosée, ES (deg C ou deg K) avec le plugin DewPointDepression (avec les mêmes clés et leurs arguments).
+.. raw:: html
 
-                TD = TT - ES   (si ES < 0.0 , ES = 0.0)
-                où TD est la température du point de rosée (deg C)
+   </div>
 
-            *Si les champs d'entrées sont TT (deg C) et ES (deg C ou deg K):
+.. raw:: html
 
-                TD = TT - ES  (si ES < 0.0 , ES = 0.0)
-                où TD est la température du point de rosée (deg C)
+   <div class="header">
 
-    Notes: Lorsque le champ d'entrée est ES ou HR, le changement de phase sera présumé survenir au même moment dans
-           le champ d'entrée que dans le champ de sortie.
-           Lorsque plusieurs champs des dépendances et le champ TT sont disponibles en entrée, le calcul sera effectué
-           avec le champ qui a le plus de niveaux en commun avec TT dans l'ordre de préférence (en cas d'égalité)
-           avec HU suivi de QV, HR et finalement ES.
-           Lorsque la clé --RPN est activée et l'attribut de --iceWaterPhase est BOTH, --temperaturePhaseSwitch n'est
-           pas accepté et 273.16K (le point triple de l'eau) est attribué aux fonctions shuaes.ftn90 et shraes.ftn90
-           qui sont appelées par le plugin DewPointDepression.
+.. raw:: html
 
-**Références:**
+   <div class="headertitle">
 
--  `Wikipédia : point de
-   rosée <http://fr.wikipedia.org/wiki/Point_de_rosée>`__
--  [[http://journals.ametsoc.org/doi/pdf/10.1175/1520-0450%281996%29035%3C0601%3AIMFAOS%3E2.0.CO%3B2][Alducho
-   v, O. A., and R. E. Eskridge, 1996: Improved Magnus form
-   approximation of saturation vapor pressure. *J. Appl. Meteor.*,
-   **35**, 601-609.]]
--  [[http://journals.ametsoc.org/doi/pdf/10.1175/BAMS-86-2-225][Lawrence,
-   M. G., 2005: The relationship between relative humidity and the
-   dewpoint temperature in moist air: A simple conversion and
-   applications. *Bull. Amer. Meteor.* Soc., **86**, 225-233.]]
--  `Librairie thermodynamique de
-   RPN <https://wiki.cmc.ec.gc.ca/images/6/60/Tdpack2011.pdf>`__
+.. raw:: html
 
-\*Mots clés:\*
+   <div class="title">
 
--  MÉTÉO/WEATHER, température/temperature, pointderosée/dewpoint,
-   humidité/humidity
+`TemperatureDewPoint <classTemperatureDewPoint.html>`__
 
-\*Usage:\*
+.. raw:: html
 
-**Exemple d'appel:**
+   </div>
 
-.. code:: example
+.. raw:: html
 
-    ...
-    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/TemperatureDewPoint/testsFiles/inputFile.std] >>
-                [TemperatureDewPoint --iceWaterPhase BOTH --temperaturePhaseSwitch -40C] >>
-                [WriterStd --output /tmp/$USER/outputFile.std]"
-    ...
+   </div>
 
-**Validation des résultats:**
+.. raw:: html
 
-**Contacts:**
+   </div>
 
--  Auteur(e) : `Guylaine
-   Hardy <https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg>`__
--  Codé par : `Guylaine
-   Hardy <https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg>`__, Jonathan
-   Cameron
--  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__
-   `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+.. raw:: html
 
-Voir la référence à
+   <div class="contents">
 
-Tests unitaires
+.. raw:: html
 
-| **Ce plugin utilise:**
-| **Ce plugin est utilisé par:**
+   <div class="textblock">
 
- 
-English
--------
+`Francais <../../spooki_french_doc/html/pluginTemperatureDewPoint.html>`__
 
 **Description:**
 
@@ -141,11 +100,11 @@ English
 -  Temperature at which the air must be cooled, at constant pressure and
    humidity content, to become saturated.
 
-\*Iteration method:\*
+**Iteration method:**
 
 -  Point-by-point
 
-\*Dependencies:\*
+**Dependencies:**
 
 -  Air temperature, TT
    **and** one of the following fields:
@@ -154,13 +113,13 @@ English
 -  Relative humidity, HR
 -  Water vapour mixing ratio, QV
 
-\*Result(s):\*
+**Result(s):**
 
 -  Dew point temperature, TD (deg C)
 
-\*Algorithm:\*
+**Algorithm:**
 
-.. code:: example
+.. code:: fragment
 
     -If the --RPN key is NOT activated:
 
@@ -214,33 +173,33 @@ English
 
 -  (FRENCH) `Wikipédia : point de
    rosée <http://fr.wikipedia.org/wiki/Point_de_rosée>`__
--  [[http://journals.ametsoc.org/doi/pdf/10.1175/1520-0450%281996%29035%3C0601%3AIMFAOS%3E2.0.CO%3B2][Alducho
-   v, O. A., and R. E. Eskridge, 1996: Improved Magnus form
+-  `Alducho v, O. A., and R. E. Eskridge, 1996: Improved Magnus form
    approximation of saturation vapor pressure. *J. Appl. Meteor.*,
-   **35**, 601-609.]]
--  [[http://journals.ametsoc.org/doi/pdf/10.1175/BAMS-86-2-225][Lawrence,
-   M. G., 2005: The relationship between relative humidity and the
-   dewpoint temperature in moist air: A simple conversion and
-   applications. *Bull. Amer. Meteor.* Soc., **86**, 225-233.]]
+   **35**,
+   601-609. <http://journals.ametsoc.org/doi/pdf/10.1175/1520-0450%281996%29035%3C0601%3AIMFAOS%3E2.0.CO%3B2>`__
+-  `Lawrence, M. G., 2005: The relationship between relative humidity
+   and the dewpoint temperature in moist air: A simple conversion and
+   applications. *Bull. Amer. Meteor.* Soc., **86**,
+   225-233. <http://journals.ametsoc.org/doi/pdf/10.1175/BAMS-86-2-225>`__
 -  `RPN thermodynamic
    library <https://wiki.cmc.ec.gc.ca/images/6/60/Tdpack2011.pdf>`__
 
-\*Keywords:\*
+**Keywords:**
 
 -  MÉTÉO/WEATHER, température/temperature, pointderosée/dewpoint,
    humidité/humidity
 
-\*Usage:\*
+**Usage:**
 
-**Call example:**
+**Call example:** ````
 
-.. code:: example
+::
 
-    ...
-    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/TemperatureDewPoint/testsFiles/inputFile.std] >>
-                [TemperatureDewPoint --iceWaterPhase BOTH --temperaturePhaseSwitch -40C] >>
-                [WriterStd --output /tmp/$USER/outputFile.std]"
-    ...
+        ...
+        spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/TemperatureDewPoint/testsFiles/inputFile.std] >>
+                    [TemperatureDewPoint --iceWaterPhase BOTH --temperaturePhaseSwitch -40C] >>
+                    [WriterStd --output /tmp/$USER/outputFile.std]"
+        ...
 
 **Results validation:**
 
@@ -254,11 +213,27 @@ English
 -  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__
    `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
 
-Reference to
+Reference to `TemperatureDewPoint <classTemperatureDewPoint.html>`__
+:sup:``[code] <TemperatureDewPoint_8cpp_source.html>`__`
 
 Units tests
 
 | **Uses:**
+
 | **Used by:**
 
- 
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+--------------
+
+Generated by  |doxygen| 1.8.13
+
+.. |doxygen| image:: doxygen.png
+   :class: footer
+   :target: http://www.doxygen.org/index.html

@@ -1,116 +1,141 @@
-Français
---------
+=========================
+Spooki: CoriolisParameter
+=========================
 
-**Description:**
+.. raw:: html
 
--  Calcul du paramètre de Coriolis.
+   <div id="top">
 
-\*Méthode d'itération:\*
+.. raw:: html
 
--  Point par point
+   <div id="titlearea">
 
-\*Dépendances:\*
++--------------------------------------------------------------------------+
+| .. raw:: html                                                            |
+|                                                                          |
+|    <div id="projectname">                                                |
+|                                                                          |
+| Spooki                                                                   |
+|                                                                          |
+| .. raw:: html                                                            |
+|                                                                          |
+|    </div>                                                                |
++--------------------------------------------------------------------------+
 
--  Un champ sur une grille reconnue par SPOOKI.
+.. raw:: html
 
-\*Résultat(s):\*
+   </div>
 
--  Paramètre de Coriolis, CORP (1/s)
+.. raw:: html
 
-\*Algorithme:\*
+   <div id="main-nav">
 
-    | Soit OMEGA = 7.2921 \* 10\*\*-5 (1/s) et :math:`\varphi`
-      (radians), la latitude.
-    | Calculer le paramètre de Coriolis, CORP (1/s), avec la formule
-      suivante:
-    | CORP = 2 \* OMEGA \* sin( :math:`\varphi`)
+.. raw:: html
 
-**Références:**
+   </div>
 
--  "An Introduction to Dynamic Meteorology", Holton, James R.
+.. raw:: html
 
-\*Mots clés:\*
+   <div id="MSearchSelectWindow"
+   onmouseover="return searchBox.OnSearchSelectShow()"
+   onmouseout="return searchBox.OnSearchSelectHide()"
+   onkeydown="return searchBox.OnSearchSelectKey(event)">
 
--  MÉTÉO/WEATHER, Coriolis, paramètre/parameter
+.. raw:: html
 
-\*Usage:\*
+   </div>
 
-**Exemple d'appel:**
+.. raw:: html
 
-.. code:: example
+   <div id="MSearchResultsWindow">
 
-    ...
-    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/CoriolisParameter/testsFiles/inputFile.std] >>
-                [CoriolisParameter] >>
-                [WriterStd --output /tmp/$USER/outputFile.std --noUnitConversion]"
-    ...
+.. raw:: html
 
-**Validation des résultats:**
+   </div>
 
-**Contacts:**
+.. raw:: html
 
--  Auteur(e) : `Simon
-   Prud'Homme <https://wiki.cmc.ec.gc.ca/wiki/User:Prudhommes>`__
--  Codé par : `Simon
-   Prud'Homme <https://wiki.cmc.ec.gc.ca/wiki/User:Prudhommes>`__
--  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
-   `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+   </div>
 
-Voir la référence à
+.. raw:: html
 
-Tests unitaires
+   <div class="header">
 
-| **Ce plugin utilise:**
-| **Ce plugin est utilisé par:**
+.. raw:: html
 
- 
+   <div class="headertitle">
 
-English
--------
+.. raw:: html
+
+   <div class="title">
+
+`CoriolisParameter <classCoriolisParameter.html>`__
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div class="contents">
+
+.. raw:: html
+
+   <div class="textblock">
+
+`Français <../../spooki_french_doc/html/pluginCoriolisParameter.html>`__
 
 **Description:**
 
 -  Calculation of the Coriolis parameter.
 
-\*Iteration method:\*
+**Iteration method:**
 
 -  Point by point
 
-\*Dependencies:\*
+**Dependencies:**
 
 -  A field on a grid known by SPOOKI.
 
-\*Result(s):\*
+**Result(s):**
 
 -  Coriolis parameter, CORP (1/s)
 
-\*Algorithm:\*
+**Algorithm:**
 
-    | For OMEGA = 7.2921 \* 10\*\*-5 (1/s) and :math:`\varphi`
-      (radians), the latitude.
-    | Calculate the Coriolis parameter, CORP (1/s), with the following
-      formula:
-    | CORP = 2 \* OMEGA \* sin( :math:`\varphi`)
+    For OMEGA = 7.2921 \* 10\*\*-5 (1/s) and \\(\\varphi\\) (radians),
+    the latitude.
+    Calculate the Coriolis parameter, CORP (1/s), with the following
+    formula:
+    CORP = 2 \* OMEGA \* sin( \\(\\varphi\\))
 
 **Reference:**
 
 -  "An Introduction to Dynamic Meteorology", Holton, James R.
 
-\*Keywords:\*
+**Keywords:**
 
 -  MÉTÉO/WEATHER, Coriolis, paramètre/parameter
 
-\*Usage:\*
+**Usage:**
 
-**Call example:**
+**Call example:** ````
 
-.. code:: example
+::
 
-    ...
-    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/CoriolisParameter/testsFiles/inputFile.std] >>
-                [CoriolisParameter] >>
-                [WriterStd --output /tmp/$USER/outputFile.std --noUnitConversion]"
-    ...
+        ...
+        spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/CoriolisParameter/testsFiles/inputFile.std] >>
+                    [CoriolisParameter] >>
+                    [WriterStd --output /tmp/$USER/outputFile.std --noUnitConversion]"
+        ...
 
 **Results validation:**
 
@@ -123,11 +148,29 @@ English
 -  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
    `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
 
-Reference to
+Reference to `CoriolisParameter <classCoriolisParameter.html>`__
+:sup:``[code] <CoriolisParameter_8cpp_source.html>`__`
 
 Unit tests
 
+`Evaluation tree <CoriolisParameter_graph.png>`__
+
 | **Uses:**
+
 | **Used by:**
 
- 
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+--------------
+
+Generated by  |doxygen| 1.8.13
+
+.. |doxygen| image:: doxygen.png
+   :class: footer
+   :target: http://www.doxygen.org/index.html

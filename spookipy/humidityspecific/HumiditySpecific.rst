@@ -1,128 +1,108 @@
-Français
---------
+========================
+Spooki: HumiditySpecific
+========================
 
-**Description:**
+.. raw:: html
 
--  Calcul de l'humidité spécifique, rapport entre la masse de vapeur
-   d'eau dans l'air et la masse d'air humide.
+   <div id="top">
 
-\*Méthode d'itération:\*
+.. raw:: html
 
--  Point par point
+   <div id="titlearea">
 
-\*Dépendances:\*
++--------------------------------------------------------------------------+
+| .. raw:: html                                                            |
+|                                                                          |
+|    <div id="projectname">                                                |
+|                                                                          |
+| Spooki                                                                   |
+|                                                                          |
+| .. raw:: html                                                            |
+|                                                                          |
+|    </div>                                                                |
++--------------------------------------------------------------------------+
 
--  Rapport de mélange de la vapeur d'eau, QV
-   ou
--  Température de l'air, TT
-   **et** un des champs suivants:
--  Température du point de rosée, TD / Écart du point de rosée, ES
--  Humidité relative, HR
+.. raw:: html
 
-\*Résultat(s):\*
+   </div>
 
--  Humidité spécifique, HU (kg/kg)
+.. raw:: html
 
-\*Algorithme:\*
+   <div id="main-nav">
 
-.. code:: example
+.. raw:: html
 
-        -Si la clé --RPN n'est pas activée:
+   </div>
 
-            *Si le champ d'entrée est le rapport de mélange de la vapeur d'eau, QV (kg/kg):
-                HU = QV / (QV+1)
-                où l'humidité spécifique, HU est en kg/kg.
+.. raw:: html
 
-            *Si les champs d'entrée sont l'humidité relative, HR (fraction) ou
-                la température du point de rosée, TD (deg C) / l'écart du point de rosée, ES (deg K ou deg C) et
-                la température de l'air, TT (deg C):
-                Calcul de la pression de vapeur, VPPR (Pa) avec le plugin VapourPressure.
-                Calcul la pression, PX (Pa) avec le plugin Pressure.
+   <div id="MSearchSelectWindow"
+   onmouseover="return searchBox.OnSearchSelectShow()"
+   onmouseout="return searchBox.OnSearchSelectHide()"
+   onkeydown="return searchBox.OnSearchSelectKey(event)">
 
-                HU = epsilon * ( VPPR / (PX - (1-epsilon)*VPPR))
+.. raw:: html
 
-                où l'humidité spécifique, HU est en kg/kg et epsilon est défini dans la table des constantes
-                comme 0.6219800221014e+00 et correspond à Rd/Rv.
+   </div>
 
-        -Si la clé --RPN est activée:
+.. raw:: html
 
-            *Si le champ d'entrée est le rapport de mélange de la vapeur d'eau, QV (kg/kg):
-                Il n'existe pas de fonction RPN pour ce calcul, nous utilisons donc:
-                HU = QV / (QV+1)
-                où l'humidité spécifique, HU est en kg/kg.
+   <div id="MSearchResultsWindow">
 
-            *Si les champs d'entrée sont l'humidité relative, HR (fraction) et la température de l'air, TT (deg K):
-                Calcul de la pression, PX (Pa) avec le plugin Pressure.
-                Appeler la fonction shrahu.ftn90 pour obtenir l'humidité spécifique, HU (kg/kg).
+.. raw:: html
 
-            *Si les champs d'entrée sont la température du point de rosée, TD (deg K) / l'écart du point de rosée, ES (deg K ou deg C) et la température de l'air, TT (deg K):
-                Calcul de l'écart du point de rosée, ES (deg K ou deg C) avec le plugin DewPointDepression si nécessaire.
-                Calcul de la pression PX (Pa) avec le plugin Pressure.
-                Appeler la fonction sesahu.ftn90 pour obtenir l'humidité spécifique, HU (kg/kg).
+   </div>
 
+.. raw:: html
 
-    Notes:  Lorsque plusieurs champs des dépendances et le champ TT sont disponibles en entrée, le calcul sera effectué
-            avec le champ qui a le plus de niveaux en commun avec TT dans l'ordre de préférence (en cas d'égalité) avec
-            QV suivi de HR, et finalement ES/TD.
-            Lorsque le champ TT n'est pas disponible, le calcul sera effectué avec QV.
-            Lorsque la clé --RPN est activée et l'attribut de --iceWaterPhase est BOTH, --temperaturePhaseSwitch n'est
-            pas accepté et 273.16K (le point triple de l'eau) est attribué aux fonctions sesahu.ftn90 et shrahu.ftn90.
+   </div>
 
-**Références:**
+.. raw:: html
 
--  `Librairie thermodynamique de
-   RPN <https://wiki.cmc.ec.gc.ca/images/6/60/Tdpack2011.pdf>`__
--  `Wikipedia : Humidité
-   spécifique <http://fr.wikipedia.org/wiki/Humidit%C3%A9_sp%C3%A9cifique>`__
+   <div class="header">
 
-\*Mots clés:\*
+.. raw:: html
 
--  MÉTÉO/WEATHER, température/temperature, humidité/humidity
+   <div class="headertitle">
 
-\*Usage:\*
+.. raw:: html
 
-**Exemple d'appel:**
+   <div class="title">
 
-.. code:: example
+`HumiditySpecific <classHumiditySpecific.html>`__
 
-    ...
-    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/HumiditySpecific/testsFiles/inputFile.std] >>
-                [HumiditySpecific --iceWaterPhase BOTH --temperaturePhaseSwitch -40C] >>
-                [WriterStd --output /tmp/$USER/outputFile.std]"
-    ...
+.. raw:: html
 
-**Validation des résultats:**
+   </div>
 
-**Contacts:**
+.. raw:: html
 
--  Auteur(e) : `Daniel Figueras <file:///wiki/Daniel_Figueras>`__
--  Codé par : `Jonathan
-   St-Cyr <https://wiki.cmc.ec.gc.ca/wiki/User:Stcyrj>`__, `Guylaine
-   Hardy <https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg>`__
--  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
-   `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+   </div>
 
-Voir la référence à
+.. raw:: html
 
-Units tests
+   </div>
 
-| **Ce plugin utilise:**
-| **Ce plugin est utilisé par:**
+.. raw:: html
 
- 
-English
--------
+   <div class="contents">
+
+.. raw:: html
+
+   <div class="textblock">
+
+`Français <../../spooki_french_doc/html/pluginHumiditySpecific.html>`__
 
 **Description:**
 
 -  Calculation of the specific humidity, the ratio of the mass of water
    vapour in the air to the total mass of moist air.
 
-\*Iteration method:\*
+**Iteration method:**
 
 -  Point-by-point
 
-\*Dependencies:\*
+**Dependencies:**
 
 -  Water vapour mixing ratio, QV
    or
@@ -131,13 +111,13 @@ English
 -  Dew point temperature, TD / Dew point depression, ES
 -  Humidité relative, HR
 
-\*Result(s):\*
+**Result(s):**
 
 -  Specific humidity, HU (kg/kg)
 
-\*Algorithm:\*
+**Algorithm:**
 
-.. code:: example
+.. code:: fragment
 
             -If the --RPN key is NOT activated:
 
@@ -181,38 +161,57 @@ English
 -  `Wikipedia : Specific
    humidity <http://en.wikipedia.org/wiki/Specific_humidity>`__
 
-\*Keywords:\*
+**Keywords:**
 
 -  MÉTÉO/WEATHER, température/temperature, humidité/humidity
 
-\*Usage:\*
+**Usage:**
 
-**Call example:**
+**Call example:** ````
 
-.. code:: example
+::
 
-    ...
-    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/HumiditySpecific/testsFiles/inputFile.std] >>
-                [HumiditySpecific --iceWaterPhase BOTH --temperaturePhaseSwitch -40C] >>
-                [WriterStd --output /tmp/$USER/outputFile.std]"
-    ...
+            ...
+            spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/HumiditySpecific/testsFiles/inputFile.std] >>
+                        [HumiditySpecific --iceWaterPhase BOTH --temperaturePhaseSwitch -40C] >>
+                        [WriterStd --output /tmp/$USER/outputFile.std]"
+            ...
+        
 
 **Results validation:**
 
 **Contacts:**
 
--  Author : `Daniel Figueras <file:///wiki/Daniel_Figueras>`__
+-  Author : `Daniel Figueras </wiki/Daniel_Figueras>`__
 -  Coded by : `Jonathan
    St-Cyr <https://wiki.cmc.ec.gc.ca/wiki/User:Stcyrj>`__, `Guylaine
    Hardy <https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg>`__
 -  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
    `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
 
-Reference to
+Reference to `HumiditySpecific <classHumiditySpecific.html>`__
+:sup:``[code] <HumiditySpecific_8cpp_source.html>`__`
 
 Units tests
 
+`Evaluation tree <HumiditySpecific_graph.png>`__
+
 | **Uses:**
+
 | **Used by:**
 
- 
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+--------------
+
+Generated by  |doxygen| 1.8.13
+
+.. |doxygen| image:: doxygen.png
+   :class: footer
+   :target: http://www.doxygen.org/index.html

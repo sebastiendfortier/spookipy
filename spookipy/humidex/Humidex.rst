@@ -1,159 +1,203 @@
-Français
---------
+===============
+Spooki: Humidex
+===============
 
-Description:
-~~~~~~~~~~~~
+.. raw:: html
 
-Calcul de l'humidex. L'humidex est un indice qui vise à quantifier
-l'inconfort créé par une combinaison de la chaleur et de l'humidité.
+   <div id="top">
 
-Méthode d'itération:
-~~~~~~~~~~~~~~~~~~~~
+.. raw:: html
 
-Point par point
+   <div id="titlearea">
 
-Dépendances:
-~~~~~~~~~~~~
++--------------------------------------------------------------------------+
+| .. raw:: html                                                            |
+|                                                                          |
+|    <div id="projectname">                                                |
+|                                                                          |
+| Spooki                                                                   |
+|                                                                          |
+| .. raw:: html                                                            |
+|                                                                          |
+|    </div>                                                                |
++--------------------------------------------------------------------------+
 
-Température de l'air en surface (TTC) . et un des champs suivants à la
-surface: Humidité spécifique, HU Humidité relative, HR Rapport du
-mélange de la vapeur d'eau, QV Température de point de rosée, TD Écart
-du point de rosée, ES
+.. raw:: html
 
-Résultat(s):
-~~~~~~~~~~~~
+   </div>
 
-Indice humidex, HMX (scalaire, sans unité)
+.. raw:: html
 
-Algorithme:
-~~~~~~~~~~~
+   <div id="main-nav">
 
-Soit TTC la température de l'air à la surface records=deg(records C)()
+.. raw:: html
 
-#. Calculer TD avec le plugin TemperatureDewPoint.
-#. Soit es(TD), la pression partielle de la vapeur [Pa] à saturation.
-   Celle-ci peut être calculée avec le plugin SaturationVapourPressure
-   en utilisant TD au lieux de TTC avec l'option ,iceWaterPhase=WATER
+   </div>
 
-On calcule ensuite l'humidex: HMX = TTC + (0.5555) \* (es(TD)10) Si
-HMXTTC resultat = HMX Sinon resultat = TTC
+.. raw:: html
 
-Références:
-~~~~~~~~~~~
+   <div id="MSearchSelectWindow"
+   onmouseover="return searchBox.OnSearchSelectShow()"
+   onmouseout="return searchBox.OnSearchSelectHide()"
+   onkeydown="return searchBox.OnSearchSelectKey(event)">
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div id="MSearchResultsWindow">
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div class="header">
+
+.. raw:: html
+
+   <div class="headertitle">
+
+.. raw:: html
+
+   <div class="title">
+
+`Humidex <classHumidex.html>`__
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div class="contents">
+
+.. raw:: html
+
+   <div class="textblock">
+
+`Français <../../spooki_french_doc/html/pluginHumidex.html>`__
+
+**Description:**
+
+-  Humidex calculation. The humidex index aims to quantify the
+   discomfort caused by a combination of heat and humidity.
+
+**Iteration method:**
+
+-  Point-by-point
+
+**Dependencies:**
+
+-  | Air surface temperature, TTC
+
+   **and** one of the following fields at the surface:
+
+-  Specific humidity, HU
+-  Relative humidity, HR
+-  Water vapour mixing ratio, QV
+-  Dew point temperature, TD
+-  Dew point depression, ES
+
+**Result(s):**
+
+-  Humidex index, HMX (scalar, unitless)
+
+**Algorithm:**
+
+    | For TTC, the air temperature valid at the surface level (deg C).
+    | For TD, the dew point temperature (deg C). It can be calculated
+      with the `TemperatureDewPoint <pluginTemperatureDewPoint.html>`__
+      plugin.
+    | For \\(\\mbox{ $e\_{s}(TD)$}\\), the partial vapour pressure (hPa)
+      at saturation. It can be calculated with the
+      `SaturationVapourPressure <pluginSaturationVapourPressure.html>`__
+      plugin using TD instead of TTC and with the option –iceWaterPhase
+      WATER
+
+    Compute the Humidex:
+
+    \\(\\mbox { res = TTC + (0.5555) \* ($e\_{s}(TD) - 10)$}\\)
+
+    | If res > TTC
+    |    HMX = res
+    | Else
+    |    HMX = TTC
+    | End if
+
+**Reference:**
 
 `Description of the humidex by
-ECCC <http://ec.gc.ca/meteo-weather/default.asp?lang=En&amp;n=6C5D4990-1#humidex%22%20class=%22external%20text%22%20rel=%22nofollow>`__
+ECCC <http://ec.gc.ca/meteo-weather/default.asp?lang=En&amp;n=6C5D4990-1#humidex>`__
+
 `Scribe
-specifications <https://wiki.cmc.ec.gc.ca/images/0/0d/SITS14_specs.pdf%22%20class=%22external%20text%22%20rel=%22nofollow>`__
+specifications <https://wiki.cmc.ec.gc.ca/images/0/0d/SITS14_specs.pdf>`__
 
-Mots clés:
-~~~~~~~~~~
+**Keywords:**
 
-MÉTÉO/WEATHER, température/temperature, Humidité/humidité
+-  MÉTÉO/WEATHER, température/temperature, humidité/humidity
 
-Usage:
-~~~~~~
+**Usage:**
 
-#. Exemple d'appel:
+**Call example:** ````
 
-   .. code:: python
+::
 
-       python3
-       import fstpy.all as fstpy
-       import spookipy.all as spooki
-       records=fstpy.StandardFileReader(SPOOKI_DIR + "/pluginsRelatedStuff/Humidex/testsFiles/inputFile.std").to_pandas()
-       s=Humidex(records).compute()
-       fstpy.StandardFileWriter("/tmp/"+USER+"/outputFile.std",records).to_fst()
+        ...
+        spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/Humidex/testsFiles/inputFile.std] >>
+                    [Humidex] >>
+                    [WriterStd --output /tmp/$USER/outputFile.std]"
+        ...
 
-Validation des résultats:
-~~~~~~~~~~~~~~~~~~~~~~~~~
+**Results validation:**
 
-Contacts:
-~~~~~~~~~
+**Contacts:**
 
-Auteur(e) : `Agnieszka
-Barszcz <https://wiki.cmc.ec.gc.ca/wiki/Agn%C3%A8s_Barszcz>`__
+-  Author : `Agnieszka
+   Barszcz <https://wiki.cmc.ec.gc.ca/wiki/Agn%C3%A8s_Barszcz>`__
+-  Coded by : `Philippe
+   Lachapelle <https://wiki.cmc.ec.gc.ca/wiki/User:lachapellep>`__
+-  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
+   `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
 
-Codé par : `Philippe
-Lachapelle <https://wiki.cmc.ec.gc.ca/wiki/User:lachapellep>`__
+Reference to `Humidex <classHumidex.html>`__
+:sup:``[code] <Humidex_8cpp_source.html>`__`
 
-Support :
+Units tests
 
--  `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__
--  `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+`Evaluation tree <Humidex_graph.png>`__
 
-English
--------
+| **Uses:**
 
-Description:
-~~~~~~~~~~~~
+| **Used by:**
 
-Humidex calculation. The humidex index aims to quantify the discomfort
-caused by a combination of heat and humidity.
+.. raw:: html
 
-Iteration method:
-~~~~~~~~~~~~~~~~~
+   </div>
 
-Point-by-point
+.. raw:: html
 
-Dependencies:
-~~~~~~~~~~~~~
+   </div>
 
-Air surface temperature, TTC and one of the following fields at the
-surface: Specific humidity, HU Relative humidity, HR Water vapour mixing
-ratio, QV Dew point temperature, TD Dew point depression, ES
+--------------
 
-Result(s):
-~~~~~~~~~~
+Generated by  |doxygen| 1.8.13
 
-Humidex index, HMX (scalar, unitless)
-
-Algorithm:
-~~~~~~~~~~
-
-TTC is the Temperature records=Celsius(records Degrees)() Calculate TD
-with the TemperatureDewPoint plugin. ES(TT) is the Saturation Vapour
-Pressure. This value can be obtained with the SaturationVapourPressure
-plugin by using TD instead of TTC with the option ,iceWaterPhase=WATER
-We calculate the Humidex: HMX = TTC + (0.5555) \* (ES(TT)10) if HMXTTC
-result = HMX else result = TTC
-
-Reference:
-~~~~~~~~~~
-
--  `Description of the humidex by
-   ECCC <http://ec.gc.ca/meteo-weather/default.asp?lang=En&amp;n=6C5D4990-1#humidex%22%20class=%22external%20text%22%20rel=%22nofollow>`__
--  `Scribe
-   specifications <https://wiki.cmc.ec.gc.ca/images/0/0d/SITS14_specs.pdf%22%20class=%22external%20text%22%20rel=%22nofollow>`__
-
-Keywords:
-~~~~~~~~~
-
-MÉTÉO/WEATHER, température/temperature, humidité/humidity
-
-Usage:
-
-#. Call example:
-
-   .. code:: python
-
-       python3
-       import fstpy.all as fstpy
-       import spookipy.all as spooki
-       records=fstpy.StandardFileReader(SPOOKI_DIR + "/pluginsRelatedStuff/Humidex/testsFiles/inputFile.std").to_pandas()
-       records=spooki.Humidex(records).compute()
-       fstpy.StandardFileWriter("/tmp/"+USER+"/outputFile.std",records).to_fst()
-
-Contacts:
-~~~~~~~~~
-
-Author : `Agnieszka
-Barszcz <https://wiki.cmc.ec.gc.ca/wiki/Agn%C3%A8s_Barszcz>`__
-
-Coded by : `Philippe
-Lachapelle <https://wiki.cmc.ec.gc.ca/wiki/User:lachapellep>`__
-
-Support :
-
--  `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__
--  `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+.. |doxygen| image:: doxygen.png
+   :class: footer
+   :target: http://www.doxygen.org/index.html

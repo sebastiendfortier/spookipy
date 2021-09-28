@@ -1,124 +1,176 @@
-Français
---------
+===============================
+Spooki: MultiplyElementsByPoint
+===============================
 
-Description:
-~~~~~~~~~~~~
+.. raw:: html
 
-Multiplication en chaque point des valeurs de tous les champs reçus
+   <div id="top">
 
-Méthode d'itération:
-~~~~~~~~~~~~~~~~~~~~
+.. raw:: html
 
-Point par point
+   <div id="titlearea">
 
-Dépendances:
-~~~~~~~~~~~~
++--------------------------------------------------------------------------+
+| .. raw:: html                                                            |
+|                                                                          |
+|    <div id="projectname">                                                |
+|                                                                          |
+| Spooki                                                                   |
+|                                                                          |
+| .. raw:: html                                                            |
+|                                                                          |
+|    </div>                                                                |
++--------------------------------------------------------------------------+
 
-Au moins 2 champs différents
+.. raw:: html
 
-Résultat(s):
-~~~~~~~~~~~~
+   </div>
 
-Un champ nommé "MUEP" avec le résultat de la multiplication des champs
-d'entrée.
+.. raw:: html
 
-Algorithme:
-~~~~~~~~~~~
+   <div id="main-nav">
 
-MUEP[i,j,k] = A[i,j,k] \* B[i,j,k] \*
+.. raw:: html
 
-Références:
-~~~~~~~~~~~
+   </div>
 
-Ne s'applique pas
+.. raw:: html
 
-Mots clés:
-~~~~~~~~~~
+   <div id="MSearchSelectWindow"
+   onmouseover="return searchBox.OnSearchSelectShow()"
+   onmouseout="return searchBox.OnSearchSelectHide()"
+   onkeydown="return searchBox.OnSearchSelectKey(event)">
 
-UTILITAIRE/UTILITY, grille/grid, point, multiplier/multiply,
-produit/product
+.. raw:: html
 
-Usage:
-~~~~~~
+   </div>
 
-Exemple d'appel: python3 import fstpy.all as fstpy import spookipy.all
-as spooki records=fstpy.StandardFileReader(SPOOKI\ :sub:`DIR` +
-"/pluginsRelatedStuff/MultiplyElementsByPoint/testsFiles/inputFile.std").to:sub:`pandas`\ ()
-s=MultiplyElementsByPoint(records).compute()
-fstpy.StandardFileWriter("*tmp*"[STRIKEOUT:USER]"/outputFile.std",records).to:sub:`fst`\ ()
+.. raw:: html
 
-Validation des résultats:
-~~~~~~~~~~~~~~~~~~~~~~~~~
+   <div id="MSearchResultsWindow">
 
-Contacts:
-~~~~~~~~~
+.. raw:: html
 
-Auteur(e) : `Sébastien
-Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__ Codé par :
-`Sébastien Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
-`Guylaine Hardy <https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg>`__ Support
-: `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__
-`CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__ Ce plugin est utilisé
-par:
+   </div>
 
-English
--------
+.. raw:: html
 
-Description:
-~~~~~~~~~~~~
+   </div>
 
-Multiplication of the values of all the fields received at each point
+.. raw:: html
 
-Iteration method:
-~~~~~~~~~~~~~~~~~
+   <div class="header">
 
-Point-by-point
+.. raw:: html
 
-Dependencies:
-~~~~~~~~~~~~~
+   <div class="headertitle">
 
-At least 2 different fields
+.. raw:: html
 
-Result(s):
-~~~~~~~~~~
+   <div class="title">
 
-A field named "MUEP" with the result of the multiplication of the input
-fields
+`MultiplyElementsByPoint <classMultiplyElementsByPoint.html>`__
 
-Algorithm:
-~~~~~~~~~~
+.. raw:: html
 
-MUEP[i,j,k] = A[i,j,k] \* B[i,j,k] \*
+   </div>
 
-Reference:
-~~~~~~~~~~
+.. raw:: html
 
-Does not apply
+   </div>
 
-Keywords:
-~~~~~~~~~
+.. raw:: html
 
-UTILITAIRE/UTILITY, grille/grid, point, multiplier/multiply,
-produit/product
+   </div>
 
-Usage:
-~~~~~~
+.. raw:: html
 
-#. Call example:
+   <div class="contents">
 
-   python3 import fstpy.all as fstpy import spookipy.all as spooki
-   records=fstpy.StandardFileReader(SPOOKI\ :sub:`DIR` +
-   "/pluginsRelatedStuff/MultiplyElementsByPoint/testsFiles/inputFile.std").to:sub:`pandas`\ ()
-   s=MultiplyElementsByPoint(records).compute()
-   fstpy.StandardFileWriter("*tmp*"[STRIKEOUT:USER]"/outputFile.std",records).to:sub:`fst`\ ()
+.. raw:: html
 
-Contacts:
-~~~~~~~~~
+   <div class="textblock">
 
-Author : `Sébastien
-Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__ Coded by :
-`Sébastien Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
-`Guylaine Hardy <https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg>`__
+`Français <../../spooki_french_doc/html/pluginMultiplyElementsByPoint.html>`__
 
-Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__
-`CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+**Description:**
+
+-  Multiplication of the values of all the fields received at each point
+
+**Iteration method:**
+
+-  Point-by-point
+
+**Dependencies:**
+
+-  At least 2 different fields
+
+**Result(s):**
+
+-  A field named "MUEP" with the result of the multiplication of the
+   input fields
+
+**Algorithm:**
+
+-  MUEP[i,j,k] = A[i,j,k] \* B[i,j,k] \* ...
+
+**Reference:**
+
+-  Does not apply
+
+**Keywords:**
+
+-  UTILITAIRE/UTILITY, grille/grid, point, multiplier/multiply,
+   produit/product
+
+**Usage:**
+
+**Call example:** ````
+
+::
+
+        ...
+        spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/MultiplyElementsByPoint/testsFiles/inputFile.std] >>
+                    [MultiplyElementsByPoint] >>
+                    [WriterStd --output /tmp/$USER/outputFile.std]"
+        ...
+
+**Results validation:**
+
+**Contacts:**
+
+-  Author : `Sébastien
+   Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
+-  Coded by : `Sébastien
+   Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__ `Guylaine
+   Hardy <https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg>`__
+-  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
+   `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+
+Reference to
+`MultiplyElementsByPoint <classMultiplyElementsByPoint.html>`__
+:sup:``[code] <MultiplyElementsByPoint_8cpp_source.html>`__`
+
+Units tests
+
+`Evaluation tree <MultiplyElementsByPoint_graph.png>`__
+
+| **Uses:**
+
+| **Used by:**
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+--------------
+
+Generated by  |doxygen| 1.8.13
+
+.. |doxygen| image:: doxygen.png
+   :class: footer
+   :target: http://www.doxygen.org/index.html

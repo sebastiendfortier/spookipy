@@ -1,104 +1,97 @@
-Français
---------
+====================================
+Spooki: InterpolationHorizontalPoint
+====================================
 
-**Description:**
+.. raw:: html
 
--  Interpolation horizontale d'un ou plusieurs champ(s) sur un ensemble
-   de points de latitudes et longitudes données.
--  Les champs peuvent être scalaires (ex: température) ou vectoriels
-   (ex: vent horizontal).
-   ***Note:*** : Seul le vent peut être interpolé vectoriellement.
+   <div id="top">
 
-\*Méthode d'itération:\*
+.. raw:: html
 
--  Point par point
+   <div id="titlearea">
 
-\*Dépendances:\*
++--------------------------------------------------------------------------+
+| .. raw:: html                                                            |
+|                                                                          |
+|    <div id="projectname">                                                |
+|                                                                          |
+| Spooki                                                                   |
+|                                                                          |
+| .. raw:: html                                                            |
+|                                                                          |
+|    </div>                                                                |
++--------------------------------------------------------------------------+
 
--  Un ou plusieurs champ(s) sur une ou plusieurs grille(s) source(s)
--  Un champ destination de latitudes (LAT), en degrés décimaux signés
--  Un champ destination de longitudes (LON), en degrés décimaux signés
+.. raw:: html
 
-\*Résultat(s):\*
+   </div>
 
--  Un ou plusieurs champ(s) interpolé(s) sur un certain nombre de points
-   de latitudes et de longitudes données
+.. raw:: html
 
-\*Algorithme:\*
+   <div id="main-nav">
 
--  Détecte la nature scalaire ou vectorielle des champs entrés sur la
-   grille source
--  Appelle les routines scalaires ou vectorielles de la librairie
-   EZSCINT selon la nature des champs et des clés paramétrables
--  Retourne les champ interpolés aux points, de latitudes et longitudes
-   données
+.. raw:: html
 
-\*Références:\*
+   </div>
 
--  `Librairie EZSCINT de
-   RMNLIB <https://wiki.cmc.ec.gc.ca/wiki/Librmn/ezscint>`__
+.. raw:: html
 
-\*Mots clés:\*
+   <div id="MSearchSelectWindow"
+   onmouseover="return searchBox.OnSearchSelectShow()"
+   onmouseout="return searchBox.OnSearchSelectHide()"
+   onkeydown="return searchBox.OnSearchSelectKey(event)">
 
--  INTERPOLATION, extrapolation, horizontale/horizontal, point, ezscint
+.. raw:: html
 
-\*Usage:\*
+   </div>
 
-\*/\ `Notes:/\*\\\\ <Notes:/*\\>`__ Pour la clé "--interpolationType":
+.. raw:: html
 
--  NEAREST: la valeur interpolée en un point de latitude et longitude
-   données est obtenue par la valeur du point le plus proche de la
-   grille source.
--  BI-LINEAR: interpolation bi-linéaire.
--  BI-CUBIC: interpolation bi-cubique.
+   <div id="MSearchResultsWindow">
 
-Pour la clé "--extrapolationType":
+.. raw:: html
 
--  MAXIMUM: les valeurs à l'extérieur du domaine sont remplacées par la
-   valeur maximum du champ à laquelle est ajouté 5% de sa variation
-   totale.
--  MINIMUM: les valeurs à l'extérieur du domaine sont remplacées par la
-   valeur minimum du champ à laquelle est soustrait 5% de sa variation
-   totale.
--  VALUE: les valeurs à l'extérieur du domaine sont remplacées par une
-   valeur numérique donnée (float).
--  ABORT: abandon de la requête.
+   </div>
 
-\*Exemple d'appel:\*
+.. raw:: html
 
-.. code:: example
+   </div>
 
-    ...
-    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/InterpolationHorizontalPoint/testsFiles/inputFile.std] >>
-                [ReaderCsv --input $SPOOKI_DIR/pluginsRelatedStuff/InterpolationHorizontalPoint/testsFiles/inputFile.csv] >>
-                [InterpolationHorizontalPoint --interpolationType BI-LINEAR --extrapolationType VALUE=99.9] >>
-                [WriterStd --output /tmp/$USER/outputFile.std]"
-    ...
+.. raw:: html
 
--  `Autres
-   exemples <https://wiki.cmc.ec.gc.ca/wiki/Spooki/Documentation/Exemples#Exemples_d.27interpolation_horizontale_sur_un_ensemble_de_points_de_latitudes_et_longitudes_donn.C3.A9es>`__
+   <div class="header">
 
-\*Validation des résultats:\*
+.. raw:: html
 
-**Contacts:**
+   <div class="headertitle">
 
--  Auteur(e) : `Sandrine
-   Edouard <https://wiki.cmc.ec.gc.ca/wiki/User:Edouards>`__
--  Codé par : `François
-   Fortin <https://wiki.cmc.ec.gc.ca/wiki/User:Fortinf>`__
--  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
-   `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+.. raw:: html
 
-Voir la référence à
+   <div class="title">
 
-Tests unitaires
+`InterpolationHorizontalPoint <classInterpolationHorizontalPoint.html>`__
 
-| **Ce plugin utilise:**
-| **Ce plugin est utilisé par:**
-|  
+.. raw:: html
 
-English
--------
+   </div>
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div class="contents">
+
+.. raw:: html
+
+   <div class="textblock">
+
+`Francais <../../spooki_french_doc/html/pluginInterpolationHorizontalPoint.html>`__
 
 **Description:**
 
@@ -106,48 +99,49 @@ English
 
 -  N/A
 
-\*Dependencies:\*
+**Dependencies:**
 
 -  N/A
 
-\*Result(s):\*
+**Result(s):**
 
 -  N/A
 
-\*Algorithm:\*
+**Algorithm:**
 
 -  N/A
 
-\*References:\*
+**References:**
 
 -  N/A
 
-\*Customizable condition:\*
+**Customizable condition:**
 
 -  N/A
 
-\*Keywords:\*
+**Keywords:**
 
--  INTERPOLATION, extrapolation, horizontale/horizontal, point, ezscint
+-  - INTERPOLATION, extrapolation, horizontale/horizontal, point,
+   ezscint
 
-\*Usage:\*
+**Usage:**
 
-**Call example:**
+**Call example:** ````
 
-.. code:: example
+::
 
-    ...
-    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/InterpolationHorizontalPoint/testsFiles/inputFile.std] >>
-                [ReaderCsv --input $SPOOKI_DIR/pluginsRelatedStuff/InterpolationHorizontalPoint/testsFiles/inputFile.csv] >>
-                [InterpolationHorizontalPoint --interpolationType BI-LINEAR --extrapolationType VALUE=99.9] >>
-                [WriterStd --output /tmp/$USER/outputFile.std]"
-    ...
+        ...
+        spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/InterpolationHorizontalPoint/testsFiles/inputFile.std] >>
+                    [ReaderCsv --input $SPOOKI_DIR/pluginsRelatedStuff/InterpolationHorizontalPoint/testsFiles/inputFile.csv] >>
+                    [InterpolationHorizontalPoint --interpolationType BI-LINEAR --extrapolationType VALUE=99.9] >>
+                    [WriterStd --output /tmp/$USER/outputFile.std]"
+        ...
 
 **Results validation:**
 
 -  Under construction!
 
-\*Contacts:\*
+**Contacts:**
 
 -  Author : `Sandrine
    Edouard <https://wiki.cmc.ec.gc.ca/wiki/User:Edouards>`__
@@ -157,10 +151,29 @@ English
    `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
 
 Reference to
+`InterpolationHorizontalPoint <classInterpolationHorizontalPoint.html>`__
+:sup:``[code] <InterpolationHorizontalPoint_8cpp_source.html>`__`
 
 Units tests
 
+`Evaluation tree <InterpolationHorizontalPoint_graph.png>`__
+
 | **Uses:**
+
 | **Used by:**
 
- 
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+--------------
+
+Generated by  |doxygen| 1.8.13
+
+.. |doxygen| image:: doxygen.png
+   :class: footer
+   :target: http://www.doxygen.org/index.html

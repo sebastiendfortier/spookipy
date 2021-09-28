@@ -1,141 +1,173 @@
-Français
---------
+================
+Spooki: Helicity
+================
+
+.. raw:: html
+
+   <div id="top">
+
+.. raw:: html
+
+   <div id="titlearea">
+
++--------------------------------------------------------------------------+
+| .. raw:: html                                                            |
+|                                                                          |
+|    <div id="projectname">                                                |
+|                                                                          |
+| Spooki                                                                   |
+|                                                                          |
+| .. raw:: html                                                            |
+|                                                                          |
+|    </div>                                                                |
++--------------------------------------------------------------------------+
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div id="main-nav">
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div id="MSearchSelectWindow"
+   onmouseover="return searchBox.OnSearchSelectShow()"
+   onmouseout="return searchBox.OnSearchSelectHide()"
+   onkeydown="return searchBox.OnSearchSelectKey(event)">
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div id="MSearchResultsWindow">
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div class="header">
+
+.. raw:: html
+
+   <div class="headertitle">
+
+.. raw:: html
+
+   <div class="title">
+
+`Helicity <classHelicity.html>`__
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div class="contents">
+
+.. raw:: html
+
+   <div class="textblock">
+
+`Francais <../../spooki_french_doc/html/pluginHelicity.html>`__
 
 **Description:**
 
--  Calcul de l'helicite relative, outil necessaire pour la prevision des
-   orages violents
+-  ...
 
-\*Méthode d'itération:\*
-
--  Integration sur une colonne d'air verticale (1D)
-
-\*Dépendances:\*
-
--  Composante du Vent zonale UU (m/s) (par rapport au nord)
--  Composante du Vent meridionale VV (m/s) (par rapport au nord)
--  Composante du Vent UV (m/s)
--  La direction du vent WD (deg)
--  La hauteur geopotentielle GZ (Km)
-
-\*Résultat(s):\*
-
--  HL : Helicite relative (m\*\*2/s\*\*2)
-
-\*Algorithme:\*
-https://wiki.cmc.ec.gc.ca/images/8/82/Spooki_-_Algorithme_Helicity.pdf
-
-**Références:**
-
--  
-
-   #. Article de reference :
-
-   https://wiki.cmc.ec.gc.ca/images/c/c3/Spooki_-_Helicity_Characteristics.pdf
--  
-
-   #. Demonstration:
-
-   https://wiki.cmc.ec.gc.ca/images/1/18/Spooki_-_Helicity.pdf
-
-\*Conditions paramétrable:\*
-
--  Z3 = niveau vertical correspond a ~850 mb
--  Z4 = niveau vertical correspond a ~300 mb
-
-\*Mots clés:\*
-
--  MÉTÉO/WEATHER, sévère/severe, été/summer, aviation, tornade/tornado,
-   énergie/energy, éolienne
-
-\*Usage:\*
-
-**Exemple d'appel:**
-
-.. code:: example
-
-    ...
-    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/Helicity/testsFiles/inputFile.std] >>
-                [Helicity] >>
-                [WriterStd --output /tmp/$USER/outputFile.std]"
-    ...
-
-**Validation des résultats:**
-
-**Contacts:**
-
--  Auteur(e) : `Hatem
-   Yazidi <https://wiki.cmc.ec.gc.ca/wiki/User:Yazidih>`__
--  Codé par : `Sébastien
-   Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
--  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
-   `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
-
-Voir la référence à
-
-Tests unitaires
-
-| **Ce plugin utilise:**
-| **Ce plugin est utilisé par:**
-
-English
--------
-
-**Description:**
+**Iteration method:**
 
 -  ...
 
-\*Iteration method:\*
+**Dependencies:**
 
 -  ...
 
-\*Dependencies:\*
+**Result(s):**
 
 -  ...
 
-\*Result(s):\*
+**Algorithm:**
 
 -  ...
 
-\*Algorithm:\*
+**Reference:**
 
 -  ...
 
-\*Reference:\*
+**Customizable condition:**
 
 -  ...
 
-\*Customizable condition:\*
+**Keywords:**
 
 -  ...
 
-\*Keywords:\*
+**Usage:**
 
--  ...
+**Call example:** ````
 
-\*Usage:\*
+::
 
-**Call example:**
-
-.. code:: example
-
-    ...
-    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/Helicity/testsFiles/inputFile.std] >>
-                [Helicity] >>
-                [WriterStd --output /tmp/$USER/outputFile.std]"
-    ...
+        ...
+        spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/Helicity/testsFiles/inputFile.std] >>
+                    [Helicity] >>
+                    [WriterStd --output /tmp/$USER/outputFile.std]"
+        ...
 
 **Results validation:**
 
 -  ...
 
-\*Contacts:\*
+**Contacts:**
 
 -  ...
 
-Reference to
+Reference to `Helicity <classHelicity.html>`__
+:sup:``[code] <Helicity_8cpp_source.html>`__`
 
 Tests unitaires
 
+`Evaluation tree <Helicity_graph.png>`__
+
 | **Uses:**
+
 | **Used by:**
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+--------------
+
+Generated by  |doxygen| 1.8.13
+
+.. |doxygen| image:: doxygen.png
+   :class: footer
+   :target: http://www.doxygen.org/index.html

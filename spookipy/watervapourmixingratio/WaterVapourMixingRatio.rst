@@ -1,126 +1,108 @@
-Français
---------
+==============================
+Spooki: WaterVapourMixingRatio
+==============================
 
-**Description:**
+.. raw:: html
 
--  Calcul du rapport de mélange de la vapeur d'eau, rapport entre la
-   masse de vapeur d'eau et la masse d'air sec.
+   <div id="top">
 
-\*Méthode d'itération:\*
+.. raw:: html
 
--  Point par point
+   <div id="titlearea">
 
-\*Dépendances:\*
++--------------------------------------------------------------------------+
+| .. raw:: html                                                            |
+|                                                                          |
+|    <div id="projectname">                                                |
+|                                                                          |
+| Spooki                                                                   |
+|                                                                          |
+| .. raw:: html                                                            |
+|                                                                          |
+|    </div>                                                                |
++--------------------------------------------------------------------------+
 
--  Humidité spécifique, HU
-   ou
--  Température de l'air, TT
-   **et** un des champs suivants:
--  Humidité relative, HR
--  Température du point de rosée, TD / Écart du point de rosée, ES
+.. raw:: html
 
-\*Résultat(s):\*
+   </div>
 
--  Rapport de mélange de la vapeur d'eau, QV (g kg-1)
+.. raw:: html
 
-\*Algorithme:\*
+   <div id="main-nav">
 
-.. code:: example
+.. raw:: html
 
-        -Si la clé --RPN n'est pas activée:
+   </div>
 
-            *Si le champ d'entrée est l'humidité spécifique, HU (kg/kg):
-                QV = HU / (1-HU)
-                où QV est le rapport de mélange de la vapeur d'eau en kg/kg.
+.. raw:: html
 
-            *Si les champs d'entrée sont l'humidité relative HR (fraction) ou
-                la température de point de rosée, TD (deg C)/ écart du point de rosée, ES (deg K ou deg C) et
-                la température de l'air, TT (deg C):
+   <div id="MSearchSelectWindow"
+   onmouseover="return searchBox.OnSearchSelectShow()"
+   onmouseout="return searchBox.OnSearchSelectHide()"
+   onkeydown="return searchBox.OnSearchSelectKey(event)">
 
-                Calculer la pression de vapeur, VPPR (Pa) avec le plugin VapourPressure.
-                Calculer la pression, PX (Pa) avec le plugin Pressure.
-                QV = epsilon * [VPPR/(PX-VPPR)]
-                où QV est le rapport de mélange de la vapeur d'eau en kg/kg et
-                epsilon est défini dans la table des constantes comme 0.6219800221014e+00 et correspond à Rd/Rv .
+.. raw:: html
 
+   </div>
 
-        -Si la clé --RPN est activée:
+.. raw:: html
 
-            *Si le champ d'entrée est l'humidité spécifique, HU (kg/kg):
-                QV = HU / (1-HU)
-                où QV est le rapport de mélange de la vapeur d'eau en kg/kg.
+   <div id="MSearchResultsWindow">
 
-            *Si les champs d'entrée sont l'humidité relative HR (fraction) ou
-                la température de point de rosée, TD (deg C)/ écart du point de rosée, ES (deg K ou deg C) et
-                la température de l'air, TT (deg C):
+.. raw:: html
 
-                Calculer l'humidité spécifique, HU (kg/kg) avec le plugin HumiditySpecific (avec les mêmes clés et leurs arguments).
-                QV = HU / (1-HU)
-                où QV est le rapport de mélange de la vapeur d'eau en kg/kg.
+   </div>
 
+.. raw:: html
 
-        Convertir QV en g/kg:
-           QV(g/kg) = QV(kg/kg)*1000.0
+   </div>
 
+.. raw:: html
 
-    Notes:  Lorsque plusieurs champs des dépendances et le champ TT sont disponibles en entrée, le calcul sera effectué avec le champ qui a le plus de niveaux en commun avec TT dans l'ordre de préférence (en cas d'égalité) avec HU suivi de HR et finalement ES/TD.
-            Lorsque le champ TT n'est pas disponible, le calcul sera effectué avec HU.
-            Lorsque la clé --RPN est activée et l'attribut de --iceWaterPhase est BOTH, --temperaturePhaseSwitch n'est
-            pas accepté et 273.16K (le point triple de l'eau) est attribué aux onctions sesahu.ftn90 et shrahu.ftn90
-            qui sont appelées par le plugin HumiditySpecific.
+   <div class="header">
 
-**Références:**
+.. raw:: html
 
--  Rogers, R. R. and M. K. Yau, 1989: A Short Course in Cloud Physics,
-   3rd Ed. Butterworth Heinemann, 290 pp.
--  `Analyse du rapport de mélange de la vapeur
-   d'eau <https://wiki.cmc.ec.gc.ca/wiki/RPT/Analyse_du_rapport_de_m%C3%A9lange_de_la_vapeur_d%27eau>`__
--  `Librairie thermodynamique
-   RPN <https://wiki.cmc.ec.gc.ca/images/6/60/Tdpack2011.pdf%20>`__
+   <div class="headertitle">
 
-\*Mots clés:\*
+.. raw:: html
 
--  MÉTÉO/WEATHER, humidité/humidity, rapport/ratio, pression/pressure
+   <div class="title">
 
-\*Usage:\*
+`WaterVapourMixingRatio <classWaterVapourMixingRatio.html>`__
 
-**Exemple d'appel:**
+.. raw:: html
 
-.. code:: example
+   </div>
 
-    ...
-    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/WaterVapourMixingRatio/testsFiles/inputFile.std] >>
-                [WaterVapourMixingRatio] >>
-                [WriterStd --output /tmp/$USER/outputFile.std]"
-    ...
+.. raw:: html
 
-**Validation des résultats:**
+   </div>
 
-**Contacts:**
+.. raw:: html
 
--  Auteur(e) : Neil Taylor
--  Codé par : Jonathan Cameron
--  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
-   `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+   </div>
 
-| Voir la référence à
-| Tests unitaires
-| **Ce plugin utilise:**
-| **Ce plugin est utilisé par:**
+.. raw:: html
 
-English
--------
+   <div class="contents">
+
+.. raw:: html
+
+   <div class="textblock">
+
+`Francais <../../spooki_french_doc/html/pluginWaterVapourMixingRatio.html>`__
 
 **Description:**
 
 -  Calculates the water vapour mixing ratio, which is the ratio of the
    mass of water vapour to the mass of dry air.
 
-\*Iteration method:\*
+**Iteration method:**
 
 -  Point-by-point
 
-\*Dependencies:\*
+**Dependencies:**
 
 -  Specific humidity, HU or
 -  Air temperature, TT and one of the following fields:
@@ -137,9 +119,9 @@ page.
 
 -  Water vapour mixing ratio, QV (g kg-1)
 
-\*Algorithm:\*
+**Algorithm:**
 
-.. code:: example
+.. code:: fragment
 
         -If the --RPN key is NOT activated:
 
@@ -191,21 +173,21 @@ page.
 -  `RPN thermodynamic
    library <https://wiki.cmc.ec.gc.ca/images/6/60/Tdpack2011.pdf%20>`__
 
-\*Keywords:\*
+**Keywords:**
 
 -  WEATHER/METEO, humidity/humidite, ratio/rapport, pressure/pression
 
-\*Usage:\*
+**Usage:**
 
-**Call example:**
+**Call example:** ````
 
-.. code:: example
+::
 
-    ...
-    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/WaterVapourMixingRatio/testsFiles/inputFile.std] >>
-                [WaterVapourMixingRatio] >>
-                [WriterStd --output /tmp/$USER/outputFile.std]"
-    ...
+        ...
+        spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/WaterVapourMixingRatio/testsFiles/inputFile.std] >>
+                    [WaterVapourMixingRatio] >>
+                    [WriterStd --output /tmp/$USER/outputFile.std]"
+        ...
 
 **Results validation:**
 
@@ -216,9 +198,28 @@ page.
 -  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
    `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
 
-| Reference to
-| Units tests
+Reference to
+`WaterVapourMixingRatio <classWaterVapourMixingRatio.html>`__
+:sup:``[code] <WaterVapourMixingRatio_8cpp_source.html>`__`
+
+Units tests
+
 | **Uses:**
+
 | **Used by:**
 
- 
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+--------------
+
+Generated by  |doxygen| 1.8.13
+
+.. |doxygen| image:: doxygen.png
+   :class: footer
+   :target: http://www.doxygen.org/index.html

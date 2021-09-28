@@ -1,220 +1,208 @@
-Français
---------
+================================
+Spooki: SaturationVapourPressure
+================================
 
-Description :
-~~~~~~~~~~~~~
+.. raw:: html
 
-Calcul de la pression de vapeur saturante en fonction de la température.
+   <div id="top">
 
-Méthode d'itération :
-~~~~~~~~~~~~~~~~~~~~~
+.. raw:: html
 
-Point par Point
+   <div id="titlearea">
 
-Dépendances :
-~~~~~~~~~~~~~
++--------------------------------------------------------------------------+
+| .. raw:: html                                                            |
+|                                                                          |
+|    <div id="projectname">                                                |
+|                                                                          |
+| Spooki                                                                   |
+|                                                                          |
+| .. raw:: html                                                            |
+|                                                                          |
+|    </div>                                                                |
++--------------------------------------------------------------------------+
 
-Température de l'air (TT)
+.. raw:: html
 
-Résultat(s) :
-~~~~~~~~~~~~~
+   </div>
 
-Pression de vapeur saturante, SVP (hPa)
+.. raw:: html
 
-Algorithme :
-~~~~~~~~~~~~
+   <div id="main-nav">
 
--Si la clé ,RPN=n'est pas activée:
+.. raw:: html
 
-Soit TT, la température de l'air (deg C)
+   </div>
 
-Soit TPL, la température à laquelle il faut changer de la saturation par
-rapport à l'eau liquide à la saturation par rapport à la glace (deg C)
+.. raw:: html
 
-Soit SVP, la pression de vapeur saturante (hPa)
+   <div id="MSearchSelectWindow"
+   onmouseover="return searchBox.OnSearchSelectShow()"
+   onmouseout="return searchBox.OnSearchSelectHide()"
+   onkeydown="return searchBox.OnSearchSelectKey(event)">
 
-Si TTTPL ou ,iceWaterPhase=WATER
+.. raw:: html
 
-SVP = AEw1\*EXP[AEw2\*TT/(AEw3 + TT)]
+   </div>
 
-Sinon
+.. raw:: html
 
-SVP = AEi1\*EXP[AEi2\*TT/(AEi3 + TT)]
+   <div id="MSearchResultsWindow">
 
-où selon Alduchov et Eskridge (1996)
+.. raw:: html
 
-AEw1=6.1094 AEi1=6.1121
+   </div>
 
-AEw2=17.625 AEi2=22.587
+.. raw:: html
 
-AEw3=243.04 AEi3=273.86
+   </div>
 
--Si la clé ,RPN=est activée:
+.. raw:: html
 
-Soit TT, la température (degK)
+   <div class="header">
 
-Soit TPL, la température sous laquelle on calcule la pression de vapeur
-saturante par rapport à la glace (degK)
+.. raw:: html
 
-Si TTTPL ou ,iceWaterPhase=WATER
+   <div class="headertitle">
 
-Appeler la fonction sfoewa.ftn90 pour obtenir la pression de vapeur
-saturante, SVP (Pa).
+.. raw:: html
 
-Sinon
+   <div class="title">
 
-Appeler la fonction sfoew.ftn90 pour obtenir la pression de vapeur
-saturante, SVP (Pa).
+`SaturationVapourPressure <classSaturationVapourPressure.html>`__
 
-Convertir SVP (Pa) en hPa:
+.. raw:: html
 
-SVP(hPa)=SVP(Pa)/100.0
+   </div>
 
-Références :
+.. raw:: html
 
-`Alduchov, O. A., and R. E. Eskridge, 1996: Improved Magnus form
-approximation of saturation vapor pressure. ''J. Appl. Meteor.'',
-'''35''',
-601-609 <http://journals.ametsoc.org/doi/pdf/10.1175/1520-0450%281996%29035%3C0601%3AIMFAOS%3E2.0.CO%3B2>`__
+   </div>
 
-`Analyse de la pression de vapeur
-saturante <https://wiki.cmc.ec.gc.ca/wiki/RPT/Analyse_de_la_pression_de_vapeur_saturante>`__
+.. raw:: html
 
-`Librairie thermodynamique de
-RPN <https://wiki.cmc.ec.gc.ca/images/6/60/Tdpack2011.pdf>`__
+   </div>
 
-Mots clés :
+.. raw:: html
 
-MÉTÉO/WEATHER, humidité/humidity, pression/pressure, saturation
+   <div class="contents">
 
-Usage:
+.. raw:: html
 
-Exemple d'appel: python3 import fstpy.all as fstpy import spookipy.all
-as spooki records=fstpy.StandardFileReader(SPOOKI\ :sub:`DIR` +
-"/pluginsRelatedStuff/SaturationVapourPressure/testsFiles/inputFile.std").to:sub:`pandas`\ ()
-records=SaturationVapourPressure(records ,iceWaterPhase=BOTH
-,temperaturePhaseSwitch=0.01C)()
-fstpy.StandardFileWriter("*tmp*"[STRIKEOUT:USER]"/outputFile.std",records).to:sub:`fst`\ ()
+   <div class="textblock">
 
-Validation des résultats:
-~~~~~~~~~~~~~~~~~~~~~~~~~
+`Français <../../spooki_french_doc/html/pluginSaturationVapourPressure.html>`__
 
-Contacts:
-~~~~~~~~~
+**Description :**
 
-Auteur(e) :Neil Taylor Codé par : `Guylaine
-Hardy <https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg>`__
+-  Calculates the saturation vapour pressure as a function of
+   temperature.
 
-Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__
-`CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__ Ce plugin est utilisé
-par:
+**Méthode d'itération :**
 
-English
--------
+-  Point-by-point
 
-Description :
-~~~~~~~~~~~~~
+**Dépendances :**
 
-Calculates the saturation vapour pressure as a function of temperature.
+-  Air temperature, TT
 
-Méthode d'itération :
-~~~~~~~~~~~~~~~~~~~~~
+**Résultat(s) :**
 
-Point-by-point
+-  Saturation vapour pressure, SVP (hPa)
 
-Dépendances :
-~~~~~~~~~~~~~
+**Algorithme :**
 
-Air temperature, TT
+.. code:: fragment
 
-Résultat(s) :
-~~~~~~~~~~~~~
+        -If the --RPN key is NOT activated:
 
-Saturation vapour pressure, SVP (hPa)
+            For TT the air temperature (deg C)
+            For TPL the temperature at which to switch from saturation over water to saturation over ice (deg C)
+            For SVP the saturation vapour pressure (hPa)
 
-Algorithme :
-~~~~~~~~~~~~
+            If TT > TPL or --iceWaterPhase WATER
+               SVP = AEw1*EXP[AEw2*TT/(AEw3 + TT)]
+            else
+               SVP = AEi1*EXP[AEi2*TT/(AEi3+TT)]
 
--If the ,RPN=key is NOT activated:
+            where according to Alduchov and Eskridge (1996)
+            AEw1=6.1094   AEi1=6.1121
+            AEw2=17.625   AEi2=22.587
+            AEw3=243.04   AEi3=273.86
 
-For TT the air temperature (deg C)
 
-For TPL the temperature at which to switch from saturation over water to
-saturation over ice (deg C)
+        -If the --RPN key is activated:
 
-For SVP the saturation vapour pressure (hPa)
+            For TT the temperature (deg K)
+            For TPL the temperature below which we calculate the saturation vapour pressure with respect to ice (deg K)
 
-If TTTPL or ,iceWaterPhase=WATER
+            If TT > TPL or --iceWaterPhase WATER
+               Call rpn function sfoewa.ftn90 to obtain the saturation vapour pressure, SVP (Pa)
+            else
+               Call rpn function sfoew.ftn90 to obtain the saturation vapour pressure, SVP (Pa)
 
-SVP = AEw1\*EXP[AEw2\*TT/(AEw3 + TT)]
+            Convert SVP (Pa) to hPa:
+               SVP(hPa)=SVP(Pa)/100.0
 
-else
+**Références :**
 
-SVP = AEi1\*EXP[AEi2\*TT/(AEi3+TT)]
+-  `Alduchov, O. A., and R. E. Eskridge, 1996: Improved Magnus form
+   approximation of saturation vapor pressure. ''J. Appl. Meteor.'',
+   '''35''',
+   601-609 <http://journals.ametsoc.org/doi/pdf/10.1175/1520-0450%281996%29035%3C0601%3AIMFAOS%3E2.0.CO%3B2>`__
+-  `Analysis of saturation vapour
+   pressure <https://wiki.cmc.ec.gc.ca/wiki/RPT/en/Analysis_of_saturation_vapour_pressure>`__
+-  `RPN thermodynamic
+   library <https://wiki.cmc.ec.gc.ca/images/6/60/Tdpack2011.pdf>`__
 
-where according to Alduchov and Eskridge (1996)
+**Mots clés :**
 
-AEw1=6.1094 AEi1=6.1121
+-  MÉTÉO/WEATHER, humidité/humidity, pression/pressure, saturation
 
-AEw2=17.625 AEi2=22.587
+**Usage:**
 
-AEw3=243.04 AEi3=273.86
+**Exemple d'appel:** ````
 
--If the ,RPN=key is activated:
+::
 
-For TT the temperature (deg K)
+        ...
+        spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/SaturationVapourPressure/testsFiles/inputFile.std] >>
+                    [SaturationVapourPressure --iceWaterPhase BOTH --temperaturePhaseSwitch 0.01C] >>
+                    [WriterStd --output /tmp/$USER/outputFile.std]"
+        ...
 
-For TPL the temperature below which we calculate the saturation vapour
-pressure with respect to ice (deg K)
+**Validation des résultats:**
 
-If TTTPL or ,iceWaterPhase=WATER
+**Contacts:**
 
-Call rpn function sfoewa.ftn90 to obtain the saturation vapour pressure,
-SVP (Pa)
+-  Author : Neil Taylor
+-  Coded by : `Guylaine
+   Hardy <https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg>`__
+-  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
+   `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
 
-else
+Reference to
+`SaturationVapourPressure <classSaturationVapourPressure.html>`__
+:sup:``[code] <SaturationVapourPressure_8cpp_source.html>`__`
 
-Call rpn function sfoew.ftn90 to obtain the saturation vapour pressure,
-SVP (Pa)
+Unit Tests
 
-Convert SVP (Pa) to hPa:
+| **Uses:**
 
-SVP(hPa)=SVP(Pa)/100.0
+| **Used by:**
 
-Références :
+.. raw:: html
 
-`Alduchov, O. A., and R. E. Eskridge, 1996: Improved Magnus form
-approximation of saturation vapor pressure. ''J. Appl. Meteor.'',
-'''35''',
-601-609 <http://journals.ametsoc.org/doi/pdf/10.1175/1520-0450%281996%29035%3C0601%3AIMFAOS%3E2.0.CO%3B2>`__
+   </div>
 
-`Analysis of saturation vapour
-pressure <https://wiki.cmc.ec.gc.ca/wiki/RPT/en/Analysis_of_saturation_vapour_pressure>`__
+.. raw:: html
 
-`RPN thermodynamic
-library <https://wiki.cmc.ec.gc.ca/images/6/60/Tdpack2011.pdf>`__
+   </div>
 
-Mots clés :
+--------------
 
-MÉTÉO/WEATHER, humidité/humidity, pression/pressure, saturation
+Generated by  |doxygen| 1.8.13
 
-Usage:
-
-Exemple d'appel: python3 import fstpy.all as fstpy import spookipy.all
-as spooki records=fstpy.StandardFileReader(SPOOKI\ :sub:`DIR` +
-"/pluginsRelatedStuff/SaturationVapourPressure/testsFiles/inputFile.std").to:sub:`pandas`\ ()
-records=SaturationVapourPressure(records ,iceWaterPhase=BOTH
-,temperaturePhaseSwitch=0.01C)()
-fstpy.StandardFileWriter("*tmp*"[STRIKEOUT:USER]"/outputFile.std",records).to:sub:`fst`\ ()
-
-Validation des résultats:
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Contacts:
-~~~~~~~~~
-
-Author :Neil Taylor Coded by : `Guylaine
-Hardy <https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg>`__
-
-Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__
-`CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+.. |doxygen| image:: doxygen.png
+   :class: footer
+   :target: http://www.doxygen.org/index.html

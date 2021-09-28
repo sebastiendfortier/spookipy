@@ -1,115 +1,143 @@
-Français
---------
+=============================
+Spooki: ArithmeticMeanByPoint
+=============================
 
-**Description:**
+.. raw:: html
 
--  Moyenne arithmétique en chaque point de tous les champs reçus
+   <div id="top">
 
-\*Méthode d'itération:\*
+.. raw:: html
 
--  Point par point
+   <div id="titlearea">
 
-\*Dépendances:\*
++--------------------------------------------------------------------------+
+| .. raw:: html                                                            |
+|                                                                          |
+|    <div id="projectname">                                                |
+|                                                                          |
+| Spooki                                                                   |
+|                                                                          |
+| .. raw:: html                                                            |
+|                                                                          |
+|    </div>                                                                |
++--------------------------------------------------------------------------+
 
--  Au moins 2 champs différents
+.. raw:: html
 
-\*Résultat(s):\*
+   </div>
 
--  La moyenne des champs fournis en entrée nommé "MEAN"
+.. raw:: html
 
-\*Algorithme:\*
+   <div id="main-nav">
 
-    Soit N champs Fn , (n=1,n)
+.. raw:: html
 
-    La moyenne arithmétique des N champs fournis en entrée s'exprime en
-    chaque point (i,j,k) selon :
+   </div>
 
-    :math:`\mbox{ $MEAN(i,j,k) = \frac {\sum_{n=1}^{N} F_n(i,j,k)}{N}$}`
+.. raw:: html
 
-**Références:**
+   <div id="MSearchSelectWindow"
+   onmouseover="return searchBox.OnSearchSelectShow()"
+   onmouseout="return searchBox.OnSearchSelectHide()"
+   onkeydown="return searchBox.OnSearchSelectKey(event)">
 
--  Ne s'applique pas
+.. raw:: html
 
-\*Mots clés:\*
+   </div>
 
--  UTILITAIRE/UTILITY, moyenne/mean, average
+.. raw:: html
 
-\*Usage:\*
+   <div id="MSearchResultsWindow">
 
-**Exemple d'appel:**
+.. raw:: html
 
-.. code:: example
+   </div>
 
-    ...
-    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/ArithmeticMeanByPoint/testsFiles/inputFile.std] >>
-                [ArithmeticMeanByPoint] >>
-                [WriterStd --output /tmp/$USER/outputFile.std]"
-    ...
+.. raw:: html
 
-**Validation des résultats:**
+   </div>
 
-**Contacts:**
+.. raw:: html
 
--  Auteur(e) : `Sébastien
-   Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
--  Codé par : `Sébastien
-   Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
--  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
-   `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+   <div class="header">
 
-| \*Ce plugin utilise:\*
-| **Ce plugin est utilisé par:**
-| Voir la référence à
+.. raw:: html
 
-Tests Unitaires
+   <div class="headertitle">
 
-English
--------
+.. raw:: html
+
+   <div class="title">
+
+`ArithmeticMeanByPoint <classArithmeticMeanByPoint.html>`__
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div class="contents">
+
+.. raw:: html
+
+   <div class="textblock">
+
+`Français <../../spooki_french_doc/html/pluginArithmeticMeanByPoint.html>`__
 
 **Description:**
 
 -  Arithmetic mean for each point of all the fields received
 
-\*Iteration method:\*
+**Iteration method:**
 
 -  Point-by-point
 
-\*Dependencies:\*
+**Dependencies:**
 
 -  At least 2 different fields
 
-\*Result(s):\*
+**Result(s):**
 
 -  The mean of the fields received from input named "MEAN"
 
-\*Algorithm:\*
+**Algorithm:**
 
     For N fields Fn , (n=1,N)
 
     The arithmetic mean of the N fields received from input is expressed
     for each point (i,j,k) as :
 
-    :math:`\mbox{ $MEAN(i,j,k) = \frac {\sum_{n=1}^{N} F_n(i,j,k)}{N}$}`
+    \\(\\mbox{ $MEAN(i,j,k) = \\frac {\\sum\_{n=1}^{N}
+    F\_n(i,j,k)}{N}$}\\)
 
 **Reference:**
 
 -  Does not apply
 
-\*Keywords:\*
+**Keywords:**
 
 -  UTILITAIRE/UTILITY, moyenne/mean, average
 
-\*Usage:\*
+**Usage:**
 
-**Call example:**
+**Call example:** ````
 
-.. code:: example
+::
 
-    ...
-    spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/ArithmeticMeanByPoint/testsFiles/inputFile.std] >>
-                [ArithmeticMeanByPoint] >>
-                [WriterStd --output /tmp/$USER/outputFile.std]"
-    ...
+        ...
+        spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/ArithmeticMeanByPoint/testsFiles/inputFile.std] >>
+                    [ArithmeticMeanByPoint] >>
+                    [WriterStd --output /tmp/$USER/outputFile.std]"
+        ...
 
 **Results validation:**
 
@@ -122,13 +150,29 @@ English
 -  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
    `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
 
-Reference to
+Reference to `ArithmeticMeanByPoint <classArithmeticMeanByPoint.html>`__
+:sup:``[code] <ArithmeticMeanByPoint_8cpp_source.html>`__`
 
 Tests unitaires
 
+`Evaluation tree <ArithmeticMeanByPoint_graph.png>`__
+
 | **Uses:**
+
 | **Used by:**
 
- 
+.. raw:: html
 
- 
+   </div>
+
+.. raw:: html
+
+   </div>
+
+--------------
+
+Generated by  |doxygen| 1.8.13
+
+.. |doxygen| image:: doxygen.png
+   :class: footer
+   :target: http://www.doxygen.org/index.html

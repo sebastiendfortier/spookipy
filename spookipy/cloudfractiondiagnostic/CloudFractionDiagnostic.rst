@@ -1,128 +1,170 @@
-Français
---------
+===============================
+Spooki: CloudFractionDiagnostic
+===============================
+
+.. raw:: html
+
+   <div id="top">
+
+.. raw:: html
+
+   <div id="titlearea">
+
++--------------------------------------------------------------------------+
+| .. raw:: html                                                            |
+|                                                                          |
+|    <div id="projectname">                                                |
+|                                                                          |
+| Spooki                                                                   |
+|                                                                          |
+| .. raw:: html                                                            |
+|                                                                          |
+|    </div>                                                                |
++--------------------------------------------------------------------------+
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div id="main-nav">
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div id="MSearchSelectWindow"
+   onmouseover="return searchBox.OnSearchSelectShow()"
+   onmouseout="return searchBox.OnSearchSelectHide()"
+   onkeydown="return searchBox.OnSearchSelectKey(event)">
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div id="MSearchResultsWindow">
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div class="header">
+
+.. raw:: html
+
+   <div class="headertitle">
+
+.. raw:: html
+
+   <div class="title">
+
+`CloudFractionDiagnostic <classCloudFractionDiagnostic.html>`__
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div class="contents">
+
+.. raw:: html
+
+   <div class="textblock">
+
+`Francais <../../spooki_french_doc/html/pluginCloudFractionDiagnostic.html>`__
 
 **Description:**
 
--  À un niveau donné, le programme convertit les valeurs d'humidité
-   relative (HR) en fraction nuageuse diagnostique au moyen d'une
-   formule issue des travaux de Slingo (1987). Le calcul de la fraction
-   nuageuse dépend de HR et d'une valeur empirique seuil pouvant varier
-   à la verticale.
+-  ...
 
-\*Méthode d'itération:\*
-
--  Point par point
-
-\*Dépendances:\*
-
--  HR : Humidité relative (sans unité, entre 0 et 1).
-
-\*Résultat(s):\*
-
--  Le champ fraction nuageuse diagnostique en chaque point de grille,
-   champ en 3D. Sans unité, entre 0 et 1. CLD
-
-\*Algorithme:\*
-
--  http://iweb.cmc.ec.gc.ca/~afsyyah/Algorithme_DiagnostiqueCloudFraction_v1.1.doc
-
-\*Références:\*
-
--  https://wiki.cmc.ec.gc.ca/images/6/6f/Spooki_-_Slingo_1987.pdf
--  https://wiki.cmc.ec.gc.ca/images/e/e6/Spooki_-_McFarlane_et_al_1992.pdf
-
-\*Mots clés:\*
-
--  MÉTÉO/WEATHER, fraction, nuageu/cloudy, nuage/cloud,
-   diagnostique/diagnostic, slingo
-
-\*Usage:\*
-
-**Exemple d'appel:**
-
-.. code:: example
-
-    ...
-    spooki_run "[ReaderStd    --input $SPOOKI_DIR/pluginsRelatedStuff/CloudFractionDiagnostic/testsFiles/inputFile.std] >>
-                [CloudFractionDiagnostic] >>
-                [WriterStd --output /tmp/$USER/outputFile.std]"
-    ...
-
-**Validation des résultats:**
-
-**Contacts:**
-
--  Auteur(e) : `Hatem
-   Yazidi <https://wiki.cmc.ec.gc.ca/wiki/User:Yazidih>`__
--  Codé par : `Sébastien
-   Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
--  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
-   `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
-
-Voir la référence à
-`CloudFractionDiagnostic <CloudFractionDiagnostic_8cpp.html>`__.
-
-Tests Unitaires
-
-| **Ce plugin utilise:**
-| **Ce plugin est utilisé par:**
-
-English
--------
-
-**Description:**
+**Iteration method:**
 
 -  ...
 
-\*Iteration method:\*
+**Dependencies:**
 
 -  ...
 
-\*Dependencies:\*
+**Result(s):**
 
 -  ...
 
-\*Result(s):\*
+**Algorithm:**
 
 -  ...
 
-\*Algorithm:\*
+**Reference:**
 
 -  ...
 
-\*Reference:\*
+**Keywords:**
 
 -  ...
 
-\*Keywords:\*
+**Usage:**
 
--  ...
+**Call example:** ````
 
-\*Usage:\*
+::
 
-**Call example:**
-
-.. code:: example
-
-    ...
-    spooki_run "[ReaderStd    --input $SPOOKI_DIR/pluginsRelatedStuff/CloudFractionDiagnostic/testsFiles/inputFile.std] >>
-                [CloudFractionDiagnostic] >>
-                [WriterStd --output /tmp/$USER/outputFile.std]"
-    ...
+        ...
+        spooki_run "[ReaderStd    --input $SPOOKI_DIR/pluginsRelatedStuff/CloudFractionDiagnostic/testsFiles/inputFile.std] >>
+                    [CloudFractionDiagnostic] >>
+                    [WriterStd --output /tmp/$USER/outputFile.std]"
+        ...
 
 **Results validation:**
 
 -  ...
 
-\*Contacts:\*
+**Contacts:**
 
 -  ...
 
 Reference to
+`CloudFractionDiagnostic <classCloudFractionDiagnostic.html>`__
+:sup:``[code] <CloudFractionDiagnostic_8cpp_source.html>`__`
 
 Tests unitaires
 
+`Evaluation tree <CloudFractionDiagnostic_graph.png>`__
+
 | **Uses:**
+
 | **Used by:**
 
- 
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+--------------
+
+Generated by  |doxygen| 1.8.13
+
+.. |doxygen| image:: doxygen.png
+   :class: footer
+   :target: http://www.doxygen.org/index.html

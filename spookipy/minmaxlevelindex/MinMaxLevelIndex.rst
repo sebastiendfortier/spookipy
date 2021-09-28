@@ -1,180 +1,232 @@
-Français
---------
+========================
+Spooki: MinMaxLevelIndex
+========================
 
-Description:
-~~~~~~~~~~~~
+.. raw:: html
 
-Trouve l'indice de la valeur maximale et/ou minimale dans une colonne,
-ou une partie de celle-ci.
+   <div id="top">
 
-Méthode d'itération:
-~~~~~~~~~~~~~~~~~~~~
+.. raw:: html
 
-Colonne par colonne
+   <div id="titlearea">
 
-Dépendances:
-~~~~~~~~~~~~
++--------------------------------------------------------------------------+
+| .. raw:: html                                                            |
+|                                                                          |
+|    <div id="projectname">                                                |
+|                                                                          |
+| Spooki                                                                   |
+|                                                                          |
+| .. raw:: html                                                            |
+|                                                                          |
+|    </div>                                                                |
++--------------------------------------------------------------------------+
 
--  Champ météorologique (3D)
+.. raw:: html
 
-Si la clé ,bounded=est activée:
+   </div>
 
--  Champ d'indices de la limite inférieure, KBAS (2D)
--  Champ d'indices de la limite supérieure, KTOP (2D)
+.. raw:: html
 
-Résultat(s):
-~~~~~~~~~~~~
+   <div id="main-nav">
 
-Un champ d'indices, KMIN(2D), pour lesquels la valeur du champ
-météorologique est minimale et/ou Un champ d'indices, KMAX(2D), pour
-lesquels la valeur du champ météorologique est maximale
+.. raw:: html
 
-Algorithme:
-~~~~~~~~~~~
+   </div>
 
-.. code:: example
+.. raw:: html
 
-    Si la clé ,bounded=n'est pas activée:
-    KBAS = niveau le plus bas de la colonne 
-    KTOP = niveau le plus haut de la colonne 
-    Pour chaque colonne et pour les niveaux avec l'indice entre KBAS et KTOP 
-    Si la clé ,minMax== MIN ou BOTH 
-    boucle k = KBAS à KTOP 
-    Si minVAR[k] alors 
-    min= VAR[k] et KMIN=k 
-    Si la clé ,minMax== MAX ou BOTH 
-    boucle k = KBAS à KTOP 
-    Si max < VAR[k] alors 
-    max = VAR[k] et KMAX=k
+   <div id="MSearchSelectWindow"
+   onmouseover="return searchBox.OnSearchSelectShow()"
+   onmouseout="return searchBox.OnSearchSelectHide()"
+   onkeydown="return searchBox.OnSearchSelectKey(event)">
 
-Références:
-~~~~~~~~~~~
+.. raw:: html
 
-Aucune
+   </div>
 
-Mots clés:
-~~~~~~~~~~
+.. raw:: html
 
-UTILITAIRE/UTILITY, minimum, maximum, niveau/level,
-vertical,borné/bounded
+   <div id="MSearchResultsWindow">
 
-Usage:
-~~~~~~
+.. raw:: html
 
-#. Exemple d'appel:
+   </div>
 
-   .. code:: python
+.. raw:: html
 
-       import fstpy.all as fstpy
-       import spookipy.all as spooki
-       records=fstpy.StandardFileReader(SPOOKI_DIR + "/pluginsRelatedStuff/MinMaxLevelIndex/testsFiles/inputFile.std").to_pandas()
-       records=spooki.MinMaxLevelIndex(records ,min=True, ascending=True).compute()
-       fstpy.StandardFileWriter("/tmp/"+USER+"/outputFile.std",records).to_fst()
+   </div>
 
-Validation des résultats:
-~~~~~~~~~~~~~~~~~~~~~~~~~
+.. raw:: html
 
-Responsables:
-~~~~~~~~~~~~~
+   <div class="header">
 
-Auteur(e) :
+.. raw:: html
 
--  `Sébastien Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
--  `Daniel Figueras <https://wiki.cmc.ec.gc.ca/wiki/User:Figuerasd>`__
+   <div class="headertitle">
 
-Codé par :
+.. raw:: html
 
--  `Sébastien Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
--  Jonathan Cameron
+   <div class="title">
 
-Support :
+`MinMaxLevelIndex <classMinMaxLevelIndex.html>`__
 
--  `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__
--  `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+.. raw:: html
 
-English
--------
+   </div>
 
-Description:
-~~~~~~~~~~~~
+.. raw:: html
 
-Finds the index of the maximum, minimum value or both in the column or
-part of it.
+   </div>
 
-Iteration method:
-~~~~~~~~~~~~~~~~~
+.. raw:: html
 
-Column by column
+   </div>
 
-Dependance:
-~~~~~~~~~~~
+.. raw:: html
 
-Meteorological field (3D) If the ,bounded=key is activated: Field of
-indexes of the lower limit, KBAS Field of indexes of the upper limit,
-KTOP
+   <div class="contents">
 
-Result(s):
-~~~~~~~~~~
+.. raw:: html
 
-A field with the indexes where the value of the meteorological field is
-minimum, KMIN <br /> and/or A field with the indexes where the value of
-the meteorological field is maximum, KMAX
+   <div class="textblock">
 
-Algorithm:
-~~~~~~~~~~
+`Français <../../spooki_french_doc/html/pluginMinMaxLevelIndex.html>`__
 
-If the key ,bounded=is not activated : KBAS = lowest level in the column
-KTOP = highest level in the column For each column and for the levels
-between KBAS and KTOP: if key ,minMax== MIN or BOTH loop for k between
-KBAS and KTOP if minVAR[k] then min = VAR[k] and KMIN = k if key
-,minMax== MAX or BOTH loop for k between KBAS and KTOP if max < VAR[k]
-then max = VAR[k] and KMAX = k
+**Description:**
 
-Reference:
-~~~~~~~~~~
+-  Finds the index of the maximum and/or minimum value in the column or
+   part of it.
 
-Keywords:
-~~~~~~~~~
+**Iteration method:**
 
-minimum, maximum, niveau/level, vertical, borné/bounded
+-  Column by column
 
-Usage:
-~~~~~~
+**Dependance:**
 
-#. Call example:
+-  Meteorological field (3D)
+   **If** the –bounded key is activated:
+-  Field of indexes of the lower limit, KBAS
+-  Field of indexes of the upper limit, KTOP
 
-   .. code:: python
+**Result(s):**
 
-       import fstpy.all as fstpy
-       import spookipy.all as spooki
-       records=fstpy.StandardFileReader(SPOOKI_DIR + "/pluginsRelatedStuff/MinMaxLevelIndex/testsFiles/inputFile.std").to_pandas()
-       records=MinMaxLevelIndex(records ,minMax=MIN ,direction=UPWARD)()
-       .StandardFileWriter("/tmp/"+USER+"/outputFile.std",records).to_fst()
-       python3
-       import fstpy.all as fstpy
-       import spookipy.all as spooki
-       records=fstpy.StandardFileReader(SPOOKI_DIR + "/pluginsRelatedStuff/MinMaxLevelIndex/testsFiles/inputFile.std").to_pandas()
-       ( [Copy] + ( ([SetConstantValue ,value=MININDEX --bidimensional]  >
-       records=zap(records ,nomvar=KBAS]) + ([SetConstantValue
-       ,value=MAXINDEX --bidimensional] [zap ,nomvar=KTOP)()  >
-       records=MinMaxLevelIndex(records ,bounded=,minMax=MIN
-       ,direction=DOWNWARD)()  >
-       fstpy.StandardFileWriter("/tmp/"+USER+"/outputFile.std",records).to_fst()
+-  The meteorological field (3D) received as input
+-  A field with the indices, KMIN (2D), for which the value of the
+   meteorological field is minimum
+   **and/or**
+-  A field with the indices, KMAX (2D), for which the value of the
+   meteorological field is maximum
 
-Responsables:
-~~~~~~~~~~~~~
+**Algorithm:**
 
-Author :
+.. code:: fragment
 
--  `Sébastien Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
--  `Daniel Figueras <https://wiki.cmc.ec.gc.ca/wiki/User:Figuerasd>`__
+    If the key --bounded is not activated :
+        KBAS = lowest level in the column
+        KTOP = highest level in the column
 
-Coded by :
+    For each column and for the levels between KBAS and KTOP:
+    (this is done from bottom to top or from top to bottom depending on the "--direction" option)
 
--  `Sébastien Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
--  Jonathan Cameron
+        If (minMax = MIN or BOTH)
+            Loop for k between KBAS and KTOP
+                If min > VAR[k] then 
+                   min = VAR[k]
+                   KMIN = k
+                End if
+            End loop
+        End if
 
-Support :
+        If (minMax = MAX or BOTH)
+            Loop for k between KBAS and KTOP
+                If max < VAR[k] then 
+                   max = VAR[k] 
+                   KMAX = k
+                End if
+            End loop
+        End if
 
--  `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__
--  `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+    | ***Notes:***
+
+    -  If several identical values of the max or min are found in a
+       column, the first occurrence will be considered the min or the
+       max. Depending on the "--direction" option, it will be the
+       highest or lowest occurrence in the sample.
+    -  When the values of KBAS and KTOP are equal to -1 (fields needed
+       when using the "--bounded" option), the column will be ignored
+       and the returned value will be -1.
+
+    **Reference:**
+
+    -  Does not apply
+
+    **Keywords:**
+
+    -  UTILITAIRE/UTILITY, minimum, maximum, niveau/level, vertical,
+       borné/bounded
+
+    **Usage:**
+
+    **Call example:** ````
+
+    ::
+
+            ...
+            spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/MinMaxLevelIndex/testsFiles/inputFile.std] >>
+                        [MinMaxLevelIndex --minMax MIN --direction ASCENDING] >>
+                        [WriterStd --output /tmp/$USER/outputFile.std]"
+            ...
+
+    ````
+
+    ::
+
+            ...
+            spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/MinMaxLevelIndex/testsFiles/inputFile.std] >>
+                        ( [Copy] + ( ([SetConstantValue --value MININDEX --bidimensional] >> [Zap --fieldName KBAS]) + ([SetConstantValue --value MAXINDEX --bidimensional] >> [Zap --fieldName KTOP]) ) ) >>
+                        [MinMaxLevelIndex --bounded --minMax MIN --direction DESCENDING] >>
+                        [WriterStd --output /tmp/$USER/outputFile.std]"
+            ...
+
+    **Results validation:**
+
+    **Responsables:**
+
+    -  Author : `Daniel
+       Figueras <https://wiki.cmc.ec.gc.ca/wiki/User:Figuerasd>`__
+       `Sébastien
+       Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
+    -  Coded by : `Sébastien
+       Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__,
+       Jonathan Cameron, `Guylaine
+       Hardy <https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg>`__
+    -  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
+       `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+
+    Reference to `MinMaxLevelIndex <classMinMaxLevelIndex.html>`__
+    :sup:``[code] <MinMaxLevelIndex_8cpp_source.html>`__`
+
+    Tests unitaires
+
+    `Evaluation tree <MinMaxLevelIndex_graph.png>`__
+
+    | **Uses:**
+
+    | **Used by:**
+
+    --------------
+
+    Generated by  |doxygen| 1.8.13
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+.. |doxygen| image:: doxygen.png
+   :class: footer
+   :target: http://www.doxygen.org/index.html

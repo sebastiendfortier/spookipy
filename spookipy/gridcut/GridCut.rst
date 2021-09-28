@@ -1,6 +1,6 @@
-========================
-Spooki: SetConstantValue
-========================
+===============
+Spooki: GridCut
+===============
 
 .. raw:: html
 
@@ -69,7 +69,7 @@ Spooki: SetConstantValue
 
    <div class="title">
 
-`SetConstantValue <classSetConstantValue.html>`__
+`GridCut <classGridCut.html>`__
 
 .. raw:: html
 
@@ -91,75 +91,90 @@ Spooki: SetConstantValue
 
    <div class="textblock">
 
-`Francais <../../spooki_french_doc/html/pluginSetConstantValue.html>`__
+`Francais <../../spooki_french_doc/html/pluginGridCut.html>`__
 
 **Description:**
 
--  `Copy <classCopy.html>`__ the input field and replace all its values
-   by a given constant. Possibility to generate a 2D constant field from
-   a 3D field.
+Cuts a piece out of a grid, defined by its upper left hand corner and
+lower right hand corner.
+    ***Notes:***
 
-**Iteration method:**
+    -  This plug-in allows for the creation of a completely autonomous
+       grid.
+    -  If one desires to merge several grids, these grids must have been
+       cut by this plug-in in the same SPOOKI execution.
 
--  Point-by-point
+    **Iteration method:**
 
-**Dependencies:**
+    -  Point by point.
 
--  A meteorological field
+    **Dependencies:**
 
-**Result(s):**
+    -  One or several field(s) on one or several input grid(s).
 
--  A copy (3D or 2D) of the meteorological field received from input
-   containing the value received as parameter
+    **Result(s):**
 
-**Algorithm:**
+    -  The input fields on a piece of the grid, with the same input
+       metadata.
 
--  Does not apply
+    **Algorithm:**
 
-**Reference:**
+    -  The input grids are referenced, as well as their data and their
+       descriptors.
+    -  The output grids are created by copying the input grid parameters
+       and by modifying the dimensions.
+    -  The desired data is copied.
 
--  None
+    **Reference:**
 
-**Keywords:**
+    -  N/A
 
--  UTILITAIRE/UTILITY, constant, generate/produire
+    **Keywords:**
 
-**Usage:**
+    -  SYSTÈME/SYSTEM, grille/grid, découpage/cut, sélection/select
 
-    | ***Notes:***
-    | For the '–value' option:
+    **Usage:**
 
-    -  MAXINDEX: the index number of the last level of the input field
-    -  MININDEX: the index number of the first level of the input field
-    -  NBLEVELS: the number of levels of the input field
+    ::
+
+                [GridCut --help]
+                --help                      Produce help message
+                --optimizationLevel arg     Level of optimization, by default use global optimization level
+                --verbose                   Verbosity level
+                --startPoint arg            The upper left point of the matrix
+                --endPoint arg              The lower right poinr of the matrix
+            
 
     **Call example:** ````
 
     ::
 
-            ...
-            spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/SetConstantValue/testsFiles/inputFile.std] >>
-                        [SetConstantValue --value 4.0] >>
-                        [WriterStd --output /tmp/$USER/outputFile.std]"
-            ...
+                ...
+                spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/GridCut/testsFiles/inputFile.std] >>
+                [GridCut --startPoint 5,16 --endPoint 73,42] >>
+                [WriterStd --output /tmp/$USER/outputFile.std]"
+                ...
+            
 
     **Results validation:**
 
     **Contacts:**
 
-    -  Author : `Sébastien
-       Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
-    -  Coded by : `Sébastien
+    -  Author : `Maximilien
+       Martin <https://wiki.cmc.ec.gc.ca/wiki/User:Martinm>`__
+    -  Coded by : `Maximilien
+       Martin <https://wiki.cmc.ec.gc.ca/wiki/User:Martinm>`__
+       `Sébastien
        Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
     -  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
        `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
 
-    Reference to `SetConstantValue <classSetConstantValue.html>`__
-    :sup:``[code] <SetConstantValue_8cpp_source.html>`__`
+    Reference to `GridCut <classGridCut.html>`__
+    :sup:``[code] <GridCut_8cpp_source.html>`__`
 
     Units tests
 
-    `Evaluation tree <SetConstantValue_graph.png>`__
+    `Evaluation tree <GridCut_graph.png>`__
 
     | **Uses:**
 

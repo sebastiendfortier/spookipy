@@ -1,93 +1,97 @@
-Français
---------
+=====================
+Spooki: FilterDigital
+=====================
 
-**Description:**
+.. raw:: html
 
--  Appliquer un filtre digital de type Stencil sur un jeu de données.
--  Le filtre, appliqué en un point donné, dans une des directions du
-   champ donné, se caractérise par une liste de poids (nombre impair)
-   symétriques par rapport au point considéré, et par le nombre de fois
-   où celui-ci est appliqué.
--  Le filre est appliqué successivement dans chacune des directions du
-   champ donné.
+   <div id="top">
 
-\*Méthode d'itération:\*
+.. raw:: html
 
--  Point par point
+   <div id="titlearea">
 
-\*Dépendances:\*
++--------------------------------------------------------------------------+
+| .. raw:: html                                                            |
+|                                                                          |
+|    <div id="projectname">                                                |
+|                                                                          |
+| Spooki                                                                   |
+|                                                                          |
+| .. raw:: html                                                            |
+|                                                                          |
+|    </div>                                                                |
++--------------------------------------------------------------------------+
 
--  Un champ météorologique sur une grille.
+.. raw:: html
 
-\*Résultat(s):\*
+   </div>
 
--  Les valeurs du champ météorologique filtrées.
+.. raw:: html
 
-\*Algorithme:\*
+   <div id="main-nav">
 
-    Soit F, un champ donné de composantes F(i), dans la direction NI
-    (i=1, NI).
+.. raw:: html
 
-    | Soit :math:`\mbox{ $w_n$}`, (n=1,N), une liste de N poids associés
-      au filtre digital appliqué sur le champ F, dont le résultat
-      :math:`\mbox{
-      $F^*$}` sur chaque composante,
-    | s'exprime selon :
+   </div>
 
-    :math:`\mbox{ $F^*(i) = \frac {\sum_{n=1}^{N} w_n F(i -
-    {\scriptstyle[\frac{N+1}{2}- n]})}{\sum_{n=1}^{N} w_n}$}`    
-    :math:`\mbox{ $, 2 \leq i \leq NI-1$}`
+.. raw:: html
 
-    Cette opération est répétée (clé "repetitions"), dans la direction
-    NI, autant de fois que le nombre spécifié en paramètre.
+   <div id="MSearchSelectWindow"
+   onmouseover="return searchBox.OnSearchSelectShow()"
+   onmouseout="return searchBox.OnSearchSelectHide()"
+   onkeydown="return searchBox.OnSearchSelectKey(event)">
 
-    On procède de la même façon dans chaque direction du champ F,
-    successivement.
+.. raw:: html
 
-    ***Note:*** : Dans le cas d'un champ 2D, l'algorithme est d'abord
-    appliqué dans la direction NI, puis dans la direction NJ.
+   </div>
 
-**Références:**
+.. raw:: html
 
--  `Inspiré de la fonction FILTRE (*stenfilt.f*) de l'utilitaire
-   PGSM <https://wiki.cmc.ec.gc.ca/images/d/dc/Spooki_-_Filtre_html.pdf>`__
+   <div id="MSearchResultsWindow">
 
-\*Mots clés:\*
+.. raw:: html
 
--  UTILITAIRE/UTILITY, filtre/filter, digital, stencil
+   </div>
 
-\*Usage:\*
+.. raw:: html
 
-**Exemple d'appel:**
+   </div>
 
-.. code:: example
+.. raw:: html
 
-    ...
-    spooki_run "[ReaderStd     --input $SPOOKI_DIR/pluginsRelatedStuff/FilterDigital/testsFiles/inputFile.std] >>
-                [FilterDigital --filter 1,2,1 --repetitions 2] >>
-                [WriterStd     --output /tmp/$USER/outputFile.std]"
-    ...
+   <div class="header">
 
-**Validation des résultats:**
+.. raw:: html
 
-**Contacts:**
+   <div class="headertitle">
 
--  Auteur(e) : `Hatem
-   Yazidi <https://wiki.cmc.ec.gc.ca/wiki/User:Yazidih>`__
--  Codé par : `Sébastien
-   Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
--  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
-   `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+.. raw:: html
 
-Voir la référence à
+   <div class="title">
 
-Tests unitaires
+`FilterDigital <classFilterDigital.html>`__
 
-| **Ce plugin utilise:**
-| **Ce plugin est utilisé par:**
+.. raw:: html
 
-English
--------
+   </div>
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div class="contents">
+
+.. raw:: html
+
+   <div class="textblock">
+
+`Francais <../../spooki_french_doc/html/pluginFilterDigital.html>`__
 
 **Description:**
 
@@ -98,31 +102,30 @@ English
 -  The filter is applied successively in each direction of the given
    field.
 
-\*Iteration method:\*
+**Iteration method:**
 
 -  Point-by-point
 
-\*Dependencies:\*
+**Dependencies:**
 
 -  A meteorological field on a grid.
 
-\*Result(s):\*
+**Result(s):**
 
 -  The filtered values of the meteorological field.
 
-\*Algorithm:\*
+**Algorithm:**
 
     For F, a given field of components F(i), in the direction NI
     (i=1,NI).
 
-    For :math:`\mbox{ $w_n$}`, (n=1,N), a list of N weights associated
+    For \\(\\mbox{ $w\_n$}\\), (n=1,N), a list of N weights associated
     to the digital filter applied on the F field, which the result
-    :math:`\mbox{
-    $F^*$}` on each component is expressed as :
+    \\(\\mbox{ $F^\*$}\\) on each component is expressed as :
 
-    :math:`\mbox{ $F^*(i) = \frac {\sum_{n=1}^{N} w_n F(i -
-    {\scriptstyle[\frac{N+1}{2}- n]})}{\sum_{n=1}^{N} w_n}$}`    
-    :math:`\mbox{ $, 2 \leq i \leq NI-1$}`
+    \\(\\mbox{ $F^\*(i) = \\frac {\\sum\_{n=1}^{N} w\_n F(i -
+    {\\scriptstyle[\\frac{N+1}{2}- n]})}{\\sum\_{n=1}^{N} w\_n}$}\\)    
+    \\(\\mbox{ $, 2 \\leq i \\leq NI-1$}\\)
 
     This operation is repeated ("repetitions" key), in the direction NI,
     as many times as the specified number in parameter.
@@ -138,21 +141,21 @@ English
 -  `Inspired from the FILTRE function (stenfilt.f) of the PGSM
    utility <https://wiki.cmc.ec.gc.ca/images/d/dc/Spooki_-_Filtre_html.pdf>`__
 
-\*Keywords:\*
+**Keywords:**
 
 -  UTILITAIRE/UTILITY, filtre/filter, digital, stencil
 
-\*Usage:\*
+**Usage:**
 
-**Call example:**
+**Call example:** ````
 
-.. code:: example
+::
 
-    ...
-    spooki_run "[ReaderStd     --input $SPOOKI_DIR/pluginsRelatedStuff/FilterDigital/testsFiles/inputFile.std] >>
-                [FilterDigital --filter 1,2,1 --repetitions 2] >>
-                [WriterStd     --output /tmp/$USER/outputFile.std]"
-    ...
+        ...
+        spooki_run "[ReaderStd     --input $SPOOKI_DIR/pluginsRelatedStuff/FilterDigital/testsFiles/inputFile.std] >>
+                    [FilterDigital --filter 1,2,1 --repetitions 2] >>
+                    [WriterStd     --output /tmp/$USER/outputFile.std]"
+        ...
 
 **Results validation:**
 
@@ -165,13 +168,29 @@ English
 -  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ /
    `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
 
-Reference to
+Reference to `FilterDigital <classFilterDigital.html>`__
+:sup:``[code] <FilterDigital_8cpp_source.html>`__`
 
 Units tests
 
+`Evaluation tree <FilterDigital_graph.png>`__
+
 | **Uses:**
+
 | **Used by:**
 
- 
+.. raw:: html
 
- 
+   </div>
+
+.. raw:: html
+
+   </div>
+
+--------------
+
+Generated by  |doxygen| 1.8.13
+
+.. |doxygen| image:: doxygen.png
+   :class: footer
+   :target: http://www.doxygen.org/index.html

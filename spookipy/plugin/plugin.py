@@ -2,8 +2,10 @@
 import abc
 import pandas as pd
 
+
 class EmptyDataframeError(Exception):
     pass
+
 
 class Plugin(abc.ABC):
     """Abstract Base Class for plugins
@@ -11,7 +13,8 @@ class Plugin(abc.ABC):
     :param df: input dataframe
     :type df: pd.DataFrame
     """
-    def __init__(self,df:pd.DataFrame) -> None:
+
+    def __init__(self, df: pd.DataFrame) -> None:
         self.df = df
         self.validate_input()
 
@@ -21,8 +24,8 @@ class Plugin(abc.ABC):
         :raises EmptyDataframeError: The plugin's dataframe is empty, no data to process.
         """
         if self.df.empty:
-            raise  EmptyDataframeError( "Plugin" + ' - no data to process')
-      
+            raise EmptyDataframeError("Plugin" + ' - no data to process')
+
     @abc.abstractmethod
     def compute(self) -> pd.DataFrame:
         """Abstract method that should implement the plugin's algorithm.

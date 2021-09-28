@@ -1,1 +1,1 @@
-from .minmaxlevelindex import MinMaxLevelIndex,MinMaxLevelIndexError
+from .minmaxlevelindex import MinMaxLevelIndex, MinMaxLevelIndexError

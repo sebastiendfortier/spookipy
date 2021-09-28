@@ -2,7 +2,13 @@
 import fstpy.all as fstpy
 import numpy as np
 
-def get_temp_phase_switch(error_class:type, ice_water_phase_both:bool, temp_phase_switch:float, temp_phase_switch_unit:str, rpn:bool) -> float:
+
+def get_temp_phase_switch(
+        error_class: type,
+        ice_water_phase_both: bool,
+        temp_phase_switch: float,
+        temp_phase_switch_unit: str,
+        rpn: bool) -> float:
     """Gets the phase switch temperature from the provided parameters
 
     :param error_class: Exception to raise
@@ -19,20 +25,27 @@ def get_temp_phase_switch(error_class:type, ice_water_phase_both:bool, temp_phas
     :rtype: float
     """
     if ice_water_phase_both:
-        validate_temp_phase_switch(error_class,temp_phase_switch)
+        validate_temp_phase_switch(error_class, temp_phase_switch)
         if rpn:
             if temp_phase_switch_unit == 'celsius':
-                temp_phase_switch = fstpy.unit_convert_array(np.array([temp_phase_switch],dtype=np.float32), 'celsius','kelvin')[0]
+                temp_phase_switch = fstpy.unit_convert_array(
+                    np.array([temp_phase_switch], dtype=np.float32), 'celsius', 'kelvin')[0]
         elif temp_phase_switch_unit == 'kelvin':
-            temp_phase_switch = fstpy.unit_convert_array(np.array([temp_phase_switch],dtype=np.float32), 'kelvin','celsius')[0]
+            temp_phase_switch = fstpy.unit_convert_array(
+                np.array([temp_phase_switch], dtype=np.float32), 'kelvin', 'celsius')[0]
     return temp_phase_switch
 
-def validate_temp_phase_switch_unit(error_class:type,temp_phase_switch_unit:str):
-    valid_units = ['celsius','kelvin']
-    if temp_phase_switch_unit not in valid_units:
-            raise error_class(f'Invalid unit {temp_phase_switch_unit} not in {valid_units}')
 
-def validate_ice_water_phase(error_class:type,ice_water_phase:str):
+def validate_temp_phase_switch_unit(
+        error_class: type,
+        temp_phase_switch_unit: str):
+    valid_units = ['celsius', 'kelvin']
+    if temp_phase_switch_unit not in valid_units:
+        raise error_class(
+            f'Invalid unit {temp_phase_switch_unit} not in {valid_units}')
+
+
+def validate_ice_water_phase(error_class: type, ice_water_phase: str):
     """Validates that the ice water phase in either water or both
 
     :param error_class: exception to raise
@@ -41,11 +54,12 @@ def validate_ice_water_phase(error_class:type,ice_water_phase:str):
     :type ice_water_phase: str
     :raises error_class: raised exception
     """
-    phases = ['both','water']
+    phases = ['both', 'water']
     if ice_water_phase not in phases:
         raise error_class(f'Invalid {ice_water_phase} not in {phases}')
 
-def validate_temp_phase_switch(error_class:type,temp_phase_switch:float):
+
+def validate_temp_phase_switch(error_class: type, temp_phase_switch: float):
     """Validates that the phase switch temperature is between  -273.15 and 273.16
 
     :param error_class: exception to raise
@@ -55,9 +69,14 @@ def validate_temp_phase_switch(error_class:type,temp_phase_switch:float):
     :raises error_class: raised exception
     """
     if temp_phase_switch < -273.15 or temp_phase_switch > 273.16:
-        raise error_class(f'Temp_phase_switch {temp_phase_switch} not within range [-273.15,273.16]\n')
+        raise error_class(
+            f'Temp_phase_switch {temp_phase_switch} not within range [-273.15,273.16]\n')
 
-def validate_parameter_combinations(error_class:type,ice_water_phase:str,temp_phase_switch:float):
+
+def validate_parameter_combinations(
+        error_class: type,
+        ice_water_phase: str,
+        temp_phase_switch: float):
     """Validate the paramter combinations
 
     :param error_class: Exception to raise
@@ -70,16 +89,25 @@ def validate_parameter_combinations(error_class:type,ice_water_phase:str,temp_ph
     :raises error_class: Cannot use ice_water_phase without setting temp_phase_switch
     :raises error_class: Cannot use temp_phase_switch without setting ice_water_phase
     """
-    if (ice_water_phase=='water') and not (temp_phase_switch is None):
-        raise error_class('Cannot use ice_water_phase="water" with temp_phase_switch\n')
+    if (ice_water_phase == 'water') and not (temp_phase_switch is None):
+        raise error_class(
+            'Cannot use ice_water_phase="water" with temp_phase_switch\n')
 
-    if (not (ice_water_phase is None) and (ice_water_phase!='water')) and (temp_phase_switch is None):
-        raise error_class('Cannot use ice_water_phase without setting temp_phase_switch\n')
+    if (not (ice_water_phase is None) and (ice_water_phase != 'water')) and (
+            temp_phase_switch is None):
+        raise error_class(
+            'Cannot use ice_water_phase without setting temp_phase_switch\n')
 
     if not (temp_phase_switch is None) and (ice_water_phase is None):
-        raise error_class('Cannot use temp_phase_switch without setting ice_water_phase\n')
+        raise error_class(
+            'Cannot use temp_phase_switch without setting ice_water_phase\n')
 
-def validate_humidity_parameters(error_class:type,ice_water_phase:str,temp_phase_switch:float,temp_phase_switch_unit:str):
+
+def validate_humidity_parameters(
+        error_class: type,
+        ice_water_phase: str,
+        temp_phase_switch: float,
+        temp_phase_switch_unit: str):
     """validate the humidity plugin parameters. Validates the paramter combinations, the phase switch temperature unit and value and the ice water phase value
 
     :param error_class: Exception to raise
@@ -91,6 +119,7 @@ def validate_humidity_parameters(error_class:type,ice_water_phase:str,temp_phase
     :param temp_phase_switch_unit: phase switch temperature unit
     :type temp_phase_switch_unit: str
     """
-    validate_parameter_combinations(error_class,ice_water_phase,temp_phase_switch)
-    validate_temp_phase_switch_unit(error_class,temp_phase_switch_unit)
-    validate_ice_water_phase(error_class,ice_water_phase)
+    validate_parameter_combinations(
+        error_class, ice_water_phase, temp_phase_switch)
+    validate_temp_phase_switch_unit(error_class, temp_phase_switch_unit)
+    validate_ice_water_phase(error_class, ice_water_phase)

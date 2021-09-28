@@ -1,1 +1,1 @@
-from .arithmeticmeanbypoint import ArithmeticMeanByPoint,ArithmeticMeanByPointError
+from .arithmeticmeanbypoint import ArithmeticMeanByPoint, ArithmeticMeanByPointError

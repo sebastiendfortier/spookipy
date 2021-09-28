@@ -20,7 +20,7 @@ echo '{' > control.json
 echo '    "name": "'${name}'",' >> control.json
 echo '    "version": "'${VERSION}'",' >> control.json
 echo '    "platform": "'${PLAT}'",' >> control.json
-echo '    "maintainer": "CMDS",' >> control.json
+echo '    "maintainer": "CMDW",' >> control.json
 echo '    "description": "'${name}' package",' >> control.json
 echo '    "x-build-date": "'`date`'",' >> control.json
 echo '    "x-build-platform": "'${BASE_ARCH}'",' >> control.json

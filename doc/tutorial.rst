@@ -31,11 +31,11 @@ See the contents of the dataframe
 .. code:: python
 
     import fstpy.all as fstpy
-    df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std',load_data=True,query='nomvar=="TT"').to_pandas()
+    df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std',query='nomvar=="TT"').to_pandas()
     # show the last rows of the dataframe
     print(df.tail())
 
-.. code:: example
+example::
 
     :    nomvar typvar  ...                                               path        grid
     : 80     TT      P  ...  /fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_...  3379277761
@@ -53,7 +53,7 @@ See the contents of the dataframe
     # show column names of the dataframe
     print(df.columns)
 
-.. code:: example
+example::
 
     : Index(['nomvar', 'typvar', 'etiket', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2',
     :        'ip3', 'deet', 'npas', 'datyp', 'nbits', 'grtyp', 'ig1', 'ig2', 'ig3',
@@ -68,7 +68,7 @@ See the contents of the dataframe
     # show the levels contained in the dataframe
     print(df.level)
 
-.. code:: example
+example::
 
     0       0.997502
     1       0.992524
@@ -90,7 +90,7 @@ See the contents of the dataframe
     # show the unique levels contained in the dataframe
     print(df.level.unique())
 
-.. code:: example
+example::
 
     [ 9.97502e-01  9.92524e-01  9.86026e-01  9.77868e-01  9.68043e-01
       9.56665e-01  9.43925e-01  9.30004e-01  9.14966e-01  8.98642e-01
@@ -109,7 +109,7 @@ See the contents of the dataframe
     # show a subset of columns of the dataframe
     print(df[['nomvar','typvar','etiket','ni','nj','nk','dateo','ip1','ip2','ip3']])
 
-.. code:: example
+example::
 
      nomvar typvar     etiket    ni    nj  nk      dateo       ip1    ip2  ip3
     0        ^^      X  R1_V710_N     1  1081   1  442998800     50460  53326    4
@@ -133,7 +133,7 @@ See the contents of the dataframe
     # show a voir like output of the dataframe
     fstpy.voir(df.head())
 
-.. code:: example
+example::
 
     :   nomvar typvar     etiket    ni    nj  nk               dateo       ip1    ip2  ip3  deet  npas datyp  nbits grtyp    ig1    ig2    ig3    ig4     level
     : 0     ZZ      P  R1_V710_N  1108  1082   1 2020-07-14 12:00:00  95791989      6    0   300    72     f     12     Z  33792  77761      1      0  0.037157  hy
@@ -145,17 +145,17 @@ See the contents of the dataframe
 select sub-sets of data
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-**Note**: fstpy.select is a wrapper for pandas.DataFrame.query method
+
 
 .. code:: python
 
     import fstpy.all as fstpy
-    df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std',load_data=True).to_pandas()
+    df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std').to_pandas()
     # select TT
-    sel_tt_df = fstpy.select(df,'nomvar=="TT"')
+    sel_tt_df = df.query('nomvar=="TT"')
     print(sel_tt_df.head())
 
-.. code:: example
+example::
 
     :   nomvar typvar     etiket  ...      datev        grid  file_modification_time
     : 0     TT      P  R1_V710_N  ...  443004200  3379277761     2021-01-26 09:31:54
@@ -171,11 +171,11 @@ select sub-sets of data
     import fstpy.all as fstpy
     df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std').to_pandas()
     # select UU and VV
-    sel_uuvv_df = fstpy.select(df,'nomvar in ["UU","VV"]')
+    sel_uuvv_df = df.query('nomvar in ["UU","VV"]')
     print(sel_uuvv_df.head())
     print(sel_uuvv_df.tail())
 
-.. code:: example
+example::
 
       nomvar typvar     etiket  ...  file_modification_time        grid            shape
     0     VV      P  R1_V710_N  ...     2021-01-26 09:31:54  3379277761  (1108, 1082, 1)
@@ -199,10 +199,10 @@ select sub-sets of data
     import fstpy.all as fstpy
     df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std').to_pandas()
     # select UU and VV with ip2 of 6
-    sel_uuvv6_df = fstpy.select(df,'(nomvar in ["UU","VV"]) and (ip2==6)')
+    sel_uuvv6_df = df.query('(nomvar in ["UU","VV"]) and (ip2==6)')
     print(sel_uuvv6_df.tail()[['nomvar','ip2']])
 
-.. code:: example
+example::
 
     :     nomvar  ip2
     : 165     UU    6
@@ -236,12 +236,12 @@ Modify meta data
     import fstpy.all as fstpy
     df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std').to_pandas()
     # select TT
-    sel_tt_df = fstpy.select(df,'nomvar=="TT"')
+    sel_tt_df = df.query('nomvar=="TT"')
     # change nomvar from TT to TTI
     zapped_df = fstpy.zap(sel_tt_df,nomvar='TTI')
     print(zapped_df.head())
 
-.. code:: example
+example::
 
     :   nomvar typvar  ...      key            shape
     : 0    TTI      P  ...  1263617  (1108, 1082, 1)
@@ -264,7 +264,7 @@ Reformatting meta data for other types or structures
     df.rename(columns=translation, inplace=True)
     print(df[['fieldName','pdsLabel','dateOfObservation']])
 
-.. code:: example
+example::
 
      fieldName   pdsLabel  dateOfObservation
     0           QR  R1_V710_N          442998800
@@ -292,17 +292,17 @@ Getting the associated data for each record in the dataframe
     import fstpy.all as fstpy
     df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std',decode_metadata=True).to_pandas()
     # we don't want to get all the data so lets get a subset
-    uuvv_df = fstpy.select(df,'(nomvar in ["UU","VV"]) and (surface==True)')
+    uuvv_df = df.query('(nomvar in ["UU","VV"]) and (surface==True)')
     print(uuvv_df.head())
-    tt_df = fstpy.select(df,'(nomvar=="TT") and (surface==True)')
+    tt_df = df.query('(nomvar=="TT") and (surface==True)')
     print(tt_df.head())
     # get the data for our new dataframes
     # after this operation the 'd' column of each dataframe contains a numpy ndarray
-    uuvv_df = fstpy.load_data(uuvv_df)
-    tt_df = fstpy.load_data(tt_df)
+    uuvv_df = fstpy.compute(uuvv_df)
+    tt_df = fstpy.compute(tt_df)
     print(tt_df[['nomvar','d']].head())
 
-.. code:: example
+example::
 
       nomvar typvar     etiket    ni  ...  zapped  ip2_dec      datev  level
     0     VV      P  R1_V710_N  1108  ...   False      6.0  443004200   10.0
@@ -326,12 +326,12 @@ Wind Modulus
 
     import fstpy.all as fstpy
     df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std',decode_metadata=True).to_pandas()
-    uuvv_df = fstpy.select(df,'(nomvar in ["UU","VV"]) and (surface==True)')
-    uuvv_df = fstpy.load_data(uuvv_df)
+    uuvv_df = df.query('(nomvar in ["UU","VV"]) and (surface==True)')
+    uuvv_df = fstpy.compute(uuvv_df)
     # first we need the wind modulus (we assume that we have only 1 level in each dataframe)
     # let's separate uu and vv from uuvv_df
-    uu_df = fstpy.select(uuvv_df,'nomvar=="UU"')
-    vv_df = fstpy.select(uuvv_df,'nomvar=="VV"')
+    uu_df = uuvv_df.query('nomvar=="UU"')
+    vv_df = uuvv_df.query('nomvar=="VV"')
 
     #let's create a record to hold the result and change the nomvar accordingly
     uv_df = vv_df.copy(deep=True)
@@ -347,7 +347,7 @@ Wind Modulus
     uv_df.at[0,'d'] = (uu**2 + vv**2)**.5
     print(uv_df[['nomvar','d']])
 
-.. code:: example
+example::
 
     UU [[-6.270401  -6.6483307 -6.9207916 ... -2.714737  -3.1170807 -3.4950104]
      [-6.3768463 -6.7743073 -7.084854  ... -2.951065  -3.0487213 -3.2401276]
@@ -380,17 +380,17 @@ Wind Chill
     import fstpy.all as fstpy
     import numpy as np
     df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std',decode_metadata=True).to_pandas()
-    uuvv_df = fstpy.select(df,'(nomvar in ["UU","VV"]) and (surface==True)')
-    uuvv_df = fstpy.load_data(uuvv_df)
-    uu_df = fstpy.select(uuvv_df,'nomvar=="UU"')
-    vv_df = fstpy.select(uuvv_df,'nomvar=="VV"')
+    uuvv_df = df.query('(nomvar in ["UU","VV"]) and (surface==True)')
+    uuvv_df = fstpy.compute(uuvv_df)
+    uu_df = uuvv_df.query('nomvar=="UU"')
+    vv_df = uuvv_df.query('nomvar=="VV"')
     uv_df = vv_df.copy(deep=True)
     uv_df = fstpy.zap(uv_df,nomvar='UV')
     uu = (uu_df.iloc[0]['d']) #iloc[0]['d'] gets the first row of data from the dataframe
     vv = (vv_df.iloc[0]['d'])
     uv_df.at[0,'d'] = (uu**2 + vv**2)**.5
-    tt_df = fstpy.select(df,'(nomvar=="TT") and (surface==True)')
-    tt_df = fstpy.load_data(uuvv_df)
+    tt_df = df.query('(nomvar=="TT") and (surface==True)')
+    tt_df = fstpy.compute(uuvv_df)
     # at this point we have uv_df and tt_df but uv_df is in knots
     # we need to do a unit conversion on uv_df to get it in kph
     # print(UNITS) to get a list of units
@@ -408,7 +408,7 @@ Wind Chill
     re_df.at[0,'d'] = np.where( (tt <= 0) & (uv >= 5), 13.12 + 0.6215 * tt + ( 0.3965 * tt - 11.37) * ( uv**0.16 ), tt)
     print(re_df.head()[['nomvar','d']])
 
-.. code:: example
+example::
 
     :   nomvar                                                  d
     : 0     RE  [[18.566509246826172, 19.054790496826172, 19.5...
@@ -424,10 +424,10 @@ Basic statistics for each record in a dataframe
     # read
     df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std').to_pandas()
 
-    df = fstpy.select(df,'nomvar=="TT"')
+    df = df.query('nomvar=="TT"')
 
     #load_data
-    df = fstpy.load_data(df)
+    df = fstpy.compute(df)
 
     # function to calculate stats on each row of the dataframe
     # function exists in std.standardfile
@@ -456,7 +456,7 @@ Basic statistics for each record in a dataframe
     df = compute_basic_stats(df)
     print(df.head())
 
-.. code:: example
+example::
 
     :   nomvar typvar     etiket    ni  ...     mean      std      min_pos     max_pos
     : 0     TT      P  R1_V710_N  1108  ...  9.62213  7.16631   (905, 751)  (631, 280)
@@ -479,14 +479,14 @@ Basic statistics for each column of 3d matrix
     df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std').to_pandas()
 
     # get TT
-    tt_df = fstpy.select(df,'nomvar=="TT"')
+    tt_df = df.query('nomvar=="TT"')
 
     #load_data
-    tt_df = fstpy.load_data(tt_df)
+    tt_df = fstpy.compute(tt_df)
 
     # flatten arrays of the dataframe since second dimension is'nt necessary
     for i in tt_df.index:
-        tt_df.at[i,'d'] = tt_df.at[i,'d'].flatten()
+        tt_df.at[i,'d'] = tt_df.at[i,'d'].ravel(order='F')
 
     #get a 3d array of TT
     array_3d = np.stack(tt_df['d'].to_list())
@@ -505,8 +505,10 @@ Basic statistics for each column of 3d matrix
 
     # creates a 1 row dataframe based on a model dataframe
     def create_result_df(df:pd.DataFrame, nomvar:str, operation_name:str) ->  pd.DataFrame:
-        res_df = fstpy.create_1row_df_from_model(df)
-        res_df = fstpy.zap(res_df, nomvar=nomvar, etiket=operation_name)
+        res_df = df.iloc[0].to_dict()
+        res_df = pd.DataFrame([res_df])
+        res_df = res_df.loc[:,'nomvar'] = nomvar
+        res_df = res_df.loc[:,'etiket'] = operation_name
         return res_df
 
 
@@ -527,7 +529,7 @@ Basic statistics for each column of 3d matrix
     res_df = pd.concat([min_df,max_df,std_df,mean_df],ignore_index=True)
     print(res_df.to_string())
 
-.. code:: example
+example::
 
     :   nomvar typvar   etiket    ni    nj  nk      dateo       ip1  ip2  ip3  deet  npas  datyp  nbits grtyp    ig1    ig2  ig3  ig4                                                    path      datev   key                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    d        grid file_modification_time            shape
     : 0    MIN      P  MINIMUM  1108  1082   1  442998800  95178882    6    0   300    72    134     16     Z  33792  77761    1    0  /fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std  443004200  None                                                                   [-78.92189, -78.9592, -78.99924, -79.03244, -79.056854, -79.079315, -79.09396, -79.11447, -79.13791, -79.1633, -79.19357, -79.25412, -79.32443, -79.38791, -79.451385, -79.49631, -79.52463, -79.54025, -79.55295, -79.58029, -79.616425, -79.66916, -79.732635, -79.79904, -79.860565, -79.91916, -79.97287, -80.02463, -80.07248, -80.1174, -80.15256, -80.18869, -80.229706, -80.263885, -80.29318, -80.32541, -80.351776, -80.37814, -80.40451, -80.43283, -80.46408, -80.49826, -80.53732, -80.57248, -80.60275, -80.62619, -80.63986, -80.64377, -80.635956, -80.619354, -80.603226, -80.61397, -80.61592, -80.606155, -80.61447, -80.619354, -80.60959, -80.59299, -80.576385, -80.56564, -80.55002, -80.52463, -80.48361, -80.431854, -80.372284, -80.30783, -80.321976, -80.3542, -80.38643, -80.41963, -80.45772, -80.50264, -80.54854, -80.59053, -80.62471, -80.65889, -80.70772, -80.78096, -80.864944, -80.927444, -80.94893, -80.92842, -80.89424, -80.86299, -80.84639, -80.853226, -80.86104, -80.86104, -80.8669, -80.87862, -80.896194, -80.9294, -80.97334, -81.02217, -81.07686, -81.13545, -81.196976, -81.26338, -81.32979, -81.39229, ...]  3379277761                   None  (1108, 1082, 1)
@@ -544,7 +546,7 @@ Getting groups of data
 
     df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std',decode_metadata=True).to_pandas()
 
-    tt_df = fstpy.select(df,'nomvar in ["TT","QR"]')
+    tt_df = df.query('nomvar in ["TT","QR"]')
 
     # grouping data by grid, the usual case when you have multiple grids in a dataframe
     grid_groups = tt_df.groupby(by=['grid'])
@@ -552,7 +554,7 @@ Getting groups of data
     for _,grid_df in grid_groups:
         print(grid_df.head()[['nomvar','grid']])
 
-.. code:: example
+example::
 
     nomvar        grid
     168     TT  3379277761
@@ -573,7 +575,7 @@ Getting groups of data
 
     df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std',decode_metadata=True).to_pandas()
 
-    tt_df = fstpy.select(df,'nomvar in ["TT",">>"]')
+    tt_df = df.query('nomvar in ["TT",">>"]')
 
     # grouping data by forecast hour, the usual case when you have multiple forecast hours per grid in a dataframe
     forecast_hour_groups = tt_df.groupby(by=['grid','forecast_hour'])
@@ -581,7 +583,7 @@ Getting groups of data
     for _,forecast_hour_df in forecast_hour_groups:
         print(forecast_hour_df.head())
 
-.. code:: example
+example::
 
        nomvar typvar     etiket  ...   label  date_of_observation  ip2_kind
     87     >>      X  R1_V710_N  ...  _V710_  2020-07-14 12:00:00        -1
@@ -610,7 +612,7 @@ Getting groups of data
 
     df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std',decode_metadata=True).to_pandas()
 
-    tt_df = fstpy.select(df,'nomvar in ["TT","UU","VV"]')
+    tt_df = df.query('nomvar in ["TT","UU","VV"]')
 
     # grouping data by level, the usual case when you have multiple levels per grid in a dataframe
     levels_groups =tt_df.groupby(by=['grid','level'])
@@ -618,7 +620,7 @@ Getting groups of data
     for _,level_df in levels_groups:
         print(level_df.head()[['nomvar','level']])
 
-.. code:: example
+example::
 
     nomvar     level
     169     UU  0.000101
@@ -652,9 +654,9 @@ With fstpy
        df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std').to_pandas()
 
        # select TT only from input
-       tt_df = fstpy.select(df,'nomvar=="TT"')
+       tt_df = df.query('nomvar=="TT"')
 
-       # this will write the dataframe to the output file, if no data was fstpy.load_datad, the class will do it
+       # this will write the dataframe to the output file, if no data was loaded, the class will do it
        from os import getenv
        USER = getenv("USER")
        std_file = fstpy.StandardFileWriter('/tmp/%s/TT.std'%USER, tt_df)
@@ -672,9 +674,9 @@ With fstpy
        df = fstpy.StandardFileReader('/fs/site4/eccc/cmd/w/sbf000/fstpy/source_data_5005.std').to_pandas()
 
        # select TT only from input
-       tt_df = fstpy.select(df,'nomvar=="TT"')
+       tt_df = df.query('nomvar=="TT"')
 
-       # this will write the complete dataframe to the compressed output file, if no data was fstpy.load_datad no data will be written,
+       # this will write the complete dataframe to the compressed output file, if no data was loaded no data will be written,
        # 'd' column will be None
        from os import getenv
        USER = getenv("USER")

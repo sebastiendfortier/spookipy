@@ -1,1 +1,1 @@
-from .gridcut import GridCut,GridCutError
+from .gridcut import GridCut, GridCutError

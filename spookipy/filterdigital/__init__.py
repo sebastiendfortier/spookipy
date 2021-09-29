@@ -1,2 +1,2 @@
 from .filterdigital import FilterDigital, FilterDigitalError
-from .stenfilt import filtre
+from .f_stenfilt import f_stenfilt

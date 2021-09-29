@@ -1,29 +1,33 @@
 # -*- coding: utf-8 -*-
-from ..utils import initializer
-from ..plugin import Plugin
-import pandas as pd
 import logging
+
+import pandas as pd
+
 from ..opelementsbyvalue import OpElementsByValue
+from ..plugin import Plugin
+from ..utils import initializer
 
 
 def add_value(a, v):
     return a + v
 
+
 class AddToElementsError(Exception):
     pass
 
+
 class AddToElements(Plugin):
     @initializer
-    def __init__(self, df:pd.DataFrame, value, nomvar_out=None):
+    def __init__(self, df: pd.DataFrame, value, nomvar_out=None):
         pass
 
     def compute(self) -> pd.DataFrame:
-        logging.info('AddToElements - compute\n')
+        logging.info('AddToElements - compute')
         return OpElementsByValue(
-            df = self.df,
-            operator = add_value,
-            value = self.value,
+            df=self.df,
+            operator=add_value,
+            value=self.value,
             operation_name='AddToElements',
-            exception_class = AddToElementsError,
-            nomvar_out= self.nomvar_out,
+            exception_class=AddToElementsError,
+            nomvar_out=self.nomvar_out,
             etiket='ADDTOE').compute()

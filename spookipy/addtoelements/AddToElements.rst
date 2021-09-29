@@ -20,7 +20,7 @@ Français
 
 \*Algorithme:\*
 
-.. code:: example
+example::
 
     Soit F, un champ de n éléments
 
@@ -44,7 +44,7 @@ Français
 
 **Exemple d'appel:**
 
-.. code:: example
+example::
 
     ...
     spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/AddToElement/testsFiles/inputFile.std] >>
@@ -92,7 +92,7 @@ English
 
 \*Algorithm:\*
 
-.. code:: example
+example::
 
     For F, a field of n elements
 
@@ -116,7 +116,7 @@ English
 
 **Call example:**
 
-.. code:: example
+example::
 
     ...
     spooki_run "[ReaderStd --input $SPOOKI_DIR/pluginsRelatedStuff/AddToElement/testsFiles/inputFile.std] >>

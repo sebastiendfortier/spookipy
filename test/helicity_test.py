@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
-from test import TMP_PATH,TEST_PATH
-import pytest
+from test import TEST_PATH, TMP_PATH
+
 import fstpy.all as fstpy
+import pytest
 import spookipy.all as spooki
 from ci_fstcomp import fstcomp
 
 pytestmark = [pytest.mark.skip]
+
 
 @pytest.fixture
 def plugin_test_dir():
@@ -18,13 +20,12 @@ def test_1(plugin_test_dir):
     source0 = plugin_test_dir + "UUVVGZ77x57x54_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-
-    #compute Helicity
+    # compute Helicity
     df = spooki.Helicity(src_df0).compute()
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Helicity] >>
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Helicity] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --makeIP1EncodingWorkWithTests]
 
-    #write the result
+    # write the result
     results_file = TMP_PATH + "test_1.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
@@ -32,7 +33,7 @@ def test_1(plugin_test_dir):
     # open and read comparison file
     file_to_compare = plugin_test_dir + "helicity3_file2cmp.std"
 
-    #compare results
-    res = fstcomp(results_file,file_to_compare)
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)

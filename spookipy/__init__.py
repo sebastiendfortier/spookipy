@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
-import pandas as pd
+import os
+from pathlib import Path
 
-def __add__(self, other):
-    return pd.concat([self,other],ignore_index=True)
 
+p = Path(os.path.abspath(__file__))
+v_file = open(p.parent.parent / 'VERSION')
+__version__ = v_file.readline().strip()
+v_file.close()

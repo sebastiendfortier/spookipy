@@ -10,7 +10,7 @@ __version__ = v_file.readline()
 v_file.close()
 
 setuptools.setup(
-    name="spookipy", # Replace with your own username
+    name="spookipy",  # Replace with your own username
     version=__version__,
     author="Sebastien Fortier",
     author_email="sebastien.fortier@canada.ca",
@@ -27,7 +27,7 @@ setuptools.setup(
         "Operating System :: OS Linux",
     ],
     install_requires=[
-        'pandas>=1.1.5','fstpy>=2.1.6'
+        'pandas>=1.2.4', 'fstpy>=2.1.7','xarray>=0.19.0','numpy>=1.19.5','dask>=2021.8.0'
     ],
     packages=setuptools.find_packages(exclude='test'),
     include_package_data=True,

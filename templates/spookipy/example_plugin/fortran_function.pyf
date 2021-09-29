@@ -1,0 +1,17 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module fortran_function ! in 
+    interface  ! in :fortran_function
+        subroutine fortran_function(a,b,ni,nj,res) ! in :fortran_function:fortran_function.f90
+            real dimension(ni,nj),intent(in) :: a
+            real dimension(ni,nj),intent(in),depend(ni,nj) :: b
+            integer, optional,intent(in),check(shape(a,0)==ni),depend(a) :: ni=shape(a,0)
+            integer, optional,intent(in),check(shape(a,1)==nj),depend(a) :: nj=shape(a,1)
+            real dimension(ni,nj),intent(out),depend(ni,nj) :: res
+        end subroutine fortran_function
+    end interface 
+end python module fortran_function
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/

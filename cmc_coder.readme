@@ -1,0 +1,88 @@
+SETTING YOUR DEV ENVIRONMENT
+----------------------------
+
+/home/mobaxterm $ ssh ppp[3|4]
+
+[sbf000@eccc2-ppp4 ~] $ mkdir src
+[sbf000@eccc2-ppp4 ~] $ cd src
+[sbf000@eccc2-ppp4 ~] $ git clone git@gitlab.science.gc.ca:cmdw-spooki/spookipy.git
+[sbf000@eccc2-ppp4 ~] $ cd spookipy
+[sbf000@eccc2-ppp4 ~] $ git checkout -b your_work_branch
+[sbf000@eccc2-ppp4 ~] $ . setup.sh
+
+
+
+RUNNING TESTS
+-------------
+# cd to test dir
+[sbf000@eccc2-ppp4 ~] $ cd src/spookipy/test    or where you have put your clone directory
+# get the file comparison tool
+[sbf000@eccc2-ppp4 ~] $ . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/apps/ci_fstcomp/1.0.2
+# get surgepy conda environment
+[sbf000@eccc2-ppp4 ~] $ . ssmuse-sh -d /fs/ssm/eccc/cmd/cmde/surge/surgepy/1.0.8/
+# load rmn libraries
+[sbf000@eccc2-ppp4 ~] $ . r.load.dot eccc/mrd/rpn/MIG/ENV/migdep/5.1.1 eccc/mrd/rpn/MIG/ENV/rpnpy/2.1.2
+# run all tests 
+[sbf000@eccc2-ppp4 ~] $ pytest -v
+# run a suite
+[sbf000@eccc2-ppp4 ~] $ pytest -v windmodulus_test.py
+# run a specific test
+[sbf000@eccc2-ppp4 ~] $ pytest -v windmodulus_test.py::test_1
+# run a group of tests - see pytest.ini for names of groups
+[sbf000@eccc2-ppp4 ~] $ pytest -v -m regressions
+
+
+CREATING THE DOC
+----------------
+# cd to doc dir
+[sbf000@eccc2-ppp4 ~] $ cd src/spookipy/doc    or where you have put your clone directory
+[sbf000@eccc2-ppp4 ~] $ . ssmuse-sh -d /fs/ssm/eccc/cmd/cmde/surge/surgepy/1.0.8/
+
+RUNNING JUPYTER LAB
+-------------------
+From my ec laptop in mobaxterm
+
+/home/mobaxterm $ ssh ppp[3|4]
+
+Get a computing node
+
+[sbf000@eccc2-ppp4 ~] $ ~for000/bin/g2cm
+
+Get jupyterlab and all other necessary python packages 
+
+[sbf000@cs4be-197p34 ~] $ . ssmuse-sh -d /fs/ssm/eccc/cmd/cmde/surge/surgepy/1.0.8/
+
+
+Run jupter lab
+
+This script starts jupyter lab ans gives me the info for the port fowarding. 
+Make a copy for yourself and change the port to something else than 5053 
+In doubt, just increment it
+Also change the pythonpath for fstpy and spookiy for your personal work directories
+
+[sbf000@cs4be-197p34 ~] $ public/start_jupyter_dev.sh 
+
+...
+from home computer run ssh -L 5053:10.216.46.193:5053 eccc-ppp4
+then in your firefox proxy browser go to localhost:5053
+starting jupyter lab
+...
+[I 2021-09-16 06:55:31.574 ServerApp] http://10.216.46.193:5053/lab?token=6f9f49efc0cb8f6fafd7160795d1ebf6f1766b5b42cd9bc1
+[I 2021-09-16 06:55:31.574 ServerApp]  or http://127.0.0.1:5053/lab?token=6f9f49efc0cb8f6fafd7160795d1ebf6f1766b5b42cd9bc1
+[I 2021-09-16 06:55:31.574 ServerApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 2021-09-16 06:55:31.597 ServerApp]
+
+    To access the server, open this file in a browser:
+        file:///fs/homeu1/eccc/cmd/cmdw/sbf000/.local/share/jupyter/runtime/jpserver-1178-open.html
+    Or copy and paste one of these URLs:
+        http://10.216.46.193:5053/lab?token=6f9f49efc0cb8f6fafd7160795d1ebf6f1766b5b42cd9bc1
+     or http://127.0.0.1:5053/lab?token=6f9f49efc0cb8f6fafd7160795d1ebf6f1766b5b42cd9bc1              < -------- copy this link and paste it in brower on your ec laptop
+
+
+
+
+In another mobaxterm terminal
+
+/home/mobaxterm $ ssh -L 5053:10.216.46.193:5053 sbf000@eccc-ppp4
+
+Keep it opened

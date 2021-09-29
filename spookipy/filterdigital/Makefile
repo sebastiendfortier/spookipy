@@ -3,10 +3,10 @@
 all: lib interface
 
 lib:
-	f2py3 -c -m stenfilt stenfilt.f90
+	f2py3 -c -m f_stenfilt f_stenfilt.f90
 
 interface:
-	f2py3 -h stenfilt.pyf stenfilt.f90 -m stenfilt
+	f2py3 -h f_stenfilt.pyf f_stenfilt.f90 -m f_stenfilt
 
 clean:
 	rm -f *.pyf *.so

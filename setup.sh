@@ -20,8 +20,6 @@ fi
 use_spookipy(){
     use_spookipy_deps
     add_spookipy_to_pythonpath
-    echo 'modifiy your PYTHONPATH to include fstpy or use the following ssm package'
-    echo '. ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/2.1.6'
 }
 
 add_spookipy_to_pythonpath(){
@@ -33,18 +31,17 @@ add_spookipy_to_pythonpath(){
     export PYTHONPATH=$spookipy_packages_dir:$PYTHONPATH
 }
 
+print_and_do(){
+   message $@
+   eval $@
+}
+
 use_spookipy_deps(){
     # spookipy uses low-level python binding for
     # librmn functions provided by rpnpy
-    echo '. r.load.dot eccc/mrd/rpn/MIG/ENV/migdep/5.1.1 eccc/mrd/rpn/MIG/ENV/rpnpy/2.1.2'
-    . r.load.dot eccc/mrd/rpn/MIG/ENV/migdep/5.1.1 eccc/mrd/rpn/MIG/ENV/rpnpy/2.1.2
-    echo '. ssmuse-sh -d /fs/ssm/eccc/cmd/cmdw/PRIVATE/dev_python_packages/python3.6/all/2021.09'
-    . ssmuse-sh -d /fs/ssm/eccc/cmd/cmdw/PRIVATE/dev_python_packages/python3.6/all/2021.09
-    echo '. ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python_packages/python3.6/all/2021.07'
-    . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python_packages/python3.6/all/2021.07
-    echo '. ssmuse-sh -d /fs/site4/eccc/cmd/w/sbf000/ssm/cifstcomp/1.0.0'
-    . ssmuse-sh -d /fs/site4/eccc/cmd/w/sbf000/ssm/cifstcomp/1.0.0
-    # . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/fstpy/2.1.6
+    print_and_do . r.load.dot eccc/mrd/rpn/MIG/ENV/migdep/5.1.1 eccc/mrd/rpn/MIG/ENV/rpnpy/2.1.2
+    print_and_do . ssmuse-sh -d /fs/ssm/eccc/cmd/cmde/surge/surgepy/1.0.8/
+    print_and_do . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/apps/ci_fstcomp/1.0.3
 }
 
 use_spookipy

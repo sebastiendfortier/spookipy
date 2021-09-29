@@ -1,17 +1,19 @@
 # -*- coding: utf-8 -*-
-from test import TMP_PATH,TEST_PATH
-import pytest
-import fstpy.all as fstpy
-import spookipy.all as spooki
-import pandas as pd
-from ci_fstcomp import fstcomp
+from test import TEST_PATH, TMP_PATH
 
+import fstpy.all as fstpy
+import pandas as pd
+import pytest
+import spookipy.all as spooki
+from ci_fstcomp import fstcomp
 
 pytestmark = [pytest.mark.regressions]
 
+
 @pytest.fixture
 def plugin_test_dir():
-    return TEST_PATH +"GridCut/testsFiles/"
+    return TEST_PATH + "GridCut/testsFiles/"
+
 
 def test_1(plugin_test_dir):
     """Tester sur une zone de 3x4 depuis une extremite de la matrice."""
@@ -19,12 +21,15 @@ def test_1(plugin_test_dir):
     source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    #compute GridCut
-    df = spooki.GridCut(src_df0,start_point=(0,0), end_point=(2,3)).compute()
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [GridCut --start_point 0,0 --end_point 2,3] >> [WriterStd --output {destination_path} --ignoreExtended]
+    # compute GridCut
+    df = spooki.GridCut(
+        src_df0, start_point=(
+            0, 0), end_point=(
+            2, 3)).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GridCut --start_point 0,0 --end_point 2,3] >> [WriterStd --output {destination_path} --ignoreExtended]
 
     df = spooki.convip(df)
-    #write the result
+    # write the result
     results_file = TMP_PATH + "test_1.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
@@ -32,9 +37,8 @@ def test_1(plugin_test_dir):
     # open and read comparison file
     file_to_compare = plugin_test_dir + "gc_test_1.std"
 
-
-    #compare results
-    res = fstcomp(results_file,file_to_compare)
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -45,12 +49,15 @@ def test_2(plugin_test_dir):
     source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    #compute GridCut
-    df = spooki.GridCut(src_df0, start_point=(2,1), end_point=(4,4)).compute()
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [GridCut --start_point 2,1 --end_point 4,4] >> [WriterStd --output {destination_path} --ignoreExtended]
+    # compute GridCut
+    df = spooki.GridCut(
+        src_df0, start_point=(
+            2, 1), end_point=(
+            4, 4)).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GridCut --start_point 2,1 --end_point 4,4] >> [WriterStd --output {destination_path} --ignoreExtended]
 
     df = spooki.convip(df)
-    #write the result
+    # write the result
     results_file = TMP_PATH + "test_2.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
@@ -58,8 +65,8 @@ def test_2(plugin_test_dir):
     # open and read comparison file
     file_to_compare = plugin_test_dir + "gc_test_2.std"
 
-    #compare results
-    res = fstcomp(results_file,file_to_compare)
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -70,13 +77,15 @@ def test_3(plugin_test_dir):
     source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-
-    #compute GridCut
-    df = spooki.GridCut(src_df0,start_point=(0,0),end_point=(4,4)).compute()
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [GridCut --start_point 0,0 --end_point 4,4] >>
+    # compute GridCut
+    df = spooki.GridCut(
+        src_df0, start_point=(
+            0, 0), end_point=(
+            4, 4)).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GridCut --start_point 0,0 --end_point 4,4] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
-    #write the result
+    # write the result
     results_file = TMP_PATH + "test_3.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
@@ -84,8 +93,8 @@ def test_3(plugin_test_dir):
     # open and read comparison file
     file_to_compare = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
 
-    #compare results
-    res = fstcomp(results_file,file_to_compare)
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -96,11 +105,13 @@ def test_4(plugin_test_dir):
     source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-
-    #compute GridCut
+    # compute GridCut
     with pytest.raises(spooki.GridCutError):
-        _ = spooki.GridCut(src_df0,start_point=(0,0),end_point=(4,5)).compute()
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [GridCut --start_point 0,0 --end_point 4,5]
+        _ = spooki.GridCut(
+            src_df0, start_point=(
+                0, 0), end_point=(
+                4, 5)).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GridCut --start_point 0,0 --end_point 4,5]
 
 
 def test_5(plugin_test_dir):
@@ -109,12 +120,16 @@ def test_5(plugin_test_dir):
     source0 = plugin_test_dir + "2014031800_024_reghyb_TT.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
+         
+    # compute GridCut
+    df = spooki.GridCut(
+        src_df0, start_point=(
+            4, 6), end_point=(
+            28, 30)).compute()
+           
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GridCut --start_point 4,6 --end_point 28,30] >> [WriterStd --output {destination_path} --ignoreExtended]
 
-    #compute GridCut
-    df = spooki.GridCut(src_df0,start_point=(4,6),end_point=(28,30)).compute()
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [GridCut --start_point 4,6 --end_point 28,30] >> [WriterStd --output {destination_path} --ignoreExtended]
-
-    #write the result
+    # write the result
     results_file = TMP_PATH + "test_5.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
@@ -122,8 +137,8 @@ def test_5(plugin_test_dir):
     # open and read comparison file
     file_to_compare = plugin_test_dir + "gc_test_5.std"
 
-    #compare results
-    res = fstcomp(results_file,file_to_compare)
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -133,18 +148,20 @@ def test_6(plugin_test_dir):
     # open and read source
     source0 = plugin_test_dir + "glbpres_TT_UU_VV.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-
-
-    #compute GridCut
-    df = spooki.GridCut(src_df0,start_point=(0,0),end_point=(511,399)).compute()
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [GridCut --start_point 0,0 --end_point 511,399] >> [WriterStd --output {destination_path} --ignoreExtended]
-
+    print('src_df0',src_df0[['nomvar','ni','nj','grid','ip1','ip2','ig1','ig2']].to_string())   
+    # compute GridCut
+    df = spooki.GridCut(
+        src_df0, start_point=(
+            0, 0), end_point=(
+            511, 399)).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GridCut --start_point 0,0 --end_point 511,399] >> [WriterStd --output {destination_path} --ignoreExtended]
+    print('after gridcut',df[['nomvar','ni','nj','grid','ip1','ip2','ig1','ig2']].to_string()) 
     #temp fix for missing !!
-    toctoc = df.loc[(df.nomvar=="!!") & (df.ig1==5002)].reset_index(drop=True)
-    df = df.loc[df.nomvar!="!!"].reset_index(drop=True)
+    # toctoc = df.loc[(df.nomvar=="!!") & (df.ig1==5002)].reset_index(drop=True)
+    # df = df.loc[df.nomvar!="!!"].reset_index(drop=True)
 
-    df = pd.concat([toctoc,df],ignore_index=True)
-    #write the result
+    # df = pd.concat([toctoc,df],ignore_index=True)
+    # write the result
     results_file = TMP_PATH + "test_6.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
@@ -152,8 +169,8 @@ def test_6(plugin_test_dir):
     # open and read comparison file
     file_to_compare = plugin_test_dir + "gc_test_6.std"
 
-    #compare results
-    res = fstcomp(results_file,file_to_compare)
+    # compare results
+    res = fstcomp(results_file, file_to_compare,exclude_meta=True)
     fstpy.delete_file(results_file)
     assert(res)
 

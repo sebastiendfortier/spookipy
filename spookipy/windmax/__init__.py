@@ -1,1 +1,1 @@
-from .windmax import WindMax,WindMaxError,wind_max
+from .windmax import WindMax, WindMaxError, wind_max

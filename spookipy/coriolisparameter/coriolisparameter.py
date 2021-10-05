@@ -21,7 +21,7 @@ def coriolis_parameter(lat_2d: np.ndarray) -> np.ndarray:
     :rtype: np.ndarray
     """
     # 2 * omega = 0.00014584
-    return 0.00014584 * np.sin(lat_2d * (math.pi / 180)).astype(float32)
+    return 0.00014584 * np.sin(lat_2d * (math.pi / 180)).astype('float32')
 
 
 class CoriolisParameterError(Exception):

@@ -6,8 +6,8 @@ import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin
-from ..utils import (create_empty_result, final_results, get_3d_array,
-                     initializer, validate_nomvar)
+from ..utils import (create_empty_result, dataframe_arrays_to_dask, final_results, get_3d_array,
+                     initializer, reshape_arrays, to_numpy, validate_nomvar)
 
 
 class MatchLevelIndexToValueError(Exception):
@@ -63,29 +63,25 @@ class MatchLevelIndexToValue(Plugin):
     def compute(self) -> pd.DataFrame:
         logging.info('MatchLevelIndexToValue - compute')
         df_list = []
-        for _, group in self.groups:
+        for (grid, dateo, forecast_hour, ip1_kind), group_df in self.groups:
 
-            ind_df = group.loc[group.nomvar == self.nomvar_index].reset_index(drop=True)
-            ind = np.expand_dims(ind_df.iloc[0]['d'].ravel(order='F').astype(dtype=np.int32),axis=0)
-            others_df = group.loc[group.nomvar !=
-                                  self.nomvar_index].reset_index(drop=True)
+            ind_df = group_df.loc[group_df.nomvar == self.nomvar_index].reset_index(drop=True)
+            ind = np.expand_dims(to_numpy(ind_df.iloc[0]['d']).flatten().astype(dtype=np.int32),axis=0)
+            others_df = group_df.loc[group_df.nomvar != self.nomvar_index].reset_index(drop=True)
             nomvars = others_df.nomvar.unique()
+
             if not(self.nomvar_out is None) and (len(nomvars) > 1):
                 raise MatchLevelIndexToValueError(
                     'whenever parameter nomvar_out is specified, only 2 inputs are allowed: IND and another field; got {nomvars} in input')
 
             for nomvar in nomvars:
                 # get current var
-                var_df = group.loc[group.nomvar == nomvar]
+                var_df = group_df.loc[group_df.nomvar == nomvar]
 
                 # sort values by level
-                var_df = var_df.sort_values(
-                    by='level',
-                    ascending=var_df.ascending.unique()[0]).reset_index(
-                    drop=True)
+                var_df = var_df.sort_values(by='level',ascending=var_df.ascending.unique()[0]).reset_index(drop=True)
 
-                res_df = create_empty_result(
-                    var_df, self.plugin_result_specifications['ALL'])
+                res_df = create_empty_result(var_df, self.plugin_result_specifications['ALL'])
 
                 if not(self.nomvar_out is None):
                     res_df.loc[:, 'nomvar'] = self.nomvar_out
@@ -102,18 +98,17 @@ class MatchLevelIndexToValue(Plugin):
 
                 # create 3d array of our variable
                 error_row = var_df.iloc[0]
-                error_row['d'] = np.full_like(error_row['d'], self.error_value)
+                error_row['d'] = np.full_like(to_numpy(error_row['d']), self.error_value)
 
                 var_df = var_df.append(error_row).reset_index(drop=True)
                 # print(var_df[['ascending','level']])
-                arr_3d = get_3d_array(var_df)
+                var_df = fstpy.compute(var_df)
+                arr_3d = get_3d_array(var_df, flatten=True)
 
-                res_df.at[0, 'd'] = np.take_along_axis(
-                    arr_3d, valid_ind, axis=0)
+                res_df.at[0, 'd'] = np.take_along_axis(arr_3d, valid_ind, axis=0)
 
+                res_df = reshape_arrays(res_df)
+                res_df = dataframe_arrays_to_dask(res_df)
                 df_list.append(res_df)
 
-        return final_results(
-            df_list,
-            MatchLevelIndexToValueError,
-            self.meta_df)
+        return final_results(df_list, MatchLevelIndexToValueError, self.meta_df)

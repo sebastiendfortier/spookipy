@@ -6,7 +6,6 @@ import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
 
-from ..opelementsbyvalue import OpElementsByValue
 from ..plugin import Plugin
 from ..utils import create_empty_result, final_results, initializer
 

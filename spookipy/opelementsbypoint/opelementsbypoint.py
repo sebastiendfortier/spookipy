@@ -79,20 +79,17 @@ class OpElementsByPoint(Plugin):
         df_list = []
         for _, current_group in self.groups:
 
-            current_group.sort_values(
-                by=['nomvar', 'dateo', 'forecast_hour'], inplace=True)
+            current_group.sort_values(by=['nomvar', 'dateo', 'forecast_hour'], inplace=True)
             if len(current_group.index) == 1:
                 logging.warning(
                     'need more than one field for this operation - skipping')
                 continue
 
-            res_df = create_empty_result(
-                current_group, self.plugin_result_specifications['ALL'])
+            res_df = create_empty_result(current_group, self.plugin_result_specifications['ALL'])
 
             array_3d = get_3d_array(current_group)
 
-            res_df.at[0, 'd'] = self.operator(
-                array_3d, axis=0).astype(np.float32)
+            res_df.at[0, 'd'] = self.operator(array_3d, axis=0).astype(np.float32)
 
             df_list.append(res_df)
 

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import dask.array as da
 import fstpy.all as fstpy
 import numpy as np
 import pandas as pd

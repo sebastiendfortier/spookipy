@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
-from ..plugin import Plugin
-from ..utils import create_empty_result, initializer, final_results, validate_nomvar
-import pandas as pd
-import fstpy.all as fstpy
 import logging
+
+import fstpy.all as fstpy
 import numpy as np
+import pandas as pd
+
+from ..plugin import Plugin
+from ..utils import (create_empty_result, final_results, initializer,
+                     validate_nomvar)
 
 
 class OpElementsByValueError(Exception):

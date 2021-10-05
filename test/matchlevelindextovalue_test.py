@@ -10,7 +10,7 @@ from fstpy.dataframe_utils import select_with_meta
 from spookipy.matchlevelindextovalue.matchlevelindextovalue import \
     MatchLevelIndexToValueError
 
-pytestmark = [pytest.mark.skip]
+pytestmark = [pytest.mark.regressions]
 
 
 @pytest.fixture

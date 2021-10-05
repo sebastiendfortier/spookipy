@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import logging
-import sys
 
 import fstpy.all as fstpy
 import numpy as np

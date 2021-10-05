@@ -5,11 +5,11 @@ import math
 import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
-from numpy import float32
+
 
 from ..plugin import Plugin
 from ..utils import (create_empty_result, existing_results, final_results,
-                     get_existing_result, get_from_dataframe)
+                     get_existing_result)
 
 
 def coriolis_parameter(lat_2d: np.ndarray) -> np.ndarray:
@@ -97,7 +97,7 @@ class CoriolisParameter(Plugin):
 
             for i in corp_df.index:
                 corp_df.at[i, 'd'] = coriolis_parameter(
-                    lat_df.at[i, 'd']).astype(float32)
+                    lat_df.at[i, 'd']).astype('float32')
 
             df_list.append(corp_df)
 

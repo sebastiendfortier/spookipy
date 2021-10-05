@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
 import logging
-import sys
 
 import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
-from fstpy.std_reader import to_cmc_xarray
 
 from ..plugin import Plugin
-from ..utils import (create_empty_result, final_results, get_3d_array,
-                     initializer, to_numpy, validate_nomvar)
+from ..utils import (create_empty_result, dataframe_arrays_to_dask, final_results, get_3d_array,
+                     initializer, reshape_arrays, validate_nomvar)
 
 
 class MinMaxLevelIndexError(Exception):
@@ -70,95 +68,85 @@ class MinMaxLevelIndex(Plugin):
 
     def compute(self) -> pd.DataFrame:
         logging.info('MinMaxLevelIndex - compute')
-        df_list = []
-        for _, group in self.nomvar_groups:
+        df_list=[]
+        for (grid, _, _, _, _),group_df in self.nomvar_groups:
+            group_df = fstpy.compute(group_df)
 
-            group.sort_values(by='level',ascending=group.ascending.unique()[0],inplace=True)
-           
-            ds = to_cmc_xarray(group)
-                
-            # print(list(ds.keys()))   
-            first_field = list(ds.keys())[0]
-            print('UU',ds[first_field])
-            maxpos = ds[first_field].compute().argmax(dim='level') # if no compute xarray and dask dont work atm
-            print(ds[first_field].compute())
-            print('maxpos',maxpos)
-            rds = ds[first_field].reindex(level=list(reversed(ds[first_field].level)))
-            print('RUU',rds)
-            rmaxpos = rds.compute().argmax(dim='level') # if no compute xarray and dask dont work atm
-            print('rmaxpos',rmaxpos)
-            print(rds.compute())
-            mask = np.ones((ds.dims['level']))
-            print('mask',mask)
-            sys.exit(-1)
+            group_df = group_df.sort_values(by='level',ascending=group_df.ascending.unique()[0])
+            group_df.loc[:,'etiket'] = self.plugin_result_specifications['ALL']['etiket']
 
-            group.loc[:, 'etiket'] = self.plugin_result_specifications['ALL']['etiket']
-            
-            kmin_df = create_empty_result(group, self.plugin_result_specifications['ALL'])
-            kmin_df['nomvar'] = self.nomvar_min
-            
+            kmin_df = create_empty_result(group_df,self.plugin_result_specifications['ALL'])
+            kmin_df['nomvar']=self.nomvar_min
 
-            kmax_df = create_empty_result(group, self.plugin_result_specifications['ALL'])
-            kmax_df['nomvar'] = self.nomvar_max
-            
 
-            array_3d = get_3d_array(group)
+            kmax_df = create_empty_result(group_df,self.plugin_result_specifications['ALL'])
+            kmax_df['nomvar']=self.nomvar_max
+
+
+            array_3d = get_3d_array(group_df,flatten=True)
 
             # if not ascending, reverse array
             if not self.ascending:
-                array_3d = np.flip(array_3d, axis=0)
+                array_3d = np.flip(array_3d,axis=0)
+
 
             if self.bounded:
                 # get kbas and ktop for this grid
-                kbas = self.df.loc[(self.df.nomvar == "KBAS") & (
-                    self.df.grid == group.iloc[0]['grid'])].reset_index(drop=True)
-
-                ktop = self.df.loc[(self.df.nomvar == "KTOP") & (
-                    self.df.grid == group.iloc[0]['grid'])].reset_index(drop=True)
-
-                kbas_arr = to_numpy(kbas.iloc[0]['d']).ravel(order='F').astype('int32')
+                kbas = self.df.loc[(self.df.nomvar=="KBAS") & (self.df.grid==grid)].reset_index(drop=True)
+                kbas = fstpy.compute(kbas)
+                ktop = self.df.loc[(self.df.nomvar=="KTOP") & (self.df.grid==grid)].reset_index(drop=True)
+                ktop = fstpy.compute(ktop)
+                kbas_arr = kbas.iloc[0]['d'].flatten().astype('int64')
                 kbas_mask = kbas_arr == -1
 
-                kbas_arr_missing = np.where(kbas_arr == -1, np.nan, kbas_arr)
-                ktop_arr = to_numpy(ktop.iloc[0]['d']).ravel(order='F').astype('int32')
+                kbas_arr_missing = np.where(kbas_arr == -1 , np.nan, kbas_arr)
+                ktop_arr = ktop.iloc[0]['d'].flatten().astype('int64')
                 ktop_mask = kbas_arr == -1
                 ktop_arr_missing = np.where(ktop_arr == -1, np.nan, ktop_arr)
 
                 array_3d = bound_array(array_3d, kbas_arr_missing, ktop_arr_missing)
 
+
             if self.ascending:
-                kmin_df.at[0, 'd'] = np.nanargmin(array_3d, axis=0).astype(np.float32)
-                kmax_df.at[0, 'd'] = np.nanargmax(array_3d, axis=0).astype(np.float32)
+                kmin_df.at[0,'d'] = np.nanargmin(array_3d, axis=0).astype('float32')
+                kmax_df.at[0,'d'] = np.nanargmax(array_3d, axis=0).astype('float32')
 
             else:
-                kmin_df.at[0, 'd'] = (array_3d.shape[0] - 1 - np.nanargmin(array_3d, axis=0)).astype(np.float32)
-                kmax_df.at[0, 'd'] = (array_3d.shape[0] - 1 - np.nanargmax(array_3d, axis=0)).astype(np.float32)
+                kmin_df.at[0,'d'] = (array_3d.shape[0]-1 - np.nanargmin(array_3d, axis=0)).astype('float32')
+                kmax_df.at[0,'d'] = (array_3d.shape[0]-1 - np.nanargmax(array_3d, axis=0)).astype('float32')
 
             if self.bounded:
                 mask = kbas_mask | ktop_mask
-                kmin_df.at[0, 'd'] = np.where(mask, -1.0, kmin_df.at[0, 'd'])
-                kmax_df.at[0, 'd'] = np.where(mask, -1.0, kmax_df.at[0, 'd'])
+                kmin_df.at[0,'d'] = np.where(mask,-1.0,kmin_df.at[0,'d'])
+                kmax_df.at[0,'d'] = np.where(mask,-1.0,kmax_df.at[0,'d'])
 
             if self.min:
+                kmin_df = reshape_arrays(kmin_df)
+                kmin_df = dataframe_arrays_to_dask(kmin_df)
                 df_list.append(kmin_df)
             if self.max:
+                kmax_df = reshape_arrays(kmax_df)
+                kmax_df = dataframe_arrays_to_dask(kmax_df)
                 df_list.append(kmax_df)
-            df_list.append(group)
+                kmax_df = reshape_arrays(kmax_df)
+ 
+            group_df = reshape_arrays(group_df)
+            group_df = dataframe_arrays_to_dask(group_df)
+            df_list.append(group_df)
 
         return final_results(df_list, MinMaxLevelIndexError, self.meta_df)
 
 
 def fix_ktop(ktop, array_max_index):
-    newktop = (array_max_index - 1) - ktop
+    newktop = (array_max_index-1)-ktop
     return newktop
 
-
 def bound_array(a, kbas, ktop):
-    arr = a.copy()
+    arr=a.copy()
     newktop = fix_ktop(ktop, arr.shape[0])
     arr = np.rot90(arr)
-    arr[np.flip(kbas[:, None]) > np.arange(arr.shape[1])] = np.nan
-    arr = np.rot90(arr, k=2)
-    arr[newktop[:, None] > np.arange(arr.shape[1])] = np.nan
-    arr = np.rot90(arr, k=-3)
+    arr[np.flip(kbas[:,None]) > np.arange(arr.shape[1])] = np.nan
+    arr = np.rot90(arr,k=2)
+    arr[newktop[:,None] > np.arange(arr.shape[1])] = np.nan
+    arr = np.rot90(arr,k=-3)
     return arr

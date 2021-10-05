@@ -37,6 +37,8 @@ CREATING THE DOC
 # cd to doc dir
 [sbf000@eccc2-ppp4 ~] $ cd src/spookipy/doc    or where you have put your clone directory
 [sbf000@eccc2-ppp4 ~] $ . ssmuse-sh -d /fs/ssm/eccc/cmd/cmde/surge/surgepy/1.0.8/
+[sbf000@eccc2-ppp4 ~] $ make clean
+[sbf000@eccc2-ppp4 ~] $ make doc
 
 RUNNING JUPYTER LAB
 -------------------

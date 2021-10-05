@@ -1,18 +1,17 @@
 # -*- coding: utf-8 -*-
 import copy
 import inspect
+import logging
 from functools import wraps
 from inspect import signature
 from typing import Tuple
 
+import dask.array as da
 import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
 import rpnpy.librmn.all as rmn
 from pandas.core import groupby
-import logging
-import dask.array as da
-import copy
 
 
 def initializer(func):
@@ -107,6 +106,7 @@ def get_plugin_dependencies(
         WaterVapourMixingRatio
     from .windchill.windchill import WindChill
     from .windmodulus.windmodulus import WindModulus
+
     # dependencies that can be computer according to the nomvar
     computable_dependencies = {
         'RE': WindChill,
@@ -374,10 +374,13 @@ def create_empty_result(
 
     return res_df
 
+def get_3d_array(df: pd.DataFrame, flatten:bool=False, reverse:bool=False) -> np.ndarray:
+    if reverse:
+        df.reindex(index=df.index[::-1])
+    if flatten:    
+        for i in df.index:
+            df.at[i,'d'] = df.at[i,'d'].flatten()
 
-def get_3d_array(df) -> np.ndarray:
-    for i in df.index:
-        df.at[i, 'd'] = df.at[i, 'd'].ravel()
     arr_3d = np.stack(df['d'].to_list())
     return arr_3d
 
@@ -623,3 +626,14 @@ def to_dask(arr:"np.ndarray|da.core.Array") -> da.core.Array:
         return da.from_array(arr).astype(np.float32)        
     else:    
         raise ConversionError('to_dask - Array is not an array of type numpy or dask')       
+
+
+def reshape_arrays(df):
+    for row in df.itertuples():
+        df.at[row.Index,'d'] = row.d.reshape((row.ni,row.nj))
+    return df    
+
+def dataframe_arrays_to_dask(df):
+    for row in df.itertuples():
+        df.at[row.Index,'d'] = to_dask(row.d)
+    return df    

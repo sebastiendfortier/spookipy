@@ -31,6 +31,11 @@ add_spookipy_to_pythonpath(){
     export PYTHONPATH=$spookipy_packages_dir:$PYTHONPATH
 }
 
+message(){
+   echo $(tput -T xterm setaf 3)$@$(tput -T xterm sgr 0) >&2
+   true
+}
+
 print_and_do(){
    message $@
    eval $@

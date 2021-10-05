@@ -70,7 +70,7 @@ class GridCut(Plugin):
             cp_df.at[i,
                      'd'] = cp_df.at[i,'d'][self.start_point[0]:self.end_point[0] + 1,
                                             self.start_point[1]:self.end_point[1] + 1]
-            cp_df.at[i, 'shape'] = cp_df.at[i, 'd'].shape
+
             cp_df.at[i, 'ni'] = cp_df.at[i, 'd'].shape[0]
             cp_df.at[i, 'nj'] = cp_df.at[i, 'd'].shape[1]
 
@@ -80,7 +80,7 @@ class GridCut(Plugin):
             # dask has problems with slicing, get the real array
             cptic_df.at[i, 'd'] = to_numpy(cptic_df.at[i, 'd'])
             cptic_df.at[i, 'd'] = cptic_df.at[i, 'd'][0:1,self.start_point[1]:self.end_point[1] + 1]
-            cptic_df.at[i, 'shape'] = cptic_df.at[i, 'd'].shape
+
             cptic_df.at[i, 'nj'] = cptic_df.at[i, 'd'].shape[1]
 
         cptac_df = self.tictictactac_df.loc[self.tictictactac_df.nomvar == ">>"].copy(deep=True)
@@ -89,7 +89,7 @@ class GridCut(Plugin):
             # dask has problems with slicing, get the real array
             cptac_df.at[i, 'd'] = to_numpy(cptac_df.at[i, 'd'])
             cptac_df.at[i, 'd'] = cptac_df.at[i,'d'][self.start_point[0]:self.end_point[0] + 1]
-            cptac_df.at[i, 'shape'] = cptac_df.at[i, 'd'].shape
+
             cptac_df.at[i, 'ni'] = cptac_df.at[i, 'd'].shape[0]
 
         res_df = pd.concat([cp_df, self.meta_df, cptic_df,

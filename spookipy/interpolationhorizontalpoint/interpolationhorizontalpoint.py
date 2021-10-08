@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
+import copy
+import multiprocessing
+
 import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
 import rpnpy.librmn.all as rmn
 
 from ..plugin import Plugin
-from ..utils import initializer, to_dask, to_numpy
+from ..utils import get_split_value, initializer, to_dask, to_numpy
 
 
 class InterpolationHorizontalPointError(Exception):
@@ -48,7 +51,8 @@ class InterpolationHorizontalPoint(Plugin):
             lat_lon_df: pd.DataFrame,
             interpolation_type: str = 'bi-cubic',
             extrapolation_type: str = 'maximum',
-            extrapolation_value: float = None):
+            extrapolation_value: float = None,
+            parallel: bool = False):
         self.validate_input()
 
     def validate_input(self):
@@ -89,18 +93,13 @@ class InterpolationHorizontalPoint(Plugin):
 
             ni, nj, _, ax, ay, ig1, ig2, ig3, ig4 = get_grid_paramters_from_latlon_fields(
                 self.lat_lon_df)
-            self.output_grid = define_grid(
-                'Y', 'L', ni, nj, ig1, ig2, ig3, ig4, ax, ay, None)
-            self.lat = self.lat_lon_df.loc[self.lat_lon_df.nomvar == "LAT"].reset_index(
-                drop=True).at[0,'d']
+            self.output_grid = define_grid('Y', 'L', ni, nj, ig1, ig2, ig3, ig4, ax, ay, None)
+            self.lat = self.lat_lon_df.loc[self.lat_lon_df.nomvar == "LAT"].reset_index(drop=True).at[0,'d']
             self.lat = to_numpy(self.lat)    
-            self.lon = self.lat_lon_df.loc[self.lat_lon_df.nomvar == "LON"].reset_index(
-                drop=True).at[0,'d']
+            self.lon = self.lat_lon_df.loc[self.lat_lon_df.nomvar == "LON"].reset_index(drop=True).at[0,'d']
             self.lon = to_numpy(self.lon)    
-            self.lat_lon_df.loc[self.lat_lon_df.nomvar ==
-                                "LAT", 'nomvar'] = '^^'
-            self.lat_lon_df.loc[self.lat_lon_df.nomvar ==
-                                "LON", 'nomvar'] = '>>'
+            self.lat_lon_df.loc[self.lat_lon_df.nomvar == "LAT", 'nomvar'] = '^^'
+            self.lat_lon_df.loc[self.lat_lon_df.nomvar == "LON", 'nomvar'] = '>>'
             self.lat_lon_df.loc[:, 'grtyp'] = 'L'
             self.lat_lon_df.loc[:, 'ig1'] = 100
             self.lat_lon_df.loc[:, 'ig2'] = 100
@@ -173,7 +172,8 @@ class InterpolationHorizontalPoint(Plugin):
             indexes = find_index_of_lat_lon_not_in_grid(
                 input_grid, ni, nj, self.lat, self.lon)
 
-            vectorial_interpolation(
+            if self.parallel:
+                vectorial_interpolation_parallel(
                 vect_df,
                 results,
                 input_grid,
@@ -181,15 +181,31 @@ class InterpolationHorizontalPoint(Plugin):
                 self.extrapolation_type,
                 self.extrapolation_value,
                 indexes)
-
-            scalar_interpolation(
-                others_df,
-                results,
-                input_grid,
-                self.output_grid,
-                self.extrapolation_type,
-                self.extrapolation_value,
-                indexes)
+                scalar_interpolation_parallel(
+                    others_df,
+                    results,
+                    input_grid,
+                    self.output_grid,
+                    self.extrapolation_type,
+                    self.extrapolation_value,
+                    indexes)
+            else:
+                vectorial_interpolation(
+                    vect_df,
+                    results,
+                    input_grid,
+                    self.output_grid,
+                    self.extrapolation_type,
+                    self.extrapolation_value,
+                    indexes)
+                scalar_interpolation(
+                    others_df,
+                    results,
+                    input_grid,
+                    self.output_grid,
+                    self.extrapolation_type,
+                    self.extrapolation_value,
+                    indexes)
 
             scalar_interpolation_pt(pt_df, results, self.lat.size)
 
@@ -261,6 +277,7 @@ def set_interpolation_type_options(interpolation_type):
         rmn.ezsetopt('INTERP_DEGREE', 'CUBIC')
 
 
+
 def scalar_interpolation(
         df,
         results,
@@ -272,18 +289,81 @@ def scalar_interpolation(
     if df.empty:
         return
     # scalar except PT
-    int_df = df.copy(deep=True)
+    int_df = copy.deepcopy(df)
 
-    for i in df.index:
-        df.at[i, 'd'] = to_numpy(df.at[i, 'd'])
-        arr = rmn.ezsint(output_grid, input_grid, df.at[i, 'd'])
-        # indexes = find_index_of_lat_lon_not_in_grid(input_grid, df.iloc[0]['ni'], df.iloc[0]['nj'], lat, lon)
-        if len(indexes):
-            arr = do_extrapolation(arr, df.at[i, 'd'], indexes, extrapolation_type, extrapolation_value)
+    split_value = get_split_value(df)
 
-        int_df.at[i, 'd'] = to_dask(arr)
+    df_list = np.array_split(df, split_value)
+
+    int_df_list = np.array_split(int_df, split_value)
+
+    for df,int_df in zip(df_list,int_df_list):
+        df = fstpy.compute(df)
+
+        for i in df.index:
+
+            arr = rmn.ezsint(output_grid, input_grid, df.at[i, 'd'])
+
+            if len(indexes):
+                arr = do_extrapolation(arr, df.at[i, 'd'], indexes, extrapolation_type, extrapolation_value)
+
+            int_df.at[i, 'd'] = to_dask(arr)
 
     results.append(int_df)
+
+def scalar_interp(out_grid, in_grid, data):
+    arr = rmn.ezsint(int(out_grid), int(in_grid), data)
+    return arr    
+
+class MyIndex:
+    """Helper class to hide the list"""
+    def __init__(self, indexes):
+        self.indexes = indexes
+    def get(self):
+        return self.indexes
+
+def scalar_interp_with_extrapolation(out_grid, in_grid, data, index, extp_type, extp_value):
+    arr = rmn.ezsint(int(out_grid), int(in_grid), data)
+    arr = do_extrapolation(arr, data, index.get(), extp_type, extp_value)
+    return arr    
+    
+def scalar_interpolation_parallel(
+        df,
+        results,
+        input_grid,
+        output_grid,
+        extrapolation_type,
+        extrapolation_value,
+        indexes=None):
+    if df.empty:
+        return
+    # scalar except PT
+    int_df = copy.deepcopy(df)
+
+    split_value = get_split_value(df)
+
+    df_list = np.array_split(df, split_value)
+
+    int_df_list = np.array_split(int_df, split_value)
+
+    for df,int_df in zip(df_list,int_df_list):
+        df = fstpy.compute(df)
+        output_grid_arr = np.full((len(df.index)),output_grid)
+        input_grid_arr = np.full((len(df.index)),input_grid)
+        if len(indexes):
+            indexes_arr = np.full((len(df.index)),MyIndex(indexes))
+            extrapolation_type_arr = np.full((len(df.index)),extrapolation_type)
+            extrapolation_value_arr = np.full((len(df.index)),extrapolation_value)
+            
+        with multiprocessing.Pool() as pool:
+            if len(indexes): 
+                interp_res = pool.starmap(scalar_interp_with_extrapolation, zip(output_grid_arr, input_grid_arr, df.d.to_list(), indexes_arr, extrapolation_type_arr, extrapolation_value_arr))
+            else:    
+                interp_res = pool.starmap(scalar_interp, zip(output_grid_arr, input_grid_arr, df.d.to_list()))
+
+        int_df['d'] = [to_dask(r) for r in interp_res]
+
+        results.append(int_df)    
 
 
 def scalar_interpolation_pt(df, results, ni):
@@ -309,35 +389,103 @@ def vectorial_interpolation(
         extrapolation_type,
         extrapolation_value,
         indexes=None):
+
     if vect_df.empty:
         return
-    uu_df = vect_df.loc[vect_df.nomvar == "UU"].reset_index(drop=True)
-    vv_df = vect_df.loc[vect_df.nomvar == "VV"].reset_index(drop=True)
+
+    uu_df = vect_df.loc[vect_df.nomvar == 'UU'].sort_values('level',ascending=vect_df.iloc[0].ascending).reset_index(drop=True)
+    vv_df = vect_df.loc[vect_df.nomvar == 'VV'].sort_values('level',ascending=vect_df.iloc[0].ascending).reset_index(drop=True)
 
     if (uu_df.empty) or (vv_df.empty):
         return
 
-    uu_int_df = uu_df.copy(deep=True)
-    vv_int_df = vv_df.copy(deep=True)
+    uu_int_df = copy.deepcopy(uu_df)
+    vv_int_df = copy.deepcopy(vv_df)
 
-    for i in uu_df.index:
-        uu_df.at[i, 'd'] = to_numpy(uu_df.at[i, 'd'])
-        vv_df.at[i, 'd'] = to_numpy(vv_df.at[i, 'd'])
-        
-        (uu, vv) = rmn.ezuvint(output_grid, input_grid, uu_df.at[i, 'd'], vv_df.at[i, 'd'])
-                               
-        uu_int_df.at[i, 'd'] = to_numpy(uu_int_df.at[i, 'd'])
-        vv_int_df.at[i, 'd'] = to_numpy(vv_int_df.at[i, 'd'])                       
+    split_value = get_split_value(uu_df)
+
+    uu_df_list = np.array_split(uu_df, split_value)
+    vv_df_list = np.array_split(vv_df, split_value)
+    uu_int_df_list = np.array_split(uu_int_df, split_value)
+    vv_int_df_list = np.array_split(vv_int_df, split_value)
+
+    for uu_df,vv_df,uu_int_df,vv_int_df in zip(uu_df_list,vv_df_list,uu_int_df_list,vv_int_df_list):
+        uu_df = fstpy.compute(uu_df)
+        vv_df = fstpy.compute(vv_df)
+
+        for i in uu_df.index:
+            
+            (uu, vv) = rmn.ezuvint(output_grid, input_grid, uu_df.at[i, 'd'], vv_df.at[i, 'd'])
+                                
+            if len(indexes):
+                uu = do_extrapolation(uu, uu_int_df.at[i, 'd'], indexes, extrapolation_type, extrapolation_value)
+                vv = do_extrapolation(vv, vv_int_df.at[i, 'd'], indexes, extrapolation_type, extrapolation_value)
+
+            uu_int_df.at[i, 'd'] = uu
+            vv_int_df.at[i, 'd'] = vv
+
+        results.append(uu_int_df)
+        results.append(vv_int_df)
+
+def vect_interp_with_extrapolation(out_grid, in_grid, uu_data, vv_data, indexes, extp_type, extp_value):
+    (uu,vv) =  rmn.ezuvint(int(out_grid),int(in_grid),uu_data, vv_data)
+    uu = do_extrapolation(uu, uu_data, indexes.get(), extp_type, extp_value)
+    vv = do_extrapolation(vv, vv_data, indexes.get(), extp_type, extp_value)
+    return uu,vv
+
+def vect_interp(output_grid, input_grid, uu_data, vv_data):
+    return rmn.ezuvint(int(output_grid),int(input_grid),uu_data,vv_data)
+
+def vectorial_interpolation_parallel(
+        vect_df,
+        results,
+        input_grid,
+        output_grid,
+        extrapolation_type,
+        extrapolation_value,
+        indexes=None):
+    if vect_df.empty:
+        return
+
+    uu_df = vect_df.loc[vect_df.nomvar == 'UU'].sort_values('level',ascending=vect_df.iloc[0].ascending).reset_index(drop=True)
+    vv_df = vect_df.loc[vect_df.nomvar == 'VV'].sort_values('level',ascending=vect_df.iloc[0].ascending).reset_index(drop=True)
+
+    if (uu_df.empty) or (vv_df.empty):
+        return
+
+    uu_int_df = copy.deepcopy(uu_df)
+    vv_int_df = copy.deepcopy(vv_df)
+
+    split_value = get_split_value(uu_df)
+
+    uu_df_list = np.array_split(uu_df, split_value)
+    vv_df_list = np.array_split(vv_df, split_value)
+    uu_int_df_list = np.array_split(uu_int_df, split_value)
+    vv_int_df_list = np.array_split(vv_int_df, split_value)
+
+    for uu_df,vv_df,uu_int_df,vv_int_df in zip(uu_df_list,vv_df_list,uu_int_df_list,vv_int_df_list):
+        uu_df = fstpy.compute(uu_df)
+        vv_df = fstpy.compute(vv_df)
+
+        output_grid_arr = np.full((len(uu_df.index)),output_grid)
+        input_grid_arr = np.full((len(uu_df.index)),input_grid)
         if len(indexes):
-            uu = do_extrapolation(uu, uu_int_df.at[i, 'd'], indexes, extrapolation_type, extrapolation_value)
-            vv = do_extrapolation(vv, vv_int_df.at[i, 'd'], indexes, extrapolation_type, extrapolation_value)
+            indexes_arr = np.full((len(uu_df.index)),MyIndex(indexes))
+            extrapolation_type_arr = np.full((len(uu_df.index)),extrapolation_type)
+            extrapolation_value_arr = np.full((len(uu_df.index)),extrapolation_value)
 
-        uu_int_df.at[i, 'd'] = uu
-        vv_int_df.at[i, 'd'] = vv
+        with multiprocessing.Pool() as pool:
+            if len(indexes):
+                interp_res = pool.starmap(vect_interp_with_extrapolation, zip(output_grid_arr, input_grid_arr, uu_df.d.to_list(), vv_df.d.to_list(), indexes_arr, extrapolation_type_arr, extrapolation_value_arr))
+            else:    
+                interp_res = pool.starmap(vect_interp, zip(output_grid_arr, input_grid_arr, uu_df.d.to_list(), vv_df.d.to_list()))
 
-    results.append(uu_int_df)
-    results.append(vv_int_df)
 
+            uu_int_df['d'] = [to_dask(r[0]) for r in interp_res]
+            vv_int_df['d'] = [to_dask(r[1]) for r in interp_res]
+
+        results.append(uu_int_df)
+        results.append(vv_int_df)
 
 def create_grid_set(input_grid, output_grid):
     rmn.ezdefset(output_grid, input_grid)

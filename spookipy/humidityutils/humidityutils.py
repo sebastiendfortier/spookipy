@@ -39,6 +39,7 @@ def get_temp_phase_switch(
 def validate_temp_phase_switch_unit(
         error_class: type,
         temp_phase_switch_unit: str):
+    
     valid_units = ['celsius', 'kelvin']
     if temp_phase_switch_unit not in valid_units:
         raise error_class(

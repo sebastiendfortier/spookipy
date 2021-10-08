@@ -12,12 +12,13 @@
 !     *         IN/OUT/  slab  : les donnees a filtrer              *
 !     *                                                             *
 !     ***************************************************************
-      subroutine f_stenfilt (slab, NI, NJ, Npass, list, L)
+      subroutine f_stenfilt (slab, NI, NJ, Npass, list, L, res)
       implicit none
 
       integer NI, NJ
       integer l,list(L)
-      real,intent(inout) :: slab(NI ,NJ)
+      real,intent(in) :: slab(NI ,NJ)
+      real,intent(out) :: res(NI ,NJ)
       real facteur(-8:8,10)
       real temp
       integer k,I,J
@@ -27,6 +28,7 @@
       real sum
       real result1(ni), result2(nj)
 
+      res = slab
 !      print *,NI,NJ,Npass,L
 !      do I=1,L
 !         print *,list(I)
@@ -89,13 +91,13 @@
 !                  print ("f8.6"),slab(I+k,J)
 !                  print ("f8.6"),facteur(k,(L/2+1)-nb_elm)
 !                  print ("f10.8"),facteur(k,(L/2+1)-nb_elm)
-                  temp = temp + slab(I+k,J) * facteur(k,(L/2+1)-nb_elm)
+                  temp = temp + res(I+k,J) * facteur(k,(L/2+1)-nb_elm)
                enddo
 !               print ("f10.8"),temp
                result1(I) = temp
             enddo
             do I=2, NI-1
-               slab(I,J) = result1(I)
+               res(I,J) = result1(I)
             enddo
          enddo
 
@@ -106,7 +108,7 @@
                do k = -nb_elm, nb_elm
 !                 print *,k,(L/2+1)-nb_elm
 !                  print ("f10.8"),facteur(k,(L/2+1)-nb_elm)
-                  temp = temp + slab(I,J+k) * facteur(k,(L/2+1)-nb_elm)
+                  temp = temp + res(I,J+k) * facteur(k,(L/2+1)-nb_elm)
 !                  print ("f8.6,A1,f8.6"),slab(I,J+k),",",
 !     &            facteur(k,(L/2+1)-nb_elm)
                enddo
@@ -114,7 +116,7 @@
                result2(J) = temp
             enddo
             do J=2, NJ-1
-               slab(I,J) = result2(J)
+               res(I,J) = result2(J)
             enddo
          enddo
       enddo

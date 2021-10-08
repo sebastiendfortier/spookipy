@@ -8,7 +8,7 @@ import rpnpy.librmn.all as rmn
 import spookipy.all as spooki
 from ci_fstcomp import fstcomp
 
-pytestmark = [pytest.mark.to_skip]
+pytestmark = [pytest.mark.regressions]
 
 
 @pytest.fixture

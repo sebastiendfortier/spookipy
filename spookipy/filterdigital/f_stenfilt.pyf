@@ -3,13 +3,14 @@
 
 python module f_stenfilt ! in 
     interface  ! in :f_stenfilt
-        subroutine f_stenfilt(slab,ni,nj,npass,list,l) ! in :f_stenfilt:f_stenfilt.f90
-            real dimension(ni,nj),intent(inout) :: slab
+        subroutine f_stenfilt(slab,ni,nj,npass,list,l,res) ! in :f_stenfilt:f_stenfilt.f90
+            real dimension(ni,nj),intent(in) :: slab
             integer, optional,check(shape(slab,0)==ni),depend(slab) :: ni=shape(slab,0)
             integer, optional,check(shape(slab,1)==nj),depend(slab) :: nj=shape(slab,1)
             integer :: npass
             integer dimension(l) :: list
             integer, optional,check(len(list)>=l),depend(list) :: l=len(list)
+            real dimension(ni,nj),intent(out),depend(ni,nj) :: res
         end subroutine f_stenfilt
     end interface 
 end python module f_stenfilt

@@ -72,20 +72,12 @@ class FilterDigital(Plugin):
 
         filter_arr = np.array(self.filter, dtype=np.int32, order='F')
 
-        # self.parallel = True
+
         if self.parallel:
             df_list = apply_filter_parallel(self.df, self.repetitions, filter_arr, filter_len)
         else:    
             df_list = apply_filter(self.df, self.repetitions, filter_arr, filter_len)
-        # df_list = []
-        # for i in self.df.index:
-        #     ni = self.df.at[i, 'd'].shape[0]
-        #     nj = self.df.at[i, 'd'].shape[1]
-        #     self.df.at[i, 'd'] = to_numpy(self.df.at[i, 'd'])
-        #     f_stenfilt(slab=self.df.at[i,'d'],ni=ni,nj=nj,npass=self.repetitions,list=filter,l=filter_len)
-        #     self.df.at[i, 'd'] = to_dask(self.df.at[i, 'd'])
 
-        # df_list.append(self.df)
 
         return final_results(df_list, FilterDigitalError, self.meta_df)
 

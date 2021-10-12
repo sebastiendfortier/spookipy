@@ -376,8 +376,8 @@ def get_3d_array(df: pd.DataFrame, flatten:bool=False, reverse:bool=False) -> np
     if reverse:
         df.reindex(index=df.index[::-1])
     if flatten:    
-        for i in df.index:
-            df.at[i,'d'] = df.at[i,'d'].flatten()
+        for row in df.itertuples():
+            df.at[row.Index,'d'] = row.d.flatten()
 
     arr_3d = np.stack(df['d'].to_list())
     return arr_3d

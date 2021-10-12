@@ -180,3 +180,43 @@ def test_6(plugin_test_dir):
     res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
+
+
+def test_7(plugin_test_dir):
+    """seuils: -10,0,10 valeurs: 1,2,3 ops: le,eq,gt + outputFieldName=TOTO parallel=True"""
+    # open and read source
+    source0 = plugin_test_dir + "inputFile.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    # compute Mask
+    df = spooki.Mask(src_df0,
+                     thresholds=[-10,
+                                 0,
+                                 10],
+                     values=[1,
+                             2,
+                             3],
+                     operators=['<=',
+                                '==',
+                                '>'],
+                     nomvar_out='TOTO',
+                     parallel=True).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
+    #  [Mask --thresholds -10,0,10 --values 1,2,3 --operators le,eq,gt --outputFieldName TOTO] >>
+    # [WriterStd --output {destination_path} --noUnitConversion]
+    df.loc[:, 'etiket'] = '__MASK__X'
+    df.loc[df.nomvar != 'TOTO', 'etiket'] = 'G1_5_0X'
+
+    df = spooki.convip(df)
+    # write the result
+    results_file = TMP_PATH + "test_6.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "resulttest_6.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)

@@ -365,9 +365,10 @@ def scalar_interpolation_parallel(df, results, input_grid, output_grid):
 
     for df,int_df in zip(df_list,int_df_list):
         df = fstpy.compute(df)
-
+        output_grid_arr = [output_grid for _ in range(len(df.index))]
+        input_grid_arr = [input_grid for _ in range(len(df.index))]
         with multiprocessing.Pool() as pool:
-            interp_res = pool.starmap(scalar_interp, zip(np.full((len(df.index)),output_grid), np.full((len(df.index)),input_grid), df.d.to_list()))
+            interp_res = pool.starmap(scalar_interp, zip(output_grid_arr, input_grid_arr, df.d.to_list()))
 
         int_df['d'] = [to_dask(r) for r in interp_res]
 
@@ -447,8 +448,10 @@ def vectorial_interpolation_parallel(vect_df, results, input_grid, output_grid):
     for uu_df,vv_df,uu_int_df,vv_int_df in zip(uu_df_list,vv_df_list,uu_int_df_list,vv_int_df_list):
         uu_df = fstpy.compute(uu_df)
         vv_df = fstpy.compute(vv_df)
+        output_grid_arr = [output_grid for _ in range(len(uu_df.index))]
+        input_grid_arr = [input_grid for _ in range(len(uu_df.index))]
         with multiprocessing.Pool() as pool:
-            interp_res = pool.starmap(vect_interp, zip(np.full((len(uu_df.index)),output_grid), np.full((len(uu_df.index)),input_grid), uu_df.d.to_list(), vv_df.d.to_list()))
+            interp_res = pool.starmap(vect_interp, zip(output_grid_arr, input_grid_arr, uu_df.d.to_list(), vv_df.d.to_list()))
 
         uu_int_df['d'] = [to_dask(r[0]) for r in interp_res]
         vv_int_df['d'] = [to_dask(r[1]) for r in interp_res]

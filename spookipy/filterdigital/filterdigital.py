@@ -72,7 +72,6 @@ class FilterDigital(Plugin):
 
         filter_arr = np.array(self.filter, dtype=np.int32, order='F')
 
-
         if self.parallel:
             df_list = apply_filter_parallel(self.df, self.repetitions, filter_arr, filter_len)
         else:    
@@ -97,11 +96,11 @@ def apply_filter(df, repetitions, filter_arr, filter_len):
         results.append(df)
     return results
 
-class MyFilter:
-    def __init__(self, filter_arr):
-        self.filter_arr = filter_arr
+class ListWrapper:
+    def __init__(self, arr):
+        self.arr = arr
     def get(self):
-        return self.filter_arr
+        return self.arr
 
 def filter_wrapper(data,repetitions,filter_arr,filter_len):
     ni = data.shape[0]
@@ -116,9 +115,10 @@ def apply_filter_parallel(df, repetitions, filter, filter_len):
     results = []
     for df in df_list:
         df = fstpy.compute(df)
-        repetitions_arr = np.full((len(df.index)),repetitions)
-        filter_arr = np.full((len(df.index)),MyFilter(filter))
-        filter_len_arr = np.full((len(df.index)),filter_len)
+        
+        repetitions_arr = [repetitions for _ in range(len(df.index))]
+        filter_arr = [ListWrapper(filter) for _ in range(len(df.index))]
+        filter_len_arr = [filter_len for _ in range(len(df.index))]
 
         with ThreadPool() as tp:
             filter_results = tp.starmap(filter_wrapper,zip(df.d.to_list(),repetitions_arr,filter_arr,filter_len_arr))

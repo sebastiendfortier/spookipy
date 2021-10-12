@@ -315,7 +315,7 @@ def scalar_interp(out_grid, in_grid, data):
     arr = rmn.ezsint(int(out_grid), int(in_grid), data)
     return arr    
 
-class MyIndex:
+class ListWrapper:
     """Helper class to hide the list"""
     def __init__(self, indexes):
         self.indexes = indexes
@@ -348,13 +348,15 @@ def scalar_interpolation_parallel(
 
     for df,int_df in zip(df_list,int_df_list):
         df = fstpy.compute(df)
-        output_grid_arr = np.full((len(df.index)),output_grid)
-        input_grid_arr = np.full((len(df.index)),input_grid)
+
+        output_grid_arr = [output_grid for _ in range(len(df.index))]
+        input_grid_arr = [input_grid for _ in range(len(df.index))]
+
         if len(indexes):
-            indexes_arr = np.full((len(df.index)),MyIndex(indexes))
-            extrapolation_type_arr = np.full((len(df.index)),extrapolation_type)
-            extrapolation_value_arr = np.full((len(df.index)),extrapolation_value)
-            
+            indexes_arr = [ListWrapper(indexes) for _ in range(len(df.index))] #np.full((len(df.index)),ListWrapper(indexes))
+            extrapolation_type_arr = [extrapolation_type for _ in range(len(df.index))] #np.full((len(df.index)),extrapolation_type)
+            extrapolation_value_arr = [extrapolation_value for _ in range(len(df.index))] #np.full((len(df.index)),extrapolation_value)
+
         with multiprocessing.Pool() as pool:
             if len(indexes): 
                 interp_res = pool.starmap(scalar_interp_with_extrapolation, zip(output_grid_arr, input_grid_arr, df.d.to_list(), indexes_arr, extrapolation_type_arr, extrapolation_value_arr))
@@ -467,12 +469,13 @@ def vectorial_interpolation_parallel(
         uu_df = fstpy.compute(uu_df)
         vv_df = fstpy.compute(vv_df)
 
-        output_grid_arr = np.full((len(uu_df.index)),output_grid)
-        input_grid_arr = np.full((len(uu_df.index)),input_grid)
+        output_grid_arr = [output_grid for _ in range(len(uu_df.index))]
+        input_grid_arr = [input_grid for _ in range(len(uu_df.index))]
+
         if len(indexes):
-            indexes_arr = np.full((len(uu_df.index)),MyIndex(indexes))
-            extrapolation_type_arr = np.full((len(uu_df.index)),extrapolation_type)
-            extrapolation_value_arr = np.full((len(uu_df.index)),extrapolation_value)
+            indexes_arr = [ListWrapper(indexes) for _ in range(len(uu_df.index))] 
+            extrapolation_type_arr = [extrapolation_type for _ in range(len(uu_df.index))] 
+            extrapolation_value_arr = [extrapolation_value for _ in range(len(uu_df.index))] 
 
         with multiprocessing.Pool() as pool:
             if len(indexes):

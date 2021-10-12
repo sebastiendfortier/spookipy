@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import copy
 import logging
 
 import fstpy.all as fstpy
@@ -97,7 +98,7 @@ class MatchLevelIndexToValue(Plugin):
                 valid_ind = np.where(mask, ind, num_levels)
 
                 # create 3d array of our variable
-                error_row = var_df.iloc[0]
+                error_row = copy.deepcopy(var_df.iloc[0])
                 error_row['d'] = np.full_like(to_numpy(error_row['d']), self.error_value)
 
                 var_df = var_df.append(error_row).reset_index(drop=True)

@@ -3,7 +3,7 @@ Requirements
 
 run time packages
 -----------------
-- fstpy>=2.1.8
+- fstpy>=2.1.9
 - pandas>=1.2.4
 - numpy>=1.19.5
 - xarray>=0.19.0
@@ -11,7 +11,7 @@ run time packages
 
 developpement packages
 ----------------------
-- fstpy>=2.1.8
+- fstpy>=2.1.9
 - ci_fstcomp>=1.0.2
 - pandas>=1.2.4
 - numpy>=1.19.5

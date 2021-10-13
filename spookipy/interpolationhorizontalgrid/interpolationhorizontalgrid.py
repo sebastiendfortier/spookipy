@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
-import dask.array as da
+import copy
+import multiprocessing
+
 import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
 import rpnpy.librmn.all as rmn
 
 from ..plugin import Plugin
-from ..utils import initializer, to_dask, to_numpy
+from ..utils import get_split_value, initializer, to_dask, to_numpy
 
 
 class InterpolationHorizontalGridError(Exception):
@@ -69,7 +71,8 @@ class InterpolationHorizontalGrid(Plugin):
             param4: float = None,
             extrapolation_value: float = None,
             nomvar: str = None,
-            output_fields='all'):
+            output_fields : str ='all',
+            parallel: bool =False):
         self.methods = ['field', 'user']
         self.grid_types = ['A', 'B', 'G', 'L', 'N', 'S']
         self.extrapolation_types = [
@@ -167,70 +170,32 @@ class InterpolationHorizontalGrid(Plugin):
 
             # define grid from meta
             if not meta_df.empty:
-                if ('>>' in meta_df.nomvar.to_list()) and (
-                        '^^' in meta_df.nomvar.to_list()):
-                    self.ni, self.nj, grref, ax, ay, self.ig1, self.ig2, self.ig3, self.ig4 = get_grid_paramters_from_latlon_fields(
-                        meta_df)
-                    self.output_grid = define_grid(
-                        self.grtyp,
-                        grref,
-                        self.ni,
-                        self.nj,
-                        self.ig1,
-                        self.ig2,
-                        self.ig3,
-                        self.ig4,
-                        ax,
-                        ay,
-                        None)
-                    self.ig1, self.ig2, self.ig3, self.ig4 = set_output_column_values(
-                        meta_df, field_df)
+                if ('>>' in meta_df.nomvar.to_list()) and ('^^' in meta_df.nomvar.to_list()):
+                    self.ni, self.nj, grref, ax, ay, self.ig1, self.ig2, self.ig3, self.ig4 = get_grid_paramters_from_latlon_fields(meta_df)
+                    self.output_grid = define_grid(self.grtyp,grref,self.ni,self.nj,self.ig1,self.ig2,self.ig3,self.ig4,ax,ay,None)
+                    self.ig1, self.ig2, self.ig3, self.ig4 = set_output_column_values(meta_df, field_df)
 
                 elif ('^>' in meta_df.nomvar.to_list()):
-                    tictac_df = meta_df.loc[meta_df.nomvar == "^>"].reset_index(
-                        drop=True)
-
-                    tictac_df.at[0,'d'] = to_numpy(tictac_df.at[0,'d'])
-                        
-                    self.output_grid = define_grid(
-                        self.grtyp, '', 0, 0, 0, 0, 0, 0, None, None, tictac_df.at[0,'d'])
-                    self.ig1, self.ig2, self.ig3, self.ig4 = set_output_column_values(
-                        meta_df, field_df)
+                    self.output_grid = define_u_grid(meta_df, self.grtyp)
+                    self.ig1, self.ig2, self.ig3, self.ig4 = set_output_column_values(meta_df, field_df)
                 # meta_data present, load it
 
             # define grid from field
             else:
                 # print(self.grtyp,'',self.ni,self.nj,self.ig1,self.ig2,self.ig3,self.ig4,None,None,None)
-                self.output_grid = define_grid(
-                    self.grtyp,
-                    '',
-                    self.ni,
-                    self.nj,
-                    self.ig1,
-                    self.ig2,
-                    self.ig3,
-                    self.ig4,
-                    None,
-                    None,
-                    None)
+                self.output_grid = define_grid(self.grtyp, '', self.ni, self.nj, self.ig1, self.ig2, self.ig3, self.ig4, None, None, None)
 
             # remove all ref fields from source grid from processing
-            if (self.output_fields == 'interpolated') and (
-                    self.method != 'user'):
-                to_remove = self.df.loc[self.df.grid ==
-                                        grid].reset_index(drop=True)
-                self.df = pd.concat(
-                    [self.df, to_remove], ignore_index=True).drop_duplicates(keep=False)
+            if (self.output_fields == 'interpolated') and (self.method != 'user'):
+                to_remove = self.df.loc[self.df.grid == grid].reset_index(drop=True)
+                self.df = pd.concat([self.df, to_remove], ignore_index=True).drop_duplicates(keep=False)
 
             # remove all ref fields except ref field itself from source grid
             # from processing
             if (self.output_fields == 'reference') and (self.method != 'user'):
-                to_remove = self.df.loc[self.df.grid ==
-                                        grid].reset_index(drop=True)
-                to_remove = to_remove.loc[(to_remove.nomvar != self.nomvar) & (
-                    to_remove.grid == grid)].reset_index(drop=True)
-                self.df = pd.concat(
-                    [self.df, to_remove], ignore_index=True).drop_duplicates(keep=False)
+                to_remove = self.df.loc[self.df.grid == grid].reset_index(drop=True)
+                to_remove = to_remove.loc[(to_remove.nomvar != self.nomvar) & (to_remove.grid == grid)].reset_index(drop=True)
+                self.df = pd.concat([self.df, to_remove], ignore_index=True).drop_duplicates(keep=False)
 
     def validate_params(self):
         if self.output_fields not in self. output_fields_selection:
@@ -259,27 +224,21 @@ class InterpolationHorizontalGrid(Plugin):
 
             keep_toctoc(current_group, results)
 
-            vect_df = current_group.loc[current_group.nomvar.isin(
-                ['UU', 'VV'])].reset_index(drop=True)
+            vect_df = current_group.loc[current_group.nomvar.isin(['UU', 'VV'])].reset_index(drop=True)
 
-            others_df = current_group.loc[~current_group.nomvar.isin(
-                ['UU', 'VV', 'PT', '>>', '^^', '^>', '!!', 'HY', '!!SF'])].reset_index(drop=True)
+            others_df = current_group.loc[~current_group.nomvar.isin(['UU', 'VV', 'PT', '>>', '^^', '^>', '!!', 'HY', '!!SF'])].reset_index(drop=True)
 
-            pt_df = current_group.loc[current_group.nomvar == 'PT'].reset_index(
-                drop=True)
+            pt_df = current_group.loc[current_group.nomvar == 'PT'].reset_index(drop=True)
 
-            source_df, grtyp = select_input_grid_source_data(
-                vect_df, others_df, pt_df)
+            source_df, grtyp = select_input_grid_source_data(vect_df, others_df, pt_df)
 
             if source_df.empty:
                 continue
 
-            meta_df = current_group.loc[current_group.nomvar.isin(
-                ['>>', '^^', '^>'])].reset_index(drop=True)
+            meta_df = current_group.loc[current_group.nomvar.isin(['>>', '^^', '^>'])].reset_index(drop=True)
             input_grid = define_input_grid(grtyp, source_df, meta_df)
 
-            grids_are_equal = check_in_out_grid_equality(
-                input_grid, self.output_grid)
+            grids_are_equal = check_in_out_grid_equality(input_grid, self.output_grid)
 
             if grids_are_equal:
                 no_mod.append(current_group)
@@ -287,17 +246,14 @@ class InterpolationHorizontalGrid(Plugin):
 
             create_grid_set(input_grid, self.output_grid)
 
-            vectorial_interpolation(
-                vect_df, results, input_grid, self.output_grid)
+            if self.parallel:
+                vectorial_interpolation_parallel(vect_df, results, input_grid, self.output_grid)
+                scalar_interpolation_parallel(others_df,results,input_grid,self.output_grid)
+            else:    
+                vectorial_interpolation(vect_df, results, input_grid, self.output_grid)
+                scalar_interpolation(others_df,results,input_grid,self.output_grid)
 
-            scalar_interpolation(
-                others_df,
-                results,
-                input_grid,
-                self.output_grid)
-
-            scalar_interpolation_pt(
-                pt_df, results, input_grid, self.output_grid)
+            scalar_interpolation_pt(pt_df, results, input_grid, self.output_grid)
 
             # print(input_grid)
             # rmn.gdrls(input_grid)
@@ -375,14 +331,48 @@ def scalar_interpolation(df, results, input_grid, output_grid):
     if df.empty:
         return
     # scalar except PT
-    int_df = df.copy(deep=True)
+    int_df = copy.deepcopy(df)
 
-    for i in df.index:
-        df.at[i, 'd'] = to_numpy(df.at[i, 'd'])
-        arr = rmn.ezsint(output_grid, input_grid, df.at[i, 'd'])
-        int_df.at[i, 'd'] = to_dask(arr)
+    split_value = get_split_value(df)
 
-    results.append(int_df)
+    df_list = np.array_split(df, split_value)
+
+    int_df_list = np.array_split(int_df, split_value)
+
+    for df,int_df in zip(df_list,int_df_list):
+        df = fstpy.compute(df)
+
+        for i in df.index:
+            arr = rmn.ezsint(output_grid, input_grid, df.at[i, 'd'])
+            int_df.at[i, 'd'] = to_dask(arr)
+
+        results.append(int_df)
+
+def scalar_interp(output_grid,input_grid,data):
+    return rmn.ezsint(int(output_grid), int(input_grid), data)
+
+def scalar_interpolation_parallel(df, results, input_grid, output_grid):
+    if df.empty:
+        return
+    # scalar except PT
+    int_df = copy.deepcopy(df)
+    
+    split_value = get_split_value(df)
+
+    df_list = np.array_split(df, split_value)
+
+    int_df_list = np.array_split(int_df, split_value)
+
+    for df,int_df in zip(df_list,int_df_list):
+        df = fstpy.compute(df)
+        output_grid_arr = [output_grid for _ in range(len(df.index))]
+        input_grid_arr = [input_grid for _ in range(len(df.index))]
+        with multiprocessing.Pool() as pool:
+            interp_res = pool.starmap(scalar_interp, zip(output_grid_arr, input_grid_arr, df.d.to_list()))
+
+        int_df['d'] = [to_dask(r) for r in interp_res]
+
+        results.append(int_df)    
 
 
 def scalar_interpolation_pt(df, results, input_grid, output_grid):
@@ -397,36 +387,77 @@ def scalar_interpolation_pt(df, results, input_grid, output_grid):
     rmn.ezsetopt('EXTRAP_DEGREE', extrap_degree)
 
 
+
 def vectorial_interpolation(vect_df, results, input_grid, output_grid):
     if vect_df.empty:
         return
-    uu_df = vect_df.loc[vect_df.nomvar == 'UU'].reset_index(drop=True)
-    vv_df = vect_df.loc[vect_df.nomvar == 'VV'].reset_index(drop=True)
+    uu_df = vect_df.loc[vect_df.nomvar == 'UU'].sort_values('level',ascending=vect_df.iloc[0].ascending).reset_index(drop=True)
+    vv_df = vect_df.loc[vect_df.nomvar == 'VV'].sort_values('level',ascending=vect_df.iloc[0].ascending).reset_index(drop=True)
 
     if (uu_df.empty) or (vv_df.empty):
         return
 
-    uu_int_df = uu_df.copy(deep=True)
-    vv_int_df = vv_df.copy(deep=True)
+    uu_int_df = copy.deepcopy(uu_df)
+    vv_int_df = copy.deepcopy(vv_df)
+
+    split_value = get_split_value(uu_df)
+
+    uu_df_list = np.array_split(uu_df, split_value)
+    vv_df_list = np.array_split(vv_df, split_value)
+    uu_int_df_list = np.array_split(uu_int_df, split_value)
+    vv_int_df_list = np.array_split(vv_int_df, split_value)
+
+    for uu_df,vv_df,uu_int_df,vv_int_df in zip(uu_df_list,vv_df_list,uu_int_df_list,vv_int_df_list):
+        uu_df = fstpy.compute(uu_df)
+        vv_df = fstpy.compute(vv_df)
+
+        for i in uu_df.index:
+            (uu_int_df.at[i, 'd'], vv_int_df.at[i, 'd']) = rmn.ezuvint(output_grid, input_grid, uu_df.at[i, 'd'], vv_df.at[i, 'd'])
     
-    for i in uu_df.index:
-        
-        uu_int_df.at[i, 'd'] = to_numpy(uu_int_df.at[i, 'd'])
+            uu_int_df.at[i, 'd'] = to_dask(uu_int_df.at[i, 'd'])
+            vv_int_df.at[i, 'd'] = to_dask(vv_int_df.at[i, 'd'])
+            
+        results.append(uu_int_df)
+        results.append(vv_int_df)
 
-        vv_int_df.at[i, 'd'] = to_numpy(vv_int_df.at[i, 'd'])  
 
-        uu_df.at[i, 'd'] = to_numpy(uu_df.at[i, 'd'])
+def vect_interp(output_grid,input_grid,uu_data,vv_data):
+    return rmn.ezuvint(int(output_grid),int(input_grid),uu_data,vv_data)
 
-        vv_df.at[i, 'd'] = to_numpy(vv_df.at[i, 'd'])               
 
-        (uu_int_df.at[i, 'd'], vv_int_df.at[i, 'd']) = rmn.ezuvint(
-            output_grid, input_grid, uu_df.at[i, 'd'], vv_df.at[i, 'd'])
- 
-        uu_int_df.at[i, 'd'] = to_dask(uu_int_df.at[i, 'd'])
-        vv_int_df.at[i, 'd'] = to_dask(vv_int_df.at[i, 'd'])
-        
-    results.append(uu_int_df)
-    results.append(vv_int_df)
+def vectorial_interpolation_parallel(vect_df, results, input_grid, output_grid):
+    
+    if vect_df.empty:
+        return
+    uu_df = vect_df.loc[vect_df.nomvar == 'UU'].sort_values('level',ascending=vect_df.iloc[0].ascending).reset_index(drop=True)
+    vv_df = vect_df.loc[vect_df.nomvar == 'VV'].sort_values('level',ascending=vect_df.iloc[0].ascending).reset_index(drop=True)
+
+    if (uu_df.empty) or (vv_df.empty):
+        return
+
+    uu_int_df = copy.deepcopy(uu_df)
+    vv_int_df = copy.deepcopy(vv_df)
+
+    split_value = get_split_value(uu_df)
+
+    uu_df_list = np.array_split(uu_df, split_value)
+    vv_df_list = np.array_split(vv_df, split_value)
+    uu_int_df_list = np.array_split(uu_int_df, split_value)
+    vv_int_df_list = np.array_split(vv_int_df, split_value)
+
+    for uu_df,vv_df,uu_int_df,vv_int_df in zip(uu_df_list,vv_df_list,uu_int_df_list,vv_int_df_list):
+        uu_df = fstpy.compute(uu_df)
+        vv_df = fstpy.compute(vv_df)
+        output_grid_arr = [output_grid for _ in range(len(uu_df.index))]
+        input_grid_arr = [input_grid for _ in range(len(uu_df.index))]
+        with multiprocessing.Pool() as pool:
+            interp_res = pool.starmap(vect_interp, zip(output_grid_arr, input_grid_arr, uu_df.d.to_list(), vv_df.d.to_list()))
+
+        uu_int_df['d'] = [to_dask(r[0]) for r in interp_res]
+        vv_int_df['d'] = [to_dask(r[1]) for r in interp_res]
+
+        results.append(uu_int_df)
+        results.append(vv_int_df)
 
 
 def create_grid_set(input_grid, output_grid):
@@ -461,31 +492,12 @@ def define_input_grid(grtyp, source_df, meta_df):
     ni, nj, ig1, ig2, ig3, ig4 = set_grid_parameters(source_df)
 
     if not meta_df.empty:
-        if ('>>' in meta_df.nomvar.to_list()) and (
-                '^^' in meta_df.nomvar.to_list()):
-            ni, nj, grref, ax, ay, ig1, ig2, ig3, ig4 = get_grid_paramters_from_latlon_fields(
-                meta_df)
-            input_grid = define_grid(
-                grtyp, grref, ni, nj, ig1, ig2, ig3, ig4, ax, ay, None)
+        if ('>>' in meta_df.nomvar.to_list()) and ('^^' in meta_df.nomvar.to_list()):
+            ni, nj, grref, ax, ay, ig1, ig2, ig3, ig4 = get_grid_paramters_from_latlon_fields(meta_df)
+            input_grid = define_grid(grtyp, grref, ni, nj, ig1, ig2, ig3, ig4, ax, ay, None)
 
         elif ('^>' in meta_df.nomvar.to_list()):
-            tictac_df = meta_df.loc[meta_df.nomvar ==
-                                    "^>"].reset_index(drop=True)
-                                    
-            tictac_df.at[0, 'd'] = to_numpy(tictac_df.at[0, 'd'])                        
-                
-            input_grid = define_grid(
-                grtyp,
-                '',
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                None,
-                None,
-                tictac_df.at[0, 'd'])
+            input_grid = define_u_grid(meta_df, grtyp)
 
     else:
         input_grid = define_grid(
@@ -502,6 +514,11 @@ def define_input_grid(grtyp, source_df, meta_df):
             None)
 
     return input_grid
+
+def define_u_grid(meta_df, grtyp):
+    tictac_df = meta_df.loc[meta_df.nomvar == "^>"].reset_index(drop=True)
+    tictac_df.at[0, 'd'] = to_numpy(tictac_df.at[0, 'd'])
+    return define_grid(grtyp, '', 0, 0, 0, 0, 0, 0, None, None, tictac_df.at[0, 'd'])
 
 
 def keep_intact_hy_field(current_group, no_mod):

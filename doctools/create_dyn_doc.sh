@@ -22,7 +22,7 @@ echo "    . r.load.dot eccc/mrd/rpn/MIG/ENV/migdep/5.1.1 eccc/mrd/rpn/MIG/ENV/rp
 echo "    # get spookipy ssm package" >> $OUTPUT
 echo "    . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/spookipy/$VERSION/" >> $OUTPUT
 echo "    # get fstpy ssm package" >> $OUTPUT
-echo "    . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/fstpy/2.1.6/" >> $OUTPUT
+echo "    . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/fstpy/2.1.9/" >> $OUTPUT
 echo "" >> $OUTPUT
 echo "use spookipy" >> $OUTPUT
 echo "~~~~~~~~~~~~" >> $OUTPUT

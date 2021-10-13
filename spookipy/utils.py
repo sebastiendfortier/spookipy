@@ -2,6 +2,7 @@
 import copy
 import inspect
 import logging
+import math
 from functools import wraps
 from inspect import signature
 from typing import Tuple
@@ -334,10 +335,7 @@ def validate_nomvar(nomvar: str, caller_class: str, error_class: type):
         raise error_class(caller_class + ' - max 4 char for nomvar')
 
 
-def create_empty_result(
-        df: pd.DataFrame,
-        plugin_result_specifications: dict,
-        all_rows: bool = False) -> pd.DataFrame:
+def create_empty_result(df: pd.DataFrame, plugin_result_specifications: dict, all_rows: bool = False) -> pd.DataFrame:
     """Creates a one row dataframe from the model dataframe, id all_rows is True, then copies the entire dataframe.
     The columns in the plugin_result_specifications dict will be modified accordingly.
 
@@ -378,8 +376,8 @@ def get_3d_array(df: pd.DataFrame, flatten:bool=False, reverse:bool=False) -> np
     if reverse:
         df.reindex(index=df.index[::-1])
     if flatten:    
-        for i in df.index:
-            df.at[i,'d'] = df.at[i,'d'].flatten()
+        for row in df.itertuples():
+            df.at[row.Index,'d'] = row.d.flatten()
 
     arr_3d = np.stack(df['d'].to_list())
     return arr_3d
@@ -637,3 +635,7 @@ def dataframe_arrays_to_dask(df):
     for row in df.itertuples():
         df.at[row.Index,'d'] = to_dask(row.d)
     return df    
+
+def get_split_value(df):
+    num_rows = fstpy.get_num_rows_for_reading(df)
+    return math.ceil(len(df.index)/num_rows)

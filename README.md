@@ -15,7 +15,7 @@ algorithms.
 
 ## run time packages
 
--   fstpy>=2.1.8
+-   fstpy>=2.1.9
 -   pandas>=1.2.4
 -   numpy>=1.19.5
 -   xarray>=0.19.0

@@ -8,7 +8,7 @@ import rpnpy.librmn.all as rmn
 import spookipy.all as spooki
 from ci_fstcomp import fstcomp
 
-pytestmark = [pytest.mark.to_skip]
+pytestmark = [pytest.mark.regressions]
 
 
 @pytest.fixture
@@ -503,6 +503,55 @@ def test_13(plugin_test_dir):
     # open and read comparison file
     file_to_compare = plugin_test_dir + "extrapolationNegativeValue_file2cmp.std"
     # file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalGrid/result_test_13"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
+
+
+def test_14(plugin_test_dir):
+    """Interpolation de champs vectoriels (UU,VV) d'une grille U vers une grille Z en parallele"""
+    # open and read source
+    source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.select_with_meta(src_df0, ["UU", "VV"])
+
+    source1 = plugin_test_dir + "2015072100_240_TTESUUVV_GridZ.std"
+    src_df1 = fstpy.StandardFileReader(source1).to_pandas()
+    src_df1 = fstpy.select_with_meta(src_df1, ["TT"])
+
+    src_df = pd.concat([src_df0, src_df1], ignore_index=True)
+
+    # compute spooki.InterpolationHorizontalGrid
+    df = spooki.InterpolationHorizontalGrid(
+        src_df,
+        method='field',
+        nomvar='TT',
+        interpolation_type='bi-cubic',
+        extrapolation_type='nearest',
+        parallel=True).compute()
+    # ([ReaderStd --input {sources[0]}] >> [Select --fieldName UU,VV]) +
+    # ([ReaderStd --input {sources[1]}] >> [Select --fieldName TT]) >>
+    # [InterpolationHorizontalGrid -m FIELD_DEFINED --fieldName TT --interpolationType BI-CUBIC --extrapolationType NEAREST] >>
+    # [Select --fieldName UU,VV] >>
+    # [WriterStd --output {destination_path} ]
+
+    df = fstpy.select_with_meta(df, ['UU', 'VV'])
+
+    # df['datyp'] = 5
+    # df.loc[df.nomvar!='!!','nbits'] = 32
+
+    df = spooki.convip(df)
+    # write the result
+    results_file = TMP_PATH + "test_9.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + \
+        "InterpHorizGridUtoZ_UUVV_file2cmp.std+20210517"
+    # file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalGrid/result_test_9"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)

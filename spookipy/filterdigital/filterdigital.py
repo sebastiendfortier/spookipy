@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 import logging
+from multiprocessing.pool import ThreadPool
 
+import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin
-from ..utils import (final_results, initializer, to_dask, to_numpy,
-                     validate_nomvar)
+from ..utils import (final_results, get_split_value, initializer, to_dask, validate_nomvar)
 from .f_stenfilt import f_stenfilt
 
 
@@ -22,7 +23,8 @@ class FilterDigital(Plugin):
             df: pd.DataFrame,
             filter: list,
             repetitions: int = 1,
-            nomvar_out=None):
+            nomvar_out=None,
+            parallel: bool = False):
 
         self.plugin_result_specifications = {
             'ALL': {'filtered': True}
@@ -68,22 +70,61 @@ class FilterDigital(Plugin):
 
         filter_len = len(self.filter)
 
-        filter = np.array(self.filter, dtype=np.int32, order='F')
+        filter_arr = np.array(self.filter, dtype=np.int32, order='F')
 
-        df_list = []
-        for i in self.df.index:
-            ni = self.df.at[i, 'd'].shape[0]
-            nj = self.df.at[i, 'd'].shape[1]
-            self.df.at[i, 'd'] = to_numpy(self.df.at[i, 'd'])
-            f_stenfilt(slab=self.df.at[i,
-                                       'd'],
-                       ni=ni,
-                       nj=nj,
-                       npass=self.repetitions,
-                       list=filter,
-                       l=filter_len)
-            self.df.at[i, 'd'] = to_dask(self.df.at[i, 'd'])
+        if self.parallel:
+            df_list = apply_filter_parallel(self.df, self.repetitions, filter_arr, filter_len)
+        else:    
+            df_list = apply_filter(self.df, self.repetitions, filter_arr, filter_len)
 
-        df_list.append(self.df)
 
         return final_results(df_list, FilterDigitalError, self.meta_df)
+
+def apply_filter(df, repetitions, filter_arr, filter_len):
+    split_value = get_split_value(df)
+
+    df_list = np.array_split(df, split_value)
+    results = []
+    for df in df_list:
+        df = fstpy.compute(df)
+        for i in df.index:
+            ni = df.at[i, 'd'].shape[0]
+            nj = df.at[i, 'd'].shape[1]
+            arr = f_stenfilt(slab=df.at[i,'d'],ni=ni,nj=nj,npass=repetitions,list=filter_arr,l=filter_len)
+            df.at[i, 'd'] = to_dask(arr)
+
+        results.append(df)
+    return results
+
+class ListWrapper:
+    def __init__(self, arr):
+        self.arr = arr
+    def get(self):
+        return self.arr
+
+def filter_wrapper(data,repetitions,filter_arr,filter_len):
+    ni = data.shape[0]
+    nj = data.shape[1]
+    return f_stenfilt(slab=data,ni=ni,nj=nj,npass=repetitions,list=filter_arr.get(),l=filter_len)
+
+def apply_filter_parallel(df, repetitions, filter, filter_len):
+
+    split_value = get_split_value(df)
+
+    df_list = np.array_split(df, split_value)
+    results = []
+    for df in df_list:
+        df = fstpy.compute(df)
+        
+        repetitions_arr = [repetitions for _ in range(len(df.index))]
+        filter_arr = [ListWrapper(filter) for _ in range(len(df.index))]
+        filter_len_arr = [filter_len for _ in range(len(df.index))]
+
+        with ThreadPool() as tp:
+            filter_results = tp.starmap(filter_wrapper,zip(df.d.to_list(),repetitions_arr,filter_arr,filter_len_arr))
+
+        df['d'] = [to_dask(r) for r in filter_results]
+
+        results.append(df)
+
+    return results

@@ -6,7 +6,7 @@ lib:
 	f2py3 -c -m f_stenfilt f_stenfilt.f90
 
 interface:
-	f2py3 -h f_stenfilt.pyf f_stenfilt.f90 -m f_stenfilt
+	f2py3 --overwrite-signature -h f_stenfilt.pyf f_stenfilt.f90 -m f_stenfilt
 
 clean:
 	rm -f *.pyf *.so

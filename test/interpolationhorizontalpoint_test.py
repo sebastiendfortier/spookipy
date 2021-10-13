@@ -962,3 +962,47 @@ def test_17(plugin_test_dir, latlon_yy_df):
     res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
+
+def test_18(plugin_test_dir, latlon_yy_df):
+    """Test avec un fichier YinYang en entree et des lat-lon sur les grilles Yin et Yang en parallele."""
+    # open and read source
+    source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    src_df0 = src_df0.loc[src_df0.nomvar.isin(
+        ["TT", "^>", "!!"])].reset_index(drop=True)
+
+    # zap all but !! HY
+    src_df0.loc[~src_df0.nomvar.isin(['!!', 'HY']), 'dateo'] = 404008736
+
+    latlon_yy_df['dateo'] = 404008736
+    # compute spooki.InterpolationHorizontalPoint
+    df = spooki.InterpolationHorizontalPoint(
+        src_df0,
+        latlon_yy_df,
+        interpolation_type='bi-linear',
+        extrapolation_type='value',
+        extrapolation_value=99.9,
+        parallel=True).compute()
+    # [ReaderStd --input {sources[0]}] >> [Select --fieldName TT] >> [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20150805T094230 --doNotFlagAsZapped] >> [spooki.InterpolationHorizontalPoint --interpolationType BI-LINEAR --extrapolationType VALUE=99.9] >> [WriterStd --output {destination_path}]
+
+    df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
+    df.loc[df.nomvar == '>>', 'etiket'] = '__INTHPTX'
+    # df['datyp']=5
+    # df['nbits']=32
+
+    df = spooki.convip(df)
+
+    # write the result
+    results_file = TMP_PATH + "test_17.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "InterpGridU_manyPts_file2cmp.std"
+    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_17"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)

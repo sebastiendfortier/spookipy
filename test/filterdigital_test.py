@@ -551,3 +551,42 @@ def test_14(plugin_test_dir):
     res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
+
+def test_14(plugin_test_dir):
+    """Test 1 répétition avec un filtre standard, l'option outputFieldName en parallele."""
+    # open and read source
+    source0 = plugin_test_dir + "UUVVfil5x5_fileSrc.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    src_df = fstpy.select_with_meta(src_df0, ['UU*'])
+
+    # compute FilterDigital
+    df = spooki.FilterDigital(
+        src_df,
+        filter=[
+            1,
+            1,
+            1],
+        repetitions=1,
+        nomvar_out='abcd',
+        parallel=True).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName UU* ] >>
+    # [FilterDigital --filter 1,1,1 --repetitions 1 --outputFieldName abcd] >>
+    # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
+
+    # df.loc[:,'datyp'] = 5
+    # df.loc[df.nomvar!='!!','nbits'] = 32
+
+    # write the result
+    results_file = TMP_PATH + "test_14.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "filter9_file2cmp.std"
+    # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_14'
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)

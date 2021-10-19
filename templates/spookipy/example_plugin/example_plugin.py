@@ -7,7 +7,7 @@ import logging
 import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
-from spookipy.utils import initializer
+
 
 # ex.: logging.info('ExamplePlugin - compute')
 # interface class for all plugins
@@ -15,7 +15,8 @@ from ..plugin import Plugin
 from ..utils import (create_empty_result, existing_results,  # plugin tools
                      final_results, get_dependencies, get_existing_result,
                      get_from_dataframe)
-from .fortran_function import fortran_function
+# from .fortran.fortran_function import fortran_function
+# from .ccp.windmoduluscpp import wind_modulus_cpp
 
 
 def python_algorithm(a: np.ndarray, b: np.ndarray) -> np.ndarray:
@@ -38,7 +39,11 @@ class ExamplePluginError(Exception):
 
 class ExamplePlugin(Plugin):
     # @initializer                                                                this decorator can be used when you have multiple parameters, it will automatically initialize self. class variable
-    def __init__(self, df: pd.DataFrame):
+    def __init__(self, df: pd.DataFrame, language='python'):
+        supported_languages = ['python','cpp','fortran']
+        if language not in supported_languages:
+            raise ExamplePluginError(f'language {language} not in {supported_languages}')
+        self.language = language
         self.plugin_mandatory_dependencies = [{                                  # define one or more filed dependencies specifications
             # in this case we want uu and vv in knots from the dataframe
             'UU': {'nomvar': 'UU', 'unit': 'knot'},
@@ -145,11 +150,14 @@ class ExamplePlugin(Plugin):
                 vv = vv_df.at[i, 'd']
                 # compute in python and store the result in our new dataframe
                 uv_df.at[i, 'd'] = python_algorithm(uu, vv)
+                #or
+                # compute in cpp and store the result in our new dataframe
+                # uv_df.at[i, 'd'] = wind_modulus_cpp(uu,vv)
                 # or
                 ni = uv_df.at[i, 'd'].shape[0]
                 nj = uv_df.at[i, 'd'].shape[1]
                 # compute in fortran and store the result in our new dataframe
-                uv_df.at[i, 'd'] = fortran_function(uu, vv, ni, nj)
+                # uv_df.at[i, 'd'] = fortran_function(uu, vv, ni, nj) 
 
             # keep the results of this group
             df_list.append(uv_df)

@@ -10,8 +10,6 @@ from ..plugin import Plugin
 from ..utils import (create_empty_result, existing_results, final_results,
                      get_dependencies, get_existing_result, get_from_dataframe,
                      to_dask, to_numpy)
-from .windmoduluscpp import wind_modulus_cpp
-
 
 class WindModulusError(Exception):
     pass
@@ -32,7 +30,7 @@ def wind_modulus(uu: np.ndarray, vv: np.ndarray) -> np.ndarray:
 
 class WindModulus(Plugin):
 
-    def __init__(self,df:pd.DataFrame,cpp:bool = False):
+    def __init__(self,df:pd.DataFrame):
         self.plugin_mandatory_dependencies = [{
             'UU': {'nomvar': 'UU', 'unit': 'knot'},
             'VV': {'nomvar': 'VV', 'unit': 'knot'},
@@ -41,7 +39,7 @@ class WindModulus(Plugin):
             'UV': {'nomvar': 'UV', 'etiket': 'WNDMOD', 'unit': 'knot'}
         }
         self.df = df
-        self.cpp = cpp
+
         #ajouter forecast_hour et unit
         self.validate_input()
 
@@ -94,7 +92,7 @@ class WindModulus(Plugin):
             for i in uv_df.index:
                 uu = uu_df.at[i,'d']
                 vv = vv_df.at[i,'d']
-                uv_df.at[i,'d'] = wind_modulus(uu,vv) if not self.cpp else to_dask(wind_modulus_cpp(to_numpy(uu),to_numpy(vv)))
+                uv_df.at[i,'d'] = wind_modulus(uu,vv) 
 
             df_list.append(uv_df)
 

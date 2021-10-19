@@ -309,7 +309,7 @@ def scalar_interpolation(
 
             int_df.at[i, 'd'] = to_dask(arr)
 
-    results.append(int_df)
+        results.append(int_df)
 
 def scalar_interp(out_grid, in_grid, data):
     arr = rmn.ezsint(int(out_grid), int(in_grid), data)
@@ -363,7 +363,7 @@ def scalar_interpolation_parallel(
             else:    
                 interp_res = pool.starmap(scalar_interp, zip(output_grid_arr, input_grid_arr, df.d.to_list()))
 
-        int_df['d'] = [to_dask(r) for r in interp_res]
+            int_df['d'] = [to_dask(r) for r in interp_res]
 
         results.append(int_df)    
 

@@ -27,7 +27,7 @@ def test_1(plugin_test_dir):
     uv_df = spooki.WindModulus(src_df0).compute()
 
     minmax_df = spooki.MinMaxLevelIndex(
-        uv_df, max=True, nomvar_max='IND').compute()
+        uv_df, nomvar="UV", max=True, nomvar_max='IND').compute()
 
     # compute MatchLevelIndexToValue
     df = spooki.MatchLevelIndexToValue(minmax_df, nomvar_out='TEST').compute()
@@ -59,7 +59,7 @@ def test_2(plugin_test_dir):
     uv_df = spooki.WindModulus(src_df0).compute()
 
     minmax_df = spooki.MinMaxLevelIndex(
-        uv_df, max=True, nomvar_max='IND').compute()
+        uv_df, nomvar="UV", max=True, nomvar_max='IND').compute()
 
     # compute MatchLevelIndexToValue
     df = spooki.MatchLevelIndexToValue(minmax_df, nomvar_out='TEST').compute()
@@ -91,7 +91,7 @@ def test_3(plugin_test_dir):
     uv_df = spooki.WindModulus(src_df0).compute()
 
     minmax_df = spooki.MinMaxLevelIndex(
-        uv_df, max=True, nomvar_max='IND').compute()
+        uv_df, nomvar="UV", max=True, nomvar_max='IND').compute()
 
     # compute MatchLevelIndexToValue
     df = spooki.MatchLevelIndexToValue(minmax_df, nomvar_out='T5').compute()
@@ -124,7 +124,7 @@ def test_4(plugin_test_dir):
     tt_df = select_with_meta(src_df0, ['TT'])
 
     minmax_df = spooki.MinMaxLevelIndex(
-        src_df0, min=True, nomvar_min='IND').compute()
+        src_df0, nomvar="TT", min=True, nomvar_min='IND').compute()
 
     uuvv_df = select_with_meta(src_df0, ['UU', 'VV'])
 

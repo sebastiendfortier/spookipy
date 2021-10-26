@@ -21,6 +21,7 @@ class MinMaxLevelIndex(Plugin):
     def __init__(
             self,
             df: pd.DataFrame,
+            nomvar : str,
             ascending=True,
             min=False,
             max=False,
@@ -58,6 +59,10 @@ class MinMaxLevelIndex(Plugin):
         if (not self.min) and (not self.max):
             self.min = True
             self.max = True
+
+        if self.bounded:
+            if (self.df.loc[self.df.nomvar == "KBAS"]).empty or (self.df.loc[self.df.nomvar == "KTOP"]).empty:
+                raise MinMaxLevelIndexError('Missing fields KBAS and/or KTOP with BOUNDED option!')
 
         self.df = fstpy.add_columns(self.df, columns=['forecast_hour', 'ip_info'])
 

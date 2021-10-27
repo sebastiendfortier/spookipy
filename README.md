@@ -23,7 +23,7 @@ algorithms.
 
 ## developpement packages
 
--   fstpy>=2.1.8
+-   fstpy>=2.1.9
 -   ci_fstcomp>=1.0.2
 -   pandas>=1.2.4
 -   numpy>=1.19.5
@@ -34,6 +34,16 @@ algorithms.
 -   sphinx-autodoc-typehints>=1.12.0
 -   sphinx-gallery>=0.9.0
 -   sphinx-rtd-theme>=1.0.0
+-   nbsphinx>=0.8.7
+
+## Surgepy
+
+This is an ssm package that we use at CMC on the science network and
+that contains a wide variety of packages
+
+``` bash
+. ssmuse-sh -d /fs/ssm/eccc/cmd/cmde/surge/surgepy/1.0.8/
+```
 
 # Installation
 
@@ -51,7 +61,7 @@ Use the ssm package
 # get spookipy ssm package
 . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/spookipy/1.0.0/
 # get fstpy ssm package
-. ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/fstpy/2.1.6/
+. ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/fstpy/2.1.9/
 ```
 
 ### use spookipy
@@ -77,24 +87,6 @@ uv_df = spooki.windmodulus(records).compute()
 dest_path = '/tmp/out.std'
 # write the selected records to the output file
 fstpy.StandardFileWriter(dest_path,uv_df).to_fst()
-```
-
-## Creating the developpement environment
-
-``` bash
-# get conda if you don't already have it
-. ssmuse-sh -x cmd/cmdm/satellite/master_u1/miniconda3_4.9.2_ubuntu-18.04-skylake-64
-# create a conda environment for spookipy's requirements
-conda create -n spookipy_dev python=3.6
-# whenever you need to use this environment on science run the following (if you have'nt loaded the conda ssm, you'll need to do it everytime)
-# unless you put it in your profile
-. activate spookipy_dev
-# installing required packages in spookipy_req environment
-conda install sphinx
-conda install -c conda-forge sphinx-autodoc-typehints
-conda install -c conda-forge sphinx-gallery
-conda install -c conda-forge sphinx_rtd_theme
-conda install numpy pandas dask xarray pytest
 ```
 
 ## Getting the source code

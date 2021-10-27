@@ -23,7 +23,7 @@ do
    echo $name >> $file_to_write
    eval printf '=%.0s' {1..${#name}} >> $file_to_write
    printf "\n" >> $file_to_write
-   echo .. include:: $name.rst >> $file_to_write
+   # echo .. include:: $name.rst >> $file_to_write
    printf "\n" >> $file_to_write
    echo "Python Module"  >> $file_to_write
    echo "-------------"  >> $file_to_write
@@ -31,6 +31,11 @@ do
    echo ".. automodule:: spookipy."$lower_name"."$lower_name >> $file_to_write
    echo "   :members:" >> $file_to_write
    printf "\n" >> $file_to_write
+   printf "\n" >> $file_to_write
+   echo "Spooki original documentation"  >> $file_to_write
+   echo "-----------------------------"  >> $file_to_write
+   printf "\n" >> $file_to_write
+   echo .. include:: $name.rst >> $file_to_write
    echo 'copying '$f&&cp $f ../doc/${name}.rst
 done
 # ==================

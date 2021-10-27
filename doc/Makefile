@@ -26,7 +26,7 @@ doc: dyn_doc rst readme
 	make --no-print-directory html
 
 remove_gen_files:
-	rm -f `ls -I contributing.rst -I anatomy_of_a_plugin.jpg -I ssm.rst -I index.rst -I plugin_anatomy.rst -I install.rst -I intro.rst -I LICENSE.rst -I requirements.rst -I tutorial.rst -I usage.rst -I _build -I _static -I auto_examples -I conf.py -I spookipy_logo.jpg -I Makefile`
+	rm -f `ls -I contributing.rst -I anatomy_of_a_plugin.jpg -I ssm.rst -I index.rst -I plugin_anatomy.rst -I install.rst -I intro.rst -I LICENSE.rst -I requirements.rst -I tutorial.rst -I usage.rst -I _build -I _static -I auto_examples -I conf.py -I spookipy_logo.jpg -I Makefile -I Tutorial.ipynb`
 
 clean: remove_gen_files
 

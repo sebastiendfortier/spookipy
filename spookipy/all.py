@@ -28,6 +28,8 @@ from .pressure import *
 from .saturationvapourpressure import *
 from .setconstantvalue import *
 from .temperaturedewpoint import *
+from .timeintervaldifference import *
+from .timeintervalminmax import *
 from .totaltotalsindex import *
 from .utils import *
 from .vapourpressure import *

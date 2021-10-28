@@ -3,14 +3,14 @@ Using spookipy in scripts or Jupyter Lab/Notebook
 
 .. code:: bash
 
-    # use surgepy
-    . ssmuse-sh -d /fs/ssm/eccc/cmd/cmde/surge/surgepy/1.0.8/
+    # activate your conda environment
+    . activate spookipy_req
     # get rmn python library
     . r.load.dot eccc/mrd/rpn/MIG/ENV/migdep/5.1.1 eccc/mrd/rpn/MIG/ENV/rpnpy/2.1.2
     # get spookipy ssm package
     . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/spookipy/1.0.0/
     # get fstpy ssm package
-    . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/fstpy/2.1.6/
+    . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/fstpy/2.1.9/
 
 use spookipy
 ~~~~~~~~~~~~
@@ -38,3 +38,4 @@ Example
     dest_path = '/tmp/out.std'
     # write the selected records to the output file
     fstpy.StandardFileWriter(dest_path,uv_df).to_fst()
+

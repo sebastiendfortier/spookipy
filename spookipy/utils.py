@@ -326,9 +326,18 @@ def validate_nomvar(nomvar: str, caller_class: str, error_class: type):
     :param error_class: The exception to throw if nomvar is not 4 characters long
     :type error_class: Exception
     :raises error_class: The class of the exception
+
+    >>> class MyError(Exception):
+    ...     pass
+    >>> validate_nomvar('TOTO','MyClass',MyError)
+    >>> validate_nomvar('','MyClass',MyError)
+    >>> validate_nomvar('T','MyClass',MyError)
+    >>> validate_nomvar('TOTOTO','MyClass',MyError)
     """
     if nomvar is None:
         return
+    if not isinstance(nomvar,str):
+        raise error_class(caller_class + ' - nomvar must be a string')
     if len(nomvar) < 2:
         raise error_class(caller_class + ' - min 2 char for nomvar')
     if len(nomvar) > 4:
@@ -639,3 +648,14 @@ def dataframe_arrays_to_dask(df):
 def get_split_value(df):
     num_rows = fstpy.get_num_rows_for_reading(df)
     return math.ceil(len(df.index)/num_rows)
+
+def encode_ip2_and_ip3(df, nomvar):
+    ip2 = df.loc[df.nomvar==nomvar].ip2[0]
+    ip3 = df.loc[df.nomvar==nomvar].ip3[0]
+    rp1a = rmn.FLOAT_IP(0., 0., rmn.LEVEL_KIND_PMB)
+    rp2a = rmn.FLOAT_IP( ip2,  ip3, rmn.TIME_KIND_HR)
+    rp3a = rmn.FLOAT_IP( ip2-ip3,  0, rmn.TIME_KIND_HR)
+    (_, ip2, ip3) = rmn.EncodeIp(rp1a, rp2a, rp3a)
+    df.loc[df.nomvar==nomvar,'ip2'] = ip2
+    df.loc[df.nomvar==nomvar,'ip3'] = ip3
+    return df

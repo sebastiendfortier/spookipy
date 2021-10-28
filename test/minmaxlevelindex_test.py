@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from test import TEST_PATH, TMP_PATH
+from spookipy.minmaxlevelindex.minmaxlevelindex import  MinMaxLevelIndexError
 
 import fstpy.all as fstpy
 import pytest
@@ -23,6 +24,7 @@ def test_1(plugin_test_dir):
     # compute spooki.MinMaxLevelIndex
     df = spooki.MinMaxLevelIndex(
         src_df0,
+        nomvar="UU",
         min=True,
         ascending=True,
         nomvar_min='IND').compute()
@@ -56,6 +58,7 @@ def test_2(plugin_test_dir):
     # compute spooki.MinMaxLevelIndex
     df = spooki.MinMaxLevelIndex(
         src_df0,
+        nomvar="UU",
         min=True,
         ascending=True,
         nomvar_min='IND').compute()
@@ -85,6 +88,7 @@ def test_3(plugin_test_dir):
     # compute spooki.MinMaxLevelIndex
     df = spooki.MinMaxLevelIndex(
         src_df0,
+        nomvar="UU",
         min=True,
         ascending=False,
         nomvar_min='IND').compute()
@@ -114,6 +118,7 @@ def test_4(plugin_test_dir):
     # compute spooki.MinMaxLevelIndex
     df = spooki.MinMaxLevelIndex(
         src_df0,
+        nomvar="UU",
         min=True,
         ascending=False,
         nomvar_min='IND').compute()
@@ -141,7 +146,11 @@ def test_5(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute spooki.MinMaxLevelIndex
-    df = spooki.MinMaxLevelIndex(src_df0, max=True, nomvar_max='IND').compute()
+    df = spooki.MinMaxLevelIndex(
+        src_df0,
+        nomvar="UU",
+        max=True,
+        nomvar_max='IND').compute()
     # [ReaderStd --input {sources[0]}] >> [spooki.MinMaxLevelIndex --minMax MAX --outputFieldName2 IND] >> [Zap --verticalLevelType ARBITRARY_CODE --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
     # write the result
@@ -168,6 +177,7 @@ def test_6(plugin_test_dir):
     # compute spooki.MinMaxLevelIndex
     df = spooki.MinMaxLevelIndex(
         src_df0,
+        nomvar="UU",
         max=True,
         ascending=True,
         nomvar_max='IND').compute()
@@ -197,6 +207,7 @@ def test_7(plugin_test_dir):
     # compute spooki.MinMaxLevelIndex
     df = spooki.MinMaxLevelIndex(
         src_df0,
+        nomvar="UU",
         max=True,
         ascending=False,
         nomvar_max='IND').compute()
@@ -226,6 +237,7 @@ def test_8(plugin_test_dir):
     # compute spooki.MinMaxLevelIndex
     df = spooki.MinMaxLevelIndex(
         src_df0,
+        nomvar="UU",
         max=True,
         ascending=False,
         nomvar_max='IND').compute()
@@ -255,6 +267,7 @@ def test_9(plugin_test_dir):
     # compute spooki.MinMaxLevelIndex
     df = spooki.MinMaxLevelIndex(
         src_df0,
+        nomvar="ICGA",
         max=True,
         bounded=True,
         nomvar_max='IND').compute()
@@ -285,7 +298,10 @@ def test_10(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute spooki.MinMaxLevelIndex
-    df = spooki.MinMaxLevelIndex(src_df0, bounded=True).compute()
+    df = spooki.MinMaxLevelIndex(
+        src_df0, 
+        nomvar="TT", 
+        bounded=True).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [spooki.MinMaxLevelIndex --bounded --minMax BOTH] >> [Select --fieldName KBAS,KTOP --exclude] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
     df['ip2'] = 24
@@ -301,3 +317,16 @@ def test_10(plugin_test_dir):
     res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
+
+def test_11(plugin_test_dir):
+    """Invalid request -- missing fields KBAS and KTOP with bounded option """
+    # open and read source
+    source0 = plugin_test_dir + "TTGZUUVV_3x2x7_regpres.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    # compute spooki.MinMaxLevelIndex
+    with pytest.raises(MinMaxLevelIndexError):
+        spooki.MinMaxLevelIndex(
+            src_df0, 
+            nomvar="TT", 
+            bounded=True).compute()

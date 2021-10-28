@@ -8,8 +8,9 @@ import pandas as pd
 
 from ..plugin import Plugin
 from ..utils import (create_empty_result, existing_results, final_results,
-                     get_dependencies, get_existing_result, get_from_dataframe,
-                     to_dask, to_numpy)
+                     get_dependencies, get_existing_result, get_from_dataframe)
+
+
 
 class WindModulusError(Exception):
     pass
@@ -92,7 +93,7 @@ class WindModulus(Plugin):
             for i in uv_df.index:
                 uu = uu_df.at[i,'d']
                 vv = vv_df.at[i,'d']
-                uv_df.at[i,'d'] = wind_modulus(uu,vv) 
+                uv_df.at[i,'d'] = wind_modulus(uu,vv)
 
             df_list.append(uv_df)
 

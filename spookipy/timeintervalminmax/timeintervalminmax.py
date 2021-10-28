@@ -49,6 +49,7 @@ class TimeIntervalMinMax(Plugin):
 
         self.nomvar = validate_list_of_str(self.nomvar)
         l_nomvar = len(self.nomvar)
+
         
         validate_nomvar(
             self.nomvar_min,

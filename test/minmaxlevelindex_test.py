@@ -135,7 +135,7 @@ def test_4(plugin_test_dir):
 
 
 def test_5(plugin_test_dir):
-    """-minMax MAX --outputFieldName2 IND"""
+    """--minMax MAX --outputFieldName2 IND"""
     # open and read source
     source0 = plugin_test_dir + "UUOrdered2D_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()

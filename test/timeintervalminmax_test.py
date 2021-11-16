@@ -485,12 +485,13 @@ def test_21(plugin_test_dir):
     # [TimeIntervalMinMax --type MIN --rangeForecastHour 160@168,150@160 --fieldName TT --interval 3,3 --step 2,2] >> 
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
-    df.loc[df.nomvar=='TT','etiket'] = '__TIMNMXX'
-    df.loc[df.nomvar=='TT','nomvar'] = 'V1MN'
+    df.loc[df.nomvar.str.match('V[0-9]+M.'),'etiket'] = '__TIMNMXX'
     df['ig1'] = 0
     df['ig2'] = 0
     df['grtyp'] = 'X'
-    df = encode_ip2_and_ip3(df,'V1MN')
+    # print(df)
+    df = encode_ip2_and_ip3(df)
+    # print(df)
     
     # write the result
     results_file = TMP_PATH + "test_21.std"
@@ -523,6 +524,13 @@ def test_22(plugin_test_dir):
     # [TimeIntervalMinMax --type MIN --rangeForecastHour 0@24,160@168 --fieldName TT,HU --interval 3,3 --step 2,2] >> 
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
+    df.loc[df.nomvar.str.match('V[0-9]+M.'),'etiket'] = '__TIMNMXX'
+    df['ig1'] = 0
+    df['ig2'] = 0
+    df['grtyp'] = 'X'
+    # print(df)
+    df = encode_ip2_and_ip3(df)
+
     # write the result
     results_file = TMP_PATH + "test_22.std"
     fstpy.delete_file(results_file)
@@ -547,13 +555,20 @@ def test_23(plugin_test_dir):
     df = spooki.TimeIntervalMinMax(src_df0,
         nomvar=['TT','GZ'],
         min=True,
-        forecast_hour_range=[(datetime.timedelta(hours=50), datetime.timedelta(hours=80)),(datetime.timedelta(hours=0), datetime.timedelta(hours=20))], 
+        forecast_hour_range=[(datetime.timedelta(hours=56), datetime.timedelta(hours=80)),(datetime.timedelta(hours=0), datetime.timedelta(hours=20))], 
         interval=[datetime.timedelta(hours=3),datetime.timedelta(hours=3)], 
         step=[datetime.timedelta(hours=2),datetime.timedelta(hours=2)]).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]} ] >> 
     # [TimeIntervalMinMax --type MIN --rangeForecastHour 56@80,0@20 --fieldName TT,GZ --interval 3,3 --step 2,2] >> 
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
+    df.loc[df.nomvar.str.match('V[0-9]+M.'),'etiket'] = '__TIMNMXX'
+    df['ig1'] = 0
+    df['ig2'] = 0
+    df['grtyp'] = 'X'
+    # print(df)
+    df = encode_ip2_and_ip3(df)
+    
     # write the result
     results_file = TMP_PATH + "test_23.std"
     fstpy.delete_file(results_file)
@@ -584,6 +599,14 @@ def test_24(plugin_test_dir):
     # [ReaderStd --ignoreExtended --input {sources[0]} ] >> 
     # [TimeIntervalMinMax --type MAX --rangeForecastHour 144@168,0@20 --fieldName HU,GZ --interval 4,4 --step 5,5] >> 
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
+
+    df.loc[df.nomvar.str.match('V[0-9]+M.'),'etiket'] = '__TIMNMXX'
+    df['ig1'] = 0
+    df['ig2'] = 0
+    df['grtyp'] = 'X'
+    # print(df)
+    df = encode_ip2_and_ip3(df)
+
 
     # write the result
     results_file = TMP_PATH + "test_24.std"
@@ -616,6 +639,13 @@ def test_25(plugin_test_dir):
     # [TimeIntervalMinMax --type MAX --rangeForecastHour 0@20,140@150,150@160 --fieldName TT --interval 2,3,4 --step 2,2,2] >> 
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
+    df.loc[df.nomvar.str.match('V[0-9]+M.'),'etiket'] = '__TIMNMXX'
+    df['ig1'] = 0
+    df['ig2'] = 0
+    df['grtyp'] = 'X'
+    # print(df)
+    df = encode_ip2_and_ip3(df)
+
     # write the result
     results_file = TMP_PATH + "test_25.std"
     fstpy.delete_file(results_file)
@@ -646,6 +676,12 @@ def test_26(plugin_test_dir):
     # [ReaderStd --ignoreExtended --input {sources[0]} ] >> 
     # [TimeIntervalMinMax --type MAX --rangeForecastHour 0@30 --fieldName TT,HU,GZ --interval 2 --step 2] >> 
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
+    df.loc[df.nomvar.str.match('V[0-9]+M.'),'etiket'] = '__TIMNMXX'
+    df['ig1'] = 0
+    df['ig2'] = 0
+    df['grtyp'] = 'X'
+    # print(df)
+    df = encode_ip2_and_ip3(df)
 
     # write the result
     results_file = TMP_PATH + "test_26.std"
@@ -679,6 +715,14 @@ def test_27(plugin_test_dir):
     # [TimeIntervalMinMax --type BOTH --rangeForecastHour 160@168,0@20 --fieldName TT,HU --interval 3,3 --step 3,3] >> 
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
+    df.loc[df.nomvar.str.match('V[0-9]+M.'),'etiket'] = '__TIMNMXX'
+    df['ig1'] = 0
+    df['ig2'] = 0
+    df['grtyp'] = 'X'
+    # print(df)
+    df = encode_ip2_and_ip3(df)
+    
+
     # write the result
     results_file = TMP_PATH + "test_27.std"
     fstpy.delete_file(results_file)
@@ -710,6 +754,13 @@ def test_28(plugin_test_dir):
     # [ReaderStd --ignoreExtended --input {sources[0]} ] >> 
     # [TimeIntervalMinMax --type BOTH --rangeForecastHour 160@168,140@160,0@20 --fieldName TT --interval 2,3,4 --step 1,2,3] >> 
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
+
+    df.loc[df.nomvar.str.match('V[0-9]+M.'),'etiket'] = '__TIMNMXX'
+    df['ig1'] = 0
+    df['ig2'] = 0
+    df['grtyp'] = 'X'
+    # print(df)
+    df = encode_ip2_and_ip3(df)
 
     # write the result
     results_file = TMP_PATH + "test_28.std"
@@ -743,6 +794,13 @@ def test_29(plugin_test_dir):
     # [TimeIntervalMinMax --type BOTH --rangeForecastHour 160@168,140@160,0@20 --fieldName TT,HU,GZ --interval 2,3,4 --step 1,2,3] >> 
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
+    df.loc[df.nomvar.str.match('V[0-9]+M.'),'etiket'] = '__TIMNMXX'
+    df['ig1'] = 0
+    df['ig2'] = 0
+    df['grtyp'] = 'X'
+    # print(df)
+    df = encode_ip2_and_ip3(df)
+
     # write the result
     results_file = TMP_PATH + "test_29.std"
     fstpy.delete_file(results_file)
@@ -767,11 +825,21 @@ def test_30(plugin_test_dir):
     df = spooki.TimeIntervalMinMax(src_df0,
         nomvar='TT',
         min=True,
-        forecast_hour_range=[(datetime.timedelta(hours=160), datetime.timedelta(hours=168)),(datetime.timedelta(hours=140), datetime.timedelta(hours=160)),(datetime.timedelta(hours=0), datetime.timedelta(hours=20))], 
+        forecast_hour_range=[
+            (datetime.timedelta(hours=160), datetime.timedelta(hours=168)),
+            (datetime.timedelta(hours=140), datetime.timedelta(hours=160)),
+            (datetime.timedelta(hours=0), datetime.timedelta(hours=20))], 
         ).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]} ] >> 
     # [TimeIntervalMinMax --type MIN --rangeForecastHour 160@168,140@160,0@20 --fieldName TT] >> 
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
+
+    df.loc[df.nomvar.str.match('V[0-9]+M.'),'etiket'] = '__TIMNMXX'
+    df['ig1'] = 0
+    df['ig2'] = 0
+    df['grtyp'] = 'X'
+    # print(df)
+    df = encode_ip2_and_ip3(df)
 
     # write the result
     results_file = TMP_PATH + "test_30.std"
@@ -852,12 +920,18 @@ def test_33(plugin_test_dir):
         nomvar='TT',
         min=True,
         forecast_hour_range=[(datetime.timedelta(hours=0), datetime.timedelta(hours=25)),(datetime.timedelta(hours=50), datetime.timedelta(hours=75)),(datetime.timedelta(hours=100), datetime.timedelta(hours=125))], 
-        interval=[datetime.timedelta(hours=3),datetime.timedelta(hours=4),datetime.timedelta(hours=5)],
+        interval=[datetime.timedelta(hours=3), datetime.timedelta(hours=4), datetime.timedelta(hours=5)],
         nomvar_min='TTMN').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]} ] >> 
     # [TimeIntervalMinMax --type MIN --rangeForecastHour 0@25,50@75,100@125 --fieldName TT --interval 3,4,5 --outputFieldNameMin TTMN] >> 
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
+    df.loc[df.nomvar.str.match('TTM.'),'etiket'] = '__TIMNMXX'
+    df['ig1'] = 0
+    df['ig2'] = 0
+    df['grtyp'] = 'X'
+    # print(df)
+    df = encode_ip2_and_ip3(df)
     # write the result
     results_file = TMP_PATH + "test_33.std"
     fstpy.delete_file(results_file)
@@ -888,6 +962,13 @@ def test_34(plugin_test_dir):
     # [ReaderStd --ignoreExtended --input {sources[0]} ] >> 
     # [TimeIntervalMinMax --type MAX --rangeForecastHour 0@25,50@75,100@125 --fieldName TT --interval 3,4,5 --outputFieldNameMax TTMX] >> 
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
+
+    df.loc[df.nomvar.str.match('TTM.'),'etiket'] = '__TIMNMXX'
+    df['ig1'] = 0
+    df['ig2'] = 0
+    df['grtyp'] = 'X'
+    # print(df)
+    df = encode_ip2_and_ip3(df)
 
     # write the result
     results_file = TMP_PATH + "test_34.std"
@@ -922,6 +1003,13 @@ def test_35(plugin_test_dir):
     # [TimeIntervalMinMax --type BOTH --rangeForecastHour 0@25,50@75,100@125 --fieldName TT --interval 3,4,5 --outputFieldNameMax TTMX --outputFieldNameMin TTMN ] >> 
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
+    df.loc[df.nomvar.str.match('TTM.'),'etiket'] = '__TIMNMXX'
+    df['ig1'] = 0
+    df['ig2'] = 0
+    df['grtyp'] = 'X'
+    # print(df)
+    df = encode_ip2_and_ip3(df)
+
     # write the result
     results_file = TMP_PATH + "test_35.std"
     fstpy.delete_file(results_file)
@@ -938,7 +1026,7 @@ def test_35(plugin_test_dir):
 
 
 def test_36(plugin_test_dir):
-    """ Calcul d'un test BOTH avec 3 fieldName avec interval sans step. rangeForecastHour"""
+    """ Calcul d'un test BOTH avec 1 fieldName avec interval sans step. rangeForecastHour"""
     # open and read source
     source0 = plugin_test_dir + "TT_125_100_75_50_25_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -948,13 +1036,19 @@ def test_36(plugin_test_dir):
         nomvar='TT',
         min=True,
         max=True,
-        forecast_hour_range=[(datetime.timedelta(hours=0), datetime.timedelta(hours=25)),(datetime.timedelta(hours=50), datetime.timedelta(hours=75)),(datetime.timedelta(hours=100), datetime.timedelta(hours=125))], 
+        forecast_hour_range=[(datetime.timedelta(hours=0,minutes=0,seconds=0), datetime.timedelta(hours=25,minutes=0,seconds=0)),(datetime.timedelta(hours=50,minutes=0,seconds=0), datetime.timedelta(hours=75,minutes=0,seconds=0)),(datetime.timedelta(hours=100,minutes=0,seconds=0), datetime.timedelta(hours=125,minutes=0,seconds=0))], 
         interval=[datetime.timedelta(hours=3),datetime.timedelta(hours=4),datetime.timedelta(hours=5)],
-        nomvar_min='TTMN').compute()
+        nomvar_min='TTMN',
+        nomvar_max='TTMX').compute()
     #['[ReaderStd --ignoreExtended --input {sources[0]} ] >> ', '
     # [TimeIntervalMinMax --type BOTH --rangeForecastHour 0:00:00@25:00:00,50:00:00@75:00:00,100:00:00@125:00:00 --fieldName TT --interval 3,4,5 --outputFieldNameMax TTMX --outputFieldNameMin TTMN ] >> ', '
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]']
-
+    df.loc[df.nomvar.str.match('TTM.'),'etiket'] = '__TIMNMXX'
+    df['ig1'] = 0
+    df['ig2'] = 0
+    df['grtyp'] = 'X'
+    # print(df)
+    df = encode_ip2_and_ip3(df)
     # write the result
     results_file = TMP_PATH + "test_36.std"
     fstpy.delete_file(results_file)
@@ -971,7 +1065,7 @@ def test_36(plugin_test_dir):
 
 
 def test_37(plugin_test_dir):
-    """ Calcul d'un test MAX avec 3 fieldName avec interval sans step."""
+    """ Calcul d'un test MAX avec 1 fieldName avec interval sans step."""
     # open and read source
     source0 = plugin_test_dir + "TT_125_100_75_50_25_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -981,12 +1075,18 @@ def test_37(plugin_test_dir):
         nomvar='TT',
         max=True,
         forecast_hour_range=[(datetime.timedelta(hours=0), datetime.timedelta(hours=25)),(datetime.timedelta(hours=50), datetime.timedelta(hours=75)),(datetime.timedelta(hours=100), datetime.timedelta(hours=125))], 
-        interval=[datetime.timedelta(hours=3),datetime.timedelta(hours=4),datetime.timedelta(hours=5)],
+        interval=[datetime.timedelta(hours=3,minutes=0,seconds=0),datetime.timedelta(hours=4,minutes=0,seconds=0),datetime.timedelta(hours=5,minutes=0,seconds=0)],
         nomvar_max='TTMX').compute()
     #['[ReaderStd --ignoreExtended --input {sources[0]} ] >> ', '
     # [TimeIntervalMinMax --type MAX --rangeForecastHour 0@25,50@75,100@125 --fieldName TT --interval 3:00:00,4:00:00,5:00:00 --outputFieldNameMax TTMX] >> ', '
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]']
 
+    df.loc[df.nomvar.str.match('TTM.'),'etiket'] = '__TIMNMXX'
+    df['ig1'] = 0
+    df['ig2'] = 0
+    df['grtyp'] = 'X'
+    # print(df)
+    df = encode_ip2_and_ip3(df)
     # write the result
     results_file = TMP_PATH + "test_35.std"
     fstpy.delete_file(results_file)
@@ -1013,10 +1113,17 @@ def test_38(plugin_test_dir):
         min=True,
         forecast_hour_range=[(datetime.timedelta(hours=160), datetime.timedelta(hours=168)),(datetime.timedelta(hours=150), datetime.timedelta(hours=160))], 
         interval=[datetime.timedelta(hours=3),datetime.timedelta(hours=3)],
-        step=[datetime.timedelta(hours=2),datetime.timedelta(hours=2)]).compute()
+        step=[datetime.timedelta(hours=2,minutes=0,seconds=0),datetime.timedelta(hours=2,minutes=0,seconds=0)]).compute()
     #['[ReaderStd --ignoreExtended --input {sources[0]} ] >> ', '
     # [TimeIntervalMinMax --type MIN --rangeForecastHour 160@168,150@160 --fieldName TT --interval 3,3 --step 2:00:00,2:00:00] >> ', '
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]']
+
+    df.loc[df.nomvar.str.match('V[0-9]+M.'),'etiket'] = '__TIMNMXX'
+    df['ig1'] = 0
+    df['ig2'] = 0
+    df['grtyp'] = 'X'
+    # print(df)
+    df = encode_ip2_and_ip3(df)
 
     # write the result
     results_file = TMP_PATH + "test_36.std"

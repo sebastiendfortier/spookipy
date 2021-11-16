@@ -184,7 +184,7 @@ def test_5(plugin_test_dir):
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [TimeIntervalDifference --fieldName PR --rangeForecastHour 0@177,0@60 --interval 12,3 --step 24,6] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
-
+    
     # write the result
     results_file = TMP_PATH + "test_5.std"
     fstpy.delete_file(results_file)
@@ -425,22 +425,7 @@ def test_13(plugin_test_dir):
     # [ReaderStd --ignoreExtended --input {sources[1]}] >>
     # [TimeIntervalDifference --fieldName PR --rangeForecastHour 0@6 --interval 6 --step 9] >>
     # [WriterStd --output {destination_path} --ignoreExtended --encodeIP2andIP3]
-
-    df = encode_ip2_and_ip3(df,'PR')
-    # ip2 = df.loc[df.nomvar=='PR'].ip2[0]
-    # ip3 = df.loc[df.nomvar=='PR'].ip3[0]
-    # rp1a = rmn.FLOAT_IP(0., 0., rmn.LEVEL_KIND_PMB)
-    # rp2a = rmn.FLOAT_IP( ip2,  ip3, rmn.TIME_KIND_HR)
-    # rp3a = rmn.FLOAT_IP( ip2-ip3,  0, rmn.TIME_KIND_HR)
-    # (_, ip2, ip3) = rmn.EncodeIp(rp1a, rp2a, rp3a)
-
-    # df.loc[df.nomvar=='PR','ip2'] = ip2
-    # df.loc[df.nomvar=='PR','ip3'] = ip3
-    
-    
-
-    # df.loc[df.nomvar=='PR', 'nbits'] = 32
-    # df.loc[df.nomvar=='PR', 'datyp'] = 5
+    df = encode_ip2_and_ip3(df)
     # write the result
     results_file = TMP_PATH + "test_13.std"
     fstpy.delete_file(results_file)

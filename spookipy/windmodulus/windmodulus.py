@@ -30,7 +30,11 @@ def wind_modulus(uu: np.ndarray, vv: np.ndarray) -> np.ndarray:
 
 
 class WindModulus(Plugin):
+    """Calculation of the wind modulus from its 2 horizontal components
 
+    :param df: input DataFrame
+    :type df: pd.DataFrame
+    """
     def __init__(self,df:pd.DataFrame):
         self.plugin_mandatory_dependencies = [{
             'UU': {'nomvar': 'UU', 'unit': 'knot'},

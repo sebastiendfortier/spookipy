@@ -21,9 +21,9 @@ def test_1(plugin_test_dir):
     source0 = plugin_test_dir + "UUVV5x5_1_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute MultiplyElementsBy
-    df = spooki.MultiplyElementsBy(src_df0, value=3).compute()
-    # [ReaderStd --input {sources[0]}] >> [MultiplyElementsBy --value 3.0] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
+    # compute MultiplyElementBy
+    df = spooki.MultiplyElementBy(src_df0, value=3).compute()
+    # [ReaderStd --input {sources[0]}] >> [MultiplyElementBy --value 3.0] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     df = spooki.convip(df, style=rmn.CONVIP_ENCODE_OLD)
     # write the result
@@ -46,9 +46,9 @@ def test_2(plugin_test_dir):
     source0 = plugin_test_dir + "UUVV5x5_1_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute MultiplyElementsBy
-    df = spooki.MultiplyElementsBy(src_df0, value=0.333).compute()
-    # [ReaderStd --input {sources[0]}] >> [MultiplyElementsBy --value 0.333] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
+    # compute MultiplyElementBy
+    df = spooki.MultiplyElementBy(src_df0, value=0.333).compute()
+    # [ReaderStd --input {sources[0]}] >> [MultiplyElementBy --value 0.333] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     df = spooki.convip(df, style=rmn.CONVIP_ENCODE_OLD)
     # write the result

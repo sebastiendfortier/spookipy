@@ -12,7 +12,21 @@ class MaskError(Exception):
 
 
 class Mask(Plugin):
+    """This plug-in creates a mask according to the threshold value(s) given.
 
+    :param df: input DataFrame  
+    :type df: pd.DataFrame  
+    :param thresholds: List of threshold values to take into account., defaults to None
+    :type thresholds: list(float), optional
+    :param values: List of values the mask will take (will be used in the same order as the threshold values), defaults to None
+    :type values: list(float), optional
+    :param operators: List of comparison operators (will be used in the same order as the threshold values), defaults to None
+    :type operators: list(str), optional
+    :param nomvar_out: nomvar for output result, defaults to None
+    :type nomvar_out: str, optional
+    :param parallel: execute in parallel, defaults to False
+    :type parallel: bool, optional
+    """
     @initializer
     def __init__(
             self,
@@ -22,6 +36,7 @@ class Mask(Plugin):
             operators=None,
             nomvar_out=None,
             parallel: bool = False):
+
         self.plugin_result_specifications = {
             'ALL': {'etiket': 'MASK'}
             }
@@ -94,7 +109,7 @@ def apply_mask(df, values, operators, thresholds):
     
     results = []
     for row in df.itertuples():
-        df.at[row.Index,'d'] = process_array(values, operators, thresholds, ops, df.at[row.Index,'d'])
+        df.at[row.Index,'d'] = process_array(values, operators, thresholds, ops, df.at[row.Index,'d']).astype('float32')
 
     results.append(df)
 

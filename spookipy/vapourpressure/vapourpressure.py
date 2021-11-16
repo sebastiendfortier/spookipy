@@ -20,7 +20,19 @@ class VapourPressureError(Exception):
 
 
 class VapourPressure(Plugin):
+    """Calculates the vapour pressure of water
 
+    :param df: input DataFrame
+    :type df: pd.DataFrame
+    :param ice_water_phase: ice water phase, defaults to None
+    :type ice_water_phase: str, optional
+    :param temp_phase_switch: temperature phase switch , defaults to None
+    :type temp_phase_switch: float, optional
+    :param temp_phase_switch_unit: temperature phase switch unit, defaults to 'celsius'
+    :type temp_phase_switch_unit: str, optional
+    :param rpn: use rpn library algorithm, defaults to False
+    :type rpn: bool, optional
+    """
     @initializer
     def __init__(
             self,

@@ -10,24 +10,45 @@ from ..utils import (create_empty_result, final_results, get_3d_array,
                      initializer, validate_nomvar)
 
 
-class OpElementsByPointError(Exception):
+class OpElementsByColumnError(Exception):
     pass
 
 
-class OpElementsByPoint(Plugin):
+class OpElementsByColumn(Plugin):
+    """Generic plugin used by other plugins to apply specific operations on a column of data
 
+    :param df: input DataFrame  
+    :type df: pd.DataFrame  
+    :param operator: function to apply on a column of data
+    :type operator: function
+    :param operation_name: name of operation do display for logging, defaults to 'OpElementsByColumn'
+    :type operation_name: str, optional
+    :param exception_class: exception to raise, defaults to OpElementsByColumnError
+    :type exception_class: type, optional
+    :param group_by_forecast_hour: group fields by forecast hour, defaults to False
+    :type group_by_forecast_hour: bool, optional
+    :param group_by_level: group fields by level, defaults to False
+    :type group_by_level: bool, optional
+    :param nomvar_out: nomvar to apply to results, defaults to None
+    :type nomvar_out: str, optional
+    :param unit: unit to apply to results, defaults to 'scalar'
+    :type unit: str, optional
+    :param etiket: etiket to apply to results, defaults to None
+    :type etiket: str, optional
+    """
     @initializer
     def __init__(
             self,
             df: pd.DataFrame,
             operator,
-            operation_name='OpElementsByPoint',
-            exception_class=OpElementsByPointError,
+            operation_name='OpElementsByColumn',
+            exception_class=OpElementsByColumnError,
             group_by_forecast_hour=False,
             group_by_level=False,
             nomvar_out=None,
             unit='scalar',
             etiket=None):
+
         if self.etiket is None:
             self.etiket = self.operation_name
         self.validate_input()
@@ -74,7 +95,7 @@ class OpElementsByPoint(Plugin):
         self.groups = self.df.groupby(by=grouping)
 
     def compute(self) -> pd.DataFrame:
-        logging.info('OpElementsByPoint - compute')
+        logging.info('OpElementsByColumn - compute')
         # holds data from all the groups
         df_list = []
         for _, current_group in self.groups:

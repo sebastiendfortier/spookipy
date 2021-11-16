@@ -4,7 +4,7 @@ import logging
 import numpy as np
 import pandas as pd
 
-from ..opelementsbypoint import OpElementsByPoint
+from ..opelementsbycolumn import OpElementsByColumn
 from ..plugin import Plugin
 from ..utils import initializer
 
@@ -14,6 +14,15 @@ class ArithmeticMeanByPointError(Exception):
 
 
 class ArithmeticMeanByPoint(Plugin):
+    """Arithmetic mean for each point of all the fields received
+
+    :param df: input DataFrame
+    :type df: pd.DataFrame
+    :param group_by_forecast_hour: group fields by forecast hour, defaults to False
+    :type group_by_forecast_hour: bool, optional
+    :param nomvar_out: nomvar for output result, defaults to 'MEAN'
+    :type nomvar_out: str, optional
+    """
     @initializer
     def __init__(
             self,
@@ -24,7 +33,7 @@ class ArithmeticMeanByPoint(Plugin):
 
     def compute(self) -> pd.DataFrame:
         logging.info('ArithmeticMeanByPoint - compute')
-        return OpElementsByPoint(
+        return OpElementsByColumn(
             self.df,
             operator=np.mean,
             operation_name='ArithmeticMeanByPoint',

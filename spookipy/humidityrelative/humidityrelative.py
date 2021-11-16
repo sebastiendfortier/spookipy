@@ -18,7 +18,19 @@ class HumidityRelativeError(Exception):
 
 
 class HumidityRelative(Plugin):
+    """Calculation of the relative humidity, the ratio between the partial pressure of water vapour content in the air and the saturated vapour pressure at the same temperature.
 
+    :param df: input DataFrame  
+    :type df: pd.DataFrame  
+    :param ice_water_phase: Switch to determine which phase to consider: ice and water ('both'), or, water only ('water'), defaults to None   
+    :type ice_water_phase: str, optional
+    :param temp_phase_switch: Temperature at which to change from the ice phase to the water phase, defaults to None
+    :type temp_phase_switch: float, optional
+    :param temp_phase_switch_unit: temp_phase_switch unit, can be kelvin or celcius, defaults to 'celsius'
+    :type temp_phase_switch_unit: str, optional
+    :param rpn: Use the RPN TdPack functions, defaults to False
+    :type rpn: bool, optional
+    """
     @initializer
     def __init__(
             self,
@@ -27,6 +39,7 @@ class HumidityRelative(Plugin):
             temp_phase_switch=None,
             temp_phase_switch_unit='celsius',
             rpn=False):
+
         self.plugin_params = {
             'ice_water_phase': self.ice_water_phase,
             'temp_phase_switch': self.temp_phase_switch,

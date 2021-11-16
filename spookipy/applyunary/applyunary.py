@@ -17,7 +17,19 @@ class ApplyUnaryError(Exception):
 
 
 class ApplyUnary(Plugin):
+    """Apply a unary function the data, point by point
 
+    :param df: input DataFrame
+    :type df: pd.DataFrame
+    :param function: unary function to apply, defaults to None
+    :type function: function, optional
+    :param nomvar_in: nomvar of field to apply function to, defaults to None
+    :type nomvar_in: str, optional
+    :param nomvar_out: nomvar of the results field, defaults to None
+    :type nomvar_out: str, optional
+    :param etiket: etiket to apply to results, defaults to None
+    :type etiket: str, optional
+    """
     @initializer
     def __init__(
             self,
@@ -26,6 +38,7 @@ class ApplyUnary(Plugin):
             nomvar_in=None,
             nomvar_out=None,
             etiket=None):
+
         self.validate_input()
 
     def validate_input(self):
@@ -45,12 +58,10 @@ class ApplyUnary(Plugin):
     def compute(self) -> pd.DataFrame:
         logging.info('ApplyUnary - compute')
 
-        in_df = self.df.loc[self.df.nomvar ==
-                            self.nomvar_in].reset_index(drop=True)
+        in_df = self.df.loc[self.df.nomvar == self.nomvar_in].reset_index(drop=True)
 
         if in_df.empty:
-            raise ApplyUnaryError(
-                f'No data to process with nomvar {self.nomvar_in}')
+            raise ApplyUnaryError(f'No data to process with nomvar {self.nomvar_in}')
 
         res_df = create_empty_result(in_df,
                                      {'nomvar': self.nomvar_out,

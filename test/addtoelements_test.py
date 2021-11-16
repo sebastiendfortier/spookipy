@@ -20,9 +20,9 @@ def test_1(plugin_test_dir):
     source0 = plugin_test_dir + "UUVV5x5_zeros_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute AddToElements
-    df = spooki.AddToElements(src_df0, value=4).compute()
-    # [ReaderStd --input {sources[0]}] >> [AddToElements --value +4.0] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
+    # compute AddToElement
+    df = spooki.AddToElement(src_df0, value=4).compute()
+    # [ReaderStd --input {sources[0]}] >> [AddToElement --value +4.0] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     # write the result
     results_file = TMP_PATH + "test_1.std"
@@ -44,9 +44,9 @@ def test_2(plugin_test_dir):
     source0 = plugin_test_dir + "UUVV5x5_zeros_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute AddToElements
-    df = spooki.AddToElements(src_df0, value=-2).compute()
-    # [ReaderStd --input {sources[0]}] >> [AddToElements --value -2.0] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
+    # compute AddToElement
+    df = spooki.AddToElement(src_df0, value=-2).compute()
+    # [ReaderStd --input {sources[0]}] >> [AddToElement --value -2.0] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     # write the result
     results_file = TMP_PATH + "test_2.std"

@@ -29,7 +29,11 @@ def wind_chill(tt: np.ndarray, uv: np.ndarray) -> np.ndarray:
 
 
 class WindChill(Plugin):
+    """Calculation of the equivalent temperature associated to the wind chill factor at the surface
 
+    :param df: input DataFrame
+    :type df: pd.DataFrame
+    """
     def __init__(self, df: pd.DataFrame):
         self.plugin_mandatory_dependencies = [{
             'UV': {'nomvar': 'UV', 'unit': 'knot', 'surface': True},

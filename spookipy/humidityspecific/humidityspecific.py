@@ -18,7 +18,19 @@ class HumiditySpecificError(Exception):
 
 
 class HumiditySpecific(Plugin):
+    """Calculation of the specific humidity, the ratio of the mass of water vapour in the air to the total mass of moist air.
 
+    :param df: input DataFrame  
+    :type df: pd.DataFrame  
+    :param ice_water_phase: Switch to determine which phase to consider: ice and water ('both'), or, water only ('water'), defaults to None   
+    :type ice_water_phase: str, optional
+    :param temp_phase_switch: Temperature at which to change from the ice phase to the water phase, defaults to None
+    :type temp_phase_switch: float, optional
+    :param temp_phase_switch_unit: temp_phase_switch unit, can be kelvin or celcius, defaults to 'celsius'
+    :type temp_phase_switch_unit: str, optional
+    :param rpn: Use the RPN TdPack functions, defaults to False
+    :type rpn: bool, optional
+    """
     @initializer
     def __init__(
             self,

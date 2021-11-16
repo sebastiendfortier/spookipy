@@ -132,7 +132,7 @@ Spooki: SweatIndex
 
 **Algorithm:**
 
-.. code:: fragment
+.. code-block:: text
 
           For TTI, the Total Totals index.
           For TD850, the dew point temperature (deg C) at 850 mb.

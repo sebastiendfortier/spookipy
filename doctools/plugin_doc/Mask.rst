@@ -112,7 +112,7 @@ Spooki: Mask
 
 **Algorithm:**
 
-.. code:: fragment
+.. code-block:: text
 
         For F,             an input field
         For thresholds[j], jth value given in the list of --thresholds option

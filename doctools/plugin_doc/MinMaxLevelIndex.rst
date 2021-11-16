@@ -120,7 +120,7 @@ Spooki: MinMaxLevelIndex
 
 **Algorithm:**
 
-.. code:: fragment
+.. code-block:: text
 
     If the key --bounded is not activated :
         KBAS = lowest level in the column

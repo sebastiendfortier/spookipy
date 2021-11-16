@@ -124,7 +124,7 @@ Spooki: SupercooledLiquidWaterContent
 
 **Algorithm:**
 
-.. code:: fragment
+.. code-block:: text
 
         If the value of the --origin key is TOTAL:
             if TT < 0:

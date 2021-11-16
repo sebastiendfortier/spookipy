@@ -112,7 +112,7 @@ Spooki: PowerElementsByPoint
 
 **Algorithm:**
 
-.. code:: fragment
+.. code-block:: text
 
         For the fields A identified by --baseFieldName and B identified by --exponentFieldName and grouped by --groupBy
 

@@ -112,7 +112,7 @@ Spooki: SetLowerBoundary
 
 **Algorithm:**
 
-.. code:: fragment
+.. code-block:: text
 
         For F, a given field of size N, composed of n elements (n = 1,N)
 

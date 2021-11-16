@@ -117,7 +117,7 @@ Spooki: HumidityRelative
 
 **Algorithm:**
 
-.. code:: fragment
+.. code-block:: text
 
         -If the --RPN key is NOT activated:
 

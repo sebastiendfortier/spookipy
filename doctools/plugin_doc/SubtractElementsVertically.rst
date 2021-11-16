@@ -113,7 +113,7 @@ Spooki: SubtractElementsVertically
 
 **Algorithm:**
 
-.. code:: fragment
+.. code-block:: text
 
           For k the chosen level
 

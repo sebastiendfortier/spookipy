@@ -126,7 +126,7 @@ Spooki: GeorgeKIndex
 
 **Algorithm:**
 
-.. code:: fragment
+.. code-block:: text
 
           For TT850, TT700 and TT500, the air temperature (deg C) at 850mb, 700mb and 500mb respectively.
           For TD850 and TD700, the dew point temperature (deg C) at 850mb and 700mb respectively.

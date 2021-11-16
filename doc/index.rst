@@ -42,7 +42,8 @@ Documentation
 **Modules**
 
 * :doc:`addelementsbypoint`
-* :doc:`addtoelements`
+* :doc:`addtoelement`
+* :doc:`applyunary`
 * :doc:`arithmeticmeanbypoint`
 * :doc:`cloudfractiondiagnostic`
 * :doc:`coriolisparameter`
@@ -54,18 +55,24 @@ Documentation
 * :doc:`humidex`
 * :doc:`humidityrelative`
 * :doc:`humidityspecific`
+* :doc:`humidityutils`
 * :doc:`interpolationhorizontalgrid`
 * :doc:`interpolationhorizontalpoint`
 * :doc:`mask`
 * :doc:`matchlevelindextovalue`
 * :doc:`minmaxlevelindex`
-* :doc:`multiplyelementsby`
+* :doc:`multiplyelementby`
 * :doc:`multiplyelementsbypoint`
+* :doc:`opelementsbycolumn`
+* :doc:`opelementsbyvalue`
 * :doc:`plugin`
 * :doc:`pressure`
 * :doc:`saturationvapourpressure`
+* :doc:`science`
 * :doc:`setconstantvalue`
 * :doc:`temperaturedewpoint`
+* :doc:`timeintervaldifference`
+* :doc:`timeintervalminmax`
 * :doc:`totaltotalsindex`
 * :doc:`vapourpressure`
 * :doc:`watervapourmixingratio`
@@ -81,7 +88,8 @@ Documentation
    :caption: Modules
 
    addelementsbypoint
-   addtoelements
+   addtoelement
+   applyunary
    arithmeticmeanbypoint
    cloudfractiondiagnostic
    coriolisparameter
@@ -93,18 +101,24 @@ Documentation
    humidex
    humidityrelative
    humidityspecific
+   humidityutils
    interpolationhorizontalgrid
    interpolationhorizontalpoint
    mask
    matchlevelindextovalue
    minmaxlevelindex
-   multiplyelementsby
+   multiplyelementby
    multiplyelementsbypoint
+   opelementsbycolumn
+   opelementsbyvalue
    plugin
    pressure
    saturationvapourpressure
+   science
    setconstantvalue
    temperaturedewpoint
+   timeintervaldifference
+   timeintervalminmax
    totaltotalsindex
    vapourpressure
    watervapourmixingratio

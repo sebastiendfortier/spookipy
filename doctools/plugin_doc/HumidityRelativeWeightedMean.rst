@@ -116,7 +116,7 @@ Spooki: HumidityRelativeWeightedMean
 
 **Algorithm:**
 
-.. code:: fragment
+.. code-block:: text
 
          For HU1000, HU925, HU850, HU700 and HU500, specific humidity (kg/kg) at 1000, 925, 850, 700 and 500 hPa respectively.
          For HUs1000, HUs925, HUs850, HUs700 and HUs500, saturation specific humidity (kg/kg) at 1000, 925, 850, 700 and 500 hPa respectively.

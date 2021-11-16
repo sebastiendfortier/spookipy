@@ -15,7 +15,7 @@ algorithms.
 
 ## run time packages
 
--   fstpy>=2.1.9
+-   fstpy>=2.1.10
 -   pandas>=1.2.4
 -   numpy>=1.19.5
 -   xarray>=0.19.0
@@ -23,7 +23,7 @@ algorithms.
 
 ## developpement packages
 
--   fstpy>=2.1.9
+-   fstpy>=2.1.10
 -   ci_fstcomp>=1.0.2
 -   pandas>=1.2.4
 -   numpy>=1.19.5
@@ -54,14 +54,10 @@ Use the ssm package
 ## Using spookipy in scripts or Jupyter Lab/Notebook
 
 ``` bash
-# activate your conda environment
-. activate spookipy_req
-# get rmn python library
-. r.load.dot eccc/mrd/rpn/MIG/ENV/migdep/5.1.1 eccc/mrd/rpn/MIG/ENV/rpnpy/2.1.2
+# load surgepy
+. ssmuse-sh -d /fs/ssm/eccc/cmd/cmde/surge/surgepy/1.0.8/
 # get spookipy ssm package
 . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/spookipy/1.0.0/
-# get fstpy ssm package
-. ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/fstpy/2.1.9/
 ```
 
 ### use spookipy
@@ -112,11 +108,9 @@ Then create a merge request on science\'s gitlab
 
 ``` bash
 # From the $project_root/test directory of the project
-. activate spookipy_dev
-# get rmn python library
-. r.load.dot eccc/mrd/rpn/MIG/ENV/migdep/5.1.1 eccc/mrd/rpn/MIG/ENV/rpnpy/2.1.2
+. ssmuse-sh -d /fs/ssm/eccc/cmd/cmde/surge/surgepy/1.0.8/
 # get fstpy ssm package
-. ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/2.1.6/
+. ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/2.1.10/
 python -m pytest
 ```
 
@@ -131,6 +125,9 @@ make doc
 ```
 
 # Creating the ssm package
+
+The plugin_list.txt in \$project_root will be used to determine which
+plugins to put in the ssm package.
 
 ``` bash
 # This will build the ssm package

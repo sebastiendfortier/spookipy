@@ -114,7 +114,7 @@ Spooki: MatchFieldsByCommonLevels
 
 **Algorithm:**
 
-.. code:: fragment
+.. code-block:: text
 
         - Find, amongst the fields given with the parameterizable key --matchFields, the field with the greater number of common vertical levels with the reference field.
 

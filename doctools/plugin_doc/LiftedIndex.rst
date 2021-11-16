@@ -152,7 +152,7 @@ Spooki: LiftedIndex
 
 | **Algorithm:**
 
-.. code:: fragment
+.. code-block:: text
 
         The lifted parcel level (LPL) will be specified by the parameter key --liftedFrom as one of
         the surface-based (SURFACE), mean-layer (MEAN_LAYER), most-unstable (MOST_UNSTABLE) parcel, 850hPa (SHOWALTER). Several can be done with one call, one after the other.

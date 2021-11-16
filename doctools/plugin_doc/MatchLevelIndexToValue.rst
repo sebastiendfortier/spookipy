@@ -115,7 +115,7 @@ Spooki: MatchLevelIndexToValue
 
 **Algorithm:**
 
-.. code:: fragment
+.. code-block:: text
 
     For IND, a 2D field of vertical level indexes, where the index numbering starts at 0.
 

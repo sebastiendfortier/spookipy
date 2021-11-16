@@ -114,7 +114,7 @@ Spooki: ReaderCsv
 
 -  | Reading of a file that must have the following form:
 
-   .. code:: fragment
+   .. code-block:: text
 
              gds:typeOfGeographicalProjection,IP1,IP2,IP3 # section gds
 

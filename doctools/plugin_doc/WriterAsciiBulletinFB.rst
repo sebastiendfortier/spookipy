@@ -145,7 +145,7 @@ NOTE: These dependencies can be first obtained by the
 
 **Algorithm:**
 
-.. code:: fragment
+.. code-block:: text
 
     1. Construction of the headers for each bulletin in function of the run hour and of the forecast hour (6, 12, 18, 24, 30 and 36)
        in the ASCII format predefined at 6, 12 or 24h.

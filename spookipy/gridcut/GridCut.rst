@@ -1,3 +1,84 @@
+Description:
+============
+
+Cuts a piece out of a grid, defined by its upper left hand corner
+and lower right hand corner.
+Notes:
+
+-  This plug-in allows for the creation of a completely
+   autonomous grid.
+-  If one desires to merge several grids, these grids must have
+   been cut by this plug-in in the same SPOOKI execution.
+
+Iteration method:
+~~~~~~~~~~~~~~~~~
+
+-  Point by point.
+
+Dependencies:
+~~~~~~~~~~~~~
+
+-  One or several field(s) on one or several input grid(s).
+
+Result(s):
+~~~~~~~~~~
+
+-  The input fields on a piece of the grid, with the same input
+   metadata.
+
+Algorithm:
+~~~~~~~~~~
+
+-  The input grids are referenced, as well as their data and
+   their descriptors.
+-  The output grids are created by copying the input grid
+   parameters and by modifying the dimensions.
+-  The desired data is copied.
+
+Reference:
+~~~~~~~~~~
+
+-  N/A
+
+Keywords:
+~~~~~~~~~
+
+-  SYSTÈME/SYSTEM, grille/grid, découpage/cut, sélection/select
+
+Usage:
+~~~~~~
+
+
+
+.. code:: python
+
+   python3
+   
+   import os
+   import fstpy.all as fstpy
+   import spookipy.all as spooki
+
+   spooki_dir = os.environ['SPOOKI_DIR']
+
+   user = os.environ['USER']
+
+   df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/GridCut/testsFiles/inputFile.std').to_pandas()
+
+   res_df = spooki.GridCut(df, start_point=(5,16), end_point=(73,42)).compute()
+
+   fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
+         
+
+Contacts:
+~~~~~~~~~
+
+-  Author : `Maximilien Martin <https://wiki.cmc.ec.gc.ca/wiki/User:Martinm>`__
+-  Coded by : `Maximilien Martin <https://wiki.cmc.ec.gc.ca/wiki/User:Martinm>`__ / `Sébastien Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
+-  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ / `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+
+
+Spooki original documentation:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `Francais <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginGridCut.html>`_
 

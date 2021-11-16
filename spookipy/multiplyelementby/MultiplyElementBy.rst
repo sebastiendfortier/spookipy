@@ -1,7 +1,7 @@
 Description:
 ============
 
--  Copies the input field and replace all its values by a given constant. Possibility to generate a 2D constant field from a 3D field.
+-  Multiplies each element of a field by a given value
 
 Iteration method:
 ~~~~~~~~~~~~~~~~~
@@ -16,23 +16,33 @@ Dependencies:
 Result(s):
 ~~~~~~~~~~
 
--  A copy (3D or 2D) of the meteorological field received from
-   input containing the value received as parameter
+-  The meteorological field to which the given value has
+   multiplied each element
 
 Algorithm:
 ~~~~~~~~~~
 
--  Does not apply
+.. code-block:: text
+
+            For F, a field of n elements
+
+            For z, a value given by the "value" key
+
+            for each point do
+
+               F(n) = F(n) *  z        n >= 1
+
+            end do
 
 Reference:
 ~~~~~~~~~~
 
--  None
+-  Does not apply
 
 Keywords:
 ~~~~~~~~~
 
--  UTILITAIRE/UTILITY, constant, generate/produire
+-  UTILITAIRE/UTILITY, multiplier/multiply
 
 Usage:
 ~~~~~~
@@ -51,12 +61,11 @@ Usage:
 
    user = os.environ['USER']
 
-   df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/SetConstantValue/testsFiles/inputFile.std').to_pandas()
+   df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/MultiplyElementBy/testsFiles/inputFile.std').to_pandas()
 
-   res_df = spooki.SetConstantValue(df, value=4.).compute()
+   res_df = spooki.MultiplyElementBy(df, value=10.).compute()
 
    fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
-
 
 Contacts:
 ~~~~~~~~~
@@ -66,9 +75,10 @@ Contacts:
 -  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ / `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
 
 
+
 Spooki original documentation:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`Francais <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginSetConstantValue.html>`_
+`Francais <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginMultiplyElementBy.html>`_
 
-`English <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_english_doc/html/pluginSetConstantValue.html>`_
+`English <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_english_doc/html/pluginMultiplyElementBy.html>`_

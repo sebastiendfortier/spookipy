@@ -122,7 +122,7 @@ Spooki: PressureOnConstantPotentialVorticity
 
 **Algorithm:**
 
-.. code:: fragment
+.. code-block:: text
 
         For PV (1/s),     the potential vorticity of Ertel.
         For PX (hPa),     the model pressure.

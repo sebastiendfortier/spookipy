@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from .addelementsbypoint import *
-from .addtoelements import *
+from .addtoelement import *
 from .applyunary import *
 from .arithmeticmeanbypoint import *
 from .cloudfractiondiagnostic import *
@@ -19,20 +19,24 @@ from .interpolationhorizontalpoint import *
 from .mask import *
 from .matchlevelindextovalue import *
 from .minmaxlevelindex import *
-from .multiplyelementsby import *
+from .multiplyelementby import *
 from .multiplyelementsbypoint import *
-from .opelementsbypoint import *
+from .opelementsbycolumn import *
 from .opelementsbyvalue import *
 from .plugin import *
 from .pressure import *
 from .saturationvapourpressure import *
+from .science import *
 from .setconstantvalue import *
 from .temperaturedewpoint import *
+from .timeintervaldifference import *
+from .timeintervalminmax import *
 from .totaltotalsindex import *
-from .utils import *
 from .vapourpressure import *
 from .watervapourmixingratio import *
 from .windchill import *
 from .winddirection import *
 from .windmax import *
 from .windmodulus import *
+
+from .utils import *

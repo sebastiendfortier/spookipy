@@ -24,17 +24,34 @@ class SetConstantValueError(Exception):
 
 
 class SetConstantValue(Plugin):
+    """Copies the input field and replace all its values by a given constant
 
+    :param df: input DataFrame
+    :type df: pd.DataFrame
+    :param value: replacement value used to replace contents of the input field, defaults to 0 (min index)
+    :type value: float, optional
+    :param nomvar_out: nomvar of the results field, defaults to None
+    :type nomvar_out: str, optional
+    :param min_index: will fill the field with the min index value, defaults to False
+    :type min_index: bool, optional
+    :param max_index: will fill the field with the max index value, defaults to False
+    :type max_index: bool, optional
+    :param nb_levels: will fill the field with the number of levels value of the provided field, defaults to False
+    :type nb_levels: bool, optional
+    :param bi_dimensionnal: forces 2D field output even if the input is a 3D field, defaults to False
+    :type bi_dimensionnal: bool, optional
+    """
     @initializer
     def __init__(
             self,
             df: pd.DataFrame,
-            value=0,
+            value:float=0.,
             nomvar_out=None,
             min_index=False,
             max_index=False,
             nb_levels=False,
             bi_dimensionnal=False):
+
         self.plugin_result_specifications = {
             'ALL': {'etiket': 'SETVAL', 'unit': 'scalar'}
         }

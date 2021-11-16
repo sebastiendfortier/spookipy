@@ -15,7 +15,25 @@ class MinMaxLevelIndexError(Exception):
 
 
 class MinMaxLevelIndex(Plugin):
-    # plugin_requires = '(nomvar in ["TD","TT"]) and (unit == "celsius")'
+    """Finds the index of the maximum and/or minimum value in the column or part of it.
+
+    :param df: input DataFrame  
+    :type df: pd.DataFrame  
+    :param nomvar: Target nomvar for the computation
+    :type nomvar: str
+    :param ascending: search order, defaults to True
+    :type ascending: bool, optional
+    :param min: get the  minimum, defaults to False
+    :type min: bool, optional
+    :param max: get the maximum, defaults to False
+    :type max: bool, optional
+    :param bounded: limit search between KBAS and KTOP, defaults to False
+    :type bounded: bool, optional
+    :param nomvar_min: nomvar of the min result, defaults to 'KMIN'
+    :type nomvar_min: str, optional
+    :param nomvar_max: nomvar of the max result, defaults to 'KMAX'
+    :type nomvar_max: str, optional
+    """
 
     @initializer
     def __init__(
@@ -28,6 +46,7 @@ class MinMaxLevelIndex(Plugin):
             bounded=False,
             nomvar_min='KMIN',
             nomvar_max='KMAX'):
+
         self.plugin_result_specifications = \
             {
                 'ALL': {'etiket': 'MMLVLI', 'unit': 'scalar', 'ip1': 0}
@@ -83,10 +102,8 @@ class MinMaxLevelIndex(Plugin):
             kmin_df = create_empty_result(group_df,self.plugin_result_specifications['ALL'])
             kmin_df['nomvar']=self.nomvar_min
 
-
             kmax_df = create_empty_result(group_df,self.plugin_result_specifications['ALL'])
             kmax_df['nomvar']=self.nomvar_max
-
 
             array_3d = get_3d_array(group_df,flatten=True)
 
@@ -110,7 +127,6 @@ class MinMaxLevelIndex(Plugin):
                 ktop_arr_missing = np.where(ktop_arr == -1, np.nan, ktop_arr)
 
                 array_3d = bound_array(array_3d, kbas_arr_missing, ktop_arr_missing)
-
 
             if self.ascending:
                 kmin_df.at[0,'d'] = np.nanargmin(array_3d, axis=0).astype('float32')

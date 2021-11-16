@@ -116,7 +116,7 @@ Spooki: TemperaturePotential
 
 **Algorithm:**
 
-.. code:: fragment
+.. code-block:: text
 
         For TT, the air temperature (deg K) and
         PX the air pressure (hPa)

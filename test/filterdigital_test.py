@@ -15,7 +15,7 @@ def plugin_test_dir():
 
 
 def test_1(plugin_test_dir):
-    """Test 1 répétition avec un filtre standard."""
+    """1 répétition avec un filtre standard."""
     # open and read source
     source0 = plugin_test_dir + "UUVVfil5x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -46,7 +46,7 @@ def test_1(plugin_test_dir):
 
 
 def test_2(plugin_test_dir):
-    """Test 3 répétitions avec un filtre standard."""
+    """3 répétitions avec un filtre standard."""
     # open and read source
     source0 = plugin_test_dir + "UUVVfil5x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -76,7 +76,7 @@ def test_2(plugin_test_dir):
 
 
 def test_3(plugin_test_dir):
-    """Test 1 répétition avec un long filtre et un fichier provenant du site de rpn PGSM."""
+    """1 répétition avec un long filtre et un fichier provenant du site de rpn PGSM."""
     # open and read source
     source0 = plugin_test_dir + "UU11x11_1_0_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -119,7 +119,7 @@ def test_3(plugin_test_dir):
 
 
 def test_4(plugin_test_dir):
-    """Test 3 répétitions avec un long filtre et un fichier provenant du site de rpn PGSM."""
+    """3 répétitions avec un long filtre et un fichier provenant du site de rpn PGSM."""
     # open and read source
     source0 = plugin_test_dir + "UU11x11_1_0_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -161,7 +161,7 @@ def test_4(plugin_test_dir):
 
 
 def test_5(plugin_test_dir):
-    """Test 1 répétition avec un filtre à 1 chiffre."""
+    """1 répétition avec un filtre à 1 chiffre."""
     # open and read source
     source0 = plugin_test_dir + "UUVVfil5x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -192,7 +192,7 @@ def test_5(plugin_test_dir):
 
 
 def test_6(plugin_test_dir):
-    """Test 1 répétition avec un long filtre et un gros fichier."""
+    """1 répétition avec un long filtre et un gros fichier."""
     # open and read source
     source0 = plugin_test_dir + "input_big_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -234,7 +234,7 @@ def test_6(plugin_test_dir):
 
 
 def test_7(plugin_test_dir):
-    """Test 3 répétitions avec un long filtre et un gros fichier."""
+    """3 répétitions avec un long filtre et un gros fichier."""
     # open and read source
     source0 = plugin_test_dir + "input_big_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -276,7 +276,7 @@ def test_7(plugin_test_dir):
 
 
 def test_8(plugin_test_dir):
-    """Test 3 répétitions avec un long filtre, poids importants et un gros fichier."""
+    """3 répétitions avec un long filtre, poids importants et un gros fichier."""
     # open and read source
     source0 = plugin_test_dir + "input_big_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -515,7 +515,7 @@ def test_13(plugin_test_dir):
 
 
 def test_14(plugin_test_dir):
-    """Test 1 répétition avec un filtre standard et l'option outputFieldName."""
+    """1 répétition avec un filtre standard et l'option outputFieldName."""
     # open and read source
     source0 = plugin_test_dir + "UUVVfil5x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -553,7 +553,7 @@ def test_14(plugin_test_dir):
     assert(res)
 
 def test_14(plugin_test_dir):
-    """Test 1 répétition avec un filtre standard, l'option outputFieldName en parallele."""
+    """1 répétition avec un filtre standard, l'option outputFieldName en parallele."""
     # open and read source
     source0 = plugin_test_dir + "UUVVfil5x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()

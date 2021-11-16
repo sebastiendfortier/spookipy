@@ -3,14 +3,10 @@ Using spookipy in scripts or Jupyter Lab/Notebook
 
 .. code:: bash
 
-    # activate your conda environment
-    . activate spookipy_req
-    # get rmn python library
-    . r.load.dot eccc/mrd/rpn/MIG/ENV/migdep/5.1.1 eccc/mrd/rpn/MIG/ENV/rpnpy/2.1.2
+    # load surgepy
+    . ssmuse-sh -d /fs/ssm/eccc/cmd/cmde/surge/surgepy/1.0.8/
     # get spookipy ssm package
     . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/spookipy/1.0.0/
-    # get fstpy ssm package
-    . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/fstpy/2.1.9/
 
 use spookipy
 ~~~~~~~~~~~~

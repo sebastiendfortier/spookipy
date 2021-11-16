@@ -24,11 +24,9 @@ Testing
 .. code:: bash
 
     # From the $project_root/test directory of the project
-    . activate spookipy_dev
-    # get rmn python library
-    . r.load.dot eccc/mrd/rpn/MIG/ENV/migdep/5.1.1 eccc/mrd/rpn/MIG/ENV/rpnpy/2.1.2
+    . ssmuse-sh -d /fs/ssm/eccc/cmd/cmde/surge/surgepy/1.0.8/
     # get fstpy ssm package
-    . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/2.1.6/
+    . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/2.1.10/
     python -m pytest
 
 Building documentation

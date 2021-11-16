@@ -23,6 +23,11 @@ def wind_direction(uu: np.ndarray, vv: np.ndarray) -> np.ndarray:
 
 
 class WindDirection(Plugin):
+    """Calculation of the meteorological wind direction
+
+    :param df: input DataFrame
+    :type df: pd.DataFrame
+    """    
     plugin_mandatory_dependencies = {
         'UU': {'nomvar': 'UU', 'unit': 'knot'},
         'VV': {'nomvar': 'VV', 'unit': 'knot'},

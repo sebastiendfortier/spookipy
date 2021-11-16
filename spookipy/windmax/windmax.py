@@ -41,7 +41,11 @@ def wind_max(uu_3d: np.ndarray,vv_3d: np.ndarray,uv_3d: np.ndarray,px_3d: np.nda
 
 
 class WindMax(Plugin):
+    """Calculation of the maximum value of the wind modulus determined according to the vertical, as well as the horizontal components of the wind and the corresponding pressure level
 
+    :param df: input DataFrame
+    :type df: pd.DataFrame
+    """
     def __init__(self, df: pd.DataFrame):
         self.plugin_mandatory_dependencies = [{
             'UV': {'nomvar': 'UV', 'unit': 'knot'},

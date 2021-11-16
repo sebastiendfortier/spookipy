@@ -112,7 +112,7 @@ Spooki: SetUpperBoundary
 
 **Algorithm:**
 
-.. code:: fragment
+.. code-block:: text
 
        For F, a given field of dimension N, composed of n elements (n = 1,N)
        For z, a value given by the "value" key, designated as upper boundary of field F

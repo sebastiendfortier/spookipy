@@ -16,7 +16,11 @@ class HumidexError(Exception):
 
 
 class Humidex(Plugin):
+    """Humidex calculation. The humidex index aims to quantify the discomfort caused by a combination of heat and humidity.
 
+    :param df: input DataFrame
+    :type df: pd.DataFrame
+    """
     def __init__(self, df: pd.DataFrame):
         self.plugin_mandatory_dependencies = [
             {

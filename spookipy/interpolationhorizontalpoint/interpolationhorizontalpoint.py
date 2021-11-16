@@ -20,17 +20,7 @@ class InterpolationHorizontalPoint(Plugin):
 
     :param df: Input dataframe
     :type df: pd.DataFrame
-    :param lat_lon_df: dataframe containing destination LAT and LON fields, created manually of from fst file
-    lat_data = np.expand_dims(np.array([45.73,43.40,49.18],dtype=np.float32),axis=-1)
-    lat_ni = lat_data.shape[0]
-    lat_nj = lat_data.shape[1]
-    lon_data = np.expand_dims(np.array([-73.75,-79.38,-123.18],dtype=np.float32),axis=-1)
-    lon_ni = lon_data.shape[0]
-    lon_nj = lon_data.shape[1]
-    pd.DataFrame([
-        {'d':lat_data, 'nomvar':'LAT','path':None,'typvar':'X', 'ni':lat_ni,'nj':lat_nj,'nk':1,'ip1':(value of your choosing or 0),'ip2':(value of your choosing or 0),'ip3':(value of your choosing or 0), 'deet':0,'npas':0,'datyp':5,'nbits':32, 'grtyp':'L','ig1':100,'ig2':100,'ig3':9000,'ig4':0},
-        {'d':lon_data, 'nomvar':'LON','path':None,'typvar':'X', 'ni':lon_ni,'nj':lon_nj,'nk':1,'ip1':(value of your choosing or 0),'ip2':(value of your choosing or 0),'ip3':(value of your choosing or 0), 'deet':0,'npas':0,'datyp':5,'nbits':32, 'grtyp':'L','ig1':100,'ig2':100,'ig3':9000,'ig4':0}
-    ])
+    :param lat_lon_df: dataframe containing destination LAT and LON fields, created manually of from fst file  
     :type lat_lon_df: pd.DataFrame
     :param interpolation_type: Type of interpolation 'nearest','bi-linear','bi-cubic', default 'bi-cubic'
     :type interpolation_type: str
@@ -309,7 +299,7 @@ def scalar_interpolation(
 
             int_df.at[i, 'd'] = to_dask(arr)
 
-    results.append(int_df)
+        results.append(int_df)
 
 def scalar_interp(out_grid, in_grid, data):
     arr = rmn.ezsint(int(out_grid), int(in_grid), data)
@@ -363,7 +353,7 @@ def scalar_interpolation_parallel(
             else:    
                 interp_res = pool.starmap(scalar_interp, zip(output_grid_arr, input_grid_arr, df.d.to_list()))
 
-        int_df['d'] = [to_dask(r) for r in interp_res]
+            int_df['d'] = [to_dask(r) for r in interp_res]
 
         results.append(int_df)    
 

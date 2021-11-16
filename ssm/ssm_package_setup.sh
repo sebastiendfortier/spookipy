@@ -1,5 +1,5 @@
 main(){
-      load_spookipy_runtime_dependencies
+      load_runtime_dependencies
 }
 
 message(){
@@ -12,10 +12,10 @@ print_and_do(){
    eval $@
 }
 
-load_spookipy_runtime_dependencies(){
-    message "Loading fstpy runtime dependencies ..."
-    print_and_do . r.load.dot eccc/mrd/rpn/MIG/ENV/migdep/5.1.1
-    print_and_do . r.load.dot eccc/mrd/rpn/MIG/ENV/rpnpy/2.1.2
+load_runtime_dependencies(){
+    message "Load ci_fstcomp for developpement"
+    print_and_do . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/2.1.10/
+    message '. ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/apps/ci_fstcomp/(check directory for latest version)/'
 }
 
 main

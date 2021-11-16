@@ -120,7 +120,7 @@ Spooki: SlopeIndex
 
 **Algorithm:**
 
-.. code:: fragment
+.. code-block:: text
 
         SLX       = Slope Index (m/s)
         float ME  = Topographic height (m)

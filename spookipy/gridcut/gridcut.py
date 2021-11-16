@@ -13,9 +13,18 @@ class GridCutError(Exception):
 
 
 class GridCut(Plugin):
+    """Cuts a piece out of a grid, defined by its upper left hand corner and lower right hand corner.
 
+    :param df: input DataFrame
+    :type df: pd.DataFrame
+    :param start_point: The upper left point of the matrix, defaults to (0, 0)
+    :type start_point: tuple, optional
+    :param end_point: The lower right point of the matrix, defaults to (1, 1)
+    :type end_point: tuple, optional
+    """
     @initializer
     def __init__(self, df: pd.DataFrame, start_point=(0, 0), end_point=(1, 1)):
+
         self.validate_input()
 
     def validate_input(self):

@@ -121,7 +121,7 @@ Spooki: GridPointDifference
 
 **Algorithm:**
 
-.. code:: fragment
+.. code-block:: text
 
     For F a given field and N its dimension along a given axis X ("axis" key)
     For n (n=1, N), the point from where we want to calculate the central, forward or backward difference of the field F.

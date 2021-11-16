@@ -112,7 +112,7 @@ Spooki: MultiplyElementBy
 
 **Algorithm:**
 
-.. code:: fragment
+.. code-block:: text
 
             For F, a field of n elements
 

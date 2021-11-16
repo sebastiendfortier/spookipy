@@ -15,6 +15,25 @@ class OpElementsByValueError(Exception):
 
 
 class OpElementsByValue(Plugin):
+    """Generic plugin used by other plugins to apply specific operations with a value as parameter on a point of data
+
+    :param df: input DataFrame  
+    :type df: pd.DataFrame  
+    :param operator: function to apply on a column of data
+    :type operator: function
+    :param value: value needed by function
+    :type value: float
+    :param operation_name: name of operation do display for logging, defaults to 'OpElementsByValue'
+    :type operation_name: str, optional
+    :param exception_class: exception to raise, defaults to OpElementsByValueError
+    :type exception_class: type, optional
+    :param nomvar_out: nomvar to apply to results, defaults to None
+    :type nomvar_out: str, optional
+    :param unit: unit to apply to results, defaults to 'scalar'
+    :type unit: str, optional
+    :param etiket: etiket to apply to results, defaults to None
+    :type etiket: str, optional
+    """
     @initializer
     def __init__(
             self,
@@ -24,8 +43,9 @@ class OpElementsByValue(Plugin):
             operation_name='OpElementsByValue',
             exception_class=OpElementsByValueError,
             nomvar_out=None,
-            unit='',
+            unit='scalar',
             etiket=None):
+
         if self.etiket is None:
             self.etiket = self.operation_name
         self.validate_input()
@@ -37,10 +57,11 @@ class OpElementsByValue(Plugin):
 
         self.df = fstpy.metadata_cleanup(self.df)
 
-        validate_nomvar(
-            self.nomvar_out,
-            self.operation_name,
-            self.exception_class)
+        if not (self.nomvar_out is None):
+            validate_nomvar(
+                self.nomvar_out,
+                self.operation_name,
+                self.exception_class)
 
         self.meta_df = self.df.loc[self.df.nomvar.isin(
             ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)

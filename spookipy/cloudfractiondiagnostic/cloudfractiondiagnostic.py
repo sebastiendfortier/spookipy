@@ -47,9 +47,16 @@ class CloudFractionDiagnosticError(Exception):
 
 
 class CloudFractionDiagnostic(Plugin):
+    """At a given level, the program converts the values    
+        relative humidity (HR) as a diagnostic cloud fraction    
 
+    :param df: input DataFrame
+    :type df: pd.DataFrame
+    :param use_constant: use a constant instead of algorithm, defaults to False
+    :type use_constant: bool, optional
+    """
     @initializer
-    def __init__(self, df: pd.DataFrame, use_constant=None):
+    def __init__(self, df: pd.DataFrame, use_constant=False):
         self.plugin_mandatory_dependencies = [
             {
                 'HR': {'nomvar': 'HR', 'unit': 'scalar', 'select_only': True},
@@ -110,7 +117,7 @@ class CloudFractionDiagnostic(Plugin):
                 self.plugin_result_specifications['CLD'],
                 all_rows=True)
 
-            if not (self.use_constant is None):
+            if self.use_constant:
                 for i in cld_df.index:
                     cld_df.at[i, 'd'] = np.full_like(
                         cld_df.at[i, 'd'], self.constant, dtype=np.float32)
@@ -124,7 +131,4 @@ class CloudFractionDiagnostic(Plugin):
 
             df_list.append(cld_df)
 
-        return final_results(
-            df_list,
-            CloudFractionDiagnosticError,
-            self.meta_df)
+        return final_results(df_list, CloudFractionDiagnosticError, self.meta_df)

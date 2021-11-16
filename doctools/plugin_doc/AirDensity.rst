@@ -123,7 +123,7 @@ Spooki: AirDensity
 
 **Algorithm:**
 
-.. code:: fragment
+.. code-block:: text
 
         If the value of the --virtualTemperature key is DRY:
         1. Convert the temperature to Kelvin degrees, by adding 273.15, TTK

@@ -16,7 +16,17 @@ class MatchLevelIndexToValueError(Exception):
 
 
 class MatchLevelIndexToValue(Plugin):
+    """Associates, to each given vertical level index, a value of one or many 3D meteorological fields from the input.
 
+    :param df: input DataFrame  
+    :type df: pd.DataFrame  
+    :param error_value: value to return if index is not found or not in valid range, defaults to -1
+    :type error_value: int, optional
+    :param nomvar_out: nomvar for output result, defaults to None
+    :type nomvar_out: str, optional
+    :param nomvar_index: nomvar of index field, defaults to 'IND'
+    :type nomvar_index: str, optional
+    """
     @initializer
     def __init__(
             self,
@@ -24,6 +34,7 @@ class MatchLevelIndexToValue(Plugin):
             error_value=-1,
             nomvar_out=None,
             nomvar_index='IND'):
+
         self.plugin_result_specifications = \
             {
                 'ALL': {'etiket': 'MLIVAL', 'ip1': 0}

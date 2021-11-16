@@ -26,7 +26,7 @@ Creating the neccesary files and folders
     # create a documentation file
     touch ExamplePlugin.rst
 
-    cd ..
+    cd ../..
     cd test
     # create a test file
     echo 'import pytest' >> example_plugin_test.py

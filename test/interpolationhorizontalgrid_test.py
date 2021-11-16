@@ -483,8 +483,7 @@ def test_13(plugin_test_dir):
         param4=21.0,
         interpolation_type='nearest',
         extrapolation_type='value',
-        extrapolation_value=-
-        888.8).compute()
+        extrapolation_value=-888.8).compute()
     # [ReaderStd --input {sources[0]}] >>
     # [Select --fieldName TT] >>
     # [InterpolationHorizontalGrid -m USER_DEFINED --gridType TYPE_N --xyDimensions 152,120 -p 52.0,120.0,50000.0,21.0 --interpolationType NEAREST --extrapolationType VALUE=-888.8] >>

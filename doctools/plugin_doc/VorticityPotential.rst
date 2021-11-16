@@ -121,7 +121,7 @@ Spooki: VorticityPotential
 
 **Algorithm:**
 
-.. code:: fragment
+.. code-block:: text
 
         For UU (m/s) and VV (m/s), respectively the wind components along the X-axis and Y-axis.
         For QQ (1/s),   the absolute vorticity.

@@ -121,7 +121,7 @@ Spooki: SpatialWeightedAveraging
 
 **Algorithm:**
 
-.. code:: fragment
+.. code-block:: text
 
            For each point of the grid, we calculate the average from a set of grid points defined by a search radius.
            This average can be weighted according to a Gaussian or be uniform. In the case of a grid with limited area,

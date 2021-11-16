@@ -111,7 +111,7 @@ Spooki: AddElementsVertically
 
 **Algorithm:**
 
-.. code:: fragment
+.. code-block:: text
 
              Add column by column all the values of a field in the vertical :
 

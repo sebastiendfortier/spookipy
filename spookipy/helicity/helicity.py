@@ -14,8 +14,17 @@ class HelicityError(Exception):
 
 
 class Helicity(Plugin):
+    """Calculation of relative helicity, a necessary tool for forecasting severe thunderstorms
 
+    :param df: input DataFrame
+    :type df: pd.DataFrame
+    :param z3: vertical level corresponding to ~850mb, defaults to 0.851343
+    :type z3: float, optional
+    :param z4: vertical level corresponding to ~300mb, defaults to 0.297078
+    :type z4: float, optional
+    """
     def __init__(self, df: pd.DataFrame, z3=0.851343, z4=0.297078):
+
         self.plugin_mandatory_dependencies = [{
             'UU': {'nomvar': 'UU', 'unit': 'knot'},
             'VV': {'nomvar': 'VV', 'unit': 'knot'},

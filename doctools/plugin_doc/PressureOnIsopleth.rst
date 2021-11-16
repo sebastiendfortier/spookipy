@@ -111,7 +111,7 @@ Spooki: PressureOnIsopleth
 
 **Algorithm:**
 
-.. code:: fragment
+.. code-block:: text
 
         For PDS ,          a 3D field.
         For PX (hPa),      the pressure of the model.

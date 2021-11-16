@@ -18,8 +18,13 @@ def george_k_index(tt850, tt700, tt500, td850, td700):
 
 
 class GeorgeKIndex(Plugin):
+    """Calculation of the George-K index, a severe weather index used for forecasting thunderstorm
 
+    :param df: input DataFrame
+    :type df: pd.DataFrame
+    """
     def __init__(self, df: pd.DataFrame):
+
         self.plugin_mandatory_dependencies = [
             {
                 'TT1': {'nomvar': 'TT', 'unit': 'celsius', 'level': 500, 'ip1_pkind': 'mb'},
@@ -47,20 +52,16 @@ class GeorgeKIndex(Plugin):
         self.meta_df = self.df.loc[self.df.nomvar.isin(
             ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
 
-        self.df = fstpy.add_columns(
-            self.df, columns=[
-                'unit', 'forecast_hour', 'ip_info'])
+        self.df = fstpy.add_columns(self.df, columns=['unit', 'forecast_hour', 'ip_info'])
 
         # check if result already exists
-        self.existing_result_df = get_existing_result(
-            self.df, self.plugin_result_specifications)
+        self.existing_result_df = get_existing_result(self.df, self.plugin_result_specifications)
 
         # remove meta data from DataFrame
         self.df = self.df.loc[~self.df.nomvar.isin(
             ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
 
-        self.groups = self.df.groupby(
-            ['grid', 'dateo', 'forecast_hour', 'ip1_kind'])
+        self.groups = self.df.groupby(['grid', 'dateo', 'forecast_hour', 'ip1_kind'])
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:
@@ -85,21 +86,14 @@ class GeorgeKIndex(Plugin):
             td850_df = td_df.loc[(td_df.level == 850)].reset_index(drop=True)
             td700_df = td_df.loc[(td_df.level == 700)].reset_index(drop=True)
 
-            ki_df = create_empty_result(
-                tt850_df, self.plugin_result_specifications['KI'])
+            ki_df = create_empty_result(tt850_df, self.plugin_result_specifications['KI'])
 
             for i in ki_df.index:
-                ki_df.at[i,
-                         'd'] = george_k_index(tt850_df.at[i,
-                                                           'd'],
-                                               tt700_df.at[i,
-                                                           'd'],
-                                               tt500_df.at[i,
-                                                           'd'],
-                                               td850_df.at[i,
-                                                           'd'],
-                                               td700_df.at[i,
-                                                           'd'])
+                ki_df.at[i,'d'] = george_k_index(tt850_df.at[i,'d'],
+                                               tt700_df.at[i,'d'],
+                                               tt500_df.at[i,'d'],
+                                               td850_df.at[i,'d'],
+                                               td700_df.at[i,'d'])
             df_list.append(ki_df)
 
         return final_results(df_list, GeorgeKIndexError, self.meta_df)

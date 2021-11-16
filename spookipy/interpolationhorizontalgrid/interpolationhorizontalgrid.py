@@ -18,34 +18,37 @@ class InterpolationHorizontalGridError(Exception):
 class InterpolationHorizontalGrid(Plugin):
     """Horizontal Interpolation of fields to a target grid
 
-    :param df: Input dataframe
-    :type df: pd.DataFrame
-    :param output_fields: sets what fields are included in output, 'interpolated' - interpolated only,'reference' - add reference field,'all' - add alla fields, defaut is 'all'
-    :type output_fields: str in
-    :param method: Manner in how the target grid is defined
-    :type method: str 'field','user'
-    :param interpolation_type: Type of interpolation 'nearest','bi-linear','bi-cubic'
-    :type interpolation_type: str
-    :param extrapolation_type: Type of extrapolation 'nearest','linear','maximum','minimum','value','abort'
-    :type extrapolation_type: str
-    :param grtyp: Type of target grid (see the reference: Grid types supported by RPN Standard Files) 'A','B','G','L','N','S', defaults to None
-    :type grtyp: str, optional
-    :param ni: X dimension of the target grid, defaults to None
-    :type ni: int, optional
-    :param nj: Y dimension of the target grid, defaults to None
-    :type nj: int, optional
-    :param param1: Projection parameter 1, defaults to None
-    :type param1: float, optional
-    :param param2: Projection parameter 2, defaults to None
-    :type param2: float, optional
-    :param param3: Projection parameter 3, defaults to None
-    :type param3: float, optional
-    :param param4: Projection parameter 4, defaults to None
-    :type param4: float, optional
-    :param extrapolation_value: value for extrapolation when type is value, defaults to None
-    :type extrapolation_value: float, optional
-    :param nomvar: Name of the field on the grid to which interpolate, defaults to None
-    :type nomvar: str, optional
+    :param df: Input dataframe  
+    :type df: pd.DataFrame  
+    :param output_fields: sets what fields are included in output, 
+                          'interpolated' - interpolated only,  
+                          'reference' - add reference field,  
+                          'all' - add all fields, defaut is 'all'   
+    :type output_fields: str  
+    :param method: Manner in how the target grid is defined  
+    :type method: str 'field','user'  
+    :param interpolation_type: Type of interpolation 'nearest','bi-linear','bi-cubic'  
+    :type interpolation_type: str  
+    :param extrapolation_type: Type of extrapolation 'nearest','linear','maximum','minimum','value','abort'  
+    :type extrapolation_type: str  
+    :param grtyp: Type of target grid (see the reference: Grid types supported by RPN Standard Files) 'A','B','G','L','N','S', defaults to None  
+    :type grtyp: str, optional  
+    :param ni: X dimension of the target grid, defaults to None  
+    :type ni: int, optional  
+    :param nj: Y dimension of the target grid, defaults to None  
+    :type nj: int, optional  
+    :param param1: Projection parameter 1, defaults to None  
+    :type param1: float, optional  
+    :param param2: Projection parameter 2, defaults to None  
+    :type param2: float, optional  
+    :param param3: Projection parameter 3, defaults to None  
+    :type param3: float, optional  
+    :param param4: Projection parameter 4, defaults to None  
+    :type param4: float, optional  
+    :param extrapolation_value: value for extrapolation when type is value, defaults to None  
+    :type extrapolation_value: float, optional  
+    :param nomvar: Name of the field on the grid to which interpolate, defaults to None  
+    :type nomvar: str, optional  
     """
 
 # –outputField arg Choice of output: include interpolated fields only or include reference field with

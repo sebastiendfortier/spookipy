@@ -126,7 +126,7 @@ Spooki: ParcelMostUnstable
 
 **Algorithm:**
 
-.. code:: fragment
+.. code-block:: text
 
         Call the Pressure plug-in to obtain PX (hPa) in the probed layer.
         Call the TemperatureWetBulb plug-in to obtain TTW (deg C) in the probed layer.

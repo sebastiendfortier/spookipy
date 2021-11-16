@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import copy
+import datetime
 import inspect
 import logging
 import math
@@ -186,7 +187,7 @@ def compute_dependency(
         df: pd.DataFrame,
         select_only: bool,
         plugin_params: dict) -> pd.DataFrame:
-    """IF possible, computes a dempendency from a plugin
+    """IF possible, computes a dependency from a plugin
 
     :param nomvar: nomvar used to identify the plugin in the dictionnary of computable_dependencies
     :type nomvar: str
@@ -316,6 +317,15 @@ def get_intersecting_levels(
     return res_df
 
 
+def validate_list_of_nomvar(nomvar: 'str|list', caller_class: str, error_class: type):
+    if isinstance(nomvar, str):
+        nomvar = [nomvar]
+    if not isinstance(nomvar, list):
+        raise error_class(f'{caller_class} - {str(nomvar)} needs to be a list of str')
+    for n in nomvar:
+        validate_nomvar(n, caller_class, error_class)
+    return nomvar   
+
 def validate_nomvar(nomvar: str, caller_class: str, error_class: type):
     """Check that a nomvar has between 2 and 4 characters
 
@@ -326,9 +336,29 @@ def validate_nomvar(nomvar: str, caller_class: str, error_class: type):
     :param error_class: The exception to throw if nomvar is not 4 characters long
     :type error_class: Exception
     :raises error_class: The class of the exception
+
+    >>> class MyError(Exception):
+    ...     pass
+    >>> validate_nomvar('TOTO','MyClass',MyError) # doctest: +IGNORE_EXCEPTION_DETAIL
+    >>> validate_nomvar('','MyClass',MyError) # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+      ...
+    MyError: MyClass - min 2 char for nomvar
+    >>> validate_nomvar('T','MyClass',MyError) # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+      ...
+    MyError: MyClass - min 2 char for nomvar    
+    >>> validate_nomvar('TOTOTO','MyClass',MyError) # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+        ...
+    MyError: MyClass - max 4 char for nomvar    
+    >>> validate_nomvar(None,'MyClass',MyError) # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+        ...
+    MyError: MyClass - nomvar must be a string    
     """
-    if nomvar is None:
-        return
+    if not isinstance(nomvar,str):
+        raise error_class(caller_class + ' - nomvar must be a string')
     if len(nomvar) < 2:
         raise error_class(caller_class + ' - min 2 char for nomvar')
     if len(nomvar) > 4:
@@ -373,6 +403,17 @@ def create_empty_result(df: pd.DataFrame, plugin_result_specifications: dict, al
     return res_df
 
 def get_3d_array(df: pd.DataFrame, flatten:bool=False, reverse:bool=False) -> np.ndarray:
+    """stacks the arrays of the 'd' row of a dataframe
+
+    :param df: input dataframe
+    :type df: pd.DataFrame
+    :param flatten: flattens the arrays, defaults to False
+    :type flatten: bool, optional
+    :param reverse: reverse stacking order, defaults to False
+    :type reverse: bool, optional
+    :return: a 3d array of the 'd' column
+    :rtype: np.ndarray
+    """
     if reverse:
         df.reindex(index=df.index[::-1])
     if flatten:    
@@ -626,16 +667,144 @@ def to_dask(arr:"np.ndarray|da.core.Array") -> da.core.Array:
         raise ConversionError('to_dask - Array is not an array of type numpy or dask')       
 
 
-def reshape_arrays(df):
+def reshape_arrays(df:pd.DataFrame) -> pd.DataFrame:
+    """reshapes the arrays of the 'd' column to correspond to ni, nj columns
+
+    :param df: input dataframe
+    :type df: pd.DataFrame
+    :return: dataframe with reshaped arrays
+    :rtype: pd.DataFrame
+    """
     for row in df.itertuples():
         df.at[row.Index,'d'] = row.d.reshape((row.ni,row.nj))
     return df    
 
-def dataframe_arrays_to_dask(df):
+def dataframe_arrays_to_dask(df:pd.DataFrame) -> pd.DataFrame:
+    """converts all the arrays of the 'd' column to dask arrays
+
+    :param df: input dataframe
+    :type df: pd.DataFrame
+    :return: dataframe with dask arrays
+    :rtype: pd.DataFrame
+    """
     for row in df.itertuples():
         df.at[row.Index,'d'] = to_dask(row.d)
     return df    
 
-def get_split_value(df):
+def get_split_value(df:pd.DataFrame) -> float:
+    """gets the optimal number of rows for reading fst file records
+
+    :param df: input dataframe
+    :type df: pd.DataFrame
+    :return: split value
+    :rtype: float
+    """
     num_rows = fstpy.get_num_rows_for_reading(df)
     return math.ceil(len(df.index)/num_rows)
+
+def encode_ip2_and_ip3(df:pd.DataFrame) -> pd.DataFrame:
+    """encode ip2 and ip3 to new style
+
+    :param df: [description]
+    :type df: pd.DataFrame
+    :return: [description]
+    :rtype: pd.DataFrame
+    """
+    for row in df.itertuples():
+        if row.nomvar in ['>>', '^^', '^>', '!!', 'P0', 'PT']:
+            continue
+        ip2 = row.ip2
+        ip3 = row.ip3
+        rp1a = rmn.FLOAT_IP(0., 0., rmn.LEVEL_KIND_PMB)
+        rp2a = rmn.FLOAT_IP( ip2,  ip3, rmn.TIME_KIND_HR)
+        rp3a = rmn.FLOAT_IP( ip2-ip3,  0, rmn.TIME_KIND_HR)
+        (_, ip2, ip3) = rmn.EncodeIp(rp1a, rp2a, rp3a)
+        df.at[row.Index,'ip2'] = ip2
+        df.at[row.Index,'ip3'] = ip3
+    return df
+
+def validate_list_of_times(param:'list(datetime.timedelta)|datetime.timedelta', exception_class:type) -> 'list(datetime.timedelta)|datetime.timedelta':
+    """validate a list of time deltas
+
+    :param param: time delta object
+    :type param: list(datetime.timedelta)|datetime.timedelta
+    :param exception_class: excpetion to raise
+    :type exception_class: type
+    :raises exception_class: raised exception
+    :return: valid time delta object(s)
+    :rtype: list(datetime.timedelta)|datetime.timedelta
+    """
+    if isinstance(param, datetime.timedelta):
+        param = [param]
+    if not isinstance(param, list):
+        raise exception_class(f'{str(param)} needs to be a list of datetime.timedelta')
+    for n in param:
+        if not isinstance(n, datetime.timedelta):
+            raise exception_class(f'{str(param)} needs to be a list of datetime.timedelta')
+        if n == datetime.timedelta():
+            raise exception_class('value is not valid') 
+    return param
+
+def validate_list_of_tuples_of_times(param:'list(Tuple(datetime.timedelta,datetime.timedelta))|Tuple(datetime.timedelta,datetime.timedelta)', exception_class:type) -> 'list(Tuple(datetime.timedelta,datetime.timedelta))|Tuple(datetime.timedelta,datetime.timedelta)':
+    """validate a list of tuples of 2 time deltas
+
+    :param param: tuple of time delta objects
+    :type param: list(Tuple(datetime.timedelta,datetime.timedelta))|Tuple(datetime.timedelta,datetime.timedelta)
+    :param exception_class: excpetion to raise
+    :type exception_class: type
+    :raises exception_class: raised exception
+    :return: valid tuple(s) of 2 time delta object(s)
+    :rtype: list(Tuple(datetime.timedelta,datetime.timedelta))|Tuple(datetime.timedelta,datetime.timedelta)
+    """
+    if isinstance(param, tuple) and len(param) == 2:
+        param = [param]
+    if not isinstance(param, list):
+        raise exception_class(f'{str(param)} is not a list, {str(param)} needs to be a list of tuple of 2 datetime.timedelta')
+    for n in param:
+        if not isinstance(n, tuple) or len(n) != 2:
+            raise exception_class(
+                f'{str(param)} does not contain tuple of 2 elements, {str(param)} needs to be a list of tuple of 2 datetime.timedelta')
+        if not isinstance(n[0], datetime.timedelta) or not isinstance(n[1], datetime.timedelta):
+            raise exception_class(
+                f'{str(param)} needs to be a list of tuple of 2 datetime.timedelta')
+        if n[0] >= n[1]:
+            raise exception_class(f'{str(param)} value is not valid')  
+    return param       
+
+def get_bounds(forecast_hour_range:'list(Tuple(datetime.timedelta, datetime.timedelta))') -> 'Tuple(list(datetime.timedelta), list(datetime.timedelta))':
+    """Get the lower and upper bounds from the forecast_hour_range(s) as seperate lists
+
+    :param forecast_hour_range: a forecast hour range
+    :type forecast_hour_range: list(Tuple(datetime.datetime, datetime.datetime))
+    :return: a list of lower bounds and a list of upper bounds
+    :rtype: Tuple(list(datetime.datetime), list(datetime.datetime))
+    """
+    borne_inf = []
+    borne_sup = []
+    for i in range(len(forecast_hour_range)):
+        borne_inf.append(forecast_hour_range[i][0])
+        borne_sup.append(forecast_hour_range[i][1])
+    return borne_inf, borne_sup
+
+def get_list_of_forecast_hours(forecast_hour_range:'list(Tuple(datetime.timedelta, datetime.timedelta))', interval:'list(datetime.timedelta)', step:'list(datetime.timedelta)') -> 'list(datetime.timedelta)':
+    """Build a list of forecast hours from  the range, the interval and the step
+
+    :param forecast_hour_range: list of forecast hour ranges
+    :type forecast_hour_range: list(Tuple(datetime.timedelta, datetime.timedelta))
+    :param interval: intervals
+    :type interval: list(datetime.timedelta)
+    :param step: steps
+    :type step: list(datetime.timedelta)
+    :return: the list of computed forecast hours
+    :rtype: list(datetime.timedelta)
+    """
+    borne_inf, borne_sup = get_bounds(forecast_hour_range)
+    forecast_hours = []
+    for i in range(len(interval)):
+        j = borne_inf[i].total_seconds()  
+        while int(j + interval[i].total_seconds()) <=  int(borne_sup[i].total_seconds()):
+            b_inf = int(j)
+            b_sup = int(j + interval[i].total_seconds())
+            forecast_hours.append((b_inf,b_sup))
+            j = j + step[i].total_seconds()
+    return forecast_hours   

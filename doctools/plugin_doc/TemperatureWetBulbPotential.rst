@@ -125,7 +125,7 @@ page.
 
 **Algorithm:**
 
-.. code:: fragment
+.. code-block:: text
 
         Call plug-in Pressure to obtain PX (hPa).
         Call plug-in TemperatureWetBulb to obtain TTW (deg C).

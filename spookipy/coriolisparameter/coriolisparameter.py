@@ -29,9 +29,12 @@ class CoriolisParameterError(Exception):
 
 
 class CoriolisParameter(Plugin):
+    """Calculation of the Coriolis parameter
 
+    :param df: input DataFrame
+    :type df: pd.DataFrame
+    """
     def __init__(self, df: pd.DataFrame):
-
         self.plugin_result_specifications = {
             'CORP': {
                 'nomvar': 'CORP',

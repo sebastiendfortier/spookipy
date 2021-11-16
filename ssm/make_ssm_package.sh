@@ -38,10 +38,33 @@ mkdir -p ${PKGNAME}/share
 mkdir -p ${PKGNAME}/etc/profile.d
 
 PROJECT_ROOT=$ROOT_DIR/${name}
+echo 'save a copy of all.py'
+mv ${PROJECT_ROOT}/all.py ${PROJECT_ROOT}/all.old
+echo 'generate new all.py from plugin_list.txt'
+./create_all_file.sh
+
 echo 'Copying files to '${PKGNAME}' directory'
 cp ssm_package_setup.sh ${PKGNAME}/etc/profile.d/${PKGNAME}.sh
 cp control.json ${PKGNAME}/.ssm.d/.
-cp -rf ${PROJECT_ROOT}/* ${PKGNAME}/lib/python/${name}/.
+
+cp -f ${PROJECT_ROOT}/all.py ${PKGNAME}/lib/python/${name}/.
+echo 'clean and reset all.py'
+rm ${PROJECT_ROOT}/all.py
+mv ${PROJECT_ROOT}/all.old ${PROJECT_ROOT}/all.py
+
+
+cp -f ${PROJECT_ROOT}/__init__.py ${PKGNAME}/lib/python/${name}/.
+cp -f ${PROJECT_ROOT}/utils.py ${PKGNAME}/lib/python/${name}/.
+cp -f ${PROJECT_ROOT}/VERSION ${PKGNAME}/lib/python/${name}/.
+while read p; do
+    if ! [[ $p == '#'* ]]
+    then 
+        p=$(echo $p| cut -d ' ' -f1)
+        cp -rf ${PROJECT_ROOT}/$p ${PKGNAME}/lib/python/${name}/.
+    fi
+done < ${ROOT_DIR}/plugin_list.txt
+
+# cp -rf ${PROJECT_ROOT}/* ${PKGNAME}/lib/python/${name}/.
 cp -rf requirements.txt ${PKGNAME}/share/.
 echo 'Creating ssm archive '${PKGNAME}'.ssm'
 tar -zcvf ${PKGNAME}.ssm ${PKGNAME}

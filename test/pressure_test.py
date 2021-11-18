@@ -50,7 +50,7 @@ def test_2(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute spooki.Pressure
-    df = spooki.Pressure(src_df0, "TT", True).compute()
+    df = spooki.Pressure(src_df0, "TT", standard_atmosphere=True).compute()
 
     # df.loc[df.nomvar.isin(['>>','^^','P0','PT']),'etiket'] = 'R1580V0N'
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
@@ -158,7 +158,7 @@ def test_6(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute spooki.Pressure
-    df = spooki.Pressure(src_df0, "HU", True).compute()
+    df = spooki.Pressure(src_df0, "HU", standard_atmosphere=True).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Zap --pdsLabel PRESSURE --doNotFlagAsZapped] >>
     # [Pressure --coordinateType SIGMA_COORDINATE --standardAtmosphere --referenceField HU] >>
@@ -264,7 +264,7 @@ def test_10(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute spooki.Pressure
-    df = spooki.Pressure(src_df0, "TT", True).compute()
+    df = spooki.Pressure(src_df0, "TT",standard_atmosphere=True).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Zap --pdsLabel PRESSURE --doNotFlagAsZapped] >>
     # [Pressure --coordinateType HYBRID_COORDINATE --standardAtmosphere --referenceField TT] >>
@@ -372,7 +372,7 @@ def test_14(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute spooki.Pressure
-    df = spooki.Pressure(src_df0, "UU", True).compute()
+    df = spooki.Pressure(src_df0, "UU", standard_atmosphere=True).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Pressure --coordinateType HYBRID_STAGGERED_COORDINATE --standardAtmosphere --referenceField UU] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
@@ -477,7 +477,7 @@ def test_18(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute spooki.Pressure
-    df = spooki.Pressure(src_df0, "TT", True).compute()
+    df = spooki.Pressure(src_df0, "TT",standard_atmosphere=True).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Zap --pdsLabel PRESSURE --doNotFlagAsZapped] >>
     # [Pressure --coordinateType PRESSURE_COORDINATE --standardAtmosphere --referenceField TT] >>

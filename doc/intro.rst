@@ -4,10 +4,10 @@ Introduction
 What is it?
 -----------
 
-spookipy is a collection of python weather algorithms to work with
+Spookipy is a collection of python algorithms that work with
 dataframes obtained with fstpy or numpy arrays.
 
-spookipy philosophy
+Spookipy philosophy
 -------------------
 
 These algorithms are generic in nature and all share a uniform model in

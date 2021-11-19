@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from fstpy.log import setup_fstpy_logger
+import fstpy.all as fstpy
 import os
 
-logger = setup_fstpy_logger()
+logger = fstpy.setup_fstpy_logger()
 
 HOST_NUM = os.getenv("TRUE_HOST")[-1]
 USER = os.getenv("USER")

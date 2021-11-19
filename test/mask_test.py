@@ -151,15 +151,9 @@ def test_6(plugin_test_dir):
 
     # compute Mask
     df = spooki.Mask(src_df0,
-                     thresholds=[-10,
-                                 0,
-                                 10],
-                     values=[1,
-                             2,
-                             3],
-                     operators=['<=',
-                                '==',
-                                '>'],
+                     thresholds=[-10, 0, 10],
+                     values=[1, 2, 3],
+                     operators=['<=', '==', '>'],
                      nomvar_out='TOTO').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     #  [Mask --thresholds -10,0,10 --values 1,2,3 --operators le,eq,gt --outputFieldName TOTO] >>

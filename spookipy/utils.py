@@ -477,7 +477,7 @@ def final_results(
     return res_df
 
 
-def convip(df: pd.DataFrame, style: int = rmn.CONVIP_ENCODE) -> pd.DataFrame:
+def convip(df: pd.DataFrame, style: int = rmn.CONVIP_ENCODE, ip_str:str='ip1') -> pd.DataFrame:
     """Converts ip1 column of dataframe from new style ips to old style and vice versa
 
     :param df: A DataFrame
@@ -489,13 +489,60 @@ def convip(df: pd.DataFrame, style: int = rmn.CONVIP_ENCODE) -> pd.DataFrame:
     """
     def convertip(ip, style):
         (val, kind) = rmn.convertIp(rmn.CONVIP_DECODE, int(ip))
+
+        if (ip_str == 'ip2'):
+            kind = 10
         if kind != -1:
             return rmn.convertIp(int(style), val, kind)
+
     vconvertip = np.vectorize(convertip)
-    df.loc[~df.nomvar.isin(["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"]), 'ip1'] = vconvertip(
-        df.loc[~df.nomvar.isin(["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"]), 'ip1'].values, style)
+    df.loc[~df.nomvar.isin(["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"]), ip_str] = vconvertip(
+        df.loc[~df.nomvar.isin(["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"]), ip_str].values, style)
 
     return df
+
+
+def encode_ip1_and_ip3(df):
+    print(f'Dans encode_ip1_and_ip3 !')
+    for row in df.itertuples():
+        if row.nomvar in ['>>', '^^', '^>', '!!', 'P0', 'PT']:
+            continue
+
+        ip1 = row.ip1
+        ip2 = row.ip2
+        ip3 = row.ip3
+
+        print(f'ip1 = {ip1}  ip2 = {ip2}  ip3 = {ip3}')
+
+        (rp1, rp2, rp3) = rmn.DecodeIp(ip1, ip2, ip3)
+        rp1a = rmn.FLOAT_IP(rp1.v1,rp1.v1, rp1.kind)
+        rp2a = rmn.FLOAT_IP( 0., 0., rmn.TIME_KIND_HR)
+        rp3a = rmn.FLOAT_IP( rp3.v1, rp3.v1, rp1.kind)
+
+        (ip1, ip2,  ip3) = rmn.EncodeIp(rp1a, rp2a, rp3a)
+        df.at[row.Index,'ip1'] = ip1
+        df.at[row.Index,'ip3'] = ip3
+
+    return df 
+
+def encode_ip1_and_ip3_version2(df):
+
+    for row in df.itertuples():
+        if row.nomvar in ['>>', '^^', '^>', '!!', 'P0', 'PT']:
+            continue
+
+        ip1  = row.ip1
+        ip2  = row.ip2
+        ip3  = row.ip3
+        kind = row.ip1_kind
+
+        ip1_enc = rmn.ip1_val(ip1, kind)
+        ip3_enc = rmn.ip1_val(ip3, kind)
+
+        df.at[row.Index,'ip1'] = ip1_enc
+        df.at[row.Index,'ip3'] = ip3_enc
+
+    return df 
 
 
 def get_from_dataframe(df: pd.DataFrame, nomvar: str) -> pd.DataFrame:

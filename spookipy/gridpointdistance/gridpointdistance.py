@@ -10,7 +10,7 @@ import pandas as pd
 import fstpy.all as fstpy
 import rpnpy.librmn.all as rmn
 from ..plugin import Plugin
-from ..utils import create_empty_result, initializer, to_dask, final_results
+from ..utils import create_empty_result, get_0_ip1, initializer, to_dask, final_results
 
 
 EARTH_RADIUS: Final = 6370997.
@@ -114,6 +114,15 @@ class GridPointDistanceError(Exception):
     pass
 
 class GridPointDistance(Plugin):
+    """Calculation of the distances on a horizontal grid between each point of which we know the latitude and longitude.
+
+    :param df: input DataFrame
+    :type df: pd.DataFrame
+    :param difference_type: a choice in ['centered', 'forward', 'backward'], defaults to None
+    :type difference_type: str, optional
+    :param axis: a choice in ['x', 'y'], defaults to ['x', 'y']
+    :type axis: list, optional
+    """
     @initializer
     def __init__(self, df: pd.DataFrame, difference_type: str = None, axis: 'list(str)' = ['x', 'y']):
         self.plugin_result_specifications = {'etiket': 'GPTDIS'}
@@ -122,7 +131,7 @@ class GridPointDistance(Plugin):
         if 'path' not in self.df.columns:
             self.df = fstpy.add_path_and_key_columns(self.df)
         self.path_groups = self.df.groupby('path')
-        print(self.meta_df)
+
 
     def validate_params(self):
         for axis in self.axis:
@@ -153,7 +162,7 @@ class GridPointDistance(Plugin):
                     model_df = create_empty_result(grtyp_df, self.plugin_result_specifications)
                     # model_df = pd.DataFrame([grtyp_df.iloc[0].to_dict()])
                     current_ip1 = model_df.iloc[0].ip1
-                    model_df['ip1'] = get_ip1(current_ip1)
+                    model_df['ip1'] = get_0_ip1(current_ip1)
                     model_df['nomvar'] = NOMVAR_X
                     gdx_df = copy.deepcopy(model_df)
                     model_df['nomvar'] = NOMVAR_Y
@@ -175,7 +184,7 @@ class GridPointDistance(Plugin):
                     lon = da.from_array(lon)
 
                     grid_wraps = (is_global and repetitions)
-                    print(is_global)
+
                     # print(lat.shape,lon.shape)
                     if self.difference_type == 'centered':
                         if 'x' in self.axis:
@@ -203,10 +212,3 @@ class GridPointDistance(Plugin):
 
         return final_results(df_list, GridPointDistanceError, self.meta_df)
 
-def get_ip1(model_ip1:int) -> int:
-    _, kind = rmn.convertIp(rmn.CONVIP_DECODE, int(model_ip1))
-    if model_ip1 >= 32768:
-        ip1 = rmn.convertIp(rmn.CONVIP_ENCODE, 0., kind)
-    else:
-        ip1 = rmn.convertIp(rmn.CONVIP_ENCODE_OLD, 0., kind)
-    return ip1

@@ -54,10 +54,10 @@ class WindMax(Plugin):
             'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'},
         }]
         self.plugin_result_specifications = {
-            'UV': {'nomvar': 'UV', 'etiket': 'WindMax', 'unit': 'knot', 'ip1': 0},
-            'UU': {'nomvar': 'UU', 'etiket': 'WindMax', 'unit': 'knot', 'ip1': 0},
-            'VV': {'nomvar': 'VV', 'etiket': 'WindMax', 'unit': 'knot', 'ip1': 0},
-            'PX': {'nomvar': 'PX', 'etiket': 'WindMax', 'unit': 'hectoPascal', 'ip1': 0},
+            'UV': {'nomvar': 'UV', 'etiket': 'WNDMAX', 'unit': 'knot', 'ip1': 0},
+            'UU': {'nomvar': 'UU', 'etiket': 'WNDMAX', 'unit': 'knot', 'ip1': 0},
+            'VV': {'nomvar': 'VV', 'etiket': 'WNDMAX', 'unit': 'knot', 'ip1': 0},
+            'PX': {'nomvar': 'PX', 'etiket': 'WNDMAX', 'unit': 'hectoPascal', 'ip1': 0},
         }
         self.df = df
         self.validate_input()

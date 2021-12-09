@@ -75,7 +75,7 @@ interval
         gridmergesimilar
         *mask
         matchfieldsbycommonlevels
-        matchlevelindextovalue
+        *matchlevelindextovalue
         *minmaxlevelindex
 
 
@@ -83,7 +83,7 @@ interval
         setupperboundary
         spatialweightedaveraging
         subtractelementsvertically
-        timeintervaldifference
-        timeintervalminmax
-        *vectormodulusanddirection
+        *timeintervaldifference
+        *timeintervalminmax
+        vectormodulusanddirection
         verticalscan

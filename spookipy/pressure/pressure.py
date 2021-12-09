@@ -75,8 +75,7 @@ class Pressure(Plugin):
         logging.info('Pressure - compute')
         df_list = []
         for _, grid in self.df.groupby(['grid']):
-            meta_df = grid.loc[grid.nomvar.isin(
-                ["!!", "HY", "P0", "PT"])].reset_index(drop=True)
+            meta_df = grid.loc[grid.nomvar.isin(["!!", "HY", "P0", "PT"])].reset_index(drop=True)
 
             vctypes_groups = grid.groupby(['vctype'])
             for _, vt in vctypes_groups:
@@ -95,7 +94,7 @@ class Pressure(Plugin):
             df: pd.DataFrame,
             meta_df: pd.DataFrame,
             vctype: str) -> pd.DataFrame:
-        """select approprite algorithm according to vctype
+        """select appropriate algorithm according to vctype
 
         :param df: input dataframe containing a single grid
         :type df: pd.DataFrame
@@ -107,32 +106,32 @@ class Pressure(Plugin):
         :rtype: pd.DataFrame
         """
         px_df = pd.DataFrame(dtype=object)
-        if vctype == "UNKNOWN":
+        if vctype == fstpy.VerticalCoordType.UNKNOWN:
             px_df = pd.DataFrame(dtype=object)
 
-        elif vctype == "HYBRID":
+        elif vctype == fstpy.VerticalCoordType.HYBRID_5001:
             logging.info(
-                'Found HYBRID vertical coordinate type - computing pressure')
+                'Found HYBRID_5001 vertical coordinate type - computing pressure')
             px_df = compute_pressure_from_hyb_coord_df( df, meta_df, self.standard_atmosphere, self.vgrid)
 
-        elif (vctype == "HYBRID_5005") or (vctype == "HYBRID_STAGGERED"):
+        elif (vctype == fstpy.VerticalCoordType.HYBRID_5005) or (vctype == fstpy.VerticalCoordType.HYBRID_5002):
             logging.info(
                 'Found HYBRID STAGGERED (5005,5002) vertical coordinate type - computing pressure')
             px_df = compute_pressure_from_hybstag_coord_df( df, meta_df, self.standard_atmosphere, self.vgrid)
 
-        elif vctype == "PRESSURE":
+        elif vctype == fstpy.VerticalCoordType.PRESSURE_2001:
             logging.info(
-                'Found PRESSURE vertical coordinate type - computing pressure')
+                'Found PRESSURE_2001 vertical coordinate type - computing pressure')
             px_df = compute_pressure_from_pressure_coord_df( df, self.standard_atmosphere)
 
-        elif vctype == "ETA":
+        elif vctype == fstpy.VerticalCoordType.ETA_1002:
             logging.info(
-                'Found ETA vertical coordinate type - computing pressure')
+                'Found ETA_1002 vertical coordinate type - computing pressure')
             px_df = compute_pressure_from_eta_coord_df( df, meta_df, self.standard_atmosphere, self.vgrid)
 
-        elif vctype == "SIGMA":
+        elif vctype == fstpy.VerticalCoordType.SIGMA_1001:
             logging.info(
-                'Found SIGMA vertical coordinate type - computing pressure')
+                'Found SIGMA_1001 vertical coordinate type - computing pressure')
             converted = False
             if (df.ip1.unique() > 32767).all():
                 converted = True
@@ -150,7 +149,7 @@ class Pressure(Plugin):
 
 
 class Pressure2Pressure:
-    """Encompasses information and algorithms to compute pressure for PRESSURE vertical coordinate type
+    """Encompasses information and algorithms to compute pressure for PRESSURE_2001 vertical coordinate type
 
     """
 
@@ -166,7 +165,7 @@ class Pressure2Pressure:
 
 def compute_pressure_from_pressure_coord_array(
         levels: list, shape: tuple) -> list:
-    """compute pressure array for a PRESSURE vertical coordinate type
+    """compute pressure array for a PRESSURE_2001 vertical coordinate type
 
     :param levels: list of pressure levels in millibar
     :type levels: list
@@ -191,10 +190,10 @@ def compute_pressure_from_pressure_coord_array(
 def compute_pressure_from_pressure_coord_df(
         df: pd.DataFrame,
         standard_atmosphere: bool = False) -> pd.DataFrame:
-    """Compute the pressure matrix for a dataframe containing one vertical coordinate type (vctype) of type PRESSURE
+    """Compute the pressure matrix for a dataframe containing one vertical coordinate type (vctype) of type PRESSURE_2001
        and only one forecast hour
 
-    :param df: contains vaiables of the same vctype (PRESSURE)
+    :param df: contains vaiables of the same vctype (PRESSURE_2001)
     :type df: pd.DataFrame
     :param standard_atmosphere: calculate pressure in standard atmosphere if specified, defaults to False
     :type standard_atmosphere: bool
@@ -228,7 +227,7 @@ SIGMA_VERSION = 1
 
 
 class Sigma2Pressure:
-    """Encompasses information and algorithms to compute pressure for SIGMA vertical coordinate type
+    """Encompasses information and algorithms to compute pressure for SIGMA_1001 vertical coordinate type
 
     :param levels: list of levels to create the vgrid descriptor
     :type levels: list
@@ -324,7 +323,7 @@ def compute_pressure_from_sigma_coord_array(
         levels: list,
         p0_data: np.ndarray,
         standard_atmosphere: bool = False) -> list:
-    """compute pressure array for a SIGMA vertical coordinate type
+    """compute pressure array for a SIGMA_1001 vertical coordinate type
 
     :param levels: list of pressure levels in sigma coord
     :type levels: list
@@ -372,10 +371,10 @@ def compute_pressure_from_sigma_coord_df(
         meta_df: pd.DataFrame,
         standard_atmosphere: bool = False,
         vgrid=False) -> pd.DataFrame:
-    """Compute the pressure matrix for a dataframe containing one vertical coordinate type (vctype) of type SIGMA
+    """Compute the pressure matrix for a dataframe containing one vertical coordinate type (vctype) of type SIGMA_1001
        and only one forecast hour
 
-    :param df: contains variables of the same vctype (SIGMA)
+    :param df: contains variables of the same vctype (SIGMA_1001)
     :type df: pd.DataFrame
     :param df: contains all accompanying metadata (P0)
     :type df: pd.DataFrame
@@ -419,7 +418,7 @@ ETA_VERSION = 2
 
 
 class Eta2Pressure:
-    """Encompasses information and algorithms to compute pressure for SIGMA vertical coordinate type
+    """Encompasses information and algorithms to compute pressure for SIGMA_1001 vertical coordinate type
 
     :param levels: list of levels to create the vgrid descriptor
     :type levels: list
@@ -527,9 +526,9 @@ def compute_pressure_from_eta_coord_array(
         bb_data: np.ndarray,
         p0_data: np.ndarray,
         standard_atmosphere: bool = False) -> list:
-    """compute pressure array for a ETA vertical coordinate type
+    """compute pressure array for a ETA_1002 vertical coordinate type
 
-    :param levels: list of pressure levels in ETA coord
+    :param levels: list of pressure levels in ETA_1002 coord
     :type levels: list
     :param pt_data: top pressure array (at least 1 value), if None bb_data must be supplied
     :type pt_data: np.ndarray
@@ -593,10 +592,10 @@ def compute_pressure_from_eta_coord_df(
         meta_df: pd.DataFrame,
         standard_atmosphere: bool = False,
         vgrid=False) -> pd.DataFrame:
-    """Compute the pressure matrix for a dataframe containing one vertical coordinate type (vctype) of type ETA
+    """Compute the pressure matrix for a dataframe containing one vertical coordinate type (vctype) of type ETA_1002
        and only one forecast hour
 
-    :param df: contains variables of the same vctype (ETA)
+    :param df: contains variables of the same vctype (ETA_1002)
     :type df: pd.DataFrame
     :param df: contains all accompanying metadata (P0, PT or !!)
     :type df: pd.DataFrame
@@ -640,7 +639,7 @@ HYBRID_VERSION = 1
 
 
 class Hybrid2Pressure:
-    """Encompasses information and algorithms to compute pressure for HYBRID vertical coordinate type
+    """Encompasses information and algorithms to compute pressure for HYBRID_5001 vertical coordinate type
 
     :param levels: list of levels to create the vgrid descriptor
     :type levels: list
@@ -758,7 +757,7 @@ class Hybrid2Pressure:
         self.ptop = self.hy_data[0]
         self.pref = self.hy_ig1
         self.rcoef = self.hy_ig2 / 1000.0
-        print(self.ptop,self.pref,self.rcoef)
+        # print(self.ptop,self.pref,self.rcoef)
 
     def hyb_to_pres(self, level):
         """hybrid to pressure conversion function
@@ -792,7 +791,7 @@ def compute_pressure_from_hyb_coord_array(
         p0_data: np.ndarray,
         levels: list,
         standard_atmosphere: bool = False) -> list:
-    """compute pressure array for a HYBRID vertical coordinate type
+    """compute pressure array for a HYBRID_5001 vertical coordinate type
 
     :param hy_data:  GEM hybrid vertical coordinate descriptor array
     :type hy_data: np.ndarray
@@ -802,7 +801,7 @@ def compute_pressure_from_hyb_coord_array(
     :type hy_ig2: float
     :param p0_data: surface pressure array
     :type p0_data: np.ndarray
-    :param levels: list of pressure levels in HYBRID coord
+    :param levels: list of pressure levels in HYBRID_5001 coord
     :type levels: list
     :param standard_atmosphere: use standard atmosphere algorithm, defaults to False
     :type standard_atmosphere: bool, optional
@@ -853,10 +852,10 @@ def compute_pressure_from_hyb_coord_df(
         meta_df: pd.DataFrame,
         standard_atmosphere: bool = False,
         vgrid=False) -> pd.DataFrame:
-    """Compute the pressure matrix for a dataframe containing one vertical coordinate type (vctype) of type HYBRID
+    """Compute the pressure matrix for a dataframe containing one vertical coordinate type (vctype) of type HYBRID_5001
        and only one forecast hour
 
-    :param df: contains variables of the same vctype (HYBRID)
+    :param df: contains variables of the same vctype (HYBRID_5001)
     :type df: pd.DataFrame
     :param meta_df: contains all accompanying metadata (P0, HY)
     :type meta_df: pd.DataFrame

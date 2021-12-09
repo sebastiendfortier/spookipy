@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 import copy
-import logging
+import dask.array as da
 from typing import Final
-
-import fstpy.all as fstpy
+import logging
+import math
 import numpy as np
 import pandas as pd
+
+import fstpy.all as fstpy
 import rpnpy.librmn.all as rmn
-import math
 from ..plugin import Plugin
 from ..utils import create_empty_result, initializer, to_dask, final_results
 
@@ -163,13 +164,15 @@ class GridPointDistance(Plugin):
                     grid_params = fstpy.get_grid_definition_params(grtyp_df)
                     (lat, lon) = fstpy.get_2d_lan_lon_arr(grid_params)
 
-
                     # longitudes        
                     if (grtyp != 'U') and ('x' in self.axis):
                         is_global, repetitions = fstpy.is_global_grid(grid_params, lon)
                     else:
                         is_global = False
                         repetitions = False
+
+                    lat = da.from_array(lat)
+                    lon = da.from_array(lon)
 
                     grid_wraps = (is_global and repetitions)
                     print(is_global)

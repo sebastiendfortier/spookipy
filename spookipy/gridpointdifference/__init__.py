@@ -1,0 +1,1 @@
+from .gridpointdifference import GridPointDifference, GridPointDifferenceError

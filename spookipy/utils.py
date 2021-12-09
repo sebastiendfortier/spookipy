@@ -807,3 +807,18 @@ def get_list_of_forecast_hours(forecast_hour_range:'list(Tuple(datetime.timedelt
             forecast_hours.append((b_inf,b_sup))
             j = j + step[i].total_seconds()
     return forecast_hours   
+
+def get_0_ip1(model_ip1:int) -> int:
+    """get an ip1 of 0 with the same encoding and kind as the model ip1
+
+    :param model_ip1: model ip1 to derive encoding and kind from
+    :type model_ip1: int
+    :return: ip1 of 0 with right encoding and kind
+    :rtype: int
+    """
+    _, kind = rmn.convertIp(rmn.CONVIP_DECODE, int(model_ip1))
+    if model_ip1 >= 32768:
+        ip1 = rmn.convertIp(rmn.CONVIP_ENCODE, 0., kind)
+    else:
+        ip1 = rmn.convertIp(rmn.CONVIP_ENCODE_OLD, 0., kind)
+    return ip1

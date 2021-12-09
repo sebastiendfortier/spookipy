@@ -9,6 +9,7 @@ from .dewpointdepression import *
 from .filterdigital import *
 from .georgekindex import *
 from .gridcut import *
+from .gridpointdistance import *
 from .helicity import *
 from .humidex import *
 from .humidityrelative import *
@@ -16,6 +17,7 @@ from .humidityspecific import *
 from .humidityutils import *
 from .interpolationhorizontalgrid import *
 from .interpolationhorizontalpoint import *
+from .interpolationvertical import *
 from .mask import *
 from .matchlevelindextovalue import *
 from .minmaxlevelindex import *

@@ -24,6 +24,7 @@ def test_1(plugin_test_dir):
     df = spooki.WindMax(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WindMax] >> [WriterStd --output {destination_path} --ignoreExtended ]
 
+    df['etiket'] = 'WINDMAX'
     # df.loc[:,'nbits'] = 32
     # df.loc[:,'datyp'] = 5
     # write the result
@@ -54,6 +55,8 @@ def test_2(plugin_test_dir):
     # df.loc[:,'nbits'] = 32
     # df.loc[:,'datyp'] = 5
     # write the result
+    df.loc[df.nomvar.isin(['UU','VV','UV','PX']),'etiket'] = 'WINDMAX'
+
     results_file = TMP_PATH + "test_2.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
@@ -80,6 +83,9 @@ def test_3(plugin_test_dir):
     # df.loc[:,'nbits'] = 32
     # df.loc[:,'datyp'] = 5
     # write the result
+
+    df['etiket'] = 'WINDMAX'
+
     results_file = TMP_PATH + "test_3.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()

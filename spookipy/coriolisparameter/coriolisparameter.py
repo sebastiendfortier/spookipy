@@ -79,7 +79,7 @@ class CoriolisParameter(Plugin):
         df_list = []
         for _, current_group in self.groups:
 
-            latlon_df = fstpy.get_2d_lat_lon(current_group)
+            latlon_df = fstpy.get_2d_lat_lon_df(current_group)
             lat_df = latlon_df.loc[latlon_df.nomvar ==
                                    'LA'].reset_index(drop=True)
             if lat_df.empty:

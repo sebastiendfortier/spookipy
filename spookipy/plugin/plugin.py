@@ -18,6 +18,7 @@ class Plugin(abc.ABC):
     def __init__(self, df: pd.DataFrame) -> None:
         self.df = df
         self.validate_input()
+        self.get_dataframes()
 
     def validate_input(self):
         """Checks that the plugin's dataframe is not empty.
@@ -26,6 +27,14 @@ class Plugin(abc.ABC):
         """
         if self.df.empty:
             raise EmptyDataframeError("Plugin" + ' - no data to process')
+
+    def get_dataframes(self):
+        """creates self.meta_df and self.no_meta_df"""
+        self.meta_df = self.df.loc[self.df.nomvar.isin(
+            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
+
+        self.no_meta_df = self.df.loc[~self.df.nomvar.isin(
+            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
 
     @abc.abstractmethod
     def compute(self) -> pd.DataFrame:

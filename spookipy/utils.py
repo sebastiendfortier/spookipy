@@ -397,8 +397,7 @@ def create_empty_result(df: pd.DataFrame, plugin_result_specifications: dict, al
 
     res_df = res_df.sort_values(
         by=['level'],
-        ascending=res_df.ascending.unique()[0]).reset_index(
-        drop=True)
+        ascending=res_df.ascending.unique()[0]).reset_index(drop=True)
 
     return res_df
 

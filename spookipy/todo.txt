@@ -15,7 +15,9 @@ interval
 
 
     grille
-        gridpointdistance
+        *gridpointdistance
+        *gridpointdifference
+        gridmergesimilar
     interpolation
         *interpolationhorizontalgrid
         *interpolationhorizontalpoint
@@ -56,7 +58,8 @@ interval
         *totaltotalsindex
         *vapourpressure
         *watervapourmixingratio
-        *windmodulusanddirection
+        *windmodulus
+        *winddirection
     produit
         bulletinfbpreparation
     système
@@ -72,15 +75,15 @@ interval
         *setconstantvalue
 
         *filterdigital
-        gridmergesimilar
+        
         *mask
         matchfieldsbycommonlevels
         *matchlevelindextovalue
         *minmaxlevelindex
 
 
-        setlowerboundary
-        setupperboundary
+        *setlowerboundary
+        *setupperboundary
         spatialweightedaveraging
         subtractelementsvertically
         *timeintervaldifference

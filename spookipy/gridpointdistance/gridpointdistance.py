@@ -67,7 +67,7 @@ VEZCALCDIST_F: Final = np.vectorize(rmn.ezcalcdist)
 # ETIKET: Final[str] = 'GPTDIS'
 NOMVAR_X: Final[str] = 'GDX'
 NOMVAR_Y: Final[str] = 'GDY'
-
+ETIKET: Final[str] = 'GPTDIS'
 def centered_distance(lats: np.ndarray, lons: np.ndarray, is_global: bool = False, grid_wraps: bool = False) -> np.ndarray:
     center_res = VEZCALCDIST_F(lats[2:], lons[2:], lats[:-2], lons[:-2])
     if is_global and (not grid_wraps):
@@ -125,7 +125,7 @@ class GridPointDistance(Plugin):
     """
     @initializer
     def __init__(self, df: pd.DataFrame, difference_type: str = None, axis: 'list(str)' = ['x', 'y']):
-        self.plugin_result_specifications = {'etiket': 'GPTDIS'}
+        self.plugin_result_specifications = {'etiket': ETIKET}
         super().__init__(df)
         self.validate_params()
         if 'path' not in self.df.columns:

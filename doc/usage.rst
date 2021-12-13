@@ -6,7 +6,7 @@ Using spookipy in scripts or Jupyter Lab/Notebook
     # load surgepy
     . ssmuse-sh -d /fs/ssm/eccc/cmd/cmde/surge/surgepy/1.0.8/
     # get spookipy ssm package
-    . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/spookipy/1.0.0/
+    . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/spookipy/1.0.1/
 
 use spookipy
 ~~~~~~~~~~~~

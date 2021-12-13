@@ -4,13 +4,9 @@ Description:
 -  Calculation of value differences of a given field for each grid point. 
 -  The difference can be calculated in three different ways on each axis of the grid :
 
-   -  centered distance    : for one given point, difference of
-      the value of the field between the previous point and the
-      next point
-   -  forward distance      : for one given point, difference of
-      the value of the field between this point and the next point
-   -  backward distance   : for one given point, difference of the
-      value of the field between this point and the previous point
+   -  centered distance : for one given point, difference of the value of the field between the previous point and the next point
+   -  forward distance : for one given point, difference of the value of the field between this point and the next point
+   -  backward distance : for one given point, difference of the value of the field between this point and the previous point
 
 Iteration method:
 ~~~~~~~~~~~~~~~~~

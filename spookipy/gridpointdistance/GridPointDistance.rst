@@ -3,12 +3,9 @@ Description:
 
 -  Calculation of the distances on a horizontal grid between each point of which we know the latitude and longitude.
    The distance can be calculated in three different ways on each axis of the grid :
-   -  centered distance    : for one given point, angular distance
-      between the previous point and the next point
-   -  forward distance      : for one given point, angular
-      distance between the point and the next point
-   -  backward distance   : for one given point, angular distance
-      between the point and the previous point
+   -  centered distance : for one given point, angular distance between the previous point and the next point
+   -  forward distance : for one given point, angular distance between the point and the next point
+   -  backward distance : for one given point, angular distance between the point and the previous point
 
 Iteration method:
 ~~~~~~~~~~~~~~~~~
@@ -34,39 +31,39 @@ Algorithm:
 
    If axis = X then  
 
-      If differenceType = CENTERED then  
+       If differenceType = CENTERED then  
 
-         :math:`GDX_{i} = R \cdot \arccos[\sin\lambda_{i-1} \cdot \sin \lambda_{i+1} + \cos\varphi_{i-1} \cdot \cos \varphi_{i+1} \cdot \cos(\varphi_{i+1} - \varphi_{i-1})]`  
+          :math:`GDX_{i} = R \cdot \arccos[\sin\lambda_{i-1} \cdot \sin \lambda_{i+1} + \cos\varphi_{i-1} \cdot \cos \varphi_{i+1} \cdot \cos(\varphi_{i+1} - \varphi_{i-1})]`  
 
-         For the 1st level:  
+          For the 1st level:  
 
-         :math:`GDX_{i} = R \cdot \arccos[\sin\lambda_{i} \cdot \sin \lambda_{i+1} + \cos \varphi_{i}\cdot \cos \varphi_{i+1} \cdot \cos (\varphi_{i+1} -\varphi_{i})]`  
+          :math:`GDX_{i} = R \cdot \arccos[\sin\lambda_{i} \cdot \sin \lambda_{i+1} + \cos \varphi_{i}\cdot \cos \varphi_{i+1} \cdot \cos (\varphi_{i+1} -\varphi_{i})]`  
 
-         For the last level:  
+          For the last level:  
 
-         :math:`GDX_{i} = R \cdot \arccos[\sin\lambda_{i} \cdot \sin \lambda_{i-1} + \cos \varphi_{i}\cdot \cos \varphi_{i-1} \cdot \cos (\varphi_{i} -\varphi_{i-1})]`  
+          :math:`GDX_{i} = R \cdot \arccos[\sin\lambda_{i} \cdot \sin \lambda_{i-1} + \cos \varphi_{i}\cdot \cos \varphi_{i-1} \cdot \cos (\varphi_{i} -\varphi_{i-1})]`  
 
       Else if differenceType = FORWARD then  
 
-         :math:`GDX_{i} = R \cdot \arccos[\sin \lambda_{i} \cdot \sin \lambda_{i+1} + \cos \varphi_{i} \cdot \cos \varphi_{i+1} \cdot \cos (\varphi_{i+1} - \varphi_{i})]`  
+          :math:`GDX_{i} = R \cdot \arccos[\sin \lambda_{i} \cdot \sin \lambda_{i+1} + \cos \varphi_{i} \cdot \cos \varphi_{i+1} \cdot \cos (\varphi_{i+1} - \varphi_{i})]`  
 
-         For the last level:  
+          For the last level:  
 
-         :math:`GDX_{i} = R \cdot \arccos[\sin\lambda_{i} \cdot \sin \lambda_{i-1} + \cos \varphi_{i}\cdot \cos \varphi_{i-1} \cdot \cos (\varphi_{i} -\varphi_{i-1})]`  
+           :math:`GDX_{i} = R \cdot \arccos[\sin\lambda_{i} \cdot \sin \lambda_{i-1} + \cos \varphi_{i}\cdot \cos \varphi_{i-1} \cdot \cos (\varphi_{i} -\varphi_{i-1})]`  
 
-      Else if differenceType = BACKWARD then  
+       Else if differenceType = BACKWARD then  
 
          :math:`GDX_{i} = R \cdot \arccos[\sin \lambda_{i} \cdot \sin \lambda_{i-1} + \cos \varphi_{i} \cdot \cos \varphi_{i-1} \cdot \cos (\varphi_{i} - \varphi_{i-1})]`  
 
-         For the 1st level:  
+           For the 1st level:  
 
-         :math:`GDX_{i} = R \cdot \arccos[\sin \lambda_{i} \cdot \sin \lambda_{i+1} + \cos \varphi_{i} \cdot \cos \varphi_{i+1} \cdot \cos (\varphi_{i+1} - \varphi_{i})]`  
+           :math:`GDX_{i} = R \cdot \arccos[\sin \lambda_{i} \cdot \sin \lambda_{i+1} + \cos \varphi_{i} \cdot \cos \varphi_{i+1} \cdot \cos (\varphi_{i+1} - \varphi_{i})]`  
 
-      End if  
+       End if  
 
    Else if axis = Y then  
 
-      We proceed in the same way but with the points situated on the Y axis  
+       We proceed in the same way but with the points situated on the Y axis  
    
    End if
 

@@ -31,6 +31,8 @@ from .pressure import *
 from .saturationvapourpressure import *
 from .science import *
 from .setconstantvalue import *
+from .setlowerboundary import *
+from .setupperboundary import *
 from .temperaturedewpoint import *
 from .timeintervaldifference import *
 from .timeintervalminmax import *

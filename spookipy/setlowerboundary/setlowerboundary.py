@@ -1,0 +1,49 @@
+# -*- coding: utf-8 -*-
+
+import logging
+from typing import Final
+
+import numpy as np
+import pandas as pd
+
+from ..plugin import Plugin
+from ..utils import (create_empty_result, final_results, initializer, validate_nomvar)
+
+ETIKET: Final[str] = 'SETLWR'
+
+class SetLowerBoundaryError(Exception):
+    pass
+
+class SetLowerBoundary(Plugin):
+    """Limit the minimum value of a field to the specified value
+
+    :param df: input DataFrame
+    :type df: pd.DataFrame
+    :param value: value to add to field
+    :type value: float
+    :param nomvar_out: nomvar for output result, defaults to None
+    :type nomvar_out: str, optional
+    """
+    @initializer
+    def __init__(self, df: pd.DataFrame, value: float = None, nomvar_out: str = None):
+        self.plugin_result_specifications = {'etiket': ETIKET}
+        super().__init__(df)
+        self.validate_params()
+
+    def validate_params(self):
+        if (self.no_meta_df.nomvar.unique().size > 1) and (not (self.nomvar_out is None)):
+            raise SetLowerBoundaryError('nomvar_out can only be used when only 1 field is present')
+
+        if (self.no_meta_df.nomvar.unique().size == 1) and (not (self.nomvar_out is None)):
+            validate_nomvar(self.nomvar_out, 'SetLowerBoundary', SetLowerBoundaryError)
+
+    def compute(self) -> pd.DataFrame:    
+        logging.info('SetLowerBoundary - compute')
+        df_list=[]
+        res_df = create_empty_result(self.no_meta_df, self.plugin_result_specifications, all_rows=True)
+        if  (self.no_meta_df.nomvar.unique().size == 1) and (not (self.nomvar_out is None)):
+            res_df['nomvar'] = self.nomvar_out
+        data = np.stack(res_df.d)
+        res_df['d'] = np.split(np.where(data < self.value, self.value, data),data.shape[0])
+        df_list.append(res_df)
+        return final_results(df_list, SetLowerBoundaryError, self.meta_df)

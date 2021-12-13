@@ -73,6 +73,8 @@ Documentation
 * :doc:`saturationvapourpressure`
 * :doc:`science`
 * :doc:`setconstantvalue`
+* :doc:`setlowerboundary`
+* :doc:`setupperboundary`
 * :doc:`temperaturedewpoint`
 * :doc:`timeintervaldifference`
 * :doc:`timeintervalminmax`
@@ -122,6 +124,8 @@ Documentation
    saturationvapourpressure
    science
    setconstantvalue
+   setlowerboundary
+   setupperboundary
    temperaturedewpoint
    timeintervaldifference
    timeintervalminmax

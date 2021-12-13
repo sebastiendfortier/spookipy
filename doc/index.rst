@@ -51,6 +51,8 @@ Documentation
 * :doc:`filterdigital`
 * :doc:`georgekindex`
 * :doc:`gridcut`
+* :doc:`gridpointdifference`
+* :doc:`gridpointdistance`
 * :doc:`helicity`
 * :doc:`humidex`
 * :doc:`humidityrelative`
@@ -58,6 +60,7 @@ Documentation
 * :doc:`humidityutils`
 * :doc:`interpolationhorizontalgrid`
 * :doc:`interpolationhorizontalpoint`
+* :doc:`interpolationvertical`
 * :doc:`mask`
 * :doc:`matchlevelindextovalue`
 * :doc:`minmaxlevelindex`
@@ -97,6 +100,8 @@ Documentation
    filterdigital
    georgekindex
    gridcut
+   gridpointdifference
+   gridpointdistance
    helicity
    humidex
    humidityrelative
@@ -104,6 +109,7 @@ Documentation
    humidityutils
    interpolationhorizontalgrid
    interpolationhorizontalpoint
+   interpolationvertical
    mask
    matchlevelindextovalue
    minmaxlevelindex

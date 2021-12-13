@@ -2,10 +2,10 @@
 
 ## What is it?
 
-spookipy is a collection of python weather algorithms to work with
-dataframes obtained with fstpy or numpy arrays.
+Spookipy is a collection of python algorithms that work with dataframes
+obtained with fstpy or numpy arrays.
 
-## spookipy philosophy
+## Spookipy philosophy
 
 These algorithms are generic in nature and all share a uniform model in
 implementation. The idea is to use the interface to create new
@@ -49,7 +49,7 @@ that contains a wide variety of packages
 
 Use the ssm package
 
-    . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/spookipy/1.0.0
+    . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/spookipy/1.0.1
 
 ## Using spookipy in scripts or Jupyter Lab/Notebook
 
@@ -57,7 +57,7 @@ Use the ssm package
 # load surgepy
 . ssmuse-sh -d /fs/ssm/eccc/cmd/cmde/surge/surgepy/1.0.8/
 # get spookipy ssm package
-. ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/spookipy/1.0.0/
+. ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/spookipy/1.0.1/
 ```
 
 ### use spookipy

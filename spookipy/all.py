@@ -9,6 +9,7 @@ from .dewpointdepression import *
 from .filterdigital import *
 from .georgekindex import *
 from .gridcut import *
+from .gridpointdifference import *
 from .gridpointdistance import *
 from .helicity import *
 from .humidex import *

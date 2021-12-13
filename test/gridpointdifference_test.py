@@ -6,6 +6,7 @@ import pandas as pd
 import pytest
 import spookipy.all as spooki
 from ci_fstcomp import fstcomp
+import rpnpy.librmn.all as rmn
 
 pytestmark = [pytest.mark.regressions]
 
@@ -21,7 +22,7 @@ def test_1(plugin_test_dir):
     source0 = plugin_test_dir + "6x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    src_df0['dateo'] = '20080529T133415'
+    src_df0['dateo'] = 347333813
     src_df0['nbits'] = 16
     src_df0['datyp'] = 1
 
@@ -34,7 +35,7 @@ def test_1(plugin_test_dir):
     # ([Copy] + [GridPointDifference --axis X,Y --differenceType CENTERED]) >> 
     # [ZapSmart --fieldNameFrom FDX --fieldNameTo FFDX] >> [ZapSmart --fieldNameFrom FDY --fieldNameTo FFDY] >> 
     # [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion]
-
+    df = pd.concat([src_df0,df], ignore_index=True)
     # write the result
     results_file = TMP_PATH + "test_1.std"
     fstpy.delete_file(results_file)
@@ -54,7 +55,7 @@ def test_2(plugin_test_dir):
     source0 = plugin_test_dir + "4z2x2y_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    src_df0['dateo'] = '20080529T133415'
+    src_df0['dateo'] = 347333813
     src_df0['nbits'] = 16
     src_df0['datyp'] = 1
 
@@ -65,7 +66,8 @@ def test_2(plugin_test_dir):
     # [GridPointDifference --axis Z --differenceType CENTERED] >> [Zap --fieldName FFDZ --doNotFlagAsZapped] >> 
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
-    df.loc[df.nomvar=='FDZ','nomvar'] = 'FFDZ'
+    df.loc[df.nomvar=='FF','nomvar'] = 'FFDZ'
+    df = spooki.convip(df,rmn.CONVIP_ENCODE_OLD)
     # write the result
     results_file = TMP_PATH + "test_2.std"
     fstpy.delete_file(results_file)
@@ -85,12 +87,12 @@ def test_3(plugin_test_dir):
     source0 = plugin_test_dir + "6x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    src_df0['dateo'] = '20080529T133415'
+    src_df0['dateo'] = 347333813
     src_df0['nbits'] = 16
     src_df0['datyp'] = 1
 
     # compute GridPointDifference
-    df = spooki.GridPointDifference(src_df0, axis=['x'], difference_type='forward').compute()
+    df = spooki.GridPointDifference(src_df0, axis=['x','y'], difference_type='forward').compute()
     df.loc[df.nomvar=='FDX','nomvar'] = 'FFDX'
     df.loc[df.nomvar=='FDY','nomvar'] = 'FFDY'
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
@@ -118,18 +120,18 @@ def test_4(plugin_test_dir):
     source0 = plugin_test_dir + "4z2x2y_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    src_df0['dateo'] = '20080529T133415'
+    src_df0['dateo'] = 347333813
     src_df0['nbits'] = 16
     src_df0['datyp'] = 1
 
     # compute GridPointDifference
     df = spooki.GridPointDifference(src_df0, axis=['z'], difference_type='forward').compute()
-    df.loc[df.nomvar=='FDZ','nomvar'] = 'FFDZ'
+    df.loc[df.nomvar=='FF','nomvar'] = 'FFDZ'
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
     # [Zap --dateOfOrigin 20080529T133415 --nbitsForDataStorage R16 --doNotFlagAsZapped] >> 
     # [GridPointDifference --axis Z --differenceType FORWARD] >> [Zap --fieldName FFDZ --doNotFlagAsZapped] >> 
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
-
+    df = spooki.convip(df, rmn.CONVIP_ENCODE_OLD)
     # write the result
     results_file = TMP_PATH + "test_4.std"
     fstpy.delete_file(results_file)
@@ -149,7 +151,7 @@ def test_5(plugin_test_dir):
     source0 = plugin_test_dir + "6x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    src_df0['dateo'] = '20080529T133415'
+    src_df0['dateo'] = 347333813
     src_df0['nbits'] = 16
     src_df0['datyp'] = 1
 
@@ -182,18 +184,18 @@ def test_6(plugin_test_dir):
     source0 = plugin_test_dir + "4z2x2y_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    src_df0['dateo'] = '20080529T133415'
+    src_df0['dateo'] = 347333813
     src_df0['nbits'] = 16
     src_df0['datyp'] = 1
 
     # compute GridPointDifference
     df = spooki.GridPointDifference(src_df0, axis=['z'], difference_type='backward').compute()
-    df.loc[df.nomvar=='FDZ','nomvar'] = 'FFDZ'    
+    df.loc[df.nomvar=='FF','nomvar'] = 'FFDZ'    
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
     # [Zap --dateOfOrigin 20080529T133415 --nbitsForDataStorage R16 --doNotFlagAsZapped] >> 
     # [GridPointDifference --axis Z --differenceType BACKWARD] >> [Zap --fieldName FFDZ --doNotFlagAsZapped] >> 
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
-
+    df = spooki.convip(df, rmn.CONVIP_ENCODE_OLD)
     # write the result
     results_file = TMP_PATH + "test_6.std"
     fstpy.delete_file(results_file)
@@ -243,7 +245,7 @@ def test_8(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0, decode_metadata=True).to_pandas()
 
     src_df0 = src_df0.loc[src_df0.level == 0.]
-    src_df0['dateo'] = '20080529T133415'
+    src_df0['dateo'] = 347333813
     src_df0['nbits'] = 16
     src_df0['datyp'] = 1
 
@@ -304,7 +306,10 @@ def test_12(plugin_test_dir):
     source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
+    meta_df = src_df0.loc[src_df0.nomvar.isin(["!!", "P0", "PT", ">>", "^^", "^>", "HY", "!!SF"])]
+    src_df0 = fstpy.add_columns(src_df0, 'ip_info')
     src_df0 = src_df0.loc[(src_df0.nomvar=='TT') & (src_df0.level==1000.)]
+    src_df0 = pd.concat([src_df0,meta_df], ignore_index=0)
 
     # compute GridPointDifference
     df = spooki.GridPointDifference(src_df0, axis=['x','y'], difference_type='centered').compute()
@@ -312,6 +317,10 @@ def test_12(plugin_test_dir):
     # [Select --fieldName TT --verticalLevel 1000] >> 
     # [GridPointDifference --axis X,Y --differenceType CENTERED] >> 
     # [WriterStd --output {destination_path} --noUnitConversion]
+    df = spooki.convip(df,rmn.CONVIP_ENCODE)
+    df.loc[df.nomvar.isin(['FDX', 'FDY']), 'etiket'] = '__GPTDIFX'
+    df.loc[df.nomvar.isin(['^>','!!']), 'etiket'] = 'G1_5_0X'
+
 
     # write the result
     results_file = TMP_PATH + "test_12.std"
@@ -332,7 +341,10 @@ def test_13(plugin_test_dir):
     source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
+    meta_df = src_df0.loc[src_df0.nomvar.isin(["!!", "P0", "PT", ">>", "^^", "^>", "HY", "!!SF"])]
+    src_df0 = fstpy.add_columns(src_df0, 'ip_info')
     src_df0 = src_df0.loc[(src_df0.nomvar=='TT') & (src_df0.level==1000.)]
+    src_df0 = pd.concat([src_df0,meta_df], ignore_index=0)
 
     # compute GridPointDifference
     df = spooki.GridPointDifference(src_df0, axis=['x','y'], difference_type='forward').compute()
@@ -340,7 +352,9 @@ def test_13(plugin_test_dir):
     # [Select --fieldName TT --verticalLevel 1000] >> 
     # [GridPointDifference --axis X,Y --differenceType FORWARD] >> 
     # [WriterStd --output {destination_path} --noUnitConversion]
-
+    df.loc[df.nomvar.isin(['FDX', 'FDY']), 'etiket'] = '__GPTDIFX'
+    df.loc[df.nomvar.isin(['^>','!!']), 'etiket'] = 'G1_5_0X'
+    df = spooki.convip(df,rmn.CONVIP_ENCODE)
     # write the result
     results_file = TMP_PATH + "test_13.std"
     fstpy.delete_file(results_file)
@@ -360,7 +374,10 @@ def test_14(plugin_test_dir):
     source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
+    meta_df = src_df0.loc[src_df0.nomvar.isin(["!!", "P0", "PT", ">>", "^^", "^>", "HY", "!!SF"])]
+    src_df0 = fstpy.add_columns(src_df0, 'ip_info')
     src_df0 = src_df0.loc[(src_df0.nomvar=='TT') & (src_df0.level==1000.)]
+    src_df0 = pd.concat([src_df0,meta_df], ignore_index=0)
 
     # compute GridPointDifference
     df = spooki.GridPointDifference(src_df0, axis=['x','y'], difference_type='backward').compute()
@@ -368,7 +385,9 @@ def test_14(plugin_test_dir):
     # [Select --fieldName TT --verticalLevel 1000] >> 
     # [GridPointDifference --axis X,Y --differenceType BACKWARD] >> 
     # [WriterStd --output {destination_path} --noUnitConversion]
-
+    df.loc[df.nomvar.isin(['FDX', 'FDY']), 'etiket'] = '__GPTDIFX'
+    df.loc[df.nomvar.isin(['^>','!!']), 'etiket'] = 'G1_5_0X'
+    df = spooki.convip(df,rmn.CONVIP_ENCODE)
     # write the result
     results_file = TMP_PATH + "test_14.std"
     fstpy.delete_file(results_file)
@@ -384,21 +403,23 @@ def test_14(plugin_test_dir):
 
 
 def test_15(plugin_test_dir):
-    """Test #15 : Différence vers l'arriere avec un fichier global réduit (grille type Z)."""
+    """Différence vers l'arriere avec un fichier global réduit (grille type Z)."""
     # open and read source    
     source0 = plugin_test_dir + "GlbPresReduit.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-
+    meta_df = src_df0.loc[src_df0.nomvar.isin(["!!", "P0", "PT", ">>", "^^", "^>", "HY", "!!SF"])]
+    src_df0 = fstpy.add_columns(src_df0, 'ip_info')
     src_df0 = src_df0.loc[(src_df0.nomvar=='TT') & (src_df0.level==1000.)]
-
+    src_df0 = pd.concat([src_df0,meta_df], ignore_index=0)
     # compute GridPointDifference
     df = spooki.GridPointDifference(src_df0, axis=['x'], difference_type='backward').compute()
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
 #                 "[Select --fieldName TT --verticalLevel 1000] >> ",
 #                 "[GridPointDifference --axis X --differenceType BACKWARD] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
-
-
+    df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
+    df.loc[~(df.nomvar=='TT'), 'etiket'] = 'G1_7_1X'
+    
     # write the result
     results_file = TMP_PATH + "test_15.std"
     fstpy.delete_file(results_file)
@@ -409,25 +430,27 @@ def test_15(plugin_test_dir):
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    # fstpy.delete_file(results_file)
     assert(res)
 
 
 def test_16(plugin_test_dir):
-    """Test #16 : Différence vers l'avant avec un fichier global réduit (grille type Z)."""
+    """Différence vers l'avant avec un fichier global réduit (grille type Z)."""
     # open and read source    
     source0 = plugin_test_dir + "GlbPresReduit.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-
+    meta_df = src_df0.loc[src_df0.nomvar.isin(["!!", "P0", "PT", ">>", "^^", "^>", "HY", "!!SF"])]
+    src_df0 = fstpy.add_columns(src_df0, 'ip_info')
     src_df0 = src_df0.loc[(src_df0.nomvar=='TT') & (src_df0.level==1000.)]
-
+    src_df0 = pd.concat([src_df0,meta_df], ignore_index=0)
     # compute GridPointDifference
     df = spooki.GridPointDifference(src_df0, axis=['x'], difference_type='forward').compute()
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >>",
 #                 "[Select --fieldName TT --verticalLevel 1000] >> ",
 #                 "[GridPointDifference --axis X --differenceType FORWARD] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
-
+    df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
+    df.loc[~(df.nomvar=='TT'), 'etiket'] = 'G1_7_1X'
     # write the result
     results_file = TMP_PATH + "test_16.std"
     fstpy.delete_file(results_file)
@@ -443,11 +466,14 @@ def test_16(plugin_test_dir):
 
 
 def test_17(plugin_test_dir):
-    """Test #17 : Différence centrée avec un fichier global réduit (grille type Z)."""
+    """Différence centrée avec un fichier global réduit (grille type Z)."""
     # open and read source    
     source0 = plugin_test_dir + "GlbPresReduit.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-
+    meta_df = src_df0.loc[src_df0.nomvar.isin(["!!", "P0", "PT", ">>", "^^", "^>", "HY", "!!SF"])]
+    src_df0 = fstpy.add_columns(src_df0, 'ip_info')
+    src_df0 = src_df0.loc[(src_df0.nomvar=='TT') & (src_df0.level==1000.)]
+    src_df0 = pd.concat([src_df0,meta_df], ignore_index=0)
     # compute GridPointDifference
     df = spooki.GridPointDifference(src_df0, axis=['x'], difference_type='centered').compute()
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
@@ -455,8 +481,8 @@ def test_17(plugin_test_dir):
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
-    src_df0 = src_df0.loc[(src_df0.nomvar=='TT') & (src_df0.level==1000.)]
-    
+    df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
+    df.loc[~(df.nomvar=='TT'), 'etiket'] = 'G1_7_1X'
     # write the result
     results_file = TMP_PATH + "test_17.std"
     fstpy.delete_file(results_file)
@@ -472,7 +498,7 @@ def test_17(plugin_test_dir):
 
 
 def test_18(plugin_test_dir):
-    """Test #18 : Différence centrée avec un fichier global réduit (grille type A)."""
+    """Différence centrée avec un fichier global réduit (grille type A)."""
     # open and read source    
     source0 = plugin_test_dir + "GlbPres_gridA.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -483,6 +509,7 @@ def test_18(plugin_test_dir):
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
+    df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
     # write the result
     results_file = TMP_PATH + "test_18.std"
     fstpy.delete_file(results_file)
@@ -498,7 +525,7 @@ def test_18(plugin_test_dir):
 
 
 def test_19(plugin_test_dir):
-    """Test #19 : Différence centrée avec un fichier global réduit (grille type B)."""
+    """Différence centrée avec un fichier global réduit (grille type B)."""
     # open and read source    
     source0 = plugin_test_dir + "GlbPres_gridB.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -509,8 +536,10 @@ def test_19(plugin_test_dir):
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
+    df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
     # write the result
     results_file = TMP_PATH + "test_19.std"
+    fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
@@ -523,7 +552,7 @@ def test_19(plugin_test_dir):
 
 
 def test_20(plugin_test_dir):
-    """Test #20 : Différence centrée avec un fichier global réduit (grille type L avec longitude qui ne se repete pas)."""
+    """Différence centrée avec un fichier global réduit (grille type L avec longitude qui ne se repete pas)."""
     # open and read source    
     source0 = plugin_test_dir + "GlbPres_gridL1.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -534,7 +563,7 @@ def test_20(plugin_test_dir):
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
-
+    df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
     # write the result
     results_file = TMP_PATH + "test_20.std"
     fstpy.delete_file(results_file)
@@ -550,7 +579,7 @@ def test_20(plugin_test_dir):
 
 
 def test_21(plugin_test_dir):
-    """Test #21 : Différence centrée avec un fichier global réduit (grille type L avec 1ere longitude qui se repete a la fin)."""
+    """Différence centrée avec un fichier global réduit (grille type L avec 1ere longitude qui se repete a la fin)."""
     # open and read source    
     source0 = plugin_test_dir + "GlbPres_gridL2.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -561,7 +590,7 @@ def test_21(plugin_test_dir):
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
-
+    df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
     # write the result
     results_file = TMP_PATH + "test_21.std"
     fstpy.delete_file(results_file)
@@ -577,7 +606,7 @@ def test_21(plugin_test_dir):
 
 
 def test_22(plugin_test_dir):
-    """Test #22 : Différence centrée avec un fichier global réduit (grille type L avec longitude qui fait plus que le tour de la terre)."""
+    """Différence centrée avec un fichier global réduit (grille type L avec longitude qui fait plus que le tour de la terre)."""
     # open and read source    
     source0 = plugin_test_dir + "GlbPres_gridL3.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -588,7 +617,7 @@ def test_22(plugin_test_dir):
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ", 
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
-
+    df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
     # write the result
     results_file = TMP_PATH + "test_22.std"
     fstpy.delete_file(results_file)
@@ -604,7 +633,7 @@ def test_22(plugin_test_dir):
 
 
 def test_23(plugin_test_dir):
-    """Test #23 : Différence centrée avec un fichier global réduit (grille type L avec longitude qui ne fait pas le tour de la terre)."""
+    """Différence centrée avec un fichier global réduit (grille type L avec longitude qui ne fait pas le tour de la terre)."""
     # open and read source    
     source0 = plugin_test_dir + "GlbPres_gridL4.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -615,7 +644,7 @@ def test_23(plugin_test_dir):
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ", 
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
-
+    df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
     # write the result
     results_file = TMP_PATH + "test_23.std"
     fstpy.delete_file(results_file)
@@ -631,7 +660,7 @@ def test_23(plugin_test_dir):
 
 
 def test_24(plugin_test_dir):
-    """Test #24 : Différence centrée avec un fichier global réduit (grille type L avec longitude qui ne fait pas le tour de la terre)."""
+    """Différence centrée avec un fichier global réduit (grille type L avec longitude qui ne fait pas le tour de la terre)."""
     # open and read source    
     source0 = plugin_test_dir + "GlbPres_gridL5.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -642,7 +671,7 @@ def test_24(plugin_test_dir):
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
-
+    df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
     # write the result
     results_file = TMP_PATH + "test_24.std"
     fstpy.delete_file(results_file)
@@ -659,7 +688,7 @@ def test_24(plugin_test_dir):
 
 #             " INFORMATIONS SUPPLEMENTAIRES": "Le test suivant sert a tester la fonction IsGlobalGrid particulierement. Cas ou l'increment de la grille ne divise pas parfaitement le globe",
 def test_25(plugin_test_dir):
-    """Test #25 : Différence centrée avec un fichier global réduit (fait le tour de la terre, 1ere longitude ne se repete pas mais distance inegale entre le dernier point et le point 0; considéré comme une grille globale)."""
+    """Différence centrée avec un fichier global réduit (fait le tour de la terre, 1ere longitude ne se repete pas mais distance inegale entre le dernier point et le point 0; considéré comme une grille globale)."""
     # open and read source    
     source0 = plugin_test_dir + "GlbPres_gridL6.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -670,7 +699,7 @@ def test_25(plugin_test_dir):
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
-
+    df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
     # write the result
     results_file = TMP_PATH + "test_25.std"
     fstpy.delete_file(results_file)
@@ -686,7 +715,7 @@ def test_25(plugin_test_dir):
 
 
 def test_26(plugin_test_dir):
-    """Test #26 : Différence centrée avec un fichier global réduit (fait le tour de la terre, 1ere longitude se repete mais longitude differente entre le dernier point et le point 0; considéré comme une grille NON globale)."""
+    """Différence centrée avec un fichier global réduit (fait le tour de la terre, 1ere longitude se repete mais longitude differente entre le dernier point et le point 0; considéré comme une grille NON globale)."""
     # open and read source    
     source0 = plugin_test_dir + "GlbPres_gridL7.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -696,7 +725,7 @@ def test_26(plugin_test_dir):
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
-
+    df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
     # write the result
     results_file = TMP_PATH + "test_26.std"
     fstpy.delete_file(results_file)
@@ -712,7 +741,7 @@ def test_26(plugin_test_dir):
 
 
 def test_27(plugin_test_dir):
-    """Test #27 : Différence centrée avec une grille de type G (grille globale par defaut sans repetition de longitude)."""
+    """Différence centrée avec une grille de type G (grille globale par defaut sans repetition de longitude)."""
     # open and read source    
     source0 = plugin_test_dir + "GlbHyb_gridG_reduit.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -722,7 +751,8 @@ def test_27(plugin_test_dir):
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
-
+    df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
+    df.loc[~(df.nomvar=='TT'), 'etiket'] = 'Y3H9DNX'
     # write the result
     results_file = TMP_PATH + "test_27.std"
     fstpy.delete_file(results_file)

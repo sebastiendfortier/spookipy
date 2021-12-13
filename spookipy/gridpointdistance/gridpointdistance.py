@@ -134,6 +134,8 @@ class GridPointDistance(Plugin):
 
 
     def validate_params(self):
+        if isinstance(self.axis, str):
+            self.axis = [self.axis]
         for axis in self.axis:
             if axis not in ['x', 'y']:
                 raise GridPointDistanceError(f"Invalid axis specification! {axis} not in  {['x', 'y']}")
@@ -180,35 +182,73 @@ class GridPointDistance(Plugin):
                         is_global = False
                         repetitions = False
 
+                    grid_wraps = (is_global and repetitions)
+
                     lat = da.from_array(lat)
                     lon = da.from_array(lon)
 
-                    grid_wraps = (is_global and repetitions)
-
                     # print(lat.shape,lon.shape)
-                    if self.difference_type == 'centered':
-                        if 'x' in self.axis:
-                            gdx_df['d'] = [to_dask(centered_distance(lat, lon, is_global, grid_wraps))]
-                            df_list.append(gdx_df)
-                        if 'y' in self.axis:
-                            gdy_df['d'] = [to_dask(centered_distance(lat.T,lon.T).T)]
-                            df_list.append(gdy_df)
+                    if grtyp != 'U':
 
-                    elif self.difference_type == 'forward':
-                        if 'x' in self.axis:
-                            gdx_df['d'] = [to_dask(forward_distance(lat,lon, is_global, grid_wraps))]
-                            df_list.append(gdx_df)
-                        if 'y' in self.axis:
-                            gdy_df['d'] = [to_dask(forward_distance(lat.T,lon.T).T)]
-                            df_list.append(gdy_df)
-                    elif self.difference_type == 'backward':
-                        if 'x' in self.axis:
-                            gdx_df['d'] = [to_dask(backward_distance(lat,lon, is_global, grid_wraps))]
-                            df_list.append(gdx_df)
+                        if self.difference_type == 'centered':
+                            if 'x' in self.axis:
+                                gdx_df['d'] = [to_dask(centered_distance(lat, lon, is_global, grid_wraps))]
+                                df_list.append(gdx_df)
+                            if 'y' in self.axis:
+                                gdy_df['d'] = [to_dask(centered_distance(lat.T,lon.T).T)]
+                                df_list.append(gdy_df)
 
-                        if 'y' in self.axis:
-                            gdy_df['d'] = [to_dask(backward_distance(lat.T,lon.T).T)]
-                            df_list.append(gdy_df)
+                        elif self.difference_type == 'forward':
+                            if 'x' in self.axis:
+                                gdx_df['d'] = [to_dask(forward_distance(lat,lon, is_global, grid_wraps))]
+                                df_list.append(gdx_df)
+                            if 'y' in self.axis:
+                                gdy_df['d'] = [to_dask(forward_distance(lat.T,lon.T).T)]
+                                df_list.append(gdy_df)
+                        elif self.difference_type == 'backward':
+                            if 'x' in self.axis:
+                                gdx_df['d'] = [to_dask(backward_distance(lat,lon, is_global, grid_wraps))]
+                                df_list.append(gdx_df)
+
+                            if 'y' in self.axis:
+                                gdy_df['d'] = [to_dask(backward_distance(lat.T,lon.T).T)]
+                                df_list.append(gdy_df)
+                    else: #grtyp == 'U'
+                        if self.difference_type == 'centered':
+                            if 'x' in self.axis:
+                                res1 = centered_distance(lat[:,0:int(lat.shape[1]/2)], lon[:,0:int(lon.shape[1]/2)], is_global, grid_wraps)
+                                res2 = centered_distance(lat[:,int(lat.shape[1]/2):], lon[:,int(lon.shape[1]/2):], is_global, grid_wraps)
+                                gdx_df['d'] = [to_dask(np.hstack([res1,res2]))]
+                                df_list.append(gdx_df)
+                            if 'y' in self.axis:
+                                res1 = centered_distance(lat[:,0:int(lat.shape[1]/2)].T, lon[:,0:int(lon.shape[1]/2)].T).T
+                                res2 = centered_distance(lat[:,int(lat.shape[1]/2):].T, lon[:,int(lon.shape[1]/2):].T).T
+                                gdy_df['d'] = [to_dask(np.hstack([res1,res2]))]
+                                df_list.append(gdy_df)
+
+                        elif self.difference_type == 'forward':
+                            if 'x' in self.axis:
+                                res1 = forward_distance(lat[:,0:int(lat.shape[1]/2)], lon[:,0:int(lon.shape[1]/2)], is_global, grid_wraps)
+                                res2 = forward_distance(lat[:,int(lat.shape[1]/2):], lon[:,int(lon.shape[1]/2):], is_global, grid_wraps)
+                                gdx_df['d'] = [to_dask(np.hstack([res1,res2]))]
+                                df_list.append(gdx_df)
+                            if 'y' in self.axis:
+                                res1 = forward_distance(lat[:,0:int(lat.shape[1]/2)].T, lon[:,0:int(lon.shape[1]/2)].T).T
+                                res2 = forward_distance(lat[:,int(lat.shape[1]/2):].T, lon[:,int(lon.shape[1]/2):].T).T
+                                gdy_df['d'] = [to_dask(np.hstack([res1,res2]))]
+                                df_list.append(gdy_df)
+                        elif self.difference_type == 'backward':
+                            if 'x' in self.axis:
+                                res1 = backward_distance(lat[:,0:int(lat.shape[1]/2)], lon[:,0:int(lon.shape[1]/2)], is_global, grid_wraps)
+                                res2 = backward_distance(lat[:,int(lat.shape[1]/2):], lon[:,int(lon.shape[1]/2):], is_global, grid_wraps)
+                                gdx_df['d'] = [to_dask(np.hstack([res1,res2]))]
+                                df_list.append(gdx_df)
+
+                            if 'y' in self.axis:
+                                res1 = backward_distance(lat[:,0:int(lat.shape[1]/2)].T, lon[:,0:int(lon.shape[1]/2)].T).T
+                                res2 = backward_distance(lat[:,int(lat.shape[1]/2):].T, lon[:,int(lon.shape[1]/2):].T).T
+                                gdy_df['d'] = [to_dask(np.hstack([res1,res2]))]
+                                df_list.append(gdy_df)
 
         return final_results(df_list, GridPointDistanceError, self.meta_df)
 

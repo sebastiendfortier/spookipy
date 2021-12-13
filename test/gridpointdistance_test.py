@@ -2,10 +2,10 @@
 from test import TEST_PATH, TMP_PATH
 
 import fstpy.all as fstpy
-import pandas as pd
 import pytest
 import spookipy.all as spooki
 from ci_fstcomp import fstcomp
+import rpnpy.librmn.all as rmn
 
 pytestmark = [pytest.mark.regressions]
 
@@ -468,3 +468,79 @@ def test_18(plugin_test_dir):
     res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
+
+def test_19(plugin_test_dir):
+    """Distance centree avec fichier YinYang en entree."""
+    # open and read source
+    source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    # compute GridPointDistance
+    df = spooki.GridPointDistance(src_df0, axis=['x','y'], difference_type='centered').compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [GridPointDifference --axis X,Y --differenceType CENTERED] >> 
+    # [WriterStd --output {destination_path} --noUnitConversion]
+
+    # write the result
+    results_file = TMP_PATH + "test_19.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+    print(results_file)
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "XYCentered_YY_file2cmp_py.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
+
+def test_20(plugin_test_dir):
+    """Distance vers l'avant (forward) avec fichier YinYang en entree."""
+    # open and read source
+    source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    # compute GridPointDistance
+    df = spooki.GridPointDistance(src_df0, axis=['x','y'], difference_type='forward').compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [GridPointDistance --axis X,Y --differenceType FORWARD] >> 
+    # [WriterStd --output {destination_path} --noUnitConversion]
+
+    # write the result
+    results_file = TMP_PATH + "test_20.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "XYForward_YY_file2cmp_py.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
+
+def test_21(plugin_test_dir):
+    """Distance vers l'arriere  avec fichier YinYang en entree."""
+    # open and read source
+    source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    # compute GridPointDistance
+    df = spooki.GridPointDistance(src_df0, axis=['x','y'], difference_type='backward').compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [GridPointDistance --axis X,Y --differenceType BACKWARD] >> 
+    # [WriterStd --output {destination_path} --noUnitConversion]
+
+    # write the result
+    results_file = TMP_PATH + "test_21.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "XYBackward_YY_file2cmp_py.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)    

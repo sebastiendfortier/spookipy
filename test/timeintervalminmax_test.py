@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 from spookipy.timeintervalminmax.timeintervalminmax import TimeIntervalMinMaxError
-from spookipy.utils import encode_ip2_and_ip3
+from spookipy.utils import encode_ip2_and_ip3_time
 from test import TMP_PATH, TEST_PATH
 import pytest
 import fstpy.all as fstpy
@@ -490,7 +490,7 @@ def test_21(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3(df)
+    df = encode_ip2_and_ip3_time(df)
     # print(df)
     
     # write the result
@@ -529,7 +529,7 @@ def test_22(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3(df)
+    df = encode_ip2_and_ip3_time(df)
 
     # write the result
     results_file = TMP_PATH + "test_22.std"
@@ -567,7 +567,7 @@ def test_23(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3(df)
+    df = encode_ip2_and_ip3_time(df)
     
     # write the result
     results_file = TMP_PATH + "test_23.std"
@@ -605,7 +605,7 @@ def test_24(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3(df)
+    df = encode_ip2_and_ip3_time(df)
 
 
     # write the result
@@ -644,7 +644,7 @@ def test_25(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3(df)
+    df = encode_ip2_and_ip3_time(df)
 
     # write the result
     results_file = TMP_PATH + "test_25.std"
@@ -681,7 +681,7 @@ def test_26(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3(df)
+    df = encode_ip2_and_ip3_time(df)
 
     # write the result
     results_file = TMP_PATH + "test_26.std"
@@ -720,7 +720,7 @@ def test_27(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3(df)
+    df = encode_ip2_and_ip3_time(df)
     
 
     # write the result
@@ -760,7 +760,7 @@ def test_28(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3(df)
+    df = encode_ip2_and_ip3_time(df)
 
     # write the result
     results_file = TMP_PATH + "test_28.std"
@@ -799,7 +799,7 @@ def test_29(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3(df)
+    df = encode_ip2_and_ip3_time(df)
 
     # write the result
     results_file = TMP_PATH + "test_29.std"
@@ -839,7 +839,7 @@ def test_30(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3(df)
+    df = encode_ip2_and_ip3_time(df)
 
     # write the result
     results_file = TMP_PATH + "test_30.std"
@@ -931,7 +931,7 @@ def test_33(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3(df)
+    df = encode_ip2_and_ip3_time(df)
     # write the result
     results_file = TMP_PATH + "test_33.std"
     fstpy.delete_file(results_file)
@@ -968,7 +968,7 @@ def test_34(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3(df)
+    df = encode_ip2_and_ip3_time(df)
 
     # write the result
     results_file = TMP_PATH + "test_34.std"
@@ -1008,7 +1008,7 @@ def test_35(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3(df)
+    df = encode_ip2_and_ip3_time(df)
 
     # write the result
     results_file = TMP_PATH + "test_35.std"
@@ -1048,7 +1048,7 @@ def test_36(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3(df)
+    df = encode_ip2_and_ip3_time(df)
     # write the result
     results_file = TMP_PATH + "test_36.std"
     fstpy.delete_file(results_file)
@@ -1086,7 +1086,7 @@ def test_37(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3(df)
+    df = encode_ip2_and_ip3_time(df)
     # write the result
     results_file = TMP_PATH + "test_35.std"
     fstpy.delete_file(results_file)
@@ -1123,7 +1123,7 @@ def test_38(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3(df)
+    df = encode_ip2_and_ip3_time(df)
 
     # write the result
     results_file = TMP_PATH + "test_36.std"

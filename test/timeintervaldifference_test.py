@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import datetime
-from spookipy.utils import encode_ip2_and_ip3
+from spookipy.utils import encode_ip2_and_ip3_time
 from test import TMP_PATH, TEST_PATH
 import pytest
 import fstpy.all as fstpy
@@ -424,7 +424,7 @@ def test_13(plugin_test_dir):
     # [ReaderStd --ignoreExtended --input {sources[1]}] >>
     # [TimeIntervalDifference --fieldName PR --rangeForecastHour 0@6 --interval 6 --step 9] >>
     # [WriterStd --output {destination_path} --ignoreExtended --encodeIP2andIP3]
-    df = encode_ip2_and_ip3(df)
+    df = encode_ip2_and_ip3_time(df)
     # write the result
     results_file = TMP_PATH + "test_13.std"
     fstpy.delete_file(results_file)

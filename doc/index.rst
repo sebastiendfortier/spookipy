@@ -75,6 +75,7 @@ Documentation
 * :doc:`setconstantvalue`
 * :doc:`setlowerboundary`
 * :doc:`setupperboundary`
+* :doc:`subtractelementsvertically`
 * :doc:`temperaturedewpoint`
 * :doc:`timeintervaldifference`
 * :doc:`timeintervalminmax`
@@ -126,6 +127,7 @@ Documentation
    setconstantvalue
    setlowerboundary
    setupperboundary
+   subtractelementsvertically
    temperaturedewpoint
    timeintervaldifference
    timeintervalminmax

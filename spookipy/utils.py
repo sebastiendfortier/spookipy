@@ -312,8 +312,7 @@ def get_intersecting_levels(
     # res_df = pd.concat(df_list,ignore_index=True)
     if 'level' not in res_df.columns:
         res_df = fstpy.add_columns(res_df, columns=['ip_info'])
-    res_df = res_df.sort_values(by='level',
-                                ascending=res_df.ascending.unique()[0])
+    res_df = res_df.sort_values(by='level',ascending=res_df.ascending.unique()[0])
     return res_df
 
 
@@ -704,13 +703,25 @@ def get_split_value(df:pd.DataFrame) -> float:
 def encode_ip2_and_ip3(df:pd.DataFrame) -> pd.DataFrame:
     """encode ip2 and ip3 to new style
 
-    :param df: [description]
+    :param df: input DataFrame
     :type df: pd.DataFrame
-    :return: [description]
+    :return: output DataFrame
     :rtype: pd.DataFrame
     """
     for row in df.itertuples():
-        if row.nomvar in ['>>', '^^', '^>', '!!', 'P0', 'PT']:
+        if row.nomvar in ['>>', '^^', '^>', '!!']:
+            continue
+
+def encode_ip2_and_ip3_time(df:pd.DataFrame) -> pd.DataFrame:
+    """encode ip2 and ip3 to new style
+
+    :param df: input DataFrame
+    :type df: pd.DataFrame
+    :return: output DataFrame
+    :rtype: pd.DataFrame
+    """
+    for row in df.itertuples():
+        if row.nomvar in ['>>', '^^', '^>', '!!']:
             continue
         ip2 = row.ip2
         ip3 = row.ip3
@@ -718,6 +729,35 @@ def encode_ip2_and_ip3(df:pd.DataFrame) -> pd.DataFrame:
         rp2a = rmn.FLOAT_IP( ip2,  ip3, rmn.TIME_KIND_HR)
         rp3a = rmn.FLOAT_IP( ip2-ip3,  0, rmn.TIME_KIND_HR)
         (_, ip2, ip3) = rmn.EncodeIp(rp1a, rp2a, rp3a)
+        df.at[row.Index,'ip2'] = ip2
+        df.at[row.Index,'ip3'] = ip3
+    return df
+
+def encode_ip2_and_ip3_height(df:pd.DataFrame) -> pd.DataFrame:
+    """encode ip2 and ip3 to new style
+
+    :param df: input DataFrame
+    :type df: pd.DataFrame
+    :return: output DataFrame
+    :rtype: pd.DataFrame
+    """
+    if 'level' not in df.columns:
+        df = fstpy.add_columns(df, 'ip_info')
+
+    for row in df.itertuples():
+        if row.nomvar in ['>>', '^^', '^>', '!!']:
+            continue
+
+        (ip1,ip1_kind) = rmn.convertIp(rmn.CONVIP_DECODE, int(row.ip1))
+        (ip2,_) = rmn.convertIp(rmn.CONVIP_DECODE, int(row.ip2))
+        (ip3,_) = rmn.convertIp(rmn.CONVIP_DECODE, int(row.ip3))
+
+        rp1a = rmn.FLOAT_IP(ip1, ip3, int(ip1_kind))
+        rp2a = rmn.FLOAT_IP(ip2,  ip2, rmn.KIND_HOURS)
+        rp3a = rmn.FLOAT_IP(ip1,  ip3, int(ip1_kind))
+        (ip1, ip2, ip3) = rmn.EncodeIp(rp1a, rp2a, rp3a)
+
+        df.at[row.Index,'ip1'] = ip1
         df.at[row.Index,'ip2'] = ip2
         df.at[row.Index,'ip3'] = ip3
     return df

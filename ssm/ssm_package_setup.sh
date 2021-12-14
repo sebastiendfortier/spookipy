@@ -14,7 +14,7 @@ print_and_do(){
 
 load_runtime_dependencies(){
     message "Load ci_fstcomp for developpement"
-    print_and_do . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/2.1.10/
+    print_and_do . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/2.1.11/
     message '. ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/apps/ci_fstcomp/(check directory for latest version)/'
 }
 

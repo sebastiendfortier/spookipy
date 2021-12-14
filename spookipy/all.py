@@ -33,6 +33,7 @@ from .science import *
 from .setconstantvalue import *
 from .setlowerboundary import *
 from .setupperboundary import *
+from .subtractelementsvertically import *
 from .temperaturedewpoint import *
 from .timeintervaldifference import *
 from .timeintervalminmax import *

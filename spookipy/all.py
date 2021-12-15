@@ -27,6 +27,7 @@ from .multiplyelementsbypoint import *
 from .opelementsbycolumn import *
 from .opelementsbyvalue import *
 from .plugin import *
+from .precipitationamount import *
 from .pressure import *
 from .saturationvapourpressure import *
 from .science import *

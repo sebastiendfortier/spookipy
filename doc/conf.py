@@ -36,11 +36,14 @@ release = version
 #       'sphinx.ext.coverage',
 #extensions = ['sphinx.ext.autodoc', 'sphinx.ext.napoleon']
 extensions = ['sphinx.ext.napoleon',
-              'sphinx.ext.doctest',
+              'sphinx.ext.doctest', 
               'sphinx_autodoc_typehints',
               'sphinx_gallery.gen_gallery',
-              'nbsphinx']
-
+              'nbsphinx',
+              'sphinx.ext.viewcode',
+              'myst_parser',
+              'IPython.sphinxext.ipython_console_highlighting']
+              
 napoleon_include_private_with_doc = False
 
 # Add any paths that contain templates here, relative to this directory.

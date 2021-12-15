@@ -39,7 +39,7 @@ interval
         liftedindex
         parcelmeanlayer
         parcelmostunstable
-        precipitationamount
+        *precipitationamount
         precipitationtypedominant
         precipitationtypeinstantaneousbourgouin
         precipitationtypesignificant
@@ -85,7 +85,7 @@ interval
         *setlowerboundary
         *setupperboundary
         spatialweightedaveraging
-        subtractelementsvertically
+        *subtractelementsvertically
         *timeintervaldifference
         *timeintervalminmax
         vectormodulusanddirection

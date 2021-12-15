@@ -63,6 +63,7 @@ Usage:
 
    fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
 
+
 Contacts:
 ~~~~~~~~~
 
@@ -70,3 +71,11 @@ Contacts:
 -  Coded by : `Sébastien Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
    `Guylaine Hardy <https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg>`__
 -  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ / `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+
+
+Spooki original documentation:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`Francais <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginSubtractElementsVertically.html>`_
+
+`English <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_english_doc/html/pluginSubtractElementsVertically.html>`_

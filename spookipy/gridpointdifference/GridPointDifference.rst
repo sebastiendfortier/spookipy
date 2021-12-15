@@ -46,9 +46,7 @@ Algorithm:
 
 .. note::
 
-   For forward or backward differences, the calculated
-   differences will repeat at one of the boundaries in order to
-   conserve a coherent data structure.
+   For forward or backward differences, the calculated differences will repeat at one of the boundaries in order to conserve a coherent data structure.
 
 Reference:
 ~~~~~~~~~~
@@ -88,7 +86,16 @@ Usage:
 
 
 Contacts:
+~~~~~~~~~
 
 -  Author : `Marc Klasa <https://wiki.cmc.ec.gc.ca/wiki/User:Klasam>`__
 -  Coded by : `François Fortin <https://wiki.cmc.ec.gc.ca/wiki/User:Fortinf>`__
 -  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ / `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+
+
+Spooki original documentation:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`Francais <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginGridPointDifference.html>`_
+
+`English <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_english_doc/html/pluginGridPointDifference.html>`_

@@ -85,11 +85,11 @@ Keywords:
 Usage:
 ~~~~~~
 
-   Note: A single value from each list of the –interval and
-   –step conditions applies to a single temporal interval defined
-   in –rangeForecastHour. The order of the values in the lists of
-   the –interval and –step conditions, must correspond to the
-   order in the –rangeForecastHour list.
+   Note: A single value from each list of the -interval and
+   -step conditions applies to a single temporal interval defined
+   in -rangeForecastHour. The order of the values in the lists of
+   the -interval and -step conditions, must correspond to the
+   order in the -rangeForecastHour list.
 
 Usage:
 ~~~~~~

@@ -56,6 +56,12 @@ class TimeIntervalDifference(Plugin):
                 raise TimeIntervalDifferenceError(
                     'The interval must be lower or equal to upper bound minus lower bound of forecast_hour_range.')
 
+        if not isinstance(self.nomvar,list):
+            self.nomvar = [self.nomvar]
+        for nomvar in self.nomvar:
+            if nomvar not in list(self.df.nomvar.unique()):
+                raise TimeIntervalDifferenceError(f'Variable {nomvar}, missing from DataFrame!')
+
         self.meta_df = self.df.loc[self.df.nomvar.isin(
             ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
 

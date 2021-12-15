@@ -69,6 +69,7 @@ Documentation
 * :doc:`opelementsbycolumn`
 * :doc:`opelementsbyvalue`
 * :doc:`plugin`
+* :doc:`precipitationamount`
 * :doc:`pressure`
 * :doc:`saturationvapourpressure`
 * :doc:`science`
@@ -121,6 +122,7 @@ Documentation
    opelementsbycolumn
    opelementsbyvalue
    plugin
+   precipitationamount
    pressure
    saturationvapourpressure
    science

@@ -132,11 +132,11 @@ class MinMaxLevelIndex(Plugin):
                 kbas = fstpy.compute(kbas)
                 ktop = group_df.loc[(group_df.nomvar=="KTOP")].reset_index(drop=True)
                 ktop = fstpy.compute(ktop)
-                kbas_arr  = kbas.iloc[0]['d'].flatten().astype('int64')
+                kbas_arr  = kbas.iloc[0]['d'].flatten().astype('int32')
                 kbas_mask = kbas_arr == -1
 
                 kbas_arr_missing = np.where(kbas_arr == -1 , np.nan, kbas_arr)
-                ktop_arr = ktop.iloc[0]['d'].flatten().astype('int64')  #int32 ???
+                ktop_arr = ktop.iloc[0]['d'].flatten().astype('int32') 
                 ktop_mask = kbas_arr == -1
                 ktop_arr_missing = np.where(ktop_arr == -1, np.nan, ktop_arr)
                 
@@ -148,7 +148,6 @@ class MinMaxLevelIndex(Plugin):
                     newkbas = kbas_arr_missing
                     newktop = ktop_arr_missing
 
-                # print(f'Array_3d = {array_3d.shape} newkbas = {newkbas.shape} newktop = {newktop.shape} \n')
                 array_3d = bound_array(array_3d, newkbas, newktop)
 
             if self.ascending:

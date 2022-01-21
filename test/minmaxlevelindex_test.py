@@ -16,7 +16,7 @@ def plugin_test_dir():
     return TEST_PATH + '/MinMaxLevelIndex/testsFiles/'
 
 def test_1(plugin_test_dir):
-    """ 7 niveaux de TT (valeurs decroissantes en montant); recherche MIN, direction ASCENDING, nomvar_min IND """
+    """ 7 niveaux de TT (valeurs decroissantes en montant); recherche MIN, direction ASCENDING, nomvar_min_idx IND """
     # open and read source
     source0 = plugin_test_dir + "TTGZUUVV_3x2x7_regpres.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -28,7 +28,7 @@ def test_1(plugin_test_dir):
         nomvar="TT",
         min=True,
         ascending=True,
-        nomvar_min='IND').compute()
+        nomvar_min_idx='IND').compute()
     # [ReaderStd --input {sources[0]}] >> [Select --fieldName TT] >> 
     # [MinMaxLevelIndex --minMax MIN --direction ASCENDING --outputFieldName1 IND] >>
     # [WriterStd --output {destination_path} --encodeIP2andIP3]",
@@ -65,7 +65,7 @@ def test_1(plugin_test_dir):
 
 
 def test_2(plugin_test_dir):
-    """ 7 niveaux de TT (valeurs decroissantes en montant); recherche MAX, direction ASCENDING, nomvar_max IND """
+    """ 7 niveaux de TT (valeurs decroissantes en montant); recherche MAX, direction ASCENDING, nomvar_max_idx IND """
     # open and read source
     source0 = plugin_test_dir + "TTGZUUVV_3x2x7_regpres.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -76,7 +76,7 @@ def test_2(plugin_test_dir):
         nomvar="TT",
         max=True,
         ascending=True,
-        nomvar_max='IND').compute()
+        nomvar_max_idx='IND').compute()
     # [ReaderStd --input {sources[0]}] >> [Select --fieldName TT] >> 
     # [MinMaxLevelIndex --minMax MAX --direction ASCENDING --outputFieldName2 IND] 
     # [WriterStd --output {destination_path} --encodeIP2andIP3]",
@@ -105,7 +105,7 @@ def test_2(plugin_test_dir):
     assert(res)
 
 def test_3(plugin_test_dir):
-    """ 7 niveaux de TT (valeurs decroissantes en montant); recherche BOTH, direction DESCENDING, nomvar_min MIN, nomvar_max MAX """
+    """ 7 niveaux de TT (valeurs decroissantes en montant); recherche BOTH, direction DESCENDING, nomvar_min_idx MIN, nomvar_max_idx MAX """
     # open and read source
     source0 = plugin_test_dir + "TTGZUUVV_3x2x7_regpres.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -117,8 +117,8 @@ def test_3(plugin_test_dir):
         min=True,
         max=True,
         ascending=False,
-        nomvar_min='MIN',
-        nomvar_max='MAX').compute()
+        nomvar_min_idx='MIN',
+        nomvar_max_idx='MAX').compute()
     # [ReaderStd --input {sources[0]}] >> [Select --fieldName TT] >> 
     # [MinMaxLevelIndex --minMax BOTH --direction DESCENDING --outputFieldName1 MIN --outputFieldName2 MAX] >>
     # [WriterStd --output {destination_path} --encodeIP2andIP3]",
@@ -147,7 +147,7 @@ def test_3(plugin_test_dir):
     assert(res)
 
 def test_4(plugin_test_dir):
-    """ 7 niveaux de GZ (valeurs croissantes en montant); recherche BOTH, direction ASCENDING, nomvar_min MIN, nomvar_max MAX """
+    """ 7 niveaux de GZ (valeurs croissantes en montant); recherche BOTH, direction ASCENDING, nomvar_min_idx MIN, nomvar_max_idx MAX """
     # open and read source
     source0 = plugin_test_dir + "TTGZUUVV_3x2x7_regpres.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -158,8 +158,8 @@ def test_4(plugin_test_dir):
         nomvar="GZ",
         min=True,
         max=True,
-        nomvar_min='MIN',
-        nomvar_max='MAX').compute()
+        nomvar_min_idx='MIN',
+        nomvar_max_idx='MAX').compute()
     # [ReaderStd --input {sources[0]}] >> [Select --fieldName GZ] >> 
     # [MinMaxLevelIndex --minMax BOTH --direction ASCENDING --outputFieldName1 MIN --outputFieldName2 MAX] >>
     # [WriterStd --output {destination_path} --encodeIP2andIP3]"
@@ -187,7 +187,7 @@ def test_4(plugin_test_dir):
     assert(res)
 
 def test_5(plugin_test_dir):
-    """ 7 niveaux de GZ (valeurs croissantes en montant); recherche BOTH, direction DESCENDING, nomvar_min MIN, nomvar_max MAX """
+    """ 7 niveaux de GZ (valeurs croissantes en montant); recherche BOTH, direction DESCENDING, nomvar_min_idx MIN, nomvar_max_idx MAX """
     # open and read source
     source0 = plugin_test_dir + "TTGZUUVV_3x2x7_regpres.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -199,8 +199,8 @@ def test_5(plugin_test_dir):
         min=True,
         max=True,
         ascending=False,
-        nomvar_min='MIN',
-        nomvar_max='MAX').compute()
+        nomvar_min_idx='MIN',
+        nomvar_max_idx='MAX').compute()
 #     # [ReaderStd --input {sources[0]}] >> [Select --fieldName GZ] >> 
 #     # [MinMaxLevelIndex --minMax BOTH --direction ASCENDING --outputFieldName1 MIN --outputFieldName2 MAX] >>
 #     # [WriterStd --output {destination_path} --encodeIP2andIP3]",
@@ -228,7 +228,7 @@ def test_5(plugin_test_dir):
     assert(res)
 
 def test_6(plugin_test_dir):
-    """ 7 niveaux de UU (valeurs desordonnees); recherche BOTH, direction DESCENDING, nomvar_min MIN, nomvar_max MAX """
+    """ 7 niveaux de UU (valeurs desordonnees); recherche BOTH, direction DESCENDING, nomvar_min_idx MIN, nomvar_max_idx MAX """
     # open and read source
     source0 = plugin_test_dir + "TTGZUUVV_3x2x7_regpres.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -240,8 +240,8 @@ def test_6(plugin_test_dir):
         min=True,
         max=True,
         ascending=False,
-        nomvar_min='MIN',
-        nomvar_max='MAX').compute()
+        nomvar_min_idx='MIN',
+        nomvar_max_idx='MAX').compute()
     # [ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> 
     # [MinMaxLevelIndex --minMax BOTH --direction DESCENDING --outputFieldName1 MIN --outputFieldName2 MAX] >>
     # [WriterStd --output {destination_path} --encodeIP2andIP3]"
@@ -269,7 +269,7 @@ def test_6(plugin_test_dir):
     assert(res)
 
 def test_7(plugin_test_dir):
-    """ 7 niveaux de UU (valeurs desordonnees); recherche BOTH, direction ASCENDING, nomvar_min MIN, nomvar_max MAX """
+    """ 7 niveaux de UU (valeurs desordonnees); recherche BOTH, direction ASCENDING, nomvar_min_idx MIN, nomvar_max_idx MAX """
     # open and read source
     source0 = plugin_test_dir + "TTGZUUVV_3x2x7_regpres.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -281,8 +281,8 @@ def test_7(plugin_test_dir):
         min=True,
         max=True,
         ascending=False,
-        nomvar_min='MIN',
-        nomvar_max='MAX').compute()
+        nomvar_min_idx='MIN',
+        nomvar_max_idx='MAX').compute()
     # [ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> 
     # [MinMaxLevelIndex --minMax BOTH --direction DESCENDING --outputFieldName1 MIN --outputFieldName2 MAX] >>
     # [WriterStd --output {destination_path} --encodeIP2andIP3]"
@@ -310,7 +310,7 @@ def test_7(plugin_test_dir):
     assert(res)
 
 def test_9(plugin_test_dir):
-    """3 niveaux de ICGA (sortie du plugin IcingRimeAppleman); BOUNDED, recherche MAX, direction ASCENDING, nomvar_max IND"""
+    """3 niveaux de ICGA (sortie du plugin IcingRimeAppleman); BOUNDED, recherche MAX, direction ASCENDING, nomvar_max_idx IND"""
     # open and read source
     source = plugin_test_dir + "test_ICGA.std"
     # source90 = plugin_test_dir + "minmax_DOWNWARD_bounded_input"
@@ -322,7 +322,7 @@ def test_9(plugin_test_dir):
         nomvar="ICGA",
         max=True,
         bounded=True,
-        nomvar_max='IND').compute()
+        nomvar_max_idx='IND').compute()
 
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [spooki.MinMaxLevelIndex --bounded --minMax MAX --outputFieldName2 IND] >>
@@ -352,7 +352,7 @@ def test_9(plugin_test_dir):
     assert(res)
 
 def test_10(plugin_test_dir):
-    """ 7 niveaux de TT (valeurs decroissantes en montant); BOUNDED, recherche BOTH, direction ASCENDING, nomvar_min MIN, nomvar_max MAX """
+    """ 7 niveaux de TT (valeurs decroissantes en montant); BOUNDED, recherche BOTH, direction ASCENDING, nomvar_min_idx MIN, nomvar_max_idx MAX """
     # open and read source
     source0 = plugin_test_dir + "TTGZUUVV_3x2x7_regpres.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -395,7 +395,7 @@ def test_10(plugin_test_dir):
     assert(res)
 
 def test_11(plugin_test_dir):
-    """ 7 niveaux de TT (valeurs decroissantes en montant); BOUNDED, recherche BOTH, direction DESCENDING, nomvar_min MIN, nomvar_max MAX """
+    """ 7 niveaux de TT (valeurs decroissantes en montant); BOUNDED, recherche BOTH, direction DESCENDING, nomvar_min_idx MIN, nomvar_max_idx MAX """
     # open and read source
     source0 = plugin_test_dir + "TTGZUUVV_3x2x7_regpres.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -466,3 +466,33 @@ def test_13(plugin_test_dir):
             src_df, 
             nomvar="UU", 
             bounded=True).compute()
+
+# Saut de numeros de test pour ne pas interferer avec les ancients tests existants dans version Spooki
+def test_20(plugin_test_dir):
+    """Test avec des fichiers ayant des grilles differentes mais contenant les meme champs; recherche min et max, indices et valeurs. """
+    # open and read source
+    source0 = plugin_test_dir + "200906290606_TT_grid1.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    source1 = plugin_test_dir + "200906290606_TT_grid2.std"
+    src_df1 = fstpy.StandardFileReader(source1).to_pandas()
+
+    src_df = pd.concat([src_df0, src_df1])
+    # compute spooki.MinMaxLevelIndex
+    df = spooki.MinMaxLevelIndex(
+        src_df, 
+        nomvar="TT",
+        value_to_return=True).compute()
+
+    # write the result
+    results_file = TMP_PATH + "test_20.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # # open and read comparison file
+    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test20.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+
+    assert(res)

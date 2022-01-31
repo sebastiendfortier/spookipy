@@ -112,8 +112,7 @@ def test_5(plugin_test_dir):
 
     uv_df = spooki.WindModulus(src_df0).compute()
 
-    minmax_df = spooki.MinMaxLevelIndex(
-        uv_df, nomvar="UV", max=True, nomvar_max_idx='IND').compute()
+    minmax_df = spooki.MinMaxLevelIndex(uv_df, nomvar="UV", max=True, nomvar_max_idx='IND').compute()
 
     # compute MatchLevelIndexToValue
     df = spooki.MatchLevelIndexToValue(minmax_df, nomvar_out='T5').compute()
@@ -145,9 +144,7 @@ def test_7(plugin_test_dir):
     uv_df = spooki.WindModulus(src_df0).compute()
 
     #  ( [SetConstantValue --value -1.0 --bidimensional] >>  [Zap --fieldName IND --doNotFlagAsZapped]  )
-    ind_df = spooki.SetConstantValue(
-        uv_df, value=-1., bi_dimensionnal=True).compute()
-    ind_df.loc[:, 'nomvar'] = 'IND'
+    ind_df = spooki.SetConstantValue(uv_df, value=-1., nomvar_out="IND", bi_dimensionnal=True).compute()
 
     src_df = pd.concat([uv_df, ind_df], ignore_index=True)
 
@@ -363,5 +360,54 @@ def test_12(plugin_test_dir):
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
-    # fstpy.delete_file(results_file)
+    fstpy.delete_file(results_file)
+    assert(res)
+
+def test_13(plugin_test_dir):
+    """ Requete invalide - fichiers dont les champs d'entree et les indices ne sont pas sur les memes grilles."""
+    # open and read source
+    source0 = plugin_test_dir + "200906290606_CLD_grid1.std"
+    source1 = plugin_test_dir + "200906290606_IND_grid2.std"
+
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    src_df1 = fstpy.StandardFileReader(source1).to_pandas()
+
+    src_df = pd.concat([src_df0, src_df1], ignore_index=True)
+
+    with pytest.raises(MatchLevelIndexToValueError):
+        _ = spooki.MatchLevelIndexToValue(src_df).compute()
+
+def test_14(plugin_test_dir):
+    """ Test ou un groupe de donnees est ignore car il n'y a pas d'indices associes."""
+    # Similaire au test11 avec resultats partiels
+
+    # open and read source
+    source0 = plugin_test_dir + "200906290606_CLD_grid1.std"
+    source1 = plugin_test_dir + "200906290606_IND_grid1.std"
+    source2 = plugin_test_dir + "200906290606_IND_grid2.std"
+
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    src_df1 = fstpy.StandardFileReader(source1).to_pandas()
+    src_df2 = fstpy.StandardFileReader(source2).to_pandas()
+
+    src_df = pd.concat([src_df0, src_df1, src_df2], ignore_index=True)
+
+    df = spooki.MatchLevelIndexToValue(
+        src_df, 
+        use_interval=True).compute()
+
+    # Encodage des ip2
+    df = spooki.encode_ip2_and_ip3_height(df)
+
+    # write the result
+    results_file = TMP_PATH + "test_14.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "MatchLevel_file2cmp_test14.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
     assert(res)

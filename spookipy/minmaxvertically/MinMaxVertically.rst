@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  Finds the maximum and/or minimum value in the column or part of it.
 
@@ -8,20 +8,21 @@ Iteration method:
 
 -  Column by column
 
-Dependance:
-~~~~~~~~~~~
+Dependencies:
+~~~~~~~~~~~~~
 
 -  Meteorological field (3D)
-   If the –bounded key is activated:
--  Field of indexes of the lower limit, KBAS
--  Field of indexes of the upper limit, KTOP
+  
+   If the bounded key is activated:
+-  Field of indices of the lower limit, KBAS
+-  Field of indices of the upper limit, KTOP
 
 Result(s):
 ~~~~~~~~~~
 
 -  A field with the values, KMIN (2D), for which the value of the
    meteorological field is minimum
-   and/or
+   *and/or*
 -  A field with the values, KMAX (2D), for which the value of the
    meteorological field is maximum
 
@@ -44,15 +45,13 @@ Algorithm:
                         nomvar_max_val= max_out,
                         value_to_return=True).compute()
 
-   | Notes:
+   Notes:
 
-   -  If several identical values of the max or min are found in a
-      column, the first occurrence will be considered the min or
-      the max. Depending on the "--direction" option, it will be
-      the highest or lowest occurrence in the sample.
-   -  When the values of KBAS and KTOP are equal to -1 (fields
-      needed when using the "--bounded" option), the column will
-      be ignored and the returned value will be -1.
+   -  If several identical values of the max or min are found in a column, the first occurrence 
+      will be considered the min or the max. Depending on the "direction" option (ascending or not), 
+      it will be the highest or lowest occurrence in the sample.
+   -  When the values of KBAS and KTOP are equal to -1 (fields needed when using 
+      the "bounded" option), the column will be ignored and the returned value will be -1.
 
 Reference:
 ~~~~~~~~~~
@@ -78,9 +77,9 @@ Usage:
 
    user = os.environ['USER']
 
-   df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/MinMaxLevelIndex/testsFiles/inputFile.std').to_pandas()
+   df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/MinMaxVertically/testsFiles/inputFile.std').to_pandas()
 
-   res_df = spooki.MinMaxVertically(df, min=True).compute()
+   res_df = spooki.MinMaxVertically(df, nomvar="TT", max=True, ascending=False).compute()
 
    fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
 
@@ -97,17 +96,17 @@ Usage:
 
    user = os.environ['USER']
 
-   df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/MinMaxLevelIndex/testsFiles/inputFile.std').to_pandas()
+   df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/MinMaxVertically/testsFiles/inputFile.std').to_pandas()
 
-   minidx_df = spooki.SetConstantValue(df, min_index=True, bi_dimensionnal=True).compute()
-   minidx_df['nomvar'] = 'KBAS'
+   tt_df = fstpy.select_with_meta(df, ['TT'])
 
-   maxidx_df = spooki.SetConstantValue(df, max_index=True, bi_dimensionnal=True).compute()
-   maxidx_df['nomvar'] = 'KTOP'
+   minidx_df = spooki.SetConstantValue(tt_df, min_index=True, nomvar_out='KBAS', bi_dimensionnal=True).compute()
+
+   maxidx_df = spooki.SetConstantValue(tt_df, max_index=True, nomvar_out='KTOP', bi_dimensionnal=True).compute()
 
    all_df = pd.concat([df,minidx_df,maxidx_df], ignore_index=True)
 
-   res_df = spooki.MinMaxLevelIndex(all_df, min=True, ascending=True).compute()
+   res_df = spooki.MinMaxVertically(all_df, nomvar="TT", min=True, max=True, bounded=True).compute()
 
    fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
 
@@ -123,6 +122,4 @@ Contacts:
 Spooki original documentation:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`Francais:  N/A`_
-
-`English: N/A`_
+-  Does not apply

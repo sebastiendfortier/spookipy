@@ -66,15 +66,16 @@ class MatchLevelIndexToValue(Plugin):
 
         self.df = self.df.loc[~self.df.nomvar.isin(
             ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
+        
+        if self.df.loc[(self.df.nomvar == self.nomvar_index)].empty:
+            raise MatchLevelIndexToValueError(
+                    f'Missing indices field {self.nomvar_index} !') 
 
         self.df = fstpy.add_columns(
             self.df, columns=[
                 'forecast_hour', 'ip_info'])
 
-        keep = self.df.loc[~self.df.nomvar.isin(
-            ["KBAS", "KTOP"])].reset_index(drop=True)
-
-        self.groups = keep.groupby(by=['grid', 'datev', 'ip1_kind'])
+        self.groups = self.df.groupby(by=['grid', 'datev', 'ip1_kind'])
 
     def compute(self) -> pd.DataFrame:
         logging.info('MatchLevelIndexToValue - compute')
@@ -82,12 +83,20 @@ class MatchLevelIndexToValue(Plugin):
         for (grid, dateo, ip1_kind), group_df in self.groups:
 
             ind_df = group_df.loc[group_df.nomvar == self.nomvar_index].reset_index(drop=True)
+            if ind_df.empty:
+                logging.warning(
+                    f'Cannot find {self.nomvar_index} field in this group - skipping the group ')
+                continue
 
             ind       = np.expand_dims(to_numpy(ind_df.iloc[0]['d']).flatten().astype(dtype=np.int32),axis=0)
             others_df = group_df.loc[group_df.nomvar != self.nomvar_index].reset_index(drop=True)
+            if others_df.empty:
+                logging.warning(
+                    f'Cannot find input field in this group to match the {self.nomvar_index} index field  - skipping the group')
+                continue
             nomvars   = others_df.nomvar.unique()
 
-            if not(self.nomvar_out is None) and (len(nomvars) > 1):
+            if not(self.nomvar_out is None) and (len(nomvars) > 1):  
                 raise MatchLevelIndexToValueError(
                     'whenever parameter nomvar_out is specified, only 2 inputs are allowed: IND and another field; got {nomvars} in input')
 
@@ -106,8 +115,7 @@ class MatchLevelIndexToValue(Plugin):
                         levels     = var_df.level.unique()
                         borne_inf  = levels[0]
                         borne_sup  = levels[-1]
-                        kind       = var_df.ip1_kind[0]
-                        res_df     = create_result_container(var_df,borne_inf, borne_sup, kind)
+                        res_df     = create_result_container(var_df,borne_inf, borne_sup, ip1_kind)
                     else:
                         # Si le champ d'indice a un interval, on prend ses infos
                         res_df = create_empty_result(ind_df, {'etiket':'MLIVAL'})
@@ -140,8 +148,12 @@ class MatchLevelIndexToValue(Plugin):
                 res_df = reshape_arrays(res_df)
                 res_df = dataframe_arrays_to_dask(res_df)
                 df_list.append(res_df)
+                
 
-        return final_results(df_list, MatchLevelIndexToValueError, self.meta_df)
+        if len(df_list):
+            return final_results(df_list, MatchLevelIndexToValueError, self.meta_df)
+        else:
+            raise MatchLevelIndexToValueError('No results produced !')
 
 def create_result_container(df, b_inf, b_sup, ip1_kind):
     ip1 = float(b_inf)

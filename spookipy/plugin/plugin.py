@@ -1,8 +1,19 @@
 # -*- coding: utf-8 -*-
 import abc
-
+import argparse
 import pandas as pd
 
+def defines_base_argparser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(prog="Plugin", description=__doc__, add_help=False)
+    parser.add_argument('--help-module',type=str,choices=["generic","specific"], help="Produce a help for a given module.")
+    parser.add_argument('--optimizationLevel',type=int,choices=[0,1,2], help="Set level of optimization")
+    parser.add_argument('--threads','-T',type=int, help="Set the maximum amount of threads to be used.")
+    parser.add_argument('--uses',action='store_true', help="Print out the plugins that this module uses - can only be used with full configuration because dependencies need to be created.")
+    parser.add_argument('--print_extended','-E',action='store_true', help="Prints the request this plugin generates when called - can only be used with full configuration because dependencies need to be created. This does not stop the request, thus error may arise if used with a fake request to get this information")
+    parser.add_argument('--verbose',"-v",action='store_true', help="Increase verbosity level.")
+    parser.add_argument('--version',action='store_true', help="Get version number.")
+
+    return parser
 
 class EmptyDataframeError(Exception):
     pass
@@ -14,6 +25,7 @@ class Plugin(abc.ABC):
     :param df: input dataframe
     :type df: pd.DataFrame
     """
+    base_parser = defines_base_argparser()
 
     def __init__(self, df: pd.DataFrame) -> None:
         self.df = df
@@ -46,5 +58,12 @@ class Plugin(abc.ABC):
         pass
 
     @staticmethod
-    def parse_config(**kwargs):
-        return kwargs
+    def parse_config(args: str) -> dict:
+        """method to translate spooki plugin parameters to python plugin parameters
+        :param args: input unparsed arguments
+        :type args: str
+        :return: a dictionnary of converted parameters
+        :rtype: dict
+        """
+        return vars(Plugin.base_parser.parse_args(args.split()))
+

@@ -6,7 +6,7 @@ from spookipy.minmaxlevelindex.minmaxlevelindex import  MinMaxLevelIndexError
 import fstpy.all as fstpy
 import pytest
 import spookipy.all as spooki
-
+from spookipy.utils import DependencyError
 from ci_fstcomp import fstcomp
 
 pytestmark = [pytest.mark.regressions]
@@ -455,13 +455,13 @@ def test_13(plugin_test_dir):
     """Invalid request -- missing mandatory fields KBAS and KTOP with bounded option, on the same grid as field UU  """
     # open and read source
     source0 = plugin_test_dir + "TTGZUUVV_3x2x7_regpres.std"
-    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas() 
     source1 = plugin_test_dir + "KbasKtop_v2.std"
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
     src_df = pd.concat([src_df0 , src_df1])
 
     # compute spooki.MinMaxLevelIndex
-    with pytest.raises(MinMaxLevelIndexError):
+    with pytest.raises(DependencyError):
         spooki.MinMaxLevelIndex(
             src_df, 
             nomvar="UU", 
@@ -496,3 +496,44 @@ def test_20(plugin_test_dir):
     fstpy.delete_file(results_file)
 
     assert(res)
+
+def test_21(plugin_test_dir):
+    """Requete partiellement reussie -- 2 groupes de champs dont 1 groupe incomplet car il manque les champs KBAS et KTOP  """
+    # Test identique au test 11 pour ce qui concerne le groupe complet. 
+    # On veut s'assurer que la requete s'execute en ignorant le groupe qui est incomplet
+
+    source0 = plugin_test_dir + "TTGZUUVV_3x2x7_regpres.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    source1 = plugin_test_dir + "KbasKtop.std"
+    src_df1 = fstpy.StandardFileReader(source1).to_pandas()
+    source2 = plugin_test_dir + "200906290606_TT_grid2.std"
+    src_df2 = fstpy.StandardFileReader(source2).to_pandas()
+    src_df = pd.concat([src_df0 , src_df1, src_df2])
+
+    df = spooki.MinMaxLevelIndex(
+        src_df, 
+        nomvar="TT",
+        bounded=True).compute()
+
+    etiket  = "R1MMLVLIN"
+    etiket2 = "__MMLVLIX"
+    df.loc[df.nomvar.isin(["KMIN", "KMAX"]),'etiket'] = etiket2
+    df.loc[df.nomvar == "TT",'etiket']                = etiket
+
+    # Encodage des ip2
+    df = spooki.encode_ip2_and_ip3_height(df)
+    
+     # write the result
+    results_file = TMP_PATH + "test_21.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # # open and read comparison file
+    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test10-11_20210915.std"
+
+    # compare results 
+    res = fstcomp(results_file, file_to_compare) 
+    fstpy.delete_file(results_file)
+
+    assert(res)
+    

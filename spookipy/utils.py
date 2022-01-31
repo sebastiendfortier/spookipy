@@ -503,7 +503,6 @@ def convip(df: pd.DataFrame, style: int = rmn.CONVIP_ENCODE, ip_str:str='ip1') -
 
 
 def encode_ip1_and_ip3(df):
-    print(f'Dans encode_ip1_and_ip3 !')
     for row in df.itertuples():
         if row.nomvar in ['>>', '^^', '^>', '!!', 'P0', 'PT']:
             continue
@@ -511,8 +510,6 @@ def encode_ip1_and_ip3(df):
         ip1 = row.ip1
         ip2 = row.ip2
         ip3 = row.ip3
-
-        print(f'ip1 = {ip1}  ip2 = {ip2}  ip3 = {ip3}')
 
         (rp1, rp2, rp3) = rmn.DecodeIp(ip1, ip2, ip3)
         rp1a = rmn.FLOAT_IP(rp1.v1,rp1.v1, rp1.kind)

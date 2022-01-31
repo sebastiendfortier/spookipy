@@ -26,6 +26,7 @@ class MinMaxVertically(Plugin):
             min=False,
             max=False,
             bounded=False,
+            ascending=True,
             nomvar_min: str = None,
             nomvar_max: str = None):
 
@@ -82,10 +83,10 @@ class MinMaxVertically(Plugin):
 
         df=MinMaxLevelIndex(self.df,
                             nomvar=self.nomvar, 
-                            ascending=True, 
                             min=self.min, 
                             max=self.max,
                             bounded=self.bounded,
+                            ascending=self.ascending,
                             nomvar_min_idx= "_MIN",
                             nomvar_min_val= min_out,
                             nomvar_max_idx= "_MAX",

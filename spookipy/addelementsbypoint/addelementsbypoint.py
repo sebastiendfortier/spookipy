@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import argparse
 import logging
 
 import numpy as np
@@ -44,19 +45,24 @@ class AddElementsByPoint(Plugin):
             nomvar_out=self.nomvar_out,
             etiket='ADDEPT').compute()
 
-    @staticmethod
-    def parse_config(**kwargs):
-        """method to translate spooki plugin parameters to python plugin parameters
 
+    @staticmethod
+    def parse_config(args: str) -> dict:
+        """method to translate spooki plugin parameters to python plugin parameters
+        :param args: input unparsed arguments
+        :type args: str
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        args = {}
+        parser = argparse.ArgumentParser(prog=AddElementsByPoint.__name__, parents=[Plugin.base_parser])
+        parser.add_argument('--outputFieldName',type=str,default="ADEP",dest='nomvar_out', help="Option to change the name of output field 'ADEP'.")
+        parser.add_argument('--groupBy',type=str,choices=['FORECAST_HOUR'],dest='group_by_forecast_hour', help="Option to group fields by attribute when performing calculation.")
 
-        if 'outputFieldName' in kwargs:
-            args['nomvar_out'] = kwargs['outputFieldName']
+        parsed_arg = vars(parser.parse_args(args.split()))
 
-        if 'groupBy' in kwargs and kwargs['groupBy'] == "FORECAST_HOUR":
-            args['group_by_forecast_hour'] = True
+        parsed_arg['group_by_forecast_hour'] = (parsed_arg['group_by_forecast_hour'] == 'FORECAST_HOUR')
+        if len(parsed_arg['nomvar_out']) > 4 or len(parsed_arg['nomvar_out']) < 2:
+            raise AddElementsByPointError("outputFieldName needs to be 2 to 4 characters long")
 
-        return args
+        return parsed_arg
+

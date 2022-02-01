@@ -10,7 +10,6 @@ from ..plugin import Plugin
 from ..utils import (create_empty_result, dataframe_arrays_to_dask, final_results, get_3d_array,
                      get_dependencies, get_from_dataframe,initializer, reshape_arrays, validate_nomvar)
 
-
 class MinMaxLevelIndexError(Exception):
     pass
 
@@ -71,14 +70,12 @@ class MinMaxLevelIndex(Plugin):
             {
                 'ALL': {'etiket': 'MMLVLI', 'unit': 'scalar', 'ip1': 0}
             }
-        self.validate_input()
-
-    def validate_input(self):
-
-        if self.df.empty:
-            raise MinMaxLevelIndexError('No data to process')
 
         self.df = fstpy.metadata_cleanup(self.df)
+        super().__init__(df)
+        self.validate_params_and_input()
+
+    def validate_params_and_input(self):
 
         validate_nomvar(
             self.nomvar,
@@ -105,29 +102,23 @@ class MinMaxLevelIndex(Plugin):
             'MinMaxLevelIndex',
             MinMaxLevelIndexError)
 
-        self.meta_df = self.df.loc[self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
-        self.df = self.df.loc[~self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
         if (not self.min) and (not self.max):
             self.min = True
             self.max = True
 
         if self.bounded:
-            if (self.df.loc[self.df.nomvar == "KBAS"]).empty or (self.df.loc[self.df.nomvar == "KTOP"]).empty:
+            if (self.no_meta_df.loc[self.no_meta_df.nomvar == "KBAS"]).empty or \
+               (self.no_meta_df.loc[self.no_meta_df.nomvar == "KTOP"]).empty:
                 raise MinMaxLevelIndexError('Missing fields KBAS and/or KTOP with BOUNDED option!')
 
-        self.df = fstpy.add_columns(self.df, columns=['forecast_hour', 'ip_info'])
+        self.no_meta_df = fstpy.add_columns(self.no_meta_df, columns=['forecast_hour', 'ip_info'])
 
-        keep = self.df.loc[self.df.nomvar.isin([self.nomvar, "KBAS","KTOP"])].reset_index(drop=True)
+        keep = self.no_meta_df.loc[self.no_meta_df.nomvar.isin([self.nomvar, "KBAS","KTOP"])].reset_index(drop=True)
 
         if (keep.loc[keep.nomvar == self.nomvar]).empty:
                 raise MinMaxLevelIndexError(f'INVALID INPUT - MISSING {self.nomvar} !')    
 
-        self.nomvar_groups = keep.groupby(
-            by=['grid', 'datev','ip1_kind'])
+        self.nomvar_groups = keep.groupby(by=['grid', 'datev','ip1_kind'])
 
         self.dependencies_list = get_dependencies(
             self.nomvar_groups,

@@ -42,13 +42,12 @@ class MatchLevelIndexToValue(Plugin):
             {
                 'ALL': {'etiket': 'MLIVAL', 'ip1': 0}
             }
-        self.validate_input()
-
-    def validate_input(self):
-        if self.df.empty:
-            raise MatchLevelIndexToValueError('No data to process')
 
         self.df = fstpy.metadata_cleanup(self.df)
+        super().__init__(df)
+        self.validate_params_and_input()
+
+    def validate_params_and_input(self):
 
         if not(self.nomvar_out is None):
             validate_nomvar(
@@ -60,25 +59,20 @@ class MatchLevelIndexToValue(Plugin):
             self.nomvar_index,
             'MatchLevelIndexToValue',
             MatchLevelIndexToValueError)
-
-        self.meta_df = self.df.loc[self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
-        self.df = self.df.loc[~self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
         
-        if self.df.loc[(self.df.nomvar == self.nomvar_index)].empty:
+        if self.no_meta_df.loc[(self.no_meta_df.nomvar == self.nomvar_index)].empty:
             raise MatchLevelIndexToValueError(
                     f'Missing indices field {self.nomvar_index} !') 
 
-        self.df = fstpy.add_columns(
-            self.df, columns=[
+        self.no_meta_df = fstpy.add_columns(
+            self.no_meta_df, columns=[
                 'forecast_hour', 'ip_info'])
 
-        self.groups = self.df.groupby(by=['grid', 'datev', 'ip1_kind'])
+        self.groups = self.no_meta_df.groupby(by=['grid', 'datev', 'ip1_kind'])
 
     def compute(self) -> pd.DataFrame:
         logging.info('MatchLevelIndexToValue - compute')
+
         df_list = []
         for (grid, dateo, ip1_kind), group_df in self.groups:
 
@@ -110,7 +104,8 @@ class MatchLevelIndexToValue(Plugin):
 
                 # Utilisation de la cle pour l'intervalle ?
                 if self.use_interval:
-                    # Si le champ d'indice n'a pas d'intervalle, on prend le 1er et le dernier niveau des donnees du champ d'entree
+                    # Si le champ d'indice n'a pas d'intervalle, on prend le 1er et le dernier niveau des donnees 
+                    # du champ d'entree
                     if ind_df.interval.isnull().bool():
                         levels     = var_df.level.unique()
                         borne_inf  = levels[0]

@@ -1,12 +1,10 @@
 
-from spookipy.minmaxvertically.minmaxvertically import MinMaxVerticallyError
 from test import TMP_PATH, TEST_PATH
 from ci_fstcomp import fstcomp
 import pandas as pd
 import fstpy.all as fstpy
 import spookipy.all as spooki
 import pytest
-
 
 @pytest.fixture
 def plugin_test_dir():
@@ -19,7 +17,7 @@ def test_1(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute spooki.MinMaxLevelIndex
-    with pytest.raises(MinMaxVerticallyError):
+    with pytest.raises(spooki.MinMaxVerticallyError):
         spooki.MinMaxVertically(
             src_df0, 
             nomvar="TT",
@@ -36,7 +34,7 @@ def test_2(plugin_test_dir):
     src_df  = pd.concat([src_df0 , src_df1])
 
     # compute spooki.MinMaxVertically
-    with pytest.raises(MinMaxVerticallyError):
+    with pytest.raises(spooki.MinMaxVerticallyError):
         spooki.MinMaxVertically(
             src_df0, 
             nomvar="UU",

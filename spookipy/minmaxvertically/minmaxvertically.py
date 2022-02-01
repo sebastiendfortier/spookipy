@@ -2,17 +2,14 @@
 
 import logging
 
-from numpy.core.numeric import True_
-
 import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
 
+from ..minmaxlevelindex import MinMaxLevelIndex
 from ..plugin import Plugin
-from ..utils import (create_empty_result, existing_results, final_results,
-                     get_dependencies, get_existing_result, get_from_dataframe, initializer, reshape_arrays,
-                     to_dask, to_numpy, validate_nomvar)
-
+from ..utils import (final_results,get_from_dataframe, initializer, 
+                    reshape_arrays, validate_nomvar)
 
 class MinMaxVerticallyError(Exception):
     pass
@@ -29,14 +26,10 @@ class MinMaxVertically(Plugin):
             ascending=True,
             nomvar_min: str = None,
             nomvar_max: str = None):
+        super().__init__(df)
+        self.validate_params_and_input()
 
-        self.validate_input()
-
-    def validate_input(self):   
-        if self.df.empty:
-            raise MinMaxVerticallyError('No data to process')
-
-        self.df = fstpy.metadata_cleanup(self.df)
+    def validate_params_and_input(self):   
 
         if not (self.nomvar_min is None):
             validate_nomvar(
@@ -54,20 +47,13 @@ class MinMaxVertically(Plugin):
             self.min = True
             self.max = True
 
-        self.meta_df = self.df.loc[self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
-        self.df = self.df.loc[~self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
-        keep = self.df.loc[~self.df.nomvar.isin(["KBAS", "KTOP"])].reset_index(drop=True)
-
         if self.bounded:
-            if (self.df.loc[self.df.nomvar == "KBAS"]).empty or (self.df.loc[self.df.nomvar == "KTOP"]).empty:
+            if (self.no_meta_df.loc[self.no_meta_df.nomvar == "KBAS"]).empty or \
+               (self.no_meta_df.loc[self.no_meta_df.nomvar == "KTOP"]).empty:
                 raise MinMaxVerticallyError('Missing fields KBAS and/or KTOP with BOUNDED option!')
 
     def compute(self) -> pd.DataFrame:
-        from ..all import MinMaxLevelIndex
+        logging.info('MinMaxVertically - compute')
 
         df_list=[]
 
@@ -92,8 +78,6 @@ class MinMaxVertically(Plugin):
                             nomvar_max_idx= "_MAX",
                             nomvar_max_val= max_out,
                             value_to_return=True).compute()
-
-        logging.warning('MinMaxVertically - compute')
 
         if self.min:
             min_df = get_from_dataframe(df, min_out)

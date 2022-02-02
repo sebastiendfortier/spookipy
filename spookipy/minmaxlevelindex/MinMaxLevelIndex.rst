@@ -1,5 +1,5 @@
 Description:
-~~~~~~~~~~~~
+============
 
 -  Finds the index of the maximum and/or minimum value in the column or part of it.
 
@@ -9,11 +9,11 @@ Iteration method:
 -  Column by column
 
 Dependencies:
-~~~~~~~~~~~
+~~~~~~~~~~~~~
 
 -  Meteorological field (3D)
    
-   If the –bounded key is activated:
+   If the -bounded key is activated:
 -  Field of indices of the lower limit, KBAS
 -  Field of indices of the upper limit, KTOP
 

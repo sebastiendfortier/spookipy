@@ -1,5 +1,5 @@
 Description:
-~~~~~~~~~~~~
+============
 
 -  Associates, to each vertical level index given, a value of one
    or many 3D meteorological fields given in input.

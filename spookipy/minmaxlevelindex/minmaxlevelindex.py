@@ -4,15 +4,14 @@ import logging
 import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
+import rpnpy.librmn.all as rmn
 
 from ..plugin import Plugin
 from ..utils import (create_empty_result, dataframe_arrays_to_dask, final_results, get_3d_array,
-                     initializer, reshape_arrays, validate_nomvar)
-
+                     get_dependencies, get_from_dataframe,initializer, reshape_arrays, validate_nomvar)
 
 class MinMaxLevelIndexError(Exception):
     pass
-
 
 class MinMaxLevelIndex(Plugin):
     """Finds the index of the maximum and/or minimum value in the column or part of it.
@@ -29,10 +28,16 @@ class MinMaxLevelIndex(Plugin):
     :type max: bool, optional
     :param bounded: limit search between KBAS and KTOP, defaults to False
     :type bounded: bool, optional
-    :param nomvar_min: nomvar of the min result, defaults to 'KMIN'
-    :type nomvar_min: str, optional
-    :param nomvar_max: nomvar of the max result, defaults to 'KMAX'
-    :type nomvar_max: str, optional
+    :param nomvar_min_idx: nomvar of the min result index, defaults to 'KMIN'
+    :type nomvar_min_idx: str, optional
+    :param nomvar_max_idx: nomvar of the max result index, defaults to 'KMAX'
+    :type nomvar_max_idx: str, optional
+    :param value_to_return: return also the maximum and/or the minimum values corresponding to the indices, defaults to False
+    :type value_to_return: bool, optional
+    :param nomvar_min_val: nomvar of the min result value, defaults to 'MIN'
+    :type nomvar_min_val: str, optional
+    :param nomvar_max_val: nomvar of the max result value, defaults to 'MAX'
+    :type nomvar_max_val: str, optional
     """
 
     @initializer
@@ -44,116 +49,177 @@ class MinMaxLevelIndex(Plugin):
             min=False,
             max=False,
             bounded=False,
-            nomvar_min='KMIN',
-            nomvar_max='KMAX'):
+            value_to_return=False,
+            nomvar_min_idx='KMIN',
+            nomvar_max_idx='KMAX',
+            nomvar_min_val='MIN',
+            nomvar_max_val='MAX'
+            ):
+
+        self.plugin_mandatory_dependencies=[{}]
+        input_field = {nomvar : {'nomvar': nomvar}}
+        self.plugin_mandatory_dependencies[0]= input_field
+
+        if self.bounded:
+            dict_Kbas = {'nomvar': 'KBAS'}
+            dict_Ktop = {'nomvar': 'KTOP'}
+            self.plugin_mandatory_dependencies[0]['KBAS'] = dict_Kbas
+            self.plugin_mandatory_dependencies[0]['KTOP'] = dict_Ktop
 
         self.plugin_result_specifications = \
             {
                 'ALL': {'etiket': 'MMLVLI', 'unit': 'scalar', 'ip1': 0}
             }
-        self.validate_input()
-
-    def validate_input(self):
-        if self.df.empty:
-            raise MinMaxLevelIndexError('No data to process')
 
         self.df = fstpy.metadata_cleanup(self.df)
+        super().__init__(df)
+        self.validate_params_and_input()
+
+    def validate_params_and_input(self):
 
         validate_nomvar(
-            self.nomvar_min,
+            self.nomvar,
             'MinMaxLevelIndex',
             MinMaxLevelIndexError)
 
         validate_nomvar(
-            self.nomvar_max,
+            self.nomvar_min_idx,
             'MinMaxLevelIndex',
             MinMaxLevelIndexError)
 
-        self.meta_df = self.df.loc[self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
+        validate_nomvar(
+            self.nomvar_max_idx,
+            'MinMaxLevelIndex',
+            MinMaxLevelIndexError)
 
-        self.df = self.df.loc[~self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
+        validate_nomvar(
+            self.nomvar_min_val,
+            'MinMaxLevelIndex',
+            MinMaxLevelIndexError)
+
+        validate_nomvar(
+            self.nomvar_max_val,
+            'MinMaxLevelIndex',
+            MinMaxLevelIndexError)
 
         if (not self.min) and (not self.max):
             self.min = True
             self.max = True
 
         if self.bounded:
-            if (self.df.loc[self.df.nomvar == "KBAS"]).empty or (self.df.loc[self.df.nomvar == "KTOP"]).empty:
+            if (self.no_meta_df.loc[self.no_meta_df.nomvar == "KBAS"]).empty or \
+               (self.no_meta_df.loc[self.no_meta_df.nomvar == "KTOP"]).empty:
                 raise MinMaxLevelIndexError('Missing fields KBAS and/or KTOP with BOUNDED option!')
 
-        self.df = fstpy.add_columns(self.df, columns=['forecast_hour', 'ip_info'])
+        self.no_meta_df = fstpy.add_columns(self.no_meta_df, columns=['forecast_hour', 'ip_info'])
 
-        keep = self.df.loc[~self.df.nomvar.isin(["KBAS", "KTOP"])].reset_index(drop=True)
+        keep = self.no_meta_df.loc[self.no_meta_df.nomvar.isin([self.nomvar, "KBAS","KTOP"])].reset_index(drop=True)
 
-        self.nomvar_groups = keep.groupby(
-            by=['grid', 'dateo', 'forecast_hour', 'ip1_kind', 'nomvar'])
+        if (keep.loc[keep.nomvar == self.nomvar]).empty:
+                raise MinMaxLevelIndexError(f'INVALID INPUT - MISSING {self.nomvar} !')    
+
+        self.nomvar_groups = keep.groupby(by=['grid', 'datev','ip1_kind'])
+
+        self.dependencies_list = get_dependencies(
+            self.nomvar_groups,
+            self.meta_df,
+            'MinMaxLevelIndex',
+            self.plugin_mandatory_dependencies,
+            intersect_levels=False)
 
     def compute(self) -> pd.DataFrame:
         logging.info('MinMaxLevelIndex - compute')
+
         df_list=[]
-        for (grid, _, _, _, _),group_df in self.nomvar_groups:
-            group_df = fstpy.compute(group_df)
+        for dependencies_df, option in self.dependencies_list:
+            var_df = get_from_dataframe(dependencies_df, self.nomvar)
 
-            group_df = group_df.sort_values(by='level',ascending=group_df.ascending.unique()[0])
-            group_df.loc[:,'etiket'] = self.plugin_result_specifications['ALL']['etiket']
+            borne_inf  = var_df.iloc[0].level
+            borne_sup  = var_df.iloc[-1].level
+            kind       = var_df.iloc[0].ip1_kind
 
-            kmin_df = create_empty_result(group_df,self.plugin_result_specifications['ALL'])
-            kmin_df['nomvar']=self.nomvar_min
+            min_idx_df = create_result_container(var_df,borne_inf, borne_sup, kind, self.nomvar_min_idx)
+            max_idx_df = create_result_container(var_df,borne_inf, borne_sup, kind, self.nomvar_max_idx)
+            min_val_df = create_result_container(var_df,borne_inf, borne_sup, kind, self.nomvar_min_val)
+            max_val_df = create_result_container(var_df,borne_inf, borne_sup, kind, self.nomvar_max_val)
 
-            kmax_df = create_empty_result(group_df,self.plugin_result_specifications['ALL'])
-            kmax_df['nomvar']=self.nomvar_max
-
-            array_3d = get_3d_array(group_df,flatten=True)
+            array_3d   = get_3d_array(var_df,flatten=True)
 
             # if not ascending, reverse array
             if not self.ascending:
                 array_3d = np.flip(array_3d,axis=0)
 
-
             if self.bounded:
                 # get kbas and ktop for this grid
-                kbas = self.df.loc[(self.df.nomvar=="KBAS") & (self.df.grid==grid)].reset_index(drop=True)
-                kbas = fstpy.compute(kbas)
-                ktop = self.df.loc[(self.df.nomvar=="KTOP") & (self.df.grid==grid)].reset_index(drop=True)
-                ktop = fstpy.compute(ktop)
-                kbas_arr = kbas.iloc[0]['d'].flatten().astype('int64')
+                kbas = get_from_dataframe(dependencies_df, 'KBAS')
+                ktop = get_from_dataframe(dependencies_df, 'KTOP')
+                kbas_arr  = kbas.iloc[0]['d'].flatten().astype('int32')
                 kbas_mask = kbas_arr == -1
 
                 kbas_arr_missing = np.where(kbas_arr == -1 , np.nan, kbas_arr)
-                ktop_arr = ktop.iloc[0]['d'].flatten().astype('int64')
+                ktop_arr  = ktop.iloc[0]['d'].flatten().astype('int32') 
                 ktop_mask = kbas_arr == -1
                 ktop_arr_missing = np.where(ktop_arr == -1, np.nan, ktop_arr)
+                
+                # Ajustement du kbas lorsque la direction est descending
+                if not self.ascending:
+                    newkbas = (array_3d.shape[0]-1)-ktop_arr_missing
+                    newktop = (array_3d.shape[0]-1)-kbas_arr_missing
+                else:
+                    newkbas = kbas_arr_missing
+                    newktop = ktop_arr_missing
 
-                array_3d = bound_array(array_3d, kbas_arr_missing, ktop_arr_missing)
+                array_3d = bound_array(array_3d, newkbas, newktop)
 
             if self.ascending:
-                kmin_df.at[0,'d'] = np.nanargmin(array_3d, axis=0).astype('float32')
-                kmax_df.at[0,'d'] = np.nanargmax(array_3d, axis=0).astype('float32')
+                min_idx = np.nanargmin(array_3d, axis=0).astype('int32')
+                min_idx = np.expand_dims(min_idx,axis=0)
+                max_idx = np.nanargmax(array_3d, axis=0).astype('int32')
+                max_idx = np.expand_dims(max_idx,axis=0)
 
+                min_idx_df.at[0,'d'] = np.nanargmin(array_3d, axis=0).astype('float32')
+                max_idx_df.at[0,'d'] = np.nanargmax(array_3d, axis=0).astype('float32')
             else:
-                kmin_df.at[0,'d'] = (array_3d.shape[0]-1 - np.nanargmin(array_3d, axis=0)).astype('float32')
-                kmax_df.at[0,'d'] = (array_3d.shape[0]-1 - np.nanargmax(array_3d, axis=0)).astype('float32')
+                min_idx = (array_3d.shape[0]-1 - np.nanargmin(array_3d, axis=0)).astype('int32')
+                min_idx = np.expand_dims(min_idx,axis=0)
+                max_idx = (array_3d.shape[0]-1 - np.nanargmax(array_3d, axis=0)).astype('int32')
+                max_idx = np.expand_dims(max_idx,axis=0)
+
+                min_idx_df.at[0,'d'] = (array_3d.shape[0]-1 - np.nanargmin(array_3d, axis=0)).astype('float32')
+                max_idx_df.at[0,'d'] = (array_3d.shape[0]-1 - np.nanargmax(array_3d, axis=0)).astype('float32')
+
+            # Prendre les valeurs associees aux indices
+            min_val_df.at[0,'d'] = np.take_along_axis(array_3d, min_idx, axis=0).astype('float32')
+            max_val_df.at[0,'d'] = np.take_along_axis(array_3d, max_idx, axis=0).astype('float32')
 
             if self.bounded:
                 mask = kbas_mask | ktop_mask
-                kmin_df.at[0,'d'] = np.where(mask,-1.0,kmin_df.at[0,'d'])
-                kmax_df.at[0,'d'] = np.where(mask,-1.0,kmax_df.at[0,'d'])
+                min_idx_df.at[0,'d'] = np.where(mask,-1.0,min_idx_df.at[0,'d'])
+                max_idx_df.at[0,'d'] = np.where(mask,-1.0,max_idx_df.at[0,'d'])
 
             if self.min:
-                kmin_df = reshape_arrays(kmin_df)
-                kmin_df = dataframe_arrays_to_dask(kmin_df)
-                df_list.append(kmin_df)
+                min_idx_df = reshape_arrays(min_idx_df)
+                min_idx_df = dataframe_arrays_to_dask(min_idx_df)
+                df_list.append(min_idx_df)
+                
             if self.max:
-                kmax_df = reshape_arrays(kmax_df)
-                kmax_df = dataframe_arrays_to_dask(kmax_df)
-                df_list.append(kmax_df)
-                kmax_df = reshape_arrays(kmax_df)
+                max_idx_df = reshape_arrays(max_idx_df)
+                max_idx_df = dataframe_arrays_to_dask(max_idx_df)
+                df_list.append(max_idx_df)
  
-            group_df = reshape_arrays(group_df)
-            group_df = dataframe_arrays_to_dask(group_df)
-            df_list.append(group_df)
+            if self.value_to_return:
+                if self.min:
+                    min_val_df =  reshape_arrays(min_val_df)
+                    min_val_df = dataframe_arrays_to_dask(min_val_df)
+                    df_list.append(min_val_df)
+                if self.max:
+                    max_val_df =  reshape_arrays(max_val_df)
+                    max_val_df = dataframe_arrays_to_dask(max_val_df)
+                    df_list.append(max_val_df)
+
+            var_df = reshape_arrays(var_df)  
+            var_df = dataframe_arrays_to_dask(var_df)
+            df_list.append(var_df)
 
         return final_results(df_list, MinMaxLevelIndexError, self.meta_df)
 
@@ -166,8 +232,21 @@ def bound_array(a, kbas, ktop):
     arr=a.copy()
     newktop = fix_ktop(ktop, arr.shape[0])
     arr = np.rot90(arr)
+
     arr[np.flip(kbas[:,None]) > np.arange(arr.shape[1])] = np.nan
     arr = np.rot90(arr,k=2)
     arr[newktop[:,None] > np.arange(arr.shape[1])] = np.nan
     arr = np.rot90(arr,k=-3)
     return arr
+
+def create_result_container(df, b_inf, b_sup, ip1_kind, nomvar):
+    ip1 = float(b_inf)
+    ip3 = float(b_sup)
+    ip2 = 0
+    kind = int(ip1_kind)
+    
+    ip1_enc = rmn.ip1_val(ip1, kind)
+    ip3_enc = rmn.ip1_val(ip3, kind)
+
+    res_df = create_empty_result(df, {'nomvar':nomvar, 'etiket':'MMLVLI', 'ip1': ip1_enc, 'ip3': ip3_enc})
+    return res_df

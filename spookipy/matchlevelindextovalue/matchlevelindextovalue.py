@@ -5,6 +5,7 @@ import logging
 import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
+import rpnpy.librmn.all as rmn
 
 from ..plugin import Plugin
 from ..utils import (create_empty_result, dataframe_arrays_to_dask, final_results, get_3d_array,
@@ -13,7 +14,6 @@ from ..utils import (create_empty_result, dataframe_arrays_to_dask, final_result
 
 class MatchLevelIndexToValueError(Exception):
     pass
-
 
 class MatchLevelIndexToValue(Plugin):
     """Associates, to each given vertical level index, a value of one or many 3D meteorological fields from the input.
@@ -26,6 +26,8 @@ class MatchLevelIndexToValue(Plugin):
     :type nomvar_out: str, optional
     :param nomvar_index: nomvar of index field, defaults to 'IND'
     :type nomvar_index: str, optional
+    :param use_interval: utilisation de l'objet intervalle, defaults to 'FALSE'
+    :type use_interval: str, optional
     """
     @initializer
     def __init__(
@@ -33,56 +35,62 @@ class MatchLevelIndexToValue(Plugin):
             df: pd.DataFrame,
             error_value=-1,
             nomvar_out=None,
-            nomvar_index='IND'):
+            nomvar_index='IND',
+            use_interval=False):
 
         self.plugin_result_specifications = \
             {
                 'ALL': {'etiket': 'MLIVAL', 'ip1': 0}
             }
-        self.validate_input()
-
-    def validate_input(self):
-        if self.df.empty:
-            raise MatchLevelIndexToValueError('No data to process')
 
         self.df = fstpy.metadata_cleanup(self.df)
+        super().__init__(df)
+        self.validate_params_and_input()
 
-        validate_nomvar(
-            self.nomvar_out,
-            'MatchLevelIndexToValue',
-            MatchLevelIndexToValueError)
+    def validate_params_and_input(self):
+
+        if not(self.nomvar_out is None):
+            validate_nomvar(
+                self.nomvar_out,
+                'MatchLevelIndexToValue',
+                MatchLevelIndexToValueError)
 
         validate_nomvar(
             self.nomvar_index,
             'MatchLevelIndexToValue',
             MatchLevelIndexToValueError)
+        
+        if self.no_meta_df.loc[(self.no_meta_df.nomvar == self.nomvar_index)].empty:
+            raise MatchLevelIndexToValueError(
+                    f'Missing indices field {self.nomvar_index} !') 
 
-        self.meta_df = self.df.loc[self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
-        self.df = self.df.loc[~self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
-        self.df = fstpy.add_columns(
-            self.df, columns=[
+        self.no_meta_df = fstpy.add_columns(
+            self.no_meta_df, columns=[
                 'forecast_hour', 'ip_info'])
 
-        keep = self.df.loc[~self.df.nomvar.isin(
-            ["KBAS", "KTOP"])].reset_index(drop=True)
-
-        self.groups = keep.groupby(by=['grid', 'dateo', 'forecast_hour', 'ip1_kind'])
+        self.groups = self.no_meta_df.groupby(by=['grid', 'datev', 'ip1_kind'])
 
     def compute(self) -> pd.DataFrame:
         logging.info('MatchLevelIndexToValue - compute')
+
         df_list = []
-        for (grid, dateo, forecast_hour, ip1_kind), group_df in self.groups:
+        for (grid, dateo, ip1_kind), group_df in self.groups:
 
             ind_df = group_df.loc[group_df.nomvar == self.nomvar_index].reset_index(drop=True)
-            ind = np.expand_dims(to_numpy(ind_df.iloc[0]['d']).flatten().astype(dtype=np.int32),axis=0)
-            others_df = group_df.loc[group_df.nomvar != self.nomvar_index].reset_index(drop=True)
-            nomvars = others_df.nomvar.unique()
+            if ind_df.empty:
+                logging.warning(
+                    f'Cannot find {self.nomvar_index} field in this group - skipping the group ')
+                continue
 
-            if not(self.nomvar_out is None) and (len(nomvars) > 1):
+            ind       = np.expand_dims(to_numpy(ind_df.iloc[0]['d']).flatten().astype(dtype=np.int32),axis=0)
+            others_df = group_df.loc[group_df.nomvar != self.nomvar_index].reset_index(drop=True)
+            if others_df.empty:
+                logging.warning(
+                    f'Cannot find input field in this group to match the {self.nomvar_index} index field  - skipping the group')
+                continue
+            nomvars   = others_df.nomvar.unique()
+
+            if not(self.nomvar_out is None) and (len(nomvars) > 1):  
                 raise MatchLevelIndexToValueError(
                     'whenever parameter nomvar_out is specified, only 2 inputs are allowed: IND and another field; got {nomvars} in input')
 
@@ -92,8 +100,22 @@ class MatchLevelIndexToValue(Plugin):
 
                 # sort values by level
                 var_df = var_df.sort_values(by='level',ascending=var_df.ascending.unique()[0]).reset_index(drop=True)
+                var_df = fstpy.add_ip_info_columns(var_df)
 
-                res_df = create_empty_result(var_df, self.plugin_result_specifications['ALL'])
+                # Utilisation de la cle pour l'intervalle ?
+                if self.use_interval:
+                    # Si le champ d'indice n'a pas d'intervalle, on prend le 1er et le dernier niveau des donnees 
+                    # du champ d'entree
+                    if ind_df.interval.isnull().bool():
+                        levels     = var_df.level.unique()
+                        borne_inf  = levels[0]
+                        borne_sup  = levels[-1]
+                        res_df     = create_result_container(var_df,borne_inf, borne_sup, ip1_kind)
+                    else:
+                        # Si le champ d'indice a un interval, on prend ses infos
+                        res_df = create_empty_result(ind_df, {'etiket':'MLIVAL'})
+                else:
+                    res_df = create_empty_result(var_df, self.plugin_result_specifications['ALL'])  
 
                 if not(self.nomvar_out is None):
                     res_df.loc[:, 'nomvar'] = self.nomvar_out
@@ -109,11 +131,10 @@ class MatchLevelIndexToValue(Plugin):
                 valid_ind = np.where(mask, ind, num_levels)
 
                 # create 3d array of our variable
-                error_row = copy.deepcopy(var_df.iloc[0])
+                error_row      = copy.deepcopy(var_df.iloc[0])
                 error_row['d'] = np.full_like(to_numpy(error_row['d']), self.error_value)
 
                 var_df = var_df.append(error_row).reset_index(drop=True)
-                # print(var_df[['ascending','level']])
                 var_df = fstpy.compute(var_df)
                 arr_3d = get_3d_array(var_df, flatten=True)
 
@@ -122,5 +143,21 @@ class MatchLevelIndexToValue(Plugin):
                 res_df = reshape_arrays(res_df)
                 res_df = dataframe_arrays_to_dask(res_df)
                 df_list.append(res_df)
+                
 
-        return final_results(df_list, MatchLevelIndexToValueError, self.meta_df)
+        if len(df_list):
+            return final_results(df_list, MatchLevelIndexToValueError, self.meta_df)
+        else:
+            raise MatchLevelIndexToValueError('No results produced !')
+
+def create_result_container(df, b_inf, b_sup, ip1_kind):
+    ip1 = float(b_inf)
+    ip3 = float(b_sup)
+    ip2 = 0
+    kind = int(ip1_kind)
+    
+    ip1_enc = rmn.ip1_val(ip1, kind)
+    ip3_enc = rmn.ip1_val(ip3, kind)
+
+    res_df = create_empty_result(df, {'etiket':'MLIVAL', 'ip1': ip1_enc, 'ip3': ip3_enc})
+    return res_df

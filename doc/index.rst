@@ -64,6 +64,7 @@ Documentation
 * :doc:`mask`
 * :doc:`matchlevelindextovalue`
 * :doc:`minmaxlevelindex`
+* :doc:`minmaxvertically`
 * :doc:`multiplyelementby`
 * :doc:`multiplyelementsbypoint`
 * :doc:`opelementsbycolumn`
@@ -117,6 +118,7 @@ Documentation
    mask
    matchlevelindextovalue
    minmaxlevelindex
+   minmaxvertically
    multiplyelementby
    multiplyelementsbypoint
    opelementsbycolumn

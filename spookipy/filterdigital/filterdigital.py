@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import argparse
 import logging
 from multiprocessing.pool import ThreadPool
 
@@ -92,6 +93,28 @@ class FilterDigital(Plugin):
 
 
         return final_results(df_list, FilterDigitalError, self.meta_df)
+
+    @staticmethod
+    def parse_config(args: str) -> dict:
+        """method to translate spooki plugin parameters to python plugin parameters
+        :param args: input unparsed arguments
+        :type args: str
+        :return: a dictionnary of converted parameters
+        :rtype: dict
+        """
+        parser = argparse.ArgumentParser(prog=FilterDigital.__name__, parents=[Plugin.base_parser])
+        parser.add_argument('--filter',type=str,required=True, help="List of weights that define the filter.")
+        parser.add_argument('--repetitions',type=int,required=True, help="The number of times the filter will be applied.")
+        parser.add_argument('--outputFieldName',type=str,dest="nomvar_out", help="Option to give the output field a different name from the input field name.")
+
+        parsed_arg = vars(parser.parse_args(args.split()))
+
+        parsed_arg['filter'] = parsed_arg['filter'].split(",")
+        if parsed_arg['nomvar_out'] is not None and ( len(parsed_arg['nomvar_out']) > 4 or len(parsed_arg['nomvar_out']) < 2 ):
+            raise FilterDigitalError("outputFieldName needs to be 2 to 4 characters long")
+
+        return parsed_arg
+
 
 # [1 1 1 2 2 1 1 1 1]
 

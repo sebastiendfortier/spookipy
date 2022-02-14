@@ -8,7 +8,7 @@ import pandas as pd
 from ..opelementsbycolumn import OpElementsByColumn
 from ..plugin import Plugin
 from ..utils import initializer
-
+from ..configparsingutils import check_length_2_to_4
 
 class AddElementsByPointError(Exception):
     pass
@@ -61,8 +61,8 @@ class AddElementsByPoint(Plugin):
         parsed_arg = vars(parser.parse_args(args.split()))
 
         parsed_arg['group_by_forecast_hour'] = (parsed_arg['group_by_forecast_hour'] == 'FORECAST_HOUR')
-        if len(parsed_arg['nomvar_out']) > 4 or len(parsed_arg['nomvar_out']) < 2:
-            raise AddElementsByPointError("outputFieldName needs to be 2 to 4 characters long")
+
+        check_length_2_to_4(parsed_arg['nomvar_out'],allow_none=False,exception=AddElementsByPointError)
 
         return parsed_arg
 

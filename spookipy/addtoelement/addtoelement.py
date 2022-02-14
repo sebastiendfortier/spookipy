@@ -7,6 +7,7 @@ import pandas as pd
 from ..opelementsbyvalue import OpElementsByValue
 from ..plugin import Plugin
 from ..utils import initializer
+from ..configparsingutils import check_length_2_to_4
 
 
 def add_value(a, v):
@@ -54,7 +55,6 @@ class AddToElement(Plugin):
 
         parsed_arg = vars(parser.parse_args(args.split()))
 
-        if parsed_arg['nomvar_out'] is not None and ( len(parsed_arg['nomvar_out']) > 4 or len(parsed_arg['nomvar_out']) < 2 ):
-            raise AddToElementError("outputFieldName needs to be 2 to 4 characters long")
+        check_length_2_to_4(parsed_arg['nomvar_out'],AddToElementError)
 
         return parsed_arg

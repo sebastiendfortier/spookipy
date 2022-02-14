@@ -10,7 +10,7 @@ import pandas as pd
 from ..plugin import Plugin
 from ..utils import (final_results, get_split_value, initializer, to_dask, validate_nomvar)
 from .f_stenfilt import f_stenfilt
-
+from ..configparsingutils import check_length_2_to_4
 
 class FilterDigitalError(Exception):
     pass
@@ -110,8 +110,8 @@ class FilterDigital(Plugin):
         parsed_arg = vars(parser.parse_args(args.split()))
 
         parsed_arg['filter'] = parsed_arg['filter'].split(",")
-        if parsed_arg['nomvar_out'] is not None and ( len(parsed_arg['nomvar_out']) > 4 or len(parsed_arg['nomvar_out']) < 2 ):
-            raise FilterDigitalError("outputFieldName needs to be 2 to 4 characters long")
+
+        check_length_2_to_4(parsed_arg['nomvar_out'],FilterDigitalError)
 
         return parsed_arg
 

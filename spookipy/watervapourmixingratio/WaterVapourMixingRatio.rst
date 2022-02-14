@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  Calculates the water vapour mixing ratio, which is the ratio of the mass of water vapour to the mass of dry air.
 
@@ -11,10 +11,14 @@ Iteration method:
 Dependencies:
 ~~~~~~~~~~~~~
 
--  Specific humidity, HU or
--  Air temperature, TT and one of the following fields:
+-  Specific humidity, HU 
+   *or*
+-  Air temperature, TT 
+-  
+   *and* one of the following fields:
 -  Relative humidity, HR
--  Dewpoint temperature, TD / Dewpoint depression, ES
+-  Dewpoint temperature, TD 
+-  Dewpoint depression, ES
 
 NOTE: Make sure to provide the dependencies listed above to this
 plug-in or to the plug-in results called by this plug-in (see the

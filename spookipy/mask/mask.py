@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
+import argparse
 import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin
 from ..utils import final_results, initializer
-
+from ..configparsingutils import preprocess_negative_args,check_length_2_to_4,apply_lamda_to_list
 
 class MaskError(Exception):
     pass
@@ -85,6 +86,31 @@ class Mask(Plugin):
         return final_results(df_list, MaskError, self.meta_df)
 
 
+    @staticmethod
+    def parse_config(args: str) -> dict:
+        """method to translate spooki plugin parameters to python plugin parameters
+        :param args: input unparsed arguments
+        :type args: str
+        :return: a dictionnary of converted parameters
+        :rtype: dict
+        """
+        parser = argparse.ArgumentParser(prog=Mask.__name__, parents=[Plugin.base_parser])
+        parser.add_argument('--thresholds',type=str,required=True, help="List of threshold values to take into account.")
+        parser.add_argument('--values',type=str,required=True, help="List of values the mask will take (will be used in the same order as the threshold values).")
+        parser.add_argument('--operators',type=str,required=True, help="List of comparison operators (will be used in the same order as the threshold values).")
+        parser.add_argument('--outputFieldName',dest='nomvar_out',type=str, help="Option to give the output field a different name from the input field name (works only with 1 input field).")
+
+        parsed_arg = vars(parser.parse_args(preprocess_negative_args(args.split(),["--thresholds","--values"])))
+
+        check_length_2_to_4(parsed_arg['nomvar_out'],error_class=MaskError)
+
+        op_dict = {'GT':'>', 'GE':'>=', 'EQ':'==', 'LE':'<=', 'LT':'<', 'NE':'!='}
+        parsed_arg['operators'] = apply_lamda_to_list(parsed_arg['operators'].split(","), lambda a : op_dict[a])
+        parsed_arg['values'] = apply_lamda_to_list(parsed_arg['values'].split(","), lambda a : float(a))
+        parsed_arg['thresholds'] = apply_lamda_to_list(parsed_arg['thresholds'].split(","), lambda a : float(a))
+
+
+        return parsed_arg
 
 def lt(value, threshold):
     return (value < threshold)

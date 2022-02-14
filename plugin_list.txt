@@ -29,6 +29,7 @@ saturationvapourpressure
 science                         # always keep
 setconstantvalue
 temperaturedewpoint
+temperaturevirtual
 timeintervaldifference
 timeintervalminmax
 totaltotalsindex

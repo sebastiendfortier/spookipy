@@ -144,8 +144,7 @@ def get_plugin_dependencies(
 
         # check if select_only is specified, if not the dependency can be
         # computed
-        select_only = desc.pop(
-            'select_only') if 'select_only' in desc.keys() else False
+        select_only = desc.pop('select_only') if 'select_only' in desc.keys() else False
 
         # print(f' for {nomvar} select_only:',select_only)
 
@@ -163,6 +162,8 @@ def get_plugin_dependencies(
         # recipe, query with dict
 
         # find rows that match desc
+        destinantion_unit = desc.pop('unit') if 'unit' in desc.keys() else None
+
         tmp_df = df.loc[(df[list(desc)] == pd.Series(desc)).all(axis=1)]
 
         # if nothing was found
@@ -173,6 +174,10 @@ def get_plugin_dependencies(
             else:
                 return pd.DataFrame(dtype=object)
 
+        else:
+            # do the unit conversion
+            if not (destinantion_unit is None):
+                tmp_df = fstpy.unit_convert(tmp_df, destinantion_unit)
         # keep found results
         df_list.append(tmp_df)
 

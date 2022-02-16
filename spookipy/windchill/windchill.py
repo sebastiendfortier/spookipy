@@ -36,7 +36,7 @@ class WindChill(Plugin):
     """
     def __init__(self, df: pd.DataFrame):
         self.plugin_mandatory_dependencies = [{
-            'UV': {'nomvar': 'UV', 'unit': 'knot', 'surface': True},
+            'UV': {'nomvar': 'UV', 'unit': 'kilometer_per_hour', 'surface': True},
             'TT': {'nomvar': 'TT', 'unit': 'celsius', 'surface': True},
         }]
 
@@ -94,9 +94,8 @@ class WindChill(Plugin):
 
             tt_df = get_from_dataframe(dependencies_df, 'TT')
             uv_df = get_from_dataframe(dependencies_df, 'UV')
-            uv_df = fstpy.unit_convert(uv_df, 'kilometer_per_hour')
-            re_df = create_empty_result(
-                tt_df, self.plugin_result_specifications['RE'])
+            # uv_df = fstpy.unit_convert(uv_df, 'kilometer_per_hour')
+            re_df = create_empty_result(tt_df, self.plugin_result_specifications['RE'])
 
             for i in re_df.index:
                 tt = tt_df.at[i, 'd']

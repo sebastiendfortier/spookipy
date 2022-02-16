@@ -36,7 +36,7 @@ class TemperaturePotential(Plugin):
         
         self.plugin_mandatory_dependencies = [
             {
-                'TT': {'nomvar': 'TT'},
+                'TT': {'nomvar': 'TT', 'unit': 'kelvin'},
                 'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'},
             }
         ]
@@ -82,9 +82,6 @@ class TemperaturePotential(Plugin):
             tt_df = get_from_dataframe(dependencies_df, 'TT')
             px_df = get_from_dataframe(dependencies_df, 'PX')
             th_df = create_empty_result(tt_df,self.plugin_result_specifications['TH'],all_rows=True)
-
-            if tt_df.unit.unique()[0] != 'kelvin':
-                tt_df = fstpy.unit_convert(tt_df,'kelvin')
 
             for i in th_df.index:
                 ttk = tt_df.at[i, 'd']

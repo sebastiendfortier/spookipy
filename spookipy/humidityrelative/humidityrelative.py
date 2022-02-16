@@ -47,9 +47,9 @@ class HumidityRelative(Plugin):
             'rpn': self.rpn}
         self.plugin_mandatory_dependencies_rpn = [
             {
-                'TT': {'nomvar': 'TT', 'unit': 'celsius'},
+                'TT': {'nomvar': 'TT', 'unit': 'kelvin'},
                 'HU': {'nomvar': 'HU', 'unit': 'kilogram_per_kilogram', 'select_only': True},
-                'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'},
+                'PX': {'nomvar': 'PX', 'unit': 'pascal'},
             },
             {
                 'TT': {'nomvar': 'TT', 'unit': 'celsius'},
@@ -57,9 +57,9 @@ class HumidityRelative(Plugin):
                 'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'},
             },
             {
-                'TT': {'nomvar': 'TT', 'unit': 'celsius'},
+                'TT': {'nomvar': 'TT', 'unit': 'kelvin'},
                 'ES': {'nomvar': 'ES', 'unit': 'celsius', 'select_only': True},
-                'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'},
+                'PX': {'nomvar': 'PX', 'unit': 'pascal'},
             },
             {
                 'TT': {'nomvar': 'TT', 'unit': 'celsius'},
@@ -201,14 +201,14 @@ class HumidityRelative(Plugin):
             self, dependencies_df, hu_df, option):
         logging.info(f'rpn option {option+1}')
 
-        tt_df = get_from_dataframe(dependencies_df, 'TT')
-        px_df = get_from_dataframe(dependencies_df, 'PX')
+        ttk_df = get_from_dataframe(dependencies_df, 'TT')
+        pxpa_df = get_from_dataframe(dependencies_df, 'PX')
         hr_df = create_empty_result(
-            tt_df,
+            ttk_df,
             self.plugin_result_specifications['HR'],
             all_rows=True)
-        ttk_df = fstpy.unit_convert(tt_df, 'kelvin')
-        pxpa_df = fstpy.unit_convert(px_df, 'pascal')
+        # ttk_df = fstpy.unit_convert(tt_df, 'kelvin')
+        # pxpa_df = fstpy.unit_convert(px_df, 'pascal')
         for i in hr_df.index:
             ttk = ttk_df.at[i, 'd']
             pxpa = pxpa_df.at[i, 'd']
@@ -234,14 +234,14 @@ class HumidityRelative(Plugin):
             self, dependencies_df, es_df, option):
         logging.info(f'rpn option {option+1}')
 
-        tt_df = get_from_dataframe(dependencies_df, 'TT')
-        px_df = get_from_dataframe(dependencies_df, 'PX')
+        ttk_df = get_from_dataframe(dependencies_df, 'TT')
+        pxpa_df = get_from_dataframe(dependencies_df, 'PX')
         hr_df = create_empty_result(
-            tt_df,
+            ttk_df,
             self.plugin_result_specifications['HR'],
             all_rows=True)
-        ttk_df = fstpy.unit_convert(tt_df, 'kelvin')
-        pxpa_df = fstpy.unit_convert(px_df, 'pascal')
+        # ttk_df = fstpy.unit_convert(tt_df, 'kelvin')
+        # pxpa_df = fstpy.unit_convert(px_df, 'pascal')
         for i in hr_df.index:
             ttk = ttk_df.at[i, 'd']
             pxpa = pxpa_df.at[i, 'd']

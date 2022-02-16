@@ -52,11 +52,13 @@ class WaterVapourMixingRatio(Plugin):
         ]
         self.plugin_mandatory_dependencies = [
             {
-                'HU': {
-                    'nomvar': 'HU', 'unit': 'kilogram_per_kilogram', 'select_only': True}, }, {
-                'VPPR': {
-                    'nomvar': 'VPPR', 'unit': 'hectoPascal'}, 'PX': {
-                        'nomvar': 'PX', 'unit': 'hectoPascal'}, }]
+                'HU': {'nomvar': 'HU', 'unit': 'kilogram_per_kilogram', 'select_only': True}, 
+            }, 
+            {
+                'VPPR': {'nomvar': 'VPPR', 'unit': 'pascal'}, 
+                'PX': {'nomvar': 'PX', 'unit': 'pascal'}, 
+            }
+        ]
 
         self.plugin_result_specifications = {
             'QV': {
@@ -149,14 +151,14 @@ class WaterVapourMixingRatio(Plugin):
         logging.info(f'option {option+1}')
         # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
 
-        vppr_df = get_from_dataframe(dependencies_df, 'VPPR')
-        px_df = get_from_dataframe(dependencies_df, 'PX')
+        vpprpa_df = get_from_dataframe(dependencies_df, 'VPPR')
+        pxpa_df = get_from_dataframe(dependencies_df, 'PX')
         qv_df = create_empty_result(
-            vppr_df,
+            vpprpa_df,
             self.plugin_result_specifications['QV'],
             all_rows=True)
-        vpprpa_df = fstpy.unit_convert(vppr_df, 'pascal')
-        pxpa_df = fstpy.unit_convert(px_df, 'pascal')
+        # vpprpa_df = fstpy.unit_convert(vppr_df, 'pascal')
+        # pxpa_df = fstpy.unit_convert(px_df, 'pascal')
         for i in qv_df.index:
             vpprpa = vpprpa_df.at[i, 'd']
             pxpa = pxpa_df.at[i, 'd']

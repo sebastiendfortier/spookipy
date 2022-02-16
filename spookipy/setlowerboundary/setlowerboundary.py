@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import argparse
 import logging
 from typing import Final
 
@@ -8,6 +9,7 @@ import pandas as pd
 
 from ..plugin import Plugin
 from ..utils import (create_empty_result, final_results, initializer, validate_nomvar)
+from ..configparsingutils import check_length_2_to_4
 
 ETIKET: Final[str] = 'SETLWR'
 
@@ -47,3 +49,21 @@ class SetLowerBoundary(Plugin):
         res_df['d'] = np.split(np.where(data < self.value, self.value, data),data.shape[0])
         df_list.append(res_df)
         return final_results(df_list, SetLowerBoundaryError, self.meta_df)
+
+    @staticmethod
+    def parse_config(args: str) -> dict:
+        """method to translate spooki plugin parameters to python plugin parameters
+        :param args: input unparsed arguments
+        :type args: str
+        :return: a dictionnary of converted parameters
+        :rtype: dict
+        """
+        parser = argparse.ArgumentParser(prog=SetLowerBoundary.__name__, parents=[Plugin.base_parser])
+        parser.add_argument('--value',type=float,required=True, help="Value of lower boundary.")
+        parser.add_argument('--outputFieldName',type=str,dest='nomvar_out',help="Option to give the output field a different name from the input field name.")
+
+        parsed_arg = vars(parser.parse_args(args.split()))
+
+        check_length_2_to_4(parsed_arg['nomvar_out'],True,SetLowerBoundaryError)
+
+        return parsed_arg

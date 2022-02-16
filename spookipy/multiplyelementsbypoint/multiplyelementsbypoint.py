@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import argparse
 import logging
 
 import numpy as np
@@ -7,6 +8,7 @@ import pandas as pd
 from ..opelementsbycolumn import OpElementsByColumn
 from ..plugin import Plugin
 from ..utils import initializer
+from ..configparsingutils import check_length_2_to_4
 
 
 class MultiplyElementsByPointError(Exception):
@@ -43,3 +45,22 @@ class MultiplyElementsByPoint(Plugin):
             group_by_level=True,
             nomvar_out=self.nomvar_out,
             etiket='MULEPT').compute()
+
+    @staticmethod
+    def parse_config(args: str) -> dict:
+        """method to translate spooki plugin parameters to python plugin parameters
+        :param args: input unparsed arguments
+        :type args: str
+        :return: a dictionnary of converted parameters
+        :rtype: dict
+        """
+        parser = argparse.ArgumentParser(prog=MultiplyElementsByPoint.__name__, parents=[Plugin.base_parser])
+        parser.add_argument('--groupBy',type=str,choices=['FORECAST_HOUR'],dest='group_by_forecast_hour', help="Option to group fields by attribute when performing calculation.")
+        parser.add_argument('--outputFieldName',type=str,default="MUEP",dest='nomvar_out',help="Option to change the name of output field 'MUEP'.")
+
+        parsed_arg = vars(parser.parse_args(args.split()))
+
+        parsed_arg['group_by_forecast_hour'] = (parsed_arg['group_by_forecast_hour'] == 'FORECAST_HOUR')
+        check_length_2_to_4(parsed_arg['nomvar_out'],False,MultiplyElementsByPointError)
+
+        return parsed_arg

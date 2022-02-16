@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import argparse
 import logging
 
 import fstpy.all as fstpy
@@ -8,6 +9,7 @@ import pandas as pd
 from ..plugin import Plugin
 from ..utils import (create_empty_result, dataframe_arrays_to_dask, final_results, get_3d_array,
                      initializer, reshape_arrays, validate_nomvar)
+from ..configparsingutils import check_length_2_to_4
 
 
 class MinMaxLevelIndexError(Exception):
@@ -156,6 +158,39 @@ class MinMaxLevelIndex(Plugin):
             df_list.append(group_df)
 
         return final_results(df_list, MinMaxLevelIndexError, self.meta_df)
+
+    @staticmethod
+    def parse_config(args: str) -> dict:
+        """method to translate spooki plugin parameters to python plugin parameters
+        :param args: input unparsed arguments
+        :type args: str
+        :return: a dictionnary of converted parameters
+        :rtype: dict
+        """
+        parser = argparse.ArgumentParser(prog=MinMaxLevelIndex.__name__, parents=[Plugin.base_parser])
+        parser.add_argument('--minMax',type=str,choices=["MIN","MAX","BOTH"], help="Finds either the maximum or minimum value index or both")
+        parser.add_argument('--direction',type=str,default="ASCENDING",choices=["ASCENDING","DESCENDING"], help="The level iteration direction (upward or downward)")
+        parser.add_argument('--bounded',dest='bounded',action='store_true',default=False, help="Searches in part of the column (requires fields KBAS and KTOP as inputs) Default: searches the whole column")
+        parser.add_argument('--fieldName',type=str,dest='nomvar', help="Name of the field.")
+        parser.add_argument('--outputFieldName1',type=str,default="KMIN",dest='nomvar_min',help="Option to change the name of output field KMIN")
+        parser.add_argument('--outputFieldName2',type=str,default="KMAX",dest='nomvar_max',help="Option to change the name of output field KMAX")
+
+        parsed_arg = vars(parser.parse_args(args.split()))
+        check_length_2_to_4(parsed_arg['nomvar'],True,MinMaxLevelIndexError)
+        check_length_2_to_4(parsed_arg['nomvar_min'],False,MinMaxLevelIndexError)
+        check_length_2_to_4(parsed_arg['nomvar_max'],False,MinMaxLevelIndexError)
+
+        if parsed_arg['minMax'] == "MIN":
+            parsed_arg['min'] = True
+        elif parsed_arg['minMax'] == "MAX":
+            parsed_arg['max'] = True
+        else:
+            parsed_arg['min'] = True
+            parsed_arg['max'] = True
+
+        parsed_arg['ascending'] = parsed_arg['direction'] == "ASCENDING"
+
+        return parsed_arg
 
 
 def fix_ktop(ktop, array_max_index):

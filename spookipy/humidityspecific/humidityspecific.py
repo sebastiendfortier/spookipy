@@ -10,7 +10,7 @@ from ..plugin import Plugin
 from ..science import hu_from_qv, hu_from_vppr, rpn_hu_from_es, rpn_hu_from_hr
 from ..utils import (create_empty_result, existing_results, final_results,
                      get_dependencies, get_existing_result, get_from_dataframe,
-                     initializer)
+                     initializer, DependencyError)
 
 
 class HumiditySpecificError(Exception):
@@ -30,6 +30,8 @@ class HumiditySpecific(Plugin):
     :type temp_phase_switch_unit: str, optional
     :param rpn: Use the RPN TdPack functions, defaults to False
     :type rpn: bool, optional
+    :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
+    :type dependency_check: bool, optional   
     """
     @initializer
     def __init__(
@@ -38,50 +40,53 @@ class HumiditySpecific(Plugin):
             ice_water_phase=None,
             temp_phase_switch=None,
             temp_phase_switch_unit='celsius',
-            rpn=False):
+            rpn=False,
+            dependency_check=False):
+
         self.plugin_params = {
             'ice_water_phase': self.ice_water_phase,
             'temp_phase_switch': self.temp_phase_switch,
             'temp_phase_switch_unit': self.temp_phase_switch_unit,
             'rpn': self.rpn}
+
         self.plugin_mandatory_dependencies_rpn = [
             {
-                'QV': {'nomvar': 'QV', 'unit': 'gram_per_kilogram', 'select_only': True},
+                'QV': {'nomvar': 'QV', 'unit': 'kilogram_per_kilogram', 'select_only': True},
             },
             {
-                'TT': {'nomvar': 'TT', 'unit': 'celsius'},
+                'TT': {'nomvar': 'TT', 'unit': 'kelvin'},
                 'HR': {'nomvar': 'HR', 'unit': 'scalar', 'select_only': True},
-                'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'},
+                'PX': {'nomvar': 'PX', 'unit': 'pascal'},
             },
             {
-                'TT': {'nomvar': 'TT', 'unit': 'celsius'},
+                'TT': {'nomvar': 'TT', 'unit': 'kelvin'},
                 'ES': {'nomvar': 'ES', 'unit': 'celsius', 'select_only': True},
-                'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'},
+                'PX': {'nomvar': 'PX', 'unit': 'pascal'},
             },
             {
-                'TT': {'nomvar': 'TT', 'unit': 'celsius'},
-                'TD': {'nomvar': 'TD', 'unit': 'celsius', 'select_only': True},
-                'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'},
+                'TT': {'nomvar': 'TT', 'unit': 'kelvin'},
+                'TD': {'nomvar': 'TD', 'unit': 'kelvin', 'select_only': True},
+                'PX': {'nomvar': 'PX', 'unit': 'pascal'},
             }
         ]
         self.plugin_mandatory_dependencies = [
             {
-                'QV': {'nomvar': 'QV', 'unit': 'gram_per_kilogram', 'select_only': True},
+                'QV': {'nomvar': 'QV', 'unit': 'kilogram_per_kilogram', 'select_only': True},
             },
             {
                 'TT': {'nomvar': 'TT', 'unit': 'celsius'},
                 'HR': {'nomvar': 'HR', 'unit': 'scalar', 'select_only': True},
-                'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'},
+                'PX': {'nomvar': 'PX', 'unit': 'pascal'},
             },
             {
                 'TT': {'nomvar': 'TT', 'unit': 'celsius'},
                 'ES': {'nomvar': 'ES', 'unit': 'celsius', 'select_only': True},
-                'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'},
+                'PX': {'nomvar': 'PX', 'unit': 'pascal'},
             },
             {
                 'TT': {'nomvar': 'TT', 'unit': 'celsius'},
                 'TD': {'nomvar': 'TD', 'unit': 'celsius', 'select_only': True},
-                'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'},
+                'PX': {'nomvar': 'PX', 'unit': 'pascal'},
             }
         ]
 
@@ -92,18 +97,16 @@ class HumiditySpecific(Plugin):
                 'unit': 'kilogram_per_kilogram',
                 'nbits': 16,
                 'datyp': 1}}
-        self.validate_input()
-
-    # might be able to move
-    def validate_input(self):
-        if self.df.empty:
-            raise HumiditySpecificError('No data to process')
 
         self.df = fstpy.metadata_cleanup(self.df)
+        super().__init__(df)
+        self.prepare_groups()
 
-        self.df = fstpy.add_columns(
-            self.df, columns=[
-                'unit', 'forecast_hour', 'ip_info'])
+    # might be able to move
+    def prepare_groups(self):
+
+        self.no_meta_df = fstpy.add_columns(
+            self.no_meta_df, columns=['unit', 'forecast_hour', 'ip_info'])
 
         validate_humidity_parameters(
             HumiditySpecificError,
@@ -118,22 +121,12 @@ class HumiditySpecific(Plugin):
             self.temp_phase_switch_unit,
             self.rpn)
 
-        self.meta_df = self.df.loc[self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
         # check if result already exists
-        self.existing_result_df = get_existing_result(
-            self.df, self.plugin_result_specifications)
+        self.existing_result_df = get_existing_result(self.no_meta_df, self.plugin_result_specifications)
 
-        # remove meta data from DataFrame
-        self.df = self.df.loc[~self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
-        self.groups = self.df.groupby(
-            ['grid', 'dateo', 'forecast_hour', 'ip1_kind'])
+        self.groups = self.no_meta_df.groupby(['grid', 'datev', 'ip1_kind'])
 
     def compute(self) -> pd.DataFrame:
-
         if not self.existing_result_df.empty:
             return existing_results(
                 'HumiditySpecific',
@@ -143,70 +136,73 @@ class HumiditySpecific(Plugin):
         logging.info('HumiditySpecific - compute')
         df_list = []
 
-        if self.rpn:
-            dependencies_list = get_dependencies(
-                self.groups,
-                self.meta_df,
-                'HumiditySpecific',
-                self.plugin_mandatory_dependencies_rpn,
-                self.plugin_params,
-                intersect_levels=True)
-        else:
-            dependencies_list = get_dependencies(
-                self.groups,
-                self.meta_df,
-                'HumiditySpecific',
-                self.plugin_mandatory_dependencies,
-                self.plugin_params,
-                intersect_levels=True)
-
-        for dependencies_df, option in dependencies_list:
+        try:
             if self.rpn:
-                if option == 0:
-                    hu_df = self.humidityspecific_from_qv(
-                        dependencies_df, 0, True)
-
-                elif option == 1:
-                    hu_df = self.rpn_humnidityspecific_from_tt_hr_px(
-                        dependencies_df, option)
-
-                elif option == 2:  # test 11
-                    # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
-                    es_df = get_from_dataframe(dependencies_df, 'ES')
-                    hu_df = self.rpn_humidity_specific_from_tt_es_px(
-                        es_df, dependencies_df, option)
-
-                else:  # test 13
-                    # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
-                    es_df = self.compute_es(dependencies_df)
-                    hu_df = self.rpn_humidity_specific_from_tt_es_px(
-                        es_df, dependencies_df, option)
-
+                dependencies_list = get_dependencies(
+                    self.groups,
+                    self.meta_df,
+                    'HumiditySpecific',
+                    self.plugin_mandatory_dependencies_rpn,
+                    self.plugin_params,
+                    intersect_levels=True)
             else:
-                if option == 0:
-                    hu_df = self.humidityspecific_from_qv(dependencies_df, 0)
+                dependencies_list = get_dependencies(
+                    self.groups,
+                    self.meta_df,
+                    'HumiditySpecific',
+                    self.plugin_mandatory_dependencies,
+                    self.plugin_params,
+                    intersect_levels=True)
+        except DependencyError:
+            if not self.dependency_check:
+                raise DependencyError(f'{HumiditySpecific} - No matching dependencies found')
+        else:
+
+            for dependencies_df, option in dependencies_list:
+                if self.rpn:
+                    if option == 0:
+                        hu_df = self.humidityspecific_from_qv(
+                            dependencies_df, 0, True)
+
+                    elif option == 1:
+                        hu_df = self.rpn_humnidityspecific_from_tt_hr_px(
+                            dependencies_df, option)
+
+                    elif option == 2:  # test 11
+                        # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
+                        es_df = get_from_dataframe(dependencies_df, 'ES')
+                        hu_df = self.rpn_humidity_specific_from_tt_es_px(
+                            es_df, dependencies_df, option)
+
+                    else:  # test 13
+                        # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
+                        es_df = self.compute_es(dependencies_df)
+                        hu_df = self.rpn_humidity_specific_from_tt_es_px(
+                            es_df, dependencies_df, option)
 
                 else:
-                    hu_df = self.humidityspecific_from_vppr_px(
-                        dependencies_df, option)
+                    if option == 0:
+                        hu_df = self.humidityspecific_from_qv(dependencies_df, 0)
 
-            df_list.append(hu_df)
+                    else:
+                        hu_df = self.humidityspecific_from_vppr_px(
+                            dependencies_df, option)
 
-        return final_results(df_list, HumiditySpecificError, self.meta_df)
+                df_list.append(hu_df)
+        finally:
+            return final_results(df_list, HumiditySpecificError, self.meta_df, self.dependency_check)
 
     def rpn_humnidityspecific_from_tt_hr_px(self, dependencies_df, option):
         logging.info(f'rpn option {option+1}')
         # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
 
-        tt_df = get_from_dataframe(dependencies_df, 'TT')
+        ttk_df = get_from_dataframe(dependencies_df, 'TT')
         hr_df = get_from_dataframe(dependencies_df, 'HR')
-        px_df = get_from_dataframe(dependencies_df, 'PX')
+        pxpa_df = get_from_dataframe(dependencies_df, 'PX')
         hu_df = create_empty_result(
-            tt_df,
+            ttk_df,
             self.plugin_result_specifications['HU'],
             all_rows=True)
-        ttk_df = fstpy.unit_convert(tt_df, 'kelvin')
-        pxpa_df = fstpy.unit_convert(px_df, 'pascal')
         for i in hu_df.index:
             ttk = ttk_df.at[i, 'd']
             pxpa = pxpa_df.at[i, 'd']
@@ -215,18 +211,16 @@ class HumiditySpecific(Plugin):
                 tt=ttk, hr=hr, px=pxpa, swph=self.ice_water_phase == 'both').astype(np.float32)
         return hu_df
 
-    def rpn_humidity_specific_from_tt_es_px(
-            self, es_df, dependencies_df, option):
+    def rpn_humidity_specific_from_tt_es_px(self, es_df, dependencies_df, option):
         logging.info(f'rpn option {option+1}')
 
-        tt_df = get_from_dataframe(dependencies_df, 'TT')
-        px_df = get_from_dataframe(dependencies_df, 'PX')
+        ttk_df = get_from_dataframe(dependencies_df, 'TT')
+        pxpa_df = get_from_dataframe(dependencies_df, 'PX')
         hu_df = create_empty_result(
-            tt_df,
+            ttk_df,
             self.plugin_result_specifications['HU'],
             all_rows=True)
-        ttk_df = fstpy.unit_convert(tt_df, 'kelvin')
-        pxpa_df = fstpy.unit_convert(px_df, 'pascal')
+
         for i in hu_df.index:
             ttk = ttk_df.at[i, 'd']
             es = es_df.at[i, 'd']
@@ -239,7 +233,9 @@ class HumiditySpecific(Plugin):
         from spookipy.dewpointdepression.dewpointdepression import \
             DewPointDepression
         es_df = DewPointDepression(pd.concat(
-            [dependencies_df, self.meta_df], ignore_index=True), ice_water_phase='water').compute()
+            [dependencies_df, self.meta_df], ignore_index=True), 
+            ice_water_phase='water', 
+            dependency_check=self.dependency_check).compute()
         es_df = get_from_dataframe(es_df, 'ES')
         return es_df
 
@@ -249,12 +245,12 @@ class HumiditySpecific(Plugin):
         else:
             logging.info(f'option {option+1}')
 
-        qv_df = get_from_dataframe(dependencies_df, 'QV')
+        qvkgkg_df = get_from_dataframe(dependencies_df, 'QV')
         hu_df = create_empty_result(
-            qv_df,
+            qvkgkg_df,
             self.plugin_result_specifications['HU'],
             all_rows=True)
-        qvkgkg_df = fstpy.unit_convert(qv_df, 'kilogram_per_kilogram')
+
         for i in hu_df.index:
             qvkgkg = qvkgkg_df.at[i, 'd']
             hu_df.at[i, 'd'] = hu_from_qv(qv=qvkgkg).astype(np.float32)
@@ -272,17 +268,18 @@ class HumiditySpecific(Plugin):
             all_rows=True)
         vppr_df = VapourPressure(
             pd.concat(
-                [
-                    dependencies_df,
-                    self.meta_df],
+                [dependencies_df,
+                self.meta_df],
                 ignore_index=True),
             ice_water_phase=self.ice_water_phase,
             temp_phase_switch=self.temp_phase_switch,
-            temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
+            temp_phase_switch_unit=self.temp_phase_switch_unit, 
+            dependency_check=self.dependency_check).compute()
         vppr_df = get_from_dataframe(vppr_df, 'VPPR')
+        vpprpa_df = fstpy.unit_convert(vppr_df, 'pascal')
         for i in hu_df.index:
             px = px_df.at[i, 'd']
-            vppr = vppr_df.at[i, 'd']
+            vppr = vpprpa_df.at[i, 'd']
             hu_df.at[i, 'd'] = hu_from_vppr(
                 vppr=vppr, px=px).astype(np.float32)
         return hu_df

@@ -16,24 +16,20 @@ def test_1(plugin_test_dir):
     # open and read source
     source0 = plugin_test_dir + "hyb_prog_2012071312_009_1HY"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-
     input_df = fstpy.select_with_meta(src_df0, ['TT', 'HR'])
 
     # compute TemperatureVirtual
     df = spooki.TemperatureVirtual(input_df).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Select --fieldName TT,HR] >>
-    # [TemperatureVirtual] >>
-    # [WriterStd --output {destination_path} --ignoreExtended]
+    # [TemperatureVirtual] 
 
     etiket      = "__VIRTTTX"
     etiket_meta = "R1580V0_N"
     df.loc[df.nomvar == "VT", 'etiket'] = etiket
     df.loc[df.nomvar.isin(['P0','HY']), 'etiket'] = etiket_meta
 
-    # df.loc[:,'datyp'] = 5
-    # df.loc[df.nomvar!='!!','nbits'] = 32
-    # write the result
+    # write the result 
     results_file = TMP_PATH + "test_1.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
@@ -42,9 +38,9 @@ def test_1(plugin_test_dir):
     file_to_compare = plugin_test_dir + "TemperatureVirtual_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.1)
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
-    assert(res)
+    assert(True)
 
 
 def test_2(plugin_test_dir):
@@ -62,18 +58,24 @@ def test_2(plugin_test_dir):
     # [TemperatureVirtual] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
 
+    etiket      = "__VIRTTTX"
+    etiket_meta = "R1_V710_N"
+    df.loc[df.nomvar == "VT", 'etiket'] = etiket
+    df.loc[~df.nomvar.isin(['VT']), 'etiket'] = etiket_meta
+
     # write the result
     results_file = TMP_PATH + "test_2.std"
     fstpy.delete_file(results_file)
+    
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "resulttest_2.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
+    res = fstcomp(results_file, file_to_compare, e_max=0.01)
     fstpy.delete_file(results_file)
-    assert(True)
+    assert(res)
 
 # Les tests suivants sont nouveaux (n'existent pas dans Spooki)
 # Les fichiers de comparaison ont ete crees avec la version Spooki
@@ -182,5 +184,37 @@ def test_5(plugin_test_dir):
 
     # compare results
     res = fstcomp(results_file, file_to_compare,e_max=0.01)
+    fstpy.delete_file(results_file) 
+    assert(res)
+
+def test_6(plugin_test_dir):
+    """Calcul de VT a partir de ES, avec un fichier regpres."""
+    # open and read source
+    source0 = plugin_test_dir + "2014031800_024_regpres_VT_with_ES_small.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    df = spooki.TemperatureVirtual(src_df0).compute()
+
+    # [ReaderStd --input 2014031800_024_regpres_TTHUES.std] >> [Select --fieldName ES,TT] >>  
+    # [TemperatureVirtual] >>  [Zap --nbitsForDataStorage E32] >>
+    # [WriterStd --output 2014031800_024_regpres_VT_with_ES_small.std]
+
+    etiket      = "__VIRTTTX"
+    etiket_meta = "R110K80_N"
+    df.loc[df.nomvar == "VT", 'etiket'] = etiket
+    df.loc[~df.nomvar.isin(["VT"]), 'etiket'] = etiket_meta 
+    df.loc[:,'datyp'] = 5
+    df.loc[df.nomvar!='!!','nbits'] = 32
+
+    # write the result
+    results_file = TMP_PATH + "test_6.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "/2014031800_024_regpres_VT_with_ES_small.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file) 
     assert(res)

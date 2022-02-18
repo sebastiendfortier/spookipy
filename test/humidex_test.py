@@ -36,7 +36,6 @@ def test_1(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2016060312_024_000_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/Humidex/result_test_1'
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.1)
@@ -64,7 +63,6 @@ def test_2(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "inputFile6x6_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/Humidex/result_test_2'
 
     # compare results
     res = fstcomp(results_file, file_to_compare)

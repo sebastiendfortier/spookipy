@@ -31,10 +31,16 @@ class Pressure(Plugin):
     :type reference_field: str, optional
     :param standard_atmosphere: calculate pressure in standard atmosphere if specified, defaults to False
     :type standard_atmosphere: bool, optional
+    :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
+    :type dependency_check: bool, optional  
     """
 
     @initializer
-    def __init__( self, df: pd.DataFrame, reference_field=None, standard_atmosphere: bool = False, vgrid=False):
+    def __init__( self, df: pd.DataFrame, 
+                reference_field=None, 
+                standard_atmosphere: bool = False, 
+                vgrid=False,
+                dependency_check=False):
         self.plugin_result_specifications_option_1 = {
             'PX': {'nomvar': 'PX', 'etiket': 'PRESSR', 'unit': 'hectoPascal'},
         }
@@ -62,7 +68,7 @@ class Pressure(Plugin):
         else:
             self.existing_result_df = get_existing_result( self.df, self.plugin_result_specifications_option_1)
 
-    def compute(self) -> pd.DataFrame:
+    def compute(self, test_dependency=False) -> pd.DataFrame:
         """groups records by grid->vctype->forecast_hour then applies the appropriate algorithm to compute the pressure
 
         :return: a dataframe containing available pressure

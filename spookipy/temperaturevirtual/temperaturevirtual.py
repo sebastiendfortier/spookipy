@@ -7,8 +7,9 @@ import pandas as pd
 
 from ..plugin import Plugin
 from ..science import vt_from_qv
-from ..utils import (create_empty_result, final_results,
-                     get_dependencies,  get_existing_result, get_from_dataframe)
+from ..utils import (create_empty_result, final_results, existing_results,
+                     get_dependencies,  get_existing_result, get_from_dataframe,
+                     initializer, DependencyError)
 
 class TemperatureVirtualError(Exception):
     pass
@@ -17,20 +18,23 @@ class TemperatureVirtual(Plugin):
     """Calculates the virtual temperature as a function of temperature and water vapour mixing ratio.
 
     :param df: input DataFrame  
-    :type df: pd.DataFrame  
+    :type df: pd.DataFrame 
+    :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
+    :type dependency_check: bool, optional   
     """
+    @initializer
     def __init__(
         self,
-        df: pd.DataFrame
+        df: pd.DataFrame,
+        dependency_check=False
         ):
 
         self.plugin_mandatory_dependencies = [
             {
-                'TT': {'nomvar': 'TT'},
-                'QV': {'nomvar': 'QV'}
+                'TT': {'nomvar': 'TT', 'unit': 'kelvin'},
+                'QV': {'nomvar': 'QV', 'unit': 'kilogram_per_kilogram'}
             }
         ]
-
         self.plugin_result_specifications = {
                 'VT': {
                 'nomvar': 'VT',
@@ -40,51 +44,55 @@ class TemperatureVirtual(Plugin):
                 'datyp': 1}}
 
         self.df = fstpy.metadata_cleanup(df)
-
         super().__init__(df)
         self.prepare_groups()
 
     def prepare_groups(self):
-
         self.no_meta_df = fstpy.add_columns(self.no_meta_df, 
-                columns=[
-                'unit', 'forecast_hour', 'ip_info'])
+                columns=['unit', 'forecast_hour', 'ip_info'])
 
         self.nomvar_groups = self.no_meta_df.groupby(by=['grid', 'datev','ip1_kind'])
 
-        self.dependencies_list = get_dependencies(
-            self.nomvar_groups,
-            self.meta_df,
-            'TemperatureVirtual',
-            self.plugin_mandatory_dependencies,
-            intersect_levels=True)
-
-    def compute(self, test_dependency = False) -> pd.DataFrame:
-        logging.info('TemperatureVirtual - compute')
- 
         # check if result already exists
-        self.existing_result_df = get_existing_result(
-            self.no_meta_df, self.plugin_result_specifications)
+        self.existing_result_df = get_existing_result(self.no_meta_df, self.plugin_result_specifications)
+
+    def compute(self) -> pd.DataFrame:
+        if not self.existing_result_df.empty:
+            return existing_results(
+                'TemperatureVitrual',
+                self.existing_result_df,
+                self.meta_df)
+
+        logging.info('TemperatureVirtual - compute')
 
         df_list=[]
-        for dependencies_df, option in self.dependencies_list:
+        try:
+            self.dependencies_list = get_dependencies(
+                self.nomvar_groups,
+                self.meta_df,
+                'TemperatureVirtual',
+                self.plugin_mandatory_dependencies,
+                intersect_levels=True)
+        except DependencyError:
+            if not self.dependency_check:
+                raise DependencyError(f'{TemperatureVirtual} - No matching dependencies found')
+        else:
+  
+            for dependencies_df, option in self.dependencies_list:
 
-            qv_df = get_from_dataframe(dependencies_df, 'QV')
-            tt_df = get_from_dataframe(dependencies_df, 'TT')
+                qvkgkg_df = get_from_dataframe(dependencies_df, 'QV')
+                ttk_df    = get_from_dataframe(dependencies_df, 'TT')
 
-            vt_df = create_empty_result(
-                qv_df,
-                self.plugin_result_specifications['VT'],
-                all_rows=True)
+                vt_df = create_empty_result(
+                    qvkgkg_df,
+                    self.plugin_result_specifications['VT'],
+                    all_rows=True)
 
-            tt_kelvin_df = fstpy.unit_convert(tt_df, 'kelvin')
-            qv_kgkg_df   = fstpy.unit_convert(qv_df, 'kilogram_per_kilogram')
-
-            for i in qv_kgkg_df.index:
-                qvkgkg = qv_kgkg_df.at[i, 'd']
-                tt_k   = tt_kelvin_df.at[i, 'd']
-                vt_df.at[i, 'd'] = vt_from_qv(tt=tt_k, qv=qvkgkg).astype(np.float32)
-    
-            df_list.append(vt_df)
-
-        return final_results(df_list, TemperatureVirtualError, self.meta_df)
+                for i in qvkgkg_df.index:
+                    qvkgkg = qvkgkg_df.at[i, 'd']
+                    ttk   = ttk_df.at[i, 'd']
+                    vt_df.at[i, 'd'] = vt_from_qv(tt=ttk, qv=qvkgkg).astype(np.float32)
+        
+                df_list.append(vt_df)
+        finally:
+            return final_results(df_list, TemperatureVirtualError, self.meta_df, self.dependency_check)

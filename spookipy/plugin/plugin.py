@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import abc
+from distutils import dep_util
 
 import pandas as pd
 
@@ -27,6 +28,7 @@ class Plugin(abc.ABC):
         """
         if self.df.empty:
             raise EmptyDataframeError("Plugin" + ' - no data to process')
+
 
     def get_dataframes(self):
         """creates self.meta_df and self.no_meta_df"""

@@ -26,6 +26,27 @@ class Pressure(Plugin):
                 standard_atmosphere: bool = False, 
                 dependency_check=False):
         super().__init__(df)
+                vgrid=False,
+                dependency_check=False):
+        self.plugin_result_specifications_option_1 = {
+            'PX': {'nomvar': 'PX', 'etiket': 'PRESSR', 'unit': 'hectoPascal'},
+        }
+
+        self.plugin_result_specifications_option_2 = {
+            'PXSA': {'nomvar': 'PXSA', 'etiket': 'PRESSR', 'unit': 'millibar'},
+        }
+        self.validate_input()
+
+    def validate_input(self):
+        if self.df.empty:
+            raise PressureError('No data to process')
+
+        self.meta_df = self.df.loc[self.df.nomvar.isin(
+            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
+
+        self.df = fstpy.add_columns(
+            self.df, columns=['ip_info', 'forecast_hour', 'unit'])
+
         if not (self.reference_field is None):
             self.no_meta_df = self.no_meta_df.loc[self.no_meta_df.nomvar == self.reference_field]
             self.df = pd.concat([self.meta_df,self.no_meta_df], ignore_index=True)
@@ -45,4 +66,4 @@ class Pressure(Plugin):
         """
         res_df = self.qp.compute()
         return final_results([res_df],PressureError,self.meta_df,self.dependency_check)
-        
+    

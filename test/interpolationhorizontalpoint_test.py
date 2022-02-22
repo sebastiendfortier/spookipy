@@ -272,9 +272,9 @@ def test_1(plugin_test_dir, latlon_df):
 
     src_df0['dateo'] = 368660482
     latlon_df['dateo'] = 368660482
-
+    concat_df_and_lat_lon = pd.concat([src_df0, latlon_df], ignore_index=True, sort=False)
     # compute spooki.InterpolationHorizontalPoint
-    df = spooki.InterpolationHorizontalPoint(src_df0, latlon_df).compute()
+    df = spooki.InterpolationHorizontalPoint(concat_df_and_lat_lon).compute()
     # [ReaderStd --input {sources[0]}] >> [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> [spooki.InterpolationHorizontalPoint] >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
 
     df['etiket'] = 'R1558V0_N'
@@ -307,9 +307,10 @@ def test_2(plugin_test_dir, latlon_df):
 
     src_df0['dateo'] = 368660482
     latlon_df['dateo'] = 368660482
+    concat_df_and_lat_lon = pd.concat([src_df0, latlon_df], ignore_index=True, sort=False)
 
     # compute spooki.InterpolationHorizontalPoint
-    df = spooki.InterpolationHorizontalPoint(src_df0, latlon_df).compute()
+    df = spooki.InterpolationHorizontalPoint(concat_df_and_lat_lon).compute()
     # [ReaderStd --input {sources[0]}] >> [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> [spooki.InterpolationHorizontalPoint] >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
 
     df['etiket'] = 'R1558V0_N'
@@ -344,8 +345,10 @@ def test_3(plugin_test_dir, latlon_df):
 
     src_df0['dateo'] = 368660482
     latlon_df['dateo'] = 368660482
+    concat_df_and_lat_lon = pd.concat([src_df0, latlon_df], ignore_index=True, sort=False)
+
     # compute spooki.InterpolationHorizontalPoint
-    df = spooki.InterpolationHorizontalPoint(src_df0, latlon_df).compute()
+    df = spooki.InterpolationHorizontalPoint(concat_df_and_lat_lon).compute()
     # [ReaderStd --input {sources[0]}] >> [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> [spooki.InterpolationHorizontalPoint] >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
 
     df['etiket'] = 'R1558V0_N'
@@ -381,8 +384,10 @@ def test_4(plugin_test_dir, latlon2_df):
 
     src_df0.loc[src_df0.nomvar != 'P0', 'dateo'] = 368660482
     latlon2_df['dateo'] = 368660482
+    concat_df_and_lat_lon = pd.concat([src_df0, latlon2_df], ignore_index=True, sort=False)
+
     # compute spooki.InterpolationHorizontalPoint
-    df = spooki.InterpolationHorizontalPoint(src_df0, latlon2_df).compute()
+    df = spooki.InterpolationHorizontalPoint(concat_df_and_lat_lon).compute()
     # [ReaderStd --input {sources[0]}] >>
     # [ReaderCsv --input {sources[1]}] >>
     # [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >>
@@ -426,10 +431,11 @@ def test_5(plugin_test_dir, latlon_df):
 
     src_df0['dateo'] = 368660482
     latlon_df['dateo'] = 368660482
+    concat_df_and_lat_lon = pd.concat([src_df0, latlon_df], ignore_index=True, sort=False)
 
     # compute spooki.InterpolationHorizontalPoint
     df = spooki.InterpolationHorizontalPoint(
-        src_df0, latlon_df, interpolation_type='nearest').compute()
+        concat_df_and_lat_lon, interpolation_type='nearest').compute()
     # [ReaderStd --input {sources[0]}] >> [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> [spooki.InterpolationHorizontalPoint --interpolationType NEAREST] >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
     df['etiket'] = 'R1558V0_N'
     df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
@@ -464,10 +470,11 @@ def test_6(plugin_test_dir, latlon_df):
 
     src_df0['dateo'] = 368660482
     latlon_df['dateo'] = 368660482
+    concat_df_and_lat_lon = pd.concat([src_df0, latlon_df], ignore_index=True, sort=False)
 
     # compute spooki.InterpolationHorizontalPoint
     df = spooki.InterpolationHorizontalPoint(
-        src_df0, latlon_df, interpolation_type='bi-linear').compute()
+        concat_df_and_lat_lon, interpolation_type='bi-linear').compute()
     # [ReaderStd --input {sources[0]}] >> [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> [spooki.InterpolationHorizontalPoint --interpolationType BI-LINEAR] >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
     df['etiket'] = 'R1558V0_N'
     df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
@@ -502,10 +509,11 @@ def test_7(plugin_test_dir, latlon_with_grid_df):
 
     src_df0['dateo'] = 368660482
     latlon_with_grid_df['dateo'] = 368660482
+    concat_df_and_lat_lon = pd.concat([src_df0, latlon_with_grid_df], ignore_index=True, sort=False)
 
     # compute spooki.InterpolationHorizontalPoint
     df = spooki.InterpolationHorizontalPoint(
-        src_df0, latlon_with_grid_df, interpolation_type='nearest').compute()
+        concat_df_and_lat_lon, interpolation_type='nearest').compute()
     # [ReaderStd --input {sources[0]}] >> [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> [spooki.InterpolationHorizontalPoint --interpolationType NEAREST] >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
 
     df['etiket'] = 'R1558V0_N'
@@ -541,11 +549,11 @@ def test_8(plugin_test_dir, latlon_extrapolation_df):
 
     src_df0['dateo'] = 368660482
     latlon_extrapolation_df['dateo'] = 368660482
+    concat_df_and_lat_lon = pd.concat([src_df0, latlon_extrapolation_df], ignore_index=True, sort=False)
 
     # compute spooki.InterpolationHorizontalPoint
     df = spooki.InterpolationHorizontalPoint(
-        src_df0,
-        latlon_extrapolation_df,
+        concat_df_and_lat_lon,
         interpolation_type='bi-cubic',
         extrapolation_type='value',
         extrapolation_value=999.9).compute()
@@ -584,11 +592,11 @@ def test_9(plugin_test_dir, latlon_extrapolation_df):
 
     src_df0['dateo'] = 368660482
     latlon_extrapolation_df['dateo'] = 368660482
+    concat_df_and_lat_lon = pd.concat([src_df0, latlon_extrapolation_df], ignore_index=True, sort=False)
 
     # compute spooki.InterpolationHorizontalPoint
     df = spooki.InterpolationHorizontalPoint(
-        src_df0,
-        latlon_extrapolation_df,
+        concat_df_and_lat_lon,
         interpolation_type='bi-cubic',
         extrapolation_type='value',
         extrapolation_value=-
@@ -627,11 +635,11 @@ def test_10(plugin_test_dir, latlon_extrapolation_df):
 
     src_df0['dateo'] = 368660482
     latlon_extrapolation_df['dateo'] = 368660482
+    concat_df_and_lat_lon = pd.concat([src_df0, latlon_extrapolation_df], ignore_index=True, sort=False)
 
     # compute spooki.InterpolationHorizontalPoint
     df = spooki.InterpolationHorizontalPoint(
-        src_df0,
-        latlon_extrapolation_df,
+        concat_df_and_lat_lon,
         interpolation_type='bi-cubic',
         extrapolation_type='maximum').compute()
     # [ReaderStd --input {sources[0]}] >> [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> [spooki.InterpolationHorizontalPoint --interpolationType BI-CUBIC --extrapolationType MAXIMUM] >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
@@ -670,10 +678,11 @@ def test_11(plugin_test_dir, latlon_extrapolation_df):
 
     src_df0['dateo'] = 368660482
     latlon_extrapolation_df['dateo'] = 368660482
+    concat_df_and_lat_lon = pd.concat([src_df0, latlon_extrapolation_df], ignore_index=True, sort=False)
+
     # compute spooki.InterpolationHorizontalPoint
     df = spooki.InterpolationHorizontalPoint(
-        src_df0,
-        latlon_extrapolation_df,
+        concat_df_and_lat_lon,
         interpolation_type='bi-cubic',
         extrapolation_type='minimum').compute()
     # [ReaderStd --input {sources[0]}] >> [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> [spooki.InterpolationHorizontalPoint --interpolationType BI-CUBIC --extrapolationType MINIMUM] >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
@@ -748,9 +757,10 @@ def test_13(plugin_test_dir, latlon_df):
 
     src_df['dateo'] = 368660482
     latlon_df['dateo'] = 368660482
+    concat_df_and_lat_lon = pd.concat([src_df, latlon_df], ignore_index=True, sort=False)
     # compute spooki.InterpolationHorizontalPoint
 
-    df = spooki.InterpolationHorizontalPoint(src_df, latlon_df).compute()
+    df = spooki.InterpolationHorizontalPoint(concat_df_and_lat_lon).compute()
     # [ReaderStd --input {sources[0]}] >> [ReaderStd --input {sources[1]}] >>
     # [ReaderCsv --input {sources[2]}] >> [spooki.InterpolationHorizontalPoint] >>
     # [Zap --metadataZappable --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >>
@@ -795,11 +805,11 @@ def test_14(plugin_test_dir):
 
     src_df0.loc[:, 'dateo'] = 368660482
     src_df1.loc[:, 'dateo'] = 368660482
+    concat_df_and_lat_lon = pd.concat([src_df0, src_df1], ignore_index=True, sort=False)
 
     # compute spooki.InterpolationHorizontalPoint
     df = spooki.InterpolationHorizontalPoint(
-        src_df0,
-        src_df1,
+        concat_df_and_lat_lon,
         interpolation_type='bi-cubic',
         extrapolation_type='value',
         extrapolation_value=999.9).compute()
@@ -844,11 +854,11 @@ def test_15(plugin_test_dir):
 
     src_df0.loc[:, 'dateo'] = 368660482
     src_df1.loc[:, 'dateo'] = 368660482
+    concat_df_and_lat_lon = pd.concat([src_df0, src_df1], ignore_index=True, sort=False)
 
     # compute spooki.InterpolationHorizontalPoint
     df = spooki.InterpolationHorizontalPoint(
-        src_df0,
-        src_df1,
+        concat_df_and_lat_lon,
         interpolation_type='bi-cubic',
         extrapolation_type='value',
         extrapolation_value=999.9).compute()
@@ -889,10 +899,11 @@ def test_16(plugin_test_dir, simple_input_df):
     # zap all but !! HY
     src_df0.loc[~src_df0.nomvar.isin(['!!', 'HY']), 'dateo'] = 404008736
     simple_input_df['dateo'] = 404008736
+    concat_df_and_lat_lon = pd.concat([src_df0, simple_input_df], ignore_index=True, sort=False)
+
     # compute spooki.InterpolationHorizontalPoint
     df = spooki.InterpolationHorizontalPoint(
-        src_df0,
-        simple_input_df,
+        concat_df_and_lat_lon,
         interpolation_type='bi-linear',
         extrapolation_type='value',
         extrapolation_value=99.9).compute()
@@ -933,10 +944,11 @@ def test_17(plugin_test_dir, latlon_yy_df):
     src_df0.loc[~src_df0.nomvar.isin(['!!', 'HY']), 'dateo'] = 404008736
 
     latlon_yy_df['dateo'] = 404008736
+    concat_df_and_lat_lon = pd.concat([src_df0, latlon_yy_df], ignore_index=True, sort=False)
+
     # compute spooki.InterpolationHorizontalPoint
     df = spooki.InterpolationHorizontalPoint(
-        src_df0,
-        latlon_yy_df,
+        concat_df_and_lat_lon,
         interpolation_type='bi-linear',
         extrapolation_type='value',
         extrapolation_value=99.9).compute()
@@ -976,10 +988,12 @@ def test_18(plugin_test_dir, latlon_yy_df):
     src_df0.loc[~src_df0.nomvar.isin(['!!', 'HY']), 'dateo'] = 404008736
 
     latlon_yy_df['dateo'] = 404008736
+
+    concat_df_and_lat_lon = pd.concat([src_df0, latlon_yy_df], ignore_index=True, sort=False)
+
     # compute spooki.InterpolationHorizontalPoint
     df = spooki.InterpolationHorizontalPoint(
-        src_df0,
-        latlon_yy_df,
+        concat_df_and_lat_lon,
         interpolation_type='bi-linear',
         extrapolation_type='value',
         extrapolation_value=99.9,

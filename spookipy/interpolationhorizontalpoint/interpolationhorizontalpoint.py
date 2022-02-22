@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import argparse
 import copy
 import multiprocessing
 
@@ -20,8 +21,6 @@ class InterpolationHorizontalPoint(Plugin):
 
     :param df: Input dataframe
     :type df: pd.DataFrame
-    :param lat_lon_df: dataframe containing destination LAT and LON fields, created manually of from fst file  
-    :type lat_lon_df: pd.DataFrame
     :param interpolation_type: Type of interpolation 'nearest','bi-linear','bi-cubic', default 'bi-cubic'
     :type interpolation_type: str
     :param extrapolation_type: Type of extrapolation 'nearest','linear','maximum','minimum','value','abort', default 'maximum'
@@ -38,7 +37,6 @@ class InterpolationHorizontalPoint(Plugin):
     def __init__(
             self,
             df: pd.DataFrame,
-            lat_lon_df: pd.DataFrame,
             interpolation_type: str = 'bi-cubic',
             extrapolation_type: str = 'maximum',
             extrapolation_value: float = None,
@@ -49,8 +47,11 @@ class InterpolationHorizontalPoint(Plugin):
         if self.df.empty:
             raise InterpolationHorizontalPointError('No data to process')
 
+        self.lat_lon_df = self.df.loc[self.df.nomvar.isin(["LAT", "LON"])]
+
         self.df = fstpy.metadata_cleanup(self.df)
         # print('self.df\n',self.df[['nomvar', 'typvar', 'etiket', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'datyp', 'nbits', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4','grid']].to_string())
+
         if self.lat_lon_df.empty:
             raise InterpolationHorizontalPointError(
                 'Missing latitudes and longitudes')
@@ -244,6 +245,29 @@ class InterpolationHorizontalPoint(Plugin):
 
         return other_res_df
 
+    @staticmethod
+    def parse_config(args: str) -> dict:
+        """method to translate spooki plugin parameters to python plugin parameters
+        :param args: input unparsed arguments
+        :type args: str
+        :return: a dictionnary of converted parameters
+        :rtype: dict
+        """
+        parser = argparse.ArgumentParser(prog=InterpolationHorizontalPoint.__name__, parents=[Plugin.base_parser])
+        parser.add_argument('--interpolationType',type=str,default="BI-CUBIC",choices=["NEAREST","BI-LINEAR","BI-CUBIC"],dest='interpolation_type', help="Type of interpolation.")
+        parser.add_argument('--extrapolationType',type=str,default="MAXIMUM",dest='extrapolation_type',help="Type of extrapolation.")
+
+        parsed_arg = vars(parser.parse_args(args.split()))
+
+        parsed_arg['interpolation_type'] = parsed_arg['interpolation_type'].lower()
+
+        if parsed_arg['extrapolation_type'] in ["MAXIMUM","MINIMUM","ABORT"]:
+            parsed_arg['extrapolation_type'] = parsed_arg['extrapolation_type'].lower()
+        elif parsed_arg['extrapolation_type'].startswith("VALUE="):
+            parsed_arg['extrapolation_value'] = float(parsed_arg['extrapolation_type'].replace("VALUE=",""))
+            parsed_arg['extrapolation_type'] = "value"
+
+        return parsed_arg
 
 ##########################################################################
 ##########################################################################

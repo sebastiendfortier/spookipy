@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import argparse
 import logging
 from typing import Final
 import fstpy.all as fstpy
@@ -7,6 +8,7 @@ import pandas as pd
 from ..plugin import Plugin
 from ..utils import create_empty_result, final_results, initializer, validate_nomvar
 import rpnpy.librmn.all as rmn
+from ..configparsingutils import check_length_2_to_4
 
 ETIKET: Final[str] =  'SUBEVY'
 
@@ -83,4 +85,24 @@ class SubtractElementsVertically(Plugin):
             df_list.append(res_df)
 
         return final_results(df_list, SubtractElementsVerticallyError, self.meta_df)
-    
+
+    @staticmethod
+    def parse_config(args: str) -> dict:
+        """method to translate spooki plugin parameters to python plugin parameters
+        :param args: input unparsed arguments
+        :type args: str
+        :return: a dictionnary of converted parameters
+        :rtype: dict
+        """
+        parser = argparse.ArgumentParser(prog=SubtractElementsVertically.__name__, parents=[Plugin.base_parser])
+        parser.add_argument('--outputFieldName',type=str,dest='nomvar_out',help="Option to give the output field a different name from the input field name.")
+        parser.add_argument('--direction',required=True,type=str,default="ASCENDING",choices=["ASCENDING","DESCENDING"], help="Direction of vertical iteration.")
+
+        parsed_arg = vars(parser.parse_args(args.split()))
+
+        parsed_arg['direction'] = parsed_arg['direction'].lower()
+
+        check_length_2_to_4(parsed_arg['nomvar_out'],True,SubtractElementsVerticallyError)
+
+        return parsed_arg
+

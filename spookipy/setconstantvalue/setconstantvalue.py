@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import argparse
 import logging
 
 import dask.array as da
@@ -8,6 +9,7 @@ import pandas as pd
 
 from ..plugin import Plugin
 from ..utils import create_empty_result, final_results, initializer
+from ..configparsingutils import check_length_2_to_4, preprocess_negative_args
 
 
 def set_value(a, v):
@@ -114,3 +116,33 @@ class SetConstantValue(Plugin):
             df_list.append(res_df)
 
         return final_results(df_list, SetConstantValueError, self.meta_df)
+
+    @staticmethod
+    def parse_config(args: str) -> dict:
+        """method to translate spooki plugin parameters to python plugin parameters
+        :param args: input unparsed arguments
+        :type args: str
+        :return: a dictionnary of converted parameters
+        :rtype: dict
+        """
+        parser = argparse.ArgumentParser(prog=SetConstantValue.__name__, parents=[Plugin.base_parser])
+        parser.add_argument('--value',type=str,required=True, help="Replacement constant value.")
+        parser.add_argument('--outputFieldName',type=str,dest='nomvar_out',help="Option to give the output field a different name from the input field name.")
+        parser.add_argument('--bidimensional',action='store_true',dest='bi_dimensionnal',help="2D field output even if the input is a 3D field")
+
+        parsed_arg = vars(parser.parse_args(preprocess_negative_args(args.split(),['value'])))
+
+        if parsed_arg['value'] in ["MAXINDEX","MININDEX","NBLEVELS"]:
+            if parsed_arg['value'] == "MAXINDEX":
+                parsed_arg['max_index'] = True
+            elif parsed_arg['value'] == "MININDEX":
+                parsed_arg['min_index'] = True
+            elif parsed_arg['value'] == "NBLEVELS":
+                parsed_arg['nb_levels'] = True
+        else:
+            parsed_arg['value'] = float(parsed_arg['value'])
+
+        check_length_2_to_4(parsed_arg['nomvar_out'],True,SetConstantValueError)
+
+        return parsed_arg
+

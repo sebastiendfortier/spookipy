@@ -3,7 +3,8 @@ Description:
 
 -  Associates, to each vertical level index given, a value of one
    or many 3D meteorological fields given in input.
-   Note: The numbering of the indices starts at zero
+
+   **Note:** The numbering of the indices starts at zero
 
 Iteration method:
 ~~~~~~~~~~~~~~~~~

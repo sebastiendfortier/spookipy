@@ -47,9 +47,9 @@ class DewPointDepression(Plugin):
             'rpn': self.rpn}
         self.plugin_mandatory_dependencies_rpn = [
             {
-                'TT': {'nomvar': 'TT', 'unit': 'celsius'},
+                'TT': {'nomvar': 'TT', 'unit': 'kelvin'},
                 'HU': {'nomvar': 'HU', 'unit': 'kilogram_per_kilogram', 'select_only': True},
-                'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'}
+                'PX': {'nomvar': 'PX', 'unit': 'pascal'}
             },
             {
                 'TT': {'nomvar': 'TT', 'unit': 'celsius'},
@@ -57,9 +57,9 @@ class DewPointDepression(Plugin):
                 'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'}
             },
             {
-                'TT': {'nomvar': 'TT', 'unit': 'celsius'},
+                'TT': {'nomvar': 'TT', 'unit': 'kelvin'},
                 'HR': {'nomvar': 'HR', 'unit': 'scalar', 'select_only': True},
-                'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'}
+                'PX': {'nomvar': 'PX', 'unit': 'pascal'}
             },
             {
                 'TT': {'nomvar': 'TT', 'unit': 'celsius'},
@@ -202,15 +202,15 @@ class DewPointDepression(Plugin):
     def rpn_dewpointdepression_from_tt_hr_px(self, dependencies_df, option):
         logging.info(f'rpn option {option+1}')
 
-        tt_df = get_from_dataframe(dependencies_df, 'TT')
+        ttk_df = get_from_dataframe(dependencies_df, 'TT')
         hr_df = get_from_dataframe(dependencies_df, 'HR')
-        px_df = get_from_dataframe(dependencies_df, 'PX')
+        pxpa_df = get_from_dataframe(dependencies_df, 'PX')
         es_df = create_empty_result(
-            tt_df,
+            ttk_df,
             self.plugin_result_specifications['ES'],
             all_rows=True)
-        ttk_df = fstpy.unit_convert(tt_df, 'kelvin')
-        pxpa_df = fstpy.unit_convert(px_df, 'pascal')
+        # ttk_df = fstpy.unit_convert(tt_df, 'kelvin')
+        # pxpa_df = fstpy.unit_convert(px_df, 'pascal')
         for i in es_df.index:
             ttk = ttk_df.at[i, 'd']
             pxpa = pxpa_df.at[i, 'd']
@@ -223,14 +223,14 @@ class DewPointDepression(Plugin):
             self, hu_df, dependencies_df, option):
         logging.info(f'rpn option {option+1}')
 
-        tt_df = get_from_dataframe(dependencies_df, 'TT')
-        px_df = get_from_dataframe(dependencies_df, 'PX')
+        ttk_df = get_from_dataframe(dependencies_df, 'TT')
+        pxpa_df = get_from_dataframe(dependencies_df, 'PX')
         es_df = create_empty_result(
-            tt_df,
+            ttk_df,
             self.plugin_result_specifications['ES'],
             all_rows=True)
-        ttk_df = fstpy.unit_convert(tt_df, 'kelvin')
-        pxpa_df = fstpy.unit_convert(px_df, 'pascal')
+        # ttk_df = fstpy.unit_convert(tt_df, 'kelvin')
+        # pxpa_df = fstpy.unit_convert(px_df, 'pascal')
         for i in es_df.index:
             ttk = ttk_df.at[i, 'd']
             pxpa = pxpa_df.at[i, 'd']

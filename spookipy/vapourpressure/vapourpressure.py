@@ -51,18 +51,18 @@ class VapourPressure(Plugin):
             # HU + PXpa
             {
                 'HU': {'nomvar': 'HU', 'unit': 'kilogram_per_kilogram', 'select_only': True},
-                'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'}
+                'PX': {'nomvar': 'PX', 'unit': 'pascal'}
             },
             # QVkg + PX
             {
-                'QV': {'nomvar': 'QV', 'unit': 'gram_per_kilogram', 'select_only': True},
+                'QV': {'nomvar': 'QV', 'unit': 'kilogram_per_kilogram', 'select_only': True},
                 'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'}
             },
             #TT + HR + PX > HUrpn + PXpa
             {
                 'TT': {'nomvar': 'TT', 'unit': 'celsius'},
                 'HR': {'nomvar': 'HR', 'unit': 'scalar', 'select_only': True},
-                'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'}
+                'PX': {'nomvar': 'PX', 'unit': 'pascal'}
             },
             # ES + TTk
             {
@@ -71,7 +71,7 @@ class VapourPressure(Plugin):
             },
             # TDk + TTk
             {
-                'TT': {'nomvar': 'TT', 'unit': 'celsius'},
+                'TT': {'nomvar': 'TT', 'unit': 'kelvin'},
                 'TD': {'nomvar': 'TD', 'unit': 'celsius', 'select_only': True},
             }
         ]
@@ -83,7 +83,7 @@ class VapourPressure(Plugin):
             },
             # QVkg/kg + PX
             {
-                'QV': {'nomvar': 'QV', 'unit': 'gram_per_kilogram', 'select_only': True},
+                'QV': {'nomvar': 'QV', 'unit': 'kilogram_per_kilogram', 'select_only': True},
                 'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'}
             },
             # HR + SVP
@@ -272,10 +272,10 @@ class VapourPressure(Plugin):
     def rpn_vapourpressure_from_tt_td(self, td_df, dependencies_df, option):
         logging.info(f'rpn option {option+1}')
 
-        tt_df = get_from_dataframe(dependencies_df, 'TT')
+        ttk_df = get_from_dataframe(dependencies_df, 'TT')
         vppr_df = create_empty_result(
-            tt_df, self.plugin_result_specifications['VPPR'], all_rows=True)
-        ttk_df = fstpy.unit_convert(tt_df, 'kelvin')
+            ttk_df, self.plugin_result_specifications['VPPR'], all_rows=True)
+        # ttk_df = fstpy.unit_convert(tt_df, 'kelvin')
         tdk_df = fstpy.unit_convert(td_df, 'kelvin')
         for i in vppr_df.index:
             ttk = ttk_df.at[i, 'd']
@@ -294,13 +294,13 @@ class VapourPressure(Plugin):
             logging.info(f'option {option+1}')
         # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
 
-        qv_df = get_from_dataframe(dependencies_df, 'QV')
+        qvkgkg_df = get_from_dataframe(dependencies_df, 'QV')
         px_df = get_from_dataframe(dependencies_df, 'PX')
         vppr_df = create_empty_result(
-            qv_df, self.plugin_result_specifications['VPPR'], all_rows=True)
-        qv_df = fstpy.unit_convert(qv_df, 'kilogram_per_kilogram')
+            qvkgkg_df, self.plugin_result_specifications['VPPR'], all_rows=True)
+        # qv_df = fstpy.unit_convert(qv_df, 'kilogram_per_kilogram')
         for i in vppr_df.index:
-            qv = qv_df.at[i, 'd']
+            qv = qvkgkg_df.at[i, 'd']
             px = px_df.at[i, 'd']
             vppr_df.at[i, 'd'] = vppr_from_qv(qv=qv, px=px).astype(np.float32)
         return vppr_df
@@ -324,10 +324,10 @@ class VapourPressure(Plugin):
     def rpn_vapourpressure_from_hu_px(self, hu_df, dependencies_df, option):
         logging.info(f'rpn option {option+1}')
 
-        px_df = get_from_dataframe(dependencies_df, 'PX')
+        pxpa_df = get_from_dataframe(dependencies_df, 'PX')
         vppr_df = create_empty_result(
-            px_df, self.plugin_result_specifications['VPPR'], all_rows=True)
-        pxpa_df = fstpy.unit_convert(px_df, 'pascal')
+            pxpa_df, self.plugin_result_specifications['VPPR'], all_rows=True)
+        # pxpa_df = fstpy.unit_convert(px_df, 'pascal')
         for i in vppr_df.index:
             pxpa = pxpa_df.at[i, 'd']
             hu = hu_df.at[i, 'd']

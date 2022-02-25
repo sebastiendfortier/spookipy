@@ -95,20 +95,28 @@ class PercentileToPercentage(Plugin):
     :param ps: Indicates the Start;End;Step for the percentile steps, defaults to 0,100,5
     :type ps: str, optional
     """
-    def __init__(self, df:pd.DataFrame, th:float=0.3, op:str='ge', ed:str='GE0_____PALL', nv:str='SSH', tv:str='P@', ps:str='0,100,5'):
+    def __init__(self, df:pd.DataFrame, threshold:float=0.3, operator:str='ge', etiket:str='GE0_____PALL', nomvar:str='SSH', typvar:str='P@', percentile_step:str='0,100,5'):
         self.df = df
-        self.th = th
-        self.op = op
-        self.ed = ed
-        self.tv = tv
-        self.nv = nv
-        self.ps = ps
+        self.th = threshold
+        self.op = operator
+        self.ed = etiket
+        self.tv = typvar
+        self.nv = nomvar
+        self.ps = percentile_step
         self.validate_input()
 
     # might be able to move
     def validate_input(self):
         if self.df.empty:
             raise PercentileToPercentageError('No data to process')
+        
+        self.nomvar_df = self.df.loc[self.df.nomvar == self.nv]
+        if self.nomvar_df.empty:
+            raise PercentileToPercentageError('Input nomvar is not found')
+        
+        self.typvar_df = self.df.loc[self.df.typvar == self.tv]
+        if self.typvar_df.empty:
+            raise PercentileToPercentageError('Input typvar is not found')
 
         self.df = fstpy.metadata_cleanup(self.df)
 
@@ -123,6 +131,7 @@ class PercentileToPercentage(Plugin):
         self.df = self.df.loc[~self.df.nomvar.isin(
             ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
 
+
     def compute(self) -> pd.DataFrame:
         """Writes the new field and metadata with the updated threshold exceedence percentage returned from field to percentage function to the
         parsed destination file from the command line. 
@@ -132,6 +141,9 @@ class PercentileToPercentage(Plugin):
         """
         df = self.df
         df_field = fstpy.compute(df.loc[(df.typvar == self.tv) & (df.nomvar == self.nv) & (df.etiket.str.startswith('C'))])
+        if df_field.empty:
+            raise("Etiket does not indicate percentile")
+
         df_all_mask = df.loc[df.nomvar.isin(['@@','!@'])]
         df_msk = fstpy.compute(df_all_mask.loc[(df_all_mask.nomvar == self.nv) & (df.etiket.str.startswith('C'))])
         df_field_grouped = df_field.groupby(['forecast_hour'], as_index=False)
@@ -144,9 +156,9 @@ class PercentileToPercentage(Plugin):
 
             #Checking for validity of etiket field
             if len(self.ed[-12:-10]) != 2 and len(self.ed[-12:-10]) != 0:
-                raise Exception("The start of the etiket name can only have either 2 or 0 characters, the input has",len(self.ed[-12:-10]),"characters.")
+                raise Exception("The start of the etiket name can only have either 2 or 0 characters.")
             if len(self.ed[-10:-4]) == 0:
-                raise Exception("Etiket name does not have 6 character before the last four chracters, the input has",len(self.ed[-10:-4]),"characters.")
+                raise Exception("Etiket name does not have 6 character before the last four chracters.")
             if (self.ed[-4] != "N") and (self.ed[-4] != "P") and (self.ed[-4] != "X"):
                 print("The letter before 'ALL' is not N, P or X")
             if self.ed[-3:] != "ALL":

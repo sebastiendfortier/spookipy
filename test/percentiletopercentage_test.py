@@ -12,11 +12,12 @@ pytestmark = [pytest.mark.regressions]
 
 @pytest.fixture
 def plugin_test_dir():
-# ExamplePlugin/testsFiles is a folder that should be created in ~spst900/ppp3TestFiles/ and ~spst900/ppp4TestFiles/
     return TEST_PATH +"PercentileToPercentage/testsFiles/"
 
 def test_1(plugin_test_dir):
-    """ """
+    """
+    Test with default options 
+    """
     # open and read source
     source0 = plugin_test_dir + "2022021100_out"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -38,23 +39,27 @@ def test_1(plugin_test_dir):
     assert(res)
 
 def test_2(plugin_test_dir):
-    """ """
+    """
+    Test with an incorrect eteiket name
+    """
     # open and read source
     source0 = plugin_test_dir + "2022021100_out"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     with pytest.raises(Exception):
         df = spooki.PercentileToPercentage(src_df0, etiket='wrong_etiket_name').compute()
-    # [ReaderStd --input {sources[0]}] >> [Select --fieldName TT] >> [UnitConvert --unit kelvin] >> [TemperaturePotential] >> [WriterStd --output {destination_path} ]
+    # [ReaderStd --input {sources[0]}] >> [Output Etiket Name --etiket wrong_etiket_name] >> [PercentileToPercentage] >> [Raise Exception]
 
 def test_3(plugin_test_dir):
-    """"""
+    """
+    test with changes to nomvar and operator
+    """
     # open and read source
     source0 = plugin_test_dir + "2022021100_out"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    df = spooki.PercentileToPercentage(src_df0, threshold=0.3, operator='le', etiket='GE0_____ALL', nomvar='SSH8', typvar='P@', percentile_step='0,100,5').compute()
-    # [ReaderStd --input {sources[0]}] >> [PercentileToPercentage] >> [WriterStd --output {destination_path} ]
+    df = spooki.PercentileToPercentage(src_df0, threshold=0.3, operator='le', etiket='GE0_____PALL', nomvar='SSH8', typvar='P@', percentile_step='0,100,5').compute()
+    # [ReaderStd --input {sources[0]}] >> [Threshold --threshold 0.3, Operator --operator le, Etiket --etiket GE0_____PALL, Nomvar --nomvar SSH8, Typvar --typvar P@, Percentile_Step --percentile_step 0,100,5] >> [PercentileToPercentage] >> [WriterStd --output {destination_path} ]
 
     # write the result
     results_file = TMP_PATH + "test_3.std"

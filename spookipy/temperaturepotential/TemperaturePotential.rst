@@ -1,7 +1,11 @@
 Description:
 ============
 
--  Calculate probability of exceedance of a threshold using ensemble percentiles.
+-  Calculates the potential temperature, which is the temperature
+   of an air parcel following adiabatic expansion or compression
+   to a reference pressure. On a tephigram such a process can be
+   visualized by raising or lowering a parcel along a dry adiabat.
+   Note: The reference pressure used here is 1000 hPa.
 
 Iteration method:
 ~~~~~~~~~~~~~~~~~
@@ -23,25 +27,27 @@ Algorithm:
 ~~~~~~~~~~
 
 .. code-block:: text
-         It is a piece-wise linear interpolation from the percentiles into a risk likelyhood percentage
 
-         For the operator variable le/ge
+         For TT, the air temperature (deg K) and
+         PX the air pressure (hPa)
 
-         When 0th percentile is greater than threshold value, likelyhood is 0 | 100 
-         If 100th percentile is less than threshold value, likelyhood is 100 | 0 
-         If threshold matches exactly a x th percentile, likelyhood is x | 100 - x
-         If threshold matches exactly multiple percentiles, likely hood is (highest percentile - lowest percentile / 2) | 100 - (highest percentile - lowest percentile / 2)
-         If threshold is between two x, y percentiles, likely hood can be calculated with x 
+         Calculate TH as:
+
+         TH = TT*(1000/PX)**(Rd/cpd)
+
+         Where Rd is the gas constant for dry air (Rd = 287.04 J/(kg*K)),
+         and cpd is the specific heat of dry air (cpd = 1005.46 J/(kg*K))
 
 Reference:
 ~~~~~~~~~~
 
--
+-  Markowski, P. and Y. Richardson, 2010: Mesoscale Meteorology in Midlatitudes. Wiley-Blackwell, 407 pp.
+-  Rogers, R. R. and M. K. Yau, 1989: A Short Course in Cloud Physics, 3rd Ed. Butterworth Heinemann, 290 pp.
 
 Keywords:
 ~~~~~~~~~
 
--  
+-  MÉTÉO/WEATHER, température/temperature, potentielle/potential
 
 Usage:
 ~~~~~~
@@ -60,7 +66,7 @@ Usage:
 
    df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/TemperaturePotential/testsFiles/inputFile.std').to_pandas()
 
-   res_df = spooki.PercentileToPercentage(df).compute()
+   res_df = spooki.TemperaturePotential(df).compute()
 
    fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
 

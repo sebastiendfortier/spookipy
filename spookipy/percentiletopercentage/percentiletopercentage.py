@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from ast import operator
 import logging
 
 import fstpy.all as fstpy
@@ -42,20 +41,20 @@ def field_to_percentage(arr: np.ndarray, arg: str) -> float:
         if arr[0] > arg.th:
             risk =100
         elif arr[-1] < arg.th:
-            risk =0
+            risk =0.0
         elif (len(smaller_than[0]) > 0) & (len(greater_than[0]) > 0):
             risk =100 - risk
         else:
-            risk =0
+            risk =0.0
 
     #The Less Than or Equal to case
     else:
         if arr[0] > arg.th:
-            risk =0
+            risk =0.0
         elif arr[-1] < arg.th:
             risk =100
         else:
-            risk =0
+            risk =0.0
     return risk
 
 
@@ -105,7 +104,7 @@ class PercentileToPercentage(Plugin):
         self.ps = percentile_step
         self.validate_input()
 
-    # might be able to move
+    #Validate input data
     def validate_input(self):
         if self.df.empty:
             raise PercentileToPercentageError('No data to process')
@@ -141,11 +140,12 @@ class PercentileToPercentage(Plugin):
         """
         df = self.df
         df_field = fstpy.compute(df.loc[(df.typvar == self.tv) & (df.nomvar == self.nv) & (df.etiket.str.startswith('C'))])
+
         if df_field.empty:
             raise("Etiket does not indicate percentile")
 
-        df_all_mask = df.loc[df.nomvar.isin(['@@','!@'])]
-        df_msk = fstpy.compute(df_all_mask.loc[(df_all_mask.nomvar == self.nv) & (df.etiket.str.startswith('C'))])
+        df_all_mask = df.loc[df.typvar.isin(['@@','!@'])]
+        df_msk = fstpy.compute(df_all_mask.loc[(df_all_mask.nomvar == self.nv) & (df_all_mask.etiket.str.startswith('C'))])
         df_field_grouped = df_field.groupby(['forecast_hour'], as_index=False)
 
         df_output = []
@@ -173,23 +173,23 @@ class PercentileToPercentage(Plugin):
             df_group = df_group.sort_values('etiket', key=sort_etiket)
             group_field_stacked = np.stack(df_group['d'])
             percentile_field = np.apply_along_axis(field_to_percentage, 0, group_field_stacked, self)
-            percentile_field = np.where(mask['d'].iloc[0] == 0, 0, percentile_field)
+            percentile_field = np.where(mask['d'].iloc[0] == 0.0, 0, percentile_field)
 
             data = copy.deepcopy(df_group.iloc[0].to_dict())
             data['etiket'] = self.ed
             data['d'] = percentile_field
             data = pd.DataFrame([data])
-        
+            data["d"] = data["d"].map(lambda f: f.astype(np.float32))
             df_output.append(data)
             df_output.append(mask)
 
         # Record the positional records to be merged with the new data frame with the updated "d" values
-        positions = [">>", "^^", "^>", "!!", "##"]
-        positional_records = df.loc[df.nomvar.isin(positions), :]
-        df_field = pd.concat(df_output)
+        '''
+        df_field = pd.concat(df_output, ignore_index=True)
 
         # Writes the data frame to the destination fst file.
-        df = pd.concat([positional_records, df_field], ignore_index=True)
+        df = pd.concat(df_field, ignore_index=True)
         df.loc[df.typvar == self.tv, "d"] = df.loc[df.typvar == self.tv, "d"].map(lambda f: f.astype(np.float32))
+        '''
 
-        return final_results(df, self.meta_df)
+        return final_results(df_output, PercentileToPercentageError, self.meta_df)

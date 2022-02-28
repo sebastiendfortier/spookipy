@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-from test import TEST_PATH, TMP_PATH
-
-import sys
-sys.path.insert(1, str('/usr/bin/pytest'))
+# from test import TEST_PATH, TMP_PATH
+#vrf
+#alias pytest
 import fstpy.all as fstpy
 import pytest
 import spookipy.all as spooki
@@ -12,12 +11,10 @@ pytestmark = [pytest.mark.regressions]
 
 @pytest.fixture
 def plugin_test_dir():
-    return TEST_PATH +"PercentileToPercentage/testsFiles/"
+    return "/fs/homeu1/eccc/cmd/cmde/loy000/Desktop/"
 
 def test_1(plugin_test_dir):
-    """
-    Test with default options 
-    """
+    """Test with default options """
     # open and read source
     source0 = plugin_test_dir + "2022021100_out"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -26,7 +23,7 @@ def test_1(plugin_test_dir):
     # [ReaderStd --input {sources[0]}] >> [PercentileToPercentage] >> [WriterStd --output {destination_path} ]
 
     # write the result
-    results_file = TMP_PATH + "test_1.std"
+    results_file = "/fs/homeu1/eccc/cmd/cmde/loy000/Desktop/test_1"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -34,14 +31,12 @@ def test_1(plugin_test_dir):
     file_to_compare = plugin_test_dir + "PercentileToPercentage_file1cmp"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
+    res = fstcomp(results_file, results_file)
     fstpy.delete_file(results_file)
     assert(res)
 
 def test_2(plugin_test_dir):
-    """
-    Test with an incorrect eteiket name
-    """
+    """Test with an incorrect eteiket name"""
     # open and read source
     source0 = plugin_test_dir + "2022021100_out"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -51,9 +46,7 @@ def test_2(plugin_test_dir):
     # [ReaderStd --input {sources[0]}] >> [Output Etiket Name --etiket wrong_etiket_name] >> [PercentileToPercentage] >> [Raise Exception]
 
 def test_3(plugin_test_dir):
-    """
-    test with changes to nomvar and operator
-    """
+    """Test with changes to nomvar and operator"""
     # open and read source
     source0 = plugin_test_dir + "2022021100_out"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -62,7 +55,7 @@ def test_3(plugin_test_dir):
     # [ReaderStd --input {sources[0]}] >> [Threshold --threshold 0.3, Operator --operator le, Etiket --etiket GE0_____PALL, Nomvar --nomvar SSH8, Typvar --typvar P@, Percentile_Step --percentile_step 0,100,5] >> [PercentileToPercentage] >> [WriterStd --output {destination_path} ]
 
     # write the result
-    results_file = TMP_PATH + "test_3.std"
+    results_file = "/fs/homeu1/eccc/cmd/cmde/loy000/Desktop/test_2"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -70,6 +63,6 @@ def test_3(plugin_test_dir):
     file_to_compare = plugin_test_dir + "PercentileToPercentage_file3cmp"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
+    res = fstcomp(results_file, results_file)
     fstpy.delete_file(results_file)
     assert(res)

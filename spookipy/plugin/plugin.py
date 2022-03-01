@@ -65,5 +65,6 @@ class Plugin(abc.ABC):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        return vars(Plugin.base_parser.parse_args(args.split()))
+        parser = argparse.ArgumentParser(prog=__class__.__name__, parents=[Plugin.base_parser])
+        return vars(parser.parse_args(args.split()))
 

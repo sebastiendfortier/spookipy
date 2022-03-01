@@ -46,7 +46,7 @@ class MinMaxLevelIndex(Plugin):
     def __init__(
             self,
             df: pd.DataFrame,
-            nomvar : str,
+            nomvar : str=None,
             ascending=True,
             min=False,
             max=False,
@@ -58,8 +58,18 @@ class MinMaxLevelIndex(Plugin):
             nomvar_max_val='MAX'
             ):
 
+        self.df = fstpy.metadata_cleanup(self.df)
+        super().__init__(df)
+
+        if self.nomvar is None:
+            nomvar_list = self.no_meta_df[~self.no_meta_df.nomvar.isin(["KBAS","KTOP"])].nomvar.unique()
+            if len(nomvar_list) == 1:
+                self.nomvar = nomvar_list[0]
+            else:
+                raise MinMaxLevelIndexError("Too many input fields, provide one field or set nomvar : {}".format(nomvar_list))
+
         self.plugin_mandatory_dependencies=[{}]
-        input_field = {nomvar : {'nomvar': nomvar}}
+        input_field = {self.nomvar : {'nomvar': self.nomvar}}
         self.plugin_mandatory_dependencies[0]= input_field
 
         if self.bounded:
@@ -73,8 +83,6 @@ class MinMaxLevelIndex(Plugin):
                 'ALL': {'etiket': 'MMLVLI', 'unit': 'scalar', 'ip1': 0}
             }
 
-        self.df = fstpy.metadata_cleanup(self.df)
-        super().__init__(df)
         self.validate_params_and_input()
 
     def validate_params_and_input(self):

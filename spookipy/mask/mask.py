@@ -6,7 +6,7 @@ import pandas as pd
 
 from ..plugin import Plugin
 from ..utils import final_results, initializer
-from ..configparsingutils import preprocess_negative_args,check_length_2_to_4,apply_lamda_to_list
+from ..configparsingutils import preprocess_negative_args,check_length_2_to_4,apply_lambda_to_list
 
 class MaskError(Exception):
     pass
@@ -105,9 +105,9 @@ class Mask(Plugin):
         check_length_2_to_4(parsed_arg['nomvar_out'],error_class=MaskError)
 
         op_dict = {'GT':'>', 'GE':'>=', 'EQ':'==', 'LE':'<=', 'LT':'<', 'NE':'!='}
-        parsed_arg['operators'] = apply_lamda_to_list(parsed_arg['operators'].split(","), lambda a : op_dict[a])
-        parsed_arg['values'] = apply_lamda_to_list(parsed_arg['values'].split(","), lambda a : float(a))
-        parsed_arg['thresholds'] = apply_lamda_to_list(parsed_arg['thresholds'].split(","), lambda a : float(a))
+        parsed_arg['operators'] = apply_lambda_to_list(parsed_arg['operators'].split(","), lambda a : op_dict[a])
+        parsed_arg['values'] = apply_lambda_to_list(parsed_arg['values'].split(","), lambda a : float(a))
+        parsed_arg['thresholds'] = apply_lambda_to_list(parsed_arg['thresholds'].split(","), lambda a : float(a))
 
 
         return parsed_arg

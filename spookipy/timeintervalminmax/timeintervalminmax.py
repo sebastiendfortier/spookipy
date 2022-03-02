@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import argparse
 import datetime
 import logging
 
@@ -9,6 +10,7 @@ import pandas as pd
 
 from ..plugin import Plugin
 from ..utils import (create_empty_result, final_results, get_list_of_forecast_hours, initializer, to_numpy, validate_list_of_nomvar, validate_list_of_times, validate_list_of_tuples_of_times)
+from ..configparsingutils import check_length_2_to_4, apply_lambda_to_list, convert_time_range, convert_time
 
 class TimeIntervalMinMaxError(Exception):
     pass
@@ -206,6 +208,50 @@ class TimeIntervalMinMax(Plugin):
 
         return res_df
 
+    @staticmethod
+    def parse_config(args: str) -> dict:
+        """method to translate spooki plugin parameters to python plugin parameters
+        :param args: input unparsed arguments
+        :type args: str
+        :return: a dictionnary of converted parameters
+        :rtype: dict
+        """
+        parser = argparse.ArgumentParser(prog=TimeIntervalMinMax.__name__, parents=[Plugin.base_parser])
+        parser.add_argument('--fieldName',required=True,type=str,dest='nomvar', help="List of field names.")
+        parser.add_argument('--interval',type=str, help="List of each time range used for the minimum/maximum calculation")
+        parser.add_argument('--rangeForecastHour',required=True,type=str,dest='forecast_hour_range', help="List of time ranges in hours.")
+        parser.add_argument('--step',type=str, help="List of the time steps in hours between successive start times within each time range.")
+        parser.add_argument('--outputFieldNameMax',type=str,dest='nomvar_max',help="List of names of maximum field.")
+        parser.add_argument('--outputFieldNameMin',type=str,dest='nomvar_min',help="List of names if minimum fields.")
+        parser.add_argument('--type',type=str,required=True,choices=["MIN","MAX","BOTH"], help="Calculation of minimum and/or maximum.")
+
+        parsed_arg = vars(parser.parse_args(args.split()))
+
+        if parsed_arg['type'] == "MIN":
+            parsed_arg['min'] = True
+        elif parsed_arg['type'] == "MAX":
+            parsed_arg['max'] = True
+        else:
+            parsed_arg['min'] = True
+            parsed_arg['max'] = True
+
+        if parsed_arg['interval'] is not None:
+            parsed_arg['interval'] = apply_lambda_to_list(parsed_arg['interval'].split(','), lambda a: convert_time(a))
+        if parsed_arg['step'] is not None:
+            parsed_arg['step'] = apply_lambda_to_list(parsed_arg['step'].split(','), lambda a: convert_time(a))
+        parsed_arg['forecast_hour_range'] = apply_lambda_to_list(parsed_arg['forecast_hour_range'].split(','), lambda a: convert_time_range(a))
+
+        parsed_arg['nomvar'] = parsed_arg['nomvar'].split(',')
+        apply_lambda_to_list(parsed_arg['nomvar'],lambda a : check_length_2_to_4(a,False,TimeIntervalMinMaxError))
+
+        if parsed_arg['nomvar_max'] is not None:
+            parsed_arg['nomvar_max'] = parsed_arg['nomvar_max'].split(',')
+            apply_lambda_to_list(parsed_arg['nomvar_max'],lambda a : check_length_2_to_4(a,True,TimeIntervalMinMaxError))
+        if parsed_arg['nomvar_min'] is not None:
+            parsed_arg['nomvar_min'] = parsed_arg['nomvar_min'].split(',')
+            apply_lambda_to_list(parsed_arg['nomvar_min'],lambda a : check_length_2_to_4(a,True,TimeIntervalMinMaxError))
+
+        return parsed_arg
 
 def create_result_container(df, b_inf, b_sup, nomvar):
     deet = df.iloc[0]['deet']

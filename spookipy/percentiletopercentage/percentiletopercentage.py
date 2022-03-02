@@ -94,7 +94,7 @@ class PercentileToPercentage(Plugin):
     :param nv: the nomvar for input data frame, defaults to SSH
     :type nv: str, optional
     :param tv: the typvar for input data frame, defaults to P@
-    :type tv: arg.Namespace, optional
+    :type tv: str, optional
     :param ps: Indicates the Start;End;Step for the percentile steps, defaults to 0,100,5
     :type ps: str, optional
     """

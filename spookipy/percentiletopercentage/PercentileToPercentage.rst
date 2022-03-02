@@ -44,6 +44,9 @@ Keywords:
 
 Usage:
 ~~~~~~
+   Note: With x being the percentile, the data frame should have
+   an etiekt format of Cx followed by the rest of the conventional 
+   etiket name. 
 
 .. code:: python
 
@@ -60,10 +63,16 @@ Usage:
    df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/PercentileToPercentage/testsFiles/inputFile.std').to_pandas()
    df_field = fstpy.compute(df.loc[(df.typvar == selected_tv) & (df.nomvar == selected_nv) & (df.etiket.str.startswith('C'))])
 
-   df_percentage = spooki.PercentileToPercentage(df,  
-                                        operation_name='MultiplyElementsBy',  
-                                        exception_class=MultiplyElementsByError,  
-                                        operator=mult_value,  
-                                        nomvar_out='MU'  
-                                        value=(1/3),  
-                                        etiket='MULEBY').compute()  
+   df_percentage = spooki.PercentileToPercentage(df_field,   
+                                        threshold=0.3, 
+                                        operator='ge', 
+                                        etiket='GE0_____PALL',
+                                        nomvar='SSH', 
+                                        typvar='P@', 
+                                        percentile_step='0,100,5').compute()
+
+Contacts:
+~~~~~~~~~
+- Author : Benoit Pouliot
+- Coded by : Logan Yu 
+- Support: `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__

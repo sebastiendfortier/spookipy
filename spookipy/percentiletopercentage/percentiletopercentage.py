@@ -11,8 +11,10 @@ from ..plugin import Plugin
 from ..utils import (create_empty_result, existing_results, final_results,
                      get_dependencies, get_existing_result, get_from_dataframe)
 
+
 class PercentileToPercentageError(Exception):
     pass
+
 
 def field_to_percentage(arr: np.ndarray, arg: str) -> float:
     """returns a float that represents the likelyhood of the threshold exceedence
@@ -26,35 +28,36 @@ def field_to_percentage(arr: np.ndarray, arg: str) -> float:
     """
     steps = np.array(arg.ps.split(',')).astype(int)
 
-    #Check for if the threshold is between two percentiles, if it is then run a linear fit calcullation to find the value
+    # Check for if the threshold is between two percentiles, if it is then run a linear fit calcullation to find the value
     equal_to = np.where(arr == arg.th)
     smaller_than = np.where(arr < arg.th)
     greater_than = np.where(arr > arg.th)
-    
+
     if len(equal_to[0]) > 0:
         risk = ((equal_to[0][0] + equal_to[0][-1]) * steps[2]) / 2
     elif (len(smaller_than[0]) > 0) & (len(greater_than[0]) > 0):
-        risk = ((greater_than[0][0] * steps[2]) - (smaller_than[0][-1] * steps[2])) / (arr[greater_than[0][0]] - arr[smaller_than[0][-1]]) * (arg.th - arr[smaller_than[0][-1]]) + (smaller_than[0][-1] * steps[2])
+        risk = ((greater_than[0][0] * steps[2]) - (smaller_than[0][-1] * steps[2])) / (arr[greater_than[0][0]] -
+                                                                                       arr[smaller_than[0][-1]]) * (arg.th - arr[smaller_than[0][-1]]) + (smaller_than[0][-1] * steps[2])
 
-    #Check for the edge cases where the threshold does not lie in the middle
+    # Check for the edge cases where the threshold does not lie in the middle
     if arg.op == 'ge':
         if arr[0] > arg.th:
-            risk =100
+            risk = 100
         elif arr[-1] < arg.th:
-            risk =0.0
+            risk = 0.0
         elif (len(smaller_than[0]) > 0) & (len(greater_than[0]) > 0):
-            risk =100 - risk
+            risk = 100 - risk
         else:
-            risk =0.0
+            risk = 0.0
 
-    #The Less Than or Equal to case
+    # The Less Than or Equal to case
     else:
         if arr[0] > arg.th:
-            risk =0.0
+            risk = 0.0
         elif arr[-1] < arg.th:
-            risk =100
+            risk = 100
         else:
-            risk =0.0
+            risk = 0.0
     return risk
 
 
@@ -76,6 +79,7 @@ def sort_etiket(col: pd.Series) -> pd.Series:
         col.iloc[i] = num
     return col.map(lambda field: int(field))
 
+
 class PercentileToPercentage(Plugin):
     """Writes a new field with with the percentile exceedence percentage from the input percentiles
 
@@ -94,7 +98,8 @@ class PercentileToPercentage(Plugin):
     :param ps: Indicates the Start;End;Step for the percentile steps, defaults to 0,100,5
     :type ps: str, optional
     """
-    def __init__(self, df:pd.DataFrame, threshold:float=0.3, operator:str='ge', etiket:str='GE0_____PALL', nomvar:str='SSH', typvar:str='P@', percentile_step:str='0,100,5'):
+
+    def __init__(self, df: pd.DataFrame, threshold: float = 0.3, operator: str = 'ge', etiket: str = 'GE0_____PALL', nomvar: str = 'SSH', typvar: str = 'P@', percentile_step: str = '0,100,5'):
         self.df = df
         self.th = threshold
         self.op = operator
@@ -104,15 +109,15 @@ class PercentileToPercentage(Plugin):
         self.ps = percentile_step
         self.validate_input()
 
-    #Validate input data
+    # Validate input data
     def validate_input(self):
         if self.df.empty:
             raise PercentileToPercentageError('No data to process')
-        
+
         self.nomvar_df = self.df.loc[self.df.nomvar == self.nv]
         if self.nomvar_df.empty:
             raise PercentileToPercentageError('Input nomvar is not found')
-        
+
         self.typvar_df = self.df.loc[self.df.typvar == self.tv]
         if self.typvar_df.empty:
             raise PercentileToPercentageError('Input typvar is not found')
@@ -124,12 +129,11 @@ class PercentileToPercentage(Plugin):
 
         self.df = fstpy.add_columns(
             self.df, columns=[
-                'forecast_hour', 'nomvar', 'typvar', 'd'])
+                'forecast_hour'])
 
         # remove meta data from DataFrame
         self.df = self.df.loc[~self.df.nomvar.isin(
             ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
 
     def compute(self) -> pd.DataFrame:
         """Writes the new field and metadata with the updated threshold exceedence percentage returned from field to percentage function to the
@@ -139,22 +143,24 @@ class PercentileToPercentage(Plugin):
         :type arg: arg.Namespace
         """
         df = self.df
-        df_field = fstpy.compute(df.loc[(df.typvar == self.tv) & (df.nomvar == self.nv) & (df.etiket.str.startswith('C'))])
+        df_field = fstpy.compute(df.loc[(df.typvar == self.tv) & (
+            df.nomvar == self.nv) & (df.etiket.str.startswith('C'))])
 
         if df_field.empty:
             raise("Etiket does not indicate percentile")
 
-        df_all_mask = df.loc[df.typvar.isin(['@@','!@'])]
-        df_msk = fstpy.compute(df_all_mask.loc[(df_all_mask.nomvar == self.nv) & (df_all_mask.etiket.str.startswith('C'))])
+        df_all_mask = df.loc[df.typvar.isin(['@@', '!@'])]
+        df_msk = fstpy.compute(df_all_mask.loc[(df_all_mask.nomvar == self.nv)
+                               & (df_all_mask.etiket.str.startswith('C'))])
         df_field_grouped = df_field.groupby(['forecast_hour'], as_index=False)
 
         df_output = []
         for (forecast_hour), df_group in df_field_grouped:
 
-            #Find the masks associated with the current group of data
+            # Find the masks associated with the current group of data
             df_msk_group = df_msk.loc[df_msk['forecast_hour'] == forecast_hour]
 
-            #Checking for validity of etiket field
+            # Checking for validity of etiket field
             if len(self.ed[-12:-10]) != 2 and len(self.ed[-12:-10]) != 0:
                 raise Exception("The start of the etiket name can only have either 2 or 0 characters.")
             if len(self.ed[-10:-4]) == 0:
@@ -164,12 +170,12 @@ class PercentileToPercentage(Plugin):
             if self.ed[-3:] != "ALL":
                 raise Exception("Etiket name does not end in 'ALL'.")
 
-            #Rewrite the etiket field name to the validated input name
+            # Rewrite the etiket field name to the validated input name
             mask = copy.deepcopy(df_msk_group.iloc[0].to_dict())
             mask['etiket'] = self.ed
             mask = pd.DataFrame([mask])
 
-            #Select a row of data to update the field to the exceedence percentage
+            # Select a row of data to update the field to the exceedence percentage
             df_group = df_group.sort_values('etiket', key=sort_etiket)
             group_field_stacked = np.stack(df_group['d'])
             percentile_field = np.apply_along_axis(field_to_percentage, 0, group_field_stacked, self)
@@ -178,6 +184,8 @@ class PercentileToPercentage(Plugin):
             data = copy.deepcopy(df_group.iloc[0].to_dict())
             data['etiket'] = self.ed
             data['d'] = percentile_field
+            data['nbits'] = 32
+            data["datyp"] = 5
             data = pd.DataFrame([data])
             data["d"] = data["d"].map(lambda f: f.astype(np.float32))
             df_output.append(data)

@@ -40,7 +40,7 @@ Reference:
 Keywords:
 ~~~~~~~~~
 
--  MÉTÉO/WEATHER, température/temperature, potentielle/potential
+-  MÉTÉO/WEATHER, pourcentage/percentage, centile/percentile
 
 Usage:
 ~~~~~~
@@ -52,3 +52,18 @@ Usage:
    import os
    import fstpy.all as fstpy
    import spookipy.all as spooki
+
+   spooki_dir = os.environ['SPOOKI_DIR']
+
+   user = os.environ['USER']
+
+   df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/PercentileToPercentage/testsFiles/inputFile.std').to_pandas()
+   df_field = fstpy.compute(df.loc[(df.typvar == selected_tv) & (df.nomvar == selected_nv) & (df.etiket.str.startswith('C'))])
+
+   df_percentage = spooki.PercentileToPercentage(df,  
+                                        operation_name='MultiplyElementsBy',  
+                                        exception_class=MultiplyElementsByError,  
+                                        operator=mult_value,  
+                                        nomvar_out='MU'  
+                                        value=(1/3),  
+                                        etiket='MULEBY').compute()  

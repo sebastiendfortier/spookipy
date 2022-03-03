@@ -69,6 +69,7 @@ Documentation
 * :doc:`multiplyelementsbypoint`
 * :doc:`opelementsbycolumn`
 * :doc:`opelementsbyvalue`
+* :doc:`percentiletopercentage`
 * :doc:`plugin`
 * :doc:`precipitationamount`
 * :doc:`pressure`
@@ -123,6 +124,7 @@ Documentation
    multiplyelementsbypoint
    opelementsbycolumn
    opelementsbyvalue
+   percentiletopercentage
    plugin
    precipitationamount
    pressure

@@ -114,10 +114,12 @@ class PercentileToPercentage(Plugin):
         if self.df.empty:
             raise PercentileToPercentageError('No data to process')
 
+        # Ensure that the selected nomvar is present
         self.nomvar_df = self.df.loc[self.df.nomvar == self.nv]
         if self.nomvar_df.empty:
             raise PercentileToPercentageError('Input nomvar is not found')
 
+        # Ensure that the selected typvar is present
         self.typvar_df = self.df.loc[self.df.typvar == self.tv]
         if self.typvar_df.empty:
             raise PercentileToPercentageError('Input typvar is not found')
@@ -146,6 +148,7 @@ class PercentileToPercentage(Plugin):
         df_field = fstpy.compute(df.loc[(df.typvar == self.tv) & (
             df.nomvar == self.nv) & (df.etiket.str.startswith('C'))])
 
+        # Since nv and tv is verified, if df is still empty then etiket does not start with C
         if df_field.empty:
             raise("Etiket does not indicate percentile")
 
@@ -190,14 +193,5 @@ class PercentileToPercentage(Plugin):
             data["d"] = data["d"].map(lambda f: f.astype(np.float32))
             df_output.append(data)
             df_output.append(mask)
-
-        # Record the positional records to be merged with the new data frame with the updated "d" values
-        '''
-        df_field = pd.concat(df_output, ignore_index=True)
-
-        # Writes the data frame to the destination fst file.
-        df = pd.concat(df_field, ignore_index=True)
-        df.loc[df.typvar == self.tv, "d"] = df.loc[df.typvar == self.tv, "d"].map(lambda f: f.astype(np.float32))
-        '''
 
         return final_results(df_output, PercentileToPercentageError, self.meta_df)

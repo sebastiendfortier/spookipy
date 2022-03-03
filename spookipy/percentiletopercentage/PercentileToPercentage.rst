@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  Calculate probability of exceedance of a threshold using ensemble percentiles.
 
@@ -44,7 +44,10 @@ Keywords:
 
 Usage:
 ~~~~~~
-   Note: With x being the percentile, the data frame should have
+
+.. note::
+
+   With x being the percentile, the data frame should have
    an etiekt format of Cx followed by the rest of the conventional 
    etiket name. 
 
@@ -70,6 +73,8 @@ Usage:
                                         nomvar='SSH', 
                                         typvar='P@', 
                                         percentile_step='0,100,5').compute()
+
+   fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', df_percentage).to_fst()                                        
 
 Contacts:
 ~~~~~~~~~

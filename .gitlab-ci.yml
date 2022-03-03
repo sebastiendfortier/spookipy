@@ -23,7 +23,7 @@ before_script:
   - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmde/surge/surgepy/1.0.8/
   - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/apps/ci_fstcomp/1.0.7
   # - . ssmuse-sh -d /fs/site4/eccc/cmd/w/sbf000/ssm/fstpy/2.1.11
-  - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/2.1.12/
+  - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/2.1.11/
   
 
 

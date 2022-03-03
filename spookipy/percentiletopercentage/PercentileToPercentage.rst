@@ -61,7 +61,7 @@ Usage:
    user = os.environ['USER']
 
    df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/PercentileToPercentage/testsFiles/inputFile.std').to_pandas()
-   df_field = fstpy.compute(df.loc[(df.typvar == selected_tv) & (df.nomvar == selected_nv) & (df.etiket.str.startswith('C'))])
+   df_field = df.loc[(df.typvar == selected_tv) & (df.nomvar == selected_nv) & (df.etiket.str.startswith('C'))]
 
    df_percentage = spooki.PercentileToPercentage(df_field,   
                                         threshold=0.3, 

@@ -33,9 +33,9 @@ def field_to_percentage(arr: np.ndarray, arg: str) -> float:
     smaller_than = np.where(arr < arg.threshold)
     greater_than = np.where(arr > arg.threshold)
 
-    if len(equal_to[0]) > 0:
+    if(equal_to[0]).size > 0:
         risk = ((equal_to[0][0] + equal_to[0][-1]) * steps[2]) / 2
-    elif (len(smaller_than[0]) > 0) & (len(greater_than[0]) > 0):
+    elif ((smaller_than[0]).size > 0) & ((greater_than[0]).size > 0):
         risk = ((greater_than[0][0] * steps[2]) - (smaller_than[0][-1] * steps[2])) / (arr[greater_than[0][0]] -
                                                                                        arr[smaller_than[0][-1]]) * (arg.threshold - arr[smaller_than[0][-1]]) + (smaller_than[0][-1] * steps[2])
 
@@ -45,7 +45,7 @@ def field_to_percentage(arr: np.ndarray, arg: str) -> float:
             risk = 100
         elif arr[-1] < arg.threshold:
             risk = 0.0
-        elif (len(smaller_than[0]) > 0) & (len(greater_than[0]) > 0):
+        elif ((smaller_than[0]).size > 0) & ((greater_than[0]).size > 0):
             risk = 100 - risk
         else:
             risk = 0.0

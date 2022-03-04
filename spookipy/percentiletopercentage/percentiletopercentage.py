@@ -187,8 +187,6 @@ class PercentileToPercentage(Plugin):
             data = copy.deepcopy(df_group.iloc[0].to_dict())
             data['etiket'] = self.ed
             data['d'] = percentile_field
-            data['nbits'] = 32
-            data["datyp"] = 5
             data = pd.DataFrame([data])
             data["d"] = data["d"].map(lambda f: f.astype(np.float32))
             df_output.append(data)

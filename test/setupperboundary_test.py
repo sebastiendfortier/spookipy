@@ -25,6 +25,7 @@ def test_1(plugin_test_dir):
     # [ReaderStd --input {sources[0]}] >> [SetUpperBoundary --value 5] >> [WriterStd --output {destination_path} ]
 
     df['etiket'] = '__SETUPRX'
+    df['typvar'] = 'PB'
 
     # write the result
     results_file = TMP_PATH + "test_1.std"
@@ -52,6 +53,7 @@ def test_2(plugin_test_dir):
     # [ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> [SetUpperBoundary --value 0] >> [WriterStd --output {destination_path}]
 
     df['etiket'] = '__SETUPRX'
+    df['typvar'] = 'PB'
 
     # write the result
     results_file = TMP_PATH + "test_2.std"
@@ -91,6 +93,7 @@ def test_4(plugin_test_dir):
     # [ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> [SetUpperBoundary --value 0 --outputFieldName TEST] >> [WriterStd --output {destination_path} --noUnitConversion]
 
     df['etiket'] = '__SETUPRX'
+    df['typvar'] = 'PB'
 
     # write the result
     results_file = TMP_PATH + "test_4.std"

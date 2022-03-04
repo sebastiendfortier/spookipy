@@ -26,6 +26,7 @@ def test_1(plugin_test_dir):
     # [SetLowerBoundary --value 0] >> 
     # [WriterStd --output {destination_path} ]
     df['etiket'] = '__SETLWRX'
+    df['typvar'] = 'PB'
     # write the result
     results_file = TMP_PATH + "test_1.std"
     fstpy.delete_file(results_file)
@@ -54,6 +55,7 @@ def test_2(plugin_test_dir):
     # [SetLowerBoundary --value 0] >> 
     # [WriterStd --output {destination_path} ]
     df['etiket'] = '__SETLWRX'
+    df['typvar'] = 'PB'
     # write the result
     results_file = TMP_PATH + "test_2.std"
     fstpy.delete_file(results_file)
@@ -93,6 +95,7 @@ def test_4(plugin_test_dir):
     # [SetLowerBoundary --value 0 --outputFieldName TEST] >> 
     # [WriterStd --output {destination_path} --noUnitConversion ]
     df['etiket'] = '__SETLWRX'
+    df['typvar'] = 'PB'
     # write the result
     results_file = TMP_PATH + "test_4.std"
     fstpy.delete_file(results_file)

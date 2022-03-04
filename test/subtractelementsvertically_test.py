@@ -147,6 +147,7 @@ def test_7(plugin_test_dir):
     # [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
     df = spooki.encode_ip2_and_ip3_height(df)
     df.loc[~df.nomvar.isin(['ES','TT']), 'etiket'] = '_V700_'
+    df.loc[df.nomvar.isin(['ES','TT']), 'typvar'] = 'P'
     # write the result
     results_file = TMP_PATH + "test_7.std"
     fstpy.delete_file(results_file)
@@ -173,6 +174,7 @@ def test_8(plugin_test_dir):
     # [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
     df = spooki.encode_ip2_and_ip3_height(df)
     df.loc[~df.nomvar.isin(['ES','TT']), 'etiket'] = '_V700_'
+    df.loc[df.nomvar.isin(['ES','TT']), 'typvar'] = 'P'
     # write the result
     results_file = TMP_PATH + "test_8.std"
     fstpy.delete_file(results_file)
@@ -183,5 +185,5 @@ def test_8(plugin_test_dir):
 
     # compare results
     res = fstcomp(results_file, file_to_compare)#, exclude_meta=True)
-    # fstpy.delete_file(results_file)
+    fstpy.delete_file(results_file)
     assert(res)

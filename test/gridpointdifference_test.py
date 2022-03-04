@@ -430,7 +430,7 @@ def test_15(plugin_test_dir):
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
-    # fstpy.delete_file(results_file)
+    fstpy.delete_file(results_file)
     assert(res)
 
 
@@ -510,6 +510,7 @@ def test_18(plugin_test_dir):
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
     df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
+    df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
     results_file = TMP_PATH + "test_18.std"
     fstpy.delete_file(results_file)
@@ -537,6 +538,7 @@ def test_19(plugin_test_dir):
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
     df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
+    df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
     results_file = TMP_PATH + "test_19.std"
     fstpy.delete_file(results_file)
@@ -564,6 +566,7 @@ def test_20(plugin_test_dir):
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
     df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
+    df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
     results_file = TMP_PATH + "test_20.std"
     fstpy.delete_file(results_file)
@@ -591,6 +594,7 @@ def test_21(plugin_test_dir):
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
     df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
+    df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
     results_file = TMP_PATH + "test_21.std"
     fstpy.delete_file(results_file)
@@ -618,6 +622,7 @@ def test_22(plugin_test_dir):
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
     df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
+    df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
     results_file = TMP_PATH + "test_22.std"
     fstpy.delete_file(results_file)
@@ -645,6 +650,7 @@ def test_23(plugin_test_dir):
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
     df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
+    df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
     results_file = TMP_PATH + "test_23.std"
     fstpy.delete_file(results_file)
@@ -672,6 +678,7 @@ def test_24(plugin_test_dir):
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
     df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
+    df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
     results_file = TMP_PATH + "test_24.std"
     fstpy.delete_file(results_file)
@@ -700,6 +707,7 @@ def test_25(plugin_test_dir):
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
     df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
+    df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
     results_file = TMP_PATH + "test_25.std"
     fstpy.delete_file(results_file)
@@ -726,6 +734,7 @@ def test_26(plugin_test_dir):
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
     df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
+    df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
     results_file = TMP_PATH + "test_26.std"
     fstpy.delete_file(results_file)

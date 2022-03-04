@@ -64,7 +64,7 @@ def test_3(plugin_test_dir):
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
-    # fstpy.delete_file(results_file)
+    fstpy.delete_file(results_file)
     assert(res)
 
 def test_4(plugin_test_dir):

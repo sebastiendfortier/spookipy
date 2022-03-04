@@ -306,6 +306,8 @@ def test_11(plugin_test_dir):
 
     # Encodage des ip2
     df = spooki.encode_ip2_and_ip3_height(df)
+    df.loc[:,'typvar'] = 'P'
+    
 
     # write the result
     results_file = TMP_PATH + "test_11.std"
@@ -349,7 +351,7 @@ def test_12(plugin_test_dir):
 
     # Encodage des ip2
     df = spooki.encode_ip2_and_ip3_height(df)
-
+    df.loc[df.typvar=='PZ','typvar'] = 'P'
     # write the result
     results_file = TMP_PATH + "test_12.std"
     fstpy.delete_file(results_file)

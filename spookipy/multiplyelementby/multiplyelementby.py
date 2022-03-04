@@ -6,8 +6,7 @@ import pandas as pd
 
 from ..opelementsbyvalue import OpElementsByValue
 from ..plugin import Plugin
-from ..utils import initializer
-from ..configparsingutils import check_length_2_to_4
+from ..utils import initializer, validate_nomvar
 
 
 def mult_value(a, v):
@@ -56,6 +55,7 @@ class MultiplyElementBy(Plugin):
 
         parsed_arg = vars(parser.parse_args(args.split()))
 
-        check_length_2_to_4(parsed_arg['nomvar_out'],True,MultiplyElementByError)
+        if parsed_arg['nomvar_out'] is not None:
+            validate_nomvar(parsed_arg['nomvar_out'],"MultiplyElementBy",MultiplyElementByError)
 
         return parsed_arg

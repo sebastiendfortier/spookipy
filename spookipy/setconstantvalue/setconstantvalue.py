@@ -8,8 +8,8 @@ import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin
-from ..utils import create_empty_result, final_results, initializer
-from ..configparsingutils import check_length_2_to_4, preprocess_negative_args
+from ..utils import create_empty_result, final_results, initializer, validate_nomvar
+from ..configparsingutils import preprocess_negative_args
 
 
 def set_value(a, v):
@@ -142,7 +142,8 @@ class SetConstantValue(Plugin):
         else:
             parsed_arg['value'] = float(parsed_arg['value'])
 
-        check_length_2_to_4(parsed_arg['nomvar_out'],True,SetConstantValueError)
+        if parsed_arg['nomvar_out'] is not None:
+            validate_nomvar(parsed_arg['nomvar_out'],"SetConstantValue",SetConstantValueError)
 
         return parsed_arg
 

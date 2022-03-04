@@ -7,8 +7,7 @@ import pandas as pd
 
 from ..opelementsbycolumn import OpElementsByColumn
 from ..plugin import Plugin
-from ..utils import initializer
-from ..configparsingutils import check_length_2_to_4
+from ..utils import initializer, validate_nomvar
 
 
 class MultiplyElementsByPointError(Exception):
@@ -61,6 +60,6 @@ class MultiplyElementsByPoint(Plugin):
         parsed_arg = vars(parser.parse_args(args.split()))
 
         parsed_arg['group_by_forecast_hour'] = (parsed_arg['group_by_forecast_hour'] == 'FORECAST_HOUR')
-        check_length_2_to_4(parsed_arg['nomvar_out'],False,MultiplyElementsByPointError)
+        validate_nomvar(parsed_arg['nomvar_out'],"MultiplyElementsByPoint",MultiplyElementsByPointError)
 
         return parsed_arg

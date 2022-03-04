@@ -9,7 +9,6 @@ import pandas as pd
 
 from ..plugin import Plugin
 from ..utils import (create_empty_result, final_results, initializer, validate_nomvar)
-from ..configparsingutils import check_length_2_to_4
 
 ETIKET: Final[str] = 'SETUPR'
 
@@ -64,6 +63,7 @@ class SetUpperBoundary(Plugin):
 
         parsed_arg = vars(parser.parse_args(args.split()))
 
-        check_length_2_to_4(parsed_arg['nomvar_out'],True,SetUpperBoundaryError)
+        if parsed_arg['nomvar_out'] is not None:
+            validate_nomvar(parsed_arg['nomvar_out'],"SetUpperBoundary",SetUpperBoundaryError)
 
         return parsed_arg

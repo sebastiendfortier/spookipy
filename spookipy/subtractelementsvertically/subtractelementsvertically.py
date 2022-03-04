@@ -8,7 +8,6 @@ import pandas as pd
 from ..plugin import Plugin
 from ..utils import create_empty_result, final_results, initializer, validate_nomvar
 import rpnpy.librmn.all as rmn
-from ..configparsingutils import check_length_2_to_4
 
 ETIKET: Final[str] =  'SUBEVY'
 
@@ -102,7 +101,8 @@ class SubtractElementsVertically(Plugin):
 
         parsed_arg['direction'] = parsed_arg['direction'].lower()
 
-        check_length_2_to_4(parsed_arg['nomvar_out'],True,SubtractElementsVerticallyError)
+        if parsed_arg['nomvar_out'] is not None:
+            validate_nomvar(parsed_arg['nomvar_out'],"SubtractElementsVertically",SubtractElementsVerticallyError)
 
         return parsed_arg
 

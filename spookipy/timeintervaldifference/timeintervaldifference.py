@@ -7,8 +7,8 @@ import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin
-from ..utils import create_empty_result, final_results, get_list_of_forecast_hours, initializer, to_numpy, validate_list_of_nomvar, validate_list_of_times, validate_list_of_tuples_of_times
-from ..configparsingutils import check_length_2_to_4, apply_lambda_to_list, convert_time_range, convert_time
+from ..utils import create_empty_result, final_results, get_list_of_forecast_hours, initializer, to_numpy, validate_list_of_nomvar, validate_list_of_times, validate_list_of_tuples_of_times, validate_nomvar
+from ..configparsingutils import apply_lambda_to_list, convert_time_range, convert_time
 
 class TimeIntervalDifferenceError(Exception):
     pass
@@ -205,7 +205,7 @@ class TimeIntervalDifference(Plugin):
         parsed_arg['forecast_hour_range'] = apply_lambda_to_list(parsed_arg['forecast_hour_range'].split(','), lambda a: convert_time_range(a))
 
         parsed_arg['nomvar'] = parsed_arg['nomvar'].split(',')
-        apply_lambda_to_list(parsed_arg['nomvar'],lambda a : check_length_2_to_4(a,False,TimeIntervalDifferenceError))
+        apply_lambda_to_list(parsed_arg['nomvar'],lambda a : validate_nomvar(a,"TimeIntervalDifference",TimeIntervalDifferenceError))
 
         return parsed_arg
 

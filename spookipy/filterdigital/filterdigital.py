@@ -10,7 +10,6 @@ import pandas as pd
 from ..plugin import Plugin
 from ..utils import (final_results, get_split_value, initializer, to_dask, validate_nomvar)
 from .f_stenfilt import f_stenfilt
-from ..configparsingutils import check_length_2_to_4
 
 class FilterDigitalError(Exception):
     pass
@@ -111,7 +110,8 @@ class FilterDigital(Plugin):
 
         parsed_arg['filter'] = parsed_arg['filter'].split(",")
 
-        check_length_2_to_4(parsed_arg['nomvar_out'],FilterDigitalError)
+        if parsed_arg['nomvar_out'] is not None:
+            validate_nomvar(parsed_arg['nomvar_out'],"FilterDigital",FilterDigitalError)
 
         return parsed_arg
 

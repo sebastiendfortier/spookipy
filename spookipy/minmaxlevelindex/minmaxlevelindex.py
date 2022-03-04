@@ -10,7 +10,6 @@ import rpnpy.librmn.all as rmn
 from ..plugin import Plugin
 from ..utils import (create_empty_result, dataframe_arrays_to_dask, final_results, get_3d_array,
                      get_dependencies, get_from_dataframe,initializer, reshape_arrays, validate_nomvar)
-from ..configparsingutils import check_length_2_to_4
 
 class MinMaxLevelIndexError(Exception):
     pass
@@ -250,9 +249,10 @@ class MinMaxLevelIndex(Plugin):
         parser.add_argument('--outputFieldName2',type=str,default="KMAX",dest='nomvar_max',help="Option to change the name of output field KMAX")
 
         parsed_arg = vars(parser.parse_args(args.split()))
-        check_length_2_to_4(parsed_arg['nomvar'],True,MinMaxLevelIndexError)
-        check_length_2_to_4(parsed_arg['nomvar_min'],False,MinMaxLevelIndexError)
-        check_length_2_to_4(parsed_arg['nomvar_max'],False,MinMaxLevelIndexError)
+        if parsed_arg['nomvar'] is not None:
+            validate_nomvar(parsed_arg['nomvar'],"MinMaxLevelIndex",MinMaxLevelIndexError)
+        validate_nomvar(parsed_arg['nomvar_min'],"MinMaxLevelIndex",MinMaxLevelIndexError)
+        validate_nomvar(parsed_arg['nomvar_max'],"MinMaxLevelIndex",MinMaxLevelIndexError)
 
         if parsed_arg['minMax'] == "MIN":
             parsed_arg['min'] = True

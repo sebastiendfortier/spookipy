@@ -7,8 +7,7 @@ import pandas as pd
 
 from ..opelementsbycolumn import OpElementsByColumn
 from ..plugin import Plugin
-from ..utils import initializer
-from ..configparsingutils import check_length_2_to_4
+from ..utils import initializer, validate_nomvar
 
 class AddElementsByPointError(Exception):
     pass
@@ -62,7 +61,7 @@ class AddElementsByPoint(Plugin):
 
         parsed_arg['group_by_forecast_hour'] = (parsed_arg['group_by_forecast_hour'] == 'FORECAST_HOUR')
 
-        check_length_2_to_4(parsed_arg['nomvar_out'],allow_none=False,exception=AddElementsByPointError)
+        validate_nomvar(parsed_arg['nomvar_out'],"AddElementsByPoint",AddElementsByPointError)
 
         return parsed_arg
 

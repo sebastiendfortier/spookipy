@@ -5,8 +5,8 @@ import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin
-from ..utils import final_results, initializer
-from ..configparsingutils import preprocess_negative_args,check_length_2_to_4,apply_lambda_to_list
+from ..utils import final_results, initializer, validate_nomvar
+from ..configparsingutils import preprocess_negative_args,apply_lambda_to_list
 
 class MaskError(Exception):
     pass
@@ -102,7 +102,8 @@ class Mask(Plugin):
 
         parsed_arg = vars(parser.parse_args(preprocess_negative_args(args.split(),["--thresholds","--values"])))
 
-        check_length_2_to_4(parsed_arg['nomvar_out'],error_class=MaskError)
+        if parsed_arg['nomvar_out'] is not None:
+            validate_nomvar(parsed_arg['nomvar_out'],"Mask",MaskError)
 
         op_dict = {'GT':'>', 'GE':'>=', 'EQ':'==', 'LE':'<=', 'LT':'<', 'NE':'!='}
         parsed_arg['operators'] = apply_lambda_to_list(parsed_arg['operators'].split(","), lambda a : op_dict[a])

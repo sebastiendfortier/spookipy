@@ -9,7 +9,6 @@ import pandas as pd
 
 from ..plugin import Plugin
 from ..utils import (create_empty_result, final_results, initializer, validate_nomvar)
-from ..configparsingutils import check_length_2_to_4
 
 ETIKET: Final[str] = 'SETLWR'
 
@@ -64,6 +63,7 @@ class SetLowerBoundary(Plugin):
 
         parsed_arg = vars(parser.parse_args(args.split()))
 
-        check_length_2_to_4(parsed_arg['nomvar_out'],True,SetLowerBoundaryError)
+        if parsed_arg['nomvar_out'] is not None:
+            validate_nomvar(parsed_arg['nomvar_out'],"SetLowerBoundary",SetLowerBoundaryError)
 
         return parsed_arg

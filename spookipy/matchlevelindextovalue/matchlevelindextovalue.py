@@ -11,7 +11,6 @@ import rpnpy.librmn.all as rmn
 from ..plugin import Plugin
 from ..utils import (create_empty_result, dataframe_arrays_to_dask, final_results, get_3d_array,
                      initializer, reshape_arrays, to_numpy, validate_nomvar)
-from ..configparsingutils import check_length_2_to_4
 
 class MatchLevelIndexToValueError(Exception):
     pass
@@ -165,8 +164,9 @@ class MatchLevelIndexToValue(Plugin):
         parser.add_argument('--outputFieldName',type=str,dest='nomvar_out',help="Option to give the output field a different name from the input field name applicable only with one input meteorological field.")
 
         parsed_arg = vars(parser.parse_args(args.split()))
-        check_length_2_to_4(parsed_arg['nomvar_index'],False,MatchLevelIndexToValueError)
-        check_length_2_to_4(parsed_arg['nomvar_out'],True,MatchLevelIndexToValueError)
+        validate_nomvar(parsed_arg['nomvar_index'],"MatchLevelIndexToValue",MatchLevelIndexToValueError)
+        if parsed_arg['nomvar_out'] is not None:
+            validate_nomvar(parsed_arg['nomvar_out'],"MatchLevelIndexToValue",MatchLevelIndexToValueError)
 
         return parsed_arg
 

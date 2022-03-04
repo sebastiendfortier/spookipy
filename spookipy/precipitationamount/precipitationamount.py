@@ -5,8 +5,8 @@ from typing import Final
 import pandas as pd
 from ..timeintervaldifference.timeintervaldifference import TimeIntervalDifference
 from ..plugin import Plugin
-from ..utils import final_results, initializer
-from ..configparsingutils import check_length_2_to_4, apply_lambda_to_list, convert_time_range, convert_time
+from ..utils import final_results, initializer, validate_nomvar
+from ..configparsingutils import apply_lambda_to_list, convert_time_range, convert_time
 
 ETIKET: Final[str] = 'PCPAMT'
 
@@ -64,6 +64,6 @@ class PrecipitationAmount(Plugin):
         parsed_arg['forecast_hour_range'] = apply_lambda_to_list(parsed_arg['forecast_hour_range'].split(','), lambda a: convert_time_range(a))
 
         parsed_arg['nomvar'] = parsed_arg['nomvar'].split(',')
-        apply_lambda_to_list(parsed_arg['nomvar'],lambda a : check_length_2_to_4(a,False,PrecipitationAmountError))
+        apply_lambda_to_list(parsed_arg['nomvar'],lambda a : validate_nomvar(a,"PrecipitationAmount",PrecipitationAmountError))
 
         return parsed_arg

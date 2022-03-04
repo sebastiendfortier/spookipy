@@ -43,8 +43,8 @@ def test_2(plugin_test_dir):
     source0 = plugin_test_dir + "2022021100_out.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    with pytest.raises(Exception):
-        df = spooki.PercentileToPercentage(src_df0, etiket='wrong_etiket_name').compute()
+    with pytest.raises(spooki.PercentileToPercentageError):
+        _ = spooki.PercentileToPercentage(src_df0, etiket='wrong_etiket_name').compute()
     # [ReaderStd --input {sources[0]}] >> [Etiket --etiket wrong_etiket_name] >> [PercentileToPercentage] >> [Raise Exception]
 
 
@@ -55,7 +55,7 @@ def test_3(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     df = spooki.PercentileToPercentage(src_df0, threshold=0.3, operator='le', etiket='GE0_____PALL',
-                                       nomvar='SSH8', typvar='P@', percentile_step='0,100,5').compute()
+                                       nomvar='SSH8', typvar='P@', percentile_step=[0,100,5]).compute()
     # [ReaderStd --input {sources[0]}] >> [Threshold --threshold 0.3, Operator --operator le, Etiket --etiket GE0_____PALL, Nomvar --nomvar SSH8, Typvar --typvar P@, Percentile_Step --percentile_step 0,100,5] >> [PercentileToPercentage] >> [WriterStd --output {destination_path} ]
 
     # write the result
@@ -79,8 +79,8 @@ def test_4(plugin_test_dir):
     source0 = plugin_test_dir + "2022021100_out.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    with pytest.raises(Exception):
-        df = spooki.PercentileToPercentage(src_df0, percentile_step="wrong_percentile").compute()
+    with pytest.raises(ValueError):
+        _ = spooki.PercentileToPercentage(src_df0, percentile_step="wrong_percentile").compute()
     # [ReaderStd --input {sources[0]}] >> [Percentile_Step --percentile_step wrong_percentile] >> [PercentileToPercentage] >> [Raise Exception]
 
 

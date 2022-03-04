@@ -43,6 +43,7 @@ def test_1(plugin_test_dir):
     df.loc[df.etiket == 'R1558V0N', 'etiket'] = 'R1558V0_N'
     df.loc[df.etiket == 'G0928V4N', 'etiket'] = 'G0928V4_N'
     df.loc[df.etiket == 'MXWIND', 'etiket'] = 'MXWIND__X'
+    df.loc[df.typvar == 'P', 'typvar'] = 'PI'
     # df['datyp'] = 5
     # df['nbits'] = 32
     # write the result
@@ -168,6 +169,7 @@ def test_5(plugin_test_dir):
     # [WriterStd --output {destination_path} --makeIP1EncodingWorkWithTests]
 
     df = spooki.convip(df, style=rmn.CONVIP_ENCODE_OLD)
+    df.loc[(~df.nomvar.isin(['KT','PT','RT'])) & (df.typvar == 'P'), 'typvar'] = 'PI'
 
     # df.loc[:,'datyp'] = 5
     # df.loc[:,'nbits'] = 32
@@ -207,6 +209,7 @@ def test_6(plugin_test_dir):
     # [InterpolationHorizontalGrid -m FIELD_DEFINED --fieldName RT --interpolationType NEAREST --extrapolationType NEAREST] >>
     # [WriterStd --output {destination_path} ]
 
+    df.loc[(df.nomvar!='RT') & (df.typvar == 'P'), 'typvar'] = 'PI'
     # df['datyp'] = 5
     # df['nbits'] = 32
     # write the result
@@ -250,6 +253,7 @@ def test_7(plugin_test_dir):
     # ([ReaderStd --input {sources[1]}] >> [Select --fieldName ES]) >>
     # [InterpolationHorizontalGrid -m FIELD_DEFINED --fieldName ES --interpolationType BI-CUBIC --extrapolationType NEAREST] >>
     # [WriterStd --output {destination_path}]
+    df.loc[(df.nomvar=='TT') & (df.typvar == 'P'), 'typvar'] = 'PI'
 
     # df['datyp'] = 5
     # df['nbits'] = 32
@@ -299,7 +303,7 @@ def test_8(plugin_test_dir):
     # ([ReaderStd --input {sources[1]}] >> [Select --fieldName TT]) >>
     # [InterpolationHorizontalGrid -m FIELD_DEFINED --fieldName ES --interpolationType BI-CUBIC --extrapolationType NEAREST] >>
     # [Zap --nbitsForDataStorage E32]>>[WriterStd --output {destination_path} ]",
-
+    df.loc[df.nomvar.isin(['TT','P0']) & (df.typvar == 'P'), 'typvar'] = 'PI'
     # for i in df.index:
     #     if df.at[i,'nomvar'] != 'ES':
     # df['datyp'] = 5
@@ -349,6 +353,7 @@ def test_9(plugin_test_dir):
     # [WriterStd --output {destination_path} ]
 
     df = fstpy.select_with_meta(df, ['UU', 'VV'])
+    df.loc[df.typvar == 'P', 'typvar'] = 'PI'
 
     # df['datyp'] = 5
     # df.loc[df.nomvar!='!!','nbits'] = 32
@@ -398,6 +403,7 @@ def test_10(plugin_test_dir):
 
     df = fstpy.select_with_meta(df, ['UU', 'VV'])
     df = df.loc[df.nomvar != 'P0']
+    df.loc[df.typvar == 'P', 'typvar'] = 'PI'
     # df['datyp'] = 5
     # df.loc[df.nomvar!='!!','nbits']=32
     # write the result
@@ -446,6 +452,7 @@ def test_11(plugin_test_dir):
     # df[df.nomvar!='!!','nbits'] = 32
     # df.loc[df.nomvar=='!!','nbits']=64
     df = spooki.convip(df)
+    df.loc[(df.nomvar!='ES') & (df.typvar == 'P'), 'typvar'] = 'PI'
 
     # print('df\n',df[['nomvar', 'typvar', 'etiket', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'datyp', 'nbits', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4','grid']].to_string())
     # write the result
@@ -494,6 +501,7 @@ def test_13(plugin_test_dir):
     # df.loc[df.nomvar=='!!','nbits']=64
 
     df = df.loc[df.nomvar != 'HY']
+    df.loc[df.typvar == 'P', 'typvar'] = 'PI'
     # write the result
     results_file = TMP_PATH + "test_13.std"
     fstpy.delete_file(results_file)
@@ -537,7 +545,7 @@ def test_14(plugin_test_dir):
     # [WriterStd --output {destination_path} ]
 
     df = fstpy.select_with_meta(df, ['UU', 'VV'])
-
+    df.loc[df.typvar == 'P', 'typvar'] = 'PI'
     # df['datyp'] = 5
     # df.loc[df.nomvar!='!!','nbits'] = 32
 

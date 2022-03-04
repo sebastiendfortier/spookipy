@@ -118,6 +118,7 @@ def test_6(plugin_test_dir):
 
     df.loc[:, 'etiket'] = '__MULBYPX'
     df.loc[df.nomvar.isin(['!!', '^^', '>>', 'P0']), 'etiket'] = 'R1_V700_N'
+    df.loc[df.nomvar=='MUEP','typvar'] = 'P'
 
     # write the result
     results_file = TMP_PATH + "test_6.std"
@@ -145,6 +146,7 @@ def test_7(plugin_test_dir):
 
     df.loc[:, 'etiket'] = '__MULBYPX'
     df.loc[df.nomvar.isin(['!!', '^^', '>>', 'P0']), 'etiket'] = 'R1_V700_N'
+    df.loc[df.nomvar=='MUEP','typvar'] = 'P'
     # write the result
     results_file = TMP_PATH + "test_7.std"
     fstpy.delete_file(results_file)

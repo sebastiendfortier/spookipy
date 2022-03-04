@@ -136,6 +136,7 @@ def test_6(plugin_test_dir):
     # df['etiket']='MEANFIELDS'
     df.loc[df.nomvar.isin(['!!', '^^', '>>', 'P0']), 'etiket'] = 'R1_V700_N'
 
+    df.loc[df.nomvar == 'MEAN','typvar'] = 'P'
     # write the result
     results_file = TMP_PATH + "test_6.std"
     fstpy.delete_file(results_file)
@@ -161,6 +162,7 @@ def test_7(plugin_test_dir):
     # [ReaderStd --input {sources[0]}] >> [ArithmeticMeanByPoint] >> [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} ]
     # df['etiket']='__MEANFIX'
     df.loc[~df.nomvar.isin(['!!', '^^', '>>', 'P0']), 'etiket'] = '__MEANFIX'
+    df.loc[df.nomvar == 'MEAN','typvar'] = 'P'
     # df['typvar']='P'
     # df['ip2']=30
     # df['deet']=300

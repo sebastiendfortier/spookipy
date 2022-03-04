@@ -281,6 +281,7 @@ def test_11(plugin_test_dir):
     #  [WriterStd --output {destination_path} --ignoreExtended]
     # df = df.loc[df.nomvar=='VPPR']
     df.loc[df.nomvar.isin(['>>', '^^', 'P0']), 'etiket'] = '580V0'
+    df.loc[df.nomvar=='VPPR', 'typvar'] = 'P'
     # print(df[[]])
     # df['datyp']=5
     # df.loc[df.nomvar!='!!','nbits']=32
@@ -318,6 +319,7 @@ def test_12(plugin_test_dir):
     # df = df.loc[df.nomvar=='VPPR']
 
     df.loc[df.nomvar.isin(['>>', '^^', 'P0']), 'etiket'] = '580V0'
+    df.loc[df.nomvar=='VPPR', 'typvar'] = 'P'
     # df['datyp']=5
     # df.loc[df.nomvar!='!!','nbits']=32
     # write the result

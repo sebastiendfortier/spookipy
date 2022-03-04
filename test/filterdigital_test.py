@@ -495,6 +495,7 @@ def test_13(plugin_test_dir):
     # [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
 
     df.loc[:, 'etiket'] = 'R1580V0_N'
+    df.loc[df.typvar == 'P','typvar'] = 'PF'
 
     # df.loc[:,'datyp'] = 5
     # df.loc[df.nomvar!='!!','nbits'] = 32

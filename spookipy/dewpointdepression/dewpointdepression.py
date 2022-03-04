@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import argparse
 import logging
 
 import fstpy.all as fstpy
@@ -12,7 +13,7 @@ from ..science import (TDPACK_OFFSET_FIX, es_from_td, rpn_es_from_hr,
 from ..utils import (create_empty_result, existing_results, final_results,
                      get_dependencies, get_existing_result, get_from_dataframe,
                      initializer)
-
+from ..configparsingutils import add_argument_for_humidity_plugin, check_and_format_humidity_parsed_arguments
 
 class DewPointDepressionError(Exception):
     pass
@@ -290,3 +291,20 @@ class DewPointDepression(Plugin):
             temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
         td_df = get_from_dataframe(td_df, 'TD')
         return td_df
+
+    @staticmethod
+    def parse_config(args: str) -> dict:
+        """method to translate spooki plugin parameters to python plugin parameters
+        :param args: input unparsed arguments
+        :type args: str
+        :return: a dictionnary of converted parameters
+        :rtype: dict
+        """
+        parser = argparse.ArgumentParser(prog=DewPointDepression.__name__, parents=[Plugin.base_parser])
+        add_argument_for_humidity_plugin(parser)
+
+        parsed_arg = vars(parser.parse_args(args.split()))
+
+        check_and_format_humidity_parsed_arguments(parsed_arg, DewPointDepressionError)
+
+        return parsed_arg

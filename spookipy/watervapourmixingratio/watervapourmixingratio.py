@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import argparse
 import logging
 
 import fstpy.all as fstpy
@@ -11,6 +12,7 @@ from ..science import qv_from_hu, qv_from_vppr
 from ..utils import (create_empty_result, existing_results, final_results,
                      get_dependencies, get_existing_result, get_from_dataframe,
                      initializer)
+from ..configparsingutils import add_argument_for_humidity_plugin, check_and_format_humidity_parsed_arguments
 
 
 class WaterVapourMixingRatioError(Exception):
@@ -178,3 +180,20 @@ class WaterVapourMixingRatio(Plugin):
             hu = hu_df.at[i, 'd']
             qv_df.at[i, 'd'] = qv_from_hu(hu=hu).astype(np.float32)
         return qv_df
+
+    @staticmethod
+    def parse_config(args: str) -> dict:
+        """method to translate spooki plugin parameters to python plugin parameters
+        :param args: input unparsed arguments
+        :type args: str
+        :return: a dictionnary of converted parameters
+        :rtype: dict
+        """
+        parser = argparse.ArgumentParser(prog=WaterVapourMixingRatio.__name__, parents=[Plugin.base_parser])
+        add_argument_for_humidity_plugin(parser,ice_water_phase_default="BOTH",temperature_phase_switch_default="-40C")
+
+        parsed_arg = vars(parser.parse_args(args.split()))
+
+        check_and_format_humidity_parsed_arguments(parsed_arg, WaterVapourMixingRatioError)
+
+        return parsed_arg

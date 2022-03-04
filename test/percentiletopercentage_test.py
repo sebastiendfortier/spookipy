@@ -79,7 +79,7 @@ def test_4(plugin_test_dir):
     source0 = plugin_test_dir + "2022021100_out.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    with pytest.raises(ValueError):
+    with pytest.raises(spooki.PercentileToPercentageError):
         _ = spooki.PercentileToPercentage(src_df0, percentile_step="wrong_percentile").compute()
     # [ReaderStd --input {sources[0]}] >> [Percentile_Step --percentile_step wrong_percentile] >> [PercentileToPercentage] >> [Raise Exception]
 

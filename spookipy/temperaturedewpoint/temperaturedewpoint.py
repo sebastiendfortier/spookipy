@@ -190,7 +190,7 @@ class TemperatureDewPoint(Plugin):
             return final_results(df_list, TemperatureDewPointError, self.meta_df, self.dependency_check)
 
     def temperaturedewpoint_from_tt_vppr(self, dependencies_df, option):
-        logging.info(f'option {option+1}')
+        logging.info(f'TemperatureDewPoint - option {option+1}')
         # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
         vppr_df = self.compute_vppr(dependencies_df)
 
@@ -227,9 +227,9 @@ class TemperatureDewPoint(Plugin):
     def temperaturedewpoint_from_tt_es(
             self, es_df, dependencies_df, option, rpn=False):
         if rpn:
-            logging.info(f'rpn option {option+1}')
+            logging.info(f'TemperatureDewPoint - rpn option {option+1}')
         else:
-            logging.info(f'option {option+1}')
+            logging.info(f'TemperatureDewPoint - option {option+1}')
 
         tt_df = get_from_dataframe(dependencies_df, 'TT')
         td_df = create_empty_result(

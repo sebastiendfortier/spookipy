@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 from typing import Tuple
+import warnings
 
 import fstpy.all as fstpy
 import numpy as np
@@ -33,10 +34,13 @@ def wind_max(uu_3d: np.ndarray,vv_3d: np.ndarray,uv_3d: np.ndarray,px_3d: np.nda
     # uvmax = np.expand_dims(np.argmax(uv_3d,axis=0),axis=0)
     uvmax = np.argmax(uv_3d, axis=0)[np.newaxis]
     # match index
-    uu_max = np.take_along_axis(uu_3d, uvmax, axis=0)
-    vv_max = np.take_along_axis(vv_3d, uvmax, axis=0)
-    uv_max = np.take_along_axis(uv_3d, uvmax, axis=0)
-    px_max = np.take_along_axis(px_3d, uvmax, axis=0)
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        uu_max = np.take_along_axis(uu_3d, uvmax, axis=0)
+        vv_max = np.take_along_axis(vv_3d, uvmax, axis=0)
+        uv_max = np.take_along_axis(uv_3d, uvmax, axis=0)
+        px_max = np.take_along_axis(px_3d, uvmax, axis=0)
+        
     return uu_max, vv_max, uv_max, px_max
 
 

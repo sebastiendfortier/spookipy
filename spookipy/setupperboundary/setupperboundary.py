@@ -2,6 +2,7 @@
 
 import logging
 from typing import Final
+import warnings
 
 import numpy as np
 import pandas as pd
@@ -44,6 +45,9 @@ class SetUpperBoundary(Plugin):
         if  (self.no_meta_df.nomvar.unique().size == 1) and (not (self.nomvar_out is None)):
             res_df['nomvar'] = self.nomvar_out
         data = np.stack(res_df.d)
-        res_df['d'] = np.split(np.where(data > self.value, self.value, data),data.shape[0])
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            res_df['d'] = np.split(np.where(data > self.value, self.value, data),data.shape[0])
+
         df_list.append(res_df)
         return final_results(df_list, SetUpperBoundaryError, self.meta_df)

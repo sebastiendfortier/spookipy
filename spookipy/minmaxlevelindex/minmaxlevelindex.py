@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
+import warnings
 
 import fstpy.all as fstpy
 import numpy as np
@@ -189,8 +190,10 @@ class MinMaxLevelIndex(Plugin):
                 max_idx_df.at[0,'d'] = (array_3d.shape[0]-1 - np.nanargmax(array_3d, axis=0)).astype('float32')
 
             # Prendre les valeurs associees aux indices
-            min_val_df.at[0,'d'] = np.take_along_axis(array_3d, min_idx, axis=0).astype('float32')
-            max_val_df.at[0,'d'] = np.take_along_axis(array_3d, max_idx, axis=0).astype('float32')
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                min_val_df.at[0,'d'] = np.take_along_axis(array_3d, min_idx, axis=0).astype('float32')
+                max_val_df.at[0,'d'] = np.take_along_axis(array_3d, max_idx, axis=0).astype('float32')
 
             if self.bounded:
                 mask = kbas_mask | ktop_mask

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import argparse
 import logging
 
 import fstpy.all as fstpy
@@ -90,6 +91,22 @@ class Helicity(Plugin):
             df_list.append(uv_df)
 
         return final_results(df_list, HelicityError, self.meta_df)
+
+    @staticmethod
+    def parse_config(args: str) -> dict:
+        """method to translate spooki plugin parameters to python plugin parameters
+        :param args: input unparsed arguments
+        :type args: str
+        :return: a dictionnary of converted parameters
+        :rtype: dict
+        """
+        parser = argparse.ArgumentParser(prog=Helicity.__name__, parents=[Plugin.base_parser])
+        parser.add_argument('--Z3',type=float,dest='z3', help="First vertical level default 850mb")
+        parser.add_argument('--Z4',type=float,dest='z4', help="Last vertical level default 300mb")
+
+        parsed_arg = vars(parser.parse_args(args.split()))
+
+        return parsed_arg
 
     # struct helicity
     # {

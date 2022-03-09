@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import argparse
 import copy
 import logging
 
@@ -10,7 +11,6 @@ import rpnpy.librmn.all as rmn
 from ..plugin import Plugin
 from ..utils import (create_empty_result, dataframe_arrays_to_dask, final_results, get_3d_array,
                      initializer, reshape_arrays, to_numpy, validate_nomvar)
-
 
 class MatchLevelIndexToValueError(Exception):
     pass
@@ -149,6 +149,26 @@ class MatchLevelIndexToValue(Plugin):
             return final_results(df_list, MatchLevelIndexToValueError, self.meta_df)
         else:
             raise MatchLevelIndexToValueError('No results produced !')
+
+
+    @staticmethod
+    def parse_config(args: str) -> dict:
+        """method to translate spooki plugin parameters to python plugin parameters
+        :param args: input unparsed arguments
+        :type args: str
+        :return: a dictionnary of converted parameters
+        :rtype: dict
+        """
+        parser = argparse.ArgumentParser(prog=MatchLevelIndexToValue.__name__, parents=[Plugin.base_parser])
+        parser.add_argument('--indexFieldName',type=str,default="IND",dest='nomvar_index', help="Option to use a different field name other than IND for the field of indices.")
+        parser.add_argument('--outputFieldName',type=str,dest='nomvar_out',help="Option to give the output field a different name from the input field name applicable only with one input meteorological field.")
+
+        parsed_arg = vars(parser.parse_args(args.split()))
+        validate_nomvar(parsed_arg['nomvar_index'],"MatchLevelIndexToValue",MatchLevelIndexToValueError)
+        if parsed_arg['nomvar_out'] is not None:
+            validate_nomvar(parsed_arg['nomvar_out'],"MatchLevelIndexToValue",MatchLevelIndexToValueError)
+
+        return parsed_arg
 
 def create_result_container(df, b_inf, b_sup, ip1_kind):
     ip1 = float(b_inf)

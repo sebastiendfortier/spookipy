@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import argparse
 import copy
 import multiprocessing
 
@@ -304,6 +305,67 @@ class InterpolationHorizontalGrid(Plugin):
 
         return res_df
 
+    @staticmethod
+    def parse_config(args: str) -> dict:
+        """method to translate spooki plugin parameters to python plugin parameters
+        :param args: input unparsed arguments
+        :type args: str
+        :return: a dictionnary of converted parameters
+        :rtype: dict
+        """
+        parser = argparse.ArgumentParser(prog=InterpolationHorizontalGrid.__name__, parents=[Plugin.base_parser])
+        parser.add_argument('--outputGridDefinitionMethod','-m',type=str,dest="method",choices=["FIELD_DEFINED","USER_DEFINED"],required=True, help="Manner in how the target grid is defined")
+        parser.add_argument('--fieldName',type=str,dest='nomvar', help="Name of the field on the grid to which interpolate. \nMandatory if '--outputGridDefinitionMethod FIELD_DEFINED' is used.")
+        parser.add_argument('--gridType',type=str,choices=["TYPE_A","TYPE_B","TYPE_G","TYPE_L","TYPE_N","TYPE_S"],dest='grtyp', help="Type of target grid (see the reference: Grid types supported by RPN Standard Files). \nMandatory if '--outputGridDefinitionMethod USER_DEFINED' is used.")
+        parser.add_argument('--xyDimensions',type=str, help="X and Y dimensions of the target grid. \nMandatory if '--outputGridDefinitionMethod USER_DEFINED' is used.")
+        parser.add_argument('--gridProjectionParameters',"-p",type=str, help="Projection parameters 1 to 4 that define the target grid  (see the reference: Grid types supported by RPN Standard Files). \nMandatory if '--outputGridDefinitionMethod USER_DEFINED' is used.")
+        parser.add_argument('--interpolationType',type=str,default="BI-CUBIC",choices=["NEAREST","BI-LINEAR","BI-CUBIC"],dest='interpolation_type', help="Type of interpolation.")
+        parser.add_argument('--extrapolationType',type=str,default="MAXIMUM",dest='extrapolation_type',help="Type of extrapolation.")
+        parser.add_argument('--outputField',type=str,default="INCLUDE_ALL_FIELDS",choices=["INTERPOLATED_FIELD_ONLY","INCLUDE_REFERENCE_FIELD","INCLUDE_ALL_FIELDS"],dest='output_fields',help="Choice of output: include interpolated fields only or include reference field with interpolated fields or include all fields.")
+
+        parsed_arg = vars(parser.parse_args(args.split()))
+
+        parsed_arg['method'] = parsed_arg['method'].replace("_DEFINED","").lower()
+
+        if parsed_arg['method'] == "field" and parsed_arg['nomvar'] is None:
+            raise InterpolationHorizontalGridError("--fieldName is mandatory if '--outputGridDefinitionMethod FIELD_DEFINED' is used.")
+        elif parsed_arg['method'] == "user":
+            if parsed_arg['grtyp'] is None:
+                raise InterpolationHorizontalGridError("--gridType is mandatory if '--outputGridDefinitionMethod USER_DEFINED' is used.")
+            if parsed_arg['xyDimensions'] is None:
+                raise InterpolationHorizontalGridError("--xyDimensions is mandatory if '--outputGridDefinitionMethod USER_DEFINED' is used.")
+            if parsed_arg['gridProjectionParameters'] is None:
+                raise InterpolationHorizontalGridError("--gridProjectionParameters is mandatory if '--outputGridDefinitionMethod USER_DEFINED' is used.")
+
+        if parsed_arg['gridProjectionParameters'] is not None:
+            parsed_arg['gridProjectionParameters'] = parsed_arg['gridProjectionParameters'].split(",")
+            parsed_arg['param1'] = float(parsed_arg['gridProjectionParameters'][0])
+            parsed_arg['param2'] = float(parsed_arg['gridProjectionParameters'][1])
+            parsed_arg['param3'] = float(parsed_arg['gridProjectionParameters'][2])
+            parsed_arg['param4'] = float(parsed_arg['gridProjectionParameters'][3])
+            if parsed_arg['param1'] < 0 or parsed_arg['param2'] < 0 or parsed_arg['param3'] < 0 or parsed_arg['param4'] < 0:
+                raise InterpolationHorizontalGridError("The grid projection parameters need to be higher than 0.")
+
+        if parsed_arg['xyDimensions'] is not None:
+            parsed_arg['xyDimensions'] = parsed_arg['xyDimensions'].split(",")
+            parsed_arg['ni'] = int(parsed_arg['xyDimensions'][0])
+            parsed_arg['nj'] = int(parsed_arg['xyDimensions'][1])
+
+        output_fields = {"INTERPOLATED_FIELD_ONLY":"interpolated", "INCLUDE_REFERENCE_FIELD":"reference", "INCLUDE_ALL_FIELDS":"all"}
+        parsed_arg['output_fields'] = output_fields[parsed_arg['output_fields']]
+
+        if parsed_arg['grtyp'] is not None:
+            parsed_arg['grtyp'] = parsed_arg['grtyp'].replace("TYPE_","")
+
+        parsed_arg['interpolation_type'] = parsed_arg['interpolation_type'].lower()
+
+        if parsed_arg['extrapolation_type'] in ["MAXIMUM","MINIMUM","ABORT","NEAREST","LINEAR"]:
+            parsed_arg['extrapolation_type'] = parsed_arg['extrapolation_type'].lower()
+        elif parsed_arg['extrapolation_type'].startswith("VALUE="):
+            parsed_arg['extrapolation_value'] = float(parsed_arg['extrapolation_type'].replace("VALUE=",""))
+            parsed_arg['extrapolation_type'] = "value"
+
+        return parsed_arg
 
 ##########################################################################
 ##########################################################################

@@ -17,19 +17,19 @@ def plugin_test_dir():
 def test_1(plugin_test_dir):
     """Test with default options """
     # open and read source
-    source0 = plugin_test_dir + "2022021100_out.std"
+    source0 = "/fs/homeu1/eccc/cmd/cmde/loy000/Desktop/" + "2022021100_out"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     df = spooki.PercentileToPercentage(src_df0).compute()
     # [ReaderStd --input {sources[0]}] >> [PercentileToPercentage] >> [WriterStd --output {destination_path} ]
 
     # write the result
-    results_file = TMP_PATH + "test_1.std"
+    results_file = "/fs/homeu1/eccc/cmd/cmde/loy000/Desktop/" + "test_1"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "PercentileToPercentage_file1cmp.std"
+    file_to_compare = "/fs/homeu1/eccc/cmd/cmde/loy000/Desktop/" + "PercentileToPercentage_file1cmp"
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.001)
@@ -40,7 +40,7 @@ def test_1(plugin_test_dir):
 def test_2(plugin_test_dir):
     """Test with an incorrect eteiket name"""
     # open and read source
-    source0 = plugin_test_dir + "2022021100_out.std"
+    source0 = "/fs/homeu1/eccc/cmd/cmde/loy000/Desktop/" + "2022021100_out"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     with pytest.raises(spooki.PercentileToPercentageError):

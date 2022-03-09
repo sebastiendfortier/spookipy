@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import argparse
 import copy
 from typing import Final
 import logging
@@ -250,3 +251,21 @@ class GridPointDifference(Plugin):
 
         return final_results(df_list, GridPointDifferenceError, self.meta_df)
 
+    @staticmethod
+    def parse_config(args: str) -> dict:
+        """method to translate spooki plugin parameters to python plugin parameters
+        :param args: input unparsed arguments
+        :type args: str
+        :return: a dictionnary of converted parameters
+        :rtype: dict
+        """
+        parser = argparse.ArgumentParser(prog=GridPointDifference.__name__, parents=[Plugin.base_parser])
+        parser.add_argument('--differenceType',type=str,default="CENTERED",choices=['CENTERED','FORWARD','BACKWARD'],dest='difference_type', help="Type of difference.")
+        parser.add_argument('--axis',type=str,required=True,help="Comma separated list of axis on which the differences will be calculated.")
+
+        parsed_arg = vars(parser.parse_args(args.split()))
+
+        parsed_arg['axis'] = parsed_arg['axis'].lower().split(',')
+        parsed_arg['difference_type'] = parsed_arg['difference_type'].lower()
+
+        return parsed_arg

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import argparse
 import logging
 import warnings
 
@@ -45,7 +46,7 @@ class MinMaxLevelIndex(Plugin):
     def __init__(
             self,
             df: pd.DataFrame,
-            nomvar : str,
+            nomvar : str=None,
             ascending=True,
             min=False,
             max=False,
@@ -57,8 +58,18 @@ class MinMaxLevelIndex(Plugin):
             nomvar_max_val='MAX'
             ):
 
+        self.df = fstpy.metadata_cleanup(self.df)
+        super().__init__(df)
+
+        if self.nomvar is None:
+            nomvar_list = self.no_meta_df[~self.no_meta_df.nomvar.isin(["KBAS","KTOP"])].nomvar.unique()
+            if len(nomvar_list) == 1:
+                self.nomvar = nomvar_list[0]
+            else:
+                raise MinMaxLevelIndexError("Too many input fields, provide one field or set nomvar : {}".format(nomvar_list))
+
         self.plugin_mandatory_dependencies=[{}]
-        input_field = {nomvar : {'nomvar': nomvar}}
+        input_field = {self.nomvar : {'nomvar': self.nomvar}}
         self.plugin_mandatory_dependencies[0]= input_field
 
         if self.bounded:
@@ -72,8 +83,6 @@ class MinMaxLevelIndex(Plugin):
                 'ALL': {'etiket': 'MMLVLI', 'unit': 'scalar', 'ip1': 0}
             }
 
-        self.df = fstpy.metadata_cleanup(self.df)
-        super().__init__(df)
         self.validate_params_and_input()
 
     def validate_params_and_input(self):
@@ -225,6 +234,40 @@ class MinMaxLevelIndex(Plugin):
             df_list.append(var_df)
 
         return final_results(df_list, MinMaxLevelIndexError, self.meta_df)
+
+    @staticmethod
+    def parse_config(args: str) -> dict:
+        """method to translate spooki plugin parameters to python plugin parameters
+        :param args: input unparsed arguments
+        :type args: str
+        :return: a dictionnary of converted parameters
+        :rtype: dict
+        """
+        parser = argparse.ArgumentParser(prog=MinMaxLevelIndex.__name__, parents=[Plugin.base_parser])
+        parser.add_argument('--minMax',type=str,choices=["MIN","MAX","BOTH"], help="Finds either the maximum or minimum value index or both")
+        parser.add_argument('--direction',type=str,default="ASCENDING",choices=["ASCENDING","DESCENDING"], help="The level iteration direction (upward or downward)")
+        parser.add_argument('--bounded',dest='bounded',action='store_true',default=False, help="Searches in part of the column (requires fields KBAS and KTOP as inputs) Default: searches the whole column")
+        parser.add_argument('--fieldName',type=str,dest='nomvar', help="Name of the field.")
+        parser.add_argument('--outputFieldName1',type=str,default="KMIN",dest='nomvar_min',help="Option to change the name of output field KMIN")
+        parser.add_argument('--outputFieldName2',type=str,default="KMAX",dest='nomvar_max',help="Option to change the name of output field KMAX")
+
+        parsed_arg = vars(parser.parse_args(args.split()))
+        if parsed_arg['nomvar'] is not None:
+            validate_nomvar(parsed_arg['nomvar'],"MinMaxLevelIndex",MinMaxLevelIndexError)
+        validate_nomvar(parsed_arg['nomvar_min'],"MinMaxLevelIndex",MinMaxLevelIndexError)
+        validate_nomvar(parsed_arg['nomvar_max'],"MinMaxLevelIndex",MinMaxLevelIndexError)
+
+        if parsed_arg['minMax'] == "MIN":
+            parsed_arg['min'] = True
+        elif parsed_arg['minMax'] == "MAX":
+            parsed_arg['max'] = True
+        else:
+            parsed_arg['min'] = True
+            parsed_arg['max'] = True
+
+        parsed_arg['ascending'] = parsed_arg['direction'] == "ASCENDING"
+
+        return parsed_arg
 
 
 def fix_ktop(ktop, array_max_index):

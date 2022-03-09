@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import argparse
 import logging
 
 import fstpy.all as fstpy
@@ -114,3 +115,25 @@ class GridCut(Plugin):
 
 # if cp_df["shape"].map(check_limits).any():
 #     print("Limits are not good ...")
+
+    @staticmethod
+    def parse_config(args: str) -> dict:
+        """method to translate spooki plugin parameters to python plugin parameters
+        :param args: input unparsed arguments
+        :type args: str
+        :return: a dictionnary of converted parameters
+        :rtype: dict
+        """
+        parser = argparse.ArgumentParser(prog=GridCut.__name__, parents=[Plugin.base_parser])
+        parser.add_argument('--startPoint',type=str,required=True,dest="start_point", help="Starting point of the selected matrix.")
+        parser.add_argument('--endPoint',type=str,required=True,dest="end_point", help="Ending point of the selected matrix.")
+
+        parsed_arg = vars(parser.parse_args(args.split()))
+
+        parsed_arg["start_point"] = tuple(map(int, parsed_arg["start_point"].split(',')))
+        parsed_arg["end_point"] = tuple(map(int, parsed_arg["end_point"].split(',')))
+
+        if parsed_arg["start_point"][0] < 0 or parsed_arg["start_point"][1] < 0 or parsed_arg["end_point"][0] < 0 or parsed_arg["end_point"][1] < 0:
+            raise Exception("Start point and end point needs to be positive.")
+        # TODO should we check it's >0?
+        return parsed_arg

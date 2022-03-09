@@ -84,7 +84,6 @@ def test_4(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "TemperatureDewPoint_file2cmp.std"
-    # file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_4"
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.1)
@@ -119,7 +118,6 @@ def test_5(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_es_file2cmp.std"
-    # file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_5"
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.1)
@@ -155,7 +153,6 @@ def test_6(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "rpn2011100712_012_glbhyb_es_file2cmp.std"
-    # file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_6"
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.1)
@@ -191,7 +188,6 @@ def test_7(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_hr_file2cmp.std"
-    # file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_7"
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
@@ -224,7 +220,6 @@ def test_9(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_hu_file2cmp.std"
-    # file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_9"
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
@@ -254,7 +249,6 @@ def test_11(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_qv_file2cmp.std"
-    # file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_11"
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
@@ -280,9 +274,6 @@ def test_12(plugin_test_dir):
     # [TemperatureDewPoint --iceWaterPhase BOTH --temperaturePhaseSwitch -40C] >> ', '
     # [WriterStd --output {destination_path} --ignoreExtended]']
 
-    # df.loc[df.nomvar=='TD','dateo']= 443004200
-    # df.loc[:,'datyp'] = 5
-    # df.loc[df.nomvar!='!!','nbits'] = 32
     df = spooki.convip(df)
     # write the result
     results_file = TMP_PATH + "test_12.std"
@@ -291,9 +282,30 @@ def test_12(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "resulttest_12.std"
-    # file_to_compare = "/home/sbf000/data/testFiles/TemperatureDewPoint/result_test_12"
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
+    fstpy.delete_file(results_file)
+    assert(res)
+
+def test_13(plugin_test_dir):
+    """Calcul du point de rosée à partir d'un fichier contenant plusieurs forecast hours pour TT et ES."""
+    # open and read source
+    source0 = plugin_test_dir + "TTES2x2x4_manyForecastHours.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    # compute TemperatureDewPoint
+    df = spooki.TemperatureDewPoint(src_df0, ice_water_phase='water').compute()
+
+    # write the result
+    results_file = TMP_PATH + "test_13.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "TemperatureDewPoint_test13_file2cmp.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)

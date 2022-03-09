@@ -2,11 +2,10 @@
 from operator import concat
 import pandas as pd
 from test import TEST_PATH, TMP_PATH
-from spookipy.minmaxlevelindex.minmaxlevelindex import  MinMaxLevelIndexError
+from spookipy.minmaxlevelindex.minmaxlevelindex import  MinMaxLevelIndex, MinMaxLevelIndexError
 import fstpy.all as fstpy
 import pytest
 import spookipy.all as spooki
-from spookipy.utils import DependencyError
 from ci_fstcomp import fstcomp
 
 pytestmark = [pytest.mark.regressions]
@@ -467,7 +466,7 @@ def test_13(plugin_test_dir):
     src_df = pd.concat([src_df0 , src_df1])
 
     # compute spooki.MinMaxLevelIndex
-    with pytest.raises(DependencyError):
+    with pytest.raises(spooki.DependencyError):
         spooki.MinMaxLevelIndex(
             src_df, 
             nomvar="UU", 

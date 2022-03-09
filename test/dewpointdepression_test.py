@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from spookipy.watervapourmixingratio.watervapourmixingratio import WaterVapourMixingRatio
 from test import TEST_PATH, TMP_PATH
 
 import fstpy.all as fstpy
@@ -51,7 +52,6 @@ def test_3(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_hu_nonRpn_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/DewPointDepression/result_test_3'
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
@@ -82,7 +82,6 @@ def test_5(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_hr_nonRpn_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/DewPointDepression/result_test_5'
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.1)
@@ -114,8 +113,7 @@ def test_6(plugin_test_dir):
     #  >> [DewPointDepression --iceWaterPhase WATER --RPN] >>
     # [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[df.nomvar == 'ES', 'etiket'] = 'G133K80N'
-    # df.loc[:,'nbits']=32
-    # df.loc[:,'datyp']=5
+
     # write the result
     results_file = TMP_PATH + "test_6.std"
     fstpy.delete_file(results_file)
@@ -123,7 +121,6 @@ def test_6(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_td_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/DewPointDepression/result_test_6'
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
@@ -149,8 +146,6 @@ def test_7(plugin_test_dir):
     df = spooki.DewPointDepression(src_df1, ice_water_phase='water').compute()
 
     df.loc[:, 'etiket'] = 'G133K80N'
-    # df.loc[:,'nbits']=32
-    # df.loc[:,'datyp']=5
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Select --fieldName TT,HU] >>
     # ([Select --fieldName TT] + [TemperatureDewPoint --iceWaterPhase WATER]) >>
@@ -163,7 +158,6 @@ def test_7(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_td_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/DewPointDepression/result_test_7'
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
@@ -192,8 +186,9 @@ def test_9(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_qv_nonRpn_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/DewPointDepression/result_test_9'
+
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.01)  # ,e_max=)
     fstpy.delete_file(results_file)
     assert(res)
+

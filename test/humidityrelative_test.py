@@ -146,9 +146,6 @@ def test_5(plugin_test_dir):
 
     df = pd.concat([meta_df, df1], ignore_index=True)
 
-    # df.loc[df.nomvar!='!!','nbits']=32
-    # df.loc[:,'datyp']=5
-
     # write the result
     results_file = TMP_PATH + "test_5.std"
     fstpy.delete_file(results_file)
@@ -156,7 +153,6 @@ def test_5(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2011100712_glbhyb_5_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/HumidityRelative/result_test_5'
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
@@ -195,7 +191,6 @@ def test_7(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2011100712_glbhyb_7_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/HumidityRelative/result_test_7'
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
@@ -206,14 +201,6 @@ def test_7(plugin_test_dir):
 def test_8():
     """Pour ajout de test futur"""
     pass
-
-
-# HumidityRelative - compute
-# option 3
-# SaturationVapourPressure - compute
-# option 1
-# VapourPressure - compute
-# option 5
 
 def test_9(plugin_test_dir):
     """Calcul de l'humidité relative (HR) à partir de la température du point de rosée (TD)."""
@@ -232,9 +219,6 @@ def test_9(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:, 'etiket'] = 'G133K80N'
 
-    # df.loc[df.nomvar!='!!','nbits']=32
-    # df.loc[:,'datyp']=5
-
     # write the result
     results_file = TMP_PATH + "test_9.std"
     fstpy.delete_file(results_file)
@@ -242,7 +226,6 @@ def test_9(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2011100712_glbhyb_9_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/HumidityRelative/result_test_9'
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.001)

@@ -2,6 +2,7 @@
 import argparse
 import copy
 import logging
+import warnings
 
 import fstpy.all as fstpy
 import numpy as np
@@ -137,8 +138,10 @@ class MatchLevelIndexToValue(Plugin):
                 var_df = var_df.append(error_row).reset_index(drop=True)
                 var_df = fstpy.compute(var_df)
                 arr_3d = get_3d_array(var_df, flatten=True)
-
-                res_df.at[0, 'd'] = np.take_along_axis(arr_3d, valid_ind, axis=0)
+                
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore")
+                    res_df.at[0, 'd'] = np.take_along_axis(arr_3d, valid_ind, axis=0)
 
                 res_df = reshape_arrays(res_df)
                 res_df = dataframe_arrays_to_dask(res_df)

@@ -34,7 +34,7 @@ class TestArithmeticMinMaxByPoint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ArithmeticMinMaxByPoint --minMax BOTH] >> [WriterStd --output {destination_path}]
 
         # write the result
-        results_file = TMP_PATH + "test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -55,7 +55,7 @@ class TestArithmeticMinMaxByPoint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ArithmeticMinMaxByPoint --minMax MIN --outputFieldName1 MNTH] >> [WriterStd --output {destination_path}]
 
         # write the result
-        results_file = TMP_PATH + "test_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -76,7 +76,7 @@ class TestArithmeticMinMaxByPoint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ArithmeticMinMaxByPoint --minMax MAX --outputFieldName1 MNTH] >> [WriterStd --output {destination_path}]
 
         # write the result
-        results_file = TMP_PATH + "test_3.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -97,7 +97,7 @@ class TestArithmeticMinMaxByPoint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ArithmeticMinMaxByPoint --minMax BOTH --outputFieldName1 MNRE --outputFieldName2 MXRE] >> [WriterStd --output {destination_path}]
 
         # write the result
-        results_file = TMP_PATH + "test_4.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -118,7 +118,7 @@ class TestArithmeticMinMaxByPoint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ArithmeticMinMaxByPoint --minMax BOTH --outputFieldName2 MXFH --groupBy FORECAST_HOUR] >> [WriterStd --output {destination_path}]
 
         # write the result
-        results_file = TMP_PATH + "test_5.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -140,7 +140,7 @@ class TestArithmeticMinMaxByPoint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ArithmeticMinMaxByPoint --minMax MIN ] >> [WriterStd --output {destination_path}]
 
         # write the result
-        results_file = TMP_PATH + "test_6.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -162,7 +162,7 @@ class TestArithmeticMinMaxByPoint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --fieldName TT] >> [ArithmeticMinMaxByPoint --minMax MIN --groupBy FORECAST_HOUR]
 
         # write the result
-        results_file = TMP_PATH + "test_7.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -183,7 +183,7 @@ class TestArithmeticMinMaxByPoint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ArithmeticMinMaxByPoint --minMax MIN --outputFieldName1 TROPLONG]
 
         # write the result
-        results_file = TMP_PATH + "test_8.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

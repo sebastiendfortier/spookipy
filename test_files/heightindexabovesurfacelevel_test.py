@@ -34,7 +34,7 @@ class TestHeightIndexAboveSurfaceLevel(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [HeightIndexAboveSurfaceLevel --unit decameter --height 300] >> [Zap --pdsLabel HEIGHTIDXABO --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = TMP_PATH + "test_basic.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_basic.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -55,7 +55,7 @@ class TestHeightIndexAboveSurfaceLevel(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [HeightIndexAboveSurfaceLevel --unit kilometer --height 3] >> [Zap --pdsLabel HEIGHTIDXABO --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = TMP_PATH + "test_basic_km.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_basic_km.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -76,7 +76,7 @@ class TestHeightIndexAboveSurfaceLevel(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [HeightIndexAboveSurfaceLevel --unit decameter --height 0] >> [HeightIndexFromLevel --unit decameter --height 300] >> [Zap --pdsLabel HEIGHTIDXABO --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = TMP_PATH + "test_base.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_base.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

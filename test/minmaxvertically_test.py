@@ -1,6 +1,7 @@
 
 from test import TMP_PATH, TEST_PATH
 from ci_fstcomp import fstcomp
+import secrets
 import pandas as pd
 import fstpy.all as fstpy
 import spookipy.all as spooki
@@ -55,7 +56,7 @@ def test_3(plugin_test_dir):
         nomvar_min='UMIN').compute()
 
     # write the result
-    results_file = TMP_PATH + "test_3.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -83,7 +84,7 @@ def test_4(plugin_test_dir):
         nomvar_max='UMAX').compute()
     
     # write the result
-    results_file = TMP_PATH + "test_4.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -115,7 +116,7 @@ def test_5(plugin_test_dir):
         nomvar_min='UMIN').compute()
     
     # write the result
-    results_file = TMP_PATH + "test_5.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 

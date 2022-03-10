@@ -5,6 +5,7 @@ import fstpy.all as fstpy
 import pytest
 import spookipy.all as spooki
 from ci_fstcomp import fstcomp
+import secrets
 
 pytestmark = [pytest.mark.regressions]
 
@@ -31,7 +32,7 @@ def test_1(plugin_test_dir):
     # df.loc[:,'datyp'] = 5
     # df.loc[df.nomvar!='!!','nbits'] = 32
     # write the result
-    results_file = TMP_PATH + "test_1.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -61,7 +62,7 @@ def test_2(plugin_test_dir):
     # df.loc[:,'datyp'] = 5
     # df.loc[df.nomvar!='!!','nbits'] = 32
     # write the result
-    results_file = TMP_PATH + "test_2.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -104,7 +105,7 @@ def test_3(plugin_test_dir):
     # df.loc[df.nomvar!='!!','nbits'] = 32
 
     # write the result
-    results_file = TMP_PATH + "test_3.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -146,7 +147,7 @@ def test_4(plugin_test_dir):
     # df.loc[df.nomvar!='!!','nbits'] = 32
 
     # write the result
-    results_file = TMP_PATH + "test_4.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -177,7 +178,7 @@ def test_5(plugin_test_dir):
     # df.loc[df.nomvar!='!!','nbits'] = 32
 
     # write the result
-    results_file = TMP_PATH + "test_5.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -218,7 +219,7 @@ def test_6(plugin_test_dir):
     # df.loc[df.nomvar!='!!','nbits'] = 32
 
     # write the result
-    results_file = TMP_PATH + "test_6.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -260,7 +261,7 @@ def test_7(plugin_test_dir):
     # df.loc[df.nomvar!='!!','nbits'] = 32
 
     # write the result
-    results_file = TMP_PATH + "test_7.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -302,7 +303,7 @@ def test_8(plugin_test_dir):
     # df.loc[df.nomvar!='!!','nbits'] = 32
 
     # write the result
-    results_file = TMP_PATH + "test_8.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -340,7 +341,7 @@ def test_9(plugin_test_dir):
     # df.loc[df.nomvar!='!!','nbits'] = 32
 
     # write the result
-    results_file = TMP_PATH + "test_9.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -379,7 +380,7 @@ def test_10(plugin_test_dir):
     # df.loc[df.nomvar!='!!','nbits'] = 32
 
     # write the result
-    results_file = TMP_PATH + "test_10.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -418,7 +419,7 @@ def test_11(plugin_test_dir):
     # df.loc[df.nomvar!='!!','nbits'] = 32
 
     # write the result
-    results_file = TMP_PATH + "test_11.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -468,7 +469,7 @@ def test_12(plugin_test_dir):
     # df.loc[df.nomvar!='!!','nbits'] = 32
 
     # write the result
-    results_file = TMP_PATH + "test_12.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -501,7 +502,7 @@ def test_13(plugin_test_dir):
     # df.loc[df.nomvar!='!!','nbits'] = 32
 
     # write the result
-    results_file = TMP_PATH + "test_13.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -540,7 +541,7 @@ def test_14(plugin_test_dir):
     # df.loc[df.nomvar!='!!','nbits'] = 32
 
     # write the result
-    results_file = TMP_PATH + "test_14.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -579,7 +580,7 @@ def test_14(plugin_test_dir):
     # df.loc[df.nomvar!='!!','nbits'] = 32
 
     # write the result
-    results_file = TMP_PATH + "test_14.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 

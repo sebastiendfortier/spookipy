@@ -34,7 +34,7 @@ class TestPowerElementsByPoint(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[PowerElementsByPoint --baseFieldName UU --exponentFieldName POW] >>', '[WriterStd --output {destination_path} --ignoreExtended]']
 
         # write the result
-        results_file = TMP_PATH + "test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -55,7 +55,7 @@ class TestPowerElementsByPoint(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Select --forecastHour 12]>>', '[PowerElementsByPoint --baseFieldName TT --exponentFieldName UU] >>', '[WriterStd --output {destination_path} --ignoreExtended]']
 
         # write the result
-        results_file = TMP_PATH + "test_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -76,7 +76,7 @@ class TestPowerElementsByPoint(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[PowerElementsByPoint --baseFieldName TT --exponentFieldName UU] >>', '[WriterStd --output {destination_path} --ignoreExtended]']
 
         # write the result
-        results_file = TMP_PATH + "test_3.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -97,7 +97,7 @@ class TestPowerElementsByPoint(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Select --forecastHour 12]>>([Select --fieldName TT] + [Select --fieldName UU --verticalLevel 1.0])>>', '[PowerElementsByPoint --baseFieldName TT --exponentFieldName UU] >>', '[WriterStd --output {destination_path} --ignoreExtended]']
 
         # write the result
-        results_file = TMP_PATH + "test_4.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -118,7 +118,7 @@ class TestPowerElementsByPoint(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '([Select --fieldName TT] + [Select --fieldName UU --verticalLevel 1.0])>>', '[PowerElementsByPoint --baseFieldName TT --exponentFieldName UU] >>', '[WriterStd --output {destination_path} --ignoreExtended]']
 
         # write the result
-        results_file = TMP_PATH + "test_5.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -139,7 +139,7 @@ class TestPowerElementsByPoint(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Select --forecastHour 12]>>([Select --fieldName UU] + [Select --fieldName TT --verticalLevel 1.0])>>', '[PowerElementsByPoint --baseFieldName TT --exponentFieldName UU] >>', '[WriterStd --output {destination_path} --ignoreExtended]']
 
         # write the result
-        results_file = TMP_PATH + "test_6.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -160,7 +160,7 @@ class TestPowerElementsByPoint(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '([Select --fieldName UU] + [Select --fieldName TT --verticalLevel 1.0])>>', '[PowerElementsByPoint --baseFieldName TT --exponentFieldName UU]>>', '[WriterStd --output {destination_path} --ignoreExtended]']
 
         # write the result
-        results_file = TMP_PATH + "test_7.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -181,7 +181,7 @@ class TestPowerElementsByPoint(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '([Select --fieldName UU] + [Select --fieldName TT --verticalLevel 1.0])>>', '[PowerElementsByPoint --baseFieldName TT --exponentFieldName UU] >>', '[WriterStd --output {destination_path} --ignoreExtended]']
 
         # write the result
-        results_file = TMP_PATH + "test_8.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -202,7 +202,7 @@ class TestPowerElementsByPoint(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '([Select --fieldName UU --forecastHour 12] + [Select --fieldName TT --verticalLevel 1.0 --forecastHour 24])>>', '[PowerElementsByPoint --baseFieldName TT --exponentFieldName UU] >>', '[WriterStd --output {destination_path} --ignoreExtended]']
 
         # write the result
-        results_file = TMP_PATH + "test_9.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -223,7 +223,7 @@ class TestPowerElementsByPoint(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '(([Select --fieldName UU --forecastHour 24] >> [Zap --forecastHour 48]) +([Select --fieldName UU --forecastHour 12] >> [Zap --forecastHour 36])+ [Select --fieldName TT])>>', '[PowerElementsByPoint --baseFieldName TT --exponentFieldName UU] >>', '[WriterStd --output {destination_path} --ignoreExtended]']
 
         # write the result
-        results_file = TMP_PATH + "test_10.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -244,7 +244,7 @@ class TestPowerElementsByPoint(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '(([Select --fieldName UU --forecastHour 12 --verticalLevel 0.995] >> [Zap --verticalLevel 0.871175]) + [Select --fieldName TT --forecastHour 12])>>', '[PowerElementsByPoint --baseFieldName TT --exponentFieldName UU] >>', '[WriterStd --output {destination_path} --ignoreExtended]']
 
         # write the result
-        results_file = TMP_PATH + "test_11.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -265,7 +265,7 @@ class TestPowerElementsByPoint(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '(([Select --fieldName UU --forecastHour 24] >> [Zap --forecastHour 48]) + [Select --fieldName UU --forecastHour 12] + [Select --fieldName TT])>>', '[Print --outputType VOIR]>>[PowerElementsByPoint --baseFieldName TT --exponentFieldName UU] >>', '[WriterStd --output {destination_path} --ignoreExtended]']
 
         # write the result
-        results_file = TMP_PATH + "test_12.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

@@ -8,6 +8,7 @@ import fstpy.all as fstpy
 import spookipy.all as spooki
 import pandas as pd
 from ci_fstcomp import fstcomp
+import secrets
 import rpnpy.librmn.all as rmn
 
 pytestmark = [pytest.mark.regressions]
@@ -51,7 +52,7 @@ def test_1(plugin_test_dir):
 #     # [TimeIntervalMinMax --fieldName PR --rangeForecastHour 0@177 --interval 12 --step 24 --outputFieldNameMin PRX]
 
 #     # write the result
-#     results_file = TMP_PATH + "test_2.std"
+#     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
 #     fstpy.delete_file(results_file)
 #     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -98,7 +99,7 @@ def test_3(plugin_test_dir):
 #     # [WriterStd --output {destination_path} --ignoreExtended]
 
 #     # write the result
-#     results_file = TMP_PATH + "test_4.std"
+#     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
 #     fstpy.delete_file(results_file)
 #     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -167,7 +168,7 @@ def test_6(plugin_test_dir):
 #     # [TimeIntervalMinMax --fieldName PR --type MAX --interval 12 --rangeForecastHour 0@177 --step 24 --outputFieldNameMin PRX]
 
 #     # write the result
-#     results_file = TMP_PATH + "test_7.std"
+#     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
 #     fstpy.delete_file(results_file)
 #     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -195,7 +196,7 @@ def test_6(plugin_test_dir):
 #     # [TimeIntervalMinMax --fieldName PR --type MAX --interval 12 --rangeForecastHour 0@177 --step 24 --outputFieldNameMin PRX]
 
 #     # write the result
-#     results_file = TMP_PATH + "test_8.std"
+#     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
 #     fstpy.delete_file(results_file)
 #     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -221,7 +222,7 @@ def test_6(plugin_test_dir):
 #     # [WriterStd --output /tmp//totonSZBK2/toto.std]
 
 #     # write the result
-#     results_file = TMP_PATH + "test_9.std"
+#     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
 #     fstpy.delete_file(results_file)
 #     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -246,7 +247,7 @@ def test_6(plugin_test_dir):
 #     # [TimeIntervalMinMax --fieldName PR --type MAX --interval 12 --rangeForecastHour 0@177 --step 24 --outputFieldNameMin PRX]
 
 #     # write the result
-#     results_file = TMP_PATH + "test_10.std"
+#     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
 #     fstpy.delete_file(results_file)
 #     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -271,7 +272,7 @@ def test_6(plugin_test_dir):
 #     # [TimeIntervalMinMax --fieldName PR --type MIN --interval 12 --rangeForecastHour 0@177 --step 24 --outputFieldNameMax PRX]
 
 #     # write the result
-#     results_file = TMP_PATH + "test_11.std"
+#     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
 #     fstpy.delete_file(results_file)
 #     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -296,7 +297,7 @@ def test_6(plugin_test_dir):
 #     # [TimeIntervalMinMax --fieldName PR --type MINI --interval 12 --rangeForecastHour 0@177 --step 24 --outputFieldNameMax PRX]
 
 #     # write the result
-#     results_file = TMP_PATH + "test_12.std"
+#     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
 #     fstpy.delete_file(results_file)
 #     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -456,7 +457,7 @@ def test_19(plugin_test_dir):
 #     # [TimeIntervalMinMax --fieldName PR --type BOTH --interval 12 --rangeForecastHour 0@177 --step 24 --outputFieldNameMin PRX,PRZ --outputFieldNameMax PRX]
 
 #     # write the result
-#     results_file = TMP_PATH + "test_20.std"
+#     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_20.std"])
 #     fstpy.delete_file(results_file)
 #     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -494,7 +495,7 @@ def test_21(plugin_test_dir):
     # print(df)
     
     # write the result
-    results_file = TMP_PATH + "test_21.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_21.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -532,7 +533,7 @@ def test_22(plugin_test_dir):
     df = encode_ip2_and_ip3_time(df)
 
     # write the result
-    results_file = TMP_PATH + "test_22.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_22.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -570,7 +571,7 @@ def test_23(plugin_test_dir):
     df = encode_ip2_and_ip3_time(df)
     
     # write the result
-    results_file = TMP_PATH + "test_23.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_23.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -609,7 +610,7 @@ def test_24(plugin_test_dir):
 
 
     # write the result
-    results_file = TMP_PATH + "test_24.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_24.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -647,7 +648,7 @@ def test_25(plugin_test_dir):
     df = encode_ip2_and_ip3_time(df)
 
     # write the result
-    results_file = TMP_PATH + "test_25.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_25.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -684,7 +685,7 @@ def test_26(plugin_test_dir):
     df = encode_ip2_and_ip3_time(df)
 
     # write the result
-    results_file = TMP_PATH + "test_26.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_26.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -724,7 +725,7 @@ def test_27(plugin_test_dir):
     
 
     # write the result
-    results_file = TMP_PATH + "test_27.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_27.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -763,7 +764,7 @@ def test_28(plugin_test_dir):
     df = encode_ip2_and_ip3_time(df)
 
     # write the result
-    results_file = TMP_PATH + "test_28.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_28.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -802,7 +803,7 @@ def test_29(plugin_test_dir):
     df = encode_ip2_and_ip3_time(df)
 
     # write the result
-    results_file = TMP_PATH + "test_29.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_29.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -842,7 +843,7 @@ def test_30(plugin_test_dir):
     df = encode_ip2_and_ip3_time(df)
 
     # write the result
-    results_file = TMP_PATH + "test_30.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_30.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -869,7 +870,7 @@ def test_30(plugin_test_dir):
 #     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
 #     # write the result
-#     results_file = TMP_PATH + "test_31.std"
+#     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_31.std"])
 #     fstpy.delete_file(results_file)
 #     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -896,7 +897,7 @@ def test_30(plugin_test_dir):
 #     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
 #     # write the result
-#     results_file = TMP_PATH + "test_32.std"
+#     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_32.std"])
 #     fstpy.delete_file(results_file)
 #     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -933,7 +934,7 @@ def test_33(plugin_test_dir):
     # print(df)
     df = encode_ip2_and_ip3_time(df)
     # write the result
-    results_file = TMP_PATH + "test_33.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_33.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -971,7 +972,7 @@ def test_34(plugin_test_dir):
     df = encode_ip2_and_ip3_time(df)
 
     # write the result
-    results_file = TMP_PATH + "test_34.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_34.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -1011,7 +1012,7 @@ def test_35(plugin_test_dir):
     df = encode_ip2_and_ip3_time(df)
 
     # write the result
-    results_file = TMP_PATH + "test_35.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_35.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -1050,7 +1051,7 @@ def test_36(plugin_test_dir):
     # print(df)
     df = encode_ip2_and_ip3_time(df)
     # write the result
-    results_file = TMP_PATH + "test_36.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_36.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -1088,7 +1089,7 @@ def test_37(plugin_test_dir):
     # print(df)
     df = encode_ip2_and_ip3_time(df)
     # write the result
-    results_file = TMP_PATH + "test_35.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_35.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -1126,7 +1127,7 @@ def test_38(plugin_test_dir):
     df = encode_ip2_and_ip3_time(df)
 
     # write the result
-    results_file = TMP_PATH + "test_36.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_36.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 

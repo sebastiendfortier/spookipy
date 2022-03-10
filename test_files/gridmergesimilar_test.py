@@ -34,7 +34,7 @@ class TestGridMergeSimilar(unittest.TestCase):
         # ([GetDictionaryInformation --dataBase STATIONS --outputAttribute LAT,LON --advancedRequest SELECT_LATITUDE_AS_LAT,LONGITUDE_AS_LON_FROM_STATIONSFB] + ([ReaderStd --input {sources[0]}] >> [Select --fieldName GZ,UU,VV,TT])) >> [InterpolationHorizontalPoint] >> [InterpolationVertical -m USER_DEFINED --verticalLevel 914.4,1828.8,2743.2,3657.6,5486.4 --verticalLevelType METER_SEA_LEVEL --interpolationType LINEAR --extrapolationType FIXED --valueAbove 999.0 --valueBelow 999.0] >> [GetDictionaryInformation --dataBase STATIONS --outputAttribute StationAlphaId,TerrainElevation,FictiveStationFlag --advancedRequest SELECT_StationAlphaId,COALESCE(TerrainElevation,StationElevation)_AS_TerrainElevation,FictiveStationFlag_FROM_STATIONSFB] >> ([Select --fieldName TT,FictiveStationFlag,StationAlphaId] + ([Select --fieldName TerrainElevation] >> [Zap --unit meter --doNotFlagAsZapped] >> [UnitConvert --unit foot]) + [WindModulusAndDirection]) >> [GridMergeSimilar] >> [Zap --metadataZappable --dateOfOrigin 20100126T211215 --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --noUnitConversion --truncateFieldName --IP1EncodingStyle OLDSTYLE --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = TMP_PATH + "test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -55,7 +55,7 @@ class TestGridMergeSimilar(unittest.TestCase):
         # ([GetDictionaryInformation --dataBase STATIONS --outputAttribute LAT,LON --advancedRequest SELECT_LATITUDE_AS_LAT,LONGITUDE_AS_LON_FROM_EXTRASSTATIONS] + ([ReaderStd --input {sources[0]}] >> [Select --fieldName GZ,UU,VV,TT])) >> [InterpolationHorizontalPoint] >> [InterpolationVertical -m USER_DEFINED --verticalLevel 914.4,1828.8,2743.2,3657.6,5486.4 --verticalLevelType METER_SEA_LEVEL --interpolationType LINEAR --extrapolationType FIXED --valueAbove 999.0 --valueBelow 999.0] >> [GetDictionaryInformation --dataBase STATIONS --outputAttribute StationAlphaId,TerrainElevation,FictiveStationFlag --advancedRequest SELECT_StationAlphaId,COALESCE(TerrainElevation,StationElevation)_AS_TerrainElevation,FictiveStationFlag_FROM_STATIONSFB] >> ([Select --fieldName TT,FictiveStationFlag,StationAlphaId] + ([Select --fieldName TerrainElevation] >> [Zap --unit meter --doNotFlagAsZapped] >> [UnitConvert --unit foot]) + [WindModulusAndDirection]) >> [GridMergeSimilar]
 
         # write the result
-        results_file = TMP_PATH + "test_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

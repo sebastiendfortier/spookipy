@@ -34,7 +34,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PressureOnIsopleth --fieldName TT --scanDirection DESCENDING --fieldConstant 20 --outputFieldName PXXX] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = TMP_PATH + "test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -55,7 +55,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PressureOnIsopleth --fieldName TT --scanDirection DESCENDING --fieldConstant 20 --outputFieldName ABCDEF]
 
         # write the result
-        results_file = TMP_PATH + "test_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -76,7 +76,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PressureOnIsopleth --fieldName ABCDE --scanDirection DESCENDING --fieldConstant 20 --outputFieldName PXXX]
 
         # write the result
-        results_file = TMP_PATH + "test_3.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -97,7 +97,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PressureOnIsopleth --fieldName TT --scanDirection DESCENDING --fieldConstant 15,20,30 --outputFieldName PXXX] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = TMP_PATH + "test_4.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -118,7 +118,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PressureOnIsopleth --fieldName TT --scanDirection ASCENDING --fieldConstant 15,20,30 --outputFieldName PXXX] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = TMP_PATH + "test_5.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -139,7 +139,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PressureOnIsopleth --fieldName TT --scanDirection DESCENDING --fieldConstant 20 --outputFieldName PXXX] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = TMP_PATH + "test_6.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

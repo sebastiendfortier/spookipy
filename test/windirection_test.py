@@ -5,6 +5,7 @@ import fstpy.all as fstpy
 import pytest
 import spookipy.all as spooki
 from ci_fstcomp import fstcomp
+import secrets
 from fstpy.dataframe_utils import select_with_meta
 
 pytestmark = [pytest.mark.skip]
@@ -31,7 +32,7 @@ def test_1(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     # write the result
-    results_file = TMP_PATH + "test_1.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -94,7 +95,7 @@ def test_5(plugin_test_dir):
     # [WriterStd --output {destination_path}]
 
     # write the result
-    results_file = TMP_PATH + "test_7.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 

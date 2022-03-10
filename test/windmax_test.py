@@ -5,6 +5,7 @@ import fstpy.all as fstpy
 import pytest
 import spookipy.all as spooki
 from ci_fstcomp import fstcomp
+import secrets
 
 pytestmark = [pytest.mark.regressions]
 
@@ -28,7 +29,7 @@ def test_1(plugin_test_dir):
     # df.loc[:,'nbits'] = 32
     # df.loc[:,'datyp'] = 5
     # write the result
-    results_file = TMP_PATH + "test_1.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
     # print(results_file)
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
@@ -57,7 +58,7 @@ def test_2(plugin_test_dir):
     # write the result
     df.loc[df.nomvar.isin(['UU','VV','UV','PX']),'etiket'] = 'WINDMAX'
 
-    results_file = TMP_PATH + "test_2.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -86,7 +87,7 @@ def test_3(plugin_test_dir):
 
     df['etiket'] = 'WINDMAX'
 
-    results_file = TMP_PATH + "test_3.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 

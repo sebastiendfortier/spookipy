@@ -34,7 +34,7 @@ class TestVorticityAbsolute(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --fieldName QQ --exclude] >> [VorticityAbsolute] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = TMP_PATH + "vortab_test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "vortab_test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -55,7 +55,7 @@ class TestVorticityAbsolute(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >>[VorticityAbsolute]
 
         # write the result
-        results_file = TMP_PATH + "vortab_test_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "vortab_test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -76,7 +76,7 @@ class TestVorticityAbsolute(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --fieldName QQ --exclude] >> [VorticityAbsolute -T1] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = TMP_PATH + "vortab_test_3.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "vortab_test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -97,7 +97,7 @@ class TestVorticityAbsolute(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [VorticityAbsolute] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = TMP_PATH + "vortab_test_4.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "vortab_test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -118,7 +118,7 @@ class TestVorticityAbsolute(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [VorticityAbsolute] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = TMP_PATH + "vortab_test_5.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "vortab_test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

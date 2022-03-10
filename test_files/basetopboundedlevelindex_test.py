@@ -40,7 +40,7 @@ class TestBaseTopBoundedLevelIndex(unittest.TestCase):
         #['[ReaderCsv --input {sources[0]}] >> ', '[ReaderCsv --input {sources[1]}] >> ', '[ReaderCsv --input {sources[2]}] >> ', '[Zap --dateOfOrigin 20080529T133415 --typeOfField FORECAST --nbitsForDataStorage R16 --doNotFlagAsZapped] >> ', '[BaseTopBoundedLevelIndex --comparisonOperator >= --threshold 0.6] >> ', '[ZapSmart --fieldNameFrom KBAS --fieldNameTo BASE] >> ', '[ZapSmart --fieldNameFrom KTOP --fieldNameTo TOP] >> ', '[WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]']
 
         # write the result
-        results_file = TMP_PATH + "test_base_top_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_base_top_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

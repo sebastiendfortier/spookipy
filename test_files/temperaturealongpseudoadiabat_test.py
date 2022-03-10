@@ -34,7 +34,7 @@ class TestTemperatureAlongPseudoadiabat(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --verticalLevel 1000] >> [TemperatureAlongPseudoadiabat --endLevel 10mb --increment 1mb] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -55,7 +55,7 @@ class TestTemperatureAlongPseudoadiabat(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [TemperatureAlongPseudoadiabat --endLevel 100mb --increment 1mb] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -76,7 +76,7 @@ class TestTemperatureAlongPseudoadiabat(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [TemperatureAlongPseudoadiabat --endLevel 100mb --increment 1mb] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_3.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -97,7 +97,7 @@ class TestTemperatureAlongPseudoadiabat(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [TemperatureAlongPseudoadiabat --endLevel 1000mb --increment 1mb] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_4.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -118,7 +118,7 @@ class TestTemperatureAlongPseudoadiabat(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [TemperatureAlongPseudoadiabat --endLevel 1000mb --increment 1mb] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_5.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -139,7 +139,7 @@ class TestTemperatureAlongPseudoadiabat(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [TemperatureAlongPseudoadiabat --endLevel 1000mb --increment 50mb] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_6.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -160,7 +160,7 @@ class TestTemperatureAlongPseudoadiabat(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [TemperatureAlongPseudoadiabat --endLevel 950mb --increment 50mb] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_7.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -182,7 +182,7 @@ class TestTemperatureAlongPseudoadiabat(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [TemperatureAlongPseudoadiabat --endLevel 950mb --increment 50mb] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_8.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -204,7 +204,7 @@ class TestTemperatureAlongPseudoadiabat(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [TemperatureAlongPseudoadiabat --endLevel SURFACE --increment 50mb] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_9.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -226,7 +226,7 @@ class TestTemperatureAlongPseudoadiabat(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [TemperatureAlongPseudoadiabat --endLevel 800mb --increment 10mb --direction ASCENDING] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_10.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -247,7 +247,7 @@ class TestTemperatureAlongPseudoadiabat(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [TemperatureAlongPseudoadiabat --endLevel 800mb --increment 10mb --direction DESCENDING] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_11.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -269,7 +269,7 @@ class TestTemperatureAlongPseudoadiabat(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [TemperatureAlongPseudoadiabat --endLevel 600mb --increment 10mb --direction DESCENDING] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_12.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -290,7 +290,7 @@ class TestTemperatureAlongPseudoadiabat(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [TemperatureAlongPseudoadiabat --endLevel 600mb --increment 10mb --direction ASCENDING] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_13.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -312,7 +312,7 @@ class TestTemperatureAlongPseudoadiabat(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [TemperatureAlongPseudoadiabat --endLevel SURFACE --increment 50mb --direction DESCENDING] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_14.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -334,7 +334,7 @@ class TestTemperatureAlongPseudoadiabat(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [TemperatureAlongPseudoadiabat --endLevel 550mb --increment 50mb --direction ASCENDING] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_15.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -356,7 +356,7 @@ class TestTemperatureAlongPseudoadiabat(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [TemperatureAlongPseudoadiabat --endLevel 600mb --increment 50mb --direction DESCENDING] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_16.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_16.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

@@ -34,7 +34,7 @@ class TestPrintIMO(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PrintIMO --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_1mUG1lz/shortOutput.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -55,7 +55,7 @@ class TestPrintIMO(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PrintIMO --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_24jpOyc/longOutput.txt --extended]
 
         # write the result
-        results_file = TMP_PATH + "test_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -76,7 +76,7 @@ class TestPrintIMO(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >> ', '[PrintIMO --output {destination_path} --json]']
 
         # write the result
-        results_file = TMP_PATH + "test_3.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

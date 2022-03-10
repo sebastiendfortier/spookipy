@@ -6,6 +6,7 @@ import pandas as pd
 import pytest
 import spookipy.all as spooki
 from ci_fstcomp import fstcomp
+import secrets
 
 pytestmark = [pytest.mark.regressions, pytest.mark.humidity]
 
@@ -147,7 +148,7 @@ def test_5(plugin_test_dir):
     df = pd.concat([meta_df, df1], ignore_index=True)
 
     # write the result
-    results_file = TMP_PATH + "test_5.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -185,7 +186,7 @@ def test_7(plugin_test_dir):
     # df.loc[:,'datyp']=5
 
     # write the result
-    results_file = TMP_PATH + "test_7.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -220,7 +221,7 @@ def test_9(plugin_test_dir):
     df.loc[:, 'etiket'] = 'G133K80N'
 
     # write the result
-    results_file = TMP_PATH + "test_9.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 

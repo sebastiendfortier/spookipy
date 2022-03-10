@@ -5,6 +5,7 @@ import fstpy.all as fstpy
 import pytest
 import spookipy.all as spooki
 from ci_fstcomp import fstcomp
+import secrets
 
 pytestmark = [pytest.mark.regressions]
 
@@ -29,7 +30,7 @@ def test_1(plugin_test_dir):
 
     df.loc[:, 'etiket'] = 'R1580V0N'
     # write the result
-    results_file = TMP_PATH + "test_1.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -59,7 +60,7 @@ def test_2(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     # write the result
-    results_file = TMP_PATH + "test_2.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -85,7 +86,7 @@ def test_2(plugin_test_dir):
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType AUTODETECT --referenceField TT] >> [Zap --pdsLabel R1580V0N] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
 # #     #write the result
-# #     results_file = TMP_PATH + "test_3.std"
+# #     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
 # #     fstpy.StandardFileWriter(results_file,df).to_fst()
 
 # #     # open and read comparison file
@@ -109,7 +110,7 @@ def test_2(plugin_test_dir):
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Zap --pdsLabel PRESSURE --doNotFlagAsZapped] >> [Pressure --coordinateType AUTODETECT --standardAtmosphere --referenceField TT ] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
 # #     #write the result
-# #     results_file = TMP_PATH + "test_4.std"
+# #     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
 # #     fstpy.StandardFileWriter(results_file,df).to_fst()
 
 # #     # open and read comparison file
@@ -137,7 +138,7 @@ def test_5(plugin_test_dir):
     # df.loc[df.nomvar=='P0','etiket'] = 'GA72A16N'
 
     # write the result
-    results_file = TMP_PATH + "test_5.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -166,7 +167,7 @@ def test_6(plugin_test_dir):
 
     # df.loc[df.nomvar=='P0','etiket'] = 'GA72A16N'
     # write the result
-    results_file = TMP_PATH + "test_6.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -192,7 +193,7 @@ def test_6(plugin_test_dir):
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType AUTODETECT --referenceField HU] >> [Zap --pdsLabel R1580V0N] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
 # #     #write the result
-# #     results_file = TMP_PATH + "test_7.std"
+# #     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
 # #     fstpy.StandardFileWriter(results_file,df).to_fst()
 
 # #     # open and read comparison file
@@ -216,7 +217,7 @@ def test_6(plugin_test_dir):
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType AUTODETECT --standardAtmosphere --referenceField HU] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
 # #     #write the result
-# #     results_file = TMP_PATH + "test_8.std"
+# #     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
 # #     fstpy.StandardFileWriter(results_file,df).to_fst()
 
 # #     # open and read comparison file
@@ -243,7 +244,7 @@ def test_9(plugin_test_dir):
     df.loc[:, 'etiket'] = 'R1580V0N'
 
     # write the result
-    results_file = TMP_PATH + "test_9.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -273,7 +274,7 @@ def test_10(plugin_test_dir):
     # df.loc[df.nomvar.isin(['>>','^^','HY','P0']),'etiket'] = 'R1580V0N'
 
     # write the result
-    results_file = TMP_PATH + "test_10.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -299,7 +300,7 @@ def test_10(plugin_test_dir):
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType AUTODETECT --referenceField TT] >> [WriterStd --output {destination_path} --ignoreExtended]
 
 # #     #write the result
-# #     results_file = TMP_PATH + "test_11.std"
+# #     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
 # #     fstpy.StandardFileWriter(results_file,df).to_fst()
 
 # #     # open and read comparison file
@@ -323,7 +324,7 @@ def test_10(plugin_test_dir):
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Zap --pdsLabel PRESSURE --doNotFlagAsZapped] >> [Pressure --coordinateType AUTODETECT --standardAtmosphere --referenceField TT] >> [WriterStd --output {destination_path} --ignoreExtended]
 
 # #     #write the result
-# #     results_file = TMP_PATH + "test_12.std"
+# #     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
 # #     fstpy.StandardFileWriter(results_file,df).to_fst()
 
 # #     # open and read comparison file
@@ -351,7 +352,7 @@ def test_13(plugin_test_dir):
     # print(df[['nomvar','etiket']])
 
     # write the result
-    results_file = TMP_PATH + "test_13.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -379,7 +380,7 @@ def test_14(plugin_test_dir):
 
     # df.loc[df.nomvar.isin(['!!','P0','^^','>>']),'etiket'] = '__PRESSX'
     # write the result
-    results_file = TMP_PATH + "test_14.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -407,7 +408,7 @@ def test_14(plugin_test_dir):
 # [WriterStd --output {destination_path} --ignoreExtended]
 
 # #     #write the result
-# #     results_file = TMP_PATH + "test_15.std"
+# #     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
 # #     fstpy.StandardFileWriter(results_file,df).to_fst()
 
 # #     # open and read comparison file
@@ -431,7 +432,7 @@ def test_14(plugin_test_dir):
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType AUTODETECT --standardAtmosphere --referenceField UU] >> [WriterStd --output {destination_path} --ignoreExtended]
 
 # #     #write the result
-# #     results_file = TMP_PATH + "test_16.std"
+# #     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_16.std"])
 # #     fstpy.StandardFileWriter(results_file,df).to_fst()
 
 # #     # open and read comparison file
@@ -456,7 +457,7 @@ def test_17(plugin_test_dir):
     # [Zap --pdsLabel R1580V0N] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
     df.loc[:, 'etiket'] = 'R1580V0N'
     # write the result
-    results_file = TMP_PATH + "test_17.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_17.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -485,7 +486,7 @@ def test_18(plugin_test_dir):
 
     # df.loc[df.nomvar.isin(['^^','>>']),'etiket'] = 'R1580V0N'
     # write the result
-    results_file = TMP_PATH + "test_18.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_18.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -511,7 +512,7 @@ def test_18(plugin_test_dir):
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Zap --pdsLabel PRESSURE --doNotFlagAsZapped] >> [Pressure --coordinateType AUTODETECT --referenceField TT] >> [Zap --pdsLabel R1580V0N] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
 # #     #write the result
-# #     results_file = TMP_PATH + "test_19.std"
+# #     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_19.std"])
 # #     fstpy.StandardFileWriter(results_file,df).to_fst()
 
 # #     # open and read comparison file
@@ -535,7 +536,7 @@ def test_18(plugin_test_dir):
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Zap --pdsLabel PRESSURE --doNotFlagAsZapped] >> [Pressure --coordinateType AUTODETECT --standardAtmosphere --referenceField TT] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
 # #     #write the result
-# #     results_file = TMP_PATH + "test_20.std"
+# #     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_20.std"])
 # #     fstpy.StandardFileWriter(results_file,df).to_fst()
 
 # #     # open and read comparison file
@@ -559,7 +560,7 @@ def test_18(plugin_test_dir):
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType ETA_COORDINATE --standardAtmosphere --referenceField TT] >> [WriterStd --output {destination_path} --ignoreExtended]
 
 # #     #write the result
-# #     results_file = TMP_PATH + "test_21.std"
+# #     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_21.std"])
 # #     fstpy.StandardFileWriter(results_file,df).to_fst()
 
 # #     # open and read comparison file
@@ -582,7 +583,7 @@ def test_18(plugin_test_dir):
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType ETA_COORDINATE --standardAtmosphere --referenceField TT] >> [WriterStd --output {destination_path} --ignoreExtended]
 
 # #     #write the result
-# #     results_file = TMP_PATH + "test_22.std"
+# #     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_22.std"])
 # #     fstpy.StandardFileWriter(results_file,df).to_fst()
 
 # #     # open and read comparison file
@@ -605,7 +606,7 @@ def test_18(plugin_test_dir):
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType SIGMA_COORDINATE --standardAtmosphere --referenceField TT] >> [WriterStd --output {destination_path} --ignoreExtended]
 
 # #     #write the result
-# #     results_file = TMP_PATH + "test_23.std"
+# #     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_23.std"])
 # #     fstpy.StandardFileWriter(results_file,df).to_fst()
 
 # #     # open and read comparison file
@@ -628,7 +629,7 @@ def test_18(plugin_test_dir):
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType SIGMA_COORDINATE --standardAtmosphere --referenceField HU] >> [WriterStd --output {destination_path} --ignoreExtended]
 
 # #     #write the result
-# #     results_file = TMP_PATH + "test_24.std"
+# #     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_24.std"])
 # #     fstpy.StandardFileWriter(results_file,df).to_fst()
 
 # #     # open and read comparison file
@@ -651,7 +652,7 @@ def test_18(plugin_test_dir):
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType HYBRID_COORDINATE --standardAtmosphere --referenceField TT] >> [WriterStd --output {destination_path} --ignoreExtended]
 
 # #     #write the result
-# #     results_file = TMP_PATH + "test_25.std"
+# #     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_25.std"])
 # #     fstpy.StandardFileWriter(results_file,df).to_fst()
 
 # #     # open and read comparison file
@@ -674,7 +675,7 @@ def test_18(plugin_test_dir):
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType HYBRID_COORDINATE --standardAtmosphere --referenceField TT] >> [WriterStd --output {destination_path} --ignoreExtended]
 
 # #     #write the result
-# #     results_file = TMP_PATH + "test_26.std"
+# #     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_26.std"])
 # #     fstpy.StandardFileWriter(results_file,df).to_fst()
 
 # #     # open and read comparison file
@@ -697,7 +698,7 @@ def test_18(plugin_test_dir):
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType HYBRID_STAGGERED_COORDINATE --standardAtmosphere --referenceField TT] >> [WriterStd --output {destination_path} --ignoreExtended]
 
 # #     #write the result
-# #     results_file = TMP_PATH + "test_27.std"
+# #     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_27.std"])
 # #     fstpy.StandardFileWriter(results_file,df).to_fst()
 
 # #     # open and read comparison file
@@ -720,7 +721,7 @@ def test_18(plugin_test_dir):
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType HYBRID_STAGGERED_COORDINATE --standardAtmosphere --referenceField TT] >> [WriterStd --output {destination_path} --ignoreExtended]
 
 # #     #write the result
-# #     results_file = TMP_PATH + "test_28.std"
+# #     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_28.std"])
 # #     fstpy.StandardFileWriter(results_file,df).to_fst()
 
 # #     # open and read comparison file
@@ -743,7 +744,7 @@ def test_18(plugin_test_dir):
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType PRESSURE_COORDINATE --standardAtmosphere --referenceField TT] >> [WriterStd --output {destination_path} --ignoreExtended]
 
 # #     #write the result
-# #     results_file = TMP_PATH + "test_29.std"
+# #     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_29.std"])
 # #     fstpy.StandardFileWriter(results_file,df).to_fst()
 
 # #     # open and read comparison file
@@ -767,7 +768,7 @@ def test_30(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --noMetadata]
     df.loc[:, 'etiket'] = 'R110K80N'
     # write the result
-    results_file = TMP_PATH + "test_30.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_30.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
 
@@ -793,7 +794,7 @@ def test_30(plugin_test_dir):
 # #     #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '[Select --exclude --fieldName PX] >> ', '[Pressure --coordinateType AUTODETECT --referenceField TT] >>', '[Zap --pdsLabel EH02558_X --metadataZappable --doNotFlagAsZapped]>>', '[Select --metadataFieldName P0,>>,^^ --exclude] >>', '[WriterStd --output {destination_path} --ignoreExtended ]']
 
 # #     #write the result
-# #     results_file = TMP_PATH + "test_31.std"
+# #     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_31.std"])
 # #     fstpy.StandardFileWriter(results_file,df).to_fst()
 
 # #     # open and read comparison file
@@ -817,7 +818,7 @@ def test_30(plugin_test_dir):
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType HYBRID_STAGGERED_COORDINATE --referenceField TT] >>[WriterStd --output {destination_path} --ignoreExtended ]
 
 # #     #write the result
-# #     results_file = TMP_PATH + "test_32.std"
+# #     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_32.std"])
 # #     fstpy.StandardFileWriter(results_file,df).to_fst()
 
 # #     # open and read comparison file
@@ -849,7 +850,7 @@ def test_33(plugin_test_dir):
 
     # write the result
 
-    results_file = TMP_PATH + "test_33.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_33.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -880,7 +881,7 @@ def test_34(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended --noMetadata --IP1EncodingStyle OLDSTYLE]
     df.loc[:, 'etiket'] = 'G1_7_0_0N'
     # write the result
-    results_file = TMP_PATH + "test_34.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_34.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
 
@@ -911,7 +912,7 @@ def test_35(plugin_test_dir):
     df = df.loc[~df.nomvar.isin(["^^", ">>", "P0"])]
 
     # write the result
-    results_file = TMP_PATH + "test_35.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_35.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -941,7 +942,7 @@ def test_36(plugin_test_dir):
     df.loc[:, 'etiket'] = 'R1_V710_N'
     df = df.loc[~df.nomvar.isin(["^^", ">>", "P0"])]
     # write the result
-    results_file = TMP_PATH + "test_36.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_36.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
     # open and read comparison file
@@ -966,7 +967,7 @@ def test_36(plugin_test_dir):
 # #     #['[ReaderStd --ignoreExtended --input {sources[0]} ]>> ', '[Pressure --coordinateType HYBRID_5005_COORDINATE --referenceField CK] >> ', '[Zap --pdsLabel R1_V710_N --metadataZappable --doNotFlagAsZapped]  >>', '[Select --metadataFieldName P0,>>,^^ --exclude] >>', '[WriterStd --output {destination_path} --ignoreExtended]']
 
 # #     #write the result
-# #     results_file = TMP_PATH + "test_37.std"
+# #     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_37.std"])
 # #     fstpy.StandardFileWriter(results_file,df).to_fst()
 
 # #     # open and read comparison file

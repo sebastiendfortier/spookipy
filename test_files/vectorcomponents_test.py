@@ -34,7 +34,7 @@ class TestVectorComponents(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [VectorComponents --orientationType BLABLABLA] >> [WriterStd --output {destination_path}]
 
         # write the result
-        results_file = TMP_PATH + "test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -55,7 +55,7 @@ class TestVectorComponents(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [WindModulusAndDirection] >> [VectorComponents --orientationType MATH] >> [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion]
 
         # write the result
-        results_file = TMP_PATH + "test_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -76,7 +76,7 @@ class TestVectorComponents(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [WindModulusAndDirection] >> [VectorComponents --orientationType MATH] >> [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion]
 
         # write the result
-        results_file = TMP_PATH + "test_3.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

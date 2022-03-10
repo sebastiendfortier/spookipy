@@ -34,7 +34,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ArithmeticMeanElementsVertically] >> [Zap --pdsLabel MEANCOLUMNS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -55,7 +55,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --verticalLevel 500] >> [ArithmeticMeanElementsVertically] >> [Zap --pdsLabel MEANCOLUMNS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -76,7 +76,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> [ArithmeticMeanElementsVertically --outputFieldName ABCD] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended --noUnitConversion]
 
         # write the result
-        results_file = TMP_PATH + "test_3.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -97,7 +97,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
         #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '(', '([Select --fieldName TT --verticalLevel 0.0102@0.0374] >> [ArithmeticMeanElementsVertically]) + ', '([Select --fieldName TT --verticalLevel 0.0625@1] >> [ArithmeticMeanElementsVertically]) + ', '([Select --fieldName UU --verticalLevel 0.0102@0.0374] >> [ArithmeticMeanElementsVertically]) + ', '([Select --fieldName UU --verticalLevel 0.0625@1] >> [ArithmeticMeanElementsVertically]) + ', '([Select --fieldName VV --verticalLevel 0.0102@0.0374] >> [ArithmeticMeanElementsVertically]) + ', '([Select --fieldName VV --verticalLevel 0.0625@1] >> [ArithmeticMeanElementsVertically])', ')', ' >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]']
 
         # write the result
-        results_file = TMP_PATH + "test_5.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -119,7 +119,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> ( ([Select --fieldName TT --verticalLevel 0@1] >> [ArithmeticMeanElementsVertically]) + ([Select --fieldName UU --verticalLevel 0@1] >> [ArithmeticMeanElementsVertically]) + ([Select --fieldName VV --verticalLevel 0@1] >> [ArithmeticMeanElementsVertically]) ) >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_6.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -141,7 +141,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName TT,UU,VV --verticalLevel 0@1] >> [ArithmeticMeanElementsVertically] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_7.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -163,7 +163,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
         #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '[ArithmeticMeanElementsVertically] >> ', '[WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]']
 
         # write the result
-        results_file = TMP_PATH + "test_8.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -184,7 +184,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [ArithmeticMeanElementsVertically --outputFieldName ABCD]
 
         # write the result
-        results_file = TMP_PATH + "test_9.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -205,7 +205,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ArithmeticMeanElementsVertically --outputFieldName ABCDEF]
 
         # write the result
-        results_file = TMP_PATH + "test_10.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

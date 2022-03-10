@@ -6,6 +6,7 @@ import pytest
 import pandas as pd
 import spookipy.all as spooki
 from ci_fstcomp import fstcomp
+import secrets
 import datetime
 
 
@@ -60,7 +61,7 @@ def test_2(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]
     df['etiket'] = 'R1558V0N'
     # write the result
-    results_file = TMP_PATH + "test_2.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -89,7 +90,7 @@ def test_3(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]']
     df.loc[df.nomvar.isin(['>>','^^']),'etiket'] = 'G133K80_N'
     # write the result
-    results_file = TMP_PATH + "test_3.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -115,7 +116,7 @@ def test_3(plugin_test_dir):
 #     # [WriterStd --output {destination_path} --ignoreExtended]']
 
 #     # write the result
-#     results_file = TMP_PATH + "test_4.std"
+#     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
 #     fstpy.delete_file(results_file)
 #     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -141,7 +142,7 @@ def test_3(plugin_test_dir):
 #     # [WriterStd --output {destination_path} --ignoreExtended]']
 
 #     # write the result
-#     results_file = TMP_PATH + "test_5.std"
+#     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
 #     fstpy.delete_file(results_file)
 #     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -167,7 +168,7 @@ def test_3(plugin_test_dir):
 #     # [WriterStd --output {destination_path} --ignoreExtended]']
 
 #     # write the result
-#     results_file = TMP_PATH + "test_6.std"
+#     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
 #     fstpy.delete_file(results_file)
 #     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -193,7 +194,7 @@ def test_3(plugin_test_dir):
 #     # [WriterStd --output {destination_path} --ignoreExtended]']
 
 #     # write the result
-#     results_file = TMP_PATH + "test_7.std"
+#     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
 #     fstpy.delete_file(results_file)
 #     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -221,7 +222,7 @@ def test_8(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]']
     df.loc[df.nomvar!='PR', 'etiket'] = 'WE_1_2_0N'
     # write the result
-    results_file = TMP_PATH + "test_8.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 

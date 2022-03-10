@@ -34,7 +34,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --voirIp1NewStyle --noHeader --voirLineCounterOff --outputType VOIR --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_2rFmuKC/test_2.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -50,7 +50,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --voirLineCounterOff --outputType VOIR --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_3CnlLaY/test_3.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_3.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -66,7 +66,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --voirLineCounterOff --outputType VOIR --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_5Z2LNjk/test_5.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_5.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -82,7 +82,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --voirLineCounterOff --outputType VOIR --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_64RSYBG/test_6.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_6.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -98,7 +98,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --voirLineCounterOff --outputType VOIR --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_7RRyoo3/test_7.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_7.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -114,7 +114,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --voirLineCounterOff --outputType VOIR --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_8Y39dIr/test_8.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_8.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -130,7 +130,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --voirLineCounterOff --outputType VOIR --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_9LU4YkQ/test_9.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_9.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -152,7 +152,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]} {sources[1]} {sources[2]}] >> [Print --voirIp1NewStyle --noHeader --voirLineCounterOff --outputType VOIR --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_10ceDjDf/test_10.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_10.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -168,7 +168,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --voirLineCounterOff --outputType VOIR --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_11j0335E/test_11.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_11.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -184,7 +184,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --voirIp1NewStyle --noHeader --voirLineCounterOff --outputType VOIR --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_12AmV5H4/test_12.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_12.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -200,7 +200,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --voirLineCounterOff --outputType VOIR --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_13lYpeyu/test_13.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_13.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -216,7 +216,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --voirLineCounterOff --outputType VOIR --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_14CUXVxU/test_14.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_14.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -232,7 +232,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --voirLineCounterOff --outputType VOIR --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_15xvtYGk/test_15.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_15.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -248,7 +248,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --voirLineCounterOff --outputType VOIR --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_16UB3mZK/test_16.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_16.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_16.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -264,7 +264,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --voirLineCounterOff --outputType VOIR --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_17fMnkrb/test_17.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_17.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_17.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -280,7 +280,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --voirLineCounterOff --outputType VOIR --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_180vRr2B/test_18.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_18.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_18.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -296,7 +296,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --voirLineCounterOff --outputType VOIR --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_193Nyyo3/test_19.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_19.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_19.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -312,7 +312,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --voirLineCounterOff --outputType VOIR --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_20Majpjv/test_20.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_20.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_20.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -328,7 +328,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --voirIp1NewStyle --noHeader --voirLineCounterOff --outputType VOIR --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_21fUF4MX/test_21.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_21.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_21.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -344,7 +344,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --voirIp1NewStyle --noHeader --voirLineCounterOff --outputType VOIR --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_22ApSqKq/test_22.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_22.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_22.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -360,7 +360,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --voirIp1NewStyle --noHeader --voirLineCounterOff --outputType VOIR --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_235fnb3U/test_23.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_23.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_23.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -382,7 +382,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]} {sources[1]} {sources[2]}] >> [Print --voirIp1NewStyle --noHeader --voirLineCounterOff --outputType VOIR --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_24Ous0Yp/test_24.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_24.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_24.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -398,7 +398,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --outputType FSTSTAT --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_25FXna5U/test_25.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_25.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_25.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -414,7 +414,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --outputType FSTSTAT --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_26aEylvq/test_26.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_26.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_26.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -430,7 +430,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --outputType FSTSTAT --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_27LkalRY/test_27.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_27.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_27.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -446,7 +446,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --outputType FSTSTAT --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_28WpMdox/test_28.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_28.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_28.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -462,7 +462,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --outputType FSTSTAT --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_29hS1Sob/test_29.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_29.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_29.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -478,7 +478,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --outputType FSTSTAT --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_30Qxlvr4/test_30.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_30.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_30.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -494,7 +494,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --outputType FSTSTAT --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_31x5hKhY/test_31.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_31.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_31.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -516,7 +516,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]} {sources[1]} {sources[2]}] >> [Print --noHeader --outputType FSTSTAT --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_328EQ6TX/test_32.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_32.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_32.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -532,7 +532,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --outputType FSTSTAT --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_33lbusIX/test_33.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_33.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_33.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -548,7 +548,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --outputType FSTSTAT --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_348LVPHX/test_34.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_34.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_34.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -564,7 +564,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --outputType FSTSTAT --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_357PNFjY/test_35.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_35.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_35.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -580,7 +580,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --outputType FSTSTAT --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_36CTcO6Y/test_36.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_36.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_36.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -596,7 +596,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --outputType FSTSTAT --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_37T7sw4Z/test_37.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_37.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_37.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -612,7 +612,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --outputType FSTSTAT --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_38GRKid1/test_38.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_38.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_38.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -628,7 +628,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --outputType FSTSTAT --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_393xoTw2/test_39.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_39.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_39.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -644,7 +644,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --outputType FSTSTAT --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_406UCy13/test_40.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_40.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_40.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -660,7 +660,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --outputType FSTSTAT --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_41tehh9a/test_41.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_41.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_41.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -676,7 +676,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --outputType FSTSTAT --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_4222N0jn/test_42.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_42.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_42.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -692,7 +692,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --outputType FSTSTAT --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_43DvjcEE/test_43.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_43.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_43.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -708,7 +708,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --outputType FSTSTAT --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_44s95BkW/test_44.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_44.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_44.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -724,7 +724,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Print --noHeader --outputType FSTSTAT --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_457XGv4l/test_45.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_45.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_45.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -746,7 +746,7 @@ class TestPrint(unittest.TestCase):
         # [ReaderStd --input {sources[0]} {sources[1]} {sources[2]}] >> [Print --noHeader --outputType FSTSTAT --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_46G1zaiY/test_46.txt]
 
         # write the result
-        results_file = TMP_PATH + "test_46.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_46.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)

@@ -34,7 +34,7 @@ class TestZap(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Zap --typeOfField BLABLABLA]
 
         # write the result
-        results_file = TMP_PATH + "test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -55,7 +55,7 @@ class TestZap(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Zap --run BLABLABLA]
 
         # write the result
-        results_file = TMP_PATH + "test_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -76,7 +76,7 @@ class TestZap(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Zap --ensembleMember BLABLABLA]
 
         # write the result
-        results_file = TMP_PATH + "test_3.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -97,7 +97,7 @@ class TestZap(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Zap --verticalLevel -1]
 
         # write the result
-        results_file = TMP_PATH + "test_5.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -118,7 +118,7 @@ class TestZap(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Zap --verticalLevelType BLABLABLA]
 
         # write the result
-        results_file = TMP_PATH + "test_6.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -139,7 +139,7 @@ class TestZap(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Zap --forecastHour -10]
 
         # write the result
-        results_file = TMP_PATH + "test_7.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -160,7 +160,7 @@ class TestZap(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Zap --forecastHourOnly -10]
 
         # write the result
-        results_file = TMP_PATH + "test_8.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -181,7 +181,7 @@ class TestZap(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Zap --userDefinedIndex -10]
 
         # write the result
-        results_file = TMP_PATH + "test_9.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -202,7 +202,7 @@ class TestZap(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Zap --nbitsForDataStorage i65]
 
         # write the result
-        results_file = TMP_PATH + "test_10.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -223,7 +223,7 @@ class TestZap(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Zap --unit i65]
 
         # write the result
-        results_file = TMP_PATH + "test_11.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -244,7 +244,7 @@ class TestZap(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Zap --forecastHourOnly -10:00:00]
 
         # write the result
-        results_file = TMP_PATH + "test_12.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -265,7 +265,7 @@ class TestZap(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHourOnly 11:00:01] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_13.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -286,7 +286,7 @@ class TestZap(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Zap --forecastHour -10:00:00]
 
         # write the result
-        results_file = TMP_PATH + "test_14.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -307,7 +307,7 @@ class TestZap(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHour 11:38:00] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_15.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -328,7 +328,7 @@ class TestZap(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHour 11.633333333] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_16.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_16.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -349,7 +349,7 @@ class TestZap(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHourOnly 11.633333333 --lenghtOfTimeStep 1 --timeStepNumber 41880] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_17.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_17.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -370,7 +370,7 @@ class TestZap(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHourOnly 11.6 --lenghtOfTimeStep 1 --timeStepNumber 41880] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_18.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_18.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -391,7 +391,7 @@ class TestZap(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHourOnly 11.633333333 --lenghtOfTimeStep 2 --timeStepNumber 41880] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_19.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_19.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -412,7 +412,7 @@ class TestZap(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHourOnly 11.633333333 --lenghtOfTimeStep 1 --timeStepNumber 41888] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_20.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_20.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -433,7 +433,7 @@ class TestZap(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHourOnly 11.633333333 --lenghtOfTimeStep 1] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_21.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_21.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -454,7 +454,7 @@ class TestZap(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHourOnly 11.633333333 --timeStepNumber 41880] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_22.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_22.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -475,7 +475,7 @@ class TestZap(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHourOnly 11:31:00 --lenghtOfTimeStep 1 --timeStepNumber 41460] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_23.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_23.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -496,7 +496,7 @@ class TestZap(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHourOnly 11:31:00 --lenghtOfTimeStep 60 --timeStepNumber 691] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_24.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_24.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -517,7 +517,7 @@ class TestZap(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHourOnly 11:31:01 --lenghtOfTimeStep 1 --timeStepNumber 41461] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_25.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_25.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -538,7 +538,7 @@ class TestZap(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag ZAPPED=TRUE,BOUNDED=FALSE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_26.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_26.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -559,7 +559,7 @@ class TestZap(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag ZAPPED=TRUE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_27.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_27.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -580,7 +580,7 @@ class TestZap(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag ZAPPEDS=TRUE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_28.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_28.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -601,7 +601,7 @@ class TestZap(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag ZAPPED=TRU] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_29.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_29.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -622,7 +622,7 @@ class TestZap(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag FILTERED=TRUE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_30.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_30.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -643,7 +643,7 @@ class TestZap(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag INTERPOLATED=TRUE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_31.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_31.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -664,7 +664,7 @@ class TestZap(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag UNITCONVERTED=TRUE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_32.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_32.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -685,7 +685,7 @@ class TestZap(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag ALL_FLAGS=TRUE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_33.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_33.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -706,7 +706,7 @@ class TestZap(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag ZAPPED=FALSE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_34.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_34.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -727,7 +727,7 @@ class TestZap(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag ZAPPED=FALSE,FILTERED=FALSE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_35.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_35.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -748,7 +748,7 @@ class TestZap(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag FILTERED=FALSE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_36.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_36.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -769,7 +769,7 @@ class TestZap(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag INTERPOLATED=FALSE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_37.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_37.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -790,7 +790,7 @@ class TestZap(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag UNITCONVERTED=FALSE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_38.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_38.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -811,7 +811,7 @@ class TestZap(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag ZAPPED=TRUE,FILTERED=TRUE] >>', '[Zap --modificationFlag ZAPPED=FALSE,FILTERED=FALSE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_39.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_39.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -832,7 +832,7 @@ class TestZap(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag ALL_FLAGS=FALSE] >>', '[Zap --modificationFlag ENSEMBLEEXTRAINFO=TRUE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_40.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_40.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

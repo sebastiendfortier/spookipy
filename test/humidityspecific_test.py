@@ -6,6 +6,7 @@ import pandas as pd
 import pytest
 import spookipy.all as spooki
 from ci_fstcomp import fstcomp
+import secrets
 
 pytestmark = [pytest.mark.regressions, pytest.mark.humidity]
 
@@ -144,7 +145,7 @@ def test_8(plugin_test_dir):
     # df.loc[:,'datyp']=5
 
     # write the result
-    results_file = TMP_PATH + "test_8.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -185,7 +186,7 @@ def test_10(plugin_test_dir):
     # df.loc[:,'datyp']=5
 
     # write the result
-    results_file = TMP_PATH + "test_10.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -231,7 +232,7 @@ def test_11(plugin_test_dir):
     # df.loc[:,'datyp']=5
 
     # write the result
-    results_file = TMP_PATH + "test_11.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -276,7 +277,7 @@ def test_12(plugin_test_dir):
     # df.loc[:,'datyp']=5
 
     # write the result
-    results_file = TMP_PATH + "test_12.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -324,7 +325,7 @@ def test_13(plugin_test_dir):
     # df.loc[:,'datyp']=5
 
     # write the result
-    results_file = TMP_PATH + "test_13.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -370,7 +371,7 @@ def test_14(plugin_test_dir):
     # df.loc[df.nomvar!='!!','nbits']=32
     # df.loc[:,'datyp']=5
 
-    results_file = TMP_PATH + "test_14.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
     fstpy.delete_file(results_file)                          
     fstpy.StandardFileWriter(results_file, df).to_fst()
 

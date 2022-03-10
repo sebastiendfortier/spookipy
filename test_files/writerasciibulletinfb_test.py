@@ -34,7 +34,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --verticalLevel 0.384@1.0] >> [BulletinFBPreparation] >> [WriterAsciiBulletinFB --backupHour 6,12 --outputPath /tmp//totoeUTH4R]
 
         # write the result
-        results_file = TMP_PATH + "test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -50,7 +50,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --verticalLevel 0.384@1.0] >> [BulletinFBPreparation] >> [WriterAsciiBulletinFB --backupHour 6,12 --outputPath /tmp//totogRD7c2/bidon]
 
         # write the result
-        results_file = TMP_PATH + "test_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -69,7 +69,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --verticalLevel 0.384@1.0] >> [BulletinFBPreparation] >> [WriterAsciiBulletinFB --backupHour 6,12 --outputPath /media]
 
         # write the result
-        results_file = TMP_PATH + "test_pathExisteMaisPasLesPermissions.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_pathExisteMaisPasLesPermissions.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -85,7 +85,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --verticalLevel 0.384@1.0] >> [Zap --dateOfOrigin 20110215163210] >> [BulletinFBPreparation] >> [WriterAsciiBulletinFB --backupHour 6,12 --outputPath /media]
 
         # write the result
-        results_file = TMP_PATH + "test_invalidRunHour.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_invalidRunHour.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -101,7 +101,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --verticalLevel 0.384@1.0] >> [BulletinFBPreparation] >> ([Select --fieldName UV,WD,GZ,TerrainElevation,StationAlphaId,FictiveStationFlag] + ([Select --fieldName TT] >> [UnitConvert --unit kelvin])) >> [WriterAsciiBulletinFB --backupHour 6,12 --outputPath /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_invalidUnitTT2aThUd]
 
         # write the result
-        results_file = TMP_PATH + "test_invalidUnitTT.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_invalidUnitTT.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -117,7 +117,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --verticalLevel 0.384@1.0] >> [BulletinFBPreparation] >> ([Select --fieldName TT,WD,GZ,TerrainElevation,StationAlphaId,FictiveStationFlag] + ([Select --fieldName UV] >> [UnitConvert --unit kilometer_per_hour])) >> [WriterAsciiBulletinFB --backupHour 6,12 --outputPath /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_invalidUnitUVc0rc0i]
 
         # write the result
-        results_file = TMP_PATH + "test_invalidUnitUV.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_invalidUnitUV.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -133,7 +133,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --verticalLevel 0.384@1.0] >> [BulletinFBPreparation] >> ([Select --fieldName TT,UV,WD,TerrainElevation,StationAlphaId,FictiveStationFlag] + ([Select --fieldName GZ] >> [UnitConvert --unit meter])) >> [WriterAsciiBulletinFB --backupHour 6,12 --outputPath /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_invalidUnitGZCC9Nax]
 
         # write the result
-        results_file = TMP_PATH + "test_invalidUnitGZ.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_invalidUnitGZ.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -149,7 +149,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --verticalLevel 0.384@1.0] >> [BulletinFBPreparation] >> ([Select --fieldName TT,UV,WD,GZ,StationAlphaId,FictiveStationFlag] + ([Select --fieldName TerrainElevation] >> [UnitConvert --unit kilometer])) >> [WriterAsciiBulletinFB --backupHour 6,12 --outputPath /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_invalidUnitTerrainElevationQWZwVU]
 
         # write the result
-        results_file = TMP_PATH + "test_invalidUnitTerrainElevation.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_invalidUnitTerrainElevation.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -165,7 +165,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --verticalLevel 0.384@1.0] >> [BulletinFBPreparation] >> [WriterAsciiBulletinFB --backupHour 6,12 --outputPath /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_WriterAsciiBulletinFB000061cMjYgs]
 
         # write the result
-        results_file = TMP_PATH + "test_WriterAsciiBulletinFB000061.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_WriterAsciiBulletinFB000061.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -181,7 +181,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --verticalLevel 0.384@1.0] >> [BulletinFBPreparation] >> [WriterAsciiBulletinFB --backupHour 6,12 --outputPath /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_WriterAsciiBulletinFB00012sCXhE8]
 
         # write the result
-        results_file = TMP_PATH + "test_WriterAsciiBulletinFB00012.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_WriterAsciiBulletinFB00012.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -197,7 +197,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --verticalLevel 0.384@1.0] >> [BulletinFBPreparation] >> [WriterAsciiBulletinFB --backupHour 6,12 --outputPath /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_WriterAsciiBulletinFB00018GoBUe0]
 
         # write the result
-        results_file = TMP_PATH + "test_WriterAsciiBulletinFB00018.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_WriterAsciiBulletinFB00018.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -216,7 +216,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --verticalLevel 0.384@1.0] >> [BulletinFBPreparation] >> [WriterAsciiBulletinFB --backupHour 6,12 --outputPath /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_WriterAsciiBulletinFB00024shFkM3]
 
         # write the result
-        results_file = TMP_PATH + "test_WriterAsciiBulletinFB00024.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_WriterAsciiBulletinFB00024.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -232,7 +232,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --verticalLevel 0.384@1.0] >> [BulletinFBPreparation] >> [WriterAsciiBulletinFB --backupHour 6,12 --outputPath /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_WriterAsciiBulletinFB00030k2Qcin]
 
         # write the result
-        results_file = TMP_PATH + "test_WriterAsciiBulletinFB00030.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_WriterAsciiBulletinFB00030.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -248,7 +248,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --verticalLevel 0.384@1.0] >> [BulletinFBPreparation] >> [WriterAsciiBulletinFB --backupHour 6,12 --outputPath /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_WriterAsciiBulletinFB00036yVsDwS]
 
         # write the result
-        results_file = TMP_PATH + "test_WriterAsciiBulletinFB00036.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_WriterAsciiBulletinFB00036.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -264,7 +264,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --verticalLevel 0.384@1.0] >> [BulletinFBPreparation] >> [WriterAsciiBulletinFB --backupHour 6,12 --outputPath /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_WriterAsciiBulletinFB00048y43hiy]
 
         # write the result
-        results_file = TMP_PATH + "test_WriterAsciiBulletinFB00048.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_WriterAsciiBulletinFB00048.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -280,7 +280,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --verticalLevel 0.384@1.0] >> [BulletinFBPreparation] >> [WriterAsciiBulletinFB --backupHour 6,12 --outputPath /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_WriterAsciiBulletinFB12006imaQxV]
 
         # write the result
-        results_file = TMP_PATH + "test_WriterAsciiBulletinFB12006.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_WriterAsciiBulletinFB12006.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -296,7 +296,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --verticalLevel 0.384@1.0] >> [BulletinFBPreparation] >> [WriterAsciiBulletinFB --backupHour 6,12 --outputPath /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_WriterAsciiBulletinFB12012YgcZUW]
 
         # write the result
-        results_file = TMP_PATH + "test_WriterAsciiBulletinFB12012.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_WriterAsciiBulletinFB12012.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -312,7 +312,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --verticalLevel 0.384@1.0] >> [BulletinFBPreparation] >> [WriterAsciiBulletinFB --backupHour 6,12 --outputPath /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_WriterAsciiBulletinFB12018woJSQ9]
 
         # write the result
-        results_file = TMP_PATH + "test_WriterAsciiBulletinFB12018.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_WriterAsciiBulletinFB12018.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -328,7 +328,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --verticalLevel 0.384@1.0] >> [BulletinFBPreparation] >> [WriterAsciiBulletinFB --backupHour 6,12 --outputPath /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_WriterAsciiBulletinFB12024yi0cOy]
 
         # write the result
-        results_file = TMP_PATH + "test_WriterAsciiBulletinFB12024.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_WriterAsciiBulletinFB12024.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -344,7 +344,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --verticalLevel 0.384@1.0] >> [BulletinFBPreparation] >> [WriterAsciiBulletinFB --backupHour 6,12 --outputPath /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_WriterAsciiBulletinFB12030OZ7ZN9]
 
         # write the result
-        results_file = TMP_PATH + "test_WriterAsciiBulletinFB12030.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_WriterAsciiBulletinFB12030.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -360,7 +360,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --verticalLevel 0.384@1.0] >> [BulletinFBPreparation] >> [WriterAsciiBulletinFB --backupHour 6,12 --outputPath /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_WriterAsciiBulletinFB12036i0hpNW]
 
         # write the result
-        results_file = TMP_PATH + "test_WriterAsciiBulletinFB12036.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_WriterAsciiBulletinFB12036.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -376,7 +376,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --verticalLevel 0.384@1.0] >> [BulletinFBPreparation] >> [WriterAsciiBulletinFB --backupHour 6,12 --outputPath /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_WriterAsciiBulletinFB12048m0ZlWU]
 
         # write the result
-        results_file = TMP_PATH + "test_WriterAsciiBulletinFB12048.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_WriterAsciiBulletinFB12048.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -392,7 +392,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --verticalLevel 0.384@1.0] >> [BulletinFBPreparation --useOriginalFDDictionary] >> [WriterAsciiBulletinFB --backupHour 6,12 --outputPath /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_WriterAsciiBulletinGlobal8xjOng]
 
         # write the result
-        results_file = TMP_PATH + "test_WriterAsciiBulletinGlobal.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_WriterAsciiBulletinGlobal.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -408,7 +408,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --verticalLevel 0.384@1.0] >> [BulletinFBPreparation] >> [WriterAsciiBulletinFB --backupHour 6,12 --outputPath /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_WriterAsciiBulletinFB000061bYkCU7F]
 
         # write the result
-        results_file = TMP_PATH + "test_WriterAsciiBulletinFB000061b.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_WriterAsciiBulletinFB000061b.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -424,7 +424,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [BulletinFBPreparation] >> [WriterAsciiBulletinFB --backupHour 6,12 --outputPath /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_WriterAsciiBulletinFBDateMmwGLh]
 
         # write the result
-        results_file = TMP_PATH + "test_WriterAsciiBulletinFBDate.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_WriterAsciiBulletinFBDate.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -440,7 +440,7 @@ class TestWriterAsciiBulletinFB(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [BulletinFBPreparation] >> [WriterAsciiBulletinFB --backupHour 6,12 --outputPath /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_WriterAsciiBulletinFBDate20cpk05]
 
         # write the result
-        results_file = TMP_PATH + "test_WriterAsciiBulletinFBDate2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_WriterAsciiBulletinFBDate2.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)

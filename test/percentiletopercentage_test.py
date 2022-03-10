@@ -55,7 +55,7 @@ def test_3(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     df = spooki.PercentileToPercentage(src_df0, threshold=0.3, operator='le', etiket='GE0_____PALL',
-                                       nomvar='SSH8', typvar='P@', percentile_step=5).compute()
+                                       nomvar='SSH8', typvar='P@', percentile_step=[0,100,5]).compute()
     # [ReaderStd --input {sources[0]}] >> [Threshold --threshold 0.3, Operator --operator le, Etiket --etiket GE0_____PALL, Nomvar --nomvar SSH8, Typvar --typvar P@, Percentile_Step --percentile_step 0,100,5] >> [PercentileToPercentage] >> [WriterStd --output {destination_path} ]
 
     # write the result

@@ -55,8 +55,8 @@ def field_to_percentage_le(arr: np.ndarray, arg: str) -> float:
     smaller_than = np.where(arr < arg.threshold)
     greater_than = np.where(arr > arg.threshold)
 
-    return((equal_to[0][0] + equal_to[0][-1]) * arg.percentile_step / 2 if ((equal_to[0]).size > 0) else (((greater_than[0][0] * arg.percentile_step) - (smaller_than[0][-1] * arg.percentile_step)) / (arr[greater_than[0][0]] -
-                                                                                arr[smaller_than[0][-1]]) * (arg.threshold - arr[smaller_than[0][-1]]) + (smaller_than[0][-1] * arg.percentile_step)))
+    return((equal_to[0][0] + equal_to[0][-1]) * arg.percentile_step / 2 if ((equal_to[0]).size > 0) else ((greater_than[0][0] * arg.percentile_step) - (smaller_than[0][-1] * arg.percentile_step)) / (arr[greater_than[0][0]] -
+                                                                                arr[smaller_than[0][-1]]) * (arg.threshold - arr[smaller_than[0][-1]]) + (smaller_than[0][-1] * arg.percentile_step))
 
 
 class PercentileToPercentage(Plugin):

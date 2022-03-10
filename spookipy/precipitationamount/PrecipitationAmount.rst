@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  Calculate precipitation accumulations for given time intervals.
 -  The various time intervals are defined according to the parameterized conditions.

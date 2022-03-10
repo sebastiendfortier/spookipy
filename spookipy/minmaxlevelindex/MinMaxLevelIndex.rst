@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  Finds the index of the maximum and/or minimum value in the column or part of it.
 

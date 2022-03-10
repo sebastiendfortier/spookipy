@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  Calculates the potential temperature, which is the temperature
    of an air parcel following adiabatic expansion or compression

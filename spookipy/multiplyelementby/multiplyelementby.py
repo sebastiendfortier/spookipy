@@ -32,10 +32,10 @@ class MultiplyElementBy(Plugin):
         pass
 
     def compute(self) -> pd.DataFrame:
-        logging.info('MultiplyElementsBy - compute')
+        logging.info('MultiplyElementBy - compute')
         return OpElementsByValue(self.df,
                                  value=self.value,
-                                 operation_name='MultiplyElementsBy',
+                                 operation_name='MultiplyElementBy',
                                  nomvar_out=self.nomvar_out,
                                  operator=mult_value,
                                  exception_class=MultiplyElementByError,

@@ -182,21 +182,25 @@ class MinMaxLevelIndex(Plugin):
                 array_3d = bound_array(array_3d, newkbas, newktop)
 
             if self.ascending:
-                min_idx = np.nanargmin(array_3d, axis=0).astype('int32')
-                min_idx = np.expand_dims(min_idx,axis=0)
-                max_idx = np.nanargmax(array_3d, axis=0).astype('int32')
-                max_idx = np.expand_dims(max_idx,axis=0)
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore")
+                    min_idx = np.nanargmin(array_3d, axis=0).astype('int32')
+                    min_idx = np.expand_dims(min_idx,axis=0)
+                    max_idx = np.nanargmax(array_3d, axis=0).astype('int32')
+                    max_idx = np.expand_dims(max_idx,axis=0)
 
-                min_idx_df.at[0,'d'] = np.nanargmin(array_3d, axis=0).astype('float32')
-                max_idx_df.at[0,'d'] = np.nanargmax(array_3d, axis=0).astype('float32')
+                    min_idx_df.at[0,'d'] = np.nanargmin(array_3d, axis=0).astype('float32')
+                    max_idx_df.at[0,'d'] = np.nanargmax(array_3d, axis=0).astype('float32')
             else:
-                min_idx = (array_3d.shape[0]-1 - np.nanargmin(array_3d, axis=0)).astype('int32')
-                min_idx = np.expand_dims(min_idx,axis=0)
-                max_idx = (array_3d.shape[0]-1 - np.nanargmax(array_3d, axis=0)).astype('int32')
-                max_idx = np.expand_dims(max_idx,axis=0)
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore")
+                    min_idx = (array_3d.shape[0]-1 - np.nanargmin(array_3d, axis=0)).astype('int32')
+                    min_idx = np.expand_dims(min_idx,axis=0)
+                    max_idx = (array_3d.shape[0]-1 - np.nanargmax(array_3d, axis=0)).astype('int32')
+                    max_idx = np.expand_dims(max_idx,axis=0)
 
-                min_idx_df.at[0,'d'] = (array_3d.shape[0]-1 - np.nanargmin(array_3d, axis=0)).astype('float32')
-                max_idx_df.at[0,'d'] = (array_3d.shape[0]-1 - np.nanargmax(array_3d, axis=0)).astype('float32')
+                    min_idx_df.at[0,'d'] = (array_3d.shape[0]-1 - np.nanargmin(array_3d, axis=0)).astype('float32')
+                    max_idx_df.at[0,'d'] = (array_3d.shape[0]-1 - np.nanargmax(array_3d, axis=0)).astype('float32')
 
             # Prendre les valeurs associees aux indices
             with warnings.catch_warnings():

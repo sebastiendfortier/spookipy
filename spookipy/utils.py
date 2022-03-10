@@ -59,22 +59,23 @@ def get_plugin_dependencies(
         throw_error=True) -> pd.DataFrame:
     """Searches for specified dependency in a dataframe. If a plugin can generate the dependency, the plugin params will be applied if not None.
     computable_dependencies = {
-        'RE':WindChill,
-        'TTI':TotalTotalsIndex,
-        'HMX':Humidex,
-        'KI':GeorgeKIndex,
-        'CORP':CoriolisParameter,
-        'CLD':CloudFractionDiagnostic,
-        'UV':WindModulus,
-        'PX':Pressure,
-        'ES':DewPointDepression,
-        'HR':HumidityRelative,
-        'HU':HumiditySpecific,
-        'TD':TemperatureDewPoint,
-        'SVP':SaturationVapourPressure,
-        'VPPR':VapourPressure,
-        'VT':TemperatureVirtual,
-        'QV':WaterVapourMixingRatio
+        'CLD': CloudFractionDiagnostic,
+        'CORP': CoriolisParameter,
+        'ES': DewPointDepression,
+        'HMX': Humidex,
+        'HR': HumidityRelative,
+        'HU': HumiditySpecific,
+        'KI': GeorgeKIndex,
+        'PX': Pressure,
+        'QV': WaterVapourMixingRatio,
+        'RE': WindChill,
+        'SVP': SaturationVapourPressure,
+        'TD': TemperatureDewPoint,
+        'TH': TemperaturePotential,
+        'TTI': TotalTotalsIndex,
+        'UV': WindModulus,
+        'VPPR': VapourPressure,
+        'VT': TemperatureVirtual,
         }
 
     :param df: dataframe to search in
@@ -89,8 +90,7 @@ def get_plugin_dependencies(
     :return: dataframe of results
     :rtype: pd.DataFrame
     """
-    from .cloudfractiondiagnostic.cloudfractiondiagnostic import \
-        CloudFractionDiagnostic
+    from .cloudfractiondiagnostic.cloudfractiondiagnostic import  CloudFractionDiagnostic
     from .coriolisparameter.coriolisparameter import CoriolisParameter
     from .dewpointdepression.dewpointdepression import DewPointDepression
     from .georgekindex.georgekindex import GeorgeKIndex
@@ -98,35 +98,35 @@ def get_plugin_dependencies(
     from .humidityrelative.humidityrelative import HumidityRelative
     from .humidityspecific.humidityspecific import HumiditySpecific
     from .pressure.pressure import Pressure
-    from .saturationvapourpressure.saturationvapourpressure import \
-        SaturationVapourPressure
+    from .saturationvapourpressure.saturationvapourpressure import SaturationVapourPressure
     from .temperaturedewpoint.temperaturedewpoint import TemperatureDewPoint
+    from .temperaturepotential.temperaturepotential import TemperaturePotential
     from .temperaturevirtual.temperaturevirtual import TemperatureVirtual
     from .totaltotalsindex.totaltotalsindex import TotalTotalsIndex
     from .vapourpressure.vapourpressure import VapourPressure
-    from .watervapourmixingratio.watervapourmixingratio import \
-        WaterVapourMixingRatio
+    from .watervapourmixingratio.watervapourmixingratio import WaterVapourMixingRatio
     from .windchill.windchill import WindChill
     from .windmodulus.windmodulus import WindModulus
 
     # dependencies that can be computer according to the nomvar
     computable_dependencies = {
-        'RE': WindChill,
-        'TTI': TotalTotalsIndex,
-        'HMX': Humidex,
-        'KI': GeorgeKIndex,
-        'CORP': CoriolisParameter,
         'CLD': CloudFractionDiagnostic,
-        'UV': WindModulus,
-        'PX': Pressure,
+        'CORP': CoriolisParameter,
         'ES': DewPointDepression,
+        'HMX': Humidex,
         'HR': HumidityRelative,
         'HU': HumiditySpecific,
-        'TD': TemperatureDewPoint,
+        'KI': GeorgeKIndex,
+        'PX': Pressure,
+        'QV': WaterVapourMixingRatio,
+        'RE': WindChill,
         'SVP': SaturationVapourPressure,
+        'TD': TemperatureDewPoint,
+        'TH': TemperaturePotential,
+        'TTI': TotalTotalsIndex,
+        'UV': WindModulus,
         'VPPR': VapourPressure,
         'VT': TemperatureVirtual,
-        'QV': WaterVapourMixingRatio
     }
 
     df_list = []

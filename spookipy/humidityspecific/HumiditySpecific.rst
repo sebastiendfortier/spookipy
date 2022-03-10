@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  Calculation of the specific humidity, the ratio of the mass of
    water vapour in the air to the total mass of moist air.

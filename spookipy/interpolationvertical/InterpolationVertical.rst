@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  Vertical interpolation module developed from the EZINTERPV library of RMNLIB, which is based on an ensemble of classical 1D interpolation routines
 -  Plug-in that processes all types of vertical levels (eta, sigma, hybrid, pressure, ...)

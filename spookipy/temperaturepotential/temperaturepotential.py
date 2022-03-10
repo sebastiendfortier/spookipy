@@ -12,13 +12,13 @@ from ..utils import (create_empty_result, existing_results, final_results,
                      get_dependencies, get_existing_result, get_from_dataframe,
                      initializer, DependencyError)
 
-"""Gas constant for dry air (RD = 287.04 J/(kg*K))"""
+
 RD: Final[float] = 287.04 # the gas constant for dry air (RD = 287.04 J/(kg*K)),
+"""Gas constant for dry air (RD = 287.04 J/(kg*K))"""
 
 
-"""Specific heat of dry air (CPD = 1005.46 J/(kg*K))"""
 CPD: Final[float] = 1005.46 # the specific heat of dry air (CPD = 1005.46 J/(kg*K))
-
+"""Specific heat of dry air (CPD = 1005.46 J/(kg*K))"""
 
 class TemperaturePotentialError(Exception):
     pass
@@ -59,9 +59,7 @@ class TemperaturePotential(Plugin):
 
     def prepare_groups(self):
 
-        self.no_meta_df = fstpy.add_columns(
-            self.no_meta_df, columns=[
-                'unit', 'forecast_hour', 'ip_info'])
+        self.no_meta_df = fstpy.add_columns(self.no_meta_df, columns=['unit', 'forecast_hour', 'ip_info'])
 
         self.existing_result_df = get_existing_result(self.no_meta_df, self.plugin_result_specifications)
 

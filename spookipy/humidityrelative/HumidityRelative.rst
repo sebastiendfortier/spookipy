@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  Calculation of the relative humidity, the ratio between the
    partial pressure of water vapour content in the air and the

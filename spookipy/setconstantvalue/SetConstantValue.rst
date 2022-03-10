@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  Copies the input field and replace all its values by a given constant. Possibility to generate a 2D constant field from a 3D field.
 

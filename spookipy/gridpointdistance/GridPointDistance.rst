@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  Calculation of the distances on a horizontal grid between each point of which we know the latitude and longitude.
    The distance can be calculated in three different ways on each axis of the grid :
@@ -98,7 +98,7 @@ Usage:
 
     df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/GridPointDistance/testsFiles/inputFile.std').to_pandas()
 
-    res_df = spooki.GridPointDistance(df, axis=['x','y'], type='centered').compute()
+    res_df = spooki.GridPointDistance(df, axis=['x','y'], difference_type='centered').compute()
 
     fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
       

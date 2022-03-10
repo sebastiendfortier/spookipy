@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  Humidex calculation. The humidex index aims to quantify the discomfort caused by a combination of heat and humidity.
 

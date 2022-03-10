@@ -2,6 +2,7 @@
 import argparse
 import copy
 import multiprocessing
+import warnings
 
 import fstpy.all as fstpy
 import numpy as np
@@ -389,8 +390,9 @@ def scalar_interpolation_pt(df, results, ni):
     int_df = df.copy(deep=True)
     int_df = int_df.reset_index(drop=True)
     df.at[0,'d'] = to_numpy(df.at[0,'d'])
-
-    arr = np.expand_dims(np.full(ni, df.at[0,'d'].flat[0], dtype=np.float32, order='F'), axis=-1)
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        arr = np.expand_dims(np.full(ni, df.at[0,'d'].flat[0], dtype=np.float32, order='F'), axis=-1)
     for i in df.index:  # should only be one
         int_df.at[i, 'd'] = arr
 
@@ -676,10 +678,14 @@ def define_grid(
 
     if grtyp in ['Y', 'Z', '#']:
         if ax.ndim == 1:
-            ax = np.expand_dims(ax, axis=-1)
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                ax = np.expand_dims(ax, axis=-1)
 
         if ay.ndim == 1:
-            ay = np.expand_dims(ay, axis=-1)
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                ay = np.expand_dims(ay, axis=-1)
 
         # print('ax\n',ax)
         # print('ay\n',ay)

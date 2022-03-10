@@ -31,6 +31,7 @@ def base_dict():
         'shape': (
             1,
             1),
+        'dateo': 0,
         'datev': 0,
         'path': None,
         'typvar': 'X',

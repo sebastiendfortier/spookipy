@@ -82,8 +82,9 @@ class MatchLevelIndexToValue(Plugin):
                 logging.warning(
                     f'Cannot find {self.nomvar_index} field in this group - skipping the group ')
                 continue
-
-            ind       = np.expand_dims(to_numpy(ind_df.iloc[0]['d']).flatten().astype(dtype=np.int32),axis=0)
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                ind = np.expand_dims(to_numpy(ind_df.iloc[0]['d']).flatten().astype(dtype=np.int32),axis=0)
             others_df = group_df.loc[group_df.nomvar != self.nomvar_index].reset_index(drop=True)
             if others_df.empty:
                 logging.warning(

@@ -3,6 +3,7 @@ import argparse
 import copy
 import logging
 import math
+import warnings
 
 import fstpy.all as fstpy
 import numpy as np
@@ -37,8 +38,9 @@ def diagnostic_cloud_fraction(hr: np.ndarray, threshold: float) -> np.ndarray:
     """
     cld = np.full_like(hr, -1, dtype=np.float32)
     cld = np.where(hr <= threshold, 0, cld)
-    cld = np.where((threshold < hr) & (hr < 1),
-                   ((hr - threshold) / (1 - threshold))**2, cld)
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        cld = np.where((threshold < hr) & (hr < 1),((hr - threshold) / (1 - threshold))**2, cld)
     cld = np.where(hr >= 1, 1, cld)
     return cld.astype(np.float32)
 

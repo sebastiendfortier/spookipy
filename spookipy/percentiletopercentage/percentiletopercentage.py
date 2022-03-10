@@ -66,20 +66,17 @@ def field_to_percentage_le(arr: np.ndarray, arg: str) -> float:
     :return: a float that represents the percentage value of the threshold exceedence
     :rtype: float
     """
-    steps = arg.percentile_step
     if arr[0] >= arg.threshold:
-        return 0.
+        return 0
     elif arr[-1] <= arg.threshold:
-        return 100.
-    else:
-        equal_to = np.where(arr == arg.threshold)
-        if len(equal_to[0]) > 0:
-            return (((equal_to[0][0] + equal_to[0][-1]) * steps[2]) / 2)
-        else:
-            smaller_than = np.where(arr < arg.threshold)
-            greater_than = np.where(arr > arg.threshold)
-            return (((greater_than[0][0] * steps[2]) - (smaller_than[0][-1] * steps[2])) / (arr[greater_than[0][0]] -
-                                                                                       arr[smaller_than[0][-1]]) * (arg.threshold - arr[smaller_than[0][-1]]) + (smaller_than[0][-1] * steps[2]))
+        return 100
+
+    equal_to = np.where(arr == arg.threshold)
+    smaller_than = np.where(arr < arg.threshold)
+    greater_than = np.where(arr > arg.threshold)
+
+    return((equal_to[0][0] + equal_to[0][-1]) * arg.percentile_step / 2 if ((equal_to[0]).size > 0) else (((greater_than[0][0] * arg.percentile_step) - (smaller_than[0][-1] * arg.percentile_step)) / (arr[greater_than[0][0]] -
+                                                                                arr[smaller_than[0][-1]]) * (arg.threshold - arr[smaller_than[0][-1]]) + (smaller_than[0][-1] * arg.percentile_step)))
 
 
 class PercentileToPercentage(Plugin):
@@ -97,11 +94,11 @@ class PercentileToPercentage(Plugin):
     :type nomvar: str, optional
     :param typvar: the typvar for input data frame, defaults to P@
     :type typvar: str, optional
-    :param percentile_step: Indicates the Start;End;Step for the percentile steps, defaults to 0,100,5
-    :type percentile_step: str, optional
+    :param percentile_step: Indicates the increment value for the percentile steps, defaults to 5
+    :type percentile_step: int, optional
     """
     @initializer
-    def __init__(self, df: pd.DataFrame, threshold: float = 0.3, operator: str = 'ge', etiket: str = 'GE0_____PALL', nomvar: str = 'SSH', typvar: str = 'P@', percentile_step: list = 5):
+    def __init__(self, df: pd.DataFrame, threshold: float = 0.3, operator: str = 'ge', etiket: str = 'GE0_____PALL', nomvar: str = 'SSH', typvar: str = 'P@', percentile_step: int = 5):
         super().__init__(df)
         # self.df = df
         # self.threshold = threshold

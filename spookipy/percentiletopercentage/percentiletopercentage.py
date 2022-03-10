@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 import copy
 import re
+import os   
 from ..plugin import Plugin
 from ..utils import (create_empty_result, existing_results, final_results,
                      get_dependencies, get_existing_result, get_from_dataframe, initializer)
@@ -25,20 +26,60 @@ def field_to_percentage_ge(arr: np.ndarray, arg: str) -> float:
     :return: a float that represents the percentage value of the threshold exceedence
     :rtype: float
     """
-    steps = arg.percentile_step
-    if arr[0] > arg.threshold:
+    if arr[0] >= arg.threshold:
         return 100.
-    elif arr[-1] < arg.threshold:
+    elif arr[-1] <= arg.threshold:
         return 0.
+
+    equal_to = np.where(arr == arg.threshold)
+    smaller_than = np.where(arr < arg.threshold)
+    greater_than = np.where(arr > arg.threshold)
+
+    return((100 - (equal_to[0][0] + equal_to[0][-1]) * arg.percentile_step / 2) if ((equal_to[0]).size > 0) else (100 - (((greater_than[0][0] * arg.percentile_step) - (smaller_than[0][-1] * arg.percentile_step)) / (arr[greater_than[0][0]] -
+                                                                                arr[smaller_than[0][-1]]) * (arg.threshold - arr[smaller_than[0][-1]]) + (smaller_than[0][-1] * arg.percentile_step))))
+    '''
+    return 100 - (((equal_to[0][0] + equal_to[0][-1]) * arg.percentile_step) / 2)
+    smaller_than = np.where(arr < arg.threshold)
+    greater_than = np.where(arr > arg.threshold)
+    return (100 - (((greater_than[0][0] * arg.percentile_step) - (smaller_than[0][-1] * arg.percentile_step)) / (arr[greater_than[0][0]] -
+                                                                                arr[smaller_than[0][-1]]) * (arg.threshold - arr[smaller_than[0][-1]]) + (smaller_than[0][-1] * arg.percentile_step)))
+
+
+    p = np.array(arg.percentile_step)
+
+    risk = np.where((np.where(arg.threshold < arr[0])[0].size > 0), 100, np.where(np.where(arg.threshold > arr[-1])[0].size > 0, 0, -999))
+    if risk != -999:
+        return risk
+    #np.where(np.where(arg.threshold==arr)[0].size > 0 & (not not p[arg.threshold==arr].all()), (p[arg.threshold==arr][0] + p[arg.threshold==arr][-1]) / 2, -999)))
+    if ((np.where(arg.threshold==arr)[0].size) > 0):
+        return 100 - (p[arg.threshold==arr][0] + p[arg.threshold==arr][-1]) / 2
+    else:
+        return (100 - (((p[arr > arg.threshold][0]) - (p[arr < arg.threshold][-1])) / (arr[arr > arg.threshold][0] - arr[arr < arg.threshold][-1]) * (arg.threshold - arr[arr < arg.threshold][-1]) + (p[arr < arg.threshold][-1])))
+    '''
+def field_to_percentage_le(arr: np.ndarray, arg: str) -> float:
+    """returns a float that represents the likelyhood of the threshold exceedence
+
+    :param arr: the list gathered from the 3d numpy array's vertical axis
+    :type arr: list
+    :param arg: the stored parsed command line arguments
+    :type arg: arg.Namespace
+    :return: a float that represents the percentage value of the threshold exceedence
+    :rtype: float
+    """
+    steps = arg.percentile_step
+    if arr[0] >= arg.threshold:
+        return 0.
+    elif arr[-1] <= arg.threshold:
+        return 100.
     else:
         equal_to = np.where(arr == arg.threshold)
         if len(equal_to[0]) > 0:
-            return ((equal_to[0][0] + equal_to[0][-1]) * steps[2]) / 2
+            return (((equal_to[0][0] + equal_to[0][-1]) * steps[2]) / 2)
         else:
             smaller_than = np.where(arr < arg.threshold)
             greater_than = np.where(arr > arg.threshold)
-            return ((greater_than[0][0] * steps[2]) - (smaller_than[0][-1] * steps[2])) / (arr[greater_than[0][0]] -
-                                                                                       arr[smaller_than[0][-1]]) * (arg.threshold - arr[smaller_than[0][-1]]) + (smaller_than[0][-1] * steps[2])
+            return (((greater_than[0][0] * steps[2]) - (smaller_than[0][-1] * steps[2])) / (arr[greater_than[0][0]] -
+                                                                                       arr[smaller_than[0][-1]]) * (arg.threshold - arr[smaller_than[0][-1]]) + (smaller_than[0][-1] * steps[2]))
 
 
 class PercentileToPercentage(Plugin):
@@ -60,7 +101,7 @@ class PercentileToPercentage(Plugin):
     :type percentile_step: str, optional
     """
     @initializer
-    def __init__(self, df: pd.DataFrame, threshold: float = 0.3, operator: str = 'ge', etiket: str = 'GE0_____PALL', nomvar: str = 'SSH', typvar: str = 'P@', percentile_step: list = [0,100,5]):
+    def __init__(self, df: pd.DataFrame, threshold: float = 0.3, operator: str = 'ge', etiket: str = 'GE0_____PALL', nomvar: str = 'SSH', typvar: str = 'P@', percentile_step: list = 5):
         super().__init__(df)
         # self.df = df
         # self.threshold = threshold
@@ -87,11 +128,11 @@ class PercentileToPercentage(Plugin):
         if self.no_meta_df.etiket.str.startswith('C').empty:
             raise PercentileToPercentageError('Etiket does not indicate percentiles')
 
-        if not isinstance(self.percentile_step,list):
+        if not isinstance(self.percentile_step,int):
             raise PercentileToPercentageError(f'Unexpected value, should be a list of ints containing Start;End;Step, provided {self.percentile_step}')
 
-        if len(self.percentile_step) != 3:
-            raise PercentileToPercentageError(f'Wrong number of values, should be a list of ints containing Start;End;Step, provided {self.percentile_step}')
+        # if len(self.percentile_step) != 3:
+            # raise PercentileToPercentageError(f'Wrong number of values, should be a list of ints containing Start;End;Step, provided {self.percentile_step}')
         # self.df = fstpy.metadata_cleanup(self.df)
 
         # self.meta_df = self.df.loc[self.df.nomvar.isin(
@@ -160,6 +201,7 @@ class PercentileToPercentage(Plugin):
             group_df['percentile'] = group_df['etiket'].map(lambda f:  int(re.sub('[^0-9]+','',f)))
             group_df = group_df.sort_values('percentile')
             group_field_stacked = np.stack(group_df['d'])
+            
             if self.operator == 'ge':
                 percentile_field = np.apply_along_axis(field_to_percentage_ge, 0, group_field_stacked, self)
             else:

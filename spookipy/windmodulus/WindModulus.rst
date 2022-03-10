@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  Calculation of the wind modulus from its 2 horizontal components.
 

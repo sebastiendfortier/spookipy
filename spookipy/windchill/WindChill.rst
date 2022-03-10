@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  Calculation of the equivalent temperature associated to the wind chill factor at the surface.
 

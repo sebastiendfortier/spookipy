@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  Calculates the vapour pressure of water.
    Note: If calculating from HR or ES/TD the user has to
@@ -140,7 +140,7 @@ Usage:
 
    df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/VapourPressure/testsFiles/inputFile.std').to_pandas()
 
-   res_df = spooki.VapourPressure(df).compute()
+   res_df = spooki.VapourPressure(df, ice_water_phase='both', temp_phase_switch=-40, temp_phase_switch_unit='celsius').compute()
 
    fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
 

@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  Generic plugin used by other plugins to apply specific operations with a value as parameter on a point of data
 
@@ -48,18 +48,21 @@ Usage:
 
    user = os.environ['USER']
 
-   df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/MultiplyElementsBy/testsFiles/inputFile.std').to_pandas()
+   df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/MultiplyElementBy/testsFiles/inputFile.std').to_pandas()
 
+   class MultiplyElementsByError(Exception):
+      pass
+      
    def mult_value(a, v):
       return a * v
 
-   res_df = spooki.OpElementsByColumn(df,  
-                                       operation_name='MultiplyElementsBy',  
-                                       exception_class=MultiplyElementsByError,  
-                                       operator=mult_value,  
-                                       nomvar_out='MU'  
-                                       value=(1/3),  
-                                       etiket='MULEBY').compute()  
+   res_df = spooki.OpElementsByValue(df,
+                                 value=(1/3),
+                                 operation_name='MultiplyElementBy',
+                                 nomvar_out='MV',
+                                 operator=mult_value,
+                                 exception_class=MultiplyElementsByError,
+                                 etiket='MULEBY').compute()
 
    fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
 

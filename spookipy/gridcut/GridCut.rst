@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 Cuts a piece out of a grid, defined by its upper left hand corner
 and lower right hand corner.

@@ -80,6 +80,7 @@ Documentation
 * :doc:`setupperboundary`
 * :doc:`subtractelementsvertically`
 * :doc:`temperaturedewpoint`
+* :doc:`temperaturepotential`
 * :doc:`temperaturevirtual`
 * :doc:`timeintervaldifference`
 * :doc:`timeintervalminmax`
@@ -136,6 +137,7 @@ Documentation
    setupperboundary
    subtractelementsvertically
    temperaturedewpoint
+   temperaturepotential
    temperaturevirtual
    timeintervaldifference
    timeintervalminmax

@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  Calculation of the Total Totals index, a severe weather index
    used for forecasting thunderstorms (Miller, 1972).

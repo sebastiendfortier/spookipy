@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  Apply a unary function the data, point by point
 
@@ -59,15 +59,10 @@ Usage:
 
     df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/AddToElement/testsFiles/inputFile.std').to_pandas()
 
-
-    function=None,
-    nomvar_in=None,
-    nomvar_out=None,
-    etiket=None
     res_df = spooki.ApplyUnary(df,
                                 function=np.sqrt,
                                 nomvar_in='UU*',
-                                nomvar_out='UUSQ,
+                                nomvar_out='UUSQ',
                                 etiket='SQRT'
                                 ).compute()
 

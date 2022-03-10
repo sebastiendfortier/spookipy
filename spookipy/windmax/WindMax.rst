@@ -1,6 +1,6 @@
 
 Description:
-============
+~~~~~~~~~~~~
 
 -  Calculation of the maximum value of the wind modulus determined according to the vertical, 
    as well as the horizontal components of the wind and the corresponding pressure level.

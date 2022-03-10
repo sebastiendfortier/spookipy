@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  From a field value for a chosen level (either the lowest or the highest), subtract the values from all the other levels of the same field.
 

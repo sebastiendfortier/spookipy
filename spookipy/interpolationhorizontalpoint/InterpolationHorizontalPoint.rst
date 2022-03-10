@@ -59,7 +59,7 @@ Usage:
     df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/InterpolationHorizontalPoint/testsFiles/inputFile.std').to_pandas()
 
     # build lat lon dataframe
-    base = {'shape': (1,1),  'datev': 0, 'path': None, 'typvar': 'X', 'ni': 1, 
+    base = {'shape': (1,1),  'dateo': 0,  'datev': 0, 'path': None, 'typvar': 'X', 'ni': 1, 
             'nj': 1, 'nk': 1, 'ip1': 0, 'ip2': 0, 'ip3': 0, 'deet': 0, 'npas': 0, 
             'datyp': 5, 'nbits': 32, 'grtyp': 'L', 'ig1': 100, 'ig2': 100, 'ig3': 9000, 'ig4': 0}
     lat = base.copy()
@@ -78,7 +78,7 @@ Usage:
 
     res_df = spooki.InterpolationHorizontalPoint(
         df,
-        lat_lon_df,
+        latlon_df,
         interpolation_type='bi-linear',
         extrapolation_type='value',
         extrapolation_value=99.9).compute()

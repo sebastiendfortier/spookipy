@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  Apply a digital filter of Stencil type on a data set.
 -  The filter, applied on one given point, in one direction of the

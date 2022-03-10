@@ -128,8 +128,8 @@ class PercentileToPercentage(Plugin):
         if not isinstance(self.percentile_step,int):
             raise PercentileToPercentageError(f'Unexpected value, should be a list of ints containing Start;End;Step, provided {self.percentile_step}')
 
-        # if len(self.percentile_step) != 3:
-            # raise PercentileToPercentageError(f'Wrong number of values, should be a list of ints containing Start;End;Step, provided {self.percentile_step}')
+        #if len(self.percentile_step) != 3:
+        #    raise PercentileToPercentageError(f'Wrong number of values, should be a list of ints containing Start;End;Step, provided {self.percentile_step}')
         # self.df = fstpy.metadata_cleanup(self.df)
 
         # self.meta_df = self.df.loc[self.df.nomvar.isin(

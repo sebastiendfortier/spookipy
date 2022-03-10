@@ -40,7 +40,7 @@ def test_1(plugin_test_dir):
 def test_2(plugin_test_dir):
     """Test with an incorrect eteiket name"""
     # open and read source
-    source0 = "/fs/homeu1/eccc/cmd/cmde/loy000/Desktop/" + "2022021100_out.std"
+    source0 = plugin_test_dir + "2022021100_out.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     with pytest.raises(spooki.PercentileToPercentageError):

@@ -19,6 +19,7 @@ AEw3 = 243.05
 AEi1 = 6.1121
 AEi2 = 22.587
 AEi3 = 273.86
+TCDK = 273.15   # conversion Celsius a kelvin
 
 
 def sign(a, b):
@@ -27,6 +28,9 @@ def sign(a, b):
 
 def DIFTRPL(ttt):
     return (ttt - TRPL)
+
+def convert_celsius_to_kelvin(ttt):
+    return (ttt - TCDK)
 
 # #define _FN1(ttt)              (_DBLE(ttt)-AERK3W+_DMAX1(_ZERO,_DSIGN(AERK3W-AERK3I,-_DIFTRPL(ttt))))
 
@@ -818,6 +822,21 @@ def qv_from_vppr(vppr:np.ndarray, px:np.ndarray) -> np.ndarray:
     """
     return np.where(px < 10E-15, 0., EPS1 * (vppr / (px - vppr)) * 1000.)
 
+def vt_from_qv(tt:np.ndarray, qv:np.ndarray) -> np.ndarray:
+    """Calculates the virtual temperature from the water vapour mixing ratio
+
+    :param tt: air temperature (kelvin)
+    :type tt: np.ndarray
+    :param qv: water vapour mixing ratio (kg/kg)
+    :type qv: np.ndarray
+    :return: virtual temperature (celsius)
+    :rtype: np.ndarray
+    """
+
+    qvtmp = np.where(qv > 10E-15, qv, 10E-15)
+
+    return ( ( tt * ((1. + (qvtmp/EPS1))/(1. + qvtmp)) ) - TCDK)
+    
 
 def es_from_td(tt:np.ndarray, td:np.ndarray) -> np.ndarray:
     """Calculates the dew point depression from the temperature dew point

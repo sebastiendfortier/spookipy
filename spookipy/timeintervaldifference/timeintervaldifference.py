@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import argparse
 import logging
 
 import fstpy.all as fstpy
@@ -6,8 +7,8 @@ import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin
-from ..utils import create_empty_result, final_results, get_list_of_forecast_hours, initializer, to_numpy, validate_list_of_nomvar, validate_list_of_times, validate_list_of_tuples_of_times
-
+from ..utils import create_empty_result, final_results, get_list_of_forecast_hours, initializer, to_numpy, validate_list_of_nomvar, validate_list_of_times, validate_list_of_tuples_of_times, validate_nomvar
+from ..configparsingutils import apply_lambda_to_list, convert_time_range, convert_time
 
 class TimeIntervalDifferenceError(Exception):
     pass
@@ -182,6 +183,31 @@ class TimeIntervalDifference(Plugin):
         # make sure that forecast_hour_range is a list of tuple of 2 datetime.timedelta
         self.forecast_hour_range = validate_list_of_tuples_of_times(self.forecast_hour_range, TimeIntervalDifferenceError)
 
+    @staticmethod
+    def parse_config(args: str) -> dict:
+        """method to translate spooki plugin parameters to python plugin parameters
+        :param args: input unparsed arguments
+        :type args: str
+        :return: a dictionnary of converted parameters
+        :rtype: dict
+        """
+        parser = argparse.ArgumentParser(prog=TimeIntervalDifference.__name__, parents=[Plugin.base_parser])
+        parser.add_argument('--fieldName',required=True,type=str,dest='nomvar', help="List of field names.")
+        parser.add_argument('--interval',required=True,type=str, help="List of the time intervals between inputs within each time range.")
+        parser.add_argument('--rangeForecastHour',required=True,type=str,dest='forecast_hour_range', help="List of time ranges.")
+        parser.add_argument('--step',required=True,type=str, help="List of the time steps between successive start times within each time range.")
+        parser.add_argument('--strictlyPositive',action='store_true',dest='strictly_positive',default=False, help="Checks that input and output values are strictly positive.\nThis option also changes the negative values to 0.\nIf said condition is observed a warning will be displayed.")
+
+        parsed_arg = vars(parser.parse_args(args.split()))
+
+        parsed_arg['interval'] = apply_lambda_to_list(parsed_arg['interval'].split(','), lambda a: convert_time(a))
+        parsed_arg['step'] = apply_lambda_to_list(parsed_arg['step'].split(','), lambda a: convert_time(a))
+        parsed_arg['forecast_hour_range'] = apply_lambda_to_list(parsed_arg['forecast_hour_range'].split(','), lambda a: convert_time_range(a))
+
+        parsed_arg['nomvar'] = parsed_arg['nomvar'].split(',')
+        apply_lambda_to_list(parsed_arg['nomvar'],lambda a : validate_nomvar(a,"TimeIntervalDifference",TimeIntervalDifferenceError))
+
+        return parsed_arg
 
 def create_result_container(df, b_inf, b_sup):
     deet = df.iloc[0]['deet']

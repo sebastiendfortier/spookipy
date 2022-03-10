@@ -107,7 +107,6 @@ def test_5(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "VapourPressure_hu_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/VapourPressure/result_test_5'
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.001)
@@ -145,7 +144,6 @@ def test_6(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "rpnVapourPressure_hu_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/VapourPressure/result_test_6'
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.001)
@@ -181,7 +179,6 @@ def test_7(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "rpnVapourPressure_hu_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/VapourPressure/result_test_7'
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.001)
@@ -217,7 +214,7 @@ def test_8(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "VapourPressure_hr_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/VapourPressure/result_test_8'
+
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.001)
     fstpy.delete_file(results_file)
@@ -252,7 +249,6 @@ def test_9(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "VapourPressure_es_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/VapourPressure/result_test_9'
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.1)
@@ -279,12 +275,14 @@ def test_11(plugin_test_dir):
     # [VapourPressure ] >>
     # [Zap --nbitsForDataStorage E32] >>
     #  [WriterStd --output {destination_path} --ignoreExtended]
-    # df = df.loc[df.nomvar=='VPPR']
+
     df.loc[df.nomvar.isin(['>>', '^^', 'P0']), 'etiket'] = '580V0'
     df.loc[df.nomvar=='VPPR', 'typvar'] = 'P'
     # print(df[[]])
+
     # df['datyp']=5
     # df.loc[df.nomvar!='!!','nbits']=32
+
     # write the result
     results_file = TMP_PATH + "test_11.std"
     fstpy.delete_file(results_file)
@@ -292,7 +290,6 @@ def test_11(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2011100712_012_regeta_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/VapourPressure/result_test_11'
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.001)
@@ -322,6 +319,7 @@ def test_12(plugin_test_dir):
     df.loc[df.nomvar=='VPPR', 'typvar'] = 'P'
     # df['datyp']=5
     # df.loc[df.nomvar!='!!','nbits']=32
+
     # write the result
     results_file = TMP_PATH + "test_12.std"
     fstpy.delete_file(results_file)
@@ -329,7 +327,6 @@ def test_12(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2011100712_012_regeta_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/VapourPressure/result_test_12'
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.001)
@@ -354,8 +351,6 @@ def test_13(plugin_test_dir):
     # [VapourPressure --RPN] >> ', '
     # [WriterStd --output {destination_path} --noMetadata --ignoreExtended]']
 
-    # df['datyp']=5
-    # df.loc[df.nomvar!='!!','nbits']=32
     # write the result
     results_file = TMP_PATH + "test_13.std"
     fstpy.delete_file(results_file)
@@ -363,7 +358,6 @@ def test_13(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "resulttest_13.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/VapourPressure/result_test_13'
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.001)

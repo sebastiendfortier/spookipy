@@ -63,7 +63,7 @@ def test_2(plugin_test_dir):
     # print(src_df0[['level','surface']])
 
     # compute WindChill
-    with pytest.raises(DependencyError):
+    with pytest.raises(spooki.WindChillError):
         _ = spooki.WindChill(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --verticalLevel 1.0 --exclude] >> [WindChill]
 
@@ -75,6 +75,6 @@ def test_3(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute WindChill
-    with pytest.raises(DependencyError):
+    with pytest.raises(spooki.WindChillError):
         _ = spooki.WindChill(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>[WindChill]

@@ -39,7 +39,7 @@ Creating the neccesary files and folders
     # ExamplePlugin/testsFiles is a folder that should be created in ~spst900/ppp3TestFiles/ and ~spst900/ppp4TestFiles/
     echo '    return TEST_PATH +"ExamplePlugin/testsFiles/"' >> example_plugin_test.py
     echo '' >> example_plugin_test.py
-    echo 'def test_1(input_file):' >> example_plugin_test.py
+    echo 'def test_1(plugin_test_dir):' >> example_plugin_test.py
     echo '    """Dummy test"""' >> example_plugin_test.py
     echo '    assert(True)' >> example_plugin_test.py
 

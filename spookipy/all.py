@@ -39,6 +39,7 @@ from .setupperboundary import *
 from .subtractelementsvertically import *
 from .temperaturedewpoint import *
 from .temperaturepotential import *
+from .temperaturevirtual import *
 from .timeintervaldifference import *
 from .timeintervalminmax import *
 from .totaltotalsindex import *

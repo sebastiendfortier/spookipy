@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import argparse
 import copy
 import logging
 import math
@@ -132,3 +133,18 @@ class CloudFractionDiagnostic(Plugin):
             df_list.append(cld_df)
 
         return final_results(df_list, CloudFractionDiagnosticError, self.meta_df)
+
+    @staticmethod
+    def parse_config(args: str) -> dict:
+        """method to translate spooki plugin parameters to python plugin parameters
+        :param args: input unparsed arguments
+        :type args: str
+        :return: a dictionnary of converted parameters
+        :rtype: dict
+        """
+        parser = argparse.ArgumentParser(prog=CloudFractionDiagnostic.__name__, parents=[Plugin.base_parser])
+        parser.add_argument('--useConstant',action='store_true',dest='use_constant', help="Use constant instead of algorithm (0.8 cte Slingo 1987)")
+
+        parsed_arg = vars(parser.parse_args(args.split()))
+
+        return parsed_arg

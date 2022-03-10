@@ -22,8 +22,7 @@ def diagnostic_cloud_fraction_threshold(level: float) -> float:
     :return: array of thresholds
     :rtype: np.ndarray
     """
-    return 1 - 2 * level + math.pow(level, 2) + math.pow(level, 3) + math.sqrt(
-        3.0) * level * (1 - 3 * level + 2 * math.pow(level, 2))
+    return 1 - 2 * level + math.pow(level, 2) + math.pow(level, 3) + math.sqrt(3.0) * level * (1 - 3 * level + 2 * math.pow(level, 2))
 
 
 def diagnostic_cloud_fraction(hr: np.ndarray, threshold: float) -> np.ndarray:
@@ -36,12 +35,11 @@ def diagnostic_cloud_fraction(hr: np.ndarray, threshold: float) -> np.ndarray:
     :return: Diagnostic cloud fraction
     :rtype: np.ndarray
     """
-    cld = np.full_like(hr, -1, dtype=np.float32)
+    cld = np.zeros_like(hr, dtype=np.float32)
     cld = np.where(hr <= threshold, 0, cld)
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore")
-        cld = np.where((threshold < hr) & (hr < 1),((hr - threshold) / (1 - threshold))**2, cld)
     cld = np.where(hr >= 1, 1, cld)
+    cld = np.where((threshold < hr) & (hr < 1) & ((1 - threshold) != 0),((hr - threshold) / (1 - threshold))**2, cld)
+    
     return cld.astype(np.float32)
 
 
@@ -129,8 +127,7 @@ class CloudFractionDiagnostic(Plugin):
                     level = cld_df.at[i, 'level']
                     hr = copy.deepcopy(cld_df.at[i, 'd'])
                     threshold = diagnostic_cloud_fraction_threshold(level)
-                    cld_df.at[i, 'd'] = diagnostic_cloud_fraction(
-                        hr, threshold)
+                    cld_df.at[i, 'd'] = diagnostic_cloud_fraction(hr, threshold)
 
             df_list.append(cld_df)
 

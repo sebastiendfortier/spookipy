@@ -33,7 +33,7 @@ def test_1(plugin_test_dir):
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.001)
-    fstpy.delete_file(results_file)
+    #fstpy.delete_file(results_file)
     assert(res)
 
 
@@ -55,11 +55,11 @@ def test_3(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     df = spooki.PercentileToPercentage(src_df0, threshold=0.3, operator='le', etiket='GE0_____PALL',
-                                       nomvar='SSH8', typvar='P@', percentile_step=[0,100,5]).compute()
+                                       nomvar='SSH8', typvar='P@', percentile_step=5).compute()
     # [ReaderStd --input {sources[0]}] >> [Threshold --threshold 0.3, Operator --operator le, Etiket --etiket GE0_____PALL, Nomvar --nomvar SSH8, Typvar --typvar P@, Percentile_Step --percentile_step 0,100,5] >> [PercentileToPercentage] >> [WriterStd --output {destination_path} ]
 
     # write the result
-    results_file = TMP_PATH + "test_2.std"
+    results_file = TMP_PATH + "test_3.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -69,7 +69,7 @@ def test_3(plugin_test_dir):
     # compare results
 
     res = fstcomp(results_file, file_to_compare, e_max=0.001)
-    fstpy.delete_file(results_file)
+    #fstpy.delete_file(results_file)
     assert(res)
 
 

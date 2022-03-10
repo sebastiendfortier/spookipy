@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import logging
-
 import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
@@ -37,25 +35,7 @@ def field_to_percentage_ge(arr: np.ndarray, arg: str) -> float:
 
     return((100 - (equal_to[0][0] + equal_to[0][-1]) * arg.percentile_step / 2) if ((equal_to[0]).size > 0) else (100 - (((greater_than[0][0] * arg.percentile_step) - (smaller_than[0][-1] * arg.percentile_step)) / (arr[greater_than[0][0]] -
                                                                                 arr[smaller_than[0][-1]]) * (arg.threshold - arr[smaller_than[0][-1]]) + (smaller_than[0][-1] * arg.percentile_step))))
-    '''
-    return 100 - (((equal_to[0][0] + equal_to[0][-1]) * arg.percentile_step) / 2)
-    smaller_than = np.where(arr < arg.threshold)
-    greater_than = np.where(arr > arg.threshold)
-    return (100 - (((greater_than[0][0] * arg.percentile_step) - (smaller_than[0][-1] * arg.percentile_step)) / (arr[greater_than[0][0]] -
-                                                                                arr[smaller_than[0][-1]]) * (arg.threshold - arr[smaller_than[0][-1]]) + (smaller_than[0][-1] * arg.percentile_step)))
 
-
-    p = np.array(arg.percentile_step)
-
-    risk = np.where((np.where(arg.threshold < arr[0])[0].size > 0), 100, np.where(np.where(arg.threshold > arr[-1])[0].size > 0, 0, -999))
-    if risk != -999:
-        return risk
-    #np.where(np.where(arg.threshold==arr)[0].size > 0 & (not not p[arg.threshold==arr].all()), (p[arg.threshold==arr][0] + p[arg.threshold==arr][-1]) / 2, -999)))
-    if ((np.where(arg.threshold==arr)[0].size) > 0):
-        return 100 - (p[arg.threshold==arr][0] + p[arg.threshold==arr][-1]) / 2
-    else:
-        return (100 - (((p[arr > arg.threshold][0]) - (p[arr < arg.threshold][-1])) / (arr[arr > arg.threshold][0] - arr[arr < arg.threshold][-1]) * (arg.threshold - arr[arr < arg.threshold][-1]) + (p[arr < arg.threshold][-1])))
-    '''
 def field_to_percentage_le(arr: np.ndarray, arg: str) -> float:
     """returns a float that represents the likelyhood of the threshold exceedence
 
@@ -67,9 +47,9 @@ def field_to_percentage_le(arr: np.ndarray, arg: str) -> float:
     :rtype: float
     """
     if arr[0] >= arg.threshold:
-        return 0
+        return 0.
     elif arr[-1] <= arg.threshold:
-        return 100
+        return 100.
 
     equal_to = np.where(arr == arg.threshold)
     smaller_than = np.where(arr < arg.threshold)
@@ -100,13 +80,6 @@ class PercentileToPercentage(Plugin):
     @initializer
     def __init__(self, df: pd.DataFrame, threshold: float = 0.3, operator: str = 'ge', etiket: str = 'GE0_____PALL', nomvar: str = 'SSH', typvar: str = 'P@', percentile_step: int = 5):
         super().__init__(df)
-        # self.df = df
-        # self.threshold = threshold
-        # self.operator = operator
-        # self.etiket = etiket
-        # self.tv = typvar
-        # self.nv = nomvar
-        # self.percentile_step = percentile_step
         self.validate_parameters()
         self.prepare_groups()
 
@@ -128,15 +101,7 @@ class PercentileToPercentage(Plugin):
         if not isinstance(self.percentile_step,int):
             raise PercentileToPercentageError(f'Unexpected value, should be a list of ints containing Start;End;Step, provided {self.percentile_step}')
 
-        #if len(self.percentile_step) != 3:
-        #    raise PercentileToPercentageError(f'Wrong number of values, should be a list of ints containing Start;End;Step, provided {self.percentile_step}')
-        # self.df = fstpy.metadata_cleanup(self.df)
-
-        # self.meta_df = self.df.loc[self.df.nomvar.isin(
-        #     ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
         self.no_meta_df = fstpy.add_columns(self.no_meta_df, columns=['forecast_hour'])
-
 
         ###
 
@@ -157,10 +122,6 @@ class PercentileToPercentage(Plugin):
 
         if self.etiket[-3:] != 'ALL':
             raise PercentileToPercentageError('Etiket name does not end in "ALL".')
-
-        # remove meta data from DataFrame
-        # self.df = self.df.loc[~self.df.nomvar.isin(
-        #     ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
 
     def prepare_groups(self):
         self.no_meta_df = fstpy.add_columns(self.no_meta_df, columns=['forecast_hour'])

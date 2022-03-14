@@ -8,6 +8,7 @@ import pytest  # pytest is used to manage tests
 import spookipy.all as spooki  # refers to this library
 # tool used to compare fst files, just like fstcomp but in python
 from ci_fstcomp import fstcomp
+import secrets
 
 # group of tests this test is associated with, see
 # $project_root/test/pytest.ini to define test marks
@@ -38,7 +39,7 @@ def test_1(plugin_test_dir):
 
     # write our results
     # set the path of the temporary file we are writing to
-    results_file = TMP_PATH + "test_1.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
     # make sure it does not exist
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst(

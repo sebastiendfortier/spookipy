@@ -34,7 +34,7 @@ class TestTemperatureWetBulbPotential(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --verticalLevel 700] >> [TemperatureWetBulbPotential] >> [Select --fieldName TW] >> [Zap --fieldName TTPS] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -55,7 +55,7 @@ class TestTemperatureWetBulbPotential(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName TT,HU --verticalLevel 1.0@0.2] >> [TemperatureWetBulbPotential --increment 20mb] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

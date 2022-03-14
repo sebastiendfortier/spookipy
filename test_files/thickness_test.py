@@ -34,7 +34,7 @@ class TestThickness(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Thickness --base 1.0 --top 0.8346 --coordinateType SIGMA_COORDINATE] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -55,7 +55,7 @@ class TestThickness(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Thickness --base 0.8346 --top 1.0 --coordinateType SIGMA_COORDINATE] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -76,7 +76,7 @@ class TestThickness(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Thickness --base 1000 --top 500 --coordinateType PRESSURE_COORDINATE] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_3.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -97,7 +97,7 @@ class TestThickness(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Thickness --base 500 --top 1000 --coordinateType PRESSURE_COORDINATE] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_4.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -118,7 +118,7 @@ class TestThickness(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Thickness --base 1000 --top 1000 --coordinateType PRESSURE_COORDINATE]
 
         # write the result
-        results_file = TMP_PATH + "test_5.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -139,7 +139,7 @@ class TestThickness(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Thickness --base 1 --top 0.607 --coordinateType HYBRID_COORDINATE] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_6.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

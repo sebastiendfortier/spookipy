@@ -34,7 +34,7 @@ class TestSpatialWeightedAveraging(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >> ', '[Select --fieldName TT] >> ', '[SpatialWeightedAveraging --searchRadius 5 --distanceType KM --kernelType UNIFORM --excludeEdges] >> ', '[ReplaceDataIfCondition --condition isnan --value -1.0] >> ', '[Zap --pdsLabel KDEUKM --doNotFlagAsZapped] >>', '[WriterStd --output {destination_path} --noUnitConversion]']
 
         # write the result
-        results_file = TMP_PATH + "test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -55,7 +55,7 @@ class TestSpatialWeightedAveraging(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >> ', '[Select --fieldName TT] >> [SpatialWeightedAveraging --searchRadius 20 --distanceType KM --kernelType GAUSSIAN --smoothingParameter 15 --excludeEdges]>> ', '[ReplaceDataIfCondition --condition isnan --value -1.0] >> ', '[Zap --pdsLabel KDEGKM --doNotFlagAsZapped] >>', '[WriterStd --output {destination_path} --noUnitConversion]']
 
         # write the result
-        results_file = TMP_PATH + "test_3.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -76,7 +76,7 @@ class TestSpatialWeightedAveraging(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >> ', '[Select --fieldName TT,ME,MG,SLX] >> ', '[SpatialWeightedAveraging --searchRadius 9 --distanceType KM --kernelType GAUSSIAN --smoothingParameter 4 --landFracDiffMax 0.7 --excludeEdges] >> ', '[ReplaceDataIfCondition --condition isnan --value -1.0] >> ', '[Zap --pdsLabel KDEGKM --doNotFlagAsZapped] >>', '[WriterStd --output {destination_path} --noUnitConversion]']
 
         # write the result
-        results_file = TMP_PATH + "test_5.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -97,7 +97,7 @@ class TestSpatialWeightedAveraging(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >> ', '[SpatialWeightedAveraging --searchRadius 15 --distanceType KM --kernelType GAUSSIAN --smoothingParameter 4 --landFracDiffMax 0.7 --excludeEdges] >> ', '[ReplaceDataIfCondition --condition isnan --value -1.0] >> ', '[Zap --pdsLabel KDEGKM --doNotFlagAsZapped] >>', '[WriterStd --output {destination_path} --noUnitConversion]']
 
         # write the result
-        results_file = TMP_PATH + "test_6.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -118,7 +118,7 @@ class TestSpatialWeightedAveraging(unittest.TestCase):
         #['[ReaderCsv --input {sources[0]}] >> ', '[Zap --dateOfOrigin 20100126T211215 --doNotFlagAsZapped] >> ', '[SpatialWeightedAveraging --searchRadius 2 --distanceType POINTS --kernelType UNIFORM --altDiffMax 500] >> ', '[WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]']
 
         # write the result
-        results_file = TMP_PATH + "test_8.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -139,7 +139,7 @@ class TestSpatialWeightedAveraging(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [SpatialWeightedAveraging --searchRadius 3 --distanceType POINTS --kernelType UNIFORM] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_9.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -160,7 +160,7 @@ class TestSpatialWeightedAveraging(unittest.TestCase):
         #['[ReaderCsv --input {sources[0]}] >> ', '[Zap --dateOfOrigin 20100126T211215 --doNotFlagAsZapped] >> ', '[SpatialWeightedAveraging --searchRadius 3 --distanceType POINTS --kernelType UNIFORM --forceGlobal] >> ', '[WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]']
 
         # write the result
-        results_file = TMP_PATH + "test_10.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -181,7 +181,7 @@ class TestSpatialWeightedAveraging(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >> ', '[Select --fieldName TT] >> ', '[SpatialWeightedAveraging --searchRadius 5 --distanceType KM --kernelType UNIFORM --excludeEdges] >> ', '[ReplaceDataIfCondition --condition isnan --value -1.0] >> ', '[Zap --pdsLabel KDEUKM --doNotFlagAsZapped] >>', '[WriterStd --output {destination_path} --noUnitConversion]']
 
         # write the result
-        results_file = TMP_PATH + "test_11.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -202,7 +202,7 @@ class TestSpatialWeightedAveraging(unittest.TestCase):
         #['[ReaderCsv --input {sources[0]}] >> ', '[Zap --dateOfOrigin 20100126T211215 --doNotFlagAsZapped] >> ', '[SpatialWeightedAveraging --searchRadius 3 --distanceType POINTS --kernelType UNIFORM --excludeEdges] >> ', '[WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests --flagMissingData --replaceMissingData]']
 
         # write the result
-        results_file = TMP_PATH + "test_12.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -223,7 +223,7 @@ class TestSpatialWeightedAveraging(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >> ', '[Select --fieldName PR] >> ', '[SpatialWeightedAveraging --searchRadius 10 --distanceType POINTS --kernelType UNIFORM --excludeEdges] >> ', '[Zap --fieldName V6] >>', '[WriterStd --output {destination_path} --noUnitConversion]']
 
         # write the result
-        results_file = TMP_PATH + "test_13.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

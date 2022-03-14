@@ -5,6 +5,7 @@ import fstpy.all as fstpy
 import pytest
 import spookipy.all as spooki
 from ci_fstcomp import fstcomp
+import secrets
 
 pytestmark = [pytest.mark.regressions]
 
@@ -26,7 +27,7 @@ def test_1(plugin_test_dir):
     # [ReaderStd --input {sources[0]}] >> [AddElementsByPoint --outputFieldName ACCU] >> [Zap --pdsLabel ADDFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --noUnitConversion]
 
     # write the result
-    results_file = TMP_PATH + "test_1.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -51,7 +52,7 @@ def test_2(plugin_test_dir):
     # [ReaderStd --input {sources[0]}] >> [AddElementsByPoint --outputFieldName ACCU] >> [Zap --pdsLabel ADDFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --noUnitConversion]
 
     # write the result
-    results_file = TMP_PATH + "test_2.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 

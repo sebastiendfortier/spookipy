@@ -34,7 +34,7 @@ class TestParcelMeanLayer(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ParcelMeanLayer --base 800 --delta 100mb --iceWaterPhase WATER]
 
         # write the result
-        results_file = TMP_PATH + "test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -55,7 +55,7 @@ class TestParcelMeanLayer(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ParcelMeanLayer --base 800mb --delta 100m --iceWaterPhase WATER]
 
         # write the result
-        results_file = TMP_PATH + "test_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -76,7 +76,7 @@ class TestParcelMeanLayer(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ParcelMeanLayer --base 900mb --delta 100mb --iceWaterPhase BOTH ]
 
         # write the result
-        results_file = TMP_PATH + "test_3.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -97,7 +97,7 @@ class TestParcelMeanLayer(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ParcelMeanLayer --base 900mb --delta 100mb --iceWaterPhase WATER --temperaturePhaseSwitch 20.0C]
 
         # write the result
-        results_file = TMP_PATH + "test_4.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -118,7 +118,7 @@ class TestParcelMeanLayer(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ParcelMeanLayer --base 400mb --delta 1000mb --iceWaterPhase WATER]
 
         # write the result
-        results_file = TMP_PATH + "test_5.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -139,7 +139,7 @@ class TestParcelMeanLayer(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ParcelMeanLayer --base 962mb --delta 100mb --iceWaterPhase WATER]
 
         # write the result
-        results_file = TMP_PATH + "test_6.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -160,7 +160,7 @@ class TestParcelMeanLayer(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ParcelMeanLayer --base SURFACE --delta 100mb --iceWaterPhase WATER]
 
         # write the result
-        results_file = TMP_PATH + "test_7.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -184,7 +184,7 @@ class TestParcelMeanLayer(unittest.TestCase):
         # ([ReaderStd --input {sources[0]}] + ([ReaderStd --input {sources[1]}] >> [Select --fieldName GZ --verticalLevel SURFACE])) >> [ParcelMeanLayer --base 1000mb --delta 400mb --iceWaterPhase WATER] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_8.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -208,7 +208,7 @@ class TestParcelMeanLayer(unittest.TestCase):
         # ([ReaderStd --input {sources[0]}] + ([ReaderStd --input {sources[1]}] >> [Select --fieldName GZ --verticalLevel SURFACE])) >> [ParcelMeanLayer --base 990mb --delta 100mb --iceWaterPhase WATER] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = TMP_PATH + "test_9.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -232,7 +232,7 @@ class TestParcelMeanLayer(unittest.TestCase):
         # ([ReaderStd --input {sources[0]}] + ([ReaderStd --input {sources[1]}] >> [Select --fieldName GZ --verticalLevel SURFACE])) >> [ParcelMeanLayer --base 1020mb --delta 800mb --iceWaterPhase WATER]
 
         # write the result
-        results_file = TMP_PATH + "test_10.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -253,7 +253,7 @@ class TestParcelMeanLayer(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ParcelMeanLayer --base SURFACE --delta 200mb --iceWaterPhase WATER] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_11.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -274,7 +274,7 @@ class TestParcelMeanLayer(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ParcelMeanLayer --base 820mb --delta 100mb --iceWaterPhase WATER] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_12.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -295,7 +295,7 @@ class TestParcelMeanLayer(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ParcelMeanLayer --base SURFACE --delta 100mb --iceWaterPhase WATER] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_13.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -316,7 +316,7 @@ class TestParcelMeanLayer(unittest.TestCase):
         #['[ReaderStd --input {sources[0]} ] >> ', '[ParcelMeanLayer --base 610mb --delta 100mb --iceWaterPhase WATER] >> ', '[WriterStd --output {destination_path} --ignoreExtended]']
 
         # write the result
-        results_file = TMP_PATH + "test_14.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -337,7 +337,7 @@ class TestParcelMeanLayer(unittest.TestCase):
         #['[ReaderStd --input {sources[0]} ] >> ', '[ParcelMeanLayer --base SURFACE --delta 100mb --iceWaterPhase WATER] >> ', '[WriterStd --output {destination_path} --ignoreExtended]']
 
         # write the result
-        results_file = TMP_PATH + "test_15.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

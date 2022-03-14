@@ -34,7 +34,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}/toto.fst] >> [TrueOperation]
 
         # write the result
-        results_file = TMP_PATH + "test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -55,7 +55,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName UU,VV,T6] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -76,7 +76,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_3.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -97,7 +97,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_5.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -118,7 +118,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName UU,VV,TT] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_6.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -139,7 +139,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WriterStd --output {destination_path} --noMetadata --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_7.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -160,7 +160,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_8.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -181,7 +181,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_9.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -208,7 +208,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]} {sources[1]} {sources[2]}] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_10.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -229,7 +229,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_11.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -250,7 +250,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_12.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -271,7 +271,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion]
 
         # write the result
-        results_file = TMP_PATH + "test_13.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -292,7 +292,7 @@ class TestReaderStd(unittest.TestCase):
         #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '[WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_14.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -313,7 +313,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_15.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -334,7 +334,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_16.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_16.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -355,7 +355,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_17.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_17.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -376,7 +376,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_18.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_18.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -397,7 +397,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [WriterStd --output {destination_path}]
 
         # write the result
-        results_file = TMP_PATH + "test_19.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_19.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -418,7 +418,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --fieldName FN] >> [WriterStd --output {destination_path}]
 
         # write the result
-        results_file = TMP_PATH + "test_20.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_20.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -439,7 +439,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --fieldName PR] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_21.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_21.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -460,7 +460,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [WriterStd --output {destination_path}]
 
         # write the result
-        results_file = TMP_PATH + "test_22.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_22.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -481,7 +481,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ZapSmart --fieldNameFrom AI --fieldNameTo PT] >> [WriterStd --output {destination_path}]
 
         # write the result
-        results_file = TMP_PATH + "test_23.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_23.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -502,7 +502,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [WriterStd --output {destination_path} --writingMode APPEND]
 
         # write the result
-        results_file = TMP_PATH + "test_25.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_25.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -523,7 +523,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = TMP_PATH + "test_26.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_26.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -550,7 +550,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --input {sources[0]} {sources[1]} {sources[2]} --ignoreExtended] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_28.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_28.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -571,7 +571,7 @@ class TestReaderStd(unittest.TestCase):
         #['[ReaderStd --input {sources[0]} --ignoreExtended] >> ', '[WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --flagMissingData]']
 
         # write the result
-        results_file = TMP_PATH + "test_29.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_29.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -592,7 +592,7 @@ class TestReaderStd(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >> ', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_30.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_30.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -613,7 +613,7 @@ class TestReaderStd(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >> ', '[Select --forecastHour 24] >>', '[WriterStd --output {destination_path}]']
 
         # write the result
-        results_file = TMP_PATH + "test_31.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_31.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -634,7 +634,7 @@ class TestReaderStd(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[Select --fieldName WGEX] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_32.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_32.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -655,7 +655,7 @@ class TestReaderStd(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}]>>', '[WriterStd --output {destination_path}]']
 
         # write the result
-        results_file = TMP_PATH + "test_33.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_33.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

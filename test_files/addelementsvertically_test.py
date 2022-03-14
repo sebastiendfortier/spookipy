@@ -23,7 +23,7 @@ def test_1(plugin_test_dir):
     # [ReaderStd --input {sources[0]}] >> [AddElementsVertically --outputFieldName TROPLONG]
 
     # write the result
-    results_file = TMP_PATH + "test_1.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
     StandardFileWriter(results_file, df)()
 
     # open and read comparison file
@@ -45,7 +45,7 @@ def test_2(plugin_test_dir):
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [AddElementsVertically --outputFieldName ABCD]
 
     # write the result
-    results_file = TMP_PATH + "test_2.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
     StandardFileWriter(results_file, df)()
 
     # open and read comparison file
@@ -67,7 +67,7 @@ def test_3(plugin_test_dir):
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [AddElementsVertically] >> [Zap --pdsLabel ADDCOLUMNS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
 
     # write the result
-    results_file = TMP_PATH + "test_3.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
     StandardFileWriter(results_file, df)()
 
     # open and read comparison file
@@ -89,7 +89,7 @@ def test_4(plugin_test_dir):
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName UU] >> [AddElementsVertically --outputFieldName ACCU] >> [Zap --pdsLabel ADDCOLUMNS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended --noUnitConversion]
 
     # write the result
-    results_file = TMP_PATH + "test_4.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
     StandardFileWriter(results_file, df)()
 
     # open and read comparison file
@@ -111,7 +111,7 @@ def test_5(plugin_test_dir):
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --verticalLevel 500] >> [AddElementsVertically] >> [Zap --pdsLabel ADDCOLUMNS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
 
     # write the result
-    results_file = TMP_PATH + "test_5.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
     StandardFileWriter(results_file, df)()
 
     # open and read comparison file
@@ -133,7 +133,7 @@ def test_6(plugin_test_dir):
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [AddElementsVertically]
 
     # write the result
-    results_file = TMP_PATH + "test_6.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
     StandardFileWriter(results_file, df)()
 
     # open and read comparison file

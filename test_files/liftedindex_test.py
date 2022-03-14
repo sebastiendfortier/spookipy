@@ -34,7 +34,7 @@ class TestLiftedIndex(unittest.TestCase):
         # [LiftedIndex --liftedFrom LIFTED_SOMEHOW]
 
         # write the result
-        results_file = TMP_PATH + "test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -55,7 +55,7 @@ class TestLiftedIndex(unittest.TestCase):
         # [LiftedIndex --liftedFrom SURFACE --increment 0.0mb]
 
         # write the result
-        results_file = TMP_PATH + "test_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -76,7 +76,7 @@ class TestLiftedIndex(unittest.TestCase):
         # [LiftedIndex --liftedFrom SURFACE --referenceLevel 0.0sg]
 
         # write the result
-        results_file = TMP_PATH + "test_3.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -97,7 +97,7 @@ class TestLiftedIndex(unittest.TestCase):
         # [LiftedIndex --liftedFrom MEAN_LAYER]
 
         # write the result
-        results_file = TMP_PATH + "test_4.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -118,7 +118,7 @@ class TestLiftedIndex(unittest.TestCase):
         # [LiftedIndex --liftedFrom MEAN_LAYER --baseMeanLayer SURFACE]
 
         # write the result
-        results_file = TMP_PATH + "test_5.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -139,7 +139,7 @@ class TestLiftedIndex(unittest.TestCase):
         # [LiftedIndex --liftedFrom MOST_UNSTABLE --deltaMostUnstable 0.0sg]
 
         # write the result
-        results_file = TMP_PATH + "test_6.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -160,7 +160,7 @@ class TestLiftedIndex(unittest.TestCase):
         # ([ReaderStd --input {sources[0]}] + ([ReaderStd --input /home/spst900/spooki/spooki_dir_ppp4/pluginsRelatedStuff/LiftedIndex/testsFiles/2011100712_012_reghyb] >> [Select --verticalLevel SURFACE])) >> [LiftedIndex --liftedFrom SURFACE,SHOWALTER] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_7.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -182,7 +182,7 @@ class TestLiftedIndex(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [LiftedIndex --liftedFrom SHOWALTER] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_8.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -203,7 +203,7 @@ class TestLiftedIndex(unittest.TestCase):
         # [ReaderStd --input {sources[0]} /home/spst900/spooki/spooki_dir_ppp4/pluginsRelatedStuff/LiftedIndex/testsFiles/2011100712_012_regpres] >> [LiftedIndex --liftedFrom MEAN_LAYER --baseMeanLayer SURFACE --deltaMeanLayer 100mb] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_9.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -224,7 +224,7 @@ class TestLiftedIndex(unittest.TestCase):
         # [ReaderStd --input {sources[0]} /home/spst900/spooki/spooki_dir_ppp4/pluginsRelatedStuff/LiftedIndex/testsFiles/2011100712_012_regpres] >> [LiftedIndex --liftedFrom MOST_UNSTABLE --deltaMostUnstable 300mb] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_10.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

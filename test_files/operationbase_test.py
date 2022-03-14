@@ -34,7 +34,7 @@ class TestOperationBase(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> ([Select --fieldName UU,VV,UV] + [Select --fieldName UU,VV,UV]) >> [Select --fieldName UV] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -55,7 +55,7 @@ class TestOperationBase(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName UU,VV,UV] >> ([Select --fieldName UV] || [Select --fieldName UV]) >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -79,7 +79,7 @@ class TestOperationBase(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]} {sources[1]}] >> [PrintIMO] >> [WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_3.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -103,7 +103,7 @@ class TestOperationBase(unittest.TestCase):
         # ([ReaderStd --ignoreExtended --input {sources[0]}] + [ReaderStd --ignoreExtended --input {sources[1]}]) >> [WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_4.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -127,7 +127,7 @@ class TestOperationBase(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]} {sources[1]}] >> [WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_5.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -151,7 +151,7 @@ class TestOperationBase(unittest.TestCase):
         # ([ReaderStd --ignoreExtended --input {sources[0]}] + [ReaderStd --ignoreExtended --input {sources[1]}]) >> [WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_6.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

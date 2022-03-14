@@ -5,6 +5,7 @@ import fstpy.all as fstpy
 import pytest
 import spookipy.all as spooki
 from ci_fstcomp import fstcomp
+import secrets
 
 pytestmark = [pytest.mark.regressions, pytest.mark.humidity]
 
@@ -107,7 +108,7 @@ def test_6(plugin_test_dir):
     # df['datyp']=5
     # df.loc[df.nomvar!='!!','nbits']=32
     # write the result
-    results_file = TMP_PATH + "test_6.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -140,7 +141,7 @@ def test_7(plugin_test_dir):
     # df['datyp']=5
     # df.loc[df.nomvar!='!!','nbits']=32
     # write the result
-    results_file = TMP_PATH + "test_7.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -173,7 +174,7 @@ def test_8(plugin_test_dir):
     df.loc[df.nomvar.isin(['SVP']), 'etiket']      = '__SVPRESX'
 
     # write the result
-    results_file = TMP_PATH + "test_8.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 

@@ -34,7 +34,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [PrecipitationTypeDominant --microphysics BOURGOUIN --epsilon -10.0]
 
         # write the result
-        results_file = TMP_PATH + "test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -55,7 +55,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [PrecipitationTypeDominant --microphysics BOURGOUIN --precipThreshold -9.0]
 
         # write the result
-        results_file = TMP_PATH + "test_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -76,7 +76,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [TimeIntervalDifference --fieldName RN,SN,FR,PE --rangeForecastHour 0@48,0@48 --interval 12,24 --step 12,24 --strictlyPositive] >> [PrecipitationTypeDominant --microphysics BOURGOUIN --epsilon 0.0] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_3.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -97,7 +97,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [TimeIntervalDifference --fieldName RN,SN,FR,PE,RN1,FR1,SN1,SN3 --rangeForecastHour 0@48,0@48 --interval 12,24 --step 12,24 --strictlyPositive] >> [PrecipitationTypeDominant --microphysics MY2 --epsilon 0.0] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_4.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -118,7 +118,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [TimeIntervalDifference --fieldName RN,SN,FR,PE,RN1,FR1,SN1,SN3 --rangeForecastHour 0@48,0@48 --interval 12,24 --step 12,24 --strictlyPositive] >> [PrecipitationTypeDominant --microphysics P3 --epsilon 0.0] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_5.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -139,7 +139,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '[TimeIntervalDifference --fieldName RN2,RN1,FR2,FR1,PE1,SN3,SG,SN1,SN2,PE2 --rangeForecastHour 0@48,0@48 --interval 12,24 --step 12,24 --strictlyPositive] >> ', '[PrecipitationTypeDominant --microphysics CUSTOM --rain RN2 --drizzle RN1 --freezingRain FR2 --freezingDrizzle FR1 --icePellets PE1 --graupel SN3 --snowGrain SG --iceCrystals SN1 --snow SN2 --hail PE2 --epsilon 0.0] >> ', '[WriterStd --output {destination_path} --ignoreExtended]']
 
         # write the result
-        results_file = TMP_PATH + "test_6.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -160,7 +160,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '[TimeIntervalDifference --fieldName RN2,FR2,FR1 --rangeForecastHour 0@48,0@48 --interval 12,24 --step 12,24 --strictlyPositive] >> ', '[PrecipitationTypeDominant --microphysics CUSTOM --rain RN2 --freezingRain FR2 --freezingDrizzle FR1 --epsilon 0.0] >> ', '[WriterStd --output {destination_path} --ignoreExtended]']
 
         # write the result
-        results_file = TMP_PATH + "test_7.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -181,7 +181,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [PrecipitationTypeDominant --microphysics BOURGOUIN --epsilon 0.0] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_8.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -202,7 +202,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [TimeIntervalDifference --fieldName RN1,FR,FR1,SN --rangeForecastHour 0@48,0@48 --interval 12,24 --step 12,24 --strictlyPositive] >> [PrecipitationTypeDominant --microphysics CUSTOM --rain RN1 --freezingRain FR --freezingDrizzle FR1 --snow SN] >> [Zap --nbitsForDataStorage E32] >>[WriterStd --output {destination_path} --ignoreExtended --noUnitConversion]
 
         # write the result
-        results_file = TMP_PATH + "test_9.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -223,7 +223,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [TimeIntervalDifference --fieldName RN1,FR,FR1,SN --rangeForecastHour 0@48,0@48 --interval 12,24 --step 12,24 --strictlyPositive] >> [PrecipitationTypeDominant --microphysics CUSTOM --rain RN1 --freezingRain FR --freezingDrizzle FR1 --snow SN] >> [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion]
 
         # write the result
-        results_file = TMP_PATH + "test_10.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -244,7 +244,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [TimeIntervalDifference --fieldName RN1,FR,FR1,SN --rangeForecastHour 0@48,0@48 --interval 12,24 --step 12,24 --strictlyPositive] >> [PrecipitationTypeDominant --microphysics CUSTOM --rain RN1 --freezingRain FR --freezingDrizzle FR1 --snow SN] >> [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion]
 
         # write the result
-        results_file = TMP_PATH + "test_11.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -265,7 +265,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '[PrecipitationTypeDominant --microphysics CUSTOM --epsilon 1e-12 --precipThreshold 1e-7 --snow RN1 --graupel RN] >> ', '[WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --noMetadata]']
 
         # write the result
-        results_file = TMP_PATH + "test_12.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -286,7 +286,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '[PrecipitationTypeDominant --microphysics MY2 --epsilon 1e-12 --precipThreshold 1e-7] >> ', '[WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --noMetadata]']
 
         # write the result
-        results_file = TMP_PATH + "test_13.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -307,7 +307,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '[PrecipitationTypeDominant --microphysics CUSTOM --epsilon 1e-12 --precipThreshold 1e-7 --rain RN --drizzle RN1] >> ', '[WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --noMetadata]']
 
         # write the result
-        results_file = TMP_PATH + "test_14.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -328,7 +328,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         #['[ReaderStd --ignoreExtended --input {sources[0]}] >>', '[PrecipitationTypeDominant --microphysics CUSTOM --epsilon 1e-12 --precipThreshold 1e-7 --rain RN --freezingRain FR --icePellets PE --snow SN --freezingDrizzle FR1 --drizzle RN1 --iceCrystals SN1 --graupel SN3] >> ', '[WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --noMetadata]']
 
         # write the result
-        results_file = TMP_PATH + "test_15.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -349,7 +349,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         #['[ReaderStd --ignoreExtended --input {sources[0]}] >>', '[PrecipitationTypeDominant --microphysics CUSTOM --epsilon 1e-12 --precipThreshold 1e-7 --rain PE --freezingRain SN --icePellets FR --snow RN1 --freezingDrizzle SN1 --drizzle FR1 --iceCrystals SN3 --graupel RN] >> ', '[WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --noMetadata]']
 
         # write the result
-        results_file = TMP_PATH + "test_16.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_16.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -370,7 +370,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         #['[ReaderStd --ignoreExtended --input {sources[0]}] >>', '[PrecipitationTypeDominant --microphysics CUSTOM --epsilon 1e-12 --precipThreshold 1e-7 --rain SN3 --freezingRain PE --icePellets RN --snow FR --freezingDrizzle RN1 --drizzle SN --iceCrystals FR1 --graupel SN1] >> ', '[WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --noMetadata]']
 
         # write the result
-        results_file = TMP_PATH + "test_17.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_17.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -391,7 +391,7 @@ class TestPrecipitationTypeDominant(unittest.TestCase):
         #['[ReaderStd --ignoreExtended --input {sources[0]}] >>', '[PrecipitationTypeDominant --microphysics BOURGOUIN --epsilon 1e-12 --precipThreshold 1e-7] >> ', '[WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --noMetadata]']
 
         # write the result
-        results_file = TMP_PATH + "test_18.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_18.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

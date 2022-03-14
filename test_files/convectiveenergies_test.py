@@ -34,7 +34,7 @@ class TestConvectiveEnergies(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ConvectiveEnergies --liftedFrom SURFACE --virtualTemperature NO --increment 2.0mb ]
 
         # write the result
-        results_file = TMP_PATH + "test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -55,7 +55,7 @@ class TestConvectiveEnergies(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ConvectiveEnergies --liftedFrom MEAN_LAYER --baseMeanLayer SURFACE --deltaMeanLayer 200mb --virtualTemperature NO --increment 2.0mb]
 
         # write the result
-        results_file = TMP_PATH + "test_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -76,7 +76,7 @@ class TestConvectiveEnergies(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ConvectiveEnergies --liftedFrom MOST_UNSTABLE --deltaMostUnstable 200mb --virtualTemperature NO --increment 2.0mb]
 
         # write the result
-        results_file = TMP_PATH + "test_3.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -97,7 +97,7 @@ class TestConvectiveEnergies(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ConvectiveEnergies --liftedFrom SURFACE --increment 1.0hPa --virtualTemperature NO ] >> [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion ]
 
         # write the result
-        results_file = TMP_PATH + "test_4.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -118,7 +118,7 @@ class TestConvectiveEnergies(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ConvectiveEnergies --liftedFrom SURFACE --increment 1.0hPa --virtualTemperature NO --outputConvectiveLevels LFC_PRESSURE,LFC_HEIGHT,EL_PRESSURE,EL_HEIGHT ] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = TMP_PATH + "test_7.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -139,7 +139,7 @@ class TestConvectiveEnergies(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ConvectiveEnergies --liftedFrom MEAN_LAYER --baseMeanLayer 800mb --deltaMeanLayer 500mb --increment 1.0hPa --virtualTemperature NO --outputConvectiveLevels LFC_PRESSURE,LFC_HEIGHT,EL_PRESSURE,EL_HEIGHT ] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = TMP_PATH + "test_8.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -160,7 +160,7 @@ class TestConvectiveEnergies(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ConvectiveEnergies --liftedFrom MOST_UNSTABLE --deltaMostUnstable 500mb --increment 1.0hPa --virtualTemperature YES --outputConvectiveLevels LFC_PRESSURE,EL_PRESSURE ] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = TMP_PATH + "test_9.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -181,7 +181,7 @@ class TestConvectiveEnergies(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ConvectiveEnergies --liftedFrom SURFACE --increment 10.0hPa --virtualTemperature NO ] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = TMP_PATH + "test_10.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -202,7 +202,7 @@ class TestConvectiveEnergies(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ConvectiveEnergies --liftedFrom SURFACE --increment 2.0hPa --virtualTemperature NO ] >> [WriterStd --output {destination_path} --ignoreExtended ]
 
         # write the result
-        results_file = TMP_PATH + "test_11.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -223,7 +223,7 @@ class TestConvectiveEnergies(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ConvectiveEnergies --liftedFrom SURFACE --increment 5.0hPa --virtualTemperature NO ] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = TMP_PATH + "test_12.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -244,7 +244,7 @@ class TestConvectiveEnergies(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ConvectiveEnergies --liftedFrom SURFACE --increment 5.0hPa --virtualTemperature YES --outputConvectiveLevels LFC_PRESSURE,LFC_HEIGHT,EL_PRESSURE,EL_HEIGHT ] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = TMP_PATH + "test_13.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -265,7 +265,7 @@ class TestConvectiveEnergies(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ConvectiveEnergies --liftedFrom SURFACE --increment 2.0hPa --virtualTemperature NO --outputConvectiveLevels LFC_PRESSURE,LFC_HEIGHT,EL_PRESSURE,EL_HEIGHT ] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = TMP_PATH + "test_14.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -286,7 +286,7 @@ class TestConvectiveEnergies(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ConvectiveEnergies --liftedFrom SURFACE --virtualTemperature NO --increment 10.0mb --capeType UNBOUNDED --lowerBoundary 0km --upperBoundary 10km ]
 
         # write the result
-        results_file = TMP_PATH + "test_15.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -307,7 +307,7 @@ class TestConvectiveEnergies(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ConvectiveEnergies --liftedFrom SURFACE --increment 1.0hPa --virtualTemperature NO --outputConvectiveLevels LFC_PRESSURE,LFC_HEIGHT,EL_PRESSURE,EL_HEIGHT --capeType UNBOUNDED ] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = TMP_PATH + "test_16.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_16.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -328,7 +328,7 @@ class TestConvectiveEnergies(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ConvectiveEnergies --liftedFrom SURFACE --increment 10.0hPa --virtualTemperature NO --capeType BOTH --lowerBoundary 20dam --upperBoundary 35dam ] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --encodeIP2andIP3 ]
 
         # write the result
-        results_file = TMP_PATH + "test_17.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_17.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -349,7 +349,7 @@ class TestConvectiveEnergies(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ConvectiveEnergies --liftedFrom SURFACE --increment 10.0hPa --virtualTemperature NO --capeType BOUNDED --lowerBoundary -60C --upperBoundary -152C ] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --encodeIP2andIP3 ]
 
         # write the result
-        results_file = TMP_PATH + "test_18.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_18.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -370,7 +370,7 @@ class TestConvectiveEnergies(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ConvectiveEnergies --liftedFrom MEAN_LAYER --baseMeanLayer 800mb --deltaMeanLayer 500mb --increment 2.0hPa --virtualTemperature NO --capeType BOTH --lowerBoundary 400dam --upperBoundary 800dam ] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --encodeIP2andIP3 ]
 
         # write the result
-        results_file = TMP_PATH + "test_19.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_19.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -391,7 +391,7 @@ class TestConvectiveEnergies(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ConvectiveEnergies --liftedFrom MEAN_LAYER --baseMeanLayer 800mb --deltaMeanLayer 500mb --increment 2.0hPa --virtualTemperature NO --capeType BOTH --lowerBoundary 560dam --upperBoundary 800dam ] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --encodeIP2andIP3 ]
 
         # write the result
-        results_file = TMP_PATH + "test_20.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_20.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -412,7 +412,7 @@ class TestConvectiveEnergies(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ConvectiveEnergies --liftedFrom MOST_UNSTABLE --deltaMostUnstable 500mb --increment 2.0hPa --virtualTemperature NO --capeType BOTH --lowerBoundary 50dam --upperBoundary 800dam ] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --encodeIP2andIP3 ]
 
         # write the result
-        results_file = TMP_PATH + "test_21.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_21.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -433,7 +433,7 @@ class TestConvectiveEnergies(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ConvectiveEnergies --liftedFrom MOST_UNSTABLE --deltaMostUnstable 500mb --increment 2.0hPa --virtualTemperature NO --capeType BOTH --lowerBoundary 100dam --upperBoundary 800dam ] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --encodeIP2andIP3 ]
 
         # write the result
-        results_file = TMP_PATH + "test_22.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_22.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -454,7 +454,7 @@ class TestConvectiveEnergies(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ConvectiveEnergies --liftedFrom SURFACE --increment 10.0hPa --virtualTemperature NO --capeType BOTH --lowerBoundary 6C --upperBoundary -152C ] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --encodeIP2andIP3 ]
 
         # write the result
-        results_file = TMP_PATH + "test_23.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_23.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -475,7 +475,7 @@ class TestConvectiveEnergies(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ConvectiveEnergies --liftedFrom SURFACE --increment 10.0hPa --virtualTemperature NO --capeType BOUNDED --lowerBoundary -10C --upperBoundary -21C ] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --encodeIP2andIP3 ]
 
         # write the result
-        results_file = TMP_PATH + "test_24.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_24.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -496,7 +496,7 @@ class TestConvectiveEnergies(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ConvectiveEnergies --liftedFrom SURFACE --increment 10.0hPa --virtualTemperature NO --capeType BOUNDED --lowerBoundary 15C --upperBoundary -152C ] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --encodeIP2andIP3 ]
 
         # write the result
-        results_file = TMP_PATH + "test_25.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_25.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -517,7 +517,7 @@ class TestConvectiveEnergies(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ConvectiveEnergies --liftedFrom SURFACE --increment 10.0hPa --virtualTemperature NO --capeType BOUNDED --lowerBoundary -28C --upperBoundary -152C ] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --encodeIP2andIP3 ]
 
         # write the result
-        results_file = TMP_PATH + "test_26.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_26.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -538,7 +538,7 @@ class TestConvectiveEnergies(unittest.TestCase):
         #['[ReaderStd --input {sources[0]} ] >> ', '[ConvectiveEnergies --liftedFrom SURFACE --increment 2.0hPa --virtualTemperature NO] >> ', '[WriterStd --output {destination_path} --ignoreExtended ]']
 
         # write the result
-        results_file = TMP_PATH + "test_27.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_27.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

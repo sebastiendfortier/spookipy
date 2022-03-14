@@ -34,7 +34,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> ( [Copy] + ([Select --fieldName TT] >> [SetConstantValue --value 0] >> [Zap --fieldName CF --doNotFlagAsZapped]) ) >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature CF --maxNbLayer 0]
 
         # write the result
-        results_file = TMP_PATH + "test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -55,7 +55,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> ( [Copy] + ([Select --fieldName TT] >> [SetConstantValue --value 0] >> [Zap --fieldName CF --unit scalar --doNotFlagAsZapped]) ) >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature CF --epsilonTemperature -1 ]
 
         # write the result
-        results_file = TMP_PATH + "test_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -76,7 +76,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> ( [Copy] + ([Select --fieldName TT] >> [SetConstantValue --value 0] >> [Zap --fieldName CF --unit scalar --doNotFlagAsZapped]) ) >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature CF --epsilonPressure -1]
 
         # write the result
-        results_file = TMP_PATH + "test_3.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -97,7 +97,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> ( [Copy] + ([Select --fieldName TT] >> [SetConstantValue --value 0] >> [Zap --fieldName CF --doNotFlagAsZapped]) + [Pressure --coordinateType AUTODETECT --referenceField TT] ) >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature CF] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = TMP_PATH + "test_4.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -118,7 +118,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> ( [Copy] + ([Select --fieldName TT] >> [SetConstantValue --value 0] >> [Zap --fieldName CF --doNotFlagAsZapped]) + [Pressure --coordinateType AUTODETECT --referenceField TT]) >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature CF --maxNbLayer 2 ] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = TMP_PATH + "test_5.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -139,7 +139,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> ( [Copy] + ([Select --fieldName TT] >> [SetConstantValue --value 0] >> [Zap --fieldName CF --doNotFlagAsZapped]) + [Pressure --coordinateType AUTODETECT --referenceField TT] ) >> ( [Copy] + [VerticalScan --maxNbOccurrence 10 --consecutiveEvents INF --referenceField TT --comparisonValueOrField 0 --outputVerticalRepresentation PRESSURE --epsilon 0.1e-05 --comparisonType CONSTANTVALUE] ) >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature CF ] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = TMP_PATH + "test_6.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -160,7 +160,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> ( [Copy] + ([Select --fieldName TT] >> [SetConstantValue --value 0] >> [Zap --fieldName CF --doNotFlagAsZapped]) + [Pressure --coordinateType AUTODETECT --referenceField TT] ) >> ( [Copy] + [VerticalScan --maxNbOccurrence 10 --consecutiveEvents INF --referenceField TT --comparisonValueOrField 0 --outputVerticalRepresentation PRESSURE --epsilon 0.1e-05 --comparisonType CONSTANTVALUE] ) >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature CF --maxNbLayer 2 ] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = TMP_PATH + "test_7.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -181,7 +181,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> ( [Copy] + ([Select --fieldName TT] >> [SetConstantValue --value 0] >> [Zap --fieldName CF --doNotFlagAsZapped]) + [Pressure --coordinateType AUTODETECT --referenceField TT] ) >> ( [Copy] + [VerticalScan --maxNbOccurrence 1 --consecutiveEvents INF --referenceField TT --comparisonValueOrField 0 --outputVerticalRepresentation PRESSURE --epsilon 0.1e-05 --comparisonType CONSTANTVALUE] ) >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature CF ] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = TMP_PATH + "test_8.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -202,7 +202,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> ( [Copy] + ([Select --fieldName TT] >> [SetConstantValue --value 0] >> [Zap --fieldName CF --doNotFlagAsZapped]) + [Pressure --coordinateType AUTODETECT --referenceField TT] ) >> ( [Copy] + [VerticalScan --maxNbOccurrence 1 --consecutiveEvents INF --referenceField TT --comparisonValueOrField 0 --outputVerticalRepresentation PRESSURE --epsilon 0.1e-05 --comparisonType CONSTANTVALUE] ) >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature CF --maxNbLayer 2] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = TMP_PATH + "test_9.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -223,7 +223,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --fieldName TT] >> ( [Copy] + ([Select --fieldName TT] >> [SetConstantValue --value 0] >> [Zap --fieldName CF --unit scalar --doNotFlagAsZapped]) + [Pressure --coordinateType AUTODETECT --referenceField TT] ) >> ( [Copy] + [VerticalScan --maxNbOccurrence 2 --consecutiveEvents INF --referenceField TT --comparisonValueOrField 0 --outputVerticalRepresentation PRESSURE --epsilon 0.1e-05 --comparisonType CONSTANTVALUE] ) >>[EnergyMeanIsothermMethod --temperature TT --comparisonTemperature CF --maxNbLayer 8 --epsilonTemperature 0.000001 ] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = TMP_PATH + "test_10.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -247,7 +247,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> ([Select --fieldName TT,GZ] + [TemperatureOfLiftedParcel --liftedFrom SURFACE --endLevel 100.0hPa --increment 10.0hPa]) >> ([Select --fieldName TT,GZ] + ([Select --fieldName TT,PX --pdsLabel TemperatureOfLiftedParcel --exclude] >> [InterpolationVertical -m FIELD_DEFINED --outputField INCLUDE_ALL_FIELDS --extrapolationType FIXED --valueAbove -300 --valueBelow -300 --referenceFieldName TTLP])) >>([Select --fieldName TTLP,TT] + [VerticalScan -r TTLP -t INTERSECTIONS -c TT -o PRESSURE -e INF -m 10 --epsilon 0.0 --crossover --valueToIgnore -300]) >>(([Select --verticalLevelType MILLIBARS] + [Select --fieldName APX]) + [ReaderStd --input {sources[1]}])>> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature TTLP --forConvectiveEnergies --valueToIgnore -300] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --ignoreExtended --noMetadata ]
 
         # write the result
-        results_file = TMP_PATH + "test_11.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -271,7 +271,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]} {sources[1]}] >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature TTLP --forConvectiveEnergies --valueToIgnore -300 ] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --ignoreExtended --noMetadata ]
 
         # write the result
-        results_file = TMP_PATH + "test_12.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -295,7 +295,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]} {sources[1]}] >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature TTLP --forConvectiveEnergies] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --ignoreExtended --noMetadata ]
 
         # write the result
-        results_file = TMP_PATH + "test_13.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -319,7 +319,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --fieldName PX,PLCL,ZLCL,TLCL] + [ReaderStd --input {sources[1]}] >> [Select --fieldName TT,TTLP,PLCL,TLCL] >>[EnergyMeanIsothermMethod --temperature TT --comparisonTemperature TTLP --forConvectiveEnergies --valueToIgnore -300] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = TMP_PATH + "test_14.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -340,7 +340,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature TTLP --forConvectiveEnergies --capeType BOTH --lowerBoundary 20dam --upperBoundary 35dam --valueToIgnore -300 ] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --noUnitConversion]
 
         # write the result
-        results_file = TMP_PATH + "test_15.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -361,7 +361,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature TTLP --forConvectiveEnergies --capeType BOTH --lowerBoundary 0dam --upperBoundary 30dam --valueToIgnore -300 ] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --noUnitConversion]
 
         # write the result
-        results_file = TMP_PATH + "test_16.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_16.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -382,7 +382,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature TTLP --forConvectiveEnergies --capeType BOTH --lowerBoundary 22dam --upperBoundary 25dam --valueToIgnore -300 ] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --noUnitConversion]
 
         # write the result
-        results_file = TMP_PATH + "test_17.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_17.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -403,7 +403,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature TTLP --forConvectiveEnergies --capeType BOTH --lowerBoundary 5dam --upperBoundary 75dam --valueToIgnore -300 ] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --noUnitConversion]
 
         # write the result
-        results_file = TMP_PATH + "test_18.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_18.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -424,7 +424,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature TTLP --forConvectiveEnergies --capeType BOTH --lowerBoundary 22dam --upperBoundary 26dam --valueToIgnore -300 ] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --noUnitConversion]
 
         # write the result
-        results_file = TMP_PATH + "test_19.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_19.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -445,7 +445,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature TTLP --forConvectiveEnergies --capeType BOUNDED --lowerBoundary 22dam --upperBoundary 26dam --valueToIgnore -300 ] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --noUnitConversion]
 
         # write the result
-        results_file = TMP_PATH + "test_20.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_20.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -466,7 +466,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature TTLP --forConvectiveEnergies --capeType UNBOUNDED --valueToIgnore -300 ] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --noUnitConversion]
 
         # write the result
-        results_file = TMP_PATH + "test_21.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_21.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -487,7 +487,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature TTLP --forConvectiveEnergies --capeType BOTH --lowerBoundary 10C --upperBoundary -100C --valueToIgnore -300 ] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --noUnitConversion]
 
         # write the result
-        results_file = TMP_PATH + "test_22.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_22.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -508,7 +508,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature TTLP --forConvectiveEnergies --capeType BOUNDED --lowerBoundary 0.5C --upperBoundary -30C --valueToIgnore -300 ] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --noUnitConversion]
 
         # write the result
-        results_file = TMP_PATH + "test_23.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_23.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -529,7 +529,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature TTLP --forConvectiveEnergies --capeType BOUNDED --lowerBoundary 1.6686C --upperBoundary -52.9392C --valueToIgnore -300 ] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --noUnitConversion]
 
         # write the result
-        results_file = TMP_PATH + "test_24.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_24.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -550,7 +550,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature TTLP --forConvectiveEnergies --capeType BOUNDED --lowerBoundary -60C --upperBoundary -152C --valueToIgnore -300 ] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --noUnitConversion]
 
         # write the result
-        results_file = TMP_PATH + "test_25.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_25.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -571,7 +571,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature MTLP --forConvectiveEnergies --capeType BOTH --lowerBoundary 560dam --upperBoundary 800dam --valueToIgnore -300 ] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --noUnitConversion]
 
         # write the result
-        results_file = TMP_PATH + "test_26.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_26.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -592,7 +592,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature MTLP --forConvectiveEnergies --capeType BOTH --lowerBoundary 400dam --upperBoundary 800dam --valueToIgnore -300 ] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --noUnitConversion]
 
         # write the result
-        results_file = TMP_PATH + "test_27.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_27.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -613,7 +613,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature UTLP --forConvectiveEnergies --capeType BOTH --lowerBoundary 100dam --upperBoundary 800dam --valueToIgnore -300 ] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --noUnitConversion]
 
         # write the result
-        results_file = TMP_PATH + "test_28.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_28.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -634,7 +634,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature UTLP --forConvectiveEnergies --capeType BOTH --lowerBoundary 50dam --upperBoundary 800dam --valueToIgnore -300 ] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --noUnitConversion]
 
         # write the result
-        results_file = TMP_PATH + "test_29.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_29.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -655,7 +655,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature TTLP --forConvectiveEnergies --capeType BOUNDED --lowerBoundary 15C --upperBoundary -152C --valueToIgnore -300 ] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --noUnitConversion]
 
         # write the result
-        results_file = TMP_PATH + "test_30.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_30.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -676,7 +676,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature TTLP --forConvectiveEnergies --capeType BOUNDED --lowerBoundary -28C --upperBoundary -152C --valueToIgnore -300 ] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --noUnitConversion]
 
         # write the result
-        results_file = TMP_PATH + "test_31.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_31.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -697,7 +697,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [EnergyMeanIsothermMethod --temperature TT --comparisonTemperature TTLP --forConvectiveEnergies --capeType BOTH --lowerBoundary 6C --upperBoundary -152C --valueToIgnore -300 ] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --noUnitConversion]
 
         # write the result
-        results_file = TMP_PATH + "test_32.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_32.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -721,7 +721,7 @@ class TestEnergyMeanIsothermMethod(unittest.TestCase):
         #['[ReaderStd --input {sources[0]} {sources[1]}] >> ', '([Copy] + [Pressure --coordinateType HYBRID_5005_COORDINATE --referenceField TT]) >> ', '[EnergyMeanIsothermMethod --temperature TT --comparisonTemperature TTLP --forConvectiveEnergies --capeType BOUNDED --lowerBoundary -10C --upperBoundary -21C --valueToIgnore -300 ] >> ', '[Zap --nbitsForDataStorage E32] >> ', '[WriterStd --output {destination_path} --encodeIP2andIP3 --noUnitConversion]']
 
         # write the result
-        results_file = TMP_PATH + "test_33.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_33.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

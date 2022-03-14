@@ -34,7 +34,7 @@ class TestParcelMostUnstable(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ParcelMostUnstable --delta 300 --iceWaterPhase WATER]
 
         # write the result
-        results_file = TMP_PATH + "test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -50,7 +50,7 @@ class TestParcelMostUnstable(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ParcelMostUnstable --delta 100mb --iceWaterPhase BOTH ]
 
         # write the result
-        results_file = TMP_PATH + "test_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -66,7 +66,7 @@ class TestParcelMostUnstable(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ParcelMostUnstable --delta 100mb --iceWaterPhase WATER --temperaturePhaseSwitch 20.0C]
 
         # write the result
-        results_file = TMP_PATH + "test_3.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -82,7 +82,7 @@ class TestParcelMostUnstable(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ParcelMostUnstable --delta 990mb --iceWaterPhase WATER ]
 
         # write the result
-        results_file = TMP_PATH + "test_4.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -98,7 +98,7 @@ class TestParcelMostUnstable(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ParcelMostUnstable --delta 300mb --increment 50 --iceWaterPhase WATER]
 
         # write the result
-        results_file = TMP_PATH + "test_5.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)
@@ -114,7 +114,7 @@ class TestParcelMostUnstable(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ParcelMostUnstable --delta 300mb --iceWaterPhase WATER ]
 
         # write the result
-        results_file = TMP_PATH + "test_6.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         assert(res)

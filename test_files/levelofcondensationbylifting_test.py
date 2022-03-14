@@ -34,7 +34,7 @@ class TestLevelOfCondensationByLifting(unittest.TestCase):
         # [ReaderStd --input {sources[0]} ] >> [LevelOfCondensationByLifting --outputField INVALID_VALUE --liftedFrom SURFACE --iceWaterPhase WATER ]
 
         # write the result
-        results_file = TMP_PATH + "test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -55,7 +55,7 @@ class TestLevelOfCondensationByLifting(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [LevelOfCondensationByLifting --outputField TEMPERATURE --liftedFrom SURFACE --iceWaterPhase ICE ]
 
         # write the result
-        results_file = TMP_PATH + "test_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -76,7 +76,7 @@ class TestLevelOfCondensationByLifting(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [LevelOfCondensationByLifting --outputField TEMPERATURE --liftedFrom INVALID_VALUE --iceWaterPhase WATER ]
 
         # write the result
-        results_file = TMP_PATH + "test_3.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -97,7 +97,7 @@ class TestLevelOfCondensationByLifting(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [LevelOfCondensationByLifting --outputField TEMPERATURE --liftedFrom SURFACE --iceWaterPhase BOTH ]
 
         # write the result
-        results_file = TMP_PATH + "test_4.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -118,7 +118,7 @@ class TestLevelOfCondensationByLifting(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [LevelOfCondensationByLifting --outputField TEMPERATURE --liftedFrom USER_DEFINED --iceWaterPhase WATER ]
 
         # write the result
-        results_file = TMP_PATH + "test_5.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -139,7 +139,7 @@ class TestLevelOfCondensationByLifting(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [LevelOfCondensationByLifting --outputField HEIGHT --liftedFrom SURFACE --iceWaterPhase WATER ]
 
         # write the result
-        results_file = TMP_PATH + "test_6.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -160,7 +160,7 @@ class TestLevelOfCondensationByLifting(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [LevelOfCondensationByLifting --outputField HEIGHT --liftedFrom SURFACE --verticalLevel 0.995 --iceWaterPhase WATER ]
 
         # write the result
-        results_file = TMP_PATH + "test_7.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -181,7 +181,7 @@ class TestLevelOfCondensationByLifting(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [LevelOfCondensationByLifting --outputField TEMPERATURE,PRESSURE,HEIGHT --liftedFrom SURFACE --iceWaterPhase WATER ] >> [Select --fieldName TLCL,PLCL,ZLCL --noMetadata ] >> [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_8.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -202,7 +202,7 @@ class TestLevelOfCondensationByLifting(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [LevelOfCondensationByLifting --outputField TEMPERATURE,PRESSURE,HEIGHT --liftedFrom USER_DEFINED --verticalLevel 0.995 --iceWaterPhase WATER ] >> [Select --fieldName TLCL,PLCL,ZLCL --noMetadata ] >> [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_9.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -223,7 +223,7 @@ class TestLevelOfCondensationByLifting(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [LevelOfCondensationByLifting --outputField TEMPERATURE,PRESSURE,HEIGHT --liftedFrom MEAN_LAYER --baseMeanLayer SURFACE --deltaMeanLayer 200mb --iceWaterPhase WATER ] >> [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion]
 
         # write the result
-        results_file = TMP_PATH + "test_10.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -244,7 +244,7 @@ class TestLevelOfCondensationByLifting(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [LevelOfCondensationByLifting -o TEMPERATURE,PRESSURE,HEIGHT --liftedFrom USER_DEFINED --verticalLevel ALL --iceWaterPhase WATER] >> [Zap --nbitsForDataStorage E32] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_12.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -266,7 +266,7 @@ class TestLevelOfCondensationByLifting(unittest.TestCase):
         #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '[LevelOfCondensationByLifting -o TEMPERATURE,PRESSURE,HEIGHT --liftedFrom USER_DEFINED --verticalLevel ALL --iceWaterPhase WATER] >> ', '[Zap --nbitsForDataStorage E32] >> ', '[WriterStd --output {destination_path} --ignoreExtended]']
 
         # write the result
-        results_file = TMP_PATH + "test_13.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

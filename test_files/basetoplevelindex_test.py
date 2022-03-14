@@ -34,7 +34,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
         # [ReaderCsv --input {sources[0]}] >> [Zap --dateOfOrigin 20080529T133415 --typeOfField FORECAST --nbitsForDataStorage R16 --verticalLevelType MILLIBARS --doNotFlagAsZapped] >> [BaseTopLevelIndex --comparisonOperator >= --threshold 0.6] >> [ZapSmart --fieldNameFrom KBAS --fieldNameTo BASE] >> [ZapSmart --fieldNameFrom KTOP --fieldNameTo TOP] >> [Zap --pdsLabel BASETOPLVLID --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_bt1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_bt1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -55,7 +55,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
         # [ReaderCsv --input {sources[0]}] >> [Zap --dateOfOrigin 20090529T133415 --typeOfField FORECAST --nbitsForDataStorage R16 --verticalLevelType MILLIBARS --doNotFlagAsZapped] >> [BaseTopLevelIndex --comparisonOperator == --threshold 0.5] >> [ZapSmart --fieldNameFrom KBAS --fieldNameTo BASE] >> [ZapSmart --fieldNameFrom KTOP --fieldNameTo TOP] >> [Zap --pdsLabel BASETOPLVLID --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_operatorEqual.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_operatorEqual.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -76,7 +76,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
         # [ReaderCsv --input {sources[0]}] >> [Zap --dateOfOrigin 20090529T133415 --typeOfField FORECAST --nbitsForDataStorage R16 --verticalLevelType MILLIBARS --doNotFlagAsZapped] >> [BaseTopLevelIndex --comparisonOperator <= --threshold 0.5] >> [ZapSmart --fieldNameFrom KBAS --fieldNameTo BASE] >> [ZapSmart --fieldNameFrom KTOP --fieldNameTo TOP] >> [Zap --pdsLabel BASETOPLVLID --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_operatorLessEqual.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_operatorLessEqual.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -97,7 +97,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
         # [ReaderCsv --input {sources[0]}] >> [Zap --dateOfOrigin 20090529T133415 --typeOfField FORECAST --nbitsForDataStorage R16 --verticalLevelType MILLIBARS --doNotFlagAsZapped] >> [BaseTopLevelIndex --comparisonOperator < --threshold 0.5] >> [ZapSmart --fieldNameFrom KBAS --fieldNameTo BASE] >> [ZapSmart --fieldNameFrom KTOP --fieldNameTo TOP] >> [Zap --pdsLabel BASETOPLVLID --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_operatorLessThan.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_operatorLessThan.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -118,7 +118,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
         # [ReaderCsv --input {sources[0]}] >> [Zap --dateOfOrigin 20090529T133415 --typeOfField FORECAST --nbitsForDataStorage R16 --verticalLevelType MILLIBARS --doNotFlagAsZapped] >> [BaseTopLevelIndex --comparisonOperator >= --threshold 0.5] >> [ZapSmart --fieldNameFrom KBAS --fieldNameTo BASE] >> [ZapSmart --fieldNameFrom KTOP --fieldNameTo TOP] >> [Zap --pdsLabel BASETOPLVLID --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_operatorGreaterEqual.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_operatorGreaterEqual.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -139,7 +139,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
         # [ReaderCsv --input {sources[0]}] >> [Zap --dateOfOrigin 20090529T133415 --typeOfField FORECAST --nbitsForDataStorage R16 --verticalLevelType MILLIBARS --doNotFlagAsZapped] >> [BaseTopLevelIndex --comparisonOperator > --threshold 0.5] >> [ZapSmart --fieldNameFrom KBAS --fieldNameTo BASE] >> [ZapSmart --fieldNameFrom KTOP --fieldNameTo TOP] >> [Zap --pdsLabel BASETOPLVLID --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_operatorGreaterThan.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_operatorGreaterThan.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -160,7 +160,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
         # [ReaderCsv --input {sources[0]}] >> [Zap --dateOfOrigin 20090529T133415 --typeOfField FORECAST --nbitsForDataStorage R16 --verticalLevelType MILLIBARS --doNotFlagAsZapped] >> [BaseTopLevelIndex --comparisonOperator != --threshold 0.5] >> [ZapSmart --fieldNameFrom KBAS --fieldNameTo BASE] >> [ZapSmart --fieldNameFrom KTOP --fieldNameTo TOP] >> [Zap --pdsLabel BASETOPLVLID --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_operatorNotEqual.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_operatorNotEqual.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

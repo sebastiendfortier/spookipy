@@ -6,6 +6,7 @@ import pandas as pd
 import pytest
 import spookipy.all as spooki
 from ci_fstcomp import fstcomp
+import secrets
 from fstpy.dataframe_utils import select_with_meta
 from spookipy.matchlevelindextovalue.matchlevelindextovalue import \
     MatchLevelIndexToValueError
@@ -36,7 +37,7 @@ def test_1(plugin_test_dir):
     # [MatchLevelIndexToValue --outputFieldName TEST] >>[WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --makeIP1EncodingWorkWithTests]
 
     # write the result
-    results_file = TMP_PATH + "test_1.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -91,7 +92,7 @@ def test_4(plugin_test_dir):
     # [MatchLevelIndexToValue --outputFieldName TEST] >> [WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --makeIP1EncodingWorkWithTests]
 
     # write the result
-    results_file = TMP_PATH + "test_2.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -123,7 +124,7 @@ def test_5(plugin_test_dir):
     # [WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --makeIP1EncodingWorkWithTests]
 
     # write the result
-    results_file = TMP_PATH + "test_5.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -158,7 +159,7 @@ def test_7(plugin_test_dir):
     # [WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --makeIP1EncodingWorkWithTests]
 
     # write the result
-    results_file = TMP_PATH + "test_7.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -187,7 +188,7 @@ def test_8(plugin_test_dir):
     # [WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --makeIP1EncodingWorkWithTests]
 
     # write the result
-    results_file = TMP_PATH + "test_8.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -230,7 +231,7 @@ def test_9(plugin_test_dir):
     df = spooki.encode_ip2_and_ip3_height(df)
 
     # write the result
-    results_file = TMP_PATH + "test_9.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -265,7 +266,7 @@ def test_10(plugin_test_dir):
     df = spooki.encode_ip2_and_ip3_height(df)
 
     # write the result
-    results_file = TMP_PATH + "test_10.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -310,7 +311,7 @@ def test_11(plugin_test_dir):
     
 
     # write the result
-    results_file = TMP_PATH + "test_11.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -353,7 +354,7 @@ def test_12(plugin_test_dir):
     df = spooki.encode_ip2_and_ip3_height(df)
     df.loc[df.typvar=='PZ','typvar'] = 'P'
     # write the result
-    results_file = TMP_PATH + "test_12.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -402,7 +403,7 @@ def test_14(plugin_test_dir):
     df = spooki.encode_ip2_and_ip3_height(df)
 
     # write the result
-    results_file = TMP_PATH + "test_14.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 

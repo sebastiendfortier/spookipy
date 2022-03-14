@@ -55,20 +55,19 @@ def test_3(plugin_test_dir):
     source0 = plugin_test_dir + "2022021100_out.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    df = spooki.PercentileToPercentage(src_df0, threshold=0.3, operator='le', etiket='GE0_____PALL',
-                                       nomvar='SSH8', typvar='P@', percentile_step=[0,100,5]).compute()
-    # [ReaderStd --input {sources[0]}] >> [Threshold --threshold 0.3, Operator --operator le, Etiket --etiket GE0_____PALL, Nomvar --nomvar SSH8, Typvar --typvar P@, Percentile_Step --percentile_step 0,100,5] >> [PercentileToPercentage] >> [WriterStd --output {destination_path} ]
+    df = spooki.PercentileToPercentage(src_df0, threshold=0.3, operator='le',
+                                       nomvar='SSH8').compute()
+    # [ReaderStd --input {sources[0]}] >> [Threshold --threshold 0.3, Operator --operator le, Nomvar --nomvar SSH8, >> [PercentileToPercentage] >> [WriterStd --output {destination_path} ]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "PercentileToPercentage_file3cmp.std"
+    file_to_compare = plugin_test_dir+ "PercentileToPercentage_file3cmp.std"
 
     # compare results
-
     res = fstcomp(results_file, file_to_compare, e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)

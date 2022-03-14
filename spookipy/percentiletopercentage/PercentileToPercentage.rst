@@ -71,7 +71,7 @@ Usage:
                                         etiket='GE0_____PALL',
                                         nomvar='SSH', 
                                         typvar='P@', 
-                                        percentile_step='0,100,5').compute()
+                                        percentile_step='5').compute()
 
    fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', df_percentage).to_fst()                                        
 

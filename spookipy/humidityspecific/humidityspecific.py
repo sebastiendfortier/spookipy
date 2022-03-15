@@ -43,6 +43,8 @@ class HumiditySpecific(Plugin):
             rpn=False,
             dependency_check=False):
 
+        self.set_parameter_defaults()
+
         self.plugin_params = {
             'ice_water_phase': self.ice_water_phase,
             'temp_phase_switch': self.temp_phase_switch,
@@ -101,6 +103,14 @@ class HumiditySpecific(Plugin):
         self.df = fstpy.metadata_cleanup(self.df)
         super().__init__(df)
         self.prepare_groups()
+
+    def set_parameter_defaults(self):
+        ice_water_phase_present = not (self.ice_water_phase is None)
+        temp_phase_switch_present = not (self.temp_phase_switch is None)
+
+        if (not ice_water_phase_present) & (not temp_phase_switch_present):
+            self.ice_water_phase = 'both'
+            self.temp_phase_switch = -40
 
     # might be able to move
     def prepare_groups(self):

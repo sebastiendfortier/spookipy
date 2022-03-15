@@ -11,7 +11,7 @@ Iteration method:
 Dependencies:
 ~~~~~~~~~~~~~
 
--  At least 2 fields 
+-  One standard file that contains percentile fields
 
 Result(s):
 ~~~~~~~~~~
@@ -68,10 +68,9 @@ Usage:
    df_percentage = spooki.PercentileToPercentage(df_field,   
                                         threshold=0.3, 
                                         operator='ge', 
-                                        etiket='GE0_____PALL',
+                                        etiket='GESTG1PALL',
                                         nomvar='SSH', 
-                                        typvar='P@', 
-                                        percentile_step='5').compute()
+                                        typvar='P@').compute()
 
    fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', df_percentage).to_fst()                                        
 

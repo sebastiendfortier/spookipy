@@ -39,8 +39,8 @@ class VapourPressure(Plugin):
     def __init__(
             self,
             df: pd.DataFrame,
-            ice_water_phase=None,
-            temp_phase_switch=None,
+            ice_water_phase='both',
+            temp_phase_switch=-40,
             temp_phase_switch_unit='celsius',
             rpn=False,
             dependency_check=False):

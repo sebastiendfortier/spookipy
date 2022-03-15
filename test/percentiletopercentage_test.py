@@ -80,8 +80,8 @@ def test_4(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     with pytest.raises(spooki.PercentileToPercentageError):
-        _ = spooki.PercentileToPercentage(src_df0, percentile_step="wrong_percentile").compute()
-    # [ReaderStd --input {sources[0]}] >> [Percentile_Step --percentile_step wrong_percentile] >> [PercentileToPercentage] >> [Raise Exception]
+        _ = spooki.PercentileToPercentage(src_df0, nomvar="empty_nomvar").compute()
+    # [ReaderStd --input {sources[0]}] >> [Nomvar --nomvar empty_nomvar] >> [PercentileToPercentage] >> [Raise Exception]
 
 
 def test_5(plugin_test_dir):

@@ -7,7 +7,7 @@ import spookipy.all as spooki
 from ci_fstcomp import fstcomp
 import secrets
 
-pytestmark = [pytest.mark.skip]
+pytestmark = [pytest.mark.regression]
 
 
 @pytest.fixture

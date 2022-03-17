@@ -73,7 +73,7 @@ def test_3(plugin_test_dir):
 
     with pytest.raises(spooki.AddElementsByPointError):
         # compute AddElementsByPoint
-        df = spooki.AddElementsByPoint(
+        _ = spooki.AddElementsByPoint(
             src_df0, nomvar_out='TROPLONG').compute()
         # [ReaderStd --input {sources[0]}] >> [AddElementsByPoint --outputFieldName TROPLONG]
 
@@ -88,7 +88,7 @@ def test_4(plugin_test_dir):
 
     with pytest.raises(spooki.AddElementsByPointError):
         # compute AddElementsByPoint
-        df = spooki.AddElementsByPoint(src_df0).compute()
+        _ = spooki.AddElementsByPoint(src_df0).compute()
         # [ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> [AddElementsByPoint]
 
 
@@ -103,5 +103,9 @@ def test_5(plugin_test_dir):
 
     with pytest.raises(spooki.AddElementsByPointError):
         # compute AddElementsByPoint
-        df = spooki.AddElementsByPoint(src_df0).compute()
+        _ = spooki.AddElementsByPoint(src_df0).compute()
         # [ReaderStd --input {sources[0]}] >> [Select --fieldName TT,GZ ] >> [AddElementsByPoint]
+
+
+if __name__ == "__main__":
+    test_1(TEST_PATH + '/AddElementsByPoint/testsFiles/')

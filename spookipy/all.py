@@ -36,6 +36,7 @@ from .science import *
 from .setconstantvalue import *
 from .setlowerboundary import *
 from .setupperboundary import *
+from .statisticsvertically import *
 from .subtractelementsvertically import *
 from .temperaturedewpoint import *
 from .temperaturepotential import *

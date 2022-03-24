@@ -3,11 +3,14 @@ addtoelement
 applyunary
 arithmeticmeanbypoint
 cloudfractiondiagnostic
+configparsingutils
 coriolisparameter
 dewpointdepression
 filterdigital
 georgekindex
 gridcut
+gridpointdifference
+gridpointdistance
 helicity
 humidex
 humidityrelative
@@ -23,12 +26,18 @@ multiplyelementby
 multiplyelementsbypoint
 opelementsbycolumn              # always keep
 opelementsbyvalue               # always keep
+percentiletopercentage
 plugin                          # always keep
+precipitationamount
 pressure
 saturationvapourpressure
 science                         # always keep
 setconstantvalue
+setlowerboundary
+setupperboundary
+subtractelementsvertically
 temperaturedewpoint
+temperaturepotential
 temperaturevirtual
 timeintervaldifference
 timeintervalminmax

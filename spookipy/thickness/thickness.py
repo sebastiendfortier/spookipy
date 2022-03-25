@@ -1,14 +1,19 @@
+from ast import Or
 from mimetypes import init
 from turtle import pd
 from spookipy.utils import initializer
 from ..plugin.plugin import Plugin
 import pandas as pd
 import fstpy.all as fstpy
-from ..utils import (create_empty_result, existing_results,  # plugin tools
-                     final_results, get_dependencies, get_existing_result,
-                     get_from_dataframe)
+from ..utils import (create_empty_result, existing_results, final_results,
+                     get_dependencies, get_existing_result, get_from_dataframe,
+                     initializer, DependencyError)
+import logging
 
 class ThicknessError(Exception):
+    pass
+
+class VctypesError(Exception):
     pass
 
 
@@ -42,65 +47,90 @@ class Thickness(Plugin):
     "HYBRID_5005": VerticalCoordType.HYBRID_5005,
     "UNKNOWN": VerticalCoordType.UNKNOWN,
     """
-
     @initializer
     def __init__(self,df: pd.DataFrame,
                 base: float,
                 top: float,
-                coordinate_type: str):
+                coordinate_type: str,
+                dependency_check = False):
+
         self.plugin_mandatory_dependencies = [
             {
                 # in this case we want gz in decameter from the dataframe
-                # dont forget to add GZ to the get_plugin_dependencies lists
                 'GZ': {'nomvar': 'GZ', 'unit': 'decameter'},
             }
         ]
 
         self.plugin_result_specifications = {
-            'GZ': {
-                'nomvar': 'GZ', 'unit': 'decameter'}
+            'DZ': {
+                'nomvar': 'DZ', 'unit': 'decameter'}
         }
-        
-        self.validate_input(self)
+        self.df = fstpy.metadata_cleanup(self.df)
+        super().__init__(df)
+        self.prepare_groups(self)
 
-    def validate_input(self):
+    def prepare_groups(self):
+        
+        self.no_meta_df = fstpy.set_vertical_coordinate_type(self.no_meta_df)
+
+        self.existing_result_df = get_existing_result(self.no_meta_df, self.plugin_result_specifications)
+        
+        self.groups = self.no_meta_df.groupby(['grid', 'vctype'])
+
+    def verify_vctype(self):
+        
+        if self.coordinate_type not in fstpy.vctype_dict.keys():
+            raise VctypesError('The vctypes values in the dataframe are not supported')
+        else:
+            self.coordinate = fstpy.vctype_dict[self.coordinate_type]
+
+       
+       
+       
+
+
+    def compute(self):
         if self.df.empty:
             raise ThicknessError('No data to process')
+        
+        if not self.existing_result_df.empty:
+            return existing_results(
+                'Thickness',
+                self.existing_result_df,
+                self.meta_df)
 
-        # cleaup the metadata fields that we received with the dataframe
-        self.df = fstpy.metadata_cleanup(self.df)
+        logging.info('Thickness - compute')
+        df_list = []
+        try:
+            self.plugin_mandatory_dependencies["vctype"]=self.coordinate
+            print(self.plugin_mandatory_dependencies)
+            dependencies_list = get_dependencies(
+                self.groups,
+                self.meta_df,
+                'Thickness',
+                self.plugin_mandatory_dependencies,
+                intersect_levels=False)
+        except DependencyError:
+            if not self.dependency_check:
+                raise DependencyError(f'{Thickness} - No matching dependencies found')
+        else:
+            for dependencies_df, _ in dependencies_list:
+                gz_df = get_from_dataframe(dependencies_df, 'GZ')
+                gz_top_df = gz_df.loc[gz_df.level == self.top]
+                gz_base_df = gz_df.loc[gz_df.level == self.base]
 
-        self.meta_df = self.df.loc[self.df.nomvar.isin(["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(
-            drop=True)   # keep the metadata to be added at the end
+                dz_df = create_empty_result(
+                    gz_df,
+                    self.plugin_result_specifications['DZ'],
+                    all_rows=False)
+                gz_top_df.iloc[0].d 
 
-        # add some columns if they are not already in the dataframe
-        self.df = fstpy.add_columns(
-            self.df, columns=['ip_info'])
+            df_list.append(dz_df)
 
-        # this helps with sorting and grouping the data
-        # ip_info tag includes the decoding (gets the kind and value) of ip1, ip2 ip3
-        # the virtical coordinate type, the surface flag, the virtical coordinate type
-        # and the ascending value for the type of level
-
-        # check if result already exists
-        # this function will look in the dataframe to see if the result isn't
-        # already present
-        self.existing_result_df = get_existing_result(
-            self.df, self.plugin_result_specifications)
-
-        # remove meta data from DataFrame
-        self.df = self.df.loc[~self.df.nomvar.isin(["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(
-            drop=True)  # get dataframe without metadata
-
-        self.groups = self.df.groupby(
-            ['vctype','ip1_kind'])
+        finally:
+            return final_results(df_list, ThicknessError, self.meta_df, self.dependency_check)
 
 
-
-    def compute():
-
-
-        pass
 
 
 

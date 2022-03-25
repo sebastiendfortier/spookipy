@@ -115,7 +115,7 @@ def test_6(plugin_test_dir):
 
     with pytest.raises(spooki.PercentileToPercentageError):
         _ = spooki.PercentileToPercentage(src_df0, etiket="GEST1__PALL").compute()
-    # [ReaderStd --input {sources[0]}] >> [Nomvar --etiket GEST1__PALL] >> [PercentileToPercentage] >> [Raise Exception]
+    # [ReaderStd --input {sources[0]}] >> [Etiket --etiket GEST1__PALL] >> [PercentileToPercentage] >> [Raise Exception]
 
 def test_7(plugin_test_dir):
     """Test with non valid etiket ending"""
@@ -125,4 +125,4 @@ def test_7(plugin_test_dir):
 
     with pytest.raises(spooki.PercentileToPercentageError):
         _ = spooki.PercentileToPercentage(src_df0, etiket="GEST1___PBLL").compute()
-    # [ReaderStd --input {sources[0]}] >> [Nomvar --etiket GEST1__PALL] >> [PercentileToPercentage] >> [Raise Exception]
+    # [ReaderStd --input {sources[0]}] >> [Etiket --etiket GEST1___PBL] >> [PercentileToPercentage] >> [Raise Exception]

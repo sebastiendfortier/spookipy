@@ -125,4 +125,4 @@ def test_7(plugin_test_dir):
 
     with pytest.raises(spooki.PercentileToPercentageError):
         _ = spooki.PercentileToPercentage(src_df0, etiket="GEST1___PBLL").compute()
-    # [ReaderStd --input {sources[0]}] >> [Etiket --etiket GEST1___PBL] >> [PercentileToPercentage] >> [Raise Exception]
+    # [ReaderStd --input {sources[0]}] >> [Etiket --etiket GEST1___PBLL] >> [PercentileToPercentage] >> [Raise Exception]

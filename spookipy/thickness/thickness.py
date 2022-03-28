@@ -1,6 +1,5 @@
-from ast import Or
-from mimetypes import init
 from turtle import pd
+import argparse
 from spookipy.utils import initializer
 from ..plugin.plugin import Plugin
 import pandas as pd
@@ -111,7 +110,7 @@ class Thickness(Plugin):
 
        
 
-    def compute(self):
+    def compute(self)-> pd.DataFrame:
         if self.df.empty:
             raise ThicknessError('No data to process')
         
@@ -158,5 +157,15 @@ class Thickness(Plugin):
 
 
 
+    @staticmethod
+    def parse_config(args: str) -> dict:
 
-
+        parser = argparse.ArgumentParser(prog=Thickness.__name__, parents=[Plugin.base_parser])
+        # parser.add_argument('--df',pd.DataFrame,help="dataframe with the data")
+        parser.add_argument('--base',type=float)
+        parser.add_argument('--top',type=float)
+        parser.add_argument('--coordinateType',type=str,choices=['SIGMA_1001', 'ETA_1002', 'HYBRID_NORMALIZED_1003', 
+                                                                'PRESSURE_2001', 'HYBRID_5001', 'HYBRID_5002', 'HYBRID_5003',
+                                                                'HYBRID_5004', 'HYBRID_5005', 'METER_SEA_LEVEL',
+                                                                'METER_GROUND_LEVEL', 'UNKNOWN'])     
+                                                                     

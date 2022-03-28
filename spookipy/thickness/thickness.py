@@ -1,4 +1,5 @@
 from turtle import pd
+import rpnpy.librmn.all as rmn
 import argparse
 from spookipy.utils import initializer
 from ..plugin.plugin import Plugin
@@ -108,9 +109,10 @@ class Thickness(Plugin):
         else:
             raise ParametersValuesError("The base value or the top value is negative")
 
-       
 
     def compute(self)-> pd.DataFrame:
+
+
         if self.df.empty:
             raise ThicknessError('No data to process')
         
@@ -155,6 +157,7 @@ class Thickness(Plugin):
             return final_results(df_list, ThicknessError, self.meta_df, self.dependency_check)
 
 
+    
 
 
     @staticmethod
@@ -168,4 +171,20 @@ class Thickness(Plugin):
                                                                 'PRESSURE_2001', 'HYBRID_5001', 'HYBRID_5002', 'HYBRID_5003',
                                                                 'HYBRID_5004', 'HYBRID_5005', 'METER_SEA_LEVEL',
                                                                 'METER_GROUND_LEVEL', 'UNKNOWN'])     
-                                                                     
+
+
+def create_result_container(df, b_inf, b_sup,ip1_kind, dict):
+    ip1 = float(b_inf)
+    ip3 = float(b_sup)
+    ip2 = 0
+    kind = int(ip1_kind)
+    
+    ip1_enc = rmn.ip1_val(ip1, kind)
+    ip3_enc = rmn.ip1_val(ip3, kind)
+    dict[0]["GZ"]["base"] = b_inf
+    dict[0]["GZ"]["top"] = b_sup
+    dict[0]["GZ"]["ip1"] = ip1_enc
+    dict[0]["GZ"]["ip3"] = ip3_enc
+
+    res_df = create_empty_result(df, dict)
+    return res_df

@@ -4,10 +4,12 @@ import argparse
 from spookipy.utils import initializer
 from ..plugin.plugin import Plugin
 import pandas as pd
+import numpy as np
 import fstpy.all as fstpy
 from ..utils import (create_empty_result, existing_results, final_results,
                      get_dependencies, get_existing_result, get_from_dataframe,
                      initializer, DependencyError)
+
 import logging
 
 class ThicknessError(Exception):
@@ -66,8 +68,7 @@ class Thickness(Plugin):
         ]
 
         self.plugin_result_specifications = {
-            'DZ': {
-                'nomvar': 'DZ', 'unit': 'decameter'}
+            'DZ': {'nomvar': 'DZ', 'unit': 'decameter'}
         }
 
         self.df = fstpy.metadata_cleanup(self.df)
@@ -98,12 +99,8 @@ class Thickness(Plugin):
 
     def verify_top_base_values(self):
         if (self.base > 0) and (self.top > 0):
-            if self.base > self.top:
-                raise ParametersValuesError("The base value is higher than the top value")
-
             if self.base == self.top:
                 raise ParametersValuesError("The base value is equal to the top value")
-            
             else:
                 return True
         else:
@@ -144,12 +141,14 @@ class Thickness(Plugin):
                 gz_top_df = gz_df.loc[gz_df.level == self.top]
                 gz_base_df = gz_df.loc[gz_df.level == self.base]
 
-                dz_df = create_empty_result(
-                    gz_df,
-                    self.plugin_result_specifications['DZ'],
-                    all_rows=False)
+                # dz_df = create_empty_result(
+                #     gz_df,
+                #     self.plugin_result_specifications['DZ'],
+                #     all_rows=False)
+                dz_df = create_result_container(gz_df,self.base,self.top,gz_df.ip1_kind,self.plugin_result_specifications)
 
-                dz_df = gz_top_df.iloc[0].d - gz_base_df.iloc[0].d
+                array = np.abs(gz_top_df.iloc[0].d - gz_base_df.iloc[0].d)
+                dz_df.d = array
 
             df_list.append(dz_df)
 
@@ -181,10 +180,10 @@ def create_result_container(df, b_inf, b_sup,ip1_kind, dict):
     
     ip1_enc = rmn.ip1_val(ip1, kind)
     ip3_enc = rmn.ip1_val(ip3, kind)
-    dict[0]["GZ"]["base"] = b_inf
-    dict[0]["GZ"]["top"] = b_sup
-    dict[0]["GZ"]["ip1"] = ip1_enc
-    dict[0]["GZ"]["ip3"] = ip3_enc
+    dict["DZ"]["base"] = b_inf
+    dict["DZ"]["top"] = b_sup
+    dict["DZ"]["ip1"] = ip1_enc
+    dict["DZ"]["ip3"] = ip3_enc
 
-    res_df = create_empty_result(df, dict)
+    res_df = create_empty_result(df, dict,all_rows=False)
     return res_df

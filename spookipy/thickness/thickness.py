@@ -50,6 +50,7 @@ class Thickness(Plugin):
     "HYBRID_5005": VerticalCoordType.HYBRID_5005,
     "UNKNOWN": VerticalCoordType.UNKNOWN,
     """
+
     @initializer
     def __init__(self,df: pd.DataFrame,
                 base: float,
@@ -94,15 +95,18 @@ class Thickness(Plugin):
 
 
     def verify_top_base_values(self):
+        if (self.base > 0) and (self.top > 0):
+            if self.base > self.top:
+                raise ParametersValuesError("The base value is higher than the top value")
 
-        if self.base > self.top:
-            raise ParametersValuesError("The base value is higher than the top value")
-
-        if self.base == self.top:
-            raise ParametersValuesError("The base value is equal to the top value")
-        
+            if self.base == self.top:
+                raise ParametersValuesError("The base value is equal to the top value")
+            
+            else:
+                return True
         else:
-            return True
+            raise ParametersValuesError("The base value or the top value is negative")
+
        
 
     def compute(self):
@@ -119,8 +123,8 @@ class Thickness(Plugin):
         df_list = []
         try:
             self.plugin_mandatory_dependencies[0]["GZ"]["vctype"]=self.coordinate
-
             print(self.plugin_mandatory_dependencies)
+
             dependencies_list = get_dependencies(
                 self.groups,
                 self.meta_df,
@@ -141,7 +145,8 @@ class Thickness(Plugin):
                     gz_df,
                     self.plugin_result_specifications['DZ'],
                     all_rows=False)
-                gz_top_df.iloc[0].d 
+                    
+                dz_df = gz_top_df.iloc[0].d - gz_base_df.iloc[0].d
 
             df_list.append(dz_df)
 

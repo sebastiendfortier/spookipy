@@ -101,21 +101,11 @@ class PercentileToPercentage(Plugin):
             raise PercentileToPercentageError('Etiket does not indicate percentiles')
 
         self.no_meta_df = fstpy.add_columns(self.no_meta_df, columns=['forecast_hour'])
+        
+        if len(self.etiket) != 12 and len(self.etiket) != 10:
+            raise PercentileToPercentageError('Etiket parameter must have 12 characters')
 
-        ###
-
-        # I think this will break if etiket is not 12 chars long, maybe make sure
-
-        ###
-        if len(self.etiket) != 10:
-            raise PercentileToPercentageError('Etiket parameter must have 10 characters')
         # Checking for validity of etiket field
-        if len(self.etiket[-10:-8]) != 2 and len(self.etiket[-10:-8]) != 0:
-            raise PercentileToPercentageError('The start of the etiket name can only have either 2 or 0 characters.')
-
-        if len(self.etiket[-10:-4]) != 6:
-            raise PercentileToPercentageError('Etiket name does not have 6 character before the last four chracters.')
-
         if (self.etiket[-4] != 'N') and (self.etiket[-4] != 'P') and (self.etiket[-4] != 'X'):
             raise PercentileToPercentageError('The letter before "ALL" is not N, P or X')
 

@@ -106,3 +106,23 @@ def test_5(plugin_test_dir):
     res = fstcomp(results_file, file_to_compare, e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)
+
+def test_6(plugin_test_dir):
+    """Test with non valid etiket length of 11"""
+    # open and read source
+    source0 = plugin_test_dir + "2022021100_out.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    with pytest.raises(spooki.PercentileToPercentageError):
+        _ = spooki.PercentileToPercentage(src_df0, etiket="GEST1__PALL").compute()
+    # [ReaderStd --input {sources[0]}] >> [Etiket --etiket GEST1__PALL] >> [PercentileToPercentage] >> [Raise Exception]
+
+def test_7(plugin_test_dir):
+    """Test with non valid etiket ending"""
+    # open and read source
+    source0 = plugin_test_dir + "2022021100_out.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    with pytest.raises(spooki.PercentileToPercentageError):
+        _ = spooki.PercentileToPercentage(src_df0, etiket="GEST1___PBLL").compute()
+    # [ReaderStd --input {sources[0]}] >> [Etiket --etiket GEST1___PBLL] >> [PercentileToPercentage] >> [Raise Exception]

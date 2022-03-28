@@ -69,8 +69,10 @@ class Thickness(Plugin):
             'DZ': {
                 'nomvar': 'DZ', 'unit': 'decameter'}
         }
+
         self.df = fstpy.metadata_cleanup(self.df)
         super().__init__(df)
+        self.verify_parameters_values(self)
         self.prepare_groups(self)
 
     def prepare_groups(self):
@@ -145,7 +147,7 @@ class Thickness(Plugin):
                     gz_df,
                     self.plugin_result_specifications['DZ'],
                     all_rows=False)
-                    
+
                 dz_df = gz_top_df.iloc[0].d - gz_base_df.iloc[0].d
 
             df_list.append(dz_df)

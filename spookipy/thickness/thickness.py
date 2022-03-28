@@ -16,6 +16,9 @@ class ThicknessError(Exception):
 class VctypesError(Exception):
     pass
 
+class ParametersValuesError(Exception):
+    pass
+
 
 class Thickness(Plugin):
     """Check that the vertical coordinate type of the input field corresponds to the "coordinate_type" key passed as a parameter
@@ -77,6 +80,11 @@ class Thickness(Plugin):
         
         self.groups = self.no_meta_df.groupby(['grid', 'vctype'])
 
+       
+    def verify_parameters_values(self):
+        self.verify_top_base_values(self)
+        self.verify_vctype(self)
+
     def verify_vctype(self):
         
         if self.coordinate_type not in fstpy.vctype_dict.keys():
@@ -84,10 +92,18 @@ class Thickness(Plugin):
         else:
             self.coordinate = fstpy.vctype_dict[self.coordinate_type]
 
-       
-       
-       
 
+    def verify_top_base_values(self):
+
+        if self.base > self.top:
+            raise ParametersValuesError("The base value is higher than the top value")
+
+        if self.base == self.top:
+            raise ParametersValuesError("The base value is equal to the top value")
+        
+        else:
+            return True
+       
 
     def compute(self):
         if self.df.empty:
@@ -102,7 +118,8 @@ class Thickness(Plugin):
         logging.info('Thickness - compute')
         df_list = []
         try:
-            self.plugin_mandatory_dependencies["vctype"]=self.coordinate
+            self.plugin_mandatory_dependencies[0]["GZ"]["vctype"]=self.coordinate
+
             print(self.plugin_mandatory_dependencies)
             dependencies_list = get_dependencies(
                 self.groups,
@@ -110,6 +127,7 @@ class Thickness(Plugin):
                 'Thickness',
                 self.plugin_mandatory_dependencies,
                 intersect_levels=False)
+
         except DependencyError:
             if not self.dependency_check:
                 raise DependencyError(f'{Thickness} - No matching dependencies found')

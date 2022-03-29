@@ -1,1 +1,1 @@
-from .thickness import *
+from .thickness import Thickness

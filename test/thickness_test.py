@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from spookipy.thickness.thickness import Thickness
 from test import TEST_PATH, TMP_PATH
 
 import fstpy.all as fstpy
@@ -7,7 +8,7 @@ import pytest
 import spookipy.all as spooki
 from ci_fstcomp import fstcomp
 import secrets
-from spookipy.utils import DependencyError
+
 
 pytestmark = [pytest.mark.regressions]
 
@@ -16,13 +17,15 @@ pytestmark = [pytest.mark.regressions]
 def plugin_test_dir():
     return TEST_PATH + "/Thickness/testsFiles/"
 
-def test_1(self):
+def test_1(plugin_test_dir):
      """Test avec un fichier de coordonnées Sigma."""
      # open and read source
      source0 = plugin_test_dir + "GZ_12000_10346_fileSrc.std"
      src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+     print(src_df0)
      # compute Thickness
-     df = spooki.Thickness(src_df0,base=1.0,top=0.8346,).compute()
+     df = Thickness(src_df0,base=1.0,top=0.8346,coordinate_type='SIGMA_1001').compute()
+     print(df)
      # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Thickness --base 1.0 --top 0.8346 --coordinateType SIGMA_COORDINATE] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
      # write the result
      results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])

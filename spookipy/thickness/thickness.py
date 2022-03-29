@@ -63,22 +63,23 @@ class Thickness(Plugin):
         self.plugin_mandatory_dependencies = [
             {
                 # in this case we want gz in decameter from the dataframe
-                'GZ': {'nomvar': 'GZ', 'unit': 'decameter'},
+                'GZ': {'nomvar': 'GZ','unit':'decameter'},
             }
         ]
 
         self.plugin_result_specifications = {
-            'DZ': {'nomvar': 'DZ', 'unit': 'decameter'}
+            'DZ': {'nomvar': 'DZ','unit':'decameter'}
         }
 
         self.df = fstpy.metadata_cleanup(self.df)
         super().__init__(df)
-        self.verify_parameters_values(self)
-        self.prepare_groups(self)
+        self.verify_parameters_values()
+        self.prepare_groups()
 
     def prepare_groups(self):
         
         self.no_meta_df = fstpy.set_vertical_coordinate_type(self.no_meta_df)
+        self.no_meta_df = fstpy.compute(self.no_meta_df)
 
         self.existing_result_df = get_existing_result(self.no_meta_df, self.plugin_result_specifications)
         
@@ -86,8 +87,8 @@ class Thickness(Plugin):
 
        
     def verify_parameters_values(self):
-        self.verify_top_base_values(self)
-        self.verify_vctype(self)
+        self.verify_top_base_values()
+        self.verify_vctype()
 
     def verify_vctype(self):
         
@@ -98,11 +99,13 @@ class Thickness(Plugin):
 
 
     def verify_top_base_values(self):
+
         if (self.base > 0) and (self.top > 0):
             if self.base == self.top:
                 raise ParametersValuesError("The base value is equal to the top value")
             else:
                 return True
+
         else:
             raise ParametersValuesError("The base value or the top value is negative")
 
@@ -121,6 +124,7 @@ class Thickness(Plugin):
 
         logging.info('Thickness - compute')
         df_list = []
+
         try:
             self.plugin_mandatory_dependencies[0]["GZ"]["vctype"]=self.coordinate
             print(self.plugin_mandatory_dependencies)
@@ -135,6 +139,7 @@ class Thickness(Plugin):
         except DependencyError:
             if not self.dependency_check:
                 raise DependencyError(f'{Thickness} - No matching dependencies found')
+                
         else:
             for dependencies_df, _ in dependencies_list:
                 gz_df = get_from_dataframe(dependencies_df, 'GZ')

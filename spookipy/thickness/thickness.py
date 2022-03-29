@@ -111,10 +111,6 @@ class Thickness(Plugin):
 
 
     def compute(self)-> pd.DataFrame:
-
-
-        if self.df.empty:
-            raise ThicknessError('No data to process')
         
         if not self.existing_result_df.empty:
             return existing_results(

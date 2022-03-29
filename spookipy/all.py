@@ -51,4 +51,5 @@ from .winddirection import *
 from .windmax import *
 from .windmodulus import *
 
+from .configparsingutils import *
 from .utils import *

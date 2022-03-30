@@ -849,7 +849,7 @@ def test_33(plugin_test_dir):
     # df.loc[df.nomvar.isin(['!!','^^','>>']),'etiket'] = 'G1_4_0_0N'
 
     # write the result
-
+    
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_33.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()

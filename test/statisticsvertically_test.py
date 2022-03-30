@@ -107,22 +107,22 @@ def test_12():
     with pytest.raises(spooki.StatisticsVerticallyError):
         _ = spooki.StatisticsVertically(df,nomvar = 'TO', stats='MEAN')
 
-def test_13(plugin_test_dir):
-    """Check for a valid nomvar - invalid nomvar"""
-    source0  = glob.glob('/fs/site4/eccc/oth/nlab_central/ron000/wxelements/archives/sample/2021090512_024_*')
+# def test_13(plugin_test_dir):
+#     """Check for a valid nomvar - invalid nomvar"""
+#     source0  = glob.glob('/fs/site4/eccc/oth/nlab_central/ron000/wxelements/archives/sample/2021090512_024_*')
 
-    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-    # compute StatisticsVerticallyy
-    # with pytest.raises(spooki.StatisticsVerticallyError):
-    df = spooki.StatisticsVertically(
-        src_df0, 
-        nomvar = 'PR', 
-        stats = ['MEAN','STD','PERCENTILES','INTERPERCENTILES','THRESHOLDS'],
-        percentiles = list(range(0,105,5)),
-        interpercentiles_lower = [10,25], 
-        interpercentiles_upper = [90,75], 
-        threshold_operators = ['LT','LT','EQ','GE','GE'],
-        threshold_values = [-10,-5,0,5,10],
-        ).compute()
-    # print(df[fstpy.BASE_COLUMNS].drop(columns='d').to_string())
-    assert(True)
+#     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+#     # compute StatisticsVerticallyy
+#     # with pytest.raises(spooki.StatisticsVerticallyError):
+#     df = spooki.StatisticsVertically(
+#         src_df0, 
+#         nomvar = 'PR', 
+#         stats = ['MEAN','STD','PERCENTILES','INTERPERCENTILES','THRESHOLDS'],
+#         percentiles = list(range(0,105,5)),
+#         interpercentiles_lower = [10,25], 
+#         interpercentiles_upper = [90,75], 
+#         threshold_operators = ['LT','LT','EQ','GE','GE'],
+#         threshold_values = [-10,-5,0,5,10],
+#         ).compute()
+#     # print(df[fstpy.BASE_COLUMNS].drop(columns='d').to_string())
+#     assert(True)

@@ -486,7 +486,7 @@ def test_19(plugin_test_dir):
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_19.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
-    print(results_file)
+    # print(results_file)
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "XYCentered_YY_file2cmp_py.std"

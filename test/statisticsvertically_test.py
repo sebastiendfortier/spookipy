@@ -124,5 +124,5 @@ def test_13(plugin_test_dir):
         threshold_operators = ['LT','LT','EQ','GE','GE'],
         threshold_values = [-10,-5,0,5,10],
         ).compute()
-    print(df[fstpy.BASE_COLUMNS].drop(columns='d').to_string())
+    # print(df[fstpy.BASE_COLUMNS].drop(columns='d').to_string())
     assert(True)

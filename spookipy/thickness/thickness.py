@@ -35,7 +35,7 @@ class Thickness(Plugin):
     :type base: float
     :param top: Top of the thickness layer (model or pressure level)
     :type top: float
-    :param coordinate_type: Type of vertical coordinate
+    :param coordinate_type: Type of vertical coordinate. choices: SIGMA_1001, ETA_1002, HYBRID_NORMALIZED_1003, PRESSURE_2001,HYBRID_5001, HYBRID_5002, HYBRID_5003, HYBRID_5004, HYBRID_5005, METER_SEA_LEVEL, METER_GROUND_LEVEL, UNKNOWN
     :type coordinate_type: str
     """
 
@@ -73,8 +73,9 @@ class Thickness(Plugin):
 
         self.df = fstpy.metadata_cleanup(self.df)
         super().__init__(df)
-        self.verify_parameters_values()
         self.prepare_groups()
+        self.verify_parameters_values()
+        
 
     def prepare_groups(self):
         
@@ -82,8 +83,10 @@ class Thickness(Plugin):
         self.no_meta_df = fstpy.compute(self.no_meta_df)
 
         self.existing_result_df = get_existing_result(self.no_meta_df, self.plugin_result_specifications)
-        
+        print("no meta df:")
+        print(self.no_meta_df.unit)
         self.groups = self.no_meta_df.groupby(['grid', 'vctype'])
+        print(self.groups)
 
        
     def verify_parameters_values(self):

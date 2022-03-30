@@ -21,7 +21,8 @@ def test_1(plugin_test_dir):
      """Test avec un fichier de coordonnées Sigma."""
      # open and read source
      source0 = plugin_test_dir + "GZ_12000_10346_fileSrc.std"
-     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+     src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
+     print("std:")
      print(src_df0)
      # compute Thickness
      df = Thickness(src_df0,base=1.0,top=0.8346,coordinate_type='SIGMA_1001').compute()

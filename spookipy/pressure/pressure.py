@@ -27,8 +27,13 @@ class Pressure(Plugin):
                 dependency_check=False):
         super().__init__(df)
         if not (self.reference_field is None):
-            self.df = fstpy.select_with_meta(self.df, [self.reference_field])
+            self.no_meta_df = self.no_meta_df.loc[self.no_meta_df.nomvar == self.reference_field]
+            self.df = pd.concat([self.meta_df,self.no_meta_df], ignore_index=True)
         
+        self.df = self.df.drop(columns=['level', 'ip1_kind', 'ip1_pkind', 'ip2_dec', 'ip2_kind', 'ip2_pkind',
+                                        'ip3_dec', 'ip3_kind', 'ip3_pkind', 'surface', 'follow_topography',
+                                        'ascending', 'interval', 'vctype'],errors='ignore')
+
         self.qp = fstpy.QuickPressure(self.df,self.standard_atmosphere)
 
 

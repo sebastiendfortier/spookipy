@@ -225,7 +225,7 @@ class StatisticsVertically(Plugin):
         logging.info('StatisticsVertically - compute')
         df_list=[]
         for (grid,nomvar,forecast_hour), nomvar_df in self.groups:
-            print(nomvar_df.drop(columns='d'))
+            # print(nomvar_df.drop(columns='d'))
             # print(fstpy.compute(nomvar_df)[fstpy.BASE_COLUMNS].to_string())
             for stat in self.stats:
                 res_df = getattr(self,stat)(fstpy.compute(nomvar_df))

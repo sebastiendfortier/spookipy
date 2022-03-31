@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from spookipy.thickness.thickness import Thickness
+from spookipy.thickness.thickness import Thickness,ParametersValuesError
 from test import TEST_PATH, TMP_PATH
 
 import fstpy.all as fstpy
@@ -55,6 +55,87 @@ def test_2(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "Thick_test1-2_file2cmp.std"
+
+    #compare results
+    res = fstcomp(results_file,file_to_compare)
+    assert(res == True)
+
+
+def test_3(self):
+    """Test #3 : Test avec un fichier en pression."""
+    # open and read source
+    source0 = plugin_test_dir + "GZ_1000_500_fileSrc.std"
+    src_df0 = fstpy.StandardFileReader(source0)
+
+
+    #compute Thickness
+    df = Thickness(src_df0,base=1000,top=500,coordinate_type='PRESSURE_2001').compute()
+    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Thickness --base 1000 --top 500 --coordinateType PRESSURE_COORDINATE] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
+
+    #write the result
+    results_file = TMP_PATH + "test_3.std"
+    fstpy.StandardFileWriter(results_file, df, erase=True)()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "Thick_test3-4_file2cmp.std"
+
+    #compare results
+    res = fstcomp(results_file,file_to_compare)
+    assert(res == True)
+
+
+def test_4(self):
+    """Test #4 : Test avec un fichier en pression avec valeur de base plus haute dans l'atmosphère que valeur de top."""
+    # open and read source
+    source0 = plugin_test_dir + "GZ_1000_500_fileSrc.std"
+    src_df0 = fstpy.StandardFileReader(source0)
+
+
+    #compute Thickness
+    df = Thickness(src_df0,base=500,top=1000,coordinate_type='PRESSURE_2001').compute()
+    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Thickness --base 500 --top 1000 --coordinateType PRESSURE_COORDINATE] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
+
+    #write the result
+    results_file = TMP_PATH + "test_4.std"
+    fstpy.StandardFileWriter(results_file, df, erase=True)()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "Thick_test3-4_file2cmp.std"
+
+    #compare results
+    res = fstcomp(results_file,file_to_compare)
+    assert(res == True)
+
+
+def test_5(self):
+    """Test #5 : Test en utilisant le même niveau pour base et top; requête invalide."""
+    with pytest.raises(ParametersValuesError):
+        # open and read source
+        source0 = plugin_test_dir + "GZ_1000_500_fileSrc.std"
+        src_df0 = fstpy.StandardFileReader(source0,base=1000,top=1000,coordinate_type='PRESSURE_2001')
+        #compute Thickness
+        df = Thickness(src_df0).compute()
+        #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Thickness --base 1000 --top 1000 --coordinateType PRESSURE_COORDINATE]
+
+
+
+def test_6(self):
+    """Test #6 : Test avec un fichier hybride."""
+    # open and read source
+    source0 = plugin_test_dir + "2016031600_024_reghyb"
+    src_df0 = fstpy.StandardFileReader(source0)
+
+
+    #compute Thickness
+    df = Thickness(src_df0,base=1,top=0.607,coordinate_type='HYBRID_5001').compute()
+    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Thickness --base 1 --top 0.607 --coordinateType HYBRID_COORDINATE] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
+
+    #write the result
+    results_file = TMP_PATH + "test_6.std"
+    fstpy.StandardFileWriter(results_file, df, erase=True)()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "Thick_test6_file2cmp.std"
 
     #compare results
     res = fstcomp(results_file,file_to_compare)

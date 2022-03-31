@@ -12,20 +12,17 @@ Dependencies:
 ~~~~~~~~~~~~~
 
 -  Specific humidity, HU 
-   *or*
+  
+   **or**
+
 -  Air temperature, TT 
--  
-   *and* one of the following fields:
+   
+   **and one of the following fields:**
+
 -  Relative humidity, HR
 -  Dewpoint temperature, TD 
 -  Dewpoint depression, ES
 
-NOTE: Make sure to provide the dependencies listed above to this
-plug-in or to the plug-in results called by this plug-in (see the
-section "this plug-in uses"). For more details on this alternative
-use, see the
-`documentation <https://wiki.cmc.ec.gc.ca/wiki/Spooki/en/Documentation/General_system_description#How_does_it_work.3F>`__
-page.
 
 Result(s):
 ~~~~~~~~~~
@@ -50,9 +47,11 @@ Algorithm:
 
                 Calculate the vapour pressure, VPPR (Pa) with the VapourPressure plug-in.
                 Calculate the pressure, PX (Pa) with the Pressure plug-in.
+
                 QV = epsilon * [VPPR/(PX-VPPR)]
                 where QV is the water vapour mixing ratio in kg/kg and
-                epsilon is defined in the table of constants as 0.6219800221014e+00 and corresponds to Rd/Rv.
+                epsilon is defined in the table of constants as 0.6219800221014e+00 and 
+                corresponds to Rd/Rv.
 
 
         -If the --RPN key is activated:
@@ -65,18 +64,24 @@ Algorithm:
                 dew point temperature, TD (deg C)/ dew point depression, ES (deg K or deg C) and
                 the air temperature, TT (deg C):
 
-                Calculate the specific humidity, HU (kg/kg) with the HumiditySpecific plug-in (with the same keys as their arguments)
-                QV = HU / (1-HU)
-                where QV is the water vapour mixing ratio in kg/kg.
+                Calculate the specific humidity, HU (kg/kg) with the HumiditySpecific 
+                plug-in (with the same keys as their arguments)
+
+                QV = HU / (1-HU)        where QV is the water vapour mixing ratio in kg/kg.
 
 
         Convert QV in g/kg:
             QV(g/kg) = QV(kg/kg)*1000.0
 
 
-    Notes: When several fields of the dependencies and TT are available in the input, the calculation will be done with the field that has the most number of levels in common with TT, in order of preference (in case of equality) with HU followed by HR and finally ES/TD.
+    Notes: 
+        When several fields of the dependencies and TT are available in the input, the calculation 
+        will be done with the field that has the most number of levels in common with TT, 
+        in order of preference (in case of equality) with HU followed by HR and finally ES/TD.
         When the TT field is not available, the calculation will be done in order of preference with HU.
-        When the --RPN key is activate and the attribute to --iceWaterPhase is BOTH, --temperaturePhaseSwitch is no accepted and 273.16K (the triple point of water) is assigned to the sesahu.ftn90 and shrahu.ftn90 functions which are called by the HumiditySpecific plug-in.
+        When the --RPN key is activate and the attribute to --iceWaterPhase is BOTH, 
+        --temperaturePhaseSwitch is no accepted and 273.16K (the triple point of water) is assigned 
+        to the sesahu.ftn90 and shrahu.ftn90 functions which are called by the HumiditySpecific plug-in.
 
 Reference:
 ~~~~~~~~~~
@@ -125,6 +130,6 @@ Contacts:
 Spooki original documentation:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`Francais <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginWaterVapourMixingRatio.html>`_
+`Français <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginWaterVapourMixingRatio.html>`_
 
 `English <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_english_doc/html/pluginWaterVapourMixingRatio.html>`_

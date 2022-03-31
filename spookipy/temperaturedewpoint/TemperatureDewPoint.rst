@@ -2,7 +2,7 @@ Description:
 ~~~~~~~~~~~~
 
 -  Calculates the thermodynamic temperature of the dew point, a
-   mesure of the atmospheric humidity.
+   measure of the atmospheric humidity.
 -  Temperature at which the air must be cooled, at constant
    pressure and humidity content, to become saturated.
 
@@ -15,7 +15,9 @@ Dependencies:
 ~~~~~~~~~~~~~
 
 -  Air temperature, TT
-   and one of the following fields:
+  
+   **and one of the following fields:**
+
 -  Dew point depression, ES
 -  Specific humidity, HU
 -  Relative humidity, HR
@@ -37,7 +39,8 @@ Algorithm:
          the water vapour mixing ratio, QV (kg/kg) or
          the relative humidity, HR (fraction) and the air temperature, TT (deg C):
 
-            For TPL, the temperature at which we must change from the saturation with respect to water to the saturation with respect to ice (deg C)
+            For TPL, the temperature at which we must change from the saturation with 
+            respect to water to the saturation with respect to ice (deg C)
             Calculate the vapour pressure, VPPR (hPa) with the VapourPressure plug-in
             Calculate the dew point temperature, TD (deg C):
 
@@ -51,7 +54,8 @@ Algorithm:
                AEw2=17.625   AEi2=22.587
                AEw3=243.04   AEi3=273.86
 
-         *If the input fields are the dew point depression, ES (deg C or deg K) and the air temperature, TT (deg C):
+         *If the input fields are the dew point depression, ES (deg C or deg K) and 
+          the air temperature, TT (deg C):
 
             TD = TT - ES   (if ES < 0.0 , ES = 0.0)
             where TD is the dew point temperature (deg C)
@@ -63,7 +67,8 @@ Algorithm:
          the water vapour mixing ratio, QV (kg/kg) or
          the relative humidity, HR (fraction) and the air temperature TT (deg C):
 
-            Calculate the dew point depression, ES (deg C or deg K) with the DewPointDepression plug-in (with the same keys and their arguments)
+            Calculate the dew point depression, ES (deg C or deg K) with the DewPointDepression 
+            plug-in (with the same keys and their arguments)
 
             TD = TT - ES  (if ES < 0.0 , ES = 0.0)
             where TD is the dew point temperature (deg C)
@@ -74,10 +79,16 @@ Algorithm:
             where TD is the dew point temperature (deg C)
 
 
-   Notes:  - When the input field is ES or HR, the phase change will presumably happen at the same time in the input field as in output field.
-            - When several fields of the dependencies and TT are available in the input, the calculation will be done with the field that has the most number of levels in common with TT, in order of preference (in case of equality)
-               with HU followed by QV, HR and finally ES.
-            - When the --RPN key is activate and the attribut to --iceWaterPhase is BOTH, -temperaturePhaseSwitch is no accepted and 273.16K (the triple point of water) is assigned to the shuaes.ftn90 and shraes.ftn90 functions which are called by the DewPointDepression plug-in.
+   Notes:  - When the input field is ES or HR, the phase change will presumably happen at 
+             the same time in the input field as in output field.
+           - When several fields of the dependencies and TT are available in the input, the 
+             calculation will be done with the field that has the most number of levels in common 
+             with TT, in order of preference (in case of equality) with HU followed by QV, HR 
+             and finally ES.
+           - When the --RPN key is activated and the attribute to --iceWaterPhase is BOTH, 
+             --temperaturePhaseSwitch is not accepted and 273.16K (the triple point of water) is 
+             assigned to the shuaes.ftn90 and shraes.ftn90 functions which are called by 
+             the DewPointDepression plug-in.
 
 Reference:
 ~~~~~~~~~~
@@ -129,6 +140,6 @@ Contacts:
 Spooki original documentation:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`Francais <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginTemperatureDewPoint.html>`_
+`Français <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginTemperatureDewPoint.html>`_
 
 `English <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_english_doc/html/pluginTemperatureDewPoint.html>`_

@@ -94,6 +94,10 @@ class Thickness(Plugin):
         self.verify_vctype()
 
     def verify_vctype(self):
+        """Verify that the type of vertical coordinates is accurate
+
+        :raises VctypesError: raises an error when the type of vertical coordinates is not accurate
+        """
         
         if self.coordinate_type not in fstpy.vctype_dict.keys():
             raise VctypesError('The vctypes values in the dataframe are not supported')
@@ -177,6 +181,7 @@ class Thickness(Plugin):
 
 
 def create_result_container(df, b_inf, b_sup,ip1_kind, dict):
+    
     ip1 = float(b_inf)
     ip3 = float(b_sup)
     ip2 = 0

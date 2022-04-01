@@ -68,7 +68,7 @@ class Thickness(Plugin):
         ]
 
         self.plugin_result_specifications = {
-            'DZ': {'nomvar': 'DZ','unit':'decameter'}
+            'DZ': {'nomvar': 'GZ','unit':'decameter', 'vctype': fstpy.VerticalCoordType.SIGMA_1001}
         }
 
         self.df = fstpy.metadata_cleanup(self.df)
@@ -80,13 +80,14 @@ class Thickness(Plugin):
     def prepare_groups(self):
         
         self.no_meta_df = fstpy.set_vertical_coordinate_type(self.no_meta_df)
-        self.no_meta_df = fstpy.compute(self.no_meta_df)
-
+        # self.no_meta_df = fstpy.compute(self.no_meta_df)
+        print("no_meta df:")
+        print(self.no_meta_df)
+        print(self.plugin_result_specifications)
         self.existing_result_df = get_existing_result(self.no_meta_df, self.plugin_result_specifications)
-        print("no meta df:")
-        print(self.no_meta_df.unit)
+        print("existing results:")
+        print(self.existing_result_df)
         self.groups = self.no_meta_df.groupby(['grid', 'vctype'])
-        print(self.groups)
 
        
     def verify_parameters_values(self):
@@ -118,18 +119,19 @@ class Thickness(Plugin):
 
 
     def compute(self)-> pd.DataFrame:
-        
+        print(self.existing_result_df)
+        logging.info('Thickness - compute')
+        df_list = []
         if not self.existing_result_df.empty:
+            print("compute ............")
             return existing_results(
                 'Thickness',
                 self.existing_result_df,
                 self.meta_df)
 
-        logging.info('Thickness - compute')
-        df_list = []
-
         try:
             self.plugin_mandatory_dependencies[0]["GZ"]["vctype"]=self.coordinate
+            print("plugin_mandatory_dependencies:")
             print(self.plugin_mandatory_dependencies)
 
             dependencies_list = get_dependencies(
@@ -138,6 +140,8 @@ class Thickness(Plugin):
                 'Thickness',
                 self.plugin_mandatory_dependencies,
                 intersect_levels=False)
+            print("dependencies list:")
+            print(dependencies_list)
 
         except DependencyError:
             if not self.dependency_check:
@@ -145,15 +149,18 @@ class Thickness(Plugin):
                 
         else:
             for dependencies_df, _ in dependencies_list:
+                print("ok................")
                 gz_df = get_from_dataframe(dependencies_df, 'GZ')
                 gz_top_df = gz_df.loc[gz_df.level == self.top]
+
                 gz_base_df = gz_df.loc[gz_df.level == self.base]
 
-                # dz_df = create_empty_result(
-                #     gz_df,
-                #     self.plugin_result_specifications['DZ'],
-                #     all_rows=False)
-                dz_df = create_result_container(gz_df,self.base,self.top,gz_df.ip1_kind,self.plugin_result_specifications)
+                dz_df = create_empty_result(
+                    gz_df,
+                    self.plugin_result_specifications['DZ'],
+                    all_rows=False)
+
+                # dz_df = create_result_container(gz_df,self.base,self.top,gz_df.ip1_kind,self.plugin_result_specifications)
 
                 array = np.abs(gz_top_df.iloc[0].d - gz_base_df.iloc[0].d)
                 dz_df.d = array
@@ -194,5 +201,5 @@ def create_result_container(df, b_inf, b_sup,ip1_kind, dict):
     dict["DZ"]["ip1"] = ip1_enc
     dict["DZ"]["ip3"] = ip3_enc
 
-    res_df = create_empty_result(df, dict,all_rows=False)
+    res_df = create_empty_result(df, dict['DZ'],all_rows=False)
     return res_df

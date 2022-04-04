@@ -208,7 +208,7 @@ def test_6(plugin_test_dir):
     df.loc[df.nomvar!='!!','nbits'] = 32
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
+    results_file = TMP_PATH + "test_6.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 

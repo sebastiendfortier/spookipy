@@ -14,7 +14,7 @@ Dependencies:
 
 -  Air Temperature, TT
   
-   *and* one of the following fields:
+   **and one of the following fields:**
 
 -  Specific Humidity, HU
 -  Water vapour mixing ratio, QV
@@ -92,6 +92,6 @@ Contacts:
 Spooki original documentation:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`Francais <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginTemperatureVirtual.html>`_
+`Français <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginTemperatureVirtual.html>`_
 
 `English <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_english_doc/html//pluginTemperatureVirtual.html>`_

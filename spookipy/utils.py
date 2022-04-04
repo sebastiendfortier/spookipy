@@ -59,23 +59,22 @@ def get_plugin_dependencies(
         throw_error=True) -> pd.DataFrame:
     """Searches for specified dependency in a dataframe. If a plugin can generate the dependency, the plugin params will be applied if not None.
     computable_dependencies = {
-        'CLD': CloudFractionDiagnostic,
-        'CORP': CoriolisParameter,
-        'ES': DewPointDepression,
-        'HMX': Humidex,
-        'HR': HumidityRelative,
-        'HU': HumiditySpecific,
-        'KI': GeorgeKIndex,
-        'PX': Pressure,
-        'QV': WaterVapourMixingRatio,
-        'RE': WindChill,
-        'SVP': SaturationVapourPressure,
-        'TD': TemperatureDewPoint,
-        'TH': TemperaturePotential,
-        'TTI': TotalTotalsIndex,
-        'UV': WindModulus,
-        'VPPR': VapourPressure,
-        'VT': TemperatureVirtual,
+        'RE':WindChill,
+        'TTI':TotalTotalsIndex,
+        'HMX':Humidex,
+        'KI':GeorgeKIndex,
+        'CORP':CoriolisParameter,
+        'CLD':CloudFractionDiagnostic,
+        'UV':WindModulus,
+        'PX':Pressure,
+        'ES':DewPointDepression,
+        'HR':HumidityRelative,
+        'HU':HumiditySpecific,
+        'TD':TemperatureDewPoint,
+        'SVP':SaturationVapourPressure,
+        'VPPR':VapourPressure,
+        'VT':TemperatureVirtual,
+        'QV':WaterVapourMixingRatio
         }
 
     :param df: dataframe to search in
@@ -126,7 +125,7 @@ def get_plugin_dependencies(
         'TTI': TotalTotalsIndex,
         'UV': WindModulus,
         'VPPR': VapourPressure,
-        'VT': TemperatureVirtual,
+        'VT': TemperatureVirtual
     }
 
     df_list = []

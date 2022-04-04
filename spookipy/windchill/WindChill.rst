@@ -11,15 +11,16 @@ Iteration method:
 Dependencies:
 ~~~~~~~~~~~~~
 
--  Air temperature, TT, at the surface
+-  Air surface temperature, TT
 -  UU wind component (along the X axis of the grid), at the surface
 -  VV wind component (along the Y axis of the grid), at the surface
-    Note: : Be sure to provide the dependencies mentioned above
-    to this plug-in or the results of
-    the plug-ins called by this plug-in (See the "this plug-in
-    uses" section). For more details on this
-    alternative use, see the
-    `documentation <https://wiki.cmc.ec.gc.ca/wiki/Spooki/Documentation/Description_g%C3%A9n%C3%A9rale_du_syst%C3%A8me#RefDependances>`__
+
+Note: Be sure to provide the dependencies mentioned above
+      to this plug-in or the results of
+      the plug-ins called by this plug-in (See the "this plug-in
+      uses" section). For more details on this
+      alternative use, see the
+      `documentation <https://wiki.cmc.ec.gc.ca/wiki/Spooki/Documentation/Description_g%C3%A9n%C3%A9rale_du_syst%C3%A8me#RefDependances>`__
     page.
 
 Result(s):
@@ -88,6 +89,6 @@ Contacts:
 Spooki original documentation:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`Francais <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginWindChill.html>`_
+`Français <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginWindChill.html>`_
 
 `English <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_english_doc/html/pluginWindChill.html>`_

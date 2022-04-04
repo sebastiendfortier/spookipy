@@ -14,10 +14,13 @@ Dependencies:
 ~~~~~~~~~~~~~
 
 -  Air temperature, TT
-   and one of the following fields:
+    
+   **and one of the following fields:**
+
 -  Specific humidity, HU
 -  Water vapour mixing ratio, QV
--  Dew point temperature, TD / Dew point depression, ES
+-  Dew point temperature, TD 
+-  Dew point depression, ES
 
 Result(s):
 ~~~~~~~~~~
@@ -32,38 +35,48 @@ Algorithm:
          -If the --RPN key is NOT activated:
 
             For the ambient temperature, TT (deg C):
-               Calculation of the saturation vapour pressure, SVP (hPa) with the SaturationVapourPressure plug-in
+               Calculation of the saturation vapour pressure, SVP (hPa) with the 
+               SaturationVapourPressure plug-in
 
             *If the input field is the specific humidity, HU (kg/kg) or
-               the water vapour mixing ratio, QV (kg/kg) or
-               the dew point temperature, TD (deg C) or
-               the dew point depression, ES (deg K or deg C):
+             the water vapour mixing ratio, QV (kg/kg) or
+             the dew point temperature, TD (deg C) or
+             the dew point depression, ES (deg K or deg C):
 
                Calculation of the vapour pressure, VPPR (hPa) with the VapourPressure plug-in
-               HR = VPPR/SVP
-               where HR is the relative humidity in fraction
+               HR = VPPR/SVP     where HR is the relative humidity in fraction
 
          -If the --RPN key is activated:
 
-            *If the input fields are the specific humidity, HU (kg/kg) and the air temperature, TT (deg K)
+            *If the input fields are the specific humidity, HU (kg/kg) and 
+             the air temperature, TT (deg K)
                Calculate the pressure, PX (Pa) with the Pressure plug-in
                Call the function shuahr.ftn90 to obtain the relative humidity, HR (fraction)
 
-            *If the input fields are the water vapour mixing ratio, QV (kg/kg) and the air temperature, TT (deg K)
+            *If the input fields are the water vapour mixing ratio, QV (kg/kg) and 
+             the air temperature, TT (deg K)
                Calculate the specific humidity, HU (kg/kg) with the HumiditySpecific plug-in
                Calculate the pressure, PX (Pa) with the Pressure plug-in
                Call the function shuahr.ftn90 to obtain the relative humidity, HR (fraction)
 
             *If the input fields are the dew point temperature, TD (deg K) or
-               the dew point depression, ES (deg K or deg C) and
-               the air temperature, TT (deg K):
+             the dew point depression, ES (deg K or deg C) and
+             the air temperature, TT (deg K):
 
-               Calculate the dew point depression, ES (deg K or deg C) with the DewPointDepression plug-in if necessary
+               Calculate the dew point depression, ES (deg K or deg C) with the 
+               DewPointDepression plug-in if necessary
                Calculate the pressure, PX (Pa) with the Pressure plug-in
                Call the function sesahr.ftn90 to obtain the relative humidity, HR (fraction)
 
-   Note:  When several fields of the dependencies and TT are available in the input, the calculation will be done with the field that has the most number of levels in common with TT, in order of preference (in case of equality) with HU followed by QV and finally ES/TD.
-            When the --RPN key is activate and the attribut to --iceWaterPhase is BOTH, --temperaturePhaseSwitch is no accepted and 273.16K (the triple point of water) is assigned to the sesahr.ftn90 and shuahr.ftn90 functions.
+   Notes:  
+      When several fields of the dependencies and TT are available in the input,  
+      the calculation will be done with the field that has the most number of levels 
+      in common with TT, in order of preference (in case of equality) with HU followed 
+      by QV and finally ES/TD.
+
+      When the --RPN key is activated and the attribute to --iceWaterPhase is BOTH, 
+      --temperaturePhaseSwitch is not accepted and 273.16K (the triple point of water) is  
+      assigned to the sesahr.ftn90 and shuahr.ftn90 functions.
 
 Reference:
 ~~~~~~~~~~
@@ -113,7 +126,7 @@ Contacts:
 Spooki original documentation:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`Francais <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginHumidityRelative.html>`_
+`Français <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginHumidityRelative.html>`_
 
 `English <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_english_doc/html/pluginHumidityRelative.html>`_
 

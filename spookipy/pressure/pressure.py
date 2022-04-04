@@ -45,4 +45,3 @@ class Pressure(Plugin):
         """
         res_df = self.qp.compute()
         return final_results([res_df],PressureError,self.meta_df,self.dependency_check)
-        

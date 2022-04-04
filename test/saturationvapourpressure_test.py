@@ -174,7 +174,7 @@ def test_8(plugin_test_dir):
     df.loc[df.nomvar.isin(['SVP']), 'etiket']      = '__SVPRESX'
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
+    results_file = TMP_PATH + "test_8.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 

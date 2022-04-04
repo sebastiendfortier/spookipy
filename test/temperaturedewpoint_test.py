@@ -299,7 +299,7 @@ def test_13(plugin_test_dir):
     df = spooki.TemperatureDewPoint(src_df0, ice_water_phase='water').compute()
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
+    results_file = TMP_PATH + "test_13.std"
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 

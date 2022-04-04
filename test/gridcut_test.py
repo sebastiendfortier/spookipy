@@ -149,14 +149,14 @@ def test_6(plugin_test_dir):
     # open and read source
     source0 = plugin_test_dir + "glbpres_TT_UU_VV.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-    print('src_df0',src_df0[['nomvar','ni','nj','grid','ip1','ip2','ig1','ig2']].to_string())   
+    # print('src_df0',src_df0[['nomvar','ni','nj','grid','ip1','ip2','ig1','ig2']].to_string())   
     # compute GridCut
     df = spooki.GridCut(
         src_df0, start_point=(
             0, 0), end_point=(
             511, 399)).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GridCut --start_point 0,0 --end_point 511,399] >> [WriterStd --output {destination_path} --ignoreExtended]
-    print('after gridcut',df[['nomvar','ni','nj','grid','ip1','ip2','ig1','ig2']].to_string()) 
+    # print('after gridcut',df[['nomvar','ni','nj','grid','ip1','ip2','ig1','ig2']].to_string()) 
     #temp fix for missing !!
     # toctoc = df.loc[(df.nomvar=="!!") & (df.ig1==5002)].reset_index(drop=True)
     # df = df.loc[df.nomvar!="!!"].reset_index(drop=True)

@@ -2,6 +2,8 @@
 import abc
 from distutils import dep_util
 import argparse
+from distutils import dep_util
+
 import pandas as pd
 
 def defines_base_argparser() -> argparse.ArgumentParser:
@@ -49,6 +51,8 @@ class Plugin(abc.ABC):
 
         self.no_meta_df = self.df.loc[~self.df.nomvar.isin(
             ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
+        if self.no_meta_df.empty:
+            raise EmptyDataframeError("Plugin" + ' - no data to process')    
 
     @abc.abstractmethod
     def compute(self) -> pd.DataFrame:

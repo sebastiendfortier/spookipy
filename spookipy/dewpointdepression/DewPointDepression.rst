@@ -15,7 +15,9 @@ Iteration method:
 Dependencies:
 ~~~~~~~~~~~~~
 
--  Air temperature, TT and one of the following fields:
+-  Air temperature, TT
+ 
+   **and one of the following fields:**
 
 -  Dew point temperature, TD
 -  Water vapour mixing ratio, QV
@@ -34,15 +36,16 @@ Algorithm:
    -If the --RPN key is NOT activated:
 
          *If the input fields are the specific humidity, HU (kg/kg) or
-            the water vapour mixing ratio, QV (kg/kg) or
-            the relative humidity, HR (fraction) and the air temperature, TT (deg C):
+          the water vapour mixing ratio, QV (kg/kg) or
+          the relative humidity, HR (fraction) and the air temperature, TT (deg C):
 
             Calculate the dew point temperature, TD (deg C) with the TemperatureDewPoint plug-in
             The dew point depression, ES (deg C or deg K) is calculated according to :
             ES = TT - TD  (if ES < 0.0 , ES = 0.0)
             where TT or TD have the same units (deg C or deg K)
 
-         *If the input fields are the dew point temperature, TD (deg C or deg K) and the air temperature, TT (deg C or deg K):
+         *If the input fields are the dew point temperature, TD (deg C or deg K) and 
+          the air temperature, TT (deg C or deg K):
 
             The dew point depression, ES (deg C or deg K) is calculated according to :
             ES = TT - TD  (if ES < 0.0 , ES = 0.0)
@@ -51,32 +54,50 @@ Algorithm:
 
    -If the --RPN key is activated:
 
-         *If the input fields are the specific humidity, HU (kg/kg) and the air temperature, TT (deg K):
+         *If the input fields are the specific humidity, HU (kg/kg) and 
+          the air temperature, TT (deg K):
 
             Calculate the pressure, PX (Pa) with the Pressure plug-in
             Call the function shuaes.ftn90 to obtain the dew point depression, ES (deg C or deg K)
 
-         *If the input fields are the water vapour mixing ratio, QV (kg/kg) and the air temperature, TT (deg K):
+         *If the input fields are the water vapour mixing ratio, QV (kg/kg) and 
+          the air temperature, TT (deg K):
 
             Calculate the specific humidity, HU (kg/kg) with the HumiditySpecific plug-in
             Calculate the pressure, PX (Pa) with the Pressure plug-in
             Call the function shuaes.ftn90 to obtain the dew point depression, ES (deg C or deg K)
 
-         *If the input fields are the relative humidity, HR (fraction) and the air temperature, TT (deg K):
+         *If the input fields are the relative humidity, HR (fraction) and 
+          the air temperature, TT (deg K):
 
             Calculate the pressure, PX (Pa) with the Pressure plug-in
             Call the function shraes.ftn90 to obtain the dew point depression, ES (deg C or deg K)
 
-         *If the input fields are the dew point temperature, TD (deg C or deg K) and the air temperature, TT (deg C or deg K):
+         *If the input fields are the dew point temperature, TD (deg C or deg K) and 
+          the air temperature, TT (deg C or deg K):
 
             ES = TT - TD  (if ES < 0.0 , ES = 0.0)
             where the dew point depression, ES is in deg C or deg K
 
-   Notes:  When the input field is TD or HR, the phase change will presumably happen at the same time in the input field as in output field.
-            When several fields of the dependencies and TT are available in the input, the calculation will be done with the field that has the most number of levels in common with TT, in order of preference (in case of equality) with HU followed by QV, HR and finally TD.
-            When the --RPN key is activate and the attribut to --iceWaterPhase is BOTH, --temperaturePhaseSwitch is no accepted and 273.16K (the triple point of water) is assigned to the shuaes.ftn90 and shraes.ftn90 functions.
-            With the --RPN key activated, the functions shuaes.ftn90 and shraes.ftn90 compare the dew point temperature with 273.16K (the triple point of water) to select if we calculate the dew point depression with respect to water or ice.
-            Without the --RPN key, we compare the temperature with --temperaturePhaseSwitch to select if we calculate the dew point depression with respect to water or ice.
+
+   Notes:
+      When the input field is TD or HR, the phase change will presumably happen at the same time 
+      in the input field as in output field.
+
+      When several fields of the dependencies and TT are available in the input, the calculation 
+      will be done with the field that has the most number of levels in common with TT, in order 
+      of preference (in case of equality) with HU followed by QV, HR and finally TD.
+
+      When the --RPN key is activate and the attribut to --iceWaterPhase is BOTH, 
+      --temperaturePhaseSwitch is not accepted and 273.16K (the triple point of water) is 
+      assigned to the shuaes.ftn90 and shraes.ftn90 functions.
+
+      With the --RPN key activated, the functions shuaes.ftn90 and shraes.ftn90 compare the  
+      dew point temperature with 273.16K (the triple point of water) to select if we calculate 
+      the dew point depression with respect to water or ice.
+
+      Without the --RPN key, we compare the temperature with --temperaturePhaseSwitch to select if 
+      we calculate the dew point depression with respect to water or ice.
 
 Reference:
 ~~~~~~~~~~
@@ -126,6 +147,6 @@ Contacts:
 Spooki original documentation:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`Francais <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginDewPointDepression.html>`_
+`Français <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginDewPointDepression.html>`_
 
 `English <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_english_doc/html/pluginDewPointDepression.html>`_

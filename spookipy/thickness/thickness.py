@@ -1,12 +1,11 @@
 from turtle import pd
 import rpnpy.librmn.all as rmn
 import argparse
-from spookipy.utils import initializer
-from ..plugin.plugin import Plugin
+from spookipy.plugin import Plugin
 import pandas as pd
 import numpy as np
 import fstpy.all as fstpy
-from ..utils import (create_empty_result, existing_results, final_results,
+from spookipy.utils import (create_empty_result, existing_results, final_results,
                      get_dependencies, get_existing_result, get_from_dataframe,
                      initializer, DependencyError)
 
@@ -71,7 +70,9 @@ class Thickness(Plugin):
             'DZ': {'nomvar': 'DZ','unit':'decameter'}
         }
 
-        self.df = fstpy.metadata_cleanup(self.df)
+        df = fstpy.set_vertical_coordinate_type(df)
+        print(df.drop(columns='d').to_string())
+        # self.df = fstpy.metadata_cleanup(self.df)
         super().__init__(df)
         self.prepare_groups()
         self.verify_parameters_values()
@@ -79,14 +80,11 @@ class Thickness(Plugin):
 
     def prepare_groups(self):
         
-        self.no_meta_df = fstpy.set_vertical_coordinate_type(self.no_meta_df)
+        # self.no_meta_df = fstpy.set_vertical_coordinate_type(self.no_meta_df)
         # self.no_meta_df = fstpy.compute(self.no_meta_df)
         print("no_meta df:")
-        print(self.no_meta_df)
-        print(self.plugin_result_specifications)
+        print(self.no_meta_df.drop(columns="d").to_string())
         self.existing_result_df = get_existing_result(self.no_meta_df, self.plugin_result_specifications)
-        print("existing results:")
-        print(self.existing_result_df)
         self.groups = self.no_meta_df.groupby(['grid', 'vctype'])
 
        
@@ -119,11 +117,11 @@ class Thickness(Plugin):
 
 
     def compute(self)-> pd.DataFrame:
-        print(self.existing_result_df)
         logging.info('Thickness - compute')
         df_list = []
+
+        # If a row DZ already exists in the dataframe we return the result
         if not self.existing_result_df.empty:
-            print("compute ............")
             return existing_results(
                 'Thickness',
                 self.existing_result_df,
@@ -152,23 +150,30 @@ class Thickness(Plugin):
                 print("ok................")
                 gz_df = get_from_dataframe(dependencies_df, 'GZ')
                 gz_top_df = gz_df.loc[gz_df.level == self.top]
-
+                print("top")
+                print(gz_top_df.drop(columns='d'))
                 gz_base_df = gz_df.loc[gz_df.level == self.base]
+                print("base:")
+                print(gz_base_df.drop(columns='d'))
+
 
                 # dz_df = create_empty_result(
                 #     gz_df,
                 #     self.plugin_result_specifications['DZ'],
                 #     all_rows=False)
-
-                dz_df = create_result_container(gz_df,self.base,self.top,gz_df.ip1_kind,self.plugin_result_specifications)
-
+                
+                dz_df = create_result_container(gz_df,self.base,self.top,gz_df.ip1_kind[0],self.plugin_result_specifications['DZ'])
+    
                 array = np.abs(gz_top_df.iloc[0].d - gz_base_df.iloc[0].d)
-                dz_df.d = array
+                dz_df.d = [array]
+                print("dz")
+                print(dz_df.nomvar)
+                print(dz_df.drop(columns='d'))
 
             df_list.append(dz_df)
 
         finally:
-            return final_results(df_list, ThicknessError, self.meta_df, self.dependency_check)
+            return final_results(df_list, ThicknessError, self.meta_df, dependency_check=True)
 
 
     
@@ -187,19 +192,28 @@ class Thickness(Plugin):
                                                                 'METER_GROUND_LEVEL', 'UNKNOWN'])     
 
 
-def create_result_container(df, b_inf, b_sup,ip1_kind, dict):
-    
+def create_result_container(df, b_inf, b_sup,ip1_kind, dict1):
+    print("start...")
+    print(b_inf)
+    print(b_sup)
+    print(ip1_kind)
     ip1 = float(b_inf)
+    print(ip1)
     ip3 = float(b_sup)
     ip2 = 0
+    print(ip2)
     kind = int(ip1_kind)
     
     ip1_enc = rmn.ip1_val(ip1, kind)
+    print(ip1_enc)
     ip3_enc = rmn.ip1_val(ip3, kind)
-    dict["DZ"]["base"] = b_inf
-    dict["DZ"]["top"] = b_sup
-    dict["DZ"]["ip1"] = ip1_enc
-    dict["DZ"]["ip3"] = ip3_enc
+    print(ip3_enc)
 
-    res_df = create_empty_result(df, dict['DZ'],all_rows=False)
+    dict1["DZ"]["ip1"] = ip1_enc
+    dict1["DZ"]["ip3"] = ip3_enc
+    print(dict1)
+
+    res_df = create_empty_result(df, dict1['DZ'],all_rows=False)
+    print("res_df")
+    print(res_df.drop(columns='d').to_string())
     return res_df

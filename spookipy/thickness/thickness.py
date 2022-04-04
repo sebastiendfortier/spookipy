@@ -68,7 +68,7 @@ class Thickness(Plugin):
         ]
 
         self.plugin_result_specifications = {
-            'DZ': {'nomvar': 'GZ','unit':'decameter', 'vctype': fstpy.VerticalCoordType.SIGMA_1001}
+            'DZ': {'nomvar': 'DZ','unit':'decameter'}
         }
 
         self.df = fstpy.metadata_cleanup(self.df)
@@ -155,12 +155,12 @@ class Thickness(Plugin):
 
                 gz_base_df = gz_df.loc[gz_df.level == self.base]
 
-                dz_df = create_empty_result(
-                    gz_df,
-                    self.plugin_result_specifications['DZ'],
-                    all_rows=False)
+                # dz_df = create_empty_result(
+                #     gz_df,
+                #     self.plugin_result_specifications['DZ'],
+                #     all_rows=False)
 
-                # dz_df = create_result_container(gz_df,self.base,self.top,gz_df.ip1_kind,self.plugin_result_specifications)
+                dz_df = create_result_container(gz_df,self.base,self.top,gz_df.ip1_kind,self.plugin_result_specifications)
 
                 array = np.abs(gz_top_df.iloc[0].d - gz_base_df.iloc[0].d)
                 dz_df.d = array

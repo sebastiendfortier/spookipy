@@ -101,6 +101,7 @@ def get_plugin_dependencies(
     from .temperaturedewpoint.temperaturedewpoint import TemperatureDewPoint
     from .temperaturepotential.temperaturepotential import TemperaturePotential
     from .temperaturevirtual.temperaturevirtual import TemperatureVirtual
+    from .thickness.thickness import Thickness
     from .totaltotalsindex.totaltotalsindex import TotalTotalsIndex
     from .vapourpressure.vapourpressure import VapourPressure
     from .watervapourmixingratio.watervapourmixingratio import WaterVapourMixingRatio
@@ -111,6 +112,7 @@ def get_plugin_dependencies(
     computable_dependencies = {
         'CLD': CloudFractionDiagnostic,
         'CORP': CoriolisParameter,
+        'DZ': Thickness,
         'ES': DewPointDepression,
         'HMX': Humidex,
         'HR': HumidityRelative,
@@ -125,7 +127,7 @@ def get_plugin_dependencies(
         'TTI': TotalTotalsIndex,
         'UV': WindModulus,
         'VPPR': VapourPressure,
-        'VT': TemperatureVirtual
+        'VT': TemperatureVirtual,
     }
 
     df_list = []

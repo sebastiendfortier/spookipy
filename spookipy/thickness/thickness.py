@@ -161,14 +161,14 @@ class Thickness(Plugin):
                 #     gz_df,
                 #     self.plugin_result_specifications['DZ'],
                 #     all_rows=False)
-                
-                dz_df = create_result_container(gz_df,self.base,self.top,gz_df.ip1_kind[0],self.plugin_result_specifications['DZ'])
+
+                dz_df = create_result_container(gz_df,self.base,self.top,gz_df.ip1_kind[0],self.plugin_result_specifications)
     
                 array = np.abs(gz_top_df.iloc[0].d - gz_base_df.iloc[0].d)
-                dz_df.d = [array]
+                dz_df["d"] = [array]
                 print("dz")
-                print(dz_df.nomvar)
-                print(dz_df.drop(columns='d'))
+                # print(dz_df.drop(columns='d'))
+                print(dz_df[['nomvar','typvar','ip1','ip3','vctype','ip1_kind']])
 
             df_list.append(dz_df)
 
@@ -194,9 +194,6 @@ class Thickness(Plugin):
 
 def create_result_container(df, b_inf, b_sup,ip1_kind, dict1):
     print("start...")
-    print(b_inf)
-    print(b_sup)
-    print(ip1_kind)
     ip1 = float(b_inf)
     print(ip1)
     ip3 = float(b_sup)
@@ -212,8 +209,11 @@ def create_result_container(df, b_inf, b_sup,ip1_kind, dict1):
     dict1["DZ"]["ip1"] = ip1_enc
     dict1["DZ"]["ip3"] = ip3_enc
     print(dict1)
+    print("dict1 a compile")
 
     res_df = create_empty_result(df, dict1['DZ'],all_rows=False)
     print("res_df")
-    print(res_df.drop(columns='d').to_string())
+    # print(res_df.drop(columns='d').to_string())
+    print(res_df[['nomvar','typvar','ip1','ip3','vctype','ip1_kind']])
+    
     return res_df

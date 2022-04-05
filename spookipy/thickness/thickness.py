@@ -40,12 +40,12 @@ class Thickness(Plugin):
 
     """
     cordinate type
-    'SIGMA_1001': VerticalCoordType.SIGMA_1001,
-    'ETA_1002': VerticalCoordType.ETA_1002,
+    'SIGMA_1001': VerticalCoordType.SIGMA_1001,SIGMA_COORDINATE
+    'ETA_1002': VerticalCoordType.ETA_1002,ETA_COORDINATE
     'HYBRID_NORMALIZED_1003': VerticalCoordType.HYBRID_NORMALIZED_1003,
-    "PRESSURE_2001": VerticalCoordType.PRESSURE_2001,
-    "HYBRID_5001": VerticalCoordType.HYBRID_5001,
-    "HYBRID_5002": VerticalCoordType.HYBRID_5002,
+    "PRESSURE_2001": VerticalCoordType.PRESSURE_2001,PRESSURE_COORDINATE
+    "HYBRID_5001": VerticalCoordType.HYBRID_5001,HYBRID_COORDINATE
+    "HYBRID_5002": VerticalCoordType.HYBRID_5002,HYBRID_STAGGERED_COORDINATE
     "HYBRID_5003": VerticalCoordType.HYBRID_5003,
     "HYBRID_5004": VerticalCoordType.HYBRID_5004,
     "HYBRID_5005": VerticalCoordType.HYBRID_5005,
@@ -67,7 +67,7 @@ class Thickness(Plugin):
         ]
 
         self.plugin_result_specifications = {
-            'DZ': {'nomvar': 'DZ','unit':'decameter'}
+            'DZ': {'nomvar': 'DZ','unit':'decameter','etiket':'THCKNS'}
         }
 
         df = fstpy.set_vertical_coordinate_type(df)
@@ -85,7 +85,7 @@ class Thickness(Plugin):
         print("no_meta df:")
         print(self.no_meta_df.drop(columns="d").to_string())
         self.existing_result_df = get_existing_result(self.no_meta_df, self.plugin_result_specifications)
-        self.groups = self.no_meta_df.groupby(['grid', 'vctype'])
+        self.groups = self.no_meta_df.groupby(['grid', 'vctype','ip1_kind'])
 
        
     def verify_parameters_values(self):
@@ -164,11 +164,11 @@ class Thickness(Plugin):
 
                 dz_df = create_result_container(gz_df,self.base,self.top,gz_df.ip1_kind[0],self.plugin_result_specifications)
     
-                array = np.abs(gz_top_df.iloc[0].d - gz_base_df.iloc[0].d)
+                array = np.abs(gz_top_df.iloc[0].d - gz_base_df.iloc[0].d).astype(np.float32)
                 dz_df["d"] = [array]
                 print("dz")
                 # print(dz_df.drop(columns='d'))
-                print(dz_df[['nomvar','typvar','ip1','ip3','vctype','ip1_kind']])
+                print(dz_df[['nomvar','typvar','ip1','ip3','vctype','ip1_kind','ip2']])
 
             df_list.append(dz_df)
 
@@ -197,16 +197,18 @@ def create_result_container(df, b_inf, b_sup,ip1_kind, dict1):
     ip1 = float(b_inf)
     print(ip1)
     ip3 = float(b_sup)
-    ip2 = 0
+    ip2 = float(df.ip2[0])
     print(ip2)
     kind = int(ip1_kind)
     
     ip1_enc = rmn.ip1_val(ip1, kind)
     print(ip1_enc)
     ip3_enc = rmn.ip1_val(ip3, kind)
+    ip2_enc = rmn.ip1_val(ip2,rmn.KIND_HOURS)
     print(ip3_enc)
 
     dict1["DZ"]["ip1"] = ip1_enc
+    dict1["DZ"]["ip2"] = ip2_enc
     dict1["DZ"]["ip3"] = ip3_enc
     print(dict1)
     print("dict1 a compile")
@@ -214,6 +216,6 @@ def create_result_container(df, b_inf, b_sup,ip1_kind, dict1):
     res_df = create_empty_result(df, dict1['DZ'],all_rows=False)
     print("res_df")
     # print(res_df.drop(columns='d').to_string())
-    print(res_df[['nomvar','typvar','ip1','ip3','vctype','ip1_kind']])
+    print(res_df[['nomvar','typvar','ip1','ip3','vctype','ip1_kind','ip2']])
     
     return res_df

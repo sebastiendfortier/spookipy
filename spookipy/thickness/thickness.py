@@ -149,20 +149,31 @@ class Thickness(Plugin):
             for dependencies_df, _ in dependencies_list:
                 print("ok................")
                 gz_df = get_from_dataframe(dependencies_df, 'GZ')
+                print("gz_df")
+                print(gz_df)
                 gz_top_df = gz_df.loc[gz_df.level == self.top]
                 print("top")
-                print(gz_top_df.drop(columns='d'))
+                print(gz_top_df[['nomvar','typvar','ip1','ip3','vctype','ip1_kind','ip2','level']])
+                # print(gz_top_df.drop(columns='d'))
                 gz_base_df = gz_df.loc[gz_df.level == self.base]
                 print("base:")
-                print(gz_base_df.drop(columns='d'))
+                # print(gz_base_df.drop(columns='d'))
+                print(gz_base_df[['nomvar','typvar','ip1','ip3','vctype','ip1_kind','ip2','level']])
+
 
 
                 # dz_df = create_empty_result(
                 #     gz_df,
                 #     self.plugin_result_specifications['DZ'],
                 #     all_rows=False)
+                if (self.base < self.top):
+                    b_inf = self.top
+                    b_sup = self.base
+                else:
+                    b_inf = self.base
+                    b_sup = self.top
 
-                dz_df = create_result_container(gz_df,self.base,self.top,gz_df.ip1_kind[0],self.plugin_result_specifications)
+                dz_df = create_result_container(gz_df,b_inf,b_sup,gz_df.ip1_kind[0],self.plugin_result_specifications)
     
                 array = np.abs(gz_top_df.iloc[0].d - gz_base_df.iloc[0].d).astype(np.float32)
                 dz_df["d"] = [array]

@@ -26,7 +26,7 @@ class Thickness(Plugin):
     if so, look in the input field for the levels passed as a parameter and do at each point:
     DZ = ABS ( GZ(top) - GZ(base) )
     rename the values concerned (nomvar) without changing other values
-    
+    cordinate type:
     'SIGMA_1001': VerticalCoordType.SIGMA_1001,SIGMA_COORDINATE
     'ETA_1002': VerticalCoordType.ETA_1002,ETA_COORDINATE
     'HYBRID_NORMALIZED_1003': VerticalCoordType.HYBRID_NORMALIZED_1003,
@@ -47,7 +47,6 @@ class Thickness(Plugin):
     :type top: float
     :param coordinate_type: Type of vertical coordinate. choices: SIGMA_1001, ETA_1002, HYBRID_NORMALIZED_1003, PRESSURE_2001,HYBRID_5001, HYBRID_5002, HYBRID_5003, HYBRID_5004, HYBRID_5005, METER_SEA_LEVEL, METER_GROUND_LEVEL, UNKNOWN
     :type coordinate_type: str
-    cordinate type
     """
 
     @initializer

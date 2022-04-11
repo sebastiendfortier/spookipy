@@ -25,9 +25,9 @@ Algorithm:
 
          Verify that the type of vertical coordinate of the input field corresponds to the "coordinateType" key passed as parameter
          if true, get from the input field, with the help of the Select plug-in, the levels passed as parameters and do for each point:
-                 DZ = ABS ( GZ(top) - GZ(base) )
+            DZ = ABS ( GZ(top) - GZ(base) )
          else
-             exit the plugin with an error message
+            exit the plugin with an error message
          end if
 
 Reference:

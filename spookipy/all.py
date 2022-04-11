@@ -4,6 +4,7 @@ from .addtoelement import *
 from .applyunary import *
 from .arithmeticmeanbypoint import *
 from .cloudfractiondiagnostic import *
+from .configparsingutils import *
 from .coriolisparameter import *
 from .dewpointdepression import *
 from .filterdigital import *
@@ -41,15 +42,14 @@ from .subtractelementsvertically import *
 from .temperaturedewpoint import *
 from .temperaturepotential import *
 from .temperaturevirtual import *
+from .thickness import *
 from .timeintervaldifference import *
 from .timeintervalminmax import *
 from .totaltotalsindex import *
+from .utils import *
 from .vapourpressure import *
 from .watervapourmixingratio import *
 from .windchill import *
 from .winddirection import *
 from .windmax import *
 from .windmodulus import *
-
-from .configparsingutils import *
-from .utils import *

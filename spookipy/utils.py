@@ -824,7 +824,7 @@ def encode_ip2_and_ip3_height(df:pd.DataFrame) -> pd.DataFrame:
         df = fstpy.add_columns(df, 'ip_info')
 
     for row in df.itertuples():
-        if row.nomvar in ['>>', '^^', '^>', '!!']:
+        if row.nomvar in ['>>', '^^', '^>', '!!','HY']:
             continue
 
         (ip1,ip1_kind) = rmn.convertIp(rmn.CONVIP_DECODE, int(row.ip1))

@@ -59,7 +59,7 @@ class Thickness(Plugin):
         self.plugin_mandatory_dependencies = [
             {
                 # in this case we want gz in decameter from the dataframe
-                'GZ': {'nomvar': 'GZ','unit':'decameter'},
+                'GZ': {'nomvar': 'GZ','unit':'decameter'}
             }
         ]
 
@@ -151,10 +151,12 @@ class Thickness(Plugin):
                 print("gz_df")
                 print(gz_df)
                 gz_top_df = gz_df.loc[gz_df.level == self.top]
+                top_ip = gz_top_df.iloc[0].ip1
                 print("top")
                 print(gz_top_df[['nomvar','typvar','ip1','ip3','vctype','ip1_kind','ip2','level']])
                 # print(gz_top_df.drop(columns='d'))
                 gz_base_df = gz_df.loc[gz_df.level == self.base]
+                base_ip = gz_base_df.iloc[0].ip1
                 print("base:")
                 # print(gz_base_df.drop(columns='d'))
                 print(gz_base_df[['nomvar','typvar','ip1','ip3','vctype','ip1_kind','ip2','level']])
@@ -166,13 +168,13 @@ class Thickness(Plugin):
                 #     self.plugin_result_specifications['DZ'],
                 #     all_rows=False)
                 if (self.base < self.top):
-                    b_inf = self.top
-                    b_sup = self.base
+                    b_inf = top_ip
+                    b_sup = base_ip
                 else:
-                    b_inf = self.base
-                    b_sup = self.top
+                    b_inf = base_ip
+                    b_sup = top_ip
 
-                dz_df = create_result_container(gz_df,b_inf,b_sup,gz_df.ip1_kind[0],self.plugin_result_specifications)
+                dz_df = create_result_container(gz_df,b_inf,b_sup,self.plugin_result_specifications)
     
                 array = np.abs(gz_top_df.iloc[0].d - gz_base_df.iloc[0].d).astype(np.float32)
                 dz_df["d"] = [array]
@@ -202,24 +204,24 @@ class Thickness(Plugin):
                                                                 'METER_GROUND_LEVEL', 'UNKNOWN'])     
 
 
-def create_result_container(df, b_inf, b_sup,ip1_kind, dict1):
+def create_result_container(df, b_inf, b_sup, dict1):
     print("start...")
-    ip1 = float(b_inf)
+    ip1 = b_inf
     print(ip1)
-    ip3 = float(b_sup)
-    ip2 = float(df.ip2[0])
-    print(ip2)
-    kind = int(ip1_kind)
+    ip3 = b_sup
+    ip2 = df.ip2[0]
+    # print(ip2)
+    # kind = int(ip1_kind)
     
-    ip1_enc = rmn.ip1_val(ip1, kind)
-    print(ip1_enc)
-    ip3_enc = rmn.ip1_val(ip3, kind)
-    ip2_enc = rmn.ip1_val(ip2,rmn.KIND_HOURS)
-    print(ip3_enc)
+    # ip1_enc = rmn.ip1_val(ip1, kind)
+    # print(ip1_enc)
+    # ip3_enc = rmn.ip1_val(ip3, kind)
+    # ip2_enc = rmn.ip1_val(ip2,rmn.KIND_HOURS)
+    # print(ip3_enc)
 
-    dict1["DZ"]["ip1"] = ip1_enc
-    dict1["DZ"]["ip2"] = ip2_enc
-    dict1["DZ"]["ip3"] = ip3_enc
+    dict1["DZ"]["ip1"] = ip1
+    dict1["DZ"]["ip2"] = ip2
+    dict1["DZ"]["ip3"] = ip3
     print(dict1)
     print("dict1 a compile")
 

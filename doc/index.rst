@@ -82,6 +82,7 @@ Documentation
 * :doc:`temperaturedewpoint`
 * :doc:`temperaturepotential`
 * :doc:`temperaturevirtual`
+* :doc:`thickness`
 * :doc:`timeintervaldifference`
 * :doc:`timeintervalminmax`
 * :doc:`totaltotalsindex`
@@ -139,6 +140,7 @@ Documentation
    temperaturedewpoint
    temperaturepotential
    temperaturevirtual
+   thickness
    timeintervaldifference
    timeintervalminmax
    totaltotalsindex

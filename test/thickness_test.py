@@ -3,7 +3,6 @@ from spookipy.thickness.thickness import Thickness,ParametersValuesError
 from test import TEST_PATH, TMP_PATH
 
 import fstpy.all as fstpy
-import pandas as pd
 import pytest
 import spookipy.all as spooki
 from ci_fstcomp import fstcomp
@@ -26,6 +25,7 @@ def test_1(plugin_test_dir):
     # compute Thickness
     df = Thickness(src_df0,base=1.0,top=0.8346,coordinate_type='UNKNOWN').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Thickness --base 1.0 --top 0.8346 --coordinateType SIGMA_COORDINATE] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
+    df = spooki.encode_ip2_and_ip3_height(df)
     
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
@@ -51,6 +51,7 @@ def test_2(plugin_test_dir):
     #compute Thickness
     df = Thickness(src_df0,base=0.8346,top=1.0,coordinate_type='UNKNOWN').compute()
     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Thickness --base 0.8346 --top 1.0 --coordinateType SIGMA_COORDINATE] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
+    df = spooki.encode_ip2_and_ip3_height(df)
 
     #write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
@@ -76,6 +77,7 @@ def test_3(plugin_test_dir):
     #compute Thickness
     df = Thickness(src_df0,base=1000,top=500,coordinate_type='PRESSURE_2001').compute()
     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Thickness --base 1000 --top 500 --coordinateType PRESSURE_COORDINATE] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
+    df = spooki.encode_ip2_and_ip3_height(df)
 
     #write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
@@ -101,6 +103,7 @@ def test_4(plugin_test_dir):
     #compute Thickness
     df = Thickness(src_df0,base=500,top=1000,coordinate_type='PRESSURE_2001').compute()
     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Thickness --base 500 --top 1000 --coordinateType PRESSURE_COORDINATE] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
+    df = spooki.encode_ip2_and_ip3_height(df)
 
     #write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
@@ -137,9 +140,9 @@ def test_6(plugin_test_dir):
 
 
     #compute Thickness
-    df = Thickness(src_df0,base=1,top=0.607,coordinate_type='HYBRID_5001').compute()
+    df = Thickness(src_df0,base=1.0,top=0.607,coordinate_type='HYBRID_5001').compute()
     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Thickness --base 1 --top 0.607 --coordinateType HYBRID_COORDINATE] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
-
+    df = spooki.encode_ip2_and_ip3_height(df)
     #write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
     fstpy.delete_file(results_file)

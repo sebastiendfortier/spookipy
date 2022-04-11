@@ -23,20 +23,24 @@ class ParametersValuesError(Exception):
 
 class Thickness(Plugin):
     """Check that the vertical coordinate type of the input field corresponds to the "coordinate_type" key passed as a parameter
+    
     if so, look in the input field for the levels passed as a parameter and do at each point:
+
     DZ = ABS ( GZ(top) - GZ(base) )
+
     rename the values concerned (nomvar) without changing other values
-    cordinate type:
-    'SIGMA_1001': VerticalCoordType.SIGMA_1001,SIGMA_COORDINATE
-    'ETA_1002': VerticalCoordType.ETA_1002,ETA_COORDINATE
-    'HYBRID_NORMALIZED_1003': VerticalCoordType.HYBRID_NORMALIZED_1003,
-    "PRESSURE_2001": VerticalCoordType.PRESSURE_2001,PRESSURE_COORDINATE
-    "HYBRID_5001": VerticalCoordType.HYBRID_5001,HYBRID_COORDINATE
-    "HYBRID_5002": VerticalCoordType.HYBRID_5002,HYBRID_STAGGERED_COORDINATE
-    "HYBRID_5003": VerticalCoordType.HYBRID_5003,
-    "HYBRID_5004": VerticalCoordType.HYBRID_5004,
-    "HYBRID_5005": VerticalCoordType.HYBRID_5005,
-    "UNKNOWN": VerticalCoordType.UNKNOWN,
+
+    cordinate type from fstpy.VerticalCoordType:
+
+    'SIGMA_1001': SIGMA_COORDINATE
+
+    'ETA_1002': ETA_COORDINATE
+
+    "PRESSURE_2001": PRESSURE_COORDINATE
+
+    "HYBRID_5001": HYBRID_COORDINATE
+
+    "UNKNOWN": UNKNOWN,
 
 
     :param df: dataframe with the data
@@ -45,7 +49,7 @@ class Thickness(Plugin):
     :type base: float
     :param top: Top of the thickness layer (model or pressure level)
     :type top: float
-    :param coordinate_type: Type of vertical coordinate. choices: SIGMA_1001, ETA_1002, HYBRID_NORMALIZED_1003, PRESSURE_2001,HYBRID_5001, HYBRID_5002, HYBRID_5003, HYBRID_5004, HYBRID_5005, METER_SEA_LEVEL, METER_GROUND_LEVEL, UNKNOWN
+    :param coordinate_type: Type of vertical coordinate. choices: SIGMA_1001, ETA_1002, PRESSURE_2001,HYBRID_5001,UNKNOWN
     :type coordinate_type: str
     """
 

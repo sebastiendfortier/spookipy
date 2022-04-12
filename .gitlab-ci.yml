@@ -6,6 +6,7 @@ variables:
   JOB_WALLCLOCK: "3600"
   doc_install_dir: "/home/spst900/public_html/spookipy/${CI_BUILD_REF_NAME}"
   latest_doc_install_dir: "/home/spst900/public_html/spookipy/latest"
+  ssm_package: "/home/${USER}/public/ssm/"
 
 stages:
   - run_regtests
@@ -67,8 +68,27 @@ install_latest_doc:
     - cp -r ${cdir}/* ${latest_doc_install_dir}
     - echo "Installed in ${latest_doc_install_dir}"
     - echo "Visit http://web.science.gc.ca/~spst900/spookipy/latest"
-ssm_package:
+
+ssm_package_with_everything:
   stage: ssm_package
   script:
-    - cd ssm
-    - ./make_ssm_package.sh
+    - cd livraison
+    - export SSM_TEST_SPOOKIPY=1
+    - ./make_ssm_package.py --install
+    - . ssmuse-sh -x $( pwd )/spookipy/$( cat ../VERSION )/all
+    - ./test_ssm_package.py
+    - mv spookipy_*.ssm ${ssm_package}
+    - rm -r master
+    - rm -r spookipy
+
+ssm_package_with_operation_yaml_list:
+  stage: ssm_package
+  script:
+    - cd livraison
+    - export SSM_TEST_SPOOKIPY=1
+    - ./make_ssm_package.py --yaml plugin_list_operation.yaml --suffix operation --install
+    - . ssmuse-sh -x $( pwd )/spookipy/$( cat ../VERSION )/all
+    - ./test_ssm_package.py --yaml plugin_list_operation.yaml
+    - mv spookipy_*.ssm ${ssm_package}
+    - rm -r master
+    - rm -r spookipy

@@ -72,7 +72,6 @@ class Thickness(Plugin):
         }
 
         df = fstpy.set_vertical_coordinate_type(df)
-        print(df.drop(columns='d').to_string())
         # self.df = fstpy.metadata_cleanup(self.df)
         super().__init__(df)
         self.prepare_groups()
@@ -83,8 +82,6 @@ class Thickness(Plugin):
         
         # self.no_meta_df = fstpy.set_vertical_coordinate_type(self.no_meta_df)
         # self.no_meta_df = fstpy.compute(self.no_meta_df)
-        print("no_meta df:")
-        print(self.no_meta_df.drop(columns="d").to_string())
         self.existing_result_df = get_existing_result(self.no_meta_df, self.plugin_result_specifications)
         self.groups = self.no_meta_df.groupby(['grid', 'vctype','ip1_kind'])
 
@@ -132,8 +129,6 @@ class Thickness(Plugin):
 
         try:
             self.plugin_mandatory_dependencies[0]["GZ"]["vctype"]=self.coordinate
-            print("plugin_mandatory_dependencies:")
-            print(self.plugin_mandatory_dependencies)
 
             dependencies_list = get_dependencies(
                 self.groups,
@@ -141,8 +136,6 @@ class Thickness(Plugin):
                 'Thickness',
                 self.plugin_mandatory_dependencies,
                 intersect_levels=False)
-            print("dependencies list:")
-            print(dependencies_list)
 
         except DependencyError:
             if not self.dependency_check:
@@ -150,27 +143,12 @@ class Thickness(Plugin):
                 
         else:
             for dependencies_df, _ in dependencies_list:
-                print("ok................")
                 gz_df = get_from_dataframe(dependencies_df, 'GZ')
-                print("gz_df")
-                print(gz_df)
                 gz_top_df = gz_df.loc[gz_df.level == self.top]
                 top_ip = gz_top_df.iloc[0].ip1
-                print("top")
-                print(gz_top_df[['nomvar','typvar','ip1','ip3','vctype','ip1_kind','ip2','level']])
-                # print(gz_top_df.drop(columns='d'))
                 gz_base_df = gz_df.loc[gz_df.level == self.base]
                 base_ip = gz_base_df.iloc[0].ip1
-                print("base:")
-                # print(gz_base_df.drop(columns='d'))
-                print(gz_base_df[['nomvar','typvar','ip1','ip3','vctype','ip1_kind','ip2','level']])
-
-
-
-                # dz_df = create_empty_result(
-                #     gz_df,
-                #     self.plugin_result_specifications['DZ'],
-                #     all_rows=False)
+           
                 if (self.base < self.top):
                     b_inf = top_ip
                     b_sup = base_ip
@@ -182,9 +160,6 @@ class Thickness(Plugin):
     
                 array = np.abs(gz_top_df.iloc[0].d - gz_base_df.iloc[0].d).astype(np.float32)
                 dz_df["d"] = [array]
-                print("dz")
-                # print(dz_df.drop(columns='d'))
-                print(dz_df[['nomvar','typvar','ip1','ip3','vctype','ip1_kind','ip2']])
 
             df_list.append(dz_df)
 
@@ -209,29 +184,19 @@ class Thickness(Plugin):
 
 
 def create_result_container(df, b_inf, b_sup, dict1):
-    print("start...")
     ip1 = b_inf
-    print(ip1)
     ip3 = b_sup
     ip2 = df.ip2[0]
-    # print(ip2)
     # kind = int(ip1_kind)
     
     # ip1_enc = rmn.ip1_val(ip1, kind)
-    # print(ip1_enc)
     # ip3_enc = rmn.ip1_val(ip3, kind)
     # ip2_enc = rmn.ip1_val(ip2,rmn.KIND_HOURS)
-    # print(ip3_enc)
 
     dict1["DZ"]["ip1"] = ip1
     dict1["DZ"]["ip2"] = ip2
     dict1["DZ"]["ip3"] = ip3
-    print(dict1)
-    print("dict1 a compile")
 
     res_df = create_empty_result(df, dict1['DZ'],all_rows=False)
-    print("res_df")
-    # print(res_df.drop(columns='d').to_string())
-    print(res_df[['nomvar','typvar','ip1','ip3','vctype','ip1_kind','ip2']])
     
     return res_df

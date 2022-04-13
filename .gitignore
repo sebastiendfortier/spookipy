@@ -17,3 +17,4 @@ plot.png
 purge.lock
 test/out.txt
 doc/_build/*
+.env

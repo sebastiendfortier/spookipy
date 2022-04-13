@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  Calculation of value differences of a given field for each grid point. 
 -  The difference can be calculated in three different ways on each axis of the grid :
@@ -80,7 +80,7 @@ Usage:
 
     df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/GridPointDifference/testsFiles/inputFile.std').to_pandas()
 
-    res_df = spooki.GridPointDifference(df, axis=['x','y'], type='centered').compute()
+    res_df = spooki.GridPointDifference(df, axis=['x','y'], difference_type='centered').compute()
 
     fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
 

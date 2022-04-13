@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  Calculation of the George-K index, a severe weather index used
    for forecasting thunderstorm (George, 1960).

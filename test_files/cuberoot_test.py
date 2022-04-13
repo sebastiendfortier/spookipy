@@ -34,7 +34,7 @@ class TestCubeRoot(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [CubeRoot] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_function_CBRT.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_function_CBRT.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

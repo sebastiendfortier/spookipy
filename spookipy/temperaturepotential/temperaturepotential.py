@@ -9,15 +9,16 @@ import pandas as pd
 
 from ..plugin import Plugin
 from ..utils import (create_empty_result, existing_results, final_results,
-                     get_dependencies, get_existing_result, get_from_dataframe)
+                     get_dependencies, get_existing_result, get_from_dataframe,
+                     initializer, DependencyError)
 
-"""Gas constant for dry air (RD = 287.04 J/(kg*K))"""
+
 RD: Final[float] = 287.04 # the gas constant for dry air (RD = 287.04 J/(kg*K)),
+"""Gas constant for dry air (RD = 287.04 J/(kg*K))"""
 
 
-"""Specific heat of dry air (CPD = 1005.46 J/(kg*K))"""
 CPD: Final[float] = 1005.46 # the specific heat of dry air (CPD = 1005.46 J/(kg*K))
-
+"""Specific heat of dry air (CPD = 1005.46 J/(kg*K))"""
 
 class TemperaturePotentialError(Exception):
     pass
@@ -31,8 +32,13 @@ class TemperaturePotential(Plugin):
 
     :param df: input dataframe
     :type df: pd.DataFrame
+    :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
+    :type dependency_check: bool, optional
     """
-    def __init__( self, df: pd.DataFrame):
+    @initializer
+    def __init__( self, 
+            df: pd.DataFrame,
+            dependency_check=False):
         
         self.plugin_mandatory_dependencies = [
             {
@@ -42,19 +48,18 @@ class TemperaturePotential(Plugin):
         ]
 
         self.plugin_result_specifications = {
-            'TH': {'nomvar': 'TH', 'etiket': 'PTNLTT', 'unit': 'kelvin'}
+            'TH': {
+                'nomvar': 'TH', 
+                'etiket': 'PTNLTT', 
+                'unit': 'kelvin'}
         }
+        self.df = fstpy.metadata_cleanup(self.df)
         super().__init__(df)
         self.prepare_groups()
 
     def prepare_groups(self):
 
-        if 'unit' not in self.no_meta_df.columns:
-            self.no_meta_df = fstpy.add_columns(self.no_meta_df, columns='unit')
-        if 'forecast_hour' not in self.no_meta_df.columns:
-            self.no_meta_df = fstpy.add_columns(self.no_meta_df, columns='forecast_hour')
-        if 'ip_info' not in self.no_meta_df.columns:
-            self.no_meta_df = fstpy.add_columns(self.no_meta_df, columns='ip_info')
+        self.no_meta_df = fstpy.add_columns(self.no_meta_df, columns=['unit', 'forecast_hour', 'ip_info'])
 
         self.existing_result_df = get_existing_result(self.no_meta_df, self.plugin_result_specifications)
 
@@ -70,25 +75,32 @@ class TemperaturePotential(Plugin):
 
         logging.info('TemperaturePotential - compute')
         df_list = []
+        try:
+            dependencies_list = get_dependencies(
+                self.groups,
+                self.meta_df,
+                'TemperaturePotential',
+                self.plugin_mandatory_dependencies,
+                intersect_levels=True)
+        except DependencyError:
+            if not self.dependency_check:
+                raise DependencyError(f'{TemperaturePotential} - No matching dependencies found')
+        else:
+            for dependencies_df, _ in dependencies_list:
+                tt_df = get_from_dataframe(dependencies_df, 'TT')
+                px_df = get_from_dataframe(dependencies_df, 'PX')
+                th_df = create_empty_result(
+                    tt_df,
+                    self.plugin_result_specifications['TH'],
+                    all_rows=True)
 
-        dependencies_list = get_dependencies(
-            self.groups,
-            self.meta_df,
-            'TemperaturePotential',
-            self.plugin_mandatory_dependencies,
-            intersect_levels=True)
+                for i in th_df.index:
+                    ttk = tt_df.at[i, 'd']
+                    px  = px_df.at[i, 'd']
+                    th_df.at[i, 'd'] = (ttk * (1000./px)**(RD/CPD)).astype(np.float32)
+            df_list.append(th_df)
 
-        for dependencies_df, _ in dependencies_list:
-            tt_df = get_from_dataframe(dependencies_df, 'TT')
-            px_df = get_from_dataframe(dependencies_df, 'PX')
-            th_df = create_empty_result(tt_df,self.plugin_result_specifications['TH'],all_rows=True)
-
-            for i in th_df.index:
-                ttk = tt_df.at[i, 'd']
-                px = px_df.at[i, 'd']
-                th_df.at[i, 'd'] = (ttk * (1000./px)**(RD/CPD)).astype(np.float32)
-        df_list.append(th_df)
-
-        return final_results(df_list, TemperaturePotentialError, self.meta_df)
+        finally:
+            return final_results(df_list, TemperaturePotentialError, self.meta_df, self.dependency_check)
 
     

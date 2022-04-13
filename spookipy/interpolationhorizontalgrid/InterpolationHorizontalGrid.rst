@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 - Horizontal interpolation of one or more field (s) on a target grid  
 - The target grid can be either defined by the user, according to the parameters given in option, or correspond to the grid of one of the fields given as input  
@@ -65,7 +65,7 @@ Usage:
     df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/InterpolationHorizontalGrid/testsFiles/inputFile.std').to_pandas()
 
     res_df = spooki.InterpolationHorizontalGrid(
-        df=df
+        df=df,
         method='user',
         grtyp='N',
         ni=191,

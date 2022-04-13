@@ -1,8 +1,9 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  Calculates the vapour pressure of water.
-   Note: If calculating from HR or ES/TD the user has to
+  
+   **Note:** If calculating from HR or ES/TD, the user has to
    define if these were calculated with respect to water
    saturation or ice saturation
 
@@ -15,11 +16,17 @@ Dependencies:
 ~~~~~~~~~~~~~
 
 -  Specific Humidity, HU
-   or
+  
+   **or**
+
 -  Water vapour mixing ratio, QV
-   or
+  
+   **or**
+
 -  Air Temperature, TT
-   and one of the following fields:
+  
+   **and one of the following fields:**
+
 -  Relative Humidity, HR
 -  Dew point temperature, TD / Dew point depression, ES
 
@@ -37,24 +44,32 @@ Algorithm:
 
             *If the input field is the specific humidity, HU (kg/kg):
                Calculate the atmospheric pressure, PX (hPa) with the Pressure plug-in.
+
                VPPR= (HU*PX) / ( epsilon + HU*(1-epsilon) )
-               where the vapour pressure, VPPR is in hPa and epsilon is defined in the table of constants as 0.6219800221014e+00 and corresponds to Rd/Rv.
+               where the vapour pressure, VPPR is in hPa and epsilon is defined in the 
+               table of constants as 0.6219800221014e+00 and corresponds to Rd/Rv.
 
 
             *If the input field is the water vapour mixing ratio, QV (kg/kg)
                Calculate the atmospheric pressure, PX (hPa) with the Pressure plug-in.
+
                VPPR= (QV*PX) / (epsilon + QV)
-               where the vapour pressure, VPPR is in hPa and epsilon is defined in the table of constants as 0.6219800221014e+00 and corresponds to Rd/Rv.
+               where the vapour pressure, VPPR is in hPa and epsilon is defined in the 
+               table of constants as 0.6219800221014e+00 and corresponds to Rd/Rv.
 
 
-            *If the input fields are the relative humidity, HR (fraction) and the air temperature, TT (deg C)
-               Calculate the saturation vapour pressure, SVP (hPa) by using the SaturationVapourPressure plug-in.
-               VPPR = HR*SVP
-               where the vapour pressure, VPPR is in hPa.
+            *If the input fields are the relative humidity, HR (fraction) and 
+             the air temperature, TT (deg C)
+               Calculate the saturation vapour pressure, SVP (hPa) by using the 
+               SaturationVapourPressure plug-in.
+
+               VPPR = HR*SVP        where the vapour pressure, VPPR is in hPa.
 
 
-            *If the input fields are the dew point depression, ES (deg C or deg K)/ dew point temperature, TD (deg C) and the air temperature, TT (deg C)
-               For TPL, the temperature at which we must change from the saturation with respect to water to the saturation with respect to ice (deg C)
+            *If the input fields are the dew point depression, ES (deg C or deg K) / 
+             dew point temperature, TD (deg C) and the air temperature, TT (deg C)
+               For TPL, the temperature at which we must change from the saturation with respect 
+               to water to the saturation with respect to ice (deg C)
                Calculate the dew point temperature, TD (deg C), with the TemperatureDewPoint plug-in.
 
                If TT>TPL or --iceWaterPhase WATER
@@ -62,7 +77,9 @@ Algorithm:
                else
                      VPPR = AEi1 * exp( (AEi2*TD)/(AEi3 + TD) )
 
-               where the vapour pressure, VPPR is in hPa and where according to Alduchov and Eskridge (1996)
+               where the vapour pressure, VPPR is in hPa and where according to 
+               Alduchov and Eskridge (1996)
+
                AEw1=6.1094   AEi1=6.1121
                AEw2=17.625   AEi2=22.587
                AEw3=243.04   AEi3=273.86
@@ -78,29 +95,41 @@ Algorithm:
                Calculate the pressure, PX (hPa) with the Pressure plug-in.
                There is no RPN function for this calculation, we therefore use:
                VPPR= (QV*PX) / (epsilon + QV)
-               where the vapour pressure, VPPR is in hPa and epsilon is defined in the table of constants as 0.6219800221014e+00 and corresponds to Rd/Rv.
+               where the vapour pressure, VPPR is in hPa and epsilon is defined in the 
+               table of constants as 0.6219800221014e+00 and corresponds to Rd/Rv.
 
-            *If the input fields are the relative humidity HR (fraction) and the air temperature, TT (deg K)
-               Calculate the specific humidity, HU (kg/kg) with the HumiditySpecific plug-in (with the same keys and their arguments)
+            *If the input fields are the relative humidity HR (fraction) and 
+             the air temperature, TT (deg K)
+               Calculate the specific humidity, HU (kg/kg) with the HumiditySpecific 
+               plug-in (with the same keys and their arguments)
                Calculate the pressure, PX (hPa) with the Pressure plug-in.
                Call the rpn function sfoefq.ftn90 to obtain the vapour pressure, VPPR (Pa)
 
-            *If the input fields are the dew point depression, ES (deg K or deg C)/ dew point temperature, TD (deg K) and the air temperature (deg K)
-               For TPL, the temperature at which we must change from the saturation with respect to water to the saturation with respect to ice (deg K)
+            *If the input fields are the dew point depression, ES (deg K or deg C) / 
+             dew point temperature, TD (deg K) and the air temperature (deg K)
+               For TPL, the temperature at which we must change from the saturation with respect 
+               to water to the saturation with respect to ice (deg K)
                Calculate the dew point temperature, TD (deg K), with the TemperatureDewPoint plug-in.
 
                If TT >TPL or --iceWaterPhase Water
-                     Call the rpn function sfoewa.ftn90 with TD to obtain the vapour pressure, VPPR (Pa)
+                     Call the rpn function sfoewa.ftn90 with TD to obtain the 
+                     vapour pressure, VPPR (Pa)
                else
-                     Call the rpn fucntion sfoew.ftn90 with TD to obtain the vapour pressure, VPPR (Pa)
+                     Call the rpn fucntion sfoew.ftn90 with TD to obtain 
+                     the vapour pressure, VPPR (Pa)
 
 
          Convert the vapour pressure, VPPR to hPa if VPPR is in Pa
             VPPR(hPa)= VPPR(Pa) / 100.0
 
 
-   Notes: When several fields of the dependencies and TT are available in the input, the calculation will be done with the field that has the most number of levels in common with TT, in order of preference (in case of equality) with HU followed by QV, HR and finally ES/TD.
-            When the TT field is not available, the calculation will be done in order of preference with HU followed by QV disregarding the number of levels.
+   Notes: When several fields of the dependencies and TT are available in the input, 
+          the calculation will be done with the field that has the most number of levels 
+          in common with TT, in order of preference (in case of equality) with HU 
+          followed by QV, HR and finally ES/TD.
+
+          When the TT field is not available, the calculation will be done in order of 
+          preference with HU followed by QV disregarding the number of levels.
 
 Reference:
 ~~~~~~~~~~
@@ -140,7 +169,7 @@ Usage:
 
    df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/VapourPressure/testsFiles/inputFile.std').to_pandas()
 
-   res_df = spooki.VapourPressure(df).compute()
+   res_df = spooki.VapourPressure(df, ice_water_phase='both', temp_phase_switch=-40, temp_phase_switch_unit='celsius').compute()
 
    fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
 
@@ -156,6 +185,6 @@ Contacts:
 Spooki original documentation:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`Francais <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginVapourPressure.html>`_
+`Français <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginVapourPressure.html>`_
 
 `English <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_english_doc/html/pluginVapourPressure.html>`_

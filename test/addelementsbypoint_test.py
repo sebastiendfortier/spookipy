@@ -5,6 +5,7 @@ import fstpy.all as fstpy
 import pytest
 import spookipy.all as spooki
 from ci_fstcomp import fstcomp
+import secrets
 
 pytestmark = [pytest.mark.regressions]
 
@@ -26,7 +27,7 @@ def test_1(plugin_test_dir):
     # [ReaderStd --input {sources[0]}] >> [AddElementsByPoint --outputFieldName ACCU] >> [Zap --pdsLabel ADDFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --noUnitConversion]
 
     # write the result
-    results_file = TMP_PATH + "test_1.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -51,7 +52,7 @@ def test_2(plugin_test_dir):
     # [ReaderStd --input {sources[0]}] >> [AddElementsByPoint --outputFieldName ACCU] >> [Zap --pdsLabel ADDFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --noUnitConversion]
 
     # write the result
-    results_file = TMP_PATH + "test_2.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -72,7 +73,7 @@ def test_3(plugin_test_dir):
 
     with pytest.raises(spooki.AddElementsByPointError):
         # compute AddElementsByPoint
-        df = spooki.AddElementsByPoint(
+        _ = spooki.AddElementsByPoint(
             src_df0, nomvar_out='TROPLONG').compute()
         # [ReaderStd --input {sources[0]}] >> [AddElementsByPoint --outputFieldName TROPLONG]
 
@@ -87,7 +88,7 @@ def test_4(plugin_test_dir):
 
     with pytest.raises(spooki.AddElementsByPointError):
         # compute AddElementsByPoint
-        df = spooki.AddElementsByPoint(src_df0).compute()
+        _ = spooki.AddElementsByPoint(src_df0).compute()
         # [ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> [AddElementsByPoint]
 
 
@@ -102,5 +103,9 @@ def test_5(plugin_test_dir):
 
     with pytest.raises(spooki.AddElementsByPointError):
         # compute AddElementsByPoint
-        df = spooki.AddElementsByPoint(src_df0).compute()
+        _ = spooki.AddElementsByPoint(src_df0).compute()
         # [ReaderStd --input {sources[0]}] >> [Select --fieldName TT,GZ ] >> [AddElementsByPoint]
+
+
+if __name__ == "__main__":
+    test_1(TEST_PATH + '/AddElementsByPoint/testsFiles/')

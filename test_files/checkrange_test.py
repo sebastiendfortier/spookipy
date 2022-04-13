@@ -34,7 +34,7 @@ class TestCheckRange(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [CheckRange --range -30@30] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_cr_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_cr_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -55,7 +55,7 @@ class TestCheckRange(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [CheckRange --range -25@28] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_cr_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_cr_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -76,7 +76,7 @@ class TestCheckRange(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [CheckRange --range -13@28 --strictComparisonOperator] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_cr_3.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_cr_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -97,7 +97,7 @@ class TestCheckRange(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [CheckRange --range -13@28] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_cr_4.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_cr_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

@@ -12,8 +12,9 @@ from ..science import (TDPACK_OFFSET_FIX, es_from_td, rpn_es_from_hr,
                        rpn_es_from_hu)
 from ..utils import (create_empty_result, existing_results, final_results,
                      get_dependencies, get_existing_result, get_from_dataframe,
-                     initializer)
+                     initializer, DependencyError)
 from ..configparsingutils import add_argument_for_humidity_plugin, check_and_format_humidity_parsed_arguments
+
 
 class DewPointDepressionError(Exception):
     pass
@@ -32,6 +33,8 @@ class DewPointDepression(Plugin):
     :type temp_phase_switch_unit: str, optional
     :param rpn: use rpn library algorithm, defaults to False
     :type rpn: bool, optional
+    :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
+    :type dependency_check: bool, optional  
     """
     @initializer
     def __init__(
@@ -40,7 +43,9 @@ class DewPointDepression(Plugin):
             ice_water_phase=None,
             temp_phase_switch=None,
             temp_phase_switch_unit='celsius',
-            rpn=False):
+            rpn=False,
+            dependency_check=False):
+
         self.plugin_params = {
             'ice_water_phase': self.ice_water_phase,
             'temp_phase_switch': self.temp_phase_switch,
@@ -53,9 +58,9 @@ class DewPointDepression(Plugin):
                 'PX': {'nomvar': 'PX', 'unit': 'pascal'}
             },
             {
-                'TT': {'nomvar': 'TT', 'unit': 'celsius'},
-                'QV': {'nomvar': 'QV', 'unit': 'gram_per_kilogram', 'select_only': True},
-                'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'}
+                'TT': {'nomvar': 'TT', 'unit': 'kelvin'},
+                'QV': {'nomvar': 'QV', 'unit': 'kilogram_per_kilogram', 'select_only': True},
+                'PX': {'nomvar': 'PX', 'unit': 'pascal'}
             },
             {
                 'TT': {'nomvar': 'TT', 'unit': 'kelvin'},
@@ -75,7 +80,7 @@ class DewPointDepression(Plugin):
             },
             {
                 'TT': {'nomvar': 'TT', 'unit': 'celsius'},
-                'QV': {'nomvar': 'QV', 'unit': 'gram_per_kilogram', 'select_only': True},
+                'QV': {'nomvar': 'QV', 'unit': 'kilogram_per_kilogram', 'select_only': True},
                 'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'}
             },
             {
@@ -96,22 +101,15 @@ class DewPointDepression(Plugin):
                 'unit': 'celsius',
                 'nbits': 16,
                 'datyp': 1}}
-        self.validate_input()
-
-    # might be able to move
-
-    def validate_input(self):
-        if self.df.empty:
-            raise DewPointDepressionError('No data to process')
 
         self.df = fstpy.metadata_cleanup(self.df)
+        super().__init__(df)
+        self.prepare_groups()
 
-        self.meta_df = self.df.loc[self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
+    def prepare_groups(self):
 
-        self.df = fstpy.add_columns(
-            self.df, columns=[
-                'unit', 'forecast_hour', 'ip_info'])
+        self.no_meta_df = fstpy.add_columns(
+            self.no_meta_df, columns=['unit', 'forecast_hour', 'ip_info'])
 
         validate_humidity_parameters(
             DewPointDepressionError,
@@ -127,15 +125,10 @@ class DewPointDepression(Plugin):
             self.rpn)
 
         # check if result already exists
-        self.existing_result_df = get_existing_result(
-            self.df, self.plugin_result_specifications)
+        self.existing_result_df = get_existing_result(self.no_meta_df, self.plugin_result_specifications)
 
-        # remove meta data from DataFrame
-        self.df = self.df.loc[~self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
-        self.groups = self.df.groupby(
-            ['grid', 'dateo', 'forecast_hour', 'ip1_kind'])
+        self.groups = self.no_meta_df.groupby(
+            ['grid', 'datev', 'ip1_kind'])
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:
@@ -145,60 +138,66 @@ class DewPointDepression(Plugin):
                 self.meta_df)
 
         logging.info('DewPointDepression - compute')
+
         df_list = []
-        if self.rpn:
-            dependencies_list = get_dependencies(
-                self.groups,
-                self.meta_df,
-                'DewPointDepression',
-                self.plugin_mandatory_dependencies_rpn,
-                self.plugin_params,
-                intersect_levels=True)
-        else:
-            dependencies_list = get_dependencies(
-                self.groups,
-                self.meta_df,
-                'DewPointDepression',
-                self.plugin_mandatory_dependencies,
-                self.plugin_params,
-                intersect_levels=True)
-
-        for dependencies_df, option in dependencies_list:
-
+        try:
             if self.rpn:
-                if option == 0:
-                    hu_df = get_from_dataframe(dependencies_df, 'HU')
-                    es_df = self.rpn_dewpointdepression_from_tt_hu_px(
-                        hu_df, dependencies_df, option)
-
-                elif option == 1:
-                    hu_df = self.compute_hu(dependencies_df)
-                    es_df = self.rpn_dewpointdepression_from_tt_hu_px(
-                        hu_df, dependencies_df, option)
-
-                elif option == 2:
-                    es_df = self.rpn_dewpointdepression_from_tt_hr_px(
-                        dependencies_df, option)
-
-                else:
-                    td_df = get_from_dataframe(dependencies_df, 'TD')
-                    es_df = self.dewpointdepression_from_tt_td(
-                        td_df, dependencies_df, option, True)
-
+                dependencies_list = get_dependencies(
+                    self.groups,
+                    self.meta_df,
+                    'DewPointDepression',
+                    self.plugin_mandatory_dependencies_rpn,
+                    self.plugin_params,
+                    intersect_levels=True)
             else:
-                if option in range(0, 3):
-                    td_df = self.compute_td(dependencies_df)
-                    es_df = self.dewpointdepression_from_tt_td(
-                        td_df, dependencies_df, option)
+                dependencies_list = get_dependencies(
+                    self.groups,
+                    self.meta_df,
+                    'DewPointDepression',
+                    self.plugin_mandatory_dependencies,
+                    self.plugin_params,
+                    intersect_levels=True)
+        
+        except DependencyError:
+            if not self.dependency_check:
+                raise DependencyError(f'{DewPointDepression} - No matching dependencies found')
+        else:
+            for dependencies_df, option in dependencies_list:
+
+                if self.rpn:
+                    if option == 0:
+                        hu_df = get_from_dataframe(dependencies_df, 'HU')
+                        es_df = self.rpn_dewpointdepression_from_tt_hu_px(
+                            hu_df, dependencies_df, option)
+
+                    elif option == 1:
+                        hu_df = self.compute_hu(dependencies_df)
+                        es_df = self.rpn_dewpointdepression_from_tt_hu_px(
+                            hu_df, dependencies_df, option)
+
+                    elif option == 2:
+                        es_df = self.rpn_dewpointdepression_from_tt_hr_px(
+                            dependencies_df, option)
+
+                    else:
+                        td_df = get_from_dataframe(dependencies_df, 'TD')
+                        es_df = self.dewpointdepression_from_tt_td(
+                            td_df, dependencies_df, option, True)
 
                 else:
-                    td_df = get_from_dataframe(dependencies_df, 'TD')
-                    es_df = self.dewpointdepression_from_tt_td(
-                        td_df, dependencies_df, option)
+                    if option in range(0, 3):
+                        td_df = self.compute_td(dependencies_df)
+                        es_df = self.dewpointdepression_from_tt_td(
+                            td_df, dependencies_df, option)
 
-            df_list.append(es_df)
+                    else:
+                        td_df = get_from_dataframe(dependencies_df, 'TD')
+                        es_df = self.dewpointdepression_from_tt_td(
+                            td_df, dependencies_df, option)
 
-        return final_results(df_list, DewPointDepression, self.meta_df)
+                df_list.append(es_df)
+        finally:
+            return final_results(df_list, DewPointDepression, self.meta_df, self.dependency_check)
 
     def rpn_dewpointdepression_from_tt_hr_px(self, dependencies_df, option):
         logging.info(f'rpn option {option+1}')
@@ -210,8 +209,6 @@ class DewPointDepression(Plugin):
             ttk_df,
             self.plugin_result_specifications['ES'],
             all_rows=True)
-        # ttk_df = fstpy.unit_convert(tt_df, 'kelvin')
-        # pxpa_df = fstpy.unit_convert(px_df, 'pascal')
         for i in es_df.index:
             ttk = ttk_df.at[i, 'd']
             pxpa = pxpa_df.at[i, 'd']
@@ -230,8 +227,6 @@ class DewPointDepression(Plugin):
             ttk_df,
             self.plugin_result_specifications['ES'],
             all_rows=True)
-        # ttk_df = fstpy.unit_convert(tt_df, 'kelvin')
-        # pxpa_df = fstpy.unit_convert(px_df, 'pascal')
         for i in es_df.index:
             ttk = ttk_df.at[i, 'd']
             pxpa = pxpa_df.at[i, 'd']
@@ -249,7 +244,7 @@ class DewPointDepression(Plugin):
                     self.meta_df],
                 ignore_index=True),
             ice_water_phase=self.ice_water_phase,
-            rpn=True).compute()
+            rpn=True, dependency_check= self.dependency_check).compute()
         hu_df = get_from_dataframe(hu_df, 'HU')
         return hu_df
 
@@ -288,7 +283,8 @@ class DewPointDepression(Plugin):
                 ignore_index=True),
             ice_water_phase=self.ice_water_phase,
             temp_phase_switch=self.temp_phase_switch,
-            temp_phase_switch_unit=self.temp_phase_switch_unit).compute()
+            temp_phase_switch_unit=self.temp_phase_switch_unit, 
+            dependency_check= self.dependency_check).compute()
         td_df = get_from_dataframe(td_df, 'TD')
         return td_df
 

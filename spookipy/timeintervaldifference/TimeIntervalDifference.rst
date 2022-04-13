@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  Calculation of a temporal difference of fields at various given intervals.
 -  The various intervals are defined by the parameter keys.

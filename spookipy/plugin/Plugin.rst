@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 Abstract base class for plugins. Each plugin must inherit from this class.
 

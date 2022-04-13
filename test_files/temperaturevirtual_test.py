@@ -34,7 +34,7 @@ class TestTemperatureVirtual(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --fieldName TT,HR] >> [TemperatureVirtual] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = TMP_PATH + "test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -55,7 +55,7 @@ class TestTemperatureVirtual(unittest.TestCase):
         #['[ReaderStd --input {sources[0]} ] >> ', '[MatchFieldsByCommonLevels --referenceField TT --matchFields HR]>>', '[WriterStd --output {destination_path} ]']
 
         # write the result
-        results_file = TMP_PATH + "test_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

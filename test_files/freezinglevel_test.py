@@ -34,7 +34,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [FreezingLevel --outputVerticalRepresentation BOTH --forcedForTestsOnly] >> [Select --fieldName FRH,BOVS,NBFL] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = TMP_PATH + "test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -55,7 +55,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [FreezingLevel --outputVerticalRepresentation BOTH --maxNbFzLvl 1 --forcedForTestsOnly] >> [Select --fieldName FRH,BOVS,NBFL] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = TMP_PATH + "test_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -76,7 +76,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [FreezingLevel --outputVerticalRepresentation GEOPOTENTIAL --forcedForTestsOnly] >> [Select --fieldName FRH,BOVS,NBFL] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = TMP_PATH + "test_3.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -97,7 +97,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [FreezingLevel --outputVerticalRepresentation BOTH --maxNbFzLvl 3 --forcedForTestsOnly] >> [Select --fieldName FRH,BOVS,NBFL] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = TMP_PATH + "test_4.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -118,7 +118,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [FreezingLevel --outputVerticalRepresentation GEOPOTENTIAL --maxNbFzLvl 3 --forcedForTestsOnly] >> [Select --fieldName FRH,BOVS,NBFL] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = TMP_PATH + "test_5.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -139,7 +139,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [FreezingLevel --outputVerticalRepresentation PRESSURE --maxNbFzLvl 5] >> [Select --fieldName FRP,BOVS,NBFL] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = TMP_PATH + "test_6.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -160,7 +160,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [FreezingLevel --outputVerticalRepresentation GEOPOTENTIAL --maxNbFzLvl 5 ] >> [Select --fieldName FRH,BOVS,NBFL] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = TMP_PATH + "test_7.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -181,7 +181,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [FreezingLevel  --outputVerticalRepresentation BOTH --maxNbFzLvl 5] >> [Select --fieldName FRH,BOVS,NBFL] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = TMP_PATH + "test_8.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -202,7 +202,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [FreezingLevel --outputVerticalRepresentation GEOPOTENTIAL --maxNbFzLvl 5] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = TMP_PATH + "test_9.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -223,7 +223,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [FreezingLevel --outputVerticalRepresentation BOTH --maxNbFzLvl 5 --highestFreezingLevel BOTH] >> [WriterStd --output {destination_path} --noUnitConversion]
 
         # write the result
-        results_file = TMP_PATH + "test_10.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -244,7 +244,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [FreezingLevel --outputVerticalRepresentation BOTH --maxNbFzLvl 5 --highestFreezingLevel YES] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = TMP_PATH + "test_15.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -265,7 +265,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [FreezingLevel --outputVerticalRepresentation PRESSURE --maxNbFzLvl 5 --highestFreezingLevel YES --forcedForTestsOnly ]
 
         # write the result
-        results_file = TMP_PATH + "test_16.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_16.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -286,7 +286,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [FreezingLevel --outputVerticalRepresentation PRESSURE --maxNbFzLvl 5 --highestFreezingLevel YES --forcedForTestsOnly ] >> [WriterStd --output {destination_path}]
 
         # write the result
-        results_file = TMP_PATH + "test_18.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_18.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -307,7 +307,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [FreezingLevel --outputVerticalRepresentation GEOPOTENTIAL --maxNbFzLvl 5 --highestFreezingLevel YES --forcedForTestsOnly] >> [WriterStd --output {destination_path}]
 
         # write the result
-        results_file = TMP_PATH + "test_19.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_19.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -328,7 +328,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [FreezingLevel --outputVerticalRepresentation GEOPOTENTIAL --maxNbFzLvl 5 --highestFreezingLevel YES --forcedForTestsOnly] >> [WriterStd --output {destination_path}]
 
         # write the result
-        results_file = TMP_PATH + "test_20.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_20.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -349,7 +349,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [FreezingLevel --outputVerticalRepresentation BOTH --maxNbFzLvl 5 --highestFreezingLevel YES --forcedForTestsOnly] >> [WriterStd --output {destination_path}]
 
         # write the result
-        results_file = TMP_PATH + "test_21.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_21.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -370,7 +370,7 @@ class TestFreezingLevel(unittest.TestCase):
         #['[ReaderStd --input {sources[0]} ] >> ', '[FreezingLevel --outputVerticalRepresentation BOTH --highestFreezingLevel BOTH --maxNbFzLvl 2 --forcedForTestsOnly] >> ', '[WriterStd --output {destination_path} ]']
 
         # write the result
-        results_file = TMP_PATH + "test_22.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_22.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

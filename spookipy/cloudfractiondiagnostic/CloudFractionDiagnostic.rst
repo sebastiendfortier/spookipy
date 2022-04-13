@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 - At a given level, the program converts the values
   relative humidity (HR) as a diagnostic cloud fraction

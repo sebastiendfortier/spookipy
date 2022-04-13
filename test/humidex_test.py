@@ -5,6 +5,7 @@ import fstpy.all as fstpy
 import pytest
 import spookipy.all as spooki
 from ci_fstcomp import fstcomp
+import secrets
 
 pytestmark = [pytest.mark.regressions, pytest.mark.humidity]
 
@@ -30,13 +31,12 @@ def test_1(plugin_test_dir):
     # df.loc[:,'datyp']=5
 
     # write the result
-    results_file = TMP_PATH + "test_1.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2016060312_024_000_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/Humidex/result_test_1'
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.1)
@@ -58,13 +58,12 @@ def test_2(plugin_test_dir):
     # df.loc[:,'datyp']=5
 
     # write the result
-    results_file = TMP_PATH + "test_2.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "inputFile6x6_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/Humidex/result_test_2'
 
     # compare results
     res = fstcomp(results_file, file_to_compare)

@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  Humidex calculation. The humidex index aims to quantify the discomfort caused by a combination of heat and humidity.
 
@@ -11,16 +11,14 @@ Iteration method:
 Dependencies:
 ~~~~~~~~~~~~~
 
--  Air surface temperature, TTC and one of the following fields at the surface:
+-  Air surface temperature, TT 
+
+   **and one of the following fields:**
 
 -  Specific humidity, HU
-
 -  Relative humidity, HR
-
 -  Water vapour mixing ratio, QV
-
 -  Dew point temperature, TD
-
 -  Dew point depression, ES
 
 Result(s):
@@ -31,22 +29,25 @@ Result(s):
 Algorithm:
 ~~~~~~~~~~
 
-    For TTC, the air temperature valid at the surface level (deg C).
-    For TD, the dew point temperature (deg C). It can be calculated with the TemperatureDewPoint plugin.
-    For :math:`{e_{s}(TD)}`, the partial vapour pressure
-    (hPa) at saturation. It can be calculated with the SaturationVapourPressure plugin using TD instead of TTC and with the option –iceWaterPhase WATER
+    For the air temperature valid at the surface level, TTC (deg C)
+
+    For the dew point temperature, TD (deg C). It can be calculated with the TemperatureDewPoint plugin.
+
+    For the partial vapour pressure at saturation, :math:`{e_{s}(TD)}` (hPa). It can be calculated 
+    with the SaturationVapourPressure plugin using TD instead of TTC and with the
+    option –iceWaterPhase WATER
 
     Compute the Humidex:
 
     :math:`{res = TTC + (0.5555) * (e_{s}(TD) - 10)}`
-
+    
 .. code-block:: text
 
-    If res > TTC
-       HMX = res
-    Else
-       HMX = TTC
-    End if
+        If res > TTC 
+           HMX = res
+        Else 
+           HMX = TTC 
+        End if
 
 Reference:
 ~~~~~~~~~~
@@ -94,6 +95,6 @@ Contacts:
 Spooki original documentation:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`Francais <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginHumidex.html>`_
+`Français <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginHumidex.html>`_
 
 `English <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_english_doc/html/pluginHumidex.html>`_

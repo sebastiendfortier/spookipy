@@ -5,6 +5,7 @@ import fstpy.all as fstpy
 import pytest
 import spookipy.all as spooki
 from ci_fstcomp import fstcomp
+import secrets
 
 pytestmark = [pytest.mark.skip]
 
@@ -166,7 +167,7 @@ def test_12(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
-    results_file = TMP_PATH + "test_12.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
@@ -195,7 +196,7 @@ def test_13(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
-    results_file = TMP_PATH + "test_13.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
@@ -220,7 +221,7 @@ def test_15(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
-    results_file = TMP_PATH + "test_15.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
@@ -253,7 +254,7 @@ def test_16(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
-    results_file = TMP_PATH + "test_16.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_16.std"])
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
@@ -285,7 +286,7 @@ def test_18(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
-    results_file = TMP_PATH + "test_18.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_18.std"])
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
@@ -314,7 +315,7 @@ def test_20(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
-    results_file = TMP_PATH + "test_20.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_20.std"])
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
@@ -339,7 +340,7 @@ def test_22(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
-    results_file = TMP_PATH + "test_22.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_22.std"])
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
@@ -364,7 +365,7 @@ def test_24(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
-    results_file = TMP_PATH + "test_24.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_24.std"])
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
@@ -388,7 +389,7 @@ def test_25(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
-    results_file = TMP_PATH + "test_25.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_25.std"])
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
@@ -437,7 +438,7 @@ def test_28(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
-    results_file = TMP_PATH + "test_28.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_28.std"])
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
@@ -476,7 +477,7 @@ def test_30(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
-    results_file = TMP_PATH + "test_30.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_30.std"])
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
@@ -500,7 +501,7 @@ def test_31(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
-    results_file = TMP_PATH + "test_31.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_31.std"])
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
@@ -542,7 +543,7 @@ def test_33(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion]
 
     # write the result
-    results_file = TMP_PATH + "test_33.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_33.std"])
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
@@ -571,7 +572,7 @@ def test_34(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion]
 
     # write the result
-    results_file = TMP_PATH + "test_34.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_34.std"])
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
@@ -600,7 +601,7 @@ def test_35(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion]
 
     # write the result
-    results_file = TMP_PATH + "test_35.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_35.std"])
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
@@ -629,7 +630,7 @@ def test_36(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion]
 
     # write the result
-    results_file = TMP_PATH + "test_36.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_36.std"])
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
@@ -681,7 +682,7 @@ def test_39(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion]
 
     # write the result
-    results_file = TMP_PATH + "test_39.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_39.std"])
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
@@ -707,7 +708,7 @@ def test_40(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion]
 
     # write the result
-    results_file = TMP_PATH + "test_40.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_40.std"])
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
@@ -732,7 +733,7 @@ def test_41(plugin_test_dir):
     # [WriterStd --output {destination_path} ]
 
     # write the result
-    results_file = TMP_PATH + "test_41.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_41.std"])
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
@@ -756,7 +757,7 @@ def test_41(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion]
 
     # write the result
-    results_file = TMP_PATH + "test_41.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_41.std"])
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file

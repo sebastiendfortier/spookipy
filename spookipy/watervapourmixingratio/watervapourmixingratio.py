@@ -11,13 +11,12 @@ from ..plugin import Plugin
 from ..science import qv_from_hu, qv_from_vppr
 from ..utils import (create_empty_result, existing_results, final_results,
                      get_dependencies, get_existing_result, get_from_dataframe,
-                     initializer)
+                     initializer, DependencyError)
 from ..configparsingutils import add_argument_for_humidity_plugin, check_and_format_humidity_parsed_arguments
 
 
 class WaterVapourMixingRatioError(Exception):
     pass
-
 
 class WaterVapourMixingRatio(Plugin):
     """Calculates the water vapour mixing ratio, which is the ratio of the mass of water vapour to the mass of dry air
@@ -32,15 +31,19 @@ class WaterVapourMixingRatio(Plugin):
     :type temp_phase_switch_unit: str, optional
     :param rpn: use rpn library algorithm, defaults to False
     :type rpn: bool, optional
+    :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
+    :type dependency_check: bool, optional   
     """
     @initializer
     def __init__(
             self,
             df: pd.DataFrame,
-            ice_water_phase=None,
-            temp_phase_switch=None,
+            ice_water_phase='both',
+            temp_phase_switch=-40,
             temp_phase_switch_unit='celsius',
-            rpn=False):
+            rpn=False, 
+            dependency_check=False):
+        
         self.plugin_params = {
             'ice_water_phase': self.ice_water_phase,
             'temp_phase_switch': self.temp_phase_switch,
@@ -48,36 +51,34 @@ class WaterVapourMixingRatio(Plugin):
             'rpn': self.rpn}
 
         self.plugin_mandatory_dependencies_rpn = [
-            {
-                'HU': {'nomvar': 'HU', 'unit': 'kilogram_per_kilogram'},
-            }
-        ]
+                {
+                    'HU': {'nomvar': 'HU', 'unit': 'kilogram_per_kilogram'},
+                }
+            ]
         self.plugin_mandatory_dependencies = [
-            {
-                'HU': {'nomvar': 'HU', 'unit': 'kilogram_per_kilogram', 'select_only': True}, 
-            }, 
-            {
-                'VPPR': {'nomvar': 'VPPR', 'unit': 'pascal'}, 
-                'PX': {'nomvar': 'PX', 'unit': 'pascal'}, 
-            }
-        ]
+                {
+                    'HU': {'nomvar': 'HU','unit': 'kilogram_per_kilogram', 'select_only': True}, 
+                },
+                {
+                    'VPPR': {'nomvar': 'VPPR', 'unit': 'pascal'},
+                    'PX':   {'nomvar': 'PX',   'unit': 'pascal'}, 
+                }
+            ]
 
         self.plugin_result_specifications = {
             'QV': {
                 'nomvar': 'QV',
                 'etiket': 'WVMXRT',
                 'unit': 'gram_per_kilogram'}}
-        self.validate_input()
-
-    # might be able to move
-    def validate_input(self):
-        if self.df.empty:
-            raise WaterVapourMixingRatioError('No data to process')
 
         self.df = fstpy.metadata_cleanup(self.df)
+        super().__init__(df)
+        self.prepare_groups()
 
-        self.df = fstpy.add_columns(
-            self.df, columns=[
+    def prepare_groups(self):
+
+        self.no_meta_df = fstpy.add_columns(
+            self.no_meta_df, columns=[
                 'unit', 'forecast_hour', 'ip_info'])
 
         validate_humidity_parameters(
@@ -93,21 +94,13 @@ class WaterVapourMixingRatio(Plugin):
             self.temp_phase_switch_unit,
             self.rpn)
 
-        self.meta_df = self.df.loc[self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
         # check if result already exists
-        self.existing_result_df = get_existing_result(
-            self.df, self.plugin_result_specifications)
+        self.existing_result_df = get_existing_result(self.no_meta_df, self.plugin_result_specifications)
 
-        # remove meta data from DataFrame
-        self.df = self.df.loc[~self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
+        self.groups = self.no_meta_df.groupby(
+            ['grid', 'datev', 'ip1_kind'])
 
-        self.groups = self.df.groupby(
-            ['grid', 'dateo', 'forecast_hour', 'ip1_kind'])
-
-    def compute(self) -> pd.DataFrame:
+    def compute(self, test_dependency=False) -> pd.DataFrame:
         if not self.existing_result_df.empty:
             return existing_results(
                 'WaterVapourMixingRatio',
@@ -117,59 +110,60 @@ class WaterVapourMixingRatio(Plugin):
         logging.info('WaterVapourMixingRatio - compute')
         df_list = []
 
-        if self.rpn:
-            dependencies_list = get_dependencies(
-                self.groups,
-                self.meta_df,
-                'WaterVapourMixingRatio',
-                self.plugin_mandatory_dependencies_rpn,
-                self.plugin_params,
-                intersect_levels=True)
-        else:
-            dependencies_list = get_dependencies(
-                self.groups,
-                self.meta_df,
-                'WaterVapourMixingRatio',
-                self.plugin_mandatory_dependencies,
-                self.plugin_params,
-                intersect_levels=True)
-
-        for dependencies_df, option in dependencies_list:
-            if option == 0:
-                qv_df = self.watervapourmixingratio_from_hu(
-                    dependencies_df, option)
+        try:
+            if self.rpn:
+                dependencies_list = get_dependencies(
+                    self.groups,
+                    self.meta_df,
+                    'WaterVapourMixingRatio',
+                    self.plugin_mandatory_dependencies_rpn,
+                    self.plugin_params,
+                    intersect_levels=True)
+           
             else:
-                qv_df = self.watervapourmixingratio_from_vppr(
-                    dependencies_df, option)
+                dependencies_list = get_dependencies(
+                    self.groups,
+                    self.meta_df,
+                    'WaterVapourMixingRatio',
+                    self.plugin_mandatory_dependencies,
+                    self.plugin_params,
+                    intersect_levels=True)
 
-            df_list.append(qv_df)
+        except DependencyError:
+            if not self.dependency_check:
+                raise DependencyError(f'{WaterVapourMixingRatio} - No matching dependencies found')
+        else:
+            for dependencies_df, option in dependencies_list:
+                if option == 0:
+                    qv_df = self.watervapourmixingratio_from_hu(dependencies_df, option)
+                else:
+                    qv_df = self.watervapourmixingratio_from_vppr(dependencies_df, option)
 
-        return final_results(
-            df_list,
-            WaterVapourMixingRatioError,
-            self.meta_df)
+                df_list.append(qv_df)
+        finally:
+            return final_results(df_list, WaterVapourMixingRatioError, self.meta_df, self.dependency_check)
 
     def watervapourmixingratio_from_vppr(self, dependencies_df, option):
-        logging.info(f'option {option+1}')
+        logging.info(f'WaterVapourMixingRatio - option {option+1}')
         # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
 
         vpprpa_df = get_from_dataframe(dependencies_df, 'VPPR')
-        pxpa_df = get_from_dataframe(dependencies_df, 'PX')
-        qv_df = create_empty_result(
+        pxpa_df   = get_from_dataframe(dependencies_df, 'PX')
+        qv_df     = create_empty_result(
             vpprpa_df,
             self.plugin_result_specifications['QV'],
             all_rows=True)
-        # vpprpa_df = fstpy.unit_convert(vppr_df, 'pascal')
-        # pxpa_df = fstpy.unit_convert(px_df, 'pascal')
+
         for i in qv_df.index:
             vpprpa = vpprpa_df.at[i, 'd']
             pxpa = pxpa_df.at[i, 'd']
             qv_df.at[i, 'd'] = qv_from_vppr(
                 px=pxpa, vppr=vpprpa).astype(np.float32)
+                
         return qv_df
 
     def watervapourmixingratio_from_hu(self, dependencies_df, option):
-        logging.info(f'option {option+1}')
+        logging.info(f'WaterVapourMixingRatio - option {option+1}')
 
         hu_df = get_from_dataframe(dependencies_df, 'HU')
         qv_df = create_empty_result(
@@ -179,6 +173,7 @@ class WaterVapourMixingRatio(Plugin):
         for i in qv_df.index:
             hu = hu_df.at[i, 'd']
             qv_df.at[i, 'd'] = qv_from_hu(hu=hu).astype(np.float32)
+
         return qv_df
 
     @staticmethod

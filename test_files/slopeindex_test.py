@@ -34,7 +34,7 @@ class TestSlopeIndex(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [SlopeIndex --verticalLevel 400 --excludeEdges]
 
         # write the result
-        results_file = TMP_PATH + "test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -58,7 +58,7 @@ class TestSlopeIndex(unittest.TestCase):
         #['( ([ReaderStd --input {sources[0]}] >> [Select --fieldName ME ]) + ', '([ReaderStd --input {sources[1]}] >> ', '[Select --fieldName UU,VV --verticalLevel 700 --verticalLevelType MILLIBARS]) ) >>', '[SlopeIndex --verticalLevel 700 --fetch 5 --excludeEdges] >> ', '[ReplaceDataIfCondition --condition isnan --value -999.0 --clearMissingDataFlag] >> ', '[Zap --pdsLabel SlopeIndex --doNotFlagAsZapped] >>', '[WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -82,7 +82,7 @@ class TestSlopeIndex(unittest.TestCase):
         #['( [ReaderStd --input {sources[0]}] >> [Select --fieldName ME ] ) + ', '( [ReaderStd --input {sources[1]}] >> ', '[Select --fieldName UU,VV --verticalLevel 700 --verticalLevelType MILLIBARS] ) >> ', '[SlopeIndex --verticalLevel 700 --excludeEdges] >> ', '[ReplaceDataIfCondition --condition isnan --value -999.0 --clearMissingDataFlag] >> ', '[Zap --pdsLabel SlopeIndex --doNotFlagAsZapped] >>', '[WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_3.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -106,7 +106,7 @@ class TestSlopeIndex(unittest.TestCase):
         #[' ( [ReaderStd --input {sources[0]}] >> [Select --fieldName ME ] ) + ', '( [ReaderStd --input {sources[1]}] >> ', '[Select --fieldName UU,VV --verticalLevel 700 --verticalLevelType MILLIBARS] ) >> ', '[SlopeIndex --verticalLevel 700] >> ', '[WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = TMP_PATH + "test_4.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -130,7 +130,7 @@ class TestSlopeIndex(unittest.TestCase):
         #['( [ReaderStd --input {sources[0]}] >> [Select --fieldName ME ] ) + ', '( [ReaderStd --input {sources[1]}] >> ', '[Select --fieldName UU,VV --verticalLevel 700 --verticalLevelType MILLIBARS] ) >> ', '[SlopeIndex --verticalLevel 700 --excludeEdges] >> ', '[WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --replaceMissingData]']
 
         # write the result
-        results_file = TMP_PATH + "test_5.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -151,7 +151,7 @@ class TestSlopeIndex(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[SlopeIndex --fetch 1] >> ', '[WriterStd --output {destination_path} --noUnitConversion]']
 
         # write the result
-        results_file = TMP_PATH + "test_6.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -172,7 +172,7 @@ class TestSlopeIndex(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[SlopeIndex] >> ', '[WriterStd --output {destination_path} --noUnitConversion]']
 
         # write the result
-        results_file = TMP_PATH + "test_7.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -193,7 +193,7 @@ class TestSlopeIndex(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[SlopeIndex] >> ', '[WriterStd --output {destination_path} --noUnitConversion]']
 
         # write the result
-        results_file = TMP_PATH + "test_8.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -214,7 +214,7 @@ class TestSlopeIndex(unittest.TestCase):
         #['[ReaderStd --input {sources[0]}] >>', '[SlopeIndex] >> ', '[WriterStd --output {destination_path}]']
 
         # write the result
-        results_file = TMP_PATH + "test_9.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

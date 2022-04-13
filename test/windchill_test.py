@@ -6,6 +6,7 @@ import pandas as pd
 import pytest
 import spookipy.all as spooki
 from ci_fstcomp import fstcomp
+import secrets
 from spookipy.utils import DependencyError
 
 pytestmark = [pytest.mark.regressions]
@@ -32,7 +33,7 @@ def test_1(plugin_test_dir):
     # df['datyp']=5
     # df['nbits']=32
     # write the result
-    results_file = TMP_PATH + "test_1.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -63,7 +64,7 @@ def test_2(plugin_test_dir):
     # print(src_df0[['level','surface']])
 
     # compute WindChill
-    with pytest.raises(DependencyError):
+    with pytest.raises(spooki.WindChillError):
         _ = spooki.WindChill(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --verticalLevel 1.0 --exclude] >> [WindChill]
 
@@ -75,6 +76,6 @@ def test_3(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute WindChill
-    with pytest.raises(DependencyError):
+    with pytest.raises(spooki.WindChillError):
         _ = spooki.WindChill(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>[WindChill]

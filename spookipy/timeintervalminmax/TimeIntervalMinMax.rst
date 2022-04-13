@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  Calculation of the minimum/maximum of a field whitin a specified time frame. 
 -  The various intervals have to be defined through the parameter keys. 

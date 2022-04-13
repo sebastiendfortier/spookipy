@@ -34,7 +34,7 @@ class TestPrecipitationTypeSignificant(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [PrecipitationAmount --fieldName RN,SN,FR,PE --rangeForecastHour 0@48,0@48 --interval 12,24 --step 12,24] >> [Select --fieldName RN,SN,FR,PE] >> [FilterDigital --filter 1,2,1 --repetitions 1] >> [PrecipitationTypeSignificant] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -55,7 +55,7 @@ class TestPrecipitationTypeSignificant(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName RN,SN,FR,PE] >> [PrecipitationTypeSignificant] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

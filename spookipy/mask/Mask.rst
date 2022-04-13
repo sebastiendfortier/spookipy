@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  This plug-in creates a mask according to the threshold value(s)
    given.

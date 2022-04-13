@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  Calculation of the pressure field for a given vertical coordinate.
 -  The definition of the different coordinates are available in this

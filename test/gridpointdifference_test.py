@@ -6,6 +6,7 @@ import pandas as pd
 import pytest
 import spookipy.all as spooki
 from ci_fstcomp import fstcomp
+import secrets
 import rpnpy.librmn.all as rmn
 
 pytestmark = [pytest.mark.regressions]
@@ -37,7 +38,7 @@ def test_1(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion]
     df = pd.concat([src_df0,df], ignore_index=True)
     # write the result
-    results_file = TMP_PATH + "test_1.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -69,7 +70,7 @@ def test_2(plugin_test_dir):
     df.loc[df.nomvar=='FF','nomvar'] = 'FFDZ'
     df = spooki.convip(df,rmn.CONVIP_ENCODE_OLD)
     # write the result
-    results_file = TMP_PATH + "test_2.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -102,7 +103,7 @@ def test_3(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
-    results_file = TMP_PATH + "test_3.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -133,7 +134,7 @@ def test_4(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
     df = spooki.convip(df, rmn.CONVIP_ENCODE_OLD)
     # write the result
-    results_file = TMP_PATH + "test_4.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -166,7 +167,7 @@ def test_5(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
-    results_file = TMP_PATH + "test_5.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -197,7 +198,7 @@ def test_6(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
     df = spooki.convip(df, rmn.CONVIP_ENCODE_OLD)
     # write the result
-    results_file = TMP_PATH + "test_6.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -226,7 +227,7 @@ def test_7(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion --IP1EncodingStyle OLDSTYLE]
     res_df = pd.concat([src_df0, df], ignore_index=True)
     # write the result
-    results_file = TMP_PATH + "test_7.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, res_df).to_fst()
 
@@ -323,7 +324,7 @@ def test_12(plugin_test_dir):
 
 
     # write the result
-    results_file = TMP_PATH + "test_12.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -356,7 +357,7 @@ def test_13(plugin_test_dir):
     df.loc[df.nomvar.isin(['^>','!!']), 'etiket'] = 'G1_5_0X'
     df = spooki.convip(df,rmn.CONVIP_ENCODE)
     # write the result
-    results_file = TMP_PATH + "test_13.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -389,7 +390,7 @@ def test_14(plugin_test_dir):
     df.loc[df.nomvar.isin(['^>','!!']), 'etiket'] = 'G1_5_0X'
     df = spooki.convip(df,rmn.CONVIP_ENCODE)
     # write the result
-    results_file = TMP_PATH + "test_14.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -421,7 +422,7 @@ def test_15(plugin_test_dir):
     df.loc[~(df.nomvar=='TT'), 'etiket'] = 'G1_7_1X'
     
     # write the result
-    results_file = TMP_PATH + "test_15.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -430,7 +431,7 @@ def test_15(plugin_test_dir):
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
-    # fstpy.delete_file(results_file)
+    fstpy.delete_file(results_file)
     assert(res)
 
 
@@ -452,7 +453,7 @@ def test_16(plugin_test_dir):
     df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
     df.loc[~(df.nomvar=='TT'), 'etiket'] = 'G1_7_1X'
     # write the result
-    results_file = TMP_PATH + "test_16.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_16.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -484,7 +485,7 @@ def test_17(plugin_test_dir):
     df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
     df.loc[~(df.nomvar=='TT'), 'etiket'] = 'G1_7_1X'
     # write the result
-    results_file = TMP_PATH + "test_17.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_17.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -510,8 +511,9 @@ def test_18(plugin_test_dir):
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
     df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
+    df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
-    results_file = TMP_PATH + "test_18.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_18.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -537,8 +539,9 @@ def test_19(plugin_test_dir):
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
     df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
+    df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
-    results_file = TMP_PATH + "test_19.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_19.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -564,8 +567,9 @@ def test_20(plugin_test_dir):
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
     df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
+    df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
-    results_file = TMP_PATH + "test_20.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_20.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -591,8 +595,9 @@ def test_21(plugin_test_dir):
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
     df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
+    df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
-    results_file = TMP_PATH + "test_21.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_21.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -618,8 +623,9 @@ def test_22(plugin_test_dir):
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
     df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
+    df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
-    results_file = TMP_PATH + "test_22.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_22.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -645,8 +651,9 @@ def test_23(plugin_test_dir):
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
     df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
+    df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
-    results_file = TMP_PATH + "test_23.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_23.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -672,8 +679,9 @@ def test_24(plugin_test_dir):
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
     df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
+    df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
-    results_file = TMP_PATH + "test_24.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_24.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -700,8 +708,9 @@ def test_25(plugin_test_dir):
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
     df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
+    df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
-    results_file = TMP_PATH + "test_25.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_25.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -726,8 +735,9 @@ def test_26(plugin_test_dir):
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
     df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
+    df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
-    results_file = TMP_PATH + "test_26.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_26.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
@@ -754,7 +764,7 @@ def test_27(plugin_test_dir):
     df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
     df.loc[~(df.nomvar=='TT'), 'etiket'] = 'Y3H9DNX'
     # write the result
-    results_file = TMP_PATH + "test_27.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_27.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 

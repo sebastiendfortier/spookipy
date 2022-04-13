@@ -34,7 +34,7 @@ class TestConcreteOperation(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> ([Select --fieldName UU --verticalLevel 1,2] + [Select --fieldName VV --verticalLevel 1] + [Select --fieldName GZ]) >> [AddElementsByPoint --outputFieldName ACCU] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -56,7 +56,7 @@ class TestConcreteOperation(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> ([Select --fieldName UU ] + [Select --fieldName VV] + [Select --fieldName GZ --verticalLevel 2]) >> [AddElementsByPoint --outputFieldName ACCU] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -77,7 +77,7 @@ class TestConcreteOperation(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> ([Select --fieldName UU --verticalLevel 0] + [Select --fieldName VV] + [Select --fieldName GZ ]) >> [AddElementsByPoint --outputFieldName ACCU] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_3.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -98,7 +98,7 @@ class TestConcreteOperation(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> ([Select --fieldName UU] + [Select --fieldName VV --verticalLevel 0,2] + [Select --fieldName GZ ]) >> [AddElementsByPoint --outputFieldName ACCU] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_4.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -119,7 +119,7 @@ class TestConcreteOperation(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> ([Select --fieldName UU] + [Select --fieldName VV --verticalLevel 0,2] + [Select --fieldName GZ ]) >> [SetConstantValue --value 5] >> [AddElementsByPoint --outputFieldName ACCU] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_5.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -140,7 +140,7 @@ class TestConcreteOperation(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType AUTODETECT --referenceField TT] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_6.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -161,7 +161,7 @@ class TestConcreteOperation(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [AddElementsByPoint --outputFieldName ACCU]
 
         # write the result
-        results_file = TMP_PATH + "test_7.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

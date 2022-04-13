@@ -8,7 +8,8 @@ import pandas as pd
 from ..plugin import Plugin
 from ..science import hmx_from_svp
 from ..utils import (create_empty_result, existing_results, final_results,
-                     get_dependencies, get_existing_result, get_from_dataframe)
+                     get_dependencies, get_existing_result, get_from_dataframe,
+                     initializer, DependencyError)
 
 
 class HumidexError(Exception):
@@ -20,73 +21,53 @@ class Humidex(Plugin):
 
     :param df: input DataFrame
     :type df: pd.DataFrame
+    :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
+    :type dependency_check: bool, optional  
     """
-    def __init__(self, df: pd.DataFrame):
+    @initializer
+    def __init__(
+            self, 
+            df: pd.DataFrame,
+            dependency_check=False):
+
         self.plugin_mandatory_dependencies = [
             {
                 'TT': {'nomvar': 'TT', 'unit': 'celsius', 'surface': True},
-                'TD': {'nomvar': 'TD', 'unit': 'celsius', 'select_only': True, 'surface': True},
-            },
-            {
-                'TT': {'nomvar': 'TT', 'unit': 'celsius', 'surface': True},
-                'HU': {'nomvar': 'HU', 'unit': 'kilogram_per_kilogram', 'select_only': True, 'surface': True},
-            },
-            {
-                'TT': {'nomvar': 'TT', 'unit': 'celsius', 'surface': True},
-                'HR': {'nomvar': 'HR', 'unit': 'scalar', 'select_only': True, 'surface': True},
-            },
-            {
-                'TT': {'nomvar': 'TT', 'unit': 'celsius', 'surface': True},
-                'QV': {'nomvar': 'QV', 'unit': 'gram_per_kilogram', 'select_only': True, 'surface': True},
-            },
-            {
-                'TT': {'nomvar': 'TT', 'unit': 'celsius', 'surface': True},
-                'ES': {'nomvar': 'ES', 'unit': 'celsius', 'select_only': True, 'surface': True},
+                'TD': {'nomvar': 'TD', 'unit': 'celsius', 'select_only': False, 'surface': True},
             }
         ]
 
         self.plugin_result_specifications = {
-            'HMX': {
-                'nomvar': 'HMX',
-                'etiket': 'HUMIDX',
-                'unit': 'scalar',
-                'ip1': 0,
-                'surface': True,
-                'surface': True}}
+                'HMX': {
+                    'nomvar': 'HMX',
+                    'etiket': 'HUMIDX',
+                    'unit': 'scalar',
+                    'ip1': 0,
+                    'surface': True,
+                    'surface': True}
+                    }
+        self.plugin_params = {
+                'ice_water_phase': 'water'}
 
-        self.df = df
+        self.df = fstpy.metadata_cleanup(df)
+        super().__init__(df)
+        self.prepare_groups()
 
-        self.validate_input()
+    def prepare_groups(self):
 
-    def validate_input(self):
-        if self.df.empty:
-            raise HumidexError('No data to process')
-
-        self.df = fstpy.metadata_cleanup(self.df)
-
-        self.df = fstpy.add_columns(
-            self.df, columns=[
+        self.no_meta_df = fstpy.add_columns(
+            self.no_meta_df, columns=[
                 'unit', 'forecast_hour', 'ip_info'])
-
-        # print(self.df[['nomvar','typvar','etiket','unit','surface','grid','forecast_hour']].sort_values(by=['grid','nomvar']).to_string())
-        self.meta_df = self.df.loc[self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
 
         # check if result already exists
         self.existing_result_df = get_existing_result(
-            self.df, self.plugin_result_specifications)
+            self.no_meta_df, self.plugin_result_specifications)
 
         # select surface only
-        self.df = self.df.loc[self.df.surface]
+        self.no_meta_df = self.no_meta_df.loc[self.no_meta_df.surface]
 
-        self.df = pd.concat([self.df, self.meta_df], ignore_index=True)
-
-        # remove meta data from DataFrame
-        self.df = self.df.loc[~self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
-        self.groups = self.df.groupby(
-            ['grid', 'dateo', 'forecast_hour', 'ip1_kind'])
+        self.groups = self.no_meta_df.groupby(
+            ['grid', 'datev', 'ip1_kind'])
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:
@@ -100,6 +81,7 @@ class Humidex(Plugin):
             self.meta_df,
             'Humidex',
             self.plugin_mandatory_dependencies,
+            self.plugin_params,
             intersect_levels=True)
 
         for dependencies_df, option in dependencies_list:
@@ -122,7 +104,7 @@ class Humidex(Plugin):
     def humidex_from_tt_svp(self, dependencies_df, td_df, option):
         from ..saturationvapourpressure.saturationvapourpressure import \
             SaturationVapourPressure
-        logging.info(f'option {option+1}')
+        logging.info(f'Humidex - option {option+1}')
 
         tt_df = get_from_dataframe(dependencies_df, 'TT')
         hmx_df = create_empty_result(
@@ -147,3 +129,4 @@ class Humidex(Plugin):
         td_df = TemperatureDewPoint(pd.concat(
             [dependencies_df, self.meta_df], ignore_index=True), ice_water_phase='water').compute()
         return td_df
+  

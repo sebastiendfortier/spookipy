@@ -69,6 +69,7 @@ Documentation
 * :doc:`multiplyelementsbypoint`
 * :doc:`opelementsbycolumn`
 * :doc:`opelementsbyvalue`
+* :doc:`percentiletopercentage`
 * :doc:`plugin`
 * :doc:`precipitationamount`
 * :doc:`pressure`
@@ -79,6 +80,8 @@ Documentation
 * :doc:`setupperboundary`
 * :doc:`subtractelementsvertically`
 * :doc:`temperaturedewpoint`
+* :doc:`temperaturepotential`
+* :doc:`temperaturevirtual`
 * :doc:`timeintervaldifference`
 * :doc:`timeintervalminmax`
 * :doc:`totaltotalsindex`
@@ -123,6 +126,7 @@ Documentation
    multiplyelementsbypoint
    opelementsbycolumn
    opelementsbyvalue
+   percentiletopercentage
    plugin
    precipitationamount
    pressure
@@ -133,6 +137,8 @@ Documentation
    setupperboundary
    subtractelementsvertically
    temperaturedewpoint
+   temperaturepotential
+   temperaturevirtual
    timeintervaldifference
    timeintervalminmax
    totaltotalsindex

@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  Generic plugin used by other plugins to apply specific operations on a column of data
 
@@ -43,12 +43,16 @@ Usage:
     import os
     import fstpy.all as fstpy
     import spookipy.all as spooki
+    import numpy as np
 
     spooki_dir = os.environ['SPOOKI_DIR']
 
     user = os.environ['USER']
 
     df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/MultiplyElementsByPoint/testsFiles/inputFile.std').to_pandas()
+
+    class MultiplyElementsByPointError(Exception):
+        pass
 
     res_df = spooki.OpElementsByColumn(df,
                                         operator=np.prod,

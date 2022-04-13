@@ -22,11 +22,12 @@ from .interpolationvertical import *
 from .mask import *
 from .matchlevelindextovalue import *
 from .minmaxlevelindex import *
-from .multiplyelementby import *
 from .minmaxvertically import *
+from .multiplyelementby import *
 from .multiplyelementsbypoint import *
 from .opelementsbycolumn import *
 from .opelementsbyvalue import *
+from .percentiletopercentage import *
 from .plugin import *
 from .precipitationamount import *
 from .pressure import *
@@ -35,9 +36,11 @@ from .science import *
 from .setconstantvalue import *
 from .setlowerboundary import *
 from .setupperboundary import *
+from .statisticsvertically import *
 from .subtractelementsvertically import *
 from .temperaturedewpoint import *
 from .temperaturepotential import *
+from .temperaturevirtual import *
 from .timeintervaldifference import *
 from .timeintervalminmax import *
 from .totaltotalsindex import *
@@ -48,4 +51,5 @@ from .winddirection import *
 from .windmax import *
 from .windmodulus import *
 
+from .configparsingutils import *
 from .utils import *

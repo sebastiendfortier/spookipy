@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 - Calculation of the meteorological wind direction (where the vector is coming from with respect to north) from its 2 horizontal components.
 

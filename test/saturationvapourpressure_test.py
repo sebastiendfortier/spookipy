@@ -5,6 +5,7 @@ import fstpy.all as fstpy
 import pytest
 import spookipy.all as spooki
 from ci_fstcomp import fstcomp
+import secrets
 
 pytestmark = [pytest.mark.regressions, pytest.mark.humidity]
 
@@ -107,13 +108,12 @@ def test_6(plugin_test_dir):
     # df['datyp']=5
     # df.loc[df.nomvar!='!!','nbits']=32
     # write the result
-    results_file = TMP_PATH + "test_6.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "SaturationVapourPressure_file2cmp.std"
-    # file_to_compare = '/fs/site4/eccc/cmd/w/sbf000/testFiles/SaturationVapourPressure/res_test_6.std'
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.1)
@@ -141,15 +141,48 @@ def test_7(plugin_test_dir):
     # df['datyp']=5
     # df.loc[df.nomvar!='!!','nbits']=32
     # write the result
-    results_file = TMP_PATH + "test_7.std"
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "resulttest_7.std"
-    # file_to_compare = '/fs/site4/eccc/cmd/w/sbf000/testFiles/SaturationVapourPressure/res_test_7.std'
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)
+
+# Test qui etait en commentaire dans la version Spooki. 
+#
+# Creation du fichier input de la facon suivante:
+# /apps/spooki_run  "[ReaderStd --input hyb_prog_2012071312_009_1HY ] >> 
+# [Select --fieldName WW,WD,UU,VV,UV --exclude] >>
+# [GridCut --startPoint 0,0 --endPoint 90,110]
+def test_8(plugin_test_dir):
+    """Calcul de la pression de vapeur saturante avec un fichier hybrid, option rpn."""
+
+    # open and read source
+    source0 = plugin_test_dir + "hyb_prog_2012071312_009_1HY_reduit"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    # compute SaturationVapourPressure
+    df = spooki.SaturationVapourPressure(
+        src_df0, ice_water_phase='water',rpn=True).compute()
+
+    df.loc[df.nomvar.isin(['HY', 'P0']), 'etiket'] = 'R1580V0_N'
+    df.loc[df.nomvar.isin(['SVP']), 'etiket']      = '__SVPRESX'
+
+    # write the result
+    results_file = TMP_PATH + "test_8.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "SaturationVapourPressure_test8_file2cmp.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare, e_max=0.01)
+    fstpy.delete_file(results_file)
+    assert(res)
+    

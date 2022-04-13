@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 - Calculation of the relative helicity, necessary tool for the
    forecast of severe thunderstorms

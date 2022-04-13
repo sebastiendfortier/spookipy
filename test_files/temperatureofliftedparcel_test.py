@@ -34,7 +34,7 @@ class TestTemperatureOfLiftedParcel(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [TemperatureOfLiftedParcel --liftedFrom USER_DEFINED --verticalLevel 1000 --endLevel 100.0hPa --increment 10.0hPa] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -55,7 +55,7 @@ class TestTemperatureOfLiftedParcel(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [TemperatureOfLiftedParcel --liftedFrom SURFACE --endLevel 100.0hPa --increment 10.0hPa] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -77,7 +77,7 @@ class TestTemperatureOfLiftedParcel(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [TemperatureOfLiftedParcel --endLevel 100mb --increment 5mb --liftedFrom SURFACE,USER_DEFINED --verticalLevel 1000] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_3.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -99,7 +99,7 @@ class TestTemperatureOfLiftedParcel(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [TemperatureOfLiftedParcel --endLevel 100mb --increment 5mb --liftedFrom SURFACE,USER_DEFINED --verticalLevel 1000] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_4.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -120,7 +120,7 @@ class TestTemperatureOfLiftedParcel(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [TemperatureOfLiftedParcel --endLevel 100mb --increment 10mb --liftedFrom SURFACE] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_5.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -142,7 +142,7 @@ class TestTemperatureOfLiftedParcel(unittest.TestCase):
         # ([ReaderStd --input {sources[0]}] + [ReaderStd --input /home/spst900/spooki/spooki_dir_ppp4/pluginsRelatedStuff/TemperatureOfLiftedParcel/testsFiles/2011100712_012_reghyb_TTPXHR1000.std]) >> [TemperatureOfLiftedParcel --liftedFrom SURFACE,USER_DEFINED --verticalLevel 1000 --endLevel 100.0hPa --increment 10.0hPa] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = TMP_PATH + "test_6.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -164,7 +164,7 @@ class TestTemperatureOfLiftedParcel(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [TemperatureOfLiftedParcel --liftedFrom MEAN_LAYER --baseMeanLayer SURFACE --deltaMeanLayer 100mb --endLevel 100.0hPa --increment 10.0hPa] >> [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion]
 
         # write the result
-        results_file = TMP_PATH + "test_7.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -185,7 +185,7 @@ class TestTemperatureOfLiftedParcel(unittest.TestCase):
         #['[ReaderStd --input {sources[0]} ] >> ', '[TemperatureOfLiftedParcel --liftedFrom MEAN_LAYER --baseMeanLayer SURFACE --deltaMeanLayer 100mb --endLevel 100.0hPa --increment 10.0hPa] >> ', '[WriterStd --output {destination_path} --ignoreExtended --noUnitConversion]']
 
         # write the result
-        results_file = TMP_PATH + "test_8.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -206,7 +206,7 @@ class TestTemperatureOfLiftedParcel(unittest.TestCase):
         #['[ReaderStd --input {sources[0]} ] >> ', '([Copy] + [Pressure --coordinateType HYBRID_5005_COORDINATE --referenceField TT]) >> ', '[TemperatureOfLiftedParcel --liftedFrom SURFACE --endLevel 100.0hPa --increment 10.0hPa] >> ', '[WriterStd --output {destination_path} --ignoreExtended --noUnitConversion]']
 
         # write the result
-        results_file = TMP_PATH + "test_9.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

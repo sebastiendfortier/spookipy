@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  Calculation of the specific humidity, the ratio of the mass of
    water vapour in the air to the total mass of moist air.
@@ -12,11 +12,16 @@ Iteration method:
 Dependencies:
 ~~~~~~~~~~~~~
 
--  Water vapour mixing ratio, QV
-   or
+-  Water vapour mixing ratio, QV 
+  
+   **or**
+
 -  Air temperature, TT
-   and one of the following fields:
--  Dew point temperature, TD / Dew point depression, ES
+
+   **and one of the following fields:**
+
+-  Dew point temperature, TD 
+-  Dew point depression, ES
 -  Humidité relative, HR
 
 Result(s):
@@ -36,11 +41,15 @@ Algorithm:
             where the specific humidity, HU is in kg/kg
 
 
-        *If the input fields are the relative humidity, HR (fraction) or the dew point temperature, TD (deg C) / dew point depression, ES (deg K or deg C) and the air temperature, TT (deg C)
+        *If the input fields are the relative humidity, HR (fraction) or 
+         the dew point temperature, TD (deg C) / dew point depression, ES (deg K or deg C) 
+         and the air temperature, TT (deg C)
             Calculation of the vapour pressure, VPPR (Pa) with the VapourPressure plug-in
             Calculation of the pressure, PX (Pa) with the Pressure plug-in
-                HU = epsilon * ( VPPR / (PX - (1-epsilon)*VPPR))
-            where specific humidity, HU is in kg/kg and epsilon is defined in the table of constants as 0.6219800221014e+00 and corresponds to Rd/Rv.
+
+            HU = epsilon * ( VPPR / (PX - (1-epsilon)*VPPR))
+            where specific humidity, HU is in kg/kg and epsilon is defined in the table of constants 
+            as 0.6219800221014e+00 and corresponds to Rd/Rv.
 
 
     -If the --RPN key is activated:
@@ -50,19 +59,30 @@ Algorithm:
             HU = QV / (QV + 1)
             where the specific humidity, HU is in kg/kg
 
-        *If the input fields are the relative humidity, HR (fraction) and the air temperature, TT (deg K)
+        *If the input fields are the relative humidity, HR (fraction) and
+         the air temperature, TT (deg K)
             Calculate the pressure, PX (Pa) with the Pressure plug-in
             Call the function shrahu.ftn90 to obtain the specific humidity, HU (kg/kg)
 
-        *If the input fields are the dew point temperature, TD (deg K) / the dew point depression, ES (deg K or deg C) and the air temperature, TT (deg K)
-            Calculate the dew point depression, ES (deg K or deg C) with the DewPointDepression plug-in if necessary
+        *If the input fields are the dew point temperature, TD (deg K) /
+         the dew point depression, ES (deg K or deg C) and the air temperature, TT (deg K)
+            Calculate the dew point depression, ES (deg K or deg C) with the DewPointDepression 
+            plug-in if necessary
             Calculate the pressure, PX (Pa) with the Pressure plug-in
             Call the function sesahu.ftn90 to obtain the specific humidity, HU (kg/kg)
 
 
-   Notes:  - When several fields of the dependencies and TT are available in the input, the calculation will be done with the field that has the most number of levels in common with TT, in order of preference (in case of equality) with QV followed by HR and finally ES/TD.
-            - When the TT field is not available, the calculation will be done with QV.
-            - When the --RPN key is activate and the attribut to --iceWaterPhase is BOTH, --temperaturePhaseSwitch is no accepted and 273.16K (the triple point of water) is assigned to the sesahu.ftn90 and shrahu.ftn90 functions.
+   Notes:   
+      When several fields of the dependencies and TT are available in the input,  
+      the calculation will be done with the field that has the most number of levels 
+      in common with TT, in order of preference (in case of equality) with QV followed 
+      by HR and finally ES/TD.
+
+      When the TT field is not available, the calculation will be done with QV.
+
+      When the --RPN key is activated and the --iceWaterPhase option is BOTH,  
+      --temperaturePhaseSwitch is not accepted and 273.16K (the triple point of water) 
+      is assigned to the sesahu.ftn90 and shrahu.ftn90 functions.
 
 Reference:
 ~~~~~~~~~~
@@ -112,6 +132,6 @@ Contacts:
 Spooki original documentation:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`Francais <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginHumiditySpecific.html>`_
+`Français <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginHumiditySpecific.html>`_
 
 `English <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_english_doc/html/pluginHumiditySpecific.html>`_

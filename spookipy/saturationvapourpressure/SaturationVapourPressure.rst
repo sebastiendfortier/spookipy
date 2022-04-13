@@ -1,5 +1,5 @@
 Description:
-============
+~~~~~~~~~~~~
 
 -  Calculates the saturation vapour pressure as a function of temperature.
 
@@ -25,9 +25,10 @@ Algorithm:
 
          -If the --RPN key is NOT activated:
 
-            For TT the air temperature (deg C)
-            For TPL the temperature at which to switch from saturation over water to saturation over ice (deg C)
-            For SVP the saturation vapour pressure (hPa)
+            For the air temperature, TT (deg C)
+            For the temperature at which to switch from saturation over water to saturation 
+            over ice, TPL (deg C)
+            For the saturation vapour pressure, SVP (hPa)
 
             If TT > TPL or --iceWaterPhase WATER
                SVP = AEw1*EXP[AEw2*TT/(AEw3 + TT)]
@@ -42,8 +43,9 @@ Algorithm:
 
          -If the --RPN key is activated:
 
-            For TT the temperature (deg K)
-            For TPL the temperature below which we calculate the saturation vapour pressure with respect to ice (deg K)
+            For the temperature, TT (deg K)
+            For the temperature below which we calculate the saturation vapour pressure 
+            with respect to ice, TPL (deg K)
 
             If TT > TPL or --iceWaterPhase WATER
                Call rpn function sfoewa.ftn90 to obtain the saturation vapour pressure, SVP (Pa)
@@ -104,6 +106,6 @@ Contacts:
 Spooki original documentation:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`Francais <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginSaturationVapourPressure.html>`_
+`Français <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginSaturationVapourPressure.html>`_
 
 `English <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_english_doc/html/pluginSaturationVapourPressure.html>`_

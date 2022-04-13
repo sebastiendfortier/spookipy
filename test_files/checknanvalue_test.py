@@ -34,7 +34,7 @@ class TestCheckNanValue(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [CheckNanValue] >> [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion ]
 
         # write the result
-        results_file = TMP_PATH + "test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -55,7 +55,7 @@ class TestCheckNanValue(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [CheckNanValue --msgOnly FALSE] >> [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion ]
 
         # write the result
-        results_file = TMP_PATH + "test_2.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -76,7 +76,7 @@ class TestCheckNanValue(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [CheckNanValue --outputFieldName ABCD]
 
         # write the result
-        results_file = TMP_PATH + "test_3.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -97,7 +97,7 @@ class TestCheckNanValue(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [CheckNanValue --outputFieldName ABCDEF]
 
         # write the result
-        results_file = TMP_PATH + "test_4.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

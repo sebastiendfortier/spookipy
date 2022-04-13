@@ -34,7 +34,7 @@ class TestWindTurbulenceDVSI(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --fieldName UU,VV,GZ --verticalLevel 700,600,500,400,300,250,200,150,100] >> [WindTurbulenceDVSI] >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE --ignoreExtended --noUnitConversion]
 
         # write the result
-        results_file = TMP_PATH + "test_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

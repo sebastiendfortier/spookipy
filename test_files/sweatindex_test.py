@@ -34,7 +34,7 @@ class TestSweatIndex(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [SweatIndex] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_sw_algo_1.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_sw_algo_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -55,7 +55,7 @@ class TestSweatIndex(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [SweatIndex] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = TMP_PATH + "test_sw_20100823.std"
+        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_sw_20100823.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file

@@ -39,8 +39,7 @@ for plugin in plugins:
 
     if os.path.exists(test_file):
         process = subprocess.run(["pytest", "-v", test_file])
-        # print(process.args)
-        # print(process.returncode)
-        # print(process.stdout)
+        if process.returncode != 0:
+            exit(process.returncode)
     else:
         print("No test for this one")

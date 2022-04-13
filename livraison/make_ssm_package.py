@@ -30,10 +30,7 @@ def main():
     plat = "all"
     name = "spookipy"
 
-
     pkg_name = "_".join([name,version,plat] if parsed_arg["suffix"] == "" else [name,version,plat,parsed_arg["suffix"]])
-
-    
 
     # generate package file hierarchy
     temp_dir = dir_livraison+"/temp"
@@ -63,7 +60,6 @@ def main():
             try:
                 plugin_list = yaml.safe_load(stream)
                 plugin_list = plugin_list["plugins"]
-                # print(x)
             except yaml.YAMLError as exc:
                 print(exc)
                 raise("Could not read yaml file")
@@ -92,7 +88,7 @@ def main():
     ssm.close()
 
     if parsed_arg["install"]:
-        install(pkg_name, dir_livraison, name, version)
+        install(pkg_name, dir_livraison, parsed_arg["temp"], name, version)
 
 def get_version(root_dir):
     version_file = open(root_dir+"/VERSION","r")
@@ -135,7 +131,6 @@ def generate_all(all_file, plugins,pkg_name):
             outfile.write("from ."+plugin+" import *\n")
 
         outfile.write("\nfrom .utils import *\n")
-        outfile.write("\nprint(\"+++++++++++++ use the package "+ pkg_name +" +++++++++++++\")\n")
 
 def get_arguments():
 
@@ -144,30 +139,23 @@ def get_arguments():
     parser.add_argument("--yaml", type=str, default="", help="YAML file with the list of plugins, if left empty it generate the package with all the plugin.")
     parser.add_argument("--suffix", type=str, default="", help="Suffix to add to the package name (ex: beta or operation).")
     parser.add_argument("--install", action="store_true", help="Do a local install.")
-
+    parser.add_argument("--temp", type=str, help="Temporary path to install the package if the --install option is used.")
     return vars(parser.parse_args())
 
-def install(pkg_name, dir_livraison, name, version):
-    # print("ssm created -d master")
-    process = subprocess.run(["ssm", "created", "-d", "master"])
-    # print(process.returncode)
-    # print("ssm install -f "+dir_livraison+"/"+pkg_name+".ssm -d master")
-    process = subprocess.run(["ssm", "install", "-f", dir_livraison+"/"+pkg_name+".ssm", "-d", "master"])
-    # print(process.returncode)
-    # print("mkdir "+name)
+def install(pkg_name, dir_livraison, path, name, version):
+    temp_path = path if path else dir_livraison
+    process = subprocess.run(["ssm", "created", "-d", os.path.join(temp_path,"master")])
+    process = subprocess.run(["ssm", "install", "-f", dir_livraison+"/"+pkg_name+".ssm", "-d", os.path.join(temp_path,"master")])
+
     try:
-        os.mkdir(name)
+        os.mkdir(os.path.join(temp_path, name))
     except FileExistsError:
         print(name + " dir already exists")
 
-    # print("ssm created -d "+name+"/"+version)
-    process = subprocess.run(["ssm", "created", "-d", name+"/"+version])
-    # print(process.returncode)
+    process = subprocess.run(["ssm", "created", "-d", os.path.join(temp_path,name,version)])
 
-    # print("ssm publish -d master -p "+pkg_name+ " -P "+name+"/"+version+"/ -pp all")
-    process = subprocess.run(["ssm", "publish", "-d", "master", "-p", pkg_name, "-P", name+"/"+ version+"/", "-pp", "all"])
-    # print(process.args)
-    # print(process.returncode)
+    process = subprocess.run(["ssm", "publish", "-d", os.path.join(temp_path,"master"), "-p", pkg_name, "-P", os.path.join(temp_path,name,version), "-pp", "all"])
+
 
 def get_all_plugins(root_dir):
 

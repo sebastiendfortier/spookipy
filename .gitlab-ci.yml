@@ -6,7 +6,8 @@ variables:
   JOB_WALLCLOCK: "3600"
   doc_install_dir: "/home/spst900/public_html/spookipy/${CI_BUILD_REF_NAME}"
   latest_doc_install_dir: "/home/spst900/public_html/spookipy/latest"
-  ssm_package: "/home/${USER}/public/ssm/"
+  ssm_package: "/home/sgci800/public/ssm/"
+  temp_dir: "/home/sgci800/cache/${CI_PROJECT_PATH}/${CI_BUILD_REF_NAME}/${CI_PIPELINE_ID}"
 
 stages:
   - run_regtests
@@ -74,8 +75,8 @@ ssm_package_with_everything:
   script:
     - cd livraison
     - export SSM_TEST_SPOOKIPY=1
-    - ./make_ssm_package.py --install
-    - . ssmuse-sh -x $( pwd )/spookipy/$( cat ../VERSION )/all
+    - ./make_ssm_package.py --install --temp ${temp_dir}/${CI_BUILD_STAGE}
+    - . ssmuse-sh -x ${temp_dir}/${CI_BUILD_STAGE}/spookipy/$( cat ../VERSION )/all
     - ./test_ssm_package.py
     - mv spookipy_*.ssm ${ssm_package}
     - rm -r master
@@ -86,8 +87,8 @@ ssm_package_with_operation_yaml_list:
   script:
     - cd livraison
     - export SSM_TEST_SPOOKIPY=1
-    - ./make_ssm_package.py --yaml plugin_list_operation.yaml --suffix operation --install
-    - . ssmuse-sh -x $( pwd )/spookipy/$( cat ../VERSION )/all
+    - ./make_ssm_package.py --yaml plugin_list_operation.yaml --suffix operation --install --temp ${temp_dir}/${CI_BUILD_STAGE}
+    - . ssmuse-sh -x ${temp_dir}/${CI_BUILD_STAGE}/spookipy/$( cat ../VERSION )/all
     - ./test_ssm_package.py --yaml plugin_list_operation.yaml
     - mv spookipy_*.ssm ${ssm_package}
     - rm -r master

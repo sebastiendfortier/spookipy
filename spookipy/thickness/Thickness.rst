@@ -73,6 +73,6 @@ Contacts:
 Spooki original documentation:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`Francais <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/classThickness.html>`_
+`Francais <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginThickness.html>`_
 
-`English <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_english_doc/html/classThickness.html>`_
+`English <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_english_doc/html/pluginThickness.html>`_

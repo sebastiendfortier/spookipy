@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
+from test import TEST_PATH, TMP_PATH, check_test_ssm_package
+
+check_test_ssm_package()
+
 from spookipy.watervapourmixingratio.watervapourmixingratio import WaterVapourMixingRatio
-from test import TEST_PATH, TMP_PATH
 
 import fstpy.all as fstpy
 import pandas as pd

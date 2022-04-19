@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 from operator import concat
 import pandas as pd
-from test import TEST_PATH, TMP_PATH
+from test import TEST_PATH, TMP_PATH, check_test_ssm_package
+
+check_test_ssm_package()
+
 from spookipy.minmaxlevelindex.minmaxlevelindex import  MinMaxLevelIndex, MinMaxLevelIndexError
 import fstpy.all as fstpy
 import pytest

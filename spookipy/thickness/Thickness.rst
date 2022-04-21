@@ -45,6 +45,7 @@ Usage:
 ~~~~~~
 
 .. code:: python
+<<<<<<< HEAD
    python3
    
    import os
@@ -60,6 +61,24 @@ Usage:
    df = spooki.Thickness(src_df0,base=1.0,top=0.8346,coordinate_type='UNKNOWN').compute()
 
    fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', df).to_fst()
+=======
+
+   python3
+   from spookipy.thickness.thickness import Thickness,ParametersValuesError
+   from test import TEST_PATH, TMP_PATH
+   import fstpy.all as fstpy
+   import spookipy.all as spooki
+   import rpnpy.librmn.all as rmn
+
+   plugin_test_dir = "/fs/site3/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/"
+   source0 = plugin_test_dir + "GZ_12000_10346_fileSrc.std"
+   src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
+   df = Thickness(src_df0,base=1.0,top=0.8346,coordinate_type='UNKNOWN').compute()
+
+   results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+   fstpy.delete_file(results_file)
+   fstpy.StandardFileWriter(results_file, df).to_fst()
+>>>>>>> parent of fc0778f... changement de lexemple
 
 Contacts:
 ~~~~~~~~~

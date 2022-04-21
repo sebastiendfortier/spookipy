@@ -45,25 +45,6 @@ Usage:
 ~~~~~~
 
 .. code:: python
-
-   python3
-   from spookipy.thickness.thickness import Thickness,ParametersValuesError
-   from test import TEST_PATH, TMP_PATH
-   import fstpy.all as fstpy
-   import spookipy.all as spooki
-   import rpnpy.librmn.all as rmn
-
-   plugin_test_dir = "/fs/site6/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/Thickness/testsFiles/"
-   source0 = plugin_test_dir + "GZ_12000_10346_fileSrc.std"
-   src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
-   df = Thickness(src_df0,base=1.0,top=0.8346,coordinate_type='UNKNOWN').compute()
-
-   results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
-   fstpy.delete_file(results_file)
-   fstpy.StandardFileWriter(results_file, df).to_fst()
-
-   .. code:: python
-
    python3
    
    import os

@@ -1,5 +1,3 @@
-from turtle import pd
-import rpnpy.librmn.all as rmn
 import argparse
 from spookipy.plugin import Plugin
 import pandas as pd

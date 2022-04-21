@@ -148,10 +148,10 @@ class MinMaxLevelIndex(Plugin):
             borne_sup  = var_df.iloc[-1].level
             kind       = var_df.iloc[0].ip1_kind
 
-            min_idx_df = create_result_container(var_df,borne_inf, borne_sup, kind, self.nomvar_min_idx)
-            max_idx_df = create_result_container(var_df,borne_inf, borne_sup, kind, self.nomvar_max_idx)
-            min_val_df = create_result_container(var_df,borne_inf, borne_sup, kind, self.nomvar_min_val)
-            max_val_df = create_result_container(var_df,borne_inf, borne_sup, kind, self.nomvar_max_val)
+            min_idx_df = create_result_container(var_df,borne_inf, borne_sup, kind, self.nomvar_min_idx, self.bounded)
+            max_idx_df = create_result_container(var_df,borne_inf, borne_sup, kind, self.nomvar_max_idx, self.bounded)
+            min_val_df = create_result_container(var_df,borne_inf, borne_sup, kind, self.nomvar_min_val, self.bounded)
+            max_val_df = create_result_container(var_df,borne_inf, borne_sup, kind, self.nomvar_max_val, self.bounded)
 
             array_3d   = get_3d_array(var_df,flatten=True)
 
@@ -222,7 +222,7 @@ class MinMaxLevelIndex(Plugin):
                 max_idx_df = reshape_arrays(max_idx_df)
                 max_idx_df = dataframe_arrays_to_dask(max_idx_df)
                 df_list.append(max_idx_df)
- 
+
             if self.value_to_return:
                 if self.min:
                     min_val_df =  reshape_arrays(min_val_df)
@@ -235,6 +235,7 @@ class MinMaxLevelIndex(Plugin):
 
             var_df = reshape_arrays(var_df)  
             var_df = dataframe_arrays_to_dask(var_df)
+
             df_list.append(var_df)
 
         return final_results(df_list, MinMaxLevelIndexError, self.meta_df)
@@ -289,7 +290,7 @@ def bound_array(a, kbas, ktop):
     arr = np.rot90(arr,k=-3)
     return arr
 
-def create_result_container(df, b_inf, b_sup, ip1_kind, nomvar):
+def create_result_container(df, b_inf, b_sup, ip1_kind, nomvar, bounded):
     ip1 = float(b_inf)
     ip3 = float(b_sup)
     ip2 = 0
@@ -299,4 +300,9 @@ def create_result_container(df, b_inf, b_sup, ip1_kind, nomvar):
     ip3_enc = rmn.ip1_val(ip3, kind)
 
     res_df = create_empty_result(df, {'nomvar':nomvar, 'etiket':'MMLVLI', 'ip1': ip1_enc, 'ip3': ip3_enc})
+
+    if bounded:
+        res_df = fstpy.add_flag_values(res_df)
+        res_df.bounded = True
+
     return res_df

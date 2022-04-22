@@ -173,13 +173,33 @@ class Thickness(Plugin):
 
         parser = argparse.ArgumentParser(prog=Thickness.__name__, parents=[Plugin.base_parser])
         # parser.add_argument('--df',pd.DataFrame,help="dataframe with the data")
-        parser.add_argument('--base',type=float)
-        parser.add_argument('--top',type=float)
-        parser.add_argument('--coordinateType',type=str,choices=['SIGMA_1001', 'ETA_1002', 'HYBRID_NORMALIZED_1003', 
-                                                                'PRESSURE_2001', 'HYBRID_5001', 'HYBRID_5002', 'HYBRID_5003',
-                                                                'HYBRID_5004', 'HYBRID_5005', 'METER_SEA_LEVEL',
-                                                                'METER_GROUND_LEVEL', 'UNKNOWN'])     
+        parser.add_argument('--base',type=float,dest='base',help='Base of the thickness layer (model or pressure level)')
+        parser.add_argument('--top',type=float,dest='top',help='Top of the thickness layer (model or pressure level)')
+        parser.add_argument('--coordinateType',type=str,dest='coordinate_type',
+        choices=['SIGMA_COORDINATE','HYBRID_COORDINATE','ETA_COORDINATE','PRESSURE_COORDINATE','UNKNOWN'],help='Type of vertical coordinate')   
 
+        parsed_arg = vars(parser.parse_args(args.split()))
+
+        if parsed_arg['base'] < 0:
+            raise ThicknessError('The base of the thickness layer has to be positive')
+
+        if parsed_arg['top'] < 0:
+            raise ThicknessError('The top of the thickness layer has to be positive')
+
+
+        if parsed_arg['coordinate_type'] == 'SIGMA_COORDINATE':
+            parsed_arg['coordinate_type'] = parsed_arg['coordinate_type'].replace("COORDINATE","1001")
+
+        if parsed_arg['coordinate_type'] == 'ETA_COORDINATE':
+            parsed_arg['coordinate_type'] = parsed_arg['coordinate_type'].replace("COORDINATE","1002")
+
+        if parsed_arg['coordinate_type'] == 'PRESSURE_COORDINATE':
+            parsed_arg['coordinate_type'] = parsed_arg['coordinate_type'].replace("COORDINATE","2001")
+
+        if parsed_arg['coordinate_type'] == 'HYBRID_COORDINATE':
+            parsed_arg['coordinate_type'] = parsed_arg['coordinate_type'].replace("COORDINATE","5001")
+
+        return parsed_arg
 
 def create_result_container(df, b_inf, b_sup, dict1):
     ip1 = b_inf

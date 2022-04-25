@@ -101,6 +101,7 @@ def get_plugin_dependencies(
     from .temperaturedewpoint.temperaturedewpoint import TemperatureDewPoint
     from .temperaturepotential.temperaturepotential import TemperaturePotential
     from .temperaturevirtual.temperaturevirtual import TemperatureVirtual
+    from .thickness.thickness import Thickness
     from .totaltotalsindex.totaltotalsindex import TotalTotalsIndex
     from .vapourpressure.vapourpressure import VapourPressure
     from .watervapourmixingratio.watervapourmixingratio import WaterVapourMixingRatio
@@ -111,6 +112,7 @@ def get_plugin_dependencies(
     computable_dependencies = {
         'CLD': CloudFractionDiagnostic,
         'CORP': CoriolisParameter,
+        'DZ': Thickness,
         'ES': DewPointDepression,
         'HMX': Humidex,
         'HR': HumidityRelative,
@@ -125,7 +127,7 @@ def get_plugin_dependencies(
         'TTI': TotalTotalsIndex,
         'UV': WindModulus,
         'VPPR': VapourPressure,
-        'VT': TemperatureVirtual
+        'VT': TemperatureVirtual,
     }
 
     df_list = []
@@ -822,7 +824,7 @@ def encode_ip2_and_ip3_height(df:pd.DataFrame) -> pd.DataFrame:
         df = fstpy.add_columns(df, 'ip_info')
 
     for row in df.itertuples():
-        if row.nomvar in ['>>', '^^', '^>', '!!']:
+        if row.nomvar in ['>>', '^^', '^>', '!!','HY']:
             continue
 
         (ip1,ip1_kind) = rmn.convertIp(rmn.CONVIP_DECODE, int(row.ip1))

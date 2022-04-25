@@ -41,6 +41,7 @@ from .subtractelementsvertically import *
 from .temperaturedewpoint import *
 from .temperaturepotential import *
 from .temperaturevirtual import *
+from .thickness import *
 from .timeintervaldifference import *
 from .timeintervalminmax import *
 from .totaltotalsindex import *

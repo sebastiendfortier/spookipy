@@ -39,6 +39,7 @@ subtractelementsvertically
 temperaturedewpoint
 temperaturepotential
 temperaturevirtual
+thickness
 timeintervaldifference
 timeintervalminmax
 totaltotalsindex

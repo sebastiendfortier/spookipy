@@ -66,6 +66,7 @@ class Plugin(abc.ABC):
     @staticmethod
     def parse_config(args: str) -> dict:
         """method to translate spooki plugin parameters to python plugin parameters
+
         :param args: input unparsed arguments
         :type args: str
         :return: a dictionnary of converted parameters

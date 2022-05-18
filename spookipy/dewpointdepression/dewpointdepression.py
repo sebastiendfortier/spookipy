@@ -115,7 +115,8 @@ class DewPointDepression(Plugin):
             DewPointDepressionError,
             self.ice_water_phase,
             self.temp_phase_switch,
-            self.temp_phase_switch_unit)
+            self.temp_phase_switch_unit,
+            rpn=self.rpn)
 
         self.temp_phase_switch = get_temp_phase_switch(
             DewPointDepressionError,
@@ -301,6 +302,6 @@ class DewPointDepression(Plugin):
 
         parsed_arg = vars(parser.parse_args(args.split()))
 
-        check_and_format_humidity_parsed_arguments(parsed_arg, DewPointDepressionError)
+        check_and_format_humidity_parsed_arguments(parsed_arg, error_class=DewPointDepressionError)
 
         return parsed_arg

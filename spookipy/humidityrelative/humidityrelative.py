@@ -115,7 +115,8 @@ class HumidityRelative(Plugin):
             HumidityRelativeError,
             self.ice_water_phase,
             self.temp_phase_switch,
-            self.temp_phase_switch_unit)
+            self.temp_phase_switch_unit,
+            rpn=self.rpn)
 
         self.temp_phase_switch = get_temp_phase_switch(
             HumidityRelativeError,
@@ -313,6 +314,6 @@ class HumidityRelative(Plugin):
 
         parsed_arg = vars(parser.parse_args(args.split()))
 
-        check_and_format_humidity_parsed_arguments(parsed_arg, HumidityRelativeError)
+        check_and_format_humidity_parsed_arguments(parsed_arg, error_class=HumidityRelativeError)
 
         return parsed_arg

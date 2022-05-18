@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import argparse
+import inspect
 import logging
 
 import fstpy.all as fstpy
@@ -39,8 +40,8 @@ class HumiditySpecific(Plugin):
     def __init__(
             self,
             df: pd.DataFrame,
-            ice_water_phase=None,
-            temp_phase_switch=None,
+            ice_water_phase="both",
+            temp_phase_switch=-40,
             temp_phase_switch_unit='celsius',
             rpn=False,
             dependency_check=False):
@@ -114,7 +115,9 @@ class HumiditySpecific(Plugin):
             HumiditySpecificError,
             self.ice_water_phase,
             self.temp_phase_switch,
-            self.temp_phase_switch_unit)
+            self.temp_phase_switch_unit,
+            inspect.signature(self.__init__).parameters["temp_phase_switch"].default,
+            rpn=self.rpn)
 
         self.temp_phase_switch = get_temp_phase_switch(
             HumiditySpecificError,
@@ -295,10 +298,10 @@ class HumiditySpecific(Plugin):
         :rtype: dict
         """
         parser = argparse.ArgumentParser(prog=HumiditySpecific.__name__, parents=[Plugin.base_parser])
-        add_argument_for_humidity_plugin(parser)
+        add_argument_for_humidity_plugin(parser, ice_water_phase_default="BOTH",temperature_phase_switch_default="-40.0C")
 
         parsed_arg = vars(parser.parse_args(args.split()))
 
-        check_and_format_humidity_parsed_arguments(parsed_arg, HumiditySpecificError)
+        check_and_format_humidity_parsed_arguments(parsed_arg, error_class=HumiditySpecificError)
 
         return parsed_arg

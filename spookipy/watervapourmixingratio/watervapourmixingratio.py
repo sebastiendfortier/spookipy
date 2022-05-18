@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import argparse
+import inspect
 import logging
 
 import fstpy.all as fstpy
@@ -85,7 +86,9 @@ class WaterVapourMixingRatio(Plugin):
             WaterVapourMixingRatioError,
             self.ice_water_phase,
             self.temp_phase_switch,
-            self.temp_phase_switch_unit)
+            self.temp_phase_switch_unit,
+            inspect.signature(self.__init__).parameters["temp_phase_switch"].default,
+            rpn=self.rpn)
 
         self.temp_phase_switch = get_temp_phase_switch(
             WaterVapourMixingRatioError,
@@ -185,10 +188,10 @@ class WaterVapourMixingRatio(Plugin):
         :rtype: dict
         """
         parser = argparse.ArgumentParser(prog=WaterVapourMixingRatio.__name__, parents=[Plugin.base_parser])
-        add_argument_for_humidity_plugin(parser,ice_water_phase_default="BOTH",temperature_phase_switch_default="-40C")
+        add_argument_for_humidity_plugin(parser,ice_water_phase_default="BOTH",temperature_phase_switch_default="-40.0C")
 
         parsed_arg = vars(parser.parse_args(args.split()))
 
-        check_and_format_humidity_parsed_arguments(parsed_arg, WaterVapourMixingRatioError)
+        check_and_format_humidity_parsed_arguments(parsed_arg, error_class=WaterVapourMixingRatioError)
 
         return parsed_arg

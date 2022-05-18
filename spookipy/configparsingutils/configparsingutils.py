@@ -64,26 +64,13 @@ def convert_time(time:str, error_class=Exception):
     else:
         raise error_class("Times need to be formatted with FLOAT[>0 to + infinity] or STRING[ [0 to + infinity]:[0-59]:[0-59] Ex: 3 or 3:00:00")
 
-
-# TODO fix that while finishing humidity plugins
-from ..humidityutils import validate_temp_phase_switch
-import argparse
-
 def add_argument_for_humidity_plugin(parser, ice_water_phase_default=None, temperature_phase_switch_default=None):
-    print("(ice_water_phase_default is None) : {}".format((ice_water_phase_default is None)))
-    print("(temperature_phase_switch_default is None) : {}".format((temperature_phase_switch_default is None)))
     parser.add_argument('--iceWaterPhase',type=str,required=(ice_water_phase_default is None),default=ice_water_phase_default,choices=["WATER","BOTH"],dest='ice_water_phase', help="Switch to determine which phase to consider: ice and water, or, water only.")
     parser.add_argument('--temperaturePhaseSwitch',type=str,default=temperature_phase_switch_default,help="Temperature at which to change from the ice phase to the water phase.") #  \nMandatory if '--iceWaterPhase BOTH' is usedwithout '--RPN'. \nNot accepted if '--RPN is used'.
     parser.add_argument('--RPN',action='store_true',default=False,dest="rpn", help="Use of the RPN TdPack functions")
 
-def check_and_format_humidity_parsed_arguments(parsed_arg, error_class):
+def check_and_format_humidity_parsed_arguments(parsed_arg, error_class = Exception):
     parsed_arg['ice_water_phase'] = parsed_arg['ice_water_phase'].lower()
-
-    # TODO deal with the conditions:
-    #       Mandatory if '--iceWaterPhase BOTH' is usedwithout '--RPN'.
-    #       Not accepted if '--RPN is used'.
-    # if parsed_arg['ice_water_phase'] == 'both' and not parsed_arg['rpn'] and parsed_arg['temperaturePhaseSwitch'] is None:
-    #     raise error_class("--temperaturePhaseSwitch is mandatory if '--iceWaterPhase BOTH' is usedwithout '--RPN'.")
 
     if parsed_arg['temperaturePhaseSwitch'] is not None:
         parsed_arg['temp_phase_switch'] = float(parsed_arg['temperaturePhaseSwitch'][0:-1])
@@ -94,6 +81,5 @@ def check_and_format_humidity_parsed_arguments(parsed_arg, error_class):
         elif parsed_arg['temp_phase_switch_unit'] == "K":
             parsed_arg['temp_phase_switch_unit'] = "kelvin"
         else:
-            raise error_class("--temperaturePhaseSwitch needs to be of types [ FLOAT[-273.15 to 273.16] + STRING [C|K] ]")
+            raise error_class("--temperaturePhaseSwitch needs to be of types [ FLOAT[-273.15 to 273.16] + STRING [C|K] ], it is {}".format(parsed_arg['temperaturePhaseSwitch']))
 
-        validate_temp_phase_switch(error_class,parsed_arg['temp_phase_switch'])

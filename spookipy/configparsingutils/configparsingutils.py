@@ -64,13 +64,11 @@ def convert_time(time:str, error_class=Exception):
     else:
         raise error_class("Times need to be formatted with FLOAT[>0 to + infinity] or STRING[ [0 to + infinity]:[0-59]:[0-59] Ex: 3 or 3:00:00")
 
-def add_argument_for_humidity_plugin(parser, ice_water_phase_default=None, temperature_phase_switch_default=None):
-    parser.add_argument('--iceWaterPhase',type=str,required=(ice_water_phase_default is None),default=ice_water_phase_default,choices=["WATER","BOTH"],dest='ice_water_phase', help="Switch to determine which phase to consider: ice and water, or, water only.")
-    parser.add_argument('--temperaturePhaseSwitch',type=str,default=temperature_phase_switch_default,help="Temperature at which to change from the ice phase to the water phase.") #  \nMandatory if '--iceWaterPhase BOTH' is usedwithout '--RPN'. \nNot accepted if '--RPN is used'.
-    parser.add_argument('--RPN',action='store_true',default=False,dest="rpn", help="Use of the RPN TdPack functions")
-
 def check_and_format_humidity_parsed_arguments(parsed_arg, error_class = Exception):
-    parsed_arg['ice_water_phase'] = parsed_arg['ice_water_phase'].lower()
+    if parsed_arg['ice_water_phase'] is not None: 
+        parsed_arg['ice_water_phase'] = parsed_arg['ice_water_phase'].lower()
+    else:
+        del parsed_arg['ice_water_phase']
 
     if parsed_arg['temperaturePhaseSwitch'] is not None:
         parsed_arg['temp_phase_switch'] = float(parsed_arg['temperaturePhaseSwitch'][0:-1])

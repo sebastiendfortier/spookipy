@@ -82,7 +82,7 @@ def validate_parameter_combinations(
         error_class: type,
         ice_water_phase: str,
         temp_phase_switch: float,
-        default_temp_phase_switch: float = None,
+        explicit_temp_phase_switch: bool = False,
         rpn: bool = False):
     """Validate the paramter combinations
 
@@ -92,15 +92,15 @@ def validate_parameter_combinations(
     :type ice_water_phase: str
     :param temp_phase_switch: phase switch temperature value
     :type temp_phase_switch: float
-    :param default_temp_phase_switch: default value of phase switch temperature for this plugin (default None)
-    :type default_temp_phase_switch: float
+    :param explicit_temp_phase_switch: is phase switch temperature set explicitly for this plugin (default False)
+    :type explicit_temp_phase_switch: bool
     :raises error_class: Cannot use ice_water_phase="water" with temp_phase_switch
     :raises error_class: Cannot use ice_water_phase without setting temp_phase_switch
     :raises error_class: Cannot use temp_phase_switch without setting ice_water_phase
     """
-    if (ice_water_phase == 'water') and not (temp_phase_switch is None or temp_phase_switch == default_temp_phase_switch):
+    if (ice_water_phase == 'water') and temp_phase_switch is not None and explicit_temp_phase_switch:
         raise error_class(
-            'Cannot use ice_water_phase="water" with temp_phase_switch\n temp_phase_switch = {}, default_temp_phase_switch = {}, -> {}'.format(temp_phase_switch,default_temp_phase_switch,temp_phase_switch is default_temp_phase_switch))
+            'Cannot use ice_water_phase="water" with temp_phase_switch\n')
 
     if (not (ice_water_phase is None) and (ice_water_phase != 'water')) and (
             temp_phase_switch is None) and (not rpn):
@@ -134,7 +134,7 @@ def validate_humidity_parameters(
         ice_water_phase: str,
         temp_phase_switch: float,
         temp_phase_switch_unit: str,
-        default_temp_phase_switch: float = None,
+        explicit_temp_phase_switch: bool = False,
         rpn: bool = False):
     """validate the humidity plugin parameters. Validates the paramter combinations, the phase switch temperature unit and value and the ice water phase value
 
@@ -146,13 +146,54 @@ def validate_humidity_parameters(
     :type temp_phase_switch: float
     :param temp_phase_switch_unit: phase switch temperature unit
     :type temp_phase_switch_unit: str
-    :param default_temp_phase_switch: default value of phase switch temperature for this plugin (default None)
-    :type default_temp_phase_switch: float
+    :param explicit_temp_phase_switch: is phase switch temperature set explicitly for this plugin (default False)
+    :type explicit_temp_phase_switch: bool
     :param rpn: use rpn (default: False)
     :type rpn: bool
     """
     validate_parameter_combinations(
-        error_class, ice_water_phase, temp_phase_switch, default_temp_phase_switch, rpn)
+        error_class, ice_water_phase, temp_phase_switch, explicit_temp_phase_switch, rpn)
     validate_temp_phase_switch_unit(error_class, temp_phase_switch_unit)
     validate_ice_water_phase(error_class, ice_water_phase)
     validate_rpn(temp_phase_switch, temp_phase_switch_unit, rpn)
+
+def mandatory_ice_water_phase_when_using_temp_phase_switch(
+        error_class: type,
+        explicit_params: list):
+    """Raise exception if 
+
+    :param error_class: Exception to raise
+    :type error_class: type
+    :param explicit_params: list of parameters explicitly used in the plugin
+    :type explicit_params: list()
+    :raises error_class: Need to set ice_water_phase when temp_phase_switch is set explicitly
+    """
+    if ("ice_water_phase" not in explicit_params) and ("temp_phase_switch" in explicit_params):
+        raise error_class(
+            'Need to set ice_water_phase when temp_phase_switch is set explicitly\n')
+
+def mandatory_temp_phase_switch_when_using_ice_water_phase_both(
+        error_class: type,
+        explicit_params: list,
+        ice_water_phase: str,
+        rpn: bool = False,
+        mandatory_even_with_rpn: bool = False):
+    """Raise exception if 
+
+    :param error_class: Exception to raise
+    :type error_class: type
+    :param explicit_params: list of parameters explicitly used in the plugin
+    :type explicit_params: list()
+    :type ice_water_phase: str
+    :param temp_phase_switch: phase switch temperature value
+    :param rpn: use rpn (default: False)
+    :type rpn: bool
+    :raises error_class: Need to set temp_phase_switch when ice_water_phase is set explicitly to both
+    """
+    if (("temp_phase_switch" not in explicit_params) and 
+        ("ice_water_phase" in explicit_params) and
+        (ice_water_phase == 'both') and
+        (not rpn or mandatory_even_with_rpn)):
+
+        raise error_class(
+            'Need to set temp_phase_switch when ice_water_phase is set explicitly to both\n')

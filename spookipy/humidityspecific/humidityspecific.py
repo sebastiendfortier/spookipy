@@ -1,19 +1,20 @@
 # -*- coding: utf-8 -*-
 import argparse
-import inspect
 import logging
 
 import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
 
-from ..humidityutils import get_temp_phase_switch, validate_humidity_parameters
+from ..humidityutils import (get_temp_phase_switch, validate_humidity_parameters, 
+                            mandatory_ice_water_phase_when_using_temp_phase_switch, 
+                            mandatory_temp_phase_switch_when_using_ice_water_phase_both)
 from ..plugin import Plugin
 from ..science import hu_from_qv, hu_from_vppr, rpn_hu_from_es, rpn_hu_from_hr
 from ..utils import (create_empty_result, existing_results, final_results,
                      get_dependencies, get_existing_result, get_from_dataframe,
-                     initializer, DependencyError)
-from ..configparsingutils import add_argument_for_humidity_plugin, check_and_format_humidity_parsed_arguments
+                     initializer, explicit_params_checker, DependencyError)
+from ..configparsingutils import check_and_format_humidity_parsed_arguments
 
 
 class HumiditySpecificError(Exception):
@@ -36,6 +37,7 @@ class HumiditySpecific(Plugin):
     :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
     :type dependency_check: bool, optional   
     """
+    @explicit_params_checker
     @initializer
     def __init__(
             self,
@@ -111,12 +113,22 @@ class HumiditySpecific(Plugin):
         self.no_meta_df = fstpy.add_columns(
             self.no_meta_df, columns=['unit', 'forecast_hour', 'ip_info'])
 
+        mandatory_ice_water_phase_when_using_temp_phase_switch(
+            HumiditySpecificError,
+            self.explicit_params)
+
+        mandatory_temp_phase_switch_when_using_ice_water_phase_both(
+            HumiditySpecificError,
+            self.explicit_params,
+            self.ice_water_phase,
+            self.rpn)
+
         validate_humidity_parameters(
             HumiditySpecificError,
             self.ice_water_phase,
             self.temp_phase_switch,
             self.temp_phase_switch_unit,
-            inspect.signature(self.__init__).parameters["temp_phase_switch"].default,
+            explicit_temp_phase_switch = ("temp_phase_switch" in self.explicit_params),
             rpn=self.rpn)
 
         self.temp_phase_switch = get_temp_phase_switch(
@@ -277,7 +289,9 @@ class HumiditySpecific(Plugin):
                 self.meta_df],
                 ignore_index=True),
             ice_water_phase=self.ice_water_phase,
-            temp_phase_switch=self.temp_phase_switch,
+            # need the None if the value is the default value, because vapourpressure raise an exception if the default value is passed
+            # only pass value if it is explicitly set
+            temp_phase_switch= self.temp_phase_switch if "temp_phase_switch" in self.explicit_params else None,
             temp_phase_switch_unit=self.temp_phase_switch_unit, 
             dependency_check=self.dependency_check).compute()
         vppr_df = get_from_dataframe(vppr_df, 'VPPR')
@@ -298,7 +312,10 @@ class HumiditySpecific(Plugin):
         :rtype: dict
         """
         parser = argparse.ArgumentParser(prog=HumiditySpecific.__name__, parents=[Plugin.base_parser])
-        add_argument_for_humidity_plugin(parser, ice_water_phase_default="BOTH",temperature_phase_switch_default="-40.0C")
+
+        parser.add_argument('--iceWaterPhase',type=str,required=False,choices=["WATER","BOTH"],dest='ice_water_phase', help="Switch to determine which phase to consider: ice and water, or, water only. (Default: BOTH)")
+        parser.add_argument('--temperaturePhaseSwitch',type=str,help="Temperature at which to change from the ice phase to the water phase.\nMandatory if '--iceWaterPhase BOTH' is used explicitly and without '--RPN'.\nNot accepted if '--RPN is used'. (Default: -40C")
+        parser.add_argument('--RPN',action='store_true',default=False,dest="rpn", help="Use of the RPN TdPack functions")
 
         parsed_arg = vars(parser.parse_args(args.split()))
 

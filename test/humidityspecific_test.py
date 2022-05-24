@@ -15,32 +15,30 @@ pytestmark = [pytest.mark.regressions, pytest.mark.humidity]
 def plugin_test_dir():
     return TEST_PATH + '/HumiditySpecific/testsFiles/'
 
-# This test is irrelevant in python because there's a default value for both parameters
-# def test_1(plugin_test_dir):
-#     """Calcul de l'humidité spécifique; utilisation de --iceWaterPhase sans --temperaturePhaseSwitch."""
-#     # open and read source
-#     source0 = plugin_test_dir + "inputFile.std"
-#     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+def test_1(plugin_test_dir):
+    """Calcul de l'humidité spécifique; utilisation de --iceWaterPhase sans --temperaturePhaseSwitch."""
+    # open and read source
+    source0 = plugin_test_dir + "inputFile.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-#     # compute HumiditySpecific
-#     with pytest.raises(spooki.HumiditySpecificError):
-#         _ = spooki.HumiditySpecific(src_df0, ice_water_phase='both').compute()
-#     # [ReaderStd --input {sources[0]}] >> [HumiditySpecific --iceWaterPhase BOTH]
+    # compute HumiditySpecific
+    with pytest.raises(spooki.HumiditySpecificError):
+        _ = spooki.HumiditySpecific(src_df0, ice_water_phase='both').compute()
+    # [ReaderStd --input {sources[0]}] >> [HumiditySpecific --iceWaterPhase BOTH]
 
-# This test is irrelevant in python because there's a default value for both parameters
-# def test_2(plugin_test_dir):
-#     """Calcul de l'humidité spécifique; utilisation de --temperaturePhaseSwitch sans --iceWaterPhase."""
-#     # open and read source
-#     source0 = plugin_test_dir + "inputFile.std"
-#     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+def test_2(plugin_test_dir):
+    """Calcul de l'humidité spécifique; utilisation de --temperaturePhaseSwitch sans --iceWaterPhase."""
+    # open and read source
+    source0 = plugin_test_dir + "inputFile.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-#     # compute HumiditySpecific
-#     with pytest.raises(spooki.HumiditySpecificError):
-#         _ = spooki.HumiditySpecific(
-#             src_df0,
-#             temp_phase_switch=-30,
-#             temp_phase_switch_unit='celsius').compute()
-#     # [ReaderStd --input {sources[0]}] >> [HumiditySpecific --temperaturePhaseSwitch -30C]
+    # compute HumiditySpecific
+    with pytest.raises(spooki.HumiditySpecificError):
+        _ = spooki.HumiditySpecific(
+            src_df0,
+            temp_phase_switch=-30,
+            temp_phase_switch_unit='celsius').compute()
+    # [ReaderStd --input {sources[0]}] >> [HumiditySpecific --temperaturePhaseSwitch -30C]
 
 
 def test_3(plugin_test_dir):

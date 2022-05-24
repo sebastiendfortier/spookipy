@@ -6,14 +6,15 @@ import fstpy.all as fstpy
 import numpy as np
 import pandas as pd
 
-from ..humidityutils import get_temp_phase_switch, validate_humidity_parameters
+from ..humidityutils import (get_temp_phase_switch, validate_humidity_parameters, 
+                            mandatory_temp_phase_switch_when_using_ice_water_phase_both)
 from ..plugin import Plugin
 from ..science import (TDPACK_OFFSET_FIX, es_from_td, rpn_es_from_hr,
                        rpn_es_from_hu)
 from ..utils import (create_empty_result, existing_results, final_results,
                      get_dependencies, get_existing_result, get_from_dataframe,
-                     initializer, DependencyError)
-from ..configparsingutils import add_argument_for_humidity_plugin, check_and_format_humidity_parsed_arguments
+                     initializer, explicit_params_checker, DependencyError)
+from ..configparsingutils import check_and_format_humidity_parsed_arguments
 
 
 class DewPointDepressionError(Exception):
@@ -36,6 +37,7 @@ class DewPointDepression(Plugin):
     :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
     :type dependency_check: bool, optional  
     """
+    @explicit_params_checker
     @initializer
     def __init__(
             self,
@@ -110,6 +112,12 @@ class DewPointDepression(Plugin):
 
         self.no_meta_df = fstpy.add_columns(
             self.no_meta_df, columns=['unit', 'forecast_hour', 'ip_info'])
+
+        mandatory_temp_phase_switch_when_using_ice_water_phase_both(
+            DewPointDepressionError,
+            self.explicit_params,
+            self.ice_water_phase,
+            self.rpn)
 
         validate_humidity_parameters(
             DewPointDepressionError,
@@ -298,7 +306,10 @@ class DewPointDepression(Plugin):
         :rtype: dict
         """
         parser = argparse.ArgumentParser(prog=DewPointDepression.__name__, parents=[Plugin.base_parser])
-        add_argument_for_humidity_plugin(parser)
+
+        parser.add_argument('--iceWaterPhase',type=str,required=True,choices=["WATER","BOTH"],dest='ice_water_phase', help="Switch to determine which phase to consider: ice and water, or, water only.")
+        parser.add_argument('--temperaturePhaseSwitch',type=str,help="Temperature at which to change from the ice phase to the water phase.\nMandatory if '--iceWaterPhase BOTH' is usedwithout '--RPN'. \nNot accepted if '--RPN is used'.")
+        parser.add_argument('--RPN',action='store_true',default=False,dest="rpn", help="Use of the RPN TdPack functions")
 
         parsed_arg = vars(parser.parse_args(args.split()))
 

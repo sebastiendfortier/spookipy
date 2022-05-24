@@ -15,6 +15,7 @@ pytestmark = [pytest.mark.regressions, pytest.mark.humidity]
 def plugin_test_dir():
     return TEST_PATH + '/HumiditySpecific/testsFiles/'
 
+
 def test_1(plugin_test_dir):
     """Calcul de l'humidité spécifique; utilisation de --iceWaterPhase sans --temperaturePhaseSwitch."""
     # open and read source
@@ -25,6 +26,7 @@ def test_1(plugin_test_dir):
     with pytest.raises(spooki.HumiditySpecificError):
         _ = spooki.HumiditySpecific(src_df0, ice_water_phase='both').compute()
     # [ReaderStd --input {sources[0]}] >> [HumiditySpecific --iceWaterPhase BOTH]
+
 
 def test_2(plugin_test_dir):
     """Calcul de l'humidité spécifique; utilisation de --temperaturePhaseSwitch sans --iceWaterPhase."""

@@ -64,4 +64,20 @@ def convert_time(time:str, error_class=Exception):
     else:
         raise error_class("Times need to be formatted with FLOAT[>0 to + infinity] or STRING[ [0 to + infinity]:[0-59]:[0-59] Ex: 3 or 3:00:00")
 
+def check_and_format_humidity_parsed_arguments(parsed_arg, error_class = Exception):
+    if parsed_arg['ice_water_phase'] is not None: 
+        parsed_arg['ice_water_phase'] = parsed_arg['ice_water_phase'].lower()
+    else:
+        del parsed_arg['ice_water_phase']
+
+    if parsed_arg['temperaturePhaseSwitch'] is not None:
+        parsed_arg['temp_phase_switch'] = float(parsed_arg['temperaturePhaseSwitch'][0:-1])
+        parsed_arg['temp_phase_switch_unit'] = parsed_arg['temperaturePhaseSwitch'][-1]
+
+        if parsed_arg['temp_phase_switch_unit'] == "C":
+            parsed_arg['temp_phase_switch_unit'] = "celsius"
+        elif parsed_arg['temp_phase_switch_unit'] == "K":
+            parsed_arg['temp_phase_switch_unit'] = "kelvin"
+        else:
+            raise error_class("--temperaturePhaseSwitch needs to be of types [ FLOAT[-273.15 to 273.16] + STRING [C|K] ], it is {}".format(parsed_arg['temperaturePhaseSwitch']))
 

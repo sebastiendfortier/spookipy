@@ -45,6 +45,13 @@ def initializer(func):
 
     return wrapper
 
+def explicit_params_checker(func):
+    varnames = inspect.getfullargspec(func)[0]
+    @wraps(func)
+    def wrapper(self, *args, **kargs):
+        setattr(self, 'explicit_params', set(list(varnames[:len(args)]) + list(kargs.keys())))
+        return func(self, *args, **kargs)
+    return wrapper
 
 class DependencyError(Exception):
     pass

@@ -416,3 +416,54 @@ def test_14(plugin_test_dir):
     res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
+
+def test_15(plugin_test_dir):
+    """Test avec un fichier contenant des TT a des heures de previsions differentes, utilisation du parametre nomvar_out."""
+    # open and read source
+
+    source1 = plugin_test_dir + "TTES2x2x4_manyForecastHours.std"
+
+    src_df = fstpy.StandardFileReader(source1).to_pandas()
+    
+    minmax_df = spooki.MinMaxLevelIndex(
+        src_df, nomvar="TT", max=True, nomvar_max_idx='IND').compute()
+
+    # compute MatchLevelIndexToValue
+    df = spooki.MatchLevelIndexToValue (minmax_df, 
+                                        nomvar_out='TEST',
+                                        use_interval=True).compute()
+
+    # Encodage des ip2
+    df = spooki.encode_ip2_and_ip3_height(df)
+    df.loc[df.typvar=='PZ','typvar'] = 'P'
+
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "MatchLevel_file2cmp_test15.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
+
+def test_16(plugin_test_dir):
+    """Requete invalide; fichier contenant des TT et ES aux memes heures de previsions ET utilisation du parametre outputFieldName."""
+    # open and read source
+
+    source1 = plugin_test_dir + "TTES2x2x4_manyForecastHours.std"
+
+    src_df = fstpy.StandardFileReader(source1).to_pandas()
+    es_df = src_df[(src_df["nomvar"] == "ES") & (src_df["ip2"]==30)]
+
+    minmax_df = spooki.MinMaxLevelIndex(
+        src_df, nomvar="TT", max=True, nomvar_max_idx='IND').compute()
+
+    src_df1 = pd.concat([minmax_df, es_df], ignore_index=True)
+    
+    # # compute MatchLevelIndexToValue
+    with pytest.raises(MatchLevelIndexToValueError):
+        _ = spooki.MatchLevelIndexToValue(src_df1, nomvar_out='TEST' ).compute()

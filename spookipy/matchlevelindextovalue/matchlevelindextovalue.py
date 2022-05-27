@@ -77,6 +77,7 @@ class MatchLevelIndexToValue(Plugin):
         df_list = []
         for (grid, dateo, ip1_kind), group_df in self.groups:
 
+            # print(f'group_df: \n {group_df.ip2.unique()} \n\n')
             ind_df = group_df.loc[group_df.nomvar == self.nomvar_index].reset_index(drop=True)
             if ind_df.empty:
                 logging.warning(
@@ -94,7 +95,7 @@ class MatchLevelIndexToValue(Plugin):
 
             if not(self.nomvar_out is None) and (len(nomvars) > 1):  
                 raise MatchLevelIndexToValueError(
-                    'whenever parameter nomvar_out is specified, only 2 inputs are allowed: IND and another field; got {nomvars} in input')
+                    f'whenever parameter nomvar_out is specified, only 2 inputs are allowed: IND and another field; got {nomvars} in input')
 
             for nomvar in nomvars:
                 # get current var

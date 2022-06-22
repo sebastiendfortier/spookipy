@@ -3,7 +3,7 @@
 from test import TEST_PATH, TMP_PATH
 
 # fstpy is used to get dataframes from fst files
-import fstpy.all as fstpy
+import fstpy
 import pytest  # pytest is used to manage tests
 import spookipy  # refers to this library
 # tool used to compare fst files, just like fstcomp but in python

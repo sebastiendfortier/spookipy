@@ -2,7 +2,7 @@ import argparse
 from spookipy.plugin import Plugin
 import pandas as pd
 import numpy as np
-import fstpy.all as fstpy
+import fstpy
 from spookipy.utils import (create_empty_result, existing_results, final_results,
                      get_dependencies, get_existing_result, get_from_dataframe,
                      initializer, DependencyError)

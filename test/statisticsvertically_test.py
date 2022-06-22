@@ -4,7 +4,7 @@ from test import TEST_PATH, TMP_PATH, check_test_ssm_package
 check_test_ssm_package()
 
 import pandas as pd
-import fstpy.all as fstpy
+import fstpy
 import pytest
 import spookipy
 from ci_fstcomp import fstcomp

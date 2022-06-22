@@ -3,7 +3,7 @@
 import argparse
 import logging
 
-import fstpy.all as fstpy
+import fstpy
 import numpy as np
 import pandas as pd
 

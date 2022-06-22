@@ -35,7 +35,7 @@ echo "" >> $OUTPUT
 echo ".. code:: python" >> $OUTPUT
 echo "" >> $OUTPUT
 echo "    data_path = prefix + '/data/'" >> $OUTPUT
-echo "    import fstpy.all as fstpy" >> $OUTPUT
+echo "    import fstpy" >> $OUTPUT
 echo "    import spookipy" >> $OUTPUT
 echo "    # setup your file to read" >> $OUTPUT
 echo "    records=fstpy.StandardFileReader(data_path + 'ttuvre.std').to_pandas()" >> $OUTPUT

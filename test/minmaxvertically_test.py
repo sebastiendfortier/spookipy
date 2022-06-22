@@ -3,7 +3,7 @@ from test import TMP_PATH, TEST_PATH
 from ci_fstcomp import fstcomp
 import secrets
 import pandas as pd
-import fstpy.all as fstpy
+import fstpy
 import spookipy
 import pytest
 

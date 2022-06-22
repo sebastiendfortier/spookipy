@@ -3,7 +3,7 @@ from test import TEST_PATH, TMP_PATH, check_test_ssm_package
 
 check_test_ssm_package()
 
-import fstpy.all as fstpy
+import fstpy
 import numpy as np
 import pandas as pd
 import pytest

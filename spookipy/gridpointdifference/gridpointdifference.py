@@ -6,7 +6,7 @@ import logging
 import numpy as np
 import pandas as pd
 
-import fstpy.all as fstpy
+import fstpy
 from ..plugin import Plugin
 from ..utils import create_empty_result, initializer, final_results, to_numpy
 

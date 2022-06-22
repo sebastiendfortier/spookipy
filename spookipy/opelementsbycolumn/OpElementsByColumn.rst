@@ -41,7 +41,7 @@ Usage:
     python3
     
     import os
-    import fstpy.all as fstpy
+    import fstpy
     import spookipy
     import numpy as np
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import fstpy.all as fstpy
+import fstpy
 import os
 
 logger = fstpy.setup_fstpy_logger()

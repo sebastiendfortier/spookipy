@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import fstpy.all as fstpy
+import fstpy
 import numpy as np
 import pandas as pd
 import copy

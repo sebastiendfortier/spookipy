@@ -18,7 +18,7 @@ mendatory_plugins = [
     "science"
 ]
 mendatory_files = [
-    "__init__.py",
+    "all.py",
     "utils.py"
 ]
 
@@ -76,10 +76,10 @@ def main():
     
     # generate and add all.py to package
     plugins.sort()
-    all_file = "all.py"
-    generate_all(all_file,plugins,pkg_name)
-    ssm.add(all_file,arcname=pkg_name+"/lib/python/"+name+"/"+all_file)
-    os.remove(all_file)
+    init_file = "init__.py"
+    generate_init(init_file,plugins)
+    ssm.add(init_file,arcname=pkg_name+"/lib/python/"+name+"/__"+init_file)
+    os.remove(init_file)
 
     # add Version
     ssm.add(root_dir+"/spookipy/VERSION",arcname=pkg_name+"/lib/python/"+name+"/VERSION")
@@ -123,9 +123,20 @@ def generate_control_json(file_name, name, version, plat):
     with open(file_name, "w") as outfile:
         outfile.write(json_object)
 
-def generate_all(all_file, plugins,pkg_name):
-    with open(all_file, "w") as outfile:
-        outfile.write("# -*- coding: utf-8 -*-\n")
+def generate_init(init_file, plugins):
+    with open(init_file, "w") as outfile:
+        content_init = '''# -*- coding: utf-8 -*-
+import os
+from pathlib import Path
+
+
+p = Path(os.path.abspath(__file__))
+v_file = open(p.parent / 'VERSION')
+__version__ = v_file.readline().strip()
+v_file.close() 
+
+'''
+        outfile.write(content_init)
 
         for plugin in plugins:
             outfile.write("from ."+plugin+" import *\n")

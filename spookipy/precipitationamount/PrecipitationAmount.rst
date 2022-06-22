@@ -55,7 +55,7 @@ Usage:
     
     import os
     import fstpy.all as fstpy
-    import spookipy.all as spooki
+    import spookipy
     import datetime
 
     spooki_dir = os.environ['SPOOKI_DIR']
@@ -68,7 +68,7 @@ Usage:
     interval = datetime.timedelta(hours=3)
     step = datetime.timedelta(hours=1)
 
-    res_df = spooki.PrecipitationAmount(df, nomvar='SN', forecast_hour_range=range, interval=interval, step=step).compute()
+    res_df = spookipy.PrecipitationAmount(df, nomvar='SN', forecast_hour_range=range, interval=interval, step=step).compute()
 
     fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
 

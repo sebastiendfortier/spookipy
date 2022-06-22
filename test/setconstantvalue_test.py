@@ -6,7 +6,7 @@ check_test_ssm_package()
 import fstpy.all as fstpy
 import pandas as pd
 import pytest
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 
@@ -27,13 +27,13 @@ def test_1(plugin_test_dir):
     uu_df = fstpy.select_with_meta(src_df0, ['UU'])
 
     # compute SetConstantValue
-    resuu_df = spooki.SetConstantValue(
+    resuu_df = spookipy.SetConstantValue(
         uu_df, value=0.33323, nomvar_out='UU*').compute()
 
     vv_df = fstpy.select_with_meta(src_df0, ['VV'])
 
     # compute SetConstantValue
-    resvv_df = spooki.SetConstantValue(
+    resvv_df = spookipy.SetConstantValue(
         vv_df, value=0.33323, nomvar_out='VV*').compute()
     # [ReaderStd --input {sources[0]}] >>
     # ( ([Select --fieldName UU] >> [SetConstantValue --value 0.33323 --outputFieldName UU*]) +
@@ -64,7 +64,7 @@ def test_2(plugin_test_dir):
 
     uu_df = fstpy.select_with_meta(src_df0, ['UU'])
     # compute SetConstantValue
-    df = spooki.SetConstantValue(
+    df = spookipy.SetConstantValue(
         uu_df,
         min_index=True,
         bi_dimensionnal=True).compute()
@@ -98,7 +98,7 @@ def test_3(plugin_test_dir):
     uu_df = fstpy.select_with_meta(src_df0, ['UU'])
 
     # compute SetConstantValue
-    df = spooki.SetConstantValue(
+    df = spookipy.SetConstantValue(
         uu_df,
         max_index=True,
         bi_dimensionnal=True).compute()
@@ -133,7 +133,7 @@ def test_4(plugin_test_dir):
     uu_df = fstpy.select_with_meta(src_df0, ['UU'])
 
     # compute SetConstantValue
-    df = spooki.SetConstantValue(
+    df = spookipy.SetConstantValue(
         uu_df, value=-1, bi_dimensionnal=True).compute()
     # [ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> [SetConstantValue --value -1.0 --bidimensional] >>
     # [Zap --fieldName RES --pdsLabel GENERATE2D --doNotFlagAsZapped] >>
@@ -166,13 +166,13 @@ def test_5(plugin_test_dir):
     uu_df = fstpy.select_with_meta(src_df0, ['UU'])
 
     # compute SetConstantValue
-    df1 = spooki.SetConstantValue(
+    df1 = spookipy.SetConstantValue(
         uu_df,
         min_index=True,
         bi_dimensionnal=True).compute()
     df1.loc[df1.nomvar == 'UU', 'nomvar'] = 'KBAS'
     df1.loc[df1.nomvar == 'KBAS', 'etiket'] = 'GENERATE2D'
-    df2 = spooki.SetConstantValue(
+    df2 = spookipy.SetConstantValue(
         uu_df,
         max_index=True,
         bi_dimensionnal=True).compute()
@@ -208,7 +208,7 @@ def test_6(plugin_test_dir):
 
     uu_df = fstpy.select_with_meta(src_df0, ['UU'])
     # compute SetConstantValue
-    df = spooki.SetConstantValue(
+    df = spookipy.SetConstantValue(
         uu_df,
         nb_levels=True,
         bi_dimensionnal=True,

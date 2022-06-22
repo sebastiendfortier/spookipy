@@ -5,7 +5,7 @@ check_test_ssm_package()
 
 import fstpy.all as fstpy
 import pytest
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 from fstpy.dataframe_utils import select_with_meta
@@ -26,11 +26,11 @@ def test_1(plugin_test_dir):
 
     src_df = select_with_meta(src_df0, ['TT', 'UU'])
 
-    # compute spooki.WindDirection
-    df = spooki.WindDirection(src_df).compute()
+    # compute spookipy.WindDirection
+    df = spookipy.WindDirection(src_df).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [PrintIMO] >>
     # [Select --fieldName UU,TT] >>
-    # [spooki.WindDirection --orientationType WIND] >>
+    # [WindDirection --orientationType WIND] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     # write the result
@@ -53,10 +53,10 @@ def test_2(plugin_test_dir):
     source0 = plugin_test_dir + "Ygrid_Ntypetictac_UUVV.fst"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute spooki.WindDirection
-    with pytest.raises(spooki.WindDirectionError):
-        _ = spooki.WindDirection(src_df0).compute()
-    # [ReaderStd --input {sources[0]}] >> [spooki.WindDirection --orientationType WIND] >> [WriterStd --output {destination_path}]
+    # compute spookipy.WindDirection
+    with pytest.raises(spookipy.WindDirectionError):
+        _ = spookipy.WindDirection(src_df0).compute()
+    # [ReaderStd --input {sources[0]}] >> [WindDirection --orientationType WIND] >> [WriterStd --output {destination_path}]
 
 
 def test_3(plugin_test_dir):
@@ -65,10 +65,10 @@ def test_3(plugin_test_dir):
     source0 = plugin_test_dir + "pm2001092012-01-00_000.fst"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute spooki.WindDirection
-    with pytest.raises(spooki.WindDirectionError):
-        _ = spooki.WindDirection(src_df0).compute()
-    # [ReaderStd --input {sources[0]}] >> [spooki.WindDirection --orientationType WIND] >> [WriterStd --output {destination_path}]
+    # compute spookipy.WindDirection
+    with pytest.raises(spookipy.WindDirectionError):
+        _ = spookipy.WindDirection(src_df0).compute()
+    # [ReaderStd --input {sources[0]}] >> [WindDirection --orientationType WIND] >> [WriterStd --output {destination_path}]
 
 
 def test_4(plugin_test_dir):
@@ -77,10 +77,10 @@ def test_4(plugin_test_dir):
     source0 = plugin_test_dir + "dm2001092012-00-00_000.fst"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute spooki.WindDirection
-    with pytest.raises(spooki.WindDirectionError):
-        _ = spooki.WindDirection(src_df0).compute()
-    # [ReaderStd --input {sources[0]}] >> [spooki.WindDirection --orientationType WIND] >> [WriterStd --output {destination_path}]
+    # compute spookipy.WindDirection
+    with pytest.raises(spookipy.WindDirectionError):
+        _ = spookipy.WindDirection(src_df0).compute()
+    # [ReaderStd --input {sources[0]}] >> [WindDirection --orientationType WIND] >> [WriterStd --output {destination_path}]
 
 
 def test_5(plugin_test_dir):
@@ -91,9 +91,9 @@ def test_5(plugin_test_dir):
 
     src_df = select_with_meta(src_df0, ['VV', 'UU'])
 
-    # compute spooki.WindDirection
-    df = spooki.WindDirection(src_df).compute()
-    # [ReaderStd --input {sources[0]}] >> [Select --fieldName UU,VV] >> [spooki.WindDirection --orientationType WIND] >>
+    # compute spookipy.WindDirection
+    df = spookipy.WindDirection(src_df).compute()
+    # [ReaderStd --input {sources[0]}] >> [Select --fieldName UU,VV] >> [WindDirection --orientationType WIND] >>
     # [WriterStd --output {destination_path}]
 
     # write the result

@@ -6,7 +6,7 @@ check_test_ssm_package()
 import fstpy.all as fstpy
 import pandas as pd
 import pytest
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 
@@ -25,8 +25,8 @@ def test_1(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute HumiditySpecific
-    with pytest.raises(spooki.HumiditySpecificError):
-        _ = spooki.HumiditySpecific(src_df0, ice_water_phase='both').compute()
+    with pytest.raises(spookipy.HumiditySpecificError):
+        _ = spookipy.HumiditySpecific(src_df0, ice_water_phase='both').compute()
     # [ReaderStd --input {sources[0]}] >> [HumiditySpecific --iceWaterPhase BOTH]
 
 
@@ -37,8 +37,8 @@ def test_2(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute HumiditySpecific
-    with pytest.raises(spooki.HumiditySpecificError):
-        _ = spooki.HumiditySpecific(
+    with pytest.raises(spookipy.HumiditySpecificError):
+        _ = spookipy.HumiditySpecific(
             src_df0,
             temp_phase_switch=-30,
             temp_phase_switch_unit='celsius').compute()
@@ -52,8 +52,8 @@ def test_3(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute HumiditySpecific
-    with pytest.raises(spooki.HumiditySpecificError):
-        _ = spooki.HumiditySpecific(
+    with pytest.raises(spookipy.HumiditySpecificError):
+        _ = spookipy.HumiditySpecific(
             src_df0,
             ice_water_phase='water',
             temp_phase_switch=-30,
@@ -68,8 +68,8 @@ def test_4(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute HumiditySpecific
-    with pytest.raises(spooki.HumiditySpecificError):
-        _ = spooki.HumiditySpecific(
+    with pytest.raises(spookipy.HumiditySpecificError):
+        _ = spookipy.HumiditySpecific(
             src_df0,
             ice_water_phase='both',
             temp_phase_switch=-30,
@@ -84,8 +84,8 @@ def test_5(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute HumiditySpecific
-    with pytest.raises(spooki.HumiditySpecificError):
-        _ = spooki.HumiditySpecific(
+    with pytest.raises(spookipy.HumiditySpecificError):
+        _ = spookipy.HumiditySpecific(
             src_df0,
             ice_water_phase='both',
             temp_phase_switch=-273.76,
@@ -100,8 +100,8 @@ def test_6(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute HumiditySpecific
-    with pytest.raises(spooki.HumiditySpecificError):
-        _ = spooki.HumiditySpecific(
+    with pytest.raises(spookipy.HumiditySpecificError):
+        _ = spookipy.HumiditySpecific(
             src_df0,
             ice_water_phase='both',
             temp_phase_switch=273.17,
@@ -116,8 +116,8 @@ def test_7(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute HumiditySpecific
-    with pytest.raises(spooki.HumiditySpecificError):
-        _ = spooki.HumiditySpecific(
+    with pytest.raises(spookipy.HumiditySpecificError):
+        _ = spookipy.HumiditySpecific(
             src_df0,
             ice_water_phase='invalide',
             temp_phase_switch=273.17,
@@ -134,14 +134,14 @@ def test_8(plugin_test_dir):
     tthr_df = fstpy.select_with_meta(src_df0, ['TT', 'HR'])
 
     # compute HumiditySpecific
-    df = spooki.HumiditySpecific(tthr_df, ice_water_phase='water').compute()
+    df = spookipy.HumiditySpecific(tthr_df, ice_water_phase='water').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Select --fieldName TT,HR] >>
     # [HumiditySpecific --iceWaterPhase WATER] >>
     # [Zap --pdsLabel R1580V0N --doNotFlagAsZapped] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:, 'etiket'] = 'R1580V0N'
-    df = spooki.convip(df)
+    df = spookipy.convip(df)
 
     # df.loc[df.nomvar!='!!','nbits']=32
     # df.loc[:,'datyp']=5
@@ -169,12 +169,12 @@ def test_10(plugin_test_dir):
     tthu_df = fstpy.select_with_meta(src_df0, ['TT', 'HU'])
 
     # compute HumiditySpecific
-    es_df = spooki.DewPointDepression(
+    es_df = spookipy.DewPointDepression(
         tthu_df, ice_water_phase='water').compute()
     tt_df = fstpy.select_with_meta(tthu_df, ['TT'])
     dpdtt_df = pd.concat([es_df, tt_df], ignore_index=True)
 
-    df = spooki.HumiditySpecific(dpdtt_df, ice_water_phase='water').compute()
+    df = spookipy.HumiditySpecific(dpdtt_df, ice_water_phase='water').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Select --fieldName TT,HU] >>
     # ([DewPointDepression --iceWaterPhase WATER] + [Select --fieldName TT]) >>
@@ -182,7 +182,7 @@ def test_10(plugin_test_dir):
     # [Zap --pdsLabel R1580V0N --doNotFlagAsZapped] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:, 'etiket'] = 'R1580V0N'
-    df = spooki.convip(df)
+    df = spookipy.convip(df)
 
     # df.loc[df.nomvar!='!!','nbits']=32
     # df.loc[:,'datyp']=5
@@ -210,14 +210,14 @@ def test_11(plugin_test_dir):
     tthu_df = fstpy.select_with_meta(src_df0, ['TT', 'HU'])
 
     # compute HumiditySpecific
-    es_df = spooki.DewPointDepression(
+    es_df = spookipy.DewPointDepression(
         tthu_df, ice_water_phase='water', rpn=True).compute()
 
     tt_df = fstpy.select_with_meta(tthu_df, ['TT'])
 
     ttes_df = pd.concat([es_df, tt_df], ignore_index=True)
 
-    df = spooki.HumiditySpecific(
+    df = spookipy.HumiditySpecific(
         ttes_df,
         ice_water_phase='water',
         rpn=True).compute()
@@ -228,7 +228,7 @@ def test_11(plugin_test_dir):
     # [Zap --pdsLabel R1580V0N --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:, 'etiket'] = 'R1580V0N'
 
-    df = spooki.convip(df)
+    df = spookipy.convip(df)
 
     # df.loc[df.nomvar!='!!','nbits']=32
     # df.loc[:,'datyp']=5
@@ -256,15 +256,15 @@ def test_12(plugin_test_dir):
     tthu_df = fstpy.select_with_meta(src_df0, ['TT', 'HU'])
     tt_df = fstpy.select_with_meta(src_df0, ['TT'])
 
-    es_df = spooki.DewPointDepression(
+    es_df = spookipy.DewPointDepression(
         tthu_df, ice_water_phase='water').compute()
     estt_df = pd.concat([es_df, tt_df], ignore_index=True)
 
-    td_df = spooki.TemperatureDewPoint(
+    td_df = spookipy.TemperatureDewPoint(
         estt_df, ice_water_phase='water').compute()
     tttd_df = pd.concat([td_df, tt_df], ignore_index=True)
 
-    df = spooki.HumiditySpecific(tttd_df, ice_water_phase='water').compute()
+    df = spookipy.HumiditySpecific(tttd_df, ice_water_phase='water').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Select --fieldName TT,HU] >>
     # ([DewPointDepression --iceWaterPhase WATER] + [Select --fieldName TT]) >>
@@ -273,7 +273,7 @@ def test_12(plugin_test_dir):
     # [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:, 'etiket'] = 'G133K80N'
-    # df = spooki.convip(df)
+    # df = spookipy.convip(df)
 
     # df.loc[df.nomvar!='!!','nbits']=32
     # df.loc[:,'datyp']=5
@@ -301,16 +301,16 @@ def test_13(plugin_test_dir):
     tthu_df = fstpy.select_with_meta(src_df0, ['TT', 'HU'])
     tt_df = fstpy.select_with_meta(src_df0, ['TT'])
 
-    es_df = spooki.DewPointDepression(
+    es_df = spookipy.DewPointDepression(
         tthu_df, ice_water_phase='water', rpn=True).compute()
     estt_df = pd.concat([es_df, tt_df], ignore_index=True)
 
-    td_df = spooki.TemperatureDewPoint(
+    td_df = spookipy.TemperatureDewPoint(
         estt_df, ice_water_phase='water').compute()
     tttd_df = pd.concat([td_df, tt_df], ignore_index=True)
 
     # compute HumiditySpecific
-    df = spooki.HumiditySpecific(
+    df = spookipy.HumiditySpecific(
         tttd_df,
         ice_water_phase='water',
         rpn=True).compute()
@@ -349,17 +349,17 @@ def test_14(plugin_test_dir):
     ttes_df = fstpy.select_with_meta(src_df0, ['TT', 'ES'])
     tt_df = fstpy.select_with_meta(src_df0, ['TT'])
 
-    es_df = spooki.DewPointDepression(
+    es_df = spookipy.DewPointDepression(
         ttes_df, ice_water_phase='water').compute()
     ttes_df = pd.concat([es_df, tt_df], ignore_index=True)
 
-    qv_df = spooki.WaterVapourMixingRatio(
+    qv_df = spookipy.WaterVapourMixingRatio(
         ttes_df,
         ice_water_phase='both',
         temp_phase_switch=-
         40).compute()
     # compute HumiditySpecific
-    df = spooki.HumiditySpecific(qv_df, ice_water_phase='water').compute()
+    df = spookipy.HumiditySpecific(qv_df, ice_water_phase='water').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Select --fieldName TT,ES] >>
     # ([DewPointDepression --iceWaterPhase WATER] + [Select --fieldName TT]) >>
@@ -368,7 +368,7 @@ def test_14(plugin_test_dir):
     # [Zap --pdsLabel R1580V0N --doNotFlagAsZapped] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[:, 'etiket'] = 'R1580V0N'
-    df = spooki.convip(df)
+    df = spookipy.convip(df)
 
     # df.loc[df.nomvar!='!!','nbits']=32
     # df.loc[:,'datyp']=5

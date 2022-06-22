@@ -5,7 +5,7 @@ from spookipy.utils import encode_ip2_and_ip3_time
 from test import TMP_PATH, TEST_PATH
 import pytest
 import fstpy.all as fstpy
-import spookipy.all as spooki
+import spookipy
 import pandas as pd
 from ci_fstcomp import fstcomp
 import secrets
@@ -26,7 +26,7 @@ def test_1(plugin_test_dir):
 
     # compute TimeIntervalMinMax
     with pytest.raises(TimeIntervalMinMaxError):
-        df = spooki.TimeIntervalMinMax(src_df0, max=True,
+        df = spookipy.TimeIntervalMinMax(src_df0, max=True,
             forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)), 
             interval=datetime.timedelta(hours=12), 
             step=datetime.timedelta(hours=24),
@@ -43,7 +43,7 @@ def test_1(plugin_test_dir):
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     # compute TimeIntervalMinMax
-#     df = spooki.TimeIntervalMinMax(src_df0,
+#     df = spookipy.TimeIntervalMinMax(src_df0,
 #         forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)), 
 #         interval=datetime.timedelta(hours=12), 
 #         step=datetime.timedelta(hours=24),
@@ -72,7 +72,7 @@ def test_3(plugin_test_dir):
 
     # compute TimeIntervalMinMax
     with pytest.raises(TimeIntervalMinMaxError):
-        df = spooki.TimeIntervalMinMax(src_df0,
+        df = spookipy.TimeIntervalMinMax(src_df0,
             interval=datetime.timedelta(hours=12), 
             step=datetime.timedelta(hours=24),
             nomvar_min='PRX').compute()
@@ -89,7 +89,7 @@ def test_3(plugin_test_dir):
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     # compute TimeIntervalMinMax
-#     df = spooki.TimeIntervalMinMax(src_df0,
+#     df = spookipy.TimeIntervalMinMax(src_df0,
 #         forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)), 
 #         interval=datetime.timedelta(hours=12), 
 #         step=datetime.timedelta(hours=24),
@@ -119,7 +119,7 @@ def test_5(plugin_test_dir):
 
     # compute TimeIntervalMinMax
     with pytest.raises(TimeIntervalMinMaxError):
-        df = spooki.TimeIntervalMinMax(src_df0, 
+        df = spookipy.TimeIntervalMinMax(src_df0, 
             nomvar='PR', 
             min=True,
             forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)), 
@@ -138,7 +138,7 @@ def test_6(plugin_test_dir):
 
     # compute TimeIntervalMinMax
     with pytest.raises(TimeIntervalMinMaxError):
-        df = spooki.TimeIntervalMinMax(src_df0,
+        df = spookipy.TimeIntervalMinMax(src_df0,
             nomvar='PR',
             min=True,
             forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)), 
@@ -157,7 +157,7 @@ def test_6(plugin_test_dir):
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     # compute TimeIntervalMinMax
-#     df = spooki.TimeIntervalMinMax(src_df0,
+#     df = spookipy.TimeIntervalMinMax(src_df0,
 #         nomvar='PR',
 #         max=True,
 #         forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)), 
@@ -188,7 +188,7 @@ def test_6(plugin_test_dir):
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     # compute TimeIntervalMinMax
-#     df = spooki.TimeIntervalMinMax(src_df0,
+#     df = spookipy.TimeIntervalMinMax(src_df0,
 #         nomvar='PR',
 #         max=True,
 #         ).compute()
@@ -216,7 +216,7 @@ def test_6(plugin_test_dir):
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     # compute TimeIntervalMinMax
-#     df = spooki.TimeIntervalMinMax(src_df0).compute()
+#     df = spookipy.TimeIntervalMinMax(src_df0).compute()
 #     # [ReaderStd --input {sources[0]}] >> 
 #     # [TimeIntervalMinMax --fieldName PR --type MAX --interval 12 --rangeForecastHour 0@177 --step 24 --outputFieldNameMax PRX] >>
 #     # [WriterStd --output /tmp//totonSZBK2/toto.std]
@@ -242,7 +242,7 @@ def test_6(plugin_test_dir):
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     # compute TimeIntervalMinMax
-#     df = spooki.TimeIntervalMinMax(src_df0).compute()
+#     df = spookipy.TimeIntervalMinMax(src_df0).compute()
 #     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
 #     # [TimeIntervalMinMax --fieldName PR --type MAX --interval 12 --rangeForecastHour 0@177 --step 24 --outputFieldNameMin PRX]
 
@@ -267,7 +267,7 @@ def test_6(plugin_test_dir):
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     # compute TimeIntervalMinMax
-#     df = spooki.TimeIntervalMinMax(src_df0).compute()
+#     df = spookipy.TimeIntervalMinMax(src_df0).compute()
 #     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
 #     # [TimeIntervalMinMax --fieldName PR --type MIN --interval 12 --rangeForecastHour 0@177 --step 24 --outputFieldNameMax PRX]
 
@@ -292,7 +292,7 @@ def test_6(plugin_test_dir):
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     # compute TimeIntervalMinMax
-#     df = spooki.TimeIntervalMinMax(src_df0).compute()
+#     df = spookipy.TimeIntervalMinMax(src_df0).compute()
 #     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
 #     # [TimeIntervalMinMax --fieldName PR --type MINI --interval 12 --rangeForecastHour 0@177 --step 24 --outputFieldNameMax PRX]
 
@@ -317,7 +317,7 @@ def test_13(plugin_test_dir):
 
     # compute TimeIntervalMinMax
     with pytest.raises(TimeIntervalMinMaxError):
-        df = spooki.TimeIntervalMinMax(src_df0,
+        df = spookipy.TimeIntervalMinMax(src_df0,
             nomvar='PR',
             max=True,
             forecast_hour_range=(datetime.timedelta(hours=-1)), 
@@ -336,7 +336,7 @@ def test_14(plugin_test_dir):
 
     # compute TimeIntervalMinMax
     with pytest.raises(TimeIntervalMinMaxError):
-        df = spooki.TimeIntervalMinMax(src_df0,
+        df = spookipy.TimeIntervalMinMax(src_df0,
             nomvar='PR',
             min=True,
             forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)), 
@@ -355,7 +355,7 @@ def test_15(plugin_test_dir):
 
     # compute TimeIntervalMinMax
     with pytest.raises(TimeIntervalMinMaxError):
-        df = spooki.TimeIntervalMinMax(src_df0,
+        df = spookipy.TimeIntervalMinMax(src_df0,
             nomvar='PR',
             min=True,
             forecast_hour_range=[(datetime.timedelta(hours=0), datetime.timedelta(hours=177)),(datetime.timedelta(hours=50), datetime.timedelta(hours=58))], 
@@ -374,7 +374,7 @@ def test_16(plugin_test_dir):
 
     # compute TimeIntervalMinMax
     with pytest.raises(TimeIntervalMinMaxError):
-        df = spooki.TimeIntervalMinMax(src_df0,
+        df = spookipy.TimeIntervalMinMax(src_df0,
             nomvar='PR',
             min=True,
             forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)), 
@@ -394,7 +394,7 @@ def test_17(plugin_test_dir):
 
     # compute TimeIntervalMinMax
     with pytest.raises(TimeIntervalMinMaxError):
-        df = spooki.TimeIntervalMinMax(src_df0,
+        df = spookipy.TimeIntervalMinMax(src_df0,
             nomvar='PR',
             min=True,
             forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)), 
@@ -413,7 +413,7 @@ def test_18(plugin_test_dir):
 
     # compute TimeIntervalMinMax
     with pytest.raises(TimeIntervalMinMaxError):
-        df = spooki.TimeIntervalMinMax(src_df0,
+        df = spookipy.TimeIntervalMinMax(src_df0,
             nomvar='PR',
             min=True,
             forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)), 
@@ -432,7 +432,7 @@ def test_19(plugin_test_dir):
 
     # compute TimeIntervalMinMax
     with pytest.raises(TimeIntervalMinMaxError):
-        df = spooki.TimeIntervalMinMax(src_df0,
+        df = spookipy.TimeIntervalMinMax(src_df0,
             nomvar='PR',
             min=True,
             max=True,
@@ -452,7 +452,7 @@ def test_19(plugin_test_dir):
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     # compute TimeIntervalMinMax
-#     df = spooki.TimeIntervalMinMax(src_df0).compute()
+#     df = spookipy.TimeIntervalMinMax(src_df0).compute()
 #     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
 #     # [TimeIntervalMinMax --fieldName PR --type BOTH --interval 12 --rangeForecastHour 0@177 --step 24 --outputFieldNameMin PRX,PRZ --outputFieldNameMax PRX]
 
@@ -476,7 +476,7 @@ def test_21(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spooki.TimeIntervalMinMax(src_df0,
+    df = spookipy.TimeIntervalMinMax(src_df0,
         nomvar='TT',
         min=True,
         forecast_hour_range=[(datetime.timedelta(hours=160), datetime.timedelta(hours=168)),(datetime.timedelta(hours=150), datetime.timedelta(hours=160))], 
@@ -515,7 +515,7 @@ def test_22(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spooki.TimeIntervalMinMax(src_df0,
+    df = spookipy.TimeIntervalMinMax(src_df0,
         nomvar=['TT','HU'],
         min=True,
         forecast_hour_range=[(datetime.timedelta(hours=0), datetime.timedelta(hours=24)),(datetime.timedelta(hours=160), datetime.timedelta(hours=168))], 
@@ -553,7 +553,7 @@ def test_23(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spooki.TimeIntervalMinMax(src_df0,
+    df = spookipy.TimeIntervalMinMax(src_df0,
         nomvar=['TT','GZ'],
         min=True,
         forecast_hour_range=[(datetime.timedelta(hours=56), datetime.timedelta(hours=80)),(datetime.timedelta(hours=0), datetime.timedelta(hours=20))], 
@@ -591,7 +591,7 @@ def test_24(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spooki.TimeIntervalMinMax(src_df0,
+    df = spookipy.TimeIntervalMinMax(src_df0,
         nomvar=['HU','GZ'],
         max=True,
         forecast_hour_range=[(datetime.timedelta(hours=144), datetime.timedelta(hours=168)),(datetime.timedelta(hours=0), datetime.timedelta(hours=20))], 
@@ -630,7 +630,7 @@ def test_25(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spooki.TimeIntervalMinMax(src_df0,
+    df = spookipy.TimeIntervalMinMax(src_df0,
         nomvar='TT',
         max=True,
         forecast_hour_range=[(datetime.timedelta(hours=0), datetime.timedelta(hours=20)),(datetime.timedelta(hours=140), datetime.timedelta(hours=150)),(datetime.timedelta(hours=150), datetime.timedelta(hours=160))], 
@@ -668,7 +668,7 @@ def test_26(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spooki.TimeIntervalMinMax(src_df0,
+    df = spookipy.TimeIntervalMinMax(src_df0,
         nomvar=['TT','HU','GZ'],
         max=True,
         forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=30)), 
@@ -705,7 +705,7 @@ def test_27(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spooki.TimeIntervalMinMax(src_df0,
+    df = spookipy.TimeIntervalMinMax(src_df0,
         nomvar=['TT','HU'],
         min=True,
         max=True,
@@ -745,7 +745,7 @@ def test_28(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spooki.TimeIntervalMinMax(src_df0,
+    df = spookipy.TimeIntervalMinMax(src_df0,
         nomvar='TT',
         min=True,
         max=True,
@@ -784,7 +784,7 @@ def test_29(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spooki.TimeIntervalMinMax(src_df0,
+    df = spookipy.TimeIntervalMinMax(src_df0,
         nomvar=['TT','HU','GZ'],
         min=True,
         max=True,
@@ -823,7 +823,7 @@ def test_30(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spooki.TimeIntervalMinMax(src_df0,
+    df = spookipy.TimeIntervalMinMax(src_df0,
         nomvar='TT',
         min=True,
         forecast_hour_range=[
@@ -864,7 +864,7 @@ def test_30(plugin_test_dir):
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     # compute TimeIntervalMinMax
-#     df = spooki.TimeIntervalMinMax(src_df0).compute()
+#     df = spookipy.TimeIntervalMinMax(src_df0).compute()
 #     # [ReaderStd --ignoreExtended --input {sources[0]} ] >> 
 #     # [TimeIntervalMinMax --type MAX --rangeForecastHour 160@168,140@160,0@20 --fieldName TT] >> 
 #     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
@@ -891,7 +891,7 @@ def test_30(plugin_test_dir):
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     # compute TimeIntervalMinMax
-#     df = spooki.TimeIntervalMinMax(src_df0).compute()
+#     df = spookipy.TimeIntervalMinMax(src_df0).compute()
 #     # [ReaderStd --ignoreExtended --input {sources[0]} ] >> 
 #     # [TimeIntervalMinMax --type BOTH --rangeForecastHour 160@168,140@160,0@20 --fieldName TT] >> 
 #     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
@@ -917,7 +917,7 @@ def test_33(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spooki.TimeIntervalMinMax(src_df0,
+    df = spookipy.TimeIntervalMinMax(src_df0,
         nomvar='TT',
         min=True,
         forecast_hour_range=[(datetime.timedelta(hours=0), datetime.timedelta(hours=25)),(datetime.timedelta(hours=50), datetime.timedelta(hours=75)),(datetime.timedelta(hours=100), datetime.timedelta(hours=125))], 
@@ -954,7 +954,7 @@ def test_34(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spooki.TimeIntervalMinMax(src_df0,
+    df = spookipy.TimeIntervalMinMax(src_df0,
         nomvar='TT',
         max=True,
         forecast_hour_range=[(datetime.timedelta(hours=0), datetime.timedelta(hours=25)),(datetime.timedelta(hours=50), datetime.timedelta(hours=75)),(datetime.timedelta(hours=100), datetime.timedelta(hours=125))], 
@@ -992,7 +992,7 @@ def test_35(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spooki.TimeIntervalMinMax(src_df0,
+    df = spookipy.TimeIntervalMinMax(src_df0,
         nomvar='TT',
         min=True,
         max=True,
@@ -1033,7 +1033,7 @@ def test_36(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spooki.TimeIntervalMinMax(src_df0,
+    df = spookipy.TimeIntervalMinMax(src_df0,
         nomvar='TT',
         min=True,
         max=True,
@@ -1072,7 +1072,7 @@ def test_37(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spooki.TimeIntervalMinMax(src_df0,
+    df = spookipy.TimeIntervalMinMax(src_df0,
         nomvar='TT',
         max=True,
         forecast_hour_range=[(datetime.timedelta(hours=0), datetime.timedelta(hours=25)),(datetime.timedelta(hours=50), datetime.timedelta(hours=75)),(datetime.timedelta(hours=100), datetime.timedelta(hours=125))], 
@@ -1109,7 +1109,7 @@ def test_38(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spooki.TimeIntervalMinMax(src_df0,
+    df = spookipy.TimeIntervalMinMax(src_df0,
         nomvar='TT',
         min=True,
         forecast_hour_range=[(datetime.timedelta(hours=160), datetime.timedelta(hours=168)),(datetime.timedelta(hours=150), datetime.timedelta(hours=160))], 

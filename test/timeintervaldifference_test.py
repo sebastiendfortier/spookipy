@@ -4,7 +4,7 @@ from spookipy.utils import encode_ip2_and_ip3_time
 from test import TMP_PATH, TEST_PATH
 import pytest
 import fstpy.all as fstpy
-import spookipy.all as spooki
+import spookipy
 import pandas as pd
 from ci_fstcomp import fstcomp
 import secrets
@@ -29,7 +29,7 @@ def test_1(plugin_test_dir):
 
     src_df = pd.concat([src_df0, src_df1], ignore_index=True)
     # compute TimeIntervalDifference
-    df = spooki.TimeIntervalDifference(src_df, nomvar='PR', 
+    df = spookipy.TimeIntervalDifference(src_df, nomvar='PR', 
         forecast_hour_range=(datetime.timedelta(hours=12), datetime.timedelta(hours=18)), 
         interval=datetime.timedelta(hours=6), 
         step=datetime.timedelta(hours=1)).compute()
@@ -69,7 +69,7 @@ def test_2(plugin_test_dir):
 
     src_df = pd.concat([src_df0, src_df1, src_df2], ignore_index=True)
     # compute TimeIntervalDifference
-    df = spooki.TimeIntervalDifference(src_df, nomvar='PR',
+    df = spookipy.TimeIntervalDifference(src_df, nomvar='PR',
                                        forecast_hour_range=[(datetime.timedelta(hours=15), datetime.timedelta(hours=18)),
                                                             (datetime.timedelta(hours=12), datetime.timedelta(hours=18))],
                                        interval=[datetime.timedelta(hours=3), datetime.timedelta(hours=6)],
@@ -104,7 +104,7 @@ def test_3(plugin_test_dir):
 
     src_df = pd.concat([src_df0, src_df1], ignore_index=True)
     # compute TimeIntervalDifference
-    df = spooki.TimeIntervalDifference(src_df, nomvar='PR',
+    df = spookipy.TimeIntervalDifference(src_df, nomvar='PR',
                                        forecast_hour_range=(datetime.timedelta(hours=6), datetime.timedelta(hours=12)),
                                        interval=datetime.timedelta(hours=6),
                                        step=datetime.timedelta(hours=1)).compute()
@@ -142,7 +142,7 @@ def test_4(plugin_test_dir):
 
     src_df = pd.concat([src_df0, src_df1], ignore_index=True)
     # compute TimeIntervalDifference
-    df = spooki.TimeIntervalDifference(src_df, nomvar='PR',
+    df = spookipy.TimeIntervalDifference(src_df, nomvar='PR',
                                        forecast_hour_range=(datetime.timedelta(hours=12), datetime.timedelta(hours=18)),
                                        interval=datetime.timedelta(hours=6),
                                        step=datetime.timedelta(hours=1)).compute()
@@ -175,7 +175,7 @@ def test_5(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalDifference
-    df = spooki.TimeIntervalDifference(src_df0, nomvar='PR',
+    df = spookipy.TimeIntervalDifference(src_df0, nomvar='PR',
                                        forecast_hour_range=[(datetime.timedelta(hours=0), datetime.timedelta(hours=177)),
                                                             (datetime.timedelta(hours=0), datetime.timedelta(hours=60))],
                                        interval=[datetime.timedelta(hours=12), datetime.timedelta(hours=3)],
@@ -206,8 +206,8 @@ def test_6(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalDifference
-    with pytest.raises(spooki.TimeIntervalDifferenceError):
-        _ = spooki.TimeIntervalDifference(src_df0, nomvar='PR',
+    with pytest.raises(spookipy.TimeIntervalDifferenceError):
+        _ = spookipy.TimeIntervalDifference(src_df0, nomvar='PR',
                                           forecast_hour_range=[(datetime.timedelta(hours=0), datetime.timedelta(hours=177)),
                                                                (datetime.timedelta(hours=0), datetime.timedelta(hours=60))],
                                           interval=[datetime.timedelta(hours=0), datetime.timedelta(hours=3)],
@@ -223,8 +223,8 @@ def test_7(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalDifference
-    with pytest.raises(spooki.TimeIntervalDifferenceError):
-        _ = spooki.TimeIntervalDifference(src_df0, nomvar='PR',
+    with pytest.raises(spookipy.TimeIntervalDifferenceError):
+        _ = spookipy.TimeIntervalDifference(src_df0, nomvar='PR',
                                           forecast_hour_range=[(datetime.timedelta(hours=0), datetime.timedelta(hours=177)),
                                                                (datetime.timedelta(hours=0), datetime.timedelta(hours=60))],
                                           interval=[datetime.timedelta(hours=12), datetime.timedelta(hours=3)],
@@ -240,7 +240,7 @@ def test_8(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalDifference
-    df = spooki.TimeIntervalDifference(src_df0, nomvar='UV',
+    df = spookipy.TimeIntervalDifference(src_df0, nomvar='UV',
                                        forecast_hour_range=[(datetime.timedelta(hours=12), datetime.timedelta(hours=36)),
                                                             (datetime.timedelta(hours=12), datetime.timedelta(hours=36))],
                                        interval=[datetime.timedelta(hours=3), datetime.timedelta(hours=12)],
@@ -275,7 +275,7 @@ def test_9(plugin_test_dir):
 
     src_df = pd.concat([src_df0, src_df1], ignore_index=True)
     # compute TimeIntervalDifference
-    df = spooki.TimeIntervalDifference(src_df, nomvar='PR',
+    df = spookipy.TimeIntervalDifference(src_df, nomvar='PR',
                                        forecast_hour_range=(datetime.timedelta(hours=3), datetime.timedelta(hours=9)),
                                        interval=datetime.timedelta(hours=6),
                                        step=datetime.timedelta(hours=9)).compute()
@@ -310,7 +310,7 @@ def test_10(plugin_test_dir):
 
     src_df = pd.concat([src_df0, src_df1], ignore_index=True)
     # compute TimeIntervalDifference
-    df = spooki.TimeIntervalDifference(src_df, nomvar='PR',
+    df = spookipy.TimeIntervalDifference(src_df, nomvar='PR',
                                        forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=6)),
                                        interval=datetime.timedelta(hours=6),
                                        step=datetime.timedelta(hours=9)).compute()
@@ -346,7 +346,7 @@ def test_11(plugin_test_dir):
 
     src_df = pd.concat([src_df0, src_df1], ignore_index=True)
     # compute TimeIntervalDifference
-    df = spooki.TimeIntervalDifference(src_df, nomvar='PR',
+    df = spookipy.TimeIntervalDifference(src_df, nomvar='PR',
                                        forecast_hour_range=(datetime.timedelta(hours=3), datetime.timedelta(hours=18)),
                                        interval=datetime.timedelta(hours=6),
                                        step=datetime.timedelta(hours=9)).compute()
@@ -380,7 +380,7 @@ def test_12(plugin_test_dir):
 
     src_df = pd.concat([src_df0, src_df1], ignore_index=True)
     # compute TimeIntervalDifference
-    df = spooki.TimeIntervalDifference(src_df, nomvar='PR',
+    df = spookipy.TimeIntervalDifference(src_df, nomvar='PR',
                                        forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=15)),
                                        interval=datetime.timedelta(hours=6),
                                        step=datetime.timedelta(hours=9)).compute()
@@ -416,7 +416,7 @@ def test_13(plugin_test_dir):
 
     src_df = pd.concat([src_df0, src_df1], ignore_index=True)
     # compute TimeIntervalDifference
-    df = spooki.TimeIntervalDifference(src_df, nomvar='PR',
+    df = spookipy.TimeIntervalDifference(src_df, nomvar='PR',
                                        forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=6)),
                                        interval=datetime.timedelta(hours=6),
                                        step=datetime.timedelta(hours=9)).compute()
@@ -448,8 +448,8 @@ def test_14(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalDifference
-    with pytest.raises(spooki.TimeIntervalDifferenceError):
-        _ = spooki.TimeIntervalDifference(src_df0, nomvar='PR',
+    with pytest.raises(spookipy.TimeIntervalDifferenceError):
+        _ = spookipy.TimeIntervalDifference(src_df0, nomvar='PR',
                                           forecast_hour_range=(datetime.timedelta(0),
                                                                datetime.timedelta(hours=200)),
                                           interval=datetime.timedelta(hours=3),
@@ -465,8 +465,8 @@ def test_15(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalDifference
-    with pytest.raises(spooki.TimeIntervalDifferenceError):
-        _ = spooki.TimeIntervalDifference(src_df0, nomvar='PR',
+    with pytest.raises(spookipy.TimeIntervalDifferenceError):
+        _ = spookipy.TimeIntervalDifference(src_df0, nomvar='PR',
                                           forecast_hour_range=(datetime.timedelta(hours=0),
                                                                datetime.timedelta(hours=15)),
                                           interval=datetime.timedelta(hours=3),
@@ -482,8 +482,8 @@ def test_16(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalDifference
-    with pytest.raises(spooki.TimeIntervalDifferenceError):
-        _ = spooki.TimeIntervalDifference(src_df0, nomvar='PR',
+    with pytest.raises(spookipy.TimeIntervalDifferenceError):
+        _ = spookipy.TimeIntervalDifference(src_df0, nomvar='PR',
                                           forecast_hour_range=(datetime.timedelta(hours=3),
                                                                datetime.timedelta(hours=6)),
                                           interval=datetime.timedelta(hours=4),
@@ -499,8 +499,8 @@ def test_17(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalDifference
-    with pytest.raises(spooki.TimeIntervalDifferenceError):
-        _ = spooki.TimeIntervalDifference(src_df0, nomvar='PR',
+    with pytest.raises(spookipy.TimeIntervalDifferenceError):
+        _ = spookipy.TimeIntervalDifference(src_df0, nomvar='PR',
                                           forecast_hour_range=(datetime.timedelta(hours=9),
                                                                datetime.timedelta(hours=6)),
                                           interval=datetime.timedelta(hours=3),
@@ -516,7 +516,7 @@ def test_17(plugin_test_dir):
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     # compute TimeIntervalDifference
-#     df = spooki.TimeIntervalDifference(src_df0, nomvar='SN',
+#     df = spookipy.TimeIntervalDifference(src_df0, nomvar='SN',
 #                                        forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=1)),
 #                                        interval=datetime.timedelta(hours=1),
 #                                        step=datetime.timedelta(hours=1)).compute()
@@ -545,7 +545,7 @@ def test_19(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalDifference
-    df = spooki.TimeIntervalDifference(src_df0, nomvar='UV',
+    df = spookipy.TimeIntervalDifference(src_df0, nomvar='UV',
                                        forecast_hour_range=[(datetime.timedelta(hours=12), datetime.timedelta(hours=36)),
                                                             (datetime.timedelta(hours=12), datetime.timedelta(hours=36))],
                                        interval=[datetime.timedelta(hours=3), datetime.timedelta(hours=12)],
@@ -579,7 +579,7 @@ def test_20(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalDifference
-    df = spooki.TimeIntervalDifference(src_df0, nomvar='UV',  # forecast_hour_range=['12:00:00@36:00:00','12:00:00@36:00:00'] , interval=[3,12] , step=[3,12] , strictlyPositive=True).compute()
+    df = spookipy.TimeIntervalDifference(src_df0, nomvar='UV',  # forecast_hour_range=['12:00:00@36:00:00','12:00:00@36:00:00'] , interval=[3,12] , step=[3,12] , strictlyPositive=True).compute()
                                        forecast_hour_range=[(datetime.timedelta(hours=12), datetime.timedelta(hours=36)),
                                                             (datetime.timedelta(hours=12), datetime.timedelta(hours=36))],
                                        interval=[datetime.timedelta(hours=3), datetime.timedelta(hours=12)],
@@ -612,8 +612,8 @@ def test_21(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalDifference
-    with pytest.raises(spooki.TimeIntervalDifferenceError):
-        _ = spooki.TimeIntervalDifference(src_df0, nomvar='UV',
+    with pytest.raises(spookipy.TimeIntervalDifferenceError):
+        _ = spookipy.TimeIntervalDifference(src_df0, nomvar='UV',
                                           interval=[datetime.timedelta(hours=3), datetime.timedelta(hours=12)],
                                           step=[datetime.timedelta(hours=3), datetime.timedelta(hours=12)]).compute()
     # ['[ReaderStd --ignoreExtended --input {sources[0]}] >>
@@ -629,7 +629,7 @@ def test_21(plugin_test_dir):
 
 
 #     #compute TimeIntervalDifference
-#     df = spooki.TimeIntervalDifference(src_df0 , nomvar='UV',
+#     df = spookipy.TimeIntervalDifference(src_df0 , nomvar='UV',
 #                                        forecast_hour_range=[(datetime.timedelta(hours=12),datetime.timedelta(hours=36)),
 #                                                             (datetime.timedelta(hours=12),datetime.timedelta(hours=36))],
 #                                        interval=[datetime.fromisoformat('3:00:00'), datetime.fromisoformat('12:00:00')],
@@ -660,7 +660,7 @@ def test_21(plugin_test_dir):
 
 
 #     #compute TimeIntervalDifference
-#     df = spooki.TimeIntervalDifference(src_df0 , nomvar='UV',
+#     df = spookipy.TimeIntervalDifference(src_df0 , nomvar='UV',
 #                                        forecast_hour_range=[(datetime.timedelta(hours=12),datetime.timedelta(hours=36)),
 #                                                             (datetime.timedelta(hours=12),datetime.timedelta(hours=36))],
 #                                        interval=[datetime.timedelta(hours=3), datetime.timedelta(hours=12)],
@@ -691,7 +691,7 @@ def test_21(plugin_test_dir):
 
 
 #     #compute TimeIntervalDifference
-#     df = spooki.TimeIntervalDifference(src_df0 , nomvar='UV',
+#     df = spookipy.TimeIntervalDifference(src_df0 , nomvar='UV',
 #                                        forecast_hour_range=[(datetime.fromisoformat('12:00:00'),datetime.fromisoformat('36:00:00')),
 #                                                             (datetime.fromisoformat('12:00:00'),datetime.fromisoformat('36:00:00'))],
 #                                        interval=[datetime.fromisoformat('3:00:00'), datetime.fromisoformat('12:00:00')],

@@ -5,7 +5,7 @@ check_test_ssm_package()
 
 import fstpy.all as fstpy
 import pytest
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 
@@ -24,8 +24,8 @@ def test_1(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TemperatureDewPoint
-    with pytest.raises(spooki.TemperatureDewPointError):
-        _ = spooki.TemperatureDewPoint(
+    with pytest.raises(spookipy.TemperatureDewPointError):
+        _ = spookipy.TemperatureDewPoint(
             src_df0, ice_water_phase='both').compute()
     # [ReaderStd --input {sources[0]}] >>
     # [TemperatureDewPoint --iceWaterPhase BOTH ]
@@ -38,8 +38,8 @@ def test_2(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TemperatureDewPoint
-    with pytest.raises(spooki.TemperatureDewPointError):
-        _ = spooki.TemperatureDewPoint(
+    with pytest.raises(spookipy.TemperatureDewPointError):
+        _ = spookipy.TemperatureDewPoint(
             src_df0, ice_water_phase='ice').compute()
     # [ReaderStd --input {sources[0]}] >>
     # [TemperatureDewPoint --iceWaterPhase ICE ]
@@ -52,8 +52,8 @@ def test_3(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TemperatureDewPoint
-    with pytest.raises(spooki.TemperatureDewPointError):
-        _ = spooki.TemperatureDewPoint(
+    with pytest.raises(spookipy.TemperatureDewPointError):
+        _ = spookipy.TemperatureDewPoint(
             src_df0,
             ice_water_phase='both',
             temp_phase_switch=-10,
@@ -69,7 +69,7 @@ def test_4(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TemperatureDewPoint
-    df = spooki.TemperatureDewPoint(
+    df = spookipy.TemperatureDewPoint(
         src_df0,
         ice_water_phase='both',
         temp_phase_switch=-40,
@@ -103,7 +103,7 @@ def test_5(plugin_test_dir):
     ttes_df = fstpy.select_with_meta(src_df0, ['TT', 'ES'])
 
     # compute TemperatureDewPoint
-    df = spooki.TemperatureDewPoint(
+    df = spookipy.TemperatureDewPoint(
         ttes_df,
         ice_water_phase='both',
         temp_phase_switch=-40,
@@ -137,7 +137,7 @@ def test_6(plugin_test_dir):
     ttes_df = fstpy.select_with_meta(src_df0, ['TT', 'ES'])
 
     # compute TemperatureDewPoint
-    df = spooki.TemperatureDewPoint(
+    df = spookipy.TemperatureDewPoint(
         ttes_df,
         ice_water_phase='both',
         temp_phase_switch=-40,
@@ -172,7 +172,7 @@ def test_7(plugin_test_dir):
     tthr_df = fstpy.select_with_meta(src_df0, ['TT', 'HR'])
 
     # compute TemperatureDewPoint
-    df = spooki.TemperatureDewPoint(
+    df = spookipy.TemperatureDewPoint(
         tthr_df,
         ice_water_phase='both',
         temp_phase_switch=-40,
@@ -207,7 +207,7 @@ def test_9(plugin_test_dir):
     tthu_df = fstpy.select_with_meta(src_df0, ['TT', 'HU'])
 
     # compute TemperatureDewPoint
-    df = spooki.TemperatureDewPoint(tthu_df, ice_water_phase='water').compute()
+    df = spookipy.TemperatureDewPoint(tthu_df, ice_water_phase='water').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Select --fieldName TT,HU] >>
     # [TemperatureDewPoint --iceWaterPhase WATER] >>
@@ -237,7 +237,7 @@ def test_11(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TemperatureDewPoint
-    df = spooki.TemperatureDewPoint(src_df0, ice_water_phase='water').compute()
+    df = spookipy.TemperatureDewPoint(src_df0, ice_water_phase='water').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [TemperatureDewPoint --iceWaterPhase WATER ] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
@@ -268,7 +268,7 @@ def test_12(plugin_test_dir):
     tthu_df = fstpy.select_with_meta(src_df0, ['TT', 'HU'])
 
     # compute TemperatureDewPoint
-    df = spooki.TemperatureDewPoint(
+    df = spookipy.TemperatureDewPoint(
         tthu_df,
         ice_water_phase='both',
         temp_phase_switch=-40,
@@ -277,7 +277,7 @@ def test_12(plugin_test_dir):
     # [TemperatureDewPoint --iceWaterPhase BOTH --temperaturePhaseSwitch -40C] >> ', '
     # [WriterStd --output {destination_path} --ignoreExtended]']
 
-    df = spooki.convip(df)
+    df = spookipy.convip(df)
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
     fstpy.delete_file(results_file)
@@ -298,7 +298,7 @@ def test_13(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TemperatureDewPoint
-    df = spooki.TemperatureDewPoint(src_df0, ice_water_phase='water').compute()
+    df = spookipy.TemperatureDewPoint(src_df0, ice_water_phase='water').compute()
 
     # write the result
     results_file = TMP_PATH + "test_13.std"

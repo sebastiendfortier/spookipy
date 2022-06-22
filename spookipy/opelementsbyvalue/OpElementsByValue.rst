@@ -42,7 +42,7 @@ Usage:
    
    import os
    import fstpy.all as fstpy
-   import spookipy.all as spooki
+   import spookipy
 
    spooki_dir = os.environ['SPOOKI_DIR']
 
@@ -56,7 +56,7 @@ Usage:
    def mult_value(a, v):
       return a * v
 
-   res_df = spooki.OpElementsByValue(df,
+   res_df = spookipy.OpElementsByValue(df,
                                  value=(1/3),
                                  operation_name='MultiplyElementBy',
                                  nomvar_out='MV',

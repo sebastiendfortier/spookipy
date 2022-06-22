@@ -8,7 +8,7 @@ from spookipy.watervapourmixingratio.watervapourmixingratio import WaterVapourMi
 import fstpy.all as fstpy
 import pandas as pd
 import pytest
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 
@@ -26,9 +26,9 @@ def test_1(plugin_test_dir):
     source0 = plugin_test_dir + "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute spooki.DewPointDepression
-    with pytest.raises(spooki.DewPointDepressionError):
-        _ = spooki.DewPointDepression(
+    # compute spookipy.DewPointDepression
+    with pytest.raises(spookipy.DewPointDepressionError):
+        _ = spookipy.DewPointDepression(
             src_df0, ice_water_phase='both').compute()
     # [ReaderStd --input {sources[0]}] >> [DewPointDepression --iceWaterPhase BOTH ]
 
@@ -41,8 +41,8 @@ def test_3(plugin_test_dir):
 
     src_df0 = fstpy.select_with_meta(src_df0, ['TT', 'HU'])
 
-    # compute spooki.DewPointDepression
-    df = spooki.DewPointDepression(src_df0, ice_water_phase='water').compute()
+    # compute spookipy.DewPointDepression
+    df = spookipy.DewPointDepression(src_df0, ice_water_phase='water').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName TT,HU] >>
     # [DewPointDepression --iceWaterPhase WATER ] >> [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended]
 
@@ -71,8 +71,8 @@ def test_5(plugin_test_dir):
 
     src_df0 = fstpy.select_with_meta(src_df0, ['TT', 'HR'])
 
-    # compute spooki.DewPointDepression
-    df = spooki.DewPointDepression(src_df0, ice_water_phase='water').compute()
+    # compute spookipy.DewPointDepression
+    df = spookipy.DewPointDepression(src_df0, ice_water_phase='water').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName TT,HR] >>
     # [DewPointDepression --iceWaterPhase WATER ] >> [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended]
 
@@ -103,12 +103,12 @@ def test_6(plugin_test_dir):
 
     tt_df = fstpy.select_with_meta(src_df0, ['TT'])
 
-    # compute spooki.DewPointDepression
-    td_df = spooki.TemperatureDewPoint(
+    # compute spookipy.DewPointDepression
+    td_df = spookipy.TemperatureDewPoint(
         src_df0, ice_water_phase='water').compute()
 
     src_df1 = pd.concat([tt_df, td_df], ignore_index=True)
-    df = spooki.DewPointDepression(
+    df = spookipy.DewPointDepression(
         src_df1,
         ice_water_phase='water',
         rpn=True).compute()
@@ -142,12 +142,12 @@ def test_7(plugin_test_dir):
 
     tt_df = fstpy.select_with_meta(src_df0, ['TT'])
 
-    # compute spooki.DewPointDepression
-    tdp_df = spooki.TemperatureDewPoint(
+    # compute spookipy.DewPointDepression
+    tdp_df = spookipy.TemperatureDewPoint(
         src_df0, ice_water_phase='water').compute()
 
     src_df1 = pd.concat([tt_df, tdp_df], ignore_index=True)
-    df = spooki.DewPointDepression(src_df1, ice_water_phase='water').compute()
+    df = spookipy.DewPointDepression(src_df1, ice_water_phase='water').compute()
 
     df.loc[:, 'etiket'] = 'G133K80N'
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
@@ -175,8 +175,8 @@ def test_9(plugin_test_dir):
     source0 = plugin_test_dir + "2011100712_012_glbhyb_QV"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute spooki.DewPointDepression
-    df = spooki.DewPointDepression(src_df0, ice_water_phase='water').compute()
+    # compute spookipy.DewPointDepression
+    df = spookipy.DewPointDepression(src_df0, ice_water_phase='water').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [DewPointDepression --iceWaterPhase WATER] >> [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended]
 

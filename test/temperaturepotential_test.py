@@ -5,7 +5,7 @@ check_test_ssm_package()
 
 import fstpy.all as fstpy
 import pytest
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 
@@ -25,7 +25,7 @@ def test_1(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TemperaturePotential
-    df = spooki.TemperaturePotential(src_df0).compute()
+    df = spookipy.TemperaturePotential(src_df0).compute()
     # [ReaderStd --input {sources[0]}] >> [TemperaturePotential] >> [WriterStd --output {destination_path} ]
 
     df.loc[df.nomvar=='TH','etiket']= '__PTNLTTX'
@@ -55,7 +55,7 @@ def test_2(plugin_test_dir):
     ttk_df = fstpy.unit_convert(tt_df, to_unit_name='kelvin')
     # print(ttk_df.loc[ttk_df.nomvar=='TT'].unit.unique()[0])
     # compute TemperaturePotential
-    df = spooki.TemperaturePotential(ttk_df).compute()
+    df = spookipy.TemperaturePotential(ttk_df).compute()
     # [ReaderStd --input {sources[0]}] >> [Select --fieldName TT] >> [UnitConvert --unit kelvin] >> [TemperaturePotential] >> [WriterStd --output {destination_path} ]
 
     df.loc[df.nomvar=='TH','etiket']= '__PTNLTTX'

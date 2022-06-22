@@ -5,7 +5,7 @@ check_test_ssm_package()
 
 import fstpy.all as fstpy
 import pytest
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 
@@ -24,7 +24,7 @@ def test_1(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute FilterDigital
-    df = spooki.FilterDigital(
+    df = spookipy.FilterDigital(
         src_df0, filter=[
             1, 1, 1], repetitions=1).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [FilterDigital --filter 1,1,1 --repetitions 1] >>
@@ -55,7 +55,7 @@ def test_2(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute FilterDigital
-    df = spooki.FilterDigital(
+    df = spookipy.FilterDigital(
         src_df0, filter=[
             1, 1, 1], repetitions=3).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [FilterDigital --filter 1,1,1 --repetitions 3] >>
@@ -85,7 +85,7 @@ def test_3(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute FilterDigital
-    df = spooki.FilterDigital(
+    df = spookipy.FilterDigital(
         src_df0,
         filter=[
             1,
@@ -128,7 +128,7 @@ def test_4(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute FilterDigital
-    df = spooki.FilterDigital(
+    df = spookipy.FilterDigital(
         src_df0,
         filter=[
             1,
@@ -170,7 +170,7 @@ def test_5(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute FilterDigital
-    df = spooki.FilterDigital(src_df0, filter=[1], repetitions=1).compute()
+    df = spookipy.FilterDigital(src_df0, filter=[1], repetitions=1).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [FilterDigital --filter 1 --repetitions 1] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
@@ -201,7 +201,7 @@ def test_6(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute FilterDigital
-    df = spooki.FilterDigital(
+    df = spookipy.FilterDigital(
         src_df0,
         filter=[
             1,
@@ -243,7 +243,7 @@ def test_7(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute FilterDigital
-    df = spooki.FilterDigital(
+    df = spookipy.FilterDigital(
         src_df0,
         filter=[
             1,
@@ -285,7 +285,7 @@ def test_8(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute FilterDigital
-    df = spooki.FilterDigital(
+    df = spookipy.FilterDigital(
         src_df0,
         filter=[
             1,
@@ -329,7 +329,7 @@ def test_9(plugin_test_dir):
     src_df = fstpy.select_with_meta(src_df0, ['TT'])
     src_df = src_df.loc[src_df.etiket == 'R1558V0N']
     # compute FilterDigital
-    df = spooki.FilterDigital(
+    df = spookipy.FilterDigital(
         src_df, filter=[
             2, 4, 2], repetitions=3).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName TT --pdsLabel R1558V0N] >>
@@ -367,7 +367,7 @@ def test_10(plugin_test_dir):
     src_df = src_df.loc[src_df.etiket == 'R1558V0N']
 
     # compute FilterDigital
-    df = spooki.FilterDigital(
+    df = spookipy.FilterDigital(
         src_df, filter=[
             2, 4, 2], repetitions=1).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName TT --pdsLabel R1558V0N] >>
@@ -406,7 +406,7 @@ def test_11(plugin_test_dir):
     src_df = src_df.loc[src_df.etiket == 'R1558V0N']
 
     # compute FilterDigital
-    df = spooki.FilterDigital(
+    df = spookipy.FilterDigital(
         src_df, filter=[
             1, 2, 4, 2, 1], repetitions=2).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName TT --pdsLabel R1558V0N] >>
@@ -446,7 +446,7 @@ def test_12(plugin_test_dir):
     src_df = src_df.loc[src_df.etiket == 'R1558V0N']
 
     # compute FilterDigital
-    df = spooki.FilterDigital(
+    df = spookipy.FilterDigital(
         src_df,
         filter=[
             1,
@@ -493,7 +493,7 @@ def test_13(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute FilterDigital
-    df = spooki.FilterDigital(src_df0, filter=[1], repetitions=1).compute()
+    df = spookipy.FilterDigital(src_df0, filter=[1], repetitions=1).compute()
     # [ReaderStd --input {sources[0]}] >> [FilterDigital --filter 1 --repetitions 1] >>
     # [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
 
@@ -527,7 +527,7 @@ def test_14(plugin_test_dir):
     src_df = fstpy.select_with_meta(src_df0, ['UU*'])
 
     # compute FilterDigital
-    df = spooki.FilterDigital(
+    df = spookipy.FilterDigital(
         src_df,
         filter=[
             1,
@@ -565,7 +565,7 @@ def test_14(plugin_test_dir):
     src_df = fstpy.select_with_meta(src_df0, ['UU*'])
 
     # compute FilterDigital
-    df = spooki.FilterDigital(
+    df = spookipy.FilterDigital(
         src_df,
         filter=[
             1,

@@ -5,7 +5,7 @@ check_test_ssm_package()
 
 import fstpy.all as fstpy
 import pytest
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 
@@ -24,7 +24,7 @@ def test_1(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute WindMax
-    df = spooki.WindMax(src_df0).compute()
+    df = spookipy.WindMax(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WindMax] >> [WriterStd --output {destination_path} --ignoreExtended ]
 
     df['etiket'] = 'WINDMAX'
@@ -53,7 +53,7 @@ def test_2(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute WindMax
-    df = spooki.WindMax(src_df0).compute()
+    df = spookipy.WindMax(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WindMax] >> [WriterStd --output {destination_path} --ignoreExtended ]
     # df.loc[:,'nbits'] = 32
     # df.loc[:,'datyp'] = 5
@@ -81,7 +81,7 @@ def test_3(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute WindMax
-    df = spooki.WindMax(src_df0).compute()
+    df = spookipy.WindMax(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WindMax] >> [WriterStd --output {destination_path} --ignoreExtended]
     # df.loc[:,'nbits'] = 32
     # df.loc[:,'datyp'] = 5

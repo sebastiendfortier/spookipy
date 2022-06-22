@@ -5,7 +5,7 @@ check_test_ssm_package()
 
 import fstpy.all as fstpy
 import pytest
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 
@@ -24,7 +24,7 @@ def test_1(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute SetUpperBoundary
-    df = spooki.SetUpperBoundary(src_df0, value=5.).compute()
+    df = spookipy.SetUpperBoundary(src_df0, value=5.).compute()
     # [ReaderStd --input {sources[0]}] >> [SetUpperBoundary --value 5] >> [WriterStd --output {destination_path} ]
 
     df['etiket'] = '__SETUPRX'
@@ -52,7 +52,7 @@ def test_2(plugin_test_dir):
     src_df = fstpy.select_with_meta(src_df0,['UU'])
 
     # compute SetUpperBoundary
-    df = spooki.SetUpperBoundary(src_df, value=0.).compute()
+    df = spookipy.SetUpperBoundary(src_df, value=0.).compute()
     # [ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> [SetUpperBoundary --value 0] >> [WriterStd --output {destination_path}]
 
     df['etiket'] = '__SETUPRX'
@@ -78,8 +78,8 @@ def test_3(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute SetUpperBoundary
-    with pytest.raises(spooki.SetUpperBoundaryError):
-        _ = spooki.SetUpperBoundary(src_df0, value=0., nomvar_out='TEST').compute()
+    with pytest.raises(spookipy.SetUpperBoundaryError):
+        _ = spookipy.SetUpperBoundary(src_df0, value=0., nomvar_out='TEST').compute()
     # [ReaderStd --input {sources[0]}] >> [SetUpperBoundary --value 0 --outputFieldName TEST]
 
 
@@ -92,7 +92,7 @@ def test_4(plugin_test_dir):
     src_df = fstpy.select_with_meta(src_df0,['UU'])
 
     # compute SetUpperBoundary
-    df = spooki.SetUpperBoundary(src_df, value=0., nomvar_out='TEST').compute()
+    df = spookipy.SetUpperBoundary(src_df, value=0., nomvar_out='TEST').compute()
     # [ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> [SetUpperBoundary --value 0 --outputFieldName TEST] >> [WriterStd --output {destination_path} --noUnitConversion]
 
     df['etiket'] = '__SETUPRX'

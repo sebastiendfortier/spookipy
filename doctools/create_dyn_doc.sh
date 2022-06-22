@@ -26,7 +26,7 @@ echo "" >> $OUTPUT
 echo ".. code:: python" >> $OUTPUT
 echo "" >> $OUTPUT
 echo "    # inside your script" >> $OUTPUT
-echo "    import spookipy.all as spookipy" >> $OUTPUT
+echo "    import spookipy" >> $OUTPUT
 echo "    uv_df = spookipy.windmodulus(df).compute()" >> $OUTPUT
 echo "" >> $OUTPUT
 echo "Example" >> $OUTPUT
@@ -36,13 +36,13 @@ echo ".. code:: python" >> $OUTPUT
 echo "" >> $OUTPUT
 echo "    data_path = prefix + '/data/'" >> $OUTPUT
 echo "    import fstpy.all as fstpy" >> $OUTPUT
-echo "    import spookipy.all as spooki" >> $OUTPUT
+echo "    import spookipy" >> $OUTPUT
 echo "    # setup your file to read" >> $OUTPUT
 echo "    records=fstpy.StandardFileReader(data_path + 'ttuvre.std').to_pandas()" >> $OUTPUT
 echo "    # display selected records in a rpn voir format" >> $OUTPUT
 echo "    fstpy.voir(records)" >> $OUTPUT
 echo "    # compute uv on the selected records" >> $OUTPUT
-echo "    uv_df = spooki.windmodulus(records).compute()" >> $OUTPUT
+echo "    uv_df = spookipy.windmodulus(records).compute()" >> $OUTPUT
 echo "    dest_path = '/tmp/out.std'" >> $OUTPUT
 echo "    # write the selected records to the output file" >> $OUTPUT
 echo "    fstpy.StandardFileWriter(dest_path,uv_df).to_fst()" >> $OUTPUT

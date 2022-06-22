@@ -50,7 +50,7 @@ Usage:
       
       import os
       import fstpy.all as fstpy
-      import spookipy.all as spooki
+      import spookipy
       
       spooki_dir = os.environ['SPOOKI_DIR']
 
@@ -58,7 +58,7 @@ Usage:
 
       df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/WindMax/testsFiles/inputFile.std').to_pandas()
 
-      res_df = spooki.WindMax(df).compute()
+      res_df = spookipy.WindMax(df).compute()
 
       fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
 

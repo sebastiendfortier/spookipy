@@ -16,9 +16,9 @@ Use:
     python3
 
     import pandas as pd
-    import spookipy.all as spooki
+    import spookipy
     
-    class Example (spooki.Plugin):
+    class Example (spookipy.Plugin):
         def __init __ (self, df: pd.DataFrame, param) -> None:
             self.param = param
             super ().__ init __ (df)

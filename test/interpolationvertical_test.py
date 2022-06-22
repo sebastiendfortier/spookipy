@@ -5,7 +5,7 @@ check_test_ssm_package()
 
 import fstpy.all as fstpy
 import pytest
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 
@@ -24,8 +24,8 @@ def test_1(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute InterpolationVertical
-    with pytest.raises(spooki.InterpolationVerticalError):
-        _ = spooki.InterpolationVertical(src_df0).compute()
+    with pytest.raises(spookipy.InterpolationVerticalError):
+        _ = spookipy.InterpolationVertical(src_df0).compute()
     # [InterpolationVertical --outputGridDefinitionMethod DEFINED_SOMEHOW --interpolationType LINEAR --extrapolationType NEAREST ]
 
 
@@ -36,8 +36,8 @@ def test_2(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute InterpolationVertical
-    with pytest.raises(spooki.InterpolationVerticalError):
-        _ = spooki.InterpolationVertical(src_df0).compute()
+    with pytest.raises(spookipy.InterpolationVerticalError):
+        _ = spookipy.InterpolationVertical(src_df0).compute()
     # [InterpolationVertical --outputGridDefinitionMethod FIELD_DEFINED --referenceFieldName GRID --interpolationType INTERPOLATE_SOMEHOW --extrapolationType NEAREST ]
 
 def test_3(plugin_test_dir):
@@ -47,8 +47,8 @@ def test_3(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute InterpolationVertical
-    with pytest.raises(spooki.InterpolationVerticalError):
-        _ = spooki.InterpolationVertical(src_df0).compute()
+    with pytest.raises(spookipy.InterpolationVerticalError):
+        _ = spookipy.InterpolationVertical(src_df0).compute()
     # [InterpolationVertical --outputGridDefinitionMethod FIELD_DEFINED --referenceFieldName GRID --interpolationType LINEAR --extrapolationType EXTRAPOLATE_SOMEHOW ]
 
 
@@ -59,8 +59,8 @@ def test_4(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute InterpolationVertical
-    with pytest.raises(spooki.InterpolationVerticalError):
-        _ = spooki.InterpolationVertical(src_df0).compute()
+    with pytest.raises(spookipy.InterpolationVerticalError):
+        _ = spookipy.InterpolationVertical(src_df0).compute()
     # [InterpolationVertical --outputGridDefinitionMethod FIELD_DEFINED --interpolationType LINEAR --extrapolationType NEAREST ]
 
 
@@ -71,8 +71,8 @@ def test_5(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute InterpolationVertical
-    with pytest.raises(spooki.InterpolationVerticalError):
-        _ = spooki.InterpolationVertical(src_df0).compute()
+    with pytest.raises(spookipy.InterpolationVerticalError):
+        _ = spookipy.InterpolationVertical(src_df0).compute()
     # [InterpolationVertical --outputGridDefinitionMethod USER_DEFINED --verticalLevelType MILLIBARS --interpolationType LINEAR --extrapolationType NEAREST ]
 
 
@@ -83,8 +83,8 @@ def test_6(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute InterpolationVertical
-    with pytest.raises(spooki.InterpolationVerticalError):
-        _ = spooki.InterpolationVertical(src_df0).compute()
+    with pytest.raises(spookipy.InterpolationVerticalError):
+        _ = spookipy.InterpolationVertical(src_df0).compute()
     # [InterpolationVertical --outputGridDefinitionMethod USER_DEFINED --verticalLevel 50,-20,100,A,200 --verticalLevelType MILLIBARS --interpolationType LINEAR --extrapolationType NEAREST ]
 
 
@@ -95,8 +95,8 @@ def test_7(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute InterpolationVertical
-    with pytest.raises(spooki.InterpolationVerticalError):
-        _ = spooki.InterpolationVertical(src_df0).compute()
+    with pytest.raises(spookipy.InterpolationVerticalError):
+        _ = spookipy.InterpolationVertical(src_df0).compute()
     # [InterpolationVertical --outputGridDefinitionMethod USER_DEFINED --verticalLevel 100@200,300 --verticalLevelType MILLIBARS --interpolationType LINEAR --extrapolationType NEAREST ]
 
 
@@ -107,8 +107,8 @@ def test_8(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute InterpolationVertical
-    with pytest.raises(spooki.InterpolationVerticalError):
-        _ = spooki.InterpolationVertical(src_df0).compute()
+    with pytest.raises(spookipy.InterpolationVerticalError):
+        _ = spookipy.InterpolationVertical(src_df0).compute()
     # [InterpolationVertical --outputGridDefinitionMethod USER_DEFINED --verticalLevel 100,200,300 --interpolationType LINEAR --extrapolationType NEAREST ]
 
 
@@ -119,8 +119,8 @@ def test_9(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute InterpolationVertical
-    with pytest.raises(spooki.InterpolationVerticalError):
-        _ = spooki.InterpolationVertical(src_df0).compute()
+    with pytest.raises(spookipy.InterpolationVerticalError):
+        _ = spookipy.InterpolationVertical(src_df0).compute()
     # [InterpolationVertical --outputGridDefinitionMethod USER_DEFINED --verticalLevelType SOME_VERTICALLEVELTYPE 
     # --verticalLevel 100,200,300 --interpolationType LINEAR --extrapolationType NEAREST ]
 
@@ -132,8 +132,8 @@ def test_10(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute InterpolationVertical
-    with pytest.raises(spooki.InterpolationVerticalError):
-        _ = spooki.InterpolationVertical(src_df0).compute()
+    with pytest.raises(spookipy.InterpolationVerticalError):
+        _ = spookipy.InterpolationVertical(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [InterpolationVertical --outputGridDefinitionMethod FIELD_DEFINED --referenceFieldName GRID --interpolationType LINEAR --extrapolationType NEAREST ]
 
 
@@ -147,8 +147,8 @@ def test_11(plugin_test_dir):
     src_df1 = fstpy.StandardFileReader(source1)
 
     # compute InterpolationVertical
-    with pytest.raises(spooki.InterpolationVerticalError):
-        _ = spooki.InterpolationVertical(src_df0).compute()
+    with pytest.raises(spookipy.InterpolationVerticalError):
+        _ = spookipy.InterpolationVertical(src_df0).compute()
     # ([ReaderStd --ignoreExtended --input {sources[0]}] + ([ReaderStd --ignoreExtended --input {sources[1]}] >> [Select --fieldName TT]) ) >> [InterpolationVertical --outputGridDefinitionMethod FIELD_DEFINED --referenceFieldName TT --interpolationType LINEAR --extrapolationType NEAREST ]
 
 def test_12(plugin_test_dir):
@@ -161,7 +161,7 @@ def test_12(plugin_test_dir):
     src_df1 = fstpy.StandardFileReader(source1)
 
     # compute InterpolationVertical
-    df = spooki.InterpolationVertical(src_df0).compute()
+    df = spookipy.InterpolationVertical(src_df0).compute()
     # ([ReaderStd --ignoreExtended --input {sources[0]}] + 
     # ([ReaderStd --ignoreExtended --input {sources[1]}] >> [Select --fieldName TT] >> [Zap --fieldName GRID]) ) >> 
     # [InterpolationVertical --interpolationType LINEAR --extrapolationType NEAREST --referenceFieldName GRID -m FIELD_DEFINED 
@@ -190,7 +190,7 @@ def test_13(plugin_test_dir):
     src_df1 = fstpy.StandardFileReader(source1)
 
     # compute InterpolationVertical
-    df = spooki.InterpolationVertical(src_df0).compute()
+    df = spookipy.InterpolationVertical(src_df0).compute()
     # ([ReaderStd --ignoreExtended --input {sources[0]}] + 
     # ([ReaderStd --ignoreExtended --input {sources[1]}] >> [Select --fieldName TT] >> [Zap --fieldName GRID]) ) >> 
     # [InterpolationVertical --interpolationType LINEAR --extrapolationType NEAREST --referenceFieldName GRID 
@@ -216,7 +216,7 @@ def test_15(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute InterpolationVertical
-    df = spooki.InterpolationVertical(src_df0).compute()
+    df = spookipy.InterpolationVertical(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
     # [InterpolationVertical --verticalLevel 950,700,350,100,20 --verticalLevelType MILLIBARS --interpolationType LINEAR 
     # --extrapolationType NEAREST -m USER_DEFINED] >> 
@@ -244,7 +244,7 @@ def test_16(plugin_test_dir):
     src_df1 = fstpy.StandardFileReader(source1)
 
     # compute InterpolationVertical
-    df = spooki.InterpolationVertical(src_df0).compute()
+    df = spookipy.InterpolationVertical(src_df0).compute()
     # ([ReaderStd --ignoreExtended --input {sources[0]}] + 
     # ([ReaderStd --ignoreExtended --input {sources[1]}] >> 
     # (([Select --fieldName TT] >> [Zap --fieldName GRID]) +([Select --fieldName UU] >> [Zap --fieldName GRDU]))) ) >> 
@@ -277,7 +277,7 @@ def test_18(plugin_test_dir):
     src_df1 = fstpy.StandardFileReader(source1)
 
     # compute InterpolationVertical
-    df = spooki.InterpolationVertical(src_df0).compute()
+    df = spookipy.InterpolationVertical(src_df0).compute()
     # (([ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --noMetadata]) + ([ReaderStd --ignoreExtended --input {sources[1]}] >> 
     # (([Select --fieldName TT] >> [Zap --fieldName GRID]) +([Select --fieldName UU] >> [Zap --fieldName GRDU]))) ) >> 
     # (([Select --fieldName TT,GZ,GRID] >> 
@@ -309,7 +309,7 @@ def test_20(plugin_test_dir):
     src_df1 = fstpy.StandardFileReader(source1)
 
     # compute InterpolationVertical
-    df = spooki.InterpolationVertical(src_df0).compute()
+    df = spookipy.InterpolationVertical(src_df0).compute()
     # ([ReaderStd --ignoreExtended --input {sources[0]}] + 
     # ([ReaderStd --ignoreExtended --input {sources[1]}] >> [Select --fieldName TT] >> [Zap --fieldName GRID]) ) >> 
     # [InterpolationVertical --interpolationType LINEAR --extrapolationType NEAREST --referenceFieldName GRID 
@@ -335,7 +335,7 @@ def test_22(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute InterpolationVertical
-    df = spooki.InterpolationVertical(src_df0).compute()
+    df = spookipy.InterpolationVertical(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
     # [InterpolationVertical --verticalLevel 950,700,350,100,20 --verticalLevelType MILLIBARS --interpolationType LINEAR 
     # --extrapolationType NEAREST -m USER_DEFINED ] >> 
@@ -360,7 +360,7 @@ def test_24(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute InterpolationVertical
-    df = spooki.InterpolationVertical(src_df0).compute()
+    df = spookipy.InterpolationVertical(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName TT,GZ] >> 
     # [InterpolationVertical --verticalLevel 1000,2000,3000,4000,6000 --verticalLevelType METER_SEA_LEVEL 
     # --interpolationType LINEAR --extrapolationType NEAREST -m USER_DEFINED ] >> 
@@ -384,7 +384,7 @@ def test_25(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute InterpolationVertical
-    df = spooki.InterpolationVertical(src_df0).compute()
+    df = spookipy.InterpolationVertical(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName GZ,TT] >> 
     # [InterpolationVertical --verticalLevel 1000,2000,3000,4000,6000 --verticalLevelType METER_SEA_LEVEL 
     # --interpolationType LINEAR --extrapolationType FIXED --valueAbove 999.0 --valueBelow 999.0 -m USER_DEFINED ] >> 
@@ -408,8 +408,8 @@ def test_26(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute InterpolationVertical
-    with pytest.raises(spooki.InterpolationVerticalError):
-        _ = spooki.InterpolationVertical(src_df0).compute()
+    with pytest.raises(spookipy.InterpolationVerticalError):
+        _ = spookipy.InterpolationVertical(src_df0).compute()
     # [InterpolationVertical -m USER_DEFINED --verticalLevel 100 --verticalLevelType MILLIBARS_ABOVE_LEVEL ]
 
 
@@ -420,8 +420,8 @@ def test_27(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute InterpolationVertical
-    with pytest.raises(spooki.InterpolationVerticalError):
-        _ = spooki.InterpolationVertical(src_df0).compute()
+    with pytest.raises(spookipy.InterpolationVerticalError):
+        _ = spookipy.InterpolationVertical(src_df0).compute()
     # [InterpolationVertical -m USER_DEFINED --verticalLevel 100 --verticalLevelType MILLIBARS_ABOVE_LEVEL ]
 
 
@@ -432,7 +432,7 @@ def test_28(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute InterpolationVertical
-    df = spooki.InterpolationVertical(src_df0).compute()
+    df = spookipy.InterpolationVertical(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
     # ([Pressure --referenceField TT --coordinateType AUTODETECT] + [Select --fieldName GZ,TT,UU,VV]) >> 
     # [InterpolationVertical -m USER_DEFINED --verticalLevel 100 --verticalLevelType MILLIBARS_ABOVE_LEVEL 
@@ -457,8 +457,8 @@ def test_29(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute InterpolationVertical
-    with pytest.raises(spooki.InterpolationVerticalError):
-        _ = spooki.InterpolationVertical(src_df0).compute()
+    with pytest.raises(spookipy.InterpolationVerticalError):
+        _ = spookipy.InterpolationVertical(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
     # ([Select --fieldName GZ,TT] + [Pressure --referenceField TT --coordinateType AUTODETECT]) >> 
     # [InterpolationVertical -T 1 --verticalLevel 900,500,300,200,100 --verticalLevelType METER_SEA_LEVEL 
@@ -472,7 +472,7 @@ def test_30(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute InterpolationVertical
-    df = spooki.InterpolationVertical(src_df0).compute()
+    df = spookipy.InterpolationVertical(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
     # [InterpolationVertical -m USER_DEFINED --verticalLevel 1000,3000,6000 --verticalLevelType METER_GROUND_LEVEL 
     # --interpolationType NEAREST --extrapolationType NEAREST] >> 
@@ -496,7 +496,7 @@ def test_31(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute InterpolationVertical
-    df = spooki.InterpolationVertical(src_df0).compute()
+    df = spookipy.InterpolationVertical(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
     # [InterpolationVertical -m USER_DEFINED --verticalLevel 1000,3000,6000 --verticalLevelType METER_GROUND_LEVEL 
     # --interpolationType LINEAR --extrapolationType NEAREST] >> 
@@ -521,8 +521,8 @@ def test_32(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute InterpolationVertical
-    with pytest.raises(spooki.InterpolationVerticalError):
-        _ = spooki.InterpolationVertical(src_df0).compute()
+    with pytest.raises(spookipy.InterpolationVerticalError):
+        _ = spookipy.InterpolationVertical(src_df0).compute()
     # [InterpolationVertical --outputGridDefinitionMethod FIELD_DEFINED --referenceFieldName GZ 
     # --outputField INCLUDE_SOMETHING --interpolationType LINEAR --extrapolationType NEAREST]
 
@@ -537,7 +537,7 @@ def test_33(plugin_test_dir):
     src_df1 = fstpy.StandardFileReader(source1)
 
     # compute InterpolationVertical
-    df = spooki.InterpolationVertical(src_df0).compute()
+    df = spookipy.InterpolationVertical(src_df0).compute()
     # ([ReaderStd --ignoreExtended --input {sources[0]}] + ([ReaderStd --ignoreExtended --input {sources[1]}] >> 
     # [Select --fieldName TT] >> [Zap --fieldName GRID])) >> 
     # [InterpolationVertical --interpolationType LINEAR --extrapolationType NEAREST --outputField INCLUDE_REFERENCE_FIELD 
@@ -565,7 +565,7 @@ def test_34(plugin_test_dir):
     src_df1 = fstpy.StandardFileReader(source1)
 
     # compute InterpolationVertical
-    df = spooki.InterpolationVertical(src_df0).compute()
+    df = spookipy.InterpolationVertical(src_df0).compute()
     # ([ReaderStd --ignoreExtended --input {sources[0]}] + 
     # ([ReaderStd --ignoreExtended --input {sources[1]}] >> [Select --fieldName TT] >> [Zap --fieldName GRID]) + 
     # ([ReaderStd --ignoreExtended --input {sources[1]}] >> [Select --fieldName GZ] >> [Zap --fieldName OUT])) >> 
@@ -594,7 +594,7 @@ def test_35(plugin_test_dir):
     src_df1 = fstpy.StandardFileReader(source1)
 
     # compute InterpolationVertical
-    df = spooki.InterpolationVertical(src_df0).compute()
+    df = spookipy.InterpolationVertical(src_df0).compute()
     # ([ReaderStd --ignoreExtended --input {sources[0]}] + 
     # ([ReaderStd --ignoreExtended --input {sources[1]}] >> [Select --fieldName TT] >> [Zap --fieldName GRID]) + 
     # ([ReaderStd --ignoreExtended --input {sources[1]}] >> [Select --fieldName GZ] >> [Zap --fieldName OUT])) >> 
@@ -623,7 +623,7 @@ def test_36(plugin_test_dir):
     src_df1 = fstpy.StandardFileReader(source1)
 
     # compute InterpolationVertical
-    df = spooki.InterpolationVertical(src_df0).compute()
+    df = spookipy.InterpolationVertical(src_df0).compute()
     # ([ReaderStd --ignoreExtended --input {sources[0]}] + 
     # ([ReaderStd --ignoreExtended --input {sources[1]}] >> [Select --fieldName TT] >> [Zap --fieldName GRID]) + 
     # ([ReaderStd --ignoreExtended --input {sources[1]}] >> [Select --fieldName GZ] >> [Zap --fieldName OUT])) >> 
@@ -649,8 +649,8 @@ def test_37(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute InterpolationVertical
-    with pytest.raises(spooki.InterpolationVerticalError):
-        _ = spooki.InterpolationVertical(src_df0).compute()
+    with pytest.raises(spookipy.InterpolationVerticalError):
+        _ = spookipy.InterpolationVertical(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>[Select --fieldName TT,UU] >> 
     # [InterpolationVertical --outputGridDefinitionMethod FIELD_DEFINED --referenceFieldName TT --interpolationType LINEAR 
     # --extrapolationType NEAREST --outputField INTERPOLATED_FIELD_ONLY]
@@ -662,8 +662,8 @@ def test_38(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute InterpolationVertical
-    with pytest.raises(spooki.InterpolationVerticalError):
-        _ = spooki.InterpolationVertical(src_df0).compute()
+    with pytest.raises(spookipy.InterpolationVerticalError):
+        _ = spookipy.InterpolationVertical(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>[Select --fieldName TT,UU] >> 
     # [InterpolationVertical --outputGridDefinitionMethod FIELD_DEFINED --referenceFieldName TT --interpolationType LINEAR 
     # --extrapolationType NEAREST --outputField INCLUDE_REFERENCE_FIELD]
@@ -676,7 +676,7 @@ def test_39(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute InterpolationVertical
-    df = spooki.InterpolationVertical(src_df0).compute()
+    df = spookipy.InterpolationVertical(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
     # [InterpolationVertical --outputGridDefinitionMethod USER_DEFINED --verticalLevel 10.0,100.0,400.0,700.0,850.0,925.0,1000.0 
     # --verticalLevelType MILLIBARS --interpolationType LINEAR --extrapolationType NEAREST ] >>
@@ -702,7 +702,7 @@ def test_40(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute InterpolationVertical
-    df = spooki.InterpolationVertical(src_df0).compute()
+    df = spookipy.InterpolationVertical(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
     # [Select --fieldName QC,TD] >> 
     # [InterpolationVertical --outputGridDefinitionMethod USER_DEFINED --verticalLevel 100,200,300,400,500,600,700,800,900,1000 
@@ -727,7 +727,7 @@ def test_41(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute InterpolationVertical
-    df = spooki.InterpolationVertical(src_df0).compute()
+    df = spookipy.InterpolationVertical(src_df0).compute()
     # [ReaderStd --input {sources[0]}] >> 
     # [InterpolationVertical --outputGridDefinitionMethod USER_DEFINED --verticalLevel 1,500,1100 
     # --verticalLevelType MILLIBARS --interpolationType LINEAR --extrapolationType FIXED --valueAbove 777.7 
@@ -752,7 +752,7 @@ def test_41(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute InterpolationVertical
-    df = spooki.InterpolationVertical(src_df0).compute()
+    df = spookipy.InterpolationVertical(src_df0).compute()
     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName QC,TD] >> 
     # [InterpolationVertical --outputGridDefinitionMethod USER_DEFINED --verticalLevel 100,200,300,400,500,600,700,800,900,1000 
     # --verticalLevelType MILLIBARS --interpolationType LINEAR --extrapolationType NEAREST ] >> 

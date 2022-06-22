@@ -6,7 +6,7 @@ check_test_ssm_package()
 import fstpy.all as fstpy
 import pandas as pd
 import pytest
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 
@@ -25,13 +25,13 @@ def test_1(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridCut
-    df = spooki.GridCut(
+    df = spookipy.GridCut(
         src_df0, start_point=(
             0, 0), end_point=(
             2, 3)).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GridCut --start_point 0,0 --end_point 2,3] >> [WriterStd --output {destination_path} --ignoreExtended]
 
-    df = spooki.convip(df)
+    df = spookipy.convip(df)
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
     fstpy.delete_file(results_file)
@@ -53,13 +53,13 @@ def test_2(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridCut
-    df = spooki.GridCut(
+    df = spookipy.GridCut(
         src_df0, start_point=(
             2, 1), end_point=(
             4, 4)).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GridCut --start_point 2,1 --end_point 4,4] >> [WriterStd --output {destination_path} --ignoreExtended]
 
-    df = spooki.convip(df)
+    df = spookipy.convip(df)
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
     fstpy.delete_file(results_file)
@@ -81,7 +81,7 @@ def test_3(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridCut
-    df = spooki.GridCut(
+    df = spookipy.GridCut(
         src_df0, start_point=(
             0, 0), end_point=(
             4, 4)).compute()
@@ -109,8 +109,8 @@ def test_4(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridCut
-    with pytest.raises(spooki.GridCutError):
-        _ = spooki.GridCut(
+    with pytest.raises(spookipy.GridCutError):
+        _ = spookipy.GridCut(
             src_df0, start_point=(
                 0, 0), end_point=(
                 4, 5)).compute()
@@ -125,7 +125,7 @@ def test_5(plugin_test_dir):
 
          
     # compute GridCut
-    df = spooki.GridCut(
+    df = spookipy.GridCut(
         src_df0, start_point=(
             4, 6), end_point=(
             28, 30)).compute()
@@ -153,7 +153,7 @@ def test_6(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
     # print('src_df0',src_df0[['nomvar','ni','nj','grid','ip1','ip2','ig1','ig2']].to_string())   
     # compute GridCut
-    df = spooki.GridCut(
+    df = spookipy.GridCut(
         src_df0, start_point=(
             0, 0), end_point=(
             511, 399)).compute()
@@ -190,7 +190,7 @@ def test_6(plugin_test_dir):
 #     src_df = pd.concat([src_df0,src_df1],ignore_index=True)
 
 #     #compute GridCut
-#     df = spooki.GridCut(src_df,start_point=(0,0),end_point=(648,42)).compute()
+#     df = spookipy.GridCut(src_df,start_point=(0,0),end_point=(648,42)).compute()
 #     #[ReaderStd --input {sources[0]}] + ([ReaderStd --input {sources[1]}] >>
 #     # ([Select --fieldName GZ --verticalLevel SURFACE] + [Select --metadataFieldName P0] )) >>
 #     # [Select --xAxisMatrixSize 649 --yAxisMatrixSize 672] >>
@@ -220,11 +220,11 @@ def test_6(plugin_test_dir):
 
 
 #     #compute GridCut
-#     df = spooki.GridCut(src_df0, start_point=(0,0), end_point=(2,3)).compute()
+#     df = spookipy.GridCut(src_df0, start_point=(0,0), end_point=(2,3)).compute()
 #     #[ReaderStd --ignoreExtended --input {sources[0]}] >>
 #     # [GridCut -T 1 --start_point 0,0 --end_point 2,3] >>
 #     #  [WriterStd --output {destination_path} --ignoreExtended]
-#     df = spooki.convip(df)
+#     df = spookipy.convip(df)
 #     #write the result
 #     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
 #     fstpy.delete_file(results_file)

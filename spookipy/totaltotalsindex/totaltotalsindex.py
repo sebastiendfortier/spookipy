@@ -62,7 +62,7 @@ class TotalTotalsIndex(Plugin):
             ['grid', 'dateo', 'forecast_hour', 'ip1_kind'])
 
     def compute(self) -> pd.DataFrame:
-        from ..all import TemperatureDewPoint
+        from .. import TemperatureDewPoint
         if not self.existing_result_df.empty:
             return existing_results(
                 'TotalTotalsIndex',

@@ -6,7 +6,7 @@ check_test_ssm_package()
 import fstpy.all as fstpy
 import pandas as pd
 import pytest
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 
@@ -25,7 +25,7 @@ def test_1(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute WindModulus
-    df = spooki.WindModulus(src_df0).compute()
+    df = spookipy.WindModulus(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WindModulus] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
     df.loc[:, 'etiket'] = 'WINDMODULUS'
     # write the result
@@ -49,7 +49,7 @@ def test_2(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute WindModulus
-    df = spooki.WindModulus(src_df0).compute()
+    df = spookipy.WindModulus(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WindModulus] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
     df.loc[:, 'etiket'] = 'WINDMODULUS'
     # write the result
@@ -76,7 +76,7 @@ def test_4(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute WindModulus
-    df = spooki.WindModulus(src_df0).compute()
+    df = spookipy.WindModulus(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WindModulus] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     # write the result
@@ -100,7 +100,7 @@ def test_5(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute WindModulus
-    df = spooki.WindModulus(src_df0).compute()
+    df = spookipy.WindModulus(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName UV,UU,VV] >> [WindModulus --optimizationLevel 1] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     # write the result
@@ -124,7 +124,7 @@ def test_6(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute WindModulus
-    df = spooki.WindModulus(src_df0).compute()
+    df = spookipy.WindModulus(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WindModulus] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     # write the result
@@ -159,7 +159,7 @@ def test_9(plugin_test_dir):
     src_df = pd.concat([src_df0, src_df1], ignore_index=True)
 
     # compute WindModulus
-    df = spooki.WindModulus(src_df).compute()
+    df = spookipy.WindModulus(src_df).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]} {sources[1]}] >> [WindModulus] >> [WriterStd --output {destination_path} --ignoreExtended]
     # pourquoi ca devrait pas fonctionner?
     df.loc[:, 'etiket'] = 'WINDMODULUS'
@@ -184,7 +184,7 @@ def test_9(plugin_test_dir):
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     #compute WindModulus
-#     df = spooki.WindModulus(src_df0,True).compute()
+#     df = spookipy.WindModulus(src_df0,True).compute()
 #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [WindModulus] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 #     df.loc[:,'etiket'] = 'WINDMODULUS'
 #     #write the result

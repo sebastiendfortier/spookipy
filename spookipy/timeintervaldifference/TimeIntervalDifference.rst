@@ -102,7 +102,7 @@ Usage:
 
    import os
    import fstpy.all as fstpy
-   import spookipy.all as spooki
+   import spookipy
    import datetime
 
    spooki_dir = os.environ['SPOOKI_DIR']
@@ -118,7 +118,7 @@ Usage:
    step1 = datetime.timedelta(hours=24)
    step2 = datetime.timedelta(hours=6)
 
-   res_df = spooki.TimeIntervalDifference(df, nomvar='PR', forecast_hour_range=[range1, range2], interval=[interval1, interval2], step=[step1, step2]).compute()
+   res_df = spookipy.TimeIntervalDifference(df, nomvar='PR', forecast_hour_range=[range1, range2], interval=[interval1, interval2], step=[step1, step2]).compute()
 
    fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
 

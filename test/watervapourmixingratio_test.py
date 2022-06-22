@@ -6,7 +6,7 @@ check_test_ssm_package()
 import fstpy.all as fstpy
 import pandas as pd
 import pytest
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 
@@ -26,7 +26,7 @@ def test_1(plugin_test_dir):
 
     hu_df = fstpy.select_with_meta(src_df0, ['HU'])
     # compute WaterVapourMixingRatio
-    df = spooki.WaterVapourMixingRatio(
+    df = spookipy.WaterVapourMixingRatio(
         hu_df,
         ice_water_phase='both',
         temp_phase_switch=-40,
@@ -61,7 +61,7 @@ def test_3(plugin_test_dir):  # option 1 rpn
 
     src_df0 = src_df0.loc[src_df0.nomvar != 'ES']
 
-    es_df = spooki.DewPointDepression(
+    es_df = spookipy.DewPointDepression(
         src_df0,
         ice_water_phase='water',
         rpn=True).compute()
@@ -70,7 +70,7 @@ def test_3(plugin_test_dir):  # option 1 rpn
     df    = pd.concat([tt_df, es_df], ignore_index=True)
 
     # compute WaterVapourMixingRatio
-    df = spooki.WaterVapourMixingRatio(
+    df = spookipy.WaterVapourMixingRatio(
         df,
         ice_water_phase='both',
         temp_phase_switch=-40,
@@ -105,13 +105,13 @@ def test_4(plugin_test_dir):  # option 1 rpn
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     tt_df = fstpy.select_with_meta(src_df0, ['TT'])
-    td_df = spooki.TemperatureDewPoint(
+    td_df = spookipy.TemperatureDewPoint(
         src_df0,
         ice_water_phase='water',
         rpn=True).compute()
 
     # compute WaterVapourMixingRatio
-    df = spooki.WaterVapourMixingRatio(
+    df = spookipy.WaterVapourMixingRatio(
         pd.concat([tt_df, td_df], ignore_index=True),
         ice_water_phase='both',
         temp_phase_switch=-40,
@@ -145,7 +145,7 @@ def test_5(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute WaterVapourMixingRatio
-    df = spooki.WaterVapourMixingRatio(
+    df = spookipy.WaterVapourMixingRatio(
         src_df0,
         ice_water_phase='both',
         temp_phase_switch=-
@@ -178,7 +178,7 @@ def test_6(plugin_test_dir):
     tthr_df = fstpy.select_with_meta(src_df0, ['TT', 'HR'])
 
     # compute WaterVapourMixingRatio
-    df = spooki.WaterVapourMixingRatio(
+    df = spookipy.WaterVapourMixingRatio(
         tthr_df,
         ice_water_phase='both',
         temp_phase_switch=-
@@ -214,10 +214,10 @@ def test_7(plugin_test_dir):
     src_df0 = src_df0.loc[src_df0.nomvar != 'ES']
 
     tt_df = fstpy.select_with_meta(src_df0, ['TT'])
-    es_df = spooki.DewPointDepression(src_df0, ice_water_phase='water').compute()
+    es_df = spookipy.DewPointDepression(src_df0, ice_water_phase='water').compute()
 
     # compute WaterVapourMixingRatio
-    df = spooki.WaterVapourMixingRatio(pd.concat(
+    df = spookipy.WaterVapourMixingRatio(pd.concat(
         [tt_df, es_df], ignore_index=True), 
         ice_water_phase='both', 
         temp_phase_switch=-40).compute()
@@ -247,10 +247,10 @@ def test_8(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     tt_df = fstpy.select_with_meta(src_df0, ['TT'])
-    td_df = spooki.TemperatureDewPoint(src_df0, ice_water_phase='water').compute()
+    td_df = spookipy.TemperatureDewPoint(src_df0, ice_water_phase='water').compute()
 
     # compute WaterVapourMixingRatio
-    df = spooki.WaterVapourMixingRatio(pd.concat(
+    df = spookipy.WaterVapourMixingRatio(pd.concat(
         [tt_df, td_df], ignore_index=True), 
         ice_water_phase='both', 
         temp_phase_switch=-40).compute()
@@ -279,8 +279,8 @@ def test_9(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute WaterVapourMixingRatio
-    with pytest.raises(spooki.WaterVapourMixingRatioError):
-        _ = spooki.WaterVapourMixingRatio(
+    with pytest.raises(spookipy.WaterVapourMixingRatioError):
+        _ = spookipy.WaterVapourMixingRatio(
             src_df0,
             ice_water_phase='both',
             temp_phase_switch=-30,
@@ -295,8 +295,8 @@ def test_10(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute WaterVapourMixingRatio
-    with pytest.raises(spooki.WaterVapourMixingRatioError):
-        _ = spooki.WaterVapourMixingRatio(
+    with pytest.raises(spookipy.WaterVapourMixingRatioError):
+        _ = spookipy.WaterVapourMixingRatio(
             src_df0,
             ice_water_phase='both',
             temp_phase_switch=-273.16,
@@ -311,8 +311,8 @@ def test_11(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute WaterVapourMixingRatio
-    with pytest.raises(spooki.WaterVapourMixingRatioError):
-        _ = spooki.WaterVapourMixingRatio(
+    with pytest.raises(spookipy.WaterVapourMixingRatioError):
+        _ = spookipy.WaterVapourMixingRatio(
             src_df0,
             ice_water_phase='both',
             temp_phase_switch=273.17,
@@ -327,8 +327,8 @@ def test_12(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute WaterVapourMixingRatio
-    with pytest.raises(spooki.WaterVapourMixingRatioError):
-        _ = spooki.WaterVapourMixingRatio(
+    with pytest.raises(spookipy.WaterVapourMixingRatioError):
+        _ = spookipy.WaterVapourMixingRatio(
             src_df0,
             ice_water_phase='invalid',
             temp_phase_switch=-
@@ -345,7 +345,7 @@ def test_13(plugin_test_dir):
 
     hu_df = fstpy.select_with_meta(src_df0, ['HU'])
     # compute WaterVapourMixingRatio
-    df = spooki.WaterVapourMixingRatio(
+    df = spookipy.WaterVapourMixingRatio(
         hu_df,
         ice_water_phase='both',
         temp_phase_switch=-40,

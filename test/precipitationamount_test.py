@@ -6,7 +6,7 @@ check_test_ssm_package()
 import fstpy.all as fstpy
 import pytest
 import pandas as pd
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 import datetime
@@ -31,8 +31,8 @@ def test_1(plugin_test_dir):
 
     src_df = pd.concat([src_df0, src_df1], ignore_index=True)
     # compute PrecipitationAmount
-    with pytest.raises(spooki.TimeIntervalDifferenceError):
-        _ = spooki.PrecipitationAmount(src_df, nomvar=['PR','TT'], 
+    with pytest.raises(spookipy.TimeIntervalDifferenceError):
+        _ = spookipy.PrecipitationAmount(src_df, nomvar=['PR','TT'], 
                                         forecast_hour_range=(datetime.timedelta(hours=12), datetime.timedelta(hours=18)), 
                                         interval=datetime.timedelta(hours=6), 
                                         step=datetime.timedelta(hours=1)).compute()
@@ -52,7 +52,7 @@ def test_2(plugin_test_dir):
 
     src_df = pd.concat([src_df0, src_df1], ignore_index=True)
     # compute PrecipitationAmount
-    df = spooki.PrecipitationAmount(src_df, nomvar='PR', 
+    df = spookipy.PrecipitationAmount(src_df, nomvar='PR', 
                                         forecast_hour_range=(datetime.timedelta(hours=12), datetime.timedelta(hours=18)), 
                                         interval=datetime.timedelta(hours=6), 
                                         step=datetime.timedelta(hours=1)).compute()
@@ -82,7 +82,7 @@ def test_3(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute PrecipitationAmount
-    df = spooki.PrecipitationAmount(src_df0, nomvar='PR',
+    df = spookipy.PrecipitationAmount(src_df0, nomvar='PR',
                                        forecast_hour_range=[(datetime.timedelta(hours=0), datetime.timedelta(hours=18)),
                                                             (datetime.timedelta(hours=0), datetime.timedelta(hours=93))],
                                        interval=[datetime.timedelta(hours=3), datetime.timedelta(hours=39)],
@@ -112,7 +112,7 @@ def test_3(plugin_test_dir):
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     # compute PrecipitationAmount
-#     df = spooki.PrecipitationAmount(src_df0).compute()
+#     df = spookipy.PrecipitationAmount(src_df0).compute()
 #     #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '
 #     # [PrecipitationAmount --fieldName PR --rangeForecastHour 0:00:00@18:00:00,0:00:00@93:00:00 --interval 3,39 --step 3,18] >> ', '
 #     # [WriterStd --output {destination_path} --ignoreExtended]']
@@ -138,7 +138,7 @@ def test_3(plugin_test_dir):
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     # compute PrecipitationAmount
-#     df = spooki.PrecipitationAmount(src_df0).compute()
+#     df = spookipy.PrecipitationAmount(src_df0).compute()
 #     #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '
 #     # [PrecipitationAmount --fieldName PR --rangeForecastHour 0@18,0@93 --interval 3:00:00,39:00:00 --step 3,18] >> ', '
 #     # [WriterStd --output {destination_path} --ignoreExtended]']
@@ -164,7 +164,7 @@ def test_3(plugin_test_dir):
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     # compute PrecipitationAmount
-#     df = spooki.PrecipitationAmount(src_df0).compute()
+#     df = spookipy.PrecipitationAmount(src_df0).compute()
 #     #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '
 #     # [PrecipitationAmount --fieldName PR --rangeForecastHour 0@18,0@93 --interval 3,39 --step 3:00:00,18:00:00] >> ', '
 #     # [WriterStd --output {destination_path} --ignoreExtended]']
@@ -190,7 +190,7 @@ def test_3(plugin_test_dir):
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     # compute PrecipitationAmount
-#     df = spooki.PrecipitationAmount(src_df0).compute()
+#     df = spookipy.PrecipitationAmount(src_df0).compute()
 #     #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '
 #     # [PrecipitationAmount --fieldName PR --rangeForecastHour 0:00:00@18:00:00,0:00:00@93:00:00 --interval 3:00:00,39:00:00 --step 3:00:00,18:00:00] >> ', '
 #     # [WriterStd --output {destination_path} --ignoreExtended]']
@@ -215,7 +215,7 @@ def test_8(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute PrecipitationAmount
-    df = spooki.PrecipitationAmount(src_df0, nomvar='PR',
+    df = spookipy.PrecipitationAmount(src_df0, nomvar='PR',
                                     forecast_hour_range=(datetime.timedelta(hours=22, minutes=30), datetime.timedelta(hours=23)),
                                        interval=datetime.timedelta(minutes=30),
                                        step=datetime.timedelta(minutes=30)).compute()

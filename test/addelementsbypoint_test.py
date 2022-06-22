@@ -5,7 +5,7 @@ check_test_ssm_package()
 
 import fstpy.all as fstpy
 import pytest
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 
@@ -24,7 +24,7 @@ def test_1(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute AddElementsByPoint
-    df = spooki.AddElementsByPoint(src_df0, nomvar_out='ACCU').compute()
+    df = spookipy.AddElementsByPoint(src_df0, nomvar_out='ACCU').compute()
     df['etiket'] = 'ADDFIELDS'
     # [ReaderStd --input {sources[0]}] >> [AddElementsByPoint --outputFieldName ACCU] >> [Zap --pdsLabel ADDFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --noUnitConversion]
 
@@ -49,7 +49,7 @@ def test_2(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute AddElementsByPoint
-    df = spooki.AddElementsByPoint(src_df0, nomvar_out='ACCU').compute()
+    df = spookipy.AddElementsByPoint(src_df0, nomvar_out='ACCU').compute()
     df['etiket'] = 'ADDFIELDS'
     # [ReaderStd --input {sources[0]}] >> [AddElementsByPoint --outputFieldName ACCU] >> [Zap --pdsLabel ADDFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --noUnitConversion]
 
@@ -73,9 +73,9 @@ def test_3(plugin_test_dir):
     source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    with pytest.raises(spooki.AddElementsByPointError):
+    with pytest.raises(spookipy.AddElementsByPointError):
         # compute AddElementsByPoint
-        _ = spooki.AddElementsByPoint(
+        _ = spookipy.AddElementsByPoint(
             src_df0, nomvar_out='TROPLONG').compute()
         # [ReaderStd --input {sources[0]}] >> [AddElementsByPoint --outputFieldName TROPLONG]
 
@@ -88,9 +88,9 @@ def test_4(plugin_test_dir):
 
     src_df0 = src_df0.loc[src_df0.nomvar == "UU"].reset_index(drop=True)
 
-    with pytest.raises(spooki.AddElementsByPointError):
+    with pytest.raises(spookipy.AddElementsByPointError):
         # compute AddElementsByPoint
-        _ = spooki.AddElementsByPoint(src_df0).compute()
+        _ = spookipy.AddElementsByPoint(src_df0).compute()
         # [ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> [AddElementsByPoint]
 
 
@@ -103,9 +103,9 @@ def test_5(plugin_test_dir):
     src_df0 = src_df0.loc[src_df0.nomvar.isin(
         ["TT", "GZ"])].reset_index(drop=True)
 
-    with pytest.raises(spooki.AddElementsByPointError):
+    with pytest.raises(spookipy.AddElementsByPointError):
         # compute AddElementsByPoint
-        _ = spooki.AddElementsByPoint(src_df0).compute()
+        _ = spookipy.AddElementsByPoint(src_df0).compute()
         # [ReaderStd --input {sources[0]}] >> [Select --fieldName TT,GZ ] >> [AddElementsByPoint]
 
 

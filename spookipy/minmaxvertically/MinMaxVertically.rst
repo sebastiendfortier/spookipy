@@ -71,7 +71,7 @@ Usage:
    
    import os
    import fstpy.all as fstpy
-   import spookipy.all as spooki
+   import spookipy
 
    spooki_dir = os.environ['SPOOKI_DIR']
 
@@ -79,7 +79,7 @@ Usage:
 
    df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/MinMaxVertically/testsFiles/inputFile.std').to_pandas()
 
-   res_df = spooki.MinMaxVertically(df, nomvar="TT", max=True, ascending=False).compute()
+   res_df = spookipy.MinMaxVertically(df, nomvar="TT", max=True, ascending=False).compute()
 
    fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
 
@@ -90,7 +90,7 @@ Usage:
    
    import os
    import fstpy.all as fstpy
-   import spookipy.all as spooki
+   import spookipy
 
    spooki_dir = os.environ['SPOOKI_DIR']
 
@@ -100,13 +100,13 @@ Usage:
 
    tt_df = fstpy.select_with_meta(df, ['TT'])
 
-   minidx_df = spooki.SetConstantValue(tt_df, min_index=True, nomvar_out='KBAS', bi_dimensionnal=True).compute()
+   minidx_df = spookipy.SetConstantValue(tt_df, min_index=True, nomvar_out='KBAS', bi_dimensionnal=True).compute()
 
-   maxidx_df = spooki.SetConstantValue(tt_df, max_index=True, nomvar_out='KTOP', bi_dimensionnal=True).compute()
+   maxidx_df = spookipy.SetConstantValue(tt_df, max_index=True, nomvar_out='KTOP', bi_dimensionnal=True).compute()
 
    all_df = pd.concat([df,minidx_df,maxidx_df], ignore_index=True)
 
-   res_df = spooki.MinMaxVertically(all_df, nomvar="TT", min=True, max=True, bounded=True).compute()
+   res_df = spookipy.MinMaxVertically(all_df, nomvar="TT", min=True, max=True, bounded=True).compute()
 
    fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
 

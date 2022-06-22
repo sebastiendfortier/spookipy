@@ -82,7 +82,7 @@ Usage:
    
    import os
    import fstpy.all as fstpy
-   import spookipy.all as spooki
+   import spookipy
 
    spooki_dir = os.environ['SPOOKI_DIR']
 
@@ -90,7 +90,7 @@ Usage:
 
    df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/MinMaxLevelIndex/testsFiles/inputFile.std').to_pandas()
 
-   res_df = spooki.MinMaxLevelIndex(df, min=True, nomvar="UU", ascending=True).compute()
+   res_df = spookipy.MinMaxLevelIndex(df, min=True, nomvar="UU", ascending=True).compute()
 
    fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
 
@@ -101,7 +101,7 @@ Usage:
    
    import os
    import fstpy.all as fstpy
-   import spookipy.all as spooki
+   import spookipy
 
    spooki_dir = os.environ['SPOOKI_DIR']
 
@@ -109,13 +109,13 @@ Usage:
 
    df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/MinMaxLevelIndex/testsFiles/inputFile.std').to_pandas()
 
-   minidx_df = spooki.SetConstantValue(df, min_index=True, nomvar_out='KBAS', bi_dimensionnal=True).compute()
+   minidx_df = spookipy.SetConstantValue(df, min_index=True, nomvar_out='KBAS', bi_dimensionnal=True).compute()
 
-   maxidx_df = spooki.SetConstantValue(df, max_index=True, nomvar_out='KTOP', bi_dimensionnal=True).compute()
+   maxidx_df = spookipy.SetConstantValue(df, max_index=True, nomvar_out='KTOP', bi_dimensionnal=True).compute()
 
    all_df = pd.concat([df,minidx_df,maxidx_df], ignore_index=True)
 
-   res_df = spooki.MinMaxLevelIndex(all_df, nomvar="UU", min=True, ascending=True).compute()
+   res_df = spookipy.MinMaxLevelIndex(all_df, nomvar="UU", min=True, ascending=True).compute()
 
    fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
 

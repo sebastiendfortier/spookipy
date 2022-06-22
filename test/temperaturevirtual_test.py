@@ -1,6 +1,6 @@
 import pytest
 from test import TMP_PATH, TEST_PATH
-import fstpy.all as fstpy
+import fstpy
 import spookipy
 import pandas as pd
 from ci_fstcomp import fstcomp

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from test import TMP_PATH, TEST_PATH
 import pytest
-import fstpy.all as fstpy
+import fstpy
 from ci_fstcomp import fstcomp
 
 pytestmark = [pytest.mark.regressions]

@@ -4,7 +4,7 @@ import copy
 import logging
 import warnings
 
-import fstpy.all as fstpy
+import fstpy
 import numpy as np
 import pandas as pd
 import rpnpy.librmn.all as rmn

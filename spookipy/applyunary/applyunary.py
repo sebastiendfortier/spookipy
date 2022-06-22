@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-import fstpy.all as fstpy
+import fstpy
 import pandas as pd
 
 from ..plugin import Plugin

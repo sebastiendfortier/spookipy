@@ -2,7 +2,7 @@
 from spookipy.thickness.thickness import Thickness,ParametersValuesError
 from test import TEST_PATH, TMP_PATH
 
-import fstpy.all as fstpy
+import fstpy
 import pytest
 import spookipy
 from ci_fstcomp import fstcomp

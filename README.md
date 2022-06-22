@@ -72,7 +72,7 @@ uv_df = spookipy.windmodulus(df).compute()
 
 ``` python
 data_path = prefix + '/data/'
-import fstpy.all as fstpy
+import fstpy
 import spookipy
 # setup your file to read
 records=fstpy.StandardFileReader(data_path + 'ttuvre.std').to_pandas()

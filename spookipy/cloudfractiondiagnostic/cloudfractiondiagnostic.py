@@ -5,7 +5,7 @@ import logging
 import math
 import warnings
 
-import fstpy.all as fstpy
+import fstpy
 import numpy as np
 import pandas as pd
 

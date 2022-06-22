@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import pandas as pd
 
-import fstpy.all as fstpy
+import fstpy
 from ..plugin import Plugin
 from ..utils import final_results, initializer
 

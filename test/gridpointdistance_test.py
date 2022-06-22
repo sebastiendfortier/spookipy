@@ -5,7 +5,7 @@ check_test_ssm_package()
 
 import fstpy.all as fstpy
 import pytest
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 import rpnpy.librmn.all as rmn
@@ -25,7 +25,7 @@ def test_1(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spooki.GridPointDistance(src_df0, axis=['x'], difference_type='centered').compute()
+    df = spookipy.GridPointDistance(src_df0, axis=['x'], difference_type='centered').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GridPointDistance --axis X --differenceType CENTERED] >> [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
@@ -48,7 +48,7 @@ def test_2(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spooki.GridPointDistance(src_df0, axis=['y'], difference_type='centered').compute()
+    df = spookipy.GridPointDistance(src_df0, axis=['y'], difference_type='centered').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GridPointDistance --axis Y --differenceType CENTERED] >> [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
@@ -71,7 +71,7 @@ def test_3(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spooki.GridPointDistance(src_df0, axis=['x'], difference_type='forward').compute()
+    df = spookipy.GridPointDistance(src_df0, axis=['x'], difference_type='forward').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GridPointDistance --axis X --differenceType FORWARD] >> [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
@@ -94,7 +94,7 @@ def test_4(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spooki.GridPointDistance(src_df0, axis=['y'], difference_type='forward').compute()
+    df = spookipy.GridPointDistance(src_df0, axis=['y'], difference_type='forward').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GridPointDistance --axis Y --differenceType FORWARD] >> [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
@@ -117,7 +117,7 @@ def test_5(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spooki.GridPointDistance(src_df0, axis=['x'], difference_type='backward').compute()
+    df = spookipy.GridPointDistance(src_df0, axis=['x'], difference_type='backward').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GridPointDistance --axis X --differenceType BACKWARD] >> [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
@@ -140,7 +140,7 @@ def test_6(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spooki.GridPointDistance(src_df0, axis=['y'], difference_type='backward').compute()
+    df = spookipy.GridPointDistance(src_df0, axis=['y'], difference_type='backward').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GridPointDistance --axis Y --differenceType BACKWARD] >> [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
@@ -163,7 +163,7 @@ def test_7(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spooki.GridPointDistance(src_df0, axis=['x','y'], difference_type='centered').compute()
+    df = spookipy.GridPointDistance(src_df0, axis=['x','y'], difference_type='centered').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GridPointDistance --axis X,Y --differenceType CENTERED] >> [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
@@ -188,7 +188,7 @@ def test_8(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spooki.GridPointDistance(src_df0, axis=['x'], difference_type='centered').compute()
+    df = spookipy.GridPointDistance(src_df0, axis=['x'], difference_type='centered').compute()
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
 #                 "[GridPointDistance --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --ignoreExtended]"
@@ -214,7 +214,7 @@ def test_9(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spooki.GridPointDistance(src_df0, axis=['x'], difference_type='forward').compute()
+    df = spookipy.GridPointDistance(src_df0, axis=['x'], difference_type='forward').compute()
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
 #                 "[GridPointDistance --axis X --differenceType FORWARD] >> ",
 #                 "[WriterStd --output {destination_path} --ignoreExtended]"
@@ -240,7 +240,7 @@ def test_10(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spooki.GridPointDistance(src_df0, axis=['x'], difference_type='backward').compute()
+    df = spookipy.GridPointDistance(src_df0, axis=['x'], difference_type='backward').compute()
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
 #                 "[GridPointDistance --axis X --differenceType BACKWARD] >> ",
 #                 "[WriterStd --output {destination_path} --ignoreExtended]"
@@ -265,7 +265,7 @@ def test_11(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spooki.GridPointDistance(src_df0, axis=['x'], difference_type='centered').compute()
+    df = spookipy.GridPointDistance(src_df0, axis=['x'], difference_type='centered').compute()
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
 #                 "[GridPointDistance --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
@@ -292,7 +292,7 @@ def test_12(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spooki.GridPointDistance(src_df0, axis=['x'], difference_type='backward').compute()
+    df = spookipy.GridPointDistance(src_df0, axis=['x'], difference_type='backward').compute()
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
 #                 "[GridPointDistance --axis X --differenceType BACKWARD] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
@@ -317,7 +317,7 @@ def test_13(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spooki.GridPointDistance(src_df0, axis=['x'], difference_type='forward').compute()
+    df = spookipy.GridPointDistance(src_df0, axis=['x'], difference_type='forward').compute()
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
 #                 "[GridPointDistance --axis X --differenceType FORWARD] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
@@ -343,7 +343,7 @@ def test_14(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spooki.GridPointDistance(src_df0, axis=['x'], difference_type='centered').compute()
+    df = spookipy.GridPointDistance(src_df0, axis=['x'], difference_type='centered').compute()
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
 #                 "[GridPointDistance --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
@@ -369,7 +369,7 @@ def test_15(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spooki.GridPointDistance(src_df0, axis=['x'], difference_type='backward').compute()
+    df = spookipy.GridPointDistance(src_df0, axis=['x'], difference_type='backward').compute()
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
 #                 "[GridPointDistance --axis X --differenceType BACKWARD] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
@@ -395,7 +395,7 @@ def test_16(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spooki.GridPointDistance(src_df0, axis=['x'], difference_type='centered').compute()
+    df = spookipy.GridPointDistance(src_df0, axis=['x'], difference_type='centered').compute()
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
 #                 "[GridPointDistance --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
@@ -425,7 +425,7 @@ def test_17(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spooki.GridPointDistance(src_df0, axis=['x'], difference_type='centered').compute()
+    df = spookipy.GridPointDistance(src_df0, axis=['x'], difference_type='centered').compute()
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >>",
 #                 "[GridPointDistance --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
@@ -454,7 +454,7 @@ def test_18(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spooki.GridPointDistance(src_df0, axis=['x'], difference_type='centered').compute()
+    df = spookipy.GridPointDistance(src_df0, axis=['x'], difference_type='centered').compute()
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
 #                 "[GridPointDistance --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
@@ -479,7 +479,7 @@ def test_19(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spooki.GridPointDistance(src_df0, axis=['x','y'], difference_type='centered').compute()
+    df = spookipy.GridPointDistance(src_df0, axis=['x','y'], difference_type='centered').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
     # [GridPointDifference --axis X,Y --differenceType CENTERED] >> 
     # [WriterStd --output {destination_path} --noUnitConversion]
@@ -505,7 +505,7 @@ def test_20(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spooki.GridPointDistance(src_df0, axis=['x','y'], difference_type='forward').compute()
+    df = spookipy.GridPointDistance(src_df0, axis=['x','y'], difference_type='forward').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
     # [GridPointDistance --axis X,Y --differenceType FORWARD] >> 
     # [WriterStd --output {destination_path} --noUnitConversion]
@@ -530,7 +530,7 @@ def test_21(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spooki.GridPointDistance(src_df0, axis=['x','y'], difference_type='backward').compute()
+    df = spookipy.GridPointDistance(src_df0, axis=['x','y'], difference_type='backward').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
     # [GridPointDistance --axis X,Y --differenceType BACKWARD] >> 
     # [WriterStd --output {destination_path} --noUnitConversion]

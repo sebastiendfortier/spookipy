@@ -4,7 +4,7 @@ from ci_fstcomp import fstcomp
 import secrets
 import pandas as pd
 import fstpy.all as fstpy
-import spookipy.all as spooki
+import spookipy
 import pytest
 
 @pytest.fixture
@@ -17,9 +17,9 @@ def test_1(plugin_test_dir):
     source0 = plugin_test_dir + "TTGZUUVV_3x2x7_regpres.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute spooki.MinMaxLevelIndex
-    with pytest.raises(spooki.MinMaxVerticallyError):
-        spooki.MinMaxVertically(
+    # compute spookipy.MinMaxLevelIndex
+    with pytest.raises(spookipy.MinMaxVerticallyError):
+        spookipy.MinMaxVertically(
             src_df0, 
             nomvar="TT",
             min = True,
@@ -34,9 +34,9 @@ def test_2(plugin_test_dir):
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
     src_df  = pd.concat([src_df0 , src_df1])
 
-    # compute spooki.MinMaxVertically
-    with pytest.raises(spooki.MinMaxVerticallyError):
-        spooki.MinMaxVertically(
+    # compute spookipy.MinMaxVertically
+    with pytest.raises(spookipy.MinMaxVerticallyError):
+        spookipy.MinMaxVertically(
             src_df0, 
             nomvar="UU",
             bounded=True).compute()
@@ -47,7 +47,7 @@ def test_3(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute MinMaxVertically
-    df = spooki.MinMaxVertically(
+    df = spookipy.MinMaxVertically(
         src_df0, 
         nomvar="UU", 
         max=True,
@@ -75,8 +75,8 @@ def test_4(plugin_test_dir):
     # source90 = plugin_test_dir + "minmax_DOWNWARD_bounded_input"
     src_df = fstpy.StandardFileReader(source).to_pandas()
 
-    # compute spooki.MinMaxLevelIndex
-    df = spooki.MinMaxVertically(
+    # compute spookipy.MinMaxLevelIndex
+    df = spookipy.MinMaxVertically(
         src_df, 
         nomvar="ICGA", 
         bounded=True,
@@ -108,8 +108,8 @@ def test_5(plugin_test_dir):
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
 
     src_df = pd.concat([src_df0, src_df1])
-    # compute spooki.MinMaxLevelIndex
-    df = spooki.MinMaxVertically(
+    # compute spookipy.MinMaxLevelIndex
+    df = spookipy.MinMaxVertically(
         src_df, 
         nomvar="TT",
         nomvar_max='UMAX',

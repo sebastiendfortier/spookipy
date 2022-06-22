@@ -49,7 +49,7 @@ Usage:
    
    import os
    import fstpy.all as fstpy
-   import spookipy.all as spooki
+   import spookipy
 
    spooki_dir = os.environ['SPOOKI_DIR']
 
@@ -57,7 +57,7 @@ Usage:
 
    src_df0 = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/Thickness/testsFiles/inputFile.std').to_pandas()
 
-   df = spooki.Thickness(src_df0,base=1.0,top=0.8346,coordinate_type='UNKNOWN').compute()
+   df = spookipy.Thickness(src_df0,base=1.0,top=0.8346,coordinate_type='UNKNOWN').compute()
 
    fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', df).to_fst()
 

@@ -5,7 +5,7 @@ check_test_ssm_package()
 
 import fstpy.all as fstpy
 import pytest
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 
@@ -25,7 +25,7 @@ def test_1(plugin_test_dir):
 
     # print(src_df0[['nomvar','ip1']])
     # compute TotalTotalsIndex
-    df = spooki.TotalTotalsIndex(src_df0).compute()
+    df = spookipy.TotalTotalsIndex(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [TotalTotalsIndex] >> [WriterStd --output {destination_path} --ignoreExtended]
 
     df['nbits'] = 32

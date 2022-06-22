@@ -5,7 +5,7 @@ from test import TEST_PATH, TMP_PATH
 # fstpy is used to get dataframes from fst files
 import fstpy.all as fstpy
 import pytest  # pytest is used to manage tests
-import spookipy.all as spooki  # refers to this library
+import spookipy  # refers to this library
 # tool used to compare fst files, just like fstcomp but in python
 from ci_fstcomp import fstcomp
 import secrets
@@ -35,7 +35,7 @@ def test_1(plugin_test_dir):
 
     # compute ExamplePlugin
     # execute our plugin
-    df = spooki.ExamplePlugin(src_df0).compute()
+    df = spookipy.ExamplePlugin(src_df0).compute()
 
     # write our results
     # set the path of the temporary file we are writing to

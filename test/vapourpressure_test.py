@@ -6,7 +6,7 @@ check_test_ssm_package()
 import fstpy.all as fstpy
 import pandas as pd
 import pytest
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 
@@ -25,8 +25,8 @@ def test_1(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute VapourPressure
-    with pytest.raises(spooki.VapourPressureError):
-        _ = spooki.VapourPressure(
+    with pytest.raises(spookipy.VapourPressureError):
+        _ = spookipy.VapourPressure(
             src_df0,
             ice_water_phase='both',
             temp_phase_switch=-30,
@@ -41,8 +41,8 @@ def test_2(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute VapourPressure
-    with pytest.raises(spooki.VapourPressureError):
-        _ = spooki.VapourPressure(
+    with pytest.raises(spookipy.VapourPressureError):
+        _ = spookipy.VapourPressure(
             src_df0,
             ice_water_phase='both',
             temp_phase_switch=-273.16,
@@ -57,8 +57,8 @@ def test_3(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute VapourPressure
-    with pytest.raises(spooki.VapourPressureError):
-        _ = spooki.VapourPressure(
+    with pytest.raises(spookipy.VapourPressureError):
+        _ = spookipy.VapourPressure(
             src_df0,
             ice_water_phase='both',
             temp_phase_switch=273.17,
@@ -73,8 +73,8 @@ def test_4(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute VapourPressure
-    with pytest.raises(spooki.VapourPressureError):
-        _ = spooki.VapourPressure(
+    with pytest.raises(spookipy.VapourPressureError):
+        _ = spookipy.VapourPressure(
             src_df0,
             ice_water_phase='invalide',
             temp_phase_switch=273.17,
@@ -91,7 +91,7 @@ def test_5(plugin_test_dir):
     tthu_df = fstpy.select_with_meta(src_df0, ['TT', 'HU'])
 
     # compute VapourPressure
-    df = spooki.VapourPressure(
+    df = spookipy.VapourPressure(
         tthu_df,
         ice_water_phase='both',
         temp_phase_switch=-
@@ -126,7 +126,7 @@ def test_6(plugin_test_dir):
     tthu_df = fstpy.select_with_meta(src_df0, ['TT', 'HU'])
 
     # compute VapourPressure
-    df = spooki.VapourPressure(
+    df = spookipy.VapourPressure(
         tthu_df,
         rpn=True,
         ice_water_phase='both',
@@ -163,7 +163,7 @@ def test_7(plugin_test_dir):
     tthu_df = fstpy.select_with_meta(src_df0, ['TT', 'HU'])
 
     # compute VapourPressure
-    df = spooki.VapourPressure(
+    df = spookipy.VapourPressure(
         tthu_df,
         ice_water_phase='both',
         temp_phase_switch=-
@@ -198,7 +198,7 @@ def test_8(plugin_test_dir):
     tthr_df = fstpy.select_with_meta(src_df0, ['TT', 'HR'])
 
     # compute VapourPressure
-    df = spooki.VapourPressure(
+    df = spookipy.VapourPressure(
         tthr_df,
         ice_water_phase='both',
         temp_phase_switch=-
@@ -233,7 +233,7 @@ def test_9(plugin_test_dir):
     ttes_df = fstpy.select_with_meta(src_df0, ['TT', 'ES'])
 
     # compute VapourPressure
-    df = spooki.VapourPressure(
+    df = spookipy.VapourPressure(
         ttes_df,
         ice_water_phase='both',
         temp_phase_switch=-
@@ -265,11 +265,11 @@ def test_11(plugin_test_dir):
     source0 = plugin_test_dir + "2011100712_012_regeta_rdiag_hu"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # px_df = spooki.Pressure(src_df0,reference_field='QV')
+    # px_df = spookipy.Pressure(src_df0,reference_field='QV')
     # print(px_df)
     # print(src_df0[['grid','nomvar','forecast_hour']].to_string())
     # compute VapourPressure
-    df = spooki.VapourPressure(
+    df = spookipy.VapourPressure(
         src_df0,
         ice_water_phase='both',
         temp_phase_switch=-
@@ -307,7 +307,7 @@ def test_12(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute VapourPressure
-    df = spooki.VapourPressure(
+    df = spookipy.VapourPressure(
         src_df0,
         rpn=True,
         ice_water_phase='both',
@@ -344,7 +344,7 @@ def test_13(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute VapourPressure
-    df = spooki.VapourPressure(
+    df = spookipy.VapourPressure(
         src_df0,
         rpn=True,
         ice_water_phase='both',

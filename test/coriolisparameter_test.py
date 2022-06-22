@@ -5,7 +5,7 @@ check_test_ssm_package()
 
 import fstpy.all as fstpy
 import pytest
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 
@@ -24,7 +24,7 @@ def test_1(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute CoriolisParameter
-    df = spooki.CoriolisParameter(src_df0).compute()
+    df = spookipy.CoriolisParameter(src_df0).compute()
     # [ReaderStd --input {sources[0]}] >> [CoriolisParameter] >> [WriterStd --output {destination_path} ]
     df.loc[:, 'etiket'] = 'R1558V0_N'
     df.loc[df.nomvar == 'CORP', 'ip1'] = 32505856
@@ -55,7 +55,7 @@ def test_2(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute CoriolisParameter
-    df = spooki.CoriolisParameter(src_df0).compute()
+    df = spookipy.CoriolisParameter(src_df0).compute()
     # [ReaderStd --input {sources[0]}] >>[CoriolisParameter]
 
     assert(not df.empty)

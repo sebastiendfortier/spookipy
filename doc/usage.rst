@@ -14,7 +14,7 @@ use spookipy
 .. code:: python
 
     # inside your script
-    import spookipy.all as spookipy
+    import spookipy
     uv_df = spookipy.windmodulus(df).compute()
 
 Example
@@ -24,13 +24,13 @@ Example
 
     data_path = prefix + '/data/'
     import fstpy.all as fstpy
-    import spookipy.all as spooki
+    import spookipy
     # setup your file to read
     records=fstpy.StandardFileReader(data_path + 'ttuvre.std').to_pandas()
     # display selected records in a rpn voir format
     fstpy.voir(records)
     # compute uv on the selected records
-    uv_df = spooki.windmodulus(records).compute()
+    uv_df = spookipy.windmodulus(records).compute()
     dest_path = '/tmp/out.std'
     # write the selected records to the output file
     fstpy.StandardFileWriter(dest_path,uv_df).to_fst()

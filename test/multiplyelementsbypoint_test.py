@@ -5,7 +5,7 @@ check_test_ssm_package()
 
 import fstpy.all as fstpy
 import pytest
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 
@@ -24,8 +24,8 @@ def test_1(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute MultiplyElementsByPoint
-    with pytest.raises(spooki.MultiplyElementsByPointError):
-        df = spooki.MultiplyElementsByPoint(
+    with pytest.raises(spookipy.MultiplyElementsByPointError):
+        df = spookipy.MultiplyElementsByPoint(
             src_df0, nomvar_out='TROPLONG').compute()
         # [ReaderStd --input {sources[0]}] >> [MultiplyElementsByPoint --outputFieldName TROPLONG]
 
@@ -39,8 +39,8 @@ def test_2(plugin_test_dir):
     src_df0 = fstpy.select_with_meta(src_df0, ['UU'])
     # src_df0 = src_df0.loc[src_df0.nomvar=='UU'].reset_index(drop=True)
     # compute MultiplyElementsByPoint
-    with pytest.raises(spooki.MultiplyElementsByPointError):
-        df = spooki.MultiplyElementsByPoint(src_df0).compute()
+    with pytest.raises(spookipy.MultiplyElementsByPointError):
+        df = spookipy.MultiplyElementsByPoint(src_df0).compute()
         # [ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> [MultiplyElementsByPoint]
 
 
@@ -53,8 +53,8 @@ def test_3(plugin_test_dir):
     src_df0 = fstpy.select_with_meta(src_df0, ['TT', 'GZ'])
 
     # compute MultiplyElementsByPoint
-    with pytest.raises(spooki.MultiplyElementsByPointError):
-        df = spooki.MultiplyElementsByPoint(src_df0).compute()
+    with pytest.raises(spookipy.MultiplyElementsByPointError):
+        df = spookipy.MultiplyElementsByPoint(src_df0).compute()
         # [ReaderStd --input {sources[0]}] >> [Select --fieldName TT,GZ ] >> [MultiplyElementsByPoint]
 
 
@@ -65,7 +65,7 @@ def test_4(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute MultiplyElementsByPoint
-    df = spooki.MultiplyElementsByPoint(src_df0, nomvar_out='UU').compute()
+    df = spookipy.MultiplyElementsByPoint(src_df0, nomvar_out='UU').compute()
     # [ReaderStd --input {sources[0]}] >> [MultiplyElementsByPoint --outputFieldName UU] >> [Zap --pdsLabel MULTIPLYFIEL --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --noUnitConversion]
 
     df.loc[:, 'etiket'] = 'MULTIPLYFIEL'
@@ -90,7 +90,7 @@ def test_5(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute MultiplyElementsByPoint
-    df = spooki.MultiplyElementsByPoint(src_df0, nomvar_out='TT').compute()
+    df = spookipy.MultiplyElementsByPoint(src_df0, nomvar_out='TT').compute()
     # [ReaderStd --input {sources[0]}] >> [MultiplyElementsByPoint --outputFieldName TT] >> [Zap --pdsLabel MULTIPLYFIEL --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --noUnitConversion]
 
     df.loc[:, 'etiket'] = 'MULTIPLYFIEL'
@@ -115,7 +115,7 @@ def test_6(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute MultiplyElementsByPoint
-    df = spooki.MultiplyElementsByPoint(
+    df = spookipy.MultiplyElementsByPoint(
         src_df0, group_by_forecast_hour=True).compute()
     # [ReaderStd --input {sources[0]}] >> [MultiplyElementsByPoint --groupBy FORECAST_HOUR] >> [Zap --pdsLabel MULBYPT --doNotFlagAsZapped] >> [WriterStd --output {destination_path} ]
 
@@ -144,7 +144,7 @@ def test_7(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute MultiplyElementsByPoint
-    df = spooki.MultiplyElementsByPoint(src_df0).compute()
+    df = spookipy.MultiplyElementsByPoint(src_df0).compute()
     # [ReaderStd --input {sources[0]}] >> [MultiplyElementsByPoint] >> [Zap --pdsLabel MULBYPT --doNotFlagAsZapped] >> [WriterStd --output {destination_path} ]
 
     df.loc[:, 'etiket'] = '__MULBYPX'

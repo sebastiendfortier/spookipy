@@ -50,7 +50,7 @@ Usage:
     
     import os
     import fstpy.all as fstpy
-    import spookipy.all as spooki
+    import spookipy
 
     spooki_dir = os.environ['SPOOKI_DIR']
 
@@ -76,7 +76,7 @@ Usage:
     latlon = [lat, lon]
     latlon_df =  pd.DataFrame(latlon)
 
-    res_df = spooki.InterpolationHorizontalPoint(
+    res_df = spookipy.InterpolationHorizontalPoint(
         df,
         latlon_df,
         interpolation_type='bi-linear',

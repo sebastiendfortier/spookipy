@@ -6,7 +6,7 @@ check_test_ssm_package()
 import fstpy.all as fstpy
 import pytest
 import rpnpy.librmn.all as rmn
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 
@@ -25,10 +25,10 @@ def test_1(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute MultiplyElementBy
-    df = spooki.MultiplyElementBy(src_df0, value=3).compute()
+    df = spookipy.MultiplyElementBy(src_df0, value=3).compute()
     # [ReaderStd --input {sources[0]}] >> [MultiplyElementBy --value 3.0] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
-    df = spooki.convip(df, style=rmn.CONVIP_ENCODE_OLD)
+    df = spookipy.convip(df, style=rmn.CONVIP_ENCODE_OLD)
     df.loc[:,'typvar'] = 'P'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
@@ -51,10 +51,10 @@ def test_2(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute MultiplyElementBy
-    df = spooki.MultiplyElementBy(src_df0, value=0.333).compute()
+    df = spookipy.MultiplyElementBy(src_df0, value=0.333).compute()
     # [ReaderStd --input {sources[0]}] >> [MultiplyElementBy --value 0.333] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
-    df = spooki.convip(df, style=rmn.CONVIP_ENCODE_OLD)
+    df = spookipy.convip(df, style=rmn.CONVIP_ENCODE_OLD)
     df.loc[:,'typvar'] = 'P'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])

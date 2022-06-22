@@ -5,7 +5,7 @@ check_test_ssm_package()
 
 import fstpy.all as fstpy
 import pytest
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 
@@ -24,8 +24,8 @@ def test_1(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute SaturationVapourPressure
-    with pytest.raises(spooki.SaturationVapourPressureError):
-        _ = spooki.SaturationVapourPressure(
+    with pytest.raises(spookipy.SaturationVapourPressureError):
+        _ = spookipy.SaturationVapourPressure(
             src_df0,
             ice_water_phase='both',
             temp_phase_switch=-30,
@@ -40,8 +40,8 @@ def test_2(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute SaturationVapourPressure
-    with pytest.raises(spooki.SaturationVapourPressureError):
-        _ = spooki.SaturationVapourPressure(
+    with pytest.raises(spookipy.SaturationVapourPressureError):
+        _ = spookipy.SaturationVapourPressure(
             src_df0,
             ice_water_phase='both',
             temp_phase_switch=-273.16,
@@ -56,8 +56,8 @@ def test_3(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute SaturationVapourPressure
-    with pytest.raises(spooki.SaturationVapourPressureError):
-        _ = spooki.SaturationVapourPressure(
+    with pytest.raises(spookipy.SaturationVapourPressureError):
+        _ = spookipy.SaturationVapourPressure(
             src_df0,
             ice_water_phase='both',
             temp_phase_switch=273.17,
@@ -72,8 +72,8 @@ def test_4(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute SaturationVapourPressure
-    with pytest.raises(spooki.SaturationVapourPressureError):
-        _ = spooki.SaturationVapourPressure(
+    with pytest.raises(spookipy.SaturationVapourPressureError):
+        _ = spookipy.SaturationVapourPressure(
             src_df0,
             ice_water_phase='invalid',
             temp_phase_switch=273.17,
@@ -88,8 +88,8 @@ def test_5(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute SaturationVapourPressure
-    with pytest.raises(spooki.SaturationVapourPressureError):
-        _ = spooki.SaturationVapourPressure(
+    with pytest.raises(spookipy.SaturationVapourPressureError):
+        _ = spookipy.SaturationVapourPressure(
             src_df0, ice_water_phase='both').compute()
     # [ReaderStd --input {sources[0]}] >> [SaturationVapourPressure --iceWaterPhase BOTH ]
 
@@ -101,7 +101,7 @@ def test_6(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute SaturationVapourPressure
-    df = spooki.SaturationVapourPressure(
+    df = spookipy.SaturationVapourPressure(
         src_df0, ice_water_phase='water').compute()
     # [ReaderStd --input {sources[0]}] >> [SaturationVapourPressure --iceWaterPhase WATER] >> [WriterStd --output {destination_path} --ignoreExtended]
 
@@ -130,7 +130,7 @@ def test_7(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute SaturationVapourPressure
-    df = spooki.SaturationVapourPressure(
+    df = spookipy.SaturationVapourPressure(
         src_df0,
         ice_water_phase='both',
         temp_phase_switch=-40,
@@ -169,7 +169,7 @@ def test_8(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute SaturationVapourPressure
-    df = spooki.SaturationVapourPressure(
+    df = spookipy.SaturationVapourPressure(
         src_df0, ice_water_phase='water',rpn=True).compute()
 
     df.loc[df.nomvar.isin(['HY', 'P0']), 'etiket'] = 'R1580V0_N'

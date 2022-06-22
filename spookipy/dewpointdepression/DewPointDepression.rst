@@ -125,7 +125,7 @@ Usage:
    
    import os
    import fstpy.all as fstpy
-   import spookipy.all as spooki
+   import spookipy
 
    spooki_dir = os.environ['SPOOKI_DIR']
 
@@ -133,7 +133,7 @@ Usage:
 
    df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/DewPointDepression/testsFiles/inputFile.std').to_pandas()
 
-   res_df = spooki.DewPointDepression(df, ice_water_pahse='both', temp_phase_switch=-40, temp_phase_unit='celcius').compute()
+   res_df = spookipy.DewPointDepression(df, ice_water_pahse='both', temp_phase_switch=-40, temp_phase_unit='celcius').compute()
 
    fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
 

@@ -6,7 +6,7 @@ check_test_ssm_package()
 import fstpy.all as fstpy
 import pandas as pd
 import pytest
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 
@@ -25,8 +25,8 @@ def test_1(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute HumidityRelative
-    with pytest.raises(spooki.HumidityRelativeError):
-        _ = spooki.HumidityRelative(
+    with pytest.raises(spookipy.HumidityRelativeError):
+        _ = spookipy.HumidityRelative(
             src_df0,
             ice_water_phase='both',
             temp_phase_switch=-30,
@@ -41,8 +41,8 @@ def test_2(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute HumidityRelative
-    with pytest.raises(spooki.HumidityRelativeError):
-        _ = spooki.HumidityRelative(
+    with pytest.raises(spookipy.HumidityRelativeError):
+        _ = spookipy.HumidityRelative(
             src_df0,
             ice_water_phase='both',
             temp_phase_switch=-273.16,
@@ -57,8 +57,8 @@ def test_3(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute HumidityRelative
-    with pytest.raises(spooki.HumidityRelativeError):
-        _ = spooki.HumidityRelative(
+    with pytest.raises(spookipy.HumidityRelativeError):
+        _ = spookipy.HumidityRelative(
             src_df0,
             ice_water_phase='both',
             temp_phase_switch=273.17,
@@ -73,8 +73,8 @@ def test_4(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute HumidityRelative
-    with pytest.raises(spooki.HumidityRelativeError):
-        _ = spooki.HumidityRelative(
+    with pytest.raises(spookipy.HumidityRelativeError):
+        _ = spookipy.HumidityRelative(
             src_df0,
             ice_water_phase='invalid',
             temp_phase_switch=273.17,
@@ -91,7 +91,7 @@ def test_5(plugin_test_dir):
     src_df0 = fstpy.select_with_meta(src_df0, ['TT', 'HU'])
 
     # compute HumidityRelative
-    df = spooki.HumidityRelative(src_df0, ice_water_phase='water').compute()
+    df = spookipy.HumidityRelative(src_df0, ice_water_phase='water').compute()
 
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Select --fieldName TT,HU] >> [HumidityRelative --iceWaterPhase WATER] >>
@@ -176,7 +176,7 @@ def test_7(plugin_test_dir):
 
     src_df0 = fstpy.select_with_meta(src_df0, ['TT', 'QV'])
     # compute HumidityRelative
-    df = spooki.HumidityRelative(src_df0, ice_water_phase='water').compute()
+    df = spookipy.HumidityRelative(src_df0, ice_water_phase='water').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Select --fieldName TT,QV] >>
     # [HumidityRelative --iceWaterPhase WATER] >>
@@ -214,7 +214,7 @@ def test_9(plugin_test_dir):
     src_df0 = fstpy.select_with_meta(src_df0, ['TT', 'TD'])
 
     # compute HumidityRelative
-    df = spooki.HumidityRelative(src_df0, ice_water_phase='water').compute()
+    df = spookipy.HumidityRelative(src_df0, ice_water_phase='water').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Select --fieldName TT,TD] >>
     # [HumidityRelative --iceWaterPhase WATER] >>

@@ -6,7 +6,7 @@ check_test_ssm_package()
 import fstpy.all as fstpy
 import pandas as pd
 import pytest
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 from spookipy.utils import DependencyError
@@ -25,11 +25,11 @@ def test_1(plugin_test_dir):
     source0 = plugin_test_dir + "UUVVTT_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    uv_df = spooki.WindModulus(src_df0).compute()
+    uv_df = spookipy.WindModulus(src_df0).compute()
 
     uv_src_df = pd.concat([src_df0, uv_df], ignore_index=True)
     # compute WindChill
-    df = spooki.WindChill(uv_src_df).compute()
+    df = spookipy.WindChill(uv_src_df).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WindChill] >> [WriterStd --output {destination_path} --ignoreExtended]
 
     # df['datyp']=5
@@ -58,7 +58,7 @@ def test_2(plugin_test_dir):
 
     uv_df = src_df0.loc[src_df0.nomvar .isin(
         ["UU", "VV"])].reset_index(drop=True)
-    uv_df = spooki.WindModulus(uv_df).compute()
+    uv_df = spookipy.WindModulus(uv_df).compute()
     uv_src_df = pd.concat([src_df0, uv_df], ignore_index=True)
 
     uv_src_df = fstpy.add_columns(uv_src_df, columns=['ip_info'])
@@ -66,8 +66,8 @@ def test_2(plugin_test_dir):
     # print(src_df0[['level','surface']])
 
     # compute WindChill
-    with pytest.raises(spooki.WindChillError):
-        _ = spooki.WindChill(src_df0).compute()
+    with pytest.raises(spookipy.WindChillError):
+        _ = spookipy.WindChill(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --verticalLevel 1.0 --exclude] >> [WindChill]
 
 
@@ -78,6 +78,6 @@ def test_3(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute WindChill
-    with pytest.raises(spooki.WindChillError):
-        _ = spooki.WindChill(src_df0).compute()
+    with pytest.raises(spookipy.WindChillError):
+        _ = spookipy.WindChill(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>[WindChill]

@@ -7,7 +7,7 @@ import fstpy.all as fstpy
 import pandas as pd
 import pytest
 import rpnpy.librmn.all as rmn
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 
@@ -26,7 +26,7 @@ def test_1(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute Mask
-    df = spooki.Mask(
+    df = spookipy.Mask(
         src_df0, thresholds=[
             0.0, 10.0, 15.0, 20.0], values=[
             0.0, 10.0, 15.0, 20.0], operators=[
@@ -35,7 +35,7 @@ def test_1(plugin_test_dir):
     # [Mask --thresholds 0.0,10.0,15.0,20.0 --values 0.0,10.0,15.0,20.0 --operators ge,ge,ge,ge] >>
     # [WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
-    df = spooki.convip(df, rmn.CONVIP_ENCODE_OLD)
+    df = spookipy.convip(df, rmn.CONVIP_ENCODE_OLD)
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
     fstpy.delete_file(results_file)
@@ -57,7 +57,7 @@ def test_2(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute Mask
-    df = spooki.Mask(src_df0, thresholds=[-15, -15, -5, 10, 20], values=[-20, -
+    df = spookipy.Mask(src_df0, thresholds=[-15, -15, -5, 10, 20], values=[-20, -
                      15, -5, 10, 20], operators=['<=', '>=', '>=', '>=', '>=']).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Mask --thresholds -15,-15,-5,10,20 --values -20,-15,-5,10,20 --operators le,ge,ge,ge,ge] >>
@@ -65,7 +65,7 @@ def test_2(plugin_test_dir):
     df.loc[:, 'etiket'] = '__MASK__X'
     df.loc[df.nomvar != 'TT', 'etiket'] = 'G1_5_0X'
 
-    df = spooki.convip(df)
+    df = spookipy.convip(df)
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
     fstpy.delete_file(results_file)
@@ -87,7 +87,7 @@ def test_3(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute Mask
-    df = spooki.Mask(src_df0,
+    df = spookipy.Mask(src_df0,
                      thresholds=[-10,
                                  0,
                                  10],
@@ -103,7 +103,7 @@ def test_3(plugin_test_dir):
     df.loc[:, 'etiket'] = '__MASK__X'
     df.loc[df.nomvar != 'TT', 'etiket'] = 'G1_5_0X'
 
-    df = spooki.convip(df)
+    df = spookipy.convip(df)
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
     fstpy.delete_file(results_file)
@@ -124,9 +124,9 @@ def test_4(plugin_test_dir):
     source0 = plugin_test_dir + "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    with pytest.raises(spooki.MaskError):
+    with pytest.raises(spookipy.MaskError):
         # compute Mask
-        _ = spooki.Mask(
+        _ = spookipy.Mask(
             src_df0, thresholds=[-10, 0, 10], values=[1, 2], operators=['<=', '==']).compute()
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Mask --thresholds -10,0,10 --values 1,2 --operators le,eq] >>
         # [WriterStd --output {destination_path} --noUnitConversion]
@@ -138,9 +138,9 @@ def test_5(plugin_test_dir):
     source0 = plugin_test_dir + "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    with pytest.raises(spooki.MaskError):
+    with pytest.raises(spookipy.MaskError):
         # compute Mask
-        _ = spooki.Mask(
+        _ = spookipy.Mask(
             src_df0, thresholds=[-0, 10], values=[0, 10], operators=['<=', 'TT']).compute()
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Mask --thresholds -0,10 --values 0,10 --operators le,'TT'] >>
         # [WriterStd --output {destination_path} --noUnitConversion]
@@ -153,7 +153,7 @@ def test_6(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute Mask
-    df = spooki.Mask(src_df0,
+    df = spookipy.Mask(src_df0,
                      thresholds=[-10, 0, 10],
                      values=[1, 2, 3],
                      operators=['<=', '==', '>'],
@@ -164,7 +164,7 @@ def test_6(plugin_test_dir):
     df.loc[:, 'etiket'] = '__MASK__X'
     df.loc[df.nomvar != 'TOTO', 'etiket'] = 'G1_5_0X'
 
-    df = spooki.convip(df)
+    df = spookipy.convip(df)
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
     fstpy.delete_file(results_file)
@@ -186,7 +186,7 @@ def test_7(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute Mask
-    df = spooki.Mask(src_df0,
+    df = spookipy.Mask(src_df0,
                      thresholds=[-10,
                                  0,
                                  10],
@@ -204,7 +204,7 @@ def test_7(plugin_test_dir):
     df.loc[:, 'etiket'] = '__MASK__X'
     df.loc[df.nomvar != 'TOTO', 'etiket'] = 'G1_5_0X'
 
-    df = spooki.convip(df)
+    df = spookipy.convip(df)
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
     fstpy.delete_file(results_file)

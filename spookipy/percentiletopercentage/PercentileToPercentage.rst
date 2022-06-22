@@ -57,7 +57,7 @@ Usage:
    
    import os
    import fstpy.all as fstpy
-   import spookipy.all as spooki
+   import spookipy
 
    spooki_dir = os.environ['SPOOKI_DIR']
 
@@ -65,7 +65,7 @@ Usage:
 
    df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/PercentileToPercentage/testsFiles/inputFile.std').to_pandas()
 
-   df_percentage = spooki.PercentileToPercentage(df_field,   
+   df_percentage = spookipy.PercentileToPercentage(df_field,   
                                         threshold=0.3, 
                                         operator='ge', 
                                         etiket='GESTG1PALL',

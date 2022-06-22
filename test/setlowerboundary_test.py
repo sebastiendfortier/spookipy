@@ -5,7 +5,7 @@ check_test_ssm_package()
 
 import fstpy.all as fstpy
 import pytest
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 
@@ -24,7 +24,7 @@ def test_1(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute SetLowerBoundary
-    df = spooki.SetLowerBoundary(src_df0, value=0.).compute()
+    df = spookipy.SetLowerBoundary(src_df0, value=0.).compute()
     # [ReaderStd --input {sources[0]}] >> 
     # [SetLowerBoundary --value 0] >> 
     # [WriterStd --output {destination_path} ]
@@ -52,7 +52,7 @@ def test_2(plugin_test_dir):
     src_df = fstpy.select_with_meta(src_df0,['UU'])
 
     # compute SetLowerBoundary
-    df = spooki.SetLowerBoundary(src_df, value= 0.).compute()
+    df = spookipy.SetLowerBoundary(src_df, value= 0.).compute()
     # [ReaderStd --input {sources[0]}] >> 
     # [Select --fieldName UU] >> 
     # [SetLowerBoundary --value 0] >> 
@@ -79,8 +79,8 @@ def test_3(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute SetLowerBoundary
-    with pytest.raises(spooki.SetLowerBoundaryError):
-        _ = spooki.SetLowerBoundary(src_df0, value=0., nomvar_out='TEST').compute()
+    with pytest.raises(spookipy.SetLowerBoundaryError):
+        _ = spookipy.SetLowerBoundary(src_df0, value=0., nomvar_out='TEST').compute()
     # [ReaderStd --input {sources[0]}] >> 
     # [SetLowerBoundary --value 0 --outputFieldName TEST]
 
@@ -93,7 +93,7 @@ def test_4(plugin_test_dir):
     src_df = fstpy.select_with_meta(src_df0,['UU'])
 
     # compute SetLowerBoundary
-    df = spooki.SetLowerBoundary(src_df, value=0., nomvar_out='TEST').compute()
+    df = spookipy.SetLowerBoundary(src_df, value=0., nomvar_out='TEST').compute()
     # [ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> 
     # [SetLowerBoundary --value 0 --outputFieldName TEST] >> 
     # [WriterStd --output {destination_path} --noUnitConversion ]
@@ -120,8 +120,8 @@ def test_5(plugin_test_dir):
 
     src_df = fstpy.select_with_meta(src_df0,['UU'])
     # compute SetLowerBoundary
-    with pytest.raises(spooki.SetLowerBoundaryError):
-        _ = spooki.SetLowerBoundary(src_df, value=0., nomvar_out='TROPLONG').compute()
+    with pytest.raises(spookipy.SetLowerBoundaryError):
+        _ = spookipy.SetLowerBoundary(src_df, value=0., nomvar_out='TROPLONG').compute()
     # [ReaderStd --input {sources[0]}] >> 
     # [Select --fieldName UU] >> 
     # [SetLowerBoundary --value 0 --outputFieldName TROPLONG]
@@ -134,8 +134,8 @@ def test_6(plugin_test_dir):
 
     src_df = fstpy.select_with_meta(src_df0,['UU'])
     # compute SetLowerBoundary
-    with pytest.raises(spooki.SetLowerBoundaryError):
-        _ = spooki.SetLowerBoundary(src_df, value=0., nomvar_out='T').compute()
+    with pytest.raises(spookipy.SetLowerBoundaryError):
+        _ = spookipy.SetLowerBoundary(src_df, value=0., nomvar_out='T').compute()
     # [ReaderStd --input {sources[0]}] >> 
     # [Select --fieldName UU] >> 
     # [SetLowerBoundary --value 0 --outputFieldName T]

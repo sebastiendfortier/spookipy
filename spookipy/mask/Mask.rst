@@ -66,7 +66,7 @@ Usage:
 
    import os
    import fstpy.all as fstpy
-   import spookipy.all as spooki
+   import spookipy
 
    spooki_dir = os.environ['SPOOKI_DIR']
 
@@ -74,7 +74,7 @@ Usage:
 
    df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/Mask/testsFiles/inputFile.std').to_pandas()
 
-   res_df = spooki.Mask(
+   res_df = spookipy.Mask(
       df,
       thresholds=[0.0,10.0,15.0,20.0],
       values=[0.0,10.0,15.0,20.0],

@@ -1,7 +1,7 @@
 import pytest
 from test import TMP_PATH, TEST_PATH
 import fstpy.all as fstpy
-import spookipy.all as spooki
+import spookipy
 import pandas as pd
 from ci_fstcomp import fstcomp
 import secrets
@@ -20,7 +20,7 @@ def test_1(plugin_test_dir):
     input_df = fstpy.select_with_meta(src_df0, ['TT', 'HR'])
 
     # compute TemperatureVirtual
-    df = spooki.TemperatureVirtual(input_df).compute()
+    df = spookipy.TemperatureVirtual(input_df).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Select --fieldName TT,HR] >>
     # [TemperatureVirtual] 
@@ -53,7 +53,7 @@ def test_2(plugin_test_dir):
     input_df = fstpy.select_with_meta(src_df0, ['TT', 'HR'])
     
     # compute TemperatureVirtual
-    df = spooki.TemperatureVirtual(input_df).compute()
+    df = spookipy.TemperatureVirtual(input_df).compute()
     # [ReaderStd --input {sources[0]} --group5005] >>
     # [Select --fieldName TT,HR] >>
     # [TemperatureVirtual] >>
@@ -93,7 +93,7 @@ def test_3(plugin_test_dir):
     source0 = plugin_test_dir + "2014031800_024_regpres_QV_small.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    df = spooki.TemperatureVirtual(src_df0).compute()
+    df = spookipy.TemperatureVirtual(src_df0).compute()
 
     etiket      = "__VIRTTTX"
     etiket_meta = "R110K80_N"
@@ -129,7 +129,7 @@ def test_4(plugin_test_dir):
 
     input_df = fstpy.select_with_meta(src_df0, ['TT', 'HU'])
 
-    df = spooki.TemperatureVirtual(input_df).compute()
+    df = spookipy.TemperatureVirtual(input_df).compute()
     # [ReaderStd --input 2014031800_024_regpres_TTHUES.std] >> [Select --fieldName HU,TT] >>  
     # [TemperatureVirtual] >>  [Zap --nbitsForDataStorage E32] >>
     # [WriterStd --output 2014031800_024_regpres_VT_with_HU_small.std]
@@ -162,7 +162,7 @@ def test_5(plugin_test_dir):
 
     input_df = fstpy.select_with_meta(src_df0, ['TT', 'ES'])
 
-    df = spooki.TemperatureVirtual(input_df).compute()
+    df = spookipy.TemperatureVirtual(input_df).compute()
 
     # [ReaderStd --input 2014031800_024_regpres_TTHUES.std] >> [Select --fieldName ES,TT] >>  
     # [TemperatureVirtual] >>  [Zap --nbitsForDataStorage E32] >>
@@ -194,7 +194,7 @@ def test_6(plugin_test_dir):
     source0 = plugin_test_dir + "2014031800_024_regpres_VT_with_ES_small.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    df = spooki.TemperatureVirtual(src_df0).compute()
+    df = spookipy.TemperatureVirtual(src_df0).compute()
 
     # [ReaderStd --input 2014031800_024_regpres_TTHUES.std] >> [Select --fieldName ES,TT] >>  
     # [TemperatureVirtual] >>  [Zap --nbitsForDataStorage E32] >>

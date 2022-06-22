@@ -117,7 +117,7 @@ Usage:
     
     import os
     import fstpy.all as fstpy
-    import spookipy.all as spooki
+    import spookipy
 
     spooki_dir = os.environ['SPOOKI_DIR']
 
@@ -125,7 +125,7 @@ Usage:
 
     df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/InterpolationVertical/testsFiles/inputFile.std').to_pandas()
 
-    res_df = spooki.InterpolationVertical(df, mode='user_defined', vertical_levels=[1000,2000,3000,4000,6000], 
+    res_df = spookipy.InterpolationVertical(df, mode='user_defined', vertical_levels=[1000,2000,3000,4000,6000], 
                                           vertical_level_type='METER_SEA_LEVEL', interpolation_type='linear', 
                                           extrapolation_type='fixed', value_above=999.0, value_below=999.0).compute()
 

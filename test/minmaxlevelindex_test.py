@@ -8,7 +8,7 @@ check_test_ssm_package()
 from spookipy.minmaxlevelindex.minmaxlevelindex import  MinMaxLevelIndex, MinMaxLevelIndexError
 import fstpy.all as fstpy
 import pytest
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 
@@ -24,9 +24,9 @@ def test_1(plugin_test_dir):
     source0 = plugin_test_dir + "TTGZUUVV_3x2x7_regpres.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute spooki.MinMaxLevelIndex
+    # compute spookipy.MinMaxLevelIndex
     # df = src_df0
-    df = spooki.MinMaxLevelIndex(
+    df = spookipy.MinMaxLevelIndex(
         src_df0,
         nomvar="TT",
         min=True,
@@ -37,7 +37,7 @@ def test_1(plugin_test_dir):
     # [WriterStd --output {destination_path} --encodeIP2andIP3]",
 
     # label = "MMLVLI"
-    # df = spooki.convip(df,spooki.rmn.CONVIP_ENCODE,'ip2')
+    # df = spookipy.convip(df,spookipy.rmn.CONVIP_ENCODE,'ip2')
 
     df_tt = df[df.nomvar == 'TT'].iloc[0]
 
@@ -51,7 +51,7 @@ def test_1(plugin_test_dir):
     df.loc[(df.nomvar=='IND'),'typvar'] = 'P'
 
     # Encodage des ip2
-    df = spooki.encode_ip2_and_ip3_height(df)
+    df = spookipy.encode_ip2_and_ip3_height(df)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
@@ -73,8 +73,8 @@ def test_2(plugin_test_dir):
     source0 = plugin_test_dir + "TTGZUUVV_3x2x7_regpres.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute spooki.MinMaxLevelIndex
-    df = spooki.MinMaxLevelIndex(
+    # compute spookipy.MinMaxLevelIndex
+    df = spookipy.MinMaxLevelIndex(
         src_df0,
         nomvar="TT",
         max=True,
@@ -91,7 +91,7 @@ def test_2(plugin_test_dir):
     df.loc[df.nomvar == "TT",'etiket']  = etiket
 
     # Encodage des ip2
-    df = spooki.encode_ip2_and_ip3_height(df)
+    df = spookipy.encode_ip2_and_ip3_height(df)
     df.loc[(df.nomvar=='IND'),'typvar'] = 'P'
 
     # write the result
@@ -113,8 +113,8 @@ def test_3(plugin_test_dir):
     source0 = plugin_test_dir + "TTGZUUVV_3x2x7_regpres.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute spooki.MinMaxLevelIndex
-    df = spooki.MinMaxLevelIndex(
+    # compute spookipy.MinMaxLevelIndex
+    df = spookipy.MinMaxLevelIndex(
         src_df0,
         nomvar="TT",
         min=True,
@@ -133,7 +133,7 @@ def test_3(plugin_test_dir):
     df.loc[df.nomvar == "TT",'etiket']              = etiket
 
     # Encodage des ip2
-    df = spooki.encode_ip2_and_ip3_height(df)
+    df = spookipy.encode_ip2_and_ip3_height(df)
     df.loc[(df.nomvar.isin(['MAX','MIN'])),'typvar'] = 'P'
 
     # write the result
@@ -155,8 +155,8 @@ def test_4(plugin_test_dir):
     source0 = plugin_test_dir + "TTGZUUVV_3x2x7_regpres.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute spooki.MinMaxLevelIndex
-    df = spooki.MinMaxLevelIndex(
+    # compute spookipy.MinMaxLevelIndex
+    df = spookipy.MinMaxLevelIndex(
         src_df0,
         nomvar="GZ",
         min=True,
@@ -173,7 +173,7 @@ def test_4(plugin_test_dir):
     df.loc[df.nomvar == "GZ",'etiket']              = etiket
 
     # Encodage des ip2
-    df = spooki.encode_ip2_and_ip3_height(df)
+    df = spookipy.encode_ip2_and_ip3_height(df)
     df.loc[(df.nomvar.isin(['MAX','MIN'])),'typvar'] = 'P'
 
     # write the result
@@ -195,8 +195,8 @@ def test_5(plugin_test_dir):
     source0 = plugin_test_dir + "TTGZUUVV_3x2x7_regpres.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute spooki.MinMaxLevelIndex
-    df = spooki.MinMaxLevelIndex(
+    # compute spookipy.MinMaxLevelIndex
+    df = spookipy.MinMaxLevelIndex(
         src_df0,
         nomvar="GZ",
         min=True,
@@ -214,7 +214,7 @@ def test_5(plugin_test_dir):
     df.loc[df.nomvar == "GZ",'etiket']              = etiket
 
     # Encodage des ip2
-    df = spooki.encode_ip2_and_ip3_height(df)
+    df = spookipy.encode_ip2_and_ip3_height(df)
     df.loc[(df.nomvar.isin(['MAX','MIN'])),'typvar'] = 'P'
 
     # write the result
@@ -237,8 +237,8 @@ def test_6(plugin_test_dir):
     source0 = plugin_test_dir + "TTGZUUVV_3x2x7_regpres.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute spooki.MinMaxLevelIndex
-    df = spooki.MinMaxLevelIndex(
+    # compute spookipy.MinMaxLevelIndex
+    df = spookipy.MinMaxLevelIndex(
         src_df0,
         nomvar="UU",
         min=True,
@@ -256,7 +256,7 @@ def test_6(plugin_test_dir):
     df.loc[df.nomvar == "UU",'etiket']              = etiket
 
     # Encodage des ip2
-    df = spooki.encode_ip2_and_ip3_height(df)
+    df = spookipy.encode_ip2_and_ip3_height(df)
     df.loc[(df.nomvar.isin(['MAX','MIN'])),'typvar'] = 'P'
 
     # write the result
@@ -279,8 +279,8 @@ def test_7(plugin_test_dir):
     source0 = plugin_test_dir + "TTGZUUVV_3x2x7_regpres.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute spooki.MinMaxLevelIndex
-    df = spooki.MinMaxLevelIndex(
+    # compute spookipy.MinMaxLevelIndex
+    df = spookipy.MinMaxLevelIndex(
         src_df0,
         nomvar="UU",
         min=True,
@@ -298,7 +298,7 @@ def test_7(plugin_test_dir):
     df.loc[df.nomvar == "UU",'etiket']              = etiket
 
     # Encodage des ip2
-    df = spooki.encode_ip2_and_ip3_height(df)
+    df = spookipy.encode_ip2_and_ip3_height(df)
     df.loc[(df.nomvar.isin(['MAX','MIN'])),'typvar'] = 'P'
 
     # write the result
@@ -322,8 +322,8 @@ def test_9(plugin_test_dir):
     # source90 = plugin_test_dir + "minmax_DOWNWARD_bounded_input"
     src_df = fstpy.StandardFileReader(source).to_pandas()
 
-    # compute spooki.MinMaxLevelIndex
-    df = spooki.MinMaxLevelIndex(
+    # compute spookipy.MinMaxLevelIndex
+    df = spookipy.MinMaxLevelIndex(
         src_df,
         nomvar="ICGA",
         max=True,
@@ -331,7 +331,7 @@ def test_9(plugin_test_dir):
         nomvar_max_idx='IND').compute()
 
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
-    # [spooki.MinMaxLevelIndex --bounded --minMax MAX --outputFieldName2 IND] >>
+    # [MinMaxLevelIndex --bounded --minMax MAX --outputFieldName2 IND] >>
     # [Zap --pdsLabel MinMaxBoundedIndexLevel --doNotFlagAsZapped] >>
     # [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
@@ -341,7 +341,7 @@ def test_9(plugin_test_dir):
     df.loc[df.nomvar == 'IND' ,'etiket']   = etiket2
 
     # Encodage des ip2
-    df = spooki.encode_ip2_and_ip3_height(df)
+    df = spookipy.encode_ip2_and_ip3_height(df)
     df.loc[df.nomvar=='IND','typvar'] = 'PB'
     
     # write the result
@@ -368,8 +368,8 @@ def test_10(plugin_test_dir):
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
     src_df = pd.concat([src_df0 , src_df1])
     
-    # compute spooki.MinMaxLevelIndex
-    df = spooki.MinMaxLevelIndex(
+    # compute spookipy.MinMaxLevelIndex
+    df = spookipy.MinMaxLevelIndex(
         src_df,
         nomvar="TT",
         bounded=True,
@@ -385,7 +385,7 @@ def test_10(plugin_test_dir):
     df.loc[df.nomvar == "TT",'etiket']                = etiket
 
     # Encodage des ip2
-    df = spooki.encode_ip2_and_ip3_height(df)
+    df = spookipy.encode_ip2_and_ip3_height(df)
     df.loc[(df.nomvar.isin(['KMAX','KMIN'])),'typvar'] = 'PB'
         
     # write the result
@@ -411,8 +411,8 @@ def test_11(plugin_test_dir):
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
     src_df = pd.concat([src_df0 , src_df1])
     
-    # compute spooki.MinMaxLevelIndex
-    df = spooki.MinMaxLevelIndex(
+    # compute spookipy.MinMaxLevelIndex
+    df = spookipy.MinMaxLevelIndex(
         src_df,
         nomvar="TT",
         bounded=True,
@@ -429,7 +429,7 @@ def test_11(plugin_test_dir):
     df.loc[df.nomvar == "TT",'etiket']                = etiket
 
     # Encodage des ip2
-    df = spooki.encode_ip2_and_ip3_height(df)
+    df = spookipy.encode_ip2_and_ip3_height(df)
     df.loc[(df.nomvar.isin(['KMAX','KMIN'])),'typvar'] = 'PB'
         
     # write the result
@@ -453,9 +453,9 @@ def test_12(plugin_test_dir):
     source0 = plugin_test_dir + "TTGZUUVV_3x2x7_regpres.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute spooki.MinMaxLevelIndex
+    # compute spookipy.MinMaxLevelIndex
     with pytest.raises(MinMaxLevelIndexError):
-        spooki.MinMaxLevelIndex(
+        spookipy.MinMaxLevelIndex(
             src_df0, 
             nomvar="TT", 
             bounded=True).compute()
@@ -469,9 +469,9 @@ def test_13(plugin_test_dir):
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
     src_df = pd.concat([src_df0 , src_df1])
 
-    # compute spooki.MinMaxLevelIndex
-    with pytest.raises(spooki.DependencyError):
-        spooki.MinMaxLevelIndex(
+    # compute spookipy.MinMaxLevelIndex
+    with pytest.raises(spookipy.DependencyError):
+        spookipy.MinMaxLevelIndex(
             src_df, 
             nomvar="UU", 
             bounded=True).compute()
@@ -486,8 +486,8 @@ def test_20(plugin_test_dir):
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
 
     src_df = pd.concat([src_df0, src_df1])
-    # compute spooki.MinMaxLevelIndex
-    df = spooki.MinMaxLevelIndex(
+    # compute spookipy.MinMaxLevelIndex
+    df = spookipy.MinMaxLevelIndex(
         src_df, 
         nomvar="TT",
         value_to_return=True).compute()
@@ -519,7 +519,7 @@ def test_21(plugin_test_dir):
     src_df2 = fstpy.StandardFileReader(source2).to_pandas()
     src_df = pd.concat([src_df0 , src_df1, src_df2])
 
-    df = spooki.MinMaxLevelIndex(
+    df = spookipy.MinMaxLevelIndex(
         src_df, 
         nomvar="TT",
         bounded=True).compute()
@@ -530,7 +530,7 @@ def test_21(plugin_test_dir):
     df.loc[df.nomvar == "TT",'etiket']                = etiket
 
     # Encodage des ip2
-    df = spooki.encode_ip2_and_ip3_height(df)
+    df = spookipy.encode_ip2_and_ip3_height(df)
     df.loc[(df.nomvar.isin(['KMAX','KMIN'])),'typvar'] = 'PB'
     
      # write the result

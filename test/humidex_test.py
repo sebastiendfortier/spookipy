@@ -5,7 +5,7 @@ check_test_ssm_package()
 
 import fstpy.all as fstpy
 import pytest
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 
@@ -24,7 +24,7 @@ def test_1(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute Humidex
-    df = spooki.Humidex(src_df0).compute()
+    df = spookipy.Humidex(src_df0).compute()
     # [ReaderStd --input {sources[0]}] >> [Humidex] >> [WriterStd --output {destination_path} --noMetadata]
 
     df.loc[:, 'etiket'] = '__HUMIDXX000'
@@ -53,7 +53,7 @@ def test_2(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute Humidex
-    df = spooki.Humidex(src_df0).compute()
+    df = spookipy.Humidex(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]} ] >> [Humidex] >> [WriterStd --output {destination_path} ]
 
     # df.loc[df.nomvar!='!!','nbits']=32

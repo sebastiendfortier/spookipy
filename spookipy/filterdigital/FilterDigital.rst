@@ -68,7 +68,7 @@ Usage:
    
    import os
    import fstpy.all as fstpy
-   import spookipy.all as spooki
+   import spookipy
 
    spooki_dir = os.environ['SPOOKI_DIR']
 
@@ -76,7 +76,7 @@ Usage:
 
    df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/FilterDigital/testsFiles/inputFile.std').to_pandas()
 
-   res_df = spooki.FilterDigital(df, filter=[1,2,1], repetitions=2).compute()
+   res_df = spookipy.FilterDigital(df, filter=[1,2,1], repetitions=2).compute()
 
    fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
 

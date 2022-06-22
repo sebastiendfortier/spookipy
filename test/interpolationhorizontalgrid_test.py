@@ -7,7 +7,7 @@ import fstpy.all as fstpy
 import pandas as pd
 import pytest
 import rpnpy.librmn.all as rmn
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 
@@ -26,7 +26,7 @@ def test_1(plugin_test_dir):
     source0 = plugin_test_dir + "input_big_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
     # compute Pressure
-    df = spooki.InterpolationHorizontalGrid(
+    df = spookipy.InterpolationHorizontalGrid(
         src_df0,
         method='user',
         grtyp='N',
@@ -72,7 +72,7 @@ def test_2(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute Pressure
-    df = spooki.InterpolationHorizontalGrid(
+    df = spookipy.InterpolationHorizontalGrid(
         src_df0,
         method='user',
         grtyp='N',
@@ -116,7 +116,7 @@ def test_3(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute Pressure
-    df = spooki.InterpolationHorizontalGrid(
+    df = spookipy.InterpolationHorizontalGrid(
         src_df0,
         method='user',
         grtyp='N',
@@ -160,8 +160,8 @@ def test_5(plugin_test_dir):
 
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute spooki.InterpolationHorizontalGrid
-    df = spooki.InterpolationHorizontalGrid(
+    # compute spookipy.InterpolationHorizontalGrid
+    df = spookipy.InterpolationHorizontalGrid(
         src_df0,
         method='field',
         nomvar='RT',
@@ -171,7 +171,7 @@ def test_5(plugin_test_dir):
     # [InterpolationHorizontalGrid -m FIELD_DEFINED --fieldName RT --interpolationType NEAREST --extrapolationType NEAREST] >>
     # [WriterStd --output {destination_path} --makeIP1EncodingWorkWithTests]
 
-    df = spooki.convip(df, style=rmn.CONVIP_ENCODE_OLD)
+    df = spookipy.convip(df, style=rmn.CONVIP_ENCODE_OLD)
     df.loc[(~df.nomvar.isin(['KT','PT','RT'])) & (df.typvar == 'P'), 'typvar'] = 'PI'
 
     # df.loc[:,'datyp'] = 5
@@ -201,8 +201,8 @@ def test_6(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     src_df0 = fstpy.select_with_meta(src_df0, ['TT', 'RT'])
-    # compute spooki.InterpolationHorizontalGrid
-    df = spooki.InterpolationHorizontalGrid(
+    # compute spookipy.InterpolationHorizontalGrid
+    df = spookipy.InterpolationHorizontalGrid(
         src_df0,
         method='field',
         nomvar='RT',
@@ -245,8 +245,8 @@ def test_7(plugin_test_dir):
     src_df = pd.concat([src_df0, src_df1], ignore_index=True)
 
     # print(src_df[['nomvar','ni','nj','ip1','ip2','ig1','ig2']])
-    # compute spooki.InterpolationHorizontalGrid
-    df = spooki.InterpolationHorizontalGrid(
+    # compute spookipy.InterpolationHorizontalGrid
+    df = spookipy.InterpolationHorizontalGrid(
         src_df,
         method='field',
         nomvar='ES',
@@ -262,7 +262,7 @@ def test_7(plugin_test_dir):
     # df['nbits'] = 32
     # df.loc[df.nomvar=='!!','nbits']=64
 
-    df = spooki.convip(df)
+    df = spookipy.convip(df)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
@@ -295,8 +295,8 @@ def test_8(plugin_test_dir):
 
     src_df = pd.concat([src_df0, src_df1], ignore_index=True)
 
-    # compute spooki.InterpolationHorizontalGrid
-    df = spooki.InterpolationHorizontalGrid(
+    # compute spookipy.InterpolationHorizontalGrid
+    df = spookipy.InterpolationHorizontalGrid(
         src_df,
         method='field',
         nomvar='ES',
@@ -312,7 +312,7 @@ def test_8(plugin_test_dir):
     # df['datyp'] = 5
     # df['nbits'] = 32
     df.loc[df.nomvar == '!!', 'nbits'] = 64
-    df = spooki.convip(df)
+    df = spookipy.convip(df)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
@@ -342,8 +342,8 @@ def test_9(plugin_test_dir):
 
     src_df = pd.concat([src_df0, src_df1], ignore_index=True)
 
-    # compute spooki.InterpolationHorizontalGrid
-    df = spooki.InterpolationHorizontalGrid(
+    # compute spookipy.InterpolationHorizontalGrid
+    df = spookipy.InterpolationHorizontalGrid(
         src_df,
         method='field',
         nomvar='TT',
@@ -361,7 +361,7 @@ def test_9(plugin_test_dir):
     # df['datyp'] = 5
     # df.loc[df.nomvar!='!!','nbits'] = 32
 
-    df = spooki.convip(df)
+    df = spookipy.convip(df)
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
     fstpy.delete_file(results_file)
@@ -391,8 +391,8 @@ def test_10(plugin_test_dir):
 
     src_df = pd.concat([src_df0, src_df1], ignore_index=True)
 
-    # compute spooki.InterpolationHorizontalGrid
-    df = spooki.InterpolationHorizontalGrid(
+    # compute spookipy.InterpolationHorizontalGrid
+    df = spookipy.InterpolationHorizontalGrid(
         src_df,
         method='field',
         nomvar='TT',
@@ -440,8 +440,8 @@ def test_11(plugin_test_dir):
 
     src_df = pd.concat([src_df0, src_df1], ignore_index=True)
     # print('src_df\n',src_df[['nomvar', 'typvar', 'etiket', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'datyp', 'nbits', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4','grid']].to_string())
-    # compute spooki.InterpolationHorizontalGrid
-    df = spooki.InterpolationHorizontalGrid(
+    # compute spookipy.InterpolationHorizontalGrid
+    df = spookipy.InterpolationHorizontalGrid(
         src_df,
         method='field',
         nomvar='ES',
@@ -454,7 +454,7 @@ def test_11(plugin_test_dir):
     # df['datyp'] = 5
     # df[df.nomvar!='!!','nbits'] = 32
     # df.loc[df.nomvar=='!!','nbits']=64
-    df = spooki.convip(df)
+    df = spookipy.convip(df)
     df.loc[(df.nomvar!='ES') & (df.typvar == 'P'), 'typvar'] = 'PI'
 
     # print('df\n',df[['nomvar', 'typvar', 'etiket', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'datyp', 'nbits', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4','grid']].to_string())
@@ -480,8 +480,8 @@ def test_13(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
     src_df0 = fstpy.select_with_meta(src_df0, ["TT"])
 
-    # compute spooki.InterpolationHorizontalGrid
-    df = spooki.InterpolationHorizontalGrid(
+    # compute spookipy.InterpolationHorizontalGrid
+    df = spookipy.InterpolationHorizontalGrid(
         src_df0,
         method='user',
         grtyp='N',
@@ -533,8 +533,8 @@ def test_14(plugin_test_dir):
 
     src_df = pd.concat([src_df0, src_df1], ignore_index=True)
 
-    # compute spooki.InterpolationHorizontalGrid
-    df = spooki.InterpolationHorizontalGrid(
+    # compute spookipy.InterpolationHorizontalGrid
+    df = spookipy.InterpolationHorizontalGrid(
         src_df,
         method='field',
         nomvar='TT',
@@ -552,7 +552,7 @@ def test_14(plugin_test_dir):
     # df['datyp'] = 5
     # df.loc[df.nomvar!='!!','nbits'] = 32
 
-    df = spooki.convip(df)
+    df = spookipy.convip(df)
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
     fstpy.delete_file(results_file)

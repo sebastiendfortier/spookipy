@@ -5,7 +5,7 @@ check_test_ssm_package()
 
 import fstpy.all as fstpy
 import pytest
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 
@@ -25,9 +25,9 @@ def test_1(plugin_test_dir):
 
     src_df0 = src_df0.loc[src_df0.nomvar == 'UU'].reset_index(drop=True)
 
-    with pytest.raises(spooki.ArithmeticMeanByPointError):
+    with pytest.raises(spookipy.ArithmeticMeanByPointError):
         # compute ArithmeticMeanByPoint
-        df = spooki.ArithmeticMeanByPoint(src_df0).compute()
+        df = spookipy.ArithmeticMeanByPoint(src_df0).compute()
         # [ReaderStd --input {sources[0]}] >> [Select --fieldName UU ] >> [ArithmeticMeanByPoint]
 
 
@@ -37,9 +37,9 @@ def test_2(plugin_test_dir):
     source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    with pytest.raises(spooki.ArithmeticMeanByPointError):
+    with pytest.raises(spookipy.ArithmeticMeanByPointError):
         # compute ArithmeticMeanByPoint
-        df = spooki.ArithmeticMeanByPoint(
+        df = spookipy.ArithmeticMeanByPoint(
             src_df0, nomvar_out='TROPLONG').compute()
         # [ReaderStd --input {sources[0]}] >> [ArithmeticMeanByPoint --outputFieldName TROPLONG]
 
@@ -51,7 +51,7 @@ def test_3(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute ArithmeticMeanByPoint
-    df = spooki.ArithmeticMeanByPoint(src_df0, nomvar_out='ACCU').compute()
+    df = spookipy.ArithmeticMeanByPoint(src_df0, nomvar_out='ACCU').compute()
     # [ReaderStd --input {sources[0]}] >> [ArithmeticMeanByPoint --outputFieldName ACCU] >> [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     df['etiket'] = 'MEANFIELDS'
@@ -76,7 +76,7 @@ def test_4(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute ArithmeticMeanByPoint
-    df = spooki.ArithmeticMeanByPoint(src_df0, nomvar_out='ACCU').compute()
+    df = spookipy.ArithmeticMeanByPoint(src_df0, nomvar_out='ACCU').compute()
     # [ReaderStd --input {sources[0]}] >> [ArithmeticMeanByPoint --outputFieldName ACCU] >> [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     df['etiket'] = 'MEANFIELDS'
@@ -102,7 +102,7 @@ def test_5(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute ArithmeticMeanByPoint
-    df = spooki.ArithmeticMeanByPoint(src_df0).compute()
+    df = spookipy.ArithmeticMeanByPoint(src_df0).compute()
     # [ReaderStd --input {sources[0]}] >> [ArithmeticMeanByPoint ] >> [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
     df['etiket'] = '__MEANFIX'
 
@@ -132,7 +132,7 @@ def test_6(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute ArithmeticMeanByPoint
-    df = spooki.ArithmeticMeanByPoint(
+    df = spookipy.ArithmeticMeanByPoint(
         src_df0, group_by_forecast_hour=True).compute()
     # [ReaderStd --input {sources[0]}] >> [ArithmeticMeanByPoint --groupBy FORECAST_HOUR] >> [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} ]
     df['etiket'] = '__MEANFIX'
@@ -161,7 +161,7 @@ def test_7(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute ArithmeticMeanByPoint
-    df = spooki.ArithmeticMeanByPoint(src_df0).compute()
+    df = spookipy.ArithmeticMeanByPoint(src_df0).compute()
     # [ReaderStd --input {sources[0]}] >> [ArithmeticMeanByPoint] >> [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} ]
     # df['etiket']='__MEANFIX'
     df.loc[~df.nomvar.isin(['!!', '^^', '>>', 'P0']), 'etiket'] = '__MEANFIX'

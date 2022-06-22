@@ -42,7 +42,7 @@ Usage:
     
     import os
     import fstpy.all as fstpy
-    import spookipy.all as spooki
+    import spookipy
     import numpy as np
 
     spooki_dir = os.environ['SPOOKI_DIR']
@@ -54,7 +54,7 @@ Usage:
     class MultiplyElementsByPointError(Exception):
         pass
 
-    res_df = spooki.OpElementsByColumn(df,
+    res_df = spookipy.OpElementsByColumn(df,
                                         operator=np.prod,
                                         operation_name='MultiplyElementsByPoint',
                                         exception_class=MultiplyElementsByPointError,

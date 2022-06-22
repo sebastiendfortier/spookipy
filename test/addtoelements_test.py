@@ -5,7 +5,7 @@ check_test_ssm_package()
 
 import fstpy.all as fstpy
 import pytest
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 
@@ -24,7 +24,7 @@ def test_1(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute AddToElement
-    df = spooki.AddToElement(src_df0, value=4).compute()
+    df = spookipy.AddToElement(src_df0, value=4).compute()
     # [ReaderStd --input {sources[0]}] >> [AddToElement --value +4.0] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     # write the result
@@ -48,7 +48,7 @@ def test_2(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute AddToElement
-    df = spooki.AddToElement(src_df0, value=-2).compute()
+    df = spookipy.AddToElement(src_df0, value=-2).compute()
     # [ReaderStd --input {sources[0]}] >> [AddToElement --value -2.0] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     # write the result

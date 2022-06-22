@@ -5,7 +5,7 @@ check_test_ssm_package()
 
 import fstpy.all as fstpy
 import pytest
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 
@@ -23,7 +23,7 @@ def test_1(plugin_test_dir):
     source0 = plugin_test_dir + "2022021100_out.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    df = spooki.PercentileToPercentage(src_df0).compute()
+    df = spookipy.PercentileToPercentage(src_df0).compute()
     # [ReaderStd --input {sources[0]}] >> [PercentileToPercentage] >> [WriterStd --output {destination_path} ]
 
     # write the result
@@ -46,8 +46,8 @@ def test_2(plugin_test_dir):
     source0 = plugin_test_dir + "2022021100_out.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    with pytest.raises(spooki.PercentileToPercentageError):
-        _ = spooki.PercentileToPercentage(src_df0, etiket='wrong_etiket_name').compute()
+    with pytest.raises(spookipy.PercentileToPercentageError):
+        _ = spookipy.PercentileToPercentage(src_df0, etiket='wrong_etiket_name').compute()
     # [ReaderStd --input {sources[0]}] >> [Etiket --etiket wrong_etiket_name] >> [PercentileToPercentage] >> [Raise Exception]
 
 
@@ -57,7 +57,7 @@ def test_3(plugin_test_dir):
     source0 = plugin_test_dir + "2022021100_out.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    df = spooki.PercentileToPercentage(src_df0, threshold=0.3, operator='le',
+    df = spookipy.PercentileToPercentage(src_df0, threshold=0.3, operator='le',
                                        nomvar='SSH8').compute()
     # [ReaderStd --input {sources[0]}] >> [Threshold --threshold 0.3, Operator --operator le, Nomvar --nomvar SSH8, >> [PercentileToPercentage] >> [WriterStd --output {destination_path} ]
 
@@ -81,8 +81,8 @@ def test_4(plugin_test_dir):
     source0 = plugin_test_dir + "2022021100_out.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    with pytest.raises(spooki.PercentileToPercentageError):
-        _ = spooki.PercentileToPercentage(src_df0, nomvar="empty_nomvar").compute()
+    with pytest.raises(spookipy.PercentileToPercentageError):
+        _ = spookipy.PercentileToPercentage(src_df0, nomvar="empty_nomvar").compute()
     # [ReaderStd --input {sources[0]}] >> [Nomvar --nomvar empty_nomvar] >> [PercentileToPercentage] >> [Raise Exception]
 
 
@@ -93,7 +93,7 @@ def test_5(plugin_test_dir):
     source0 = plugin_test_dir + "2022021100_out.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    df = spooki.PercentileToPercentage(src_df0, threshold=-0.3, nomvar='SSH8').compute()
+    df = spookipy.PercentileToPercentage(src_df0, threshold=-0.3, nomvar='SSH8').compute()
     # [ReaderStd --input {sources[0]}] >> [Threshold --threshold -0.3, Nomvar --nomvar SSH8] >> [PercentileToPercentage] >> [WriterStd --output {destination_path} ]
 
     # write the result
@@ -115,8 +115,8 @@ def test_6(plugin_test_dir):
     source0 = plugin_test_dir + "2022021100_out.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    with pytest.raises(spooki.PercentileToPercentageError):
-        _ = spooki.PercentileToPercentage(src_df0, etiket="GEST1__PALL").compute()
+    with pytest.raises(spookipy.PercentileToPercentageError):
+        _ = spookipy.PercentileToPercentage(src_df0, etiket="GEST1__PALL").compute()
     # [ReaderStd --input {sources[0]}] >> [Etiket --etiket GEST1__PALL] >> [PercentileToPercentage] >> [Raise Exception]
 
 def test_7(plugin_test_dir):
@@ -125,6 +125,6 @@ def test_7(plugin_test_dir):
     source0 = plugin_test_dir + "2022021100_out.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    with pytest.raises(spooki.PercentileToPercentageError):
-        _ = spooki.PercentileToPercentage(src_df0, etiket="GEST1___PBLL").compute()
+    with pytest.raises(spookipy.PercentileToPercentageError):
+        _ = spookipy.PercentileToPercentage(src_df0, etiket="GEST1___PBLL").compute()
     # [ReaderStd --input {sources[0]}] >> [Etiket --etiket GEST1___PBLL] >> [PercentileToPercentage] >> [Raise Exception]

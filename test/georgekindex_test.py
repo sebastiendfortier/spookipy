@@ -6,7 +6,7 @@ check_test_ssm_package()
 import fstpy.all as fstpy
 import pandas as pd
 import pytest
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 from fstpy.dataframe_utils import select_with_meta
@@ -26,7 +26,7 @@ def test_1(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GeorgeKIndex
-    df = spooki.GeorgeKIndex(src_df0).compute()
+    df = spookipy.GeorgeKIndex(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GeorgeKIndex] >> [WriterStd --output {destination_path} --ignoreExtended]
 
     # df.loc[:,'datyp'] = 5
@@ -54,7 +54,7 @@ def test_2(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GeorgeKIndex
-    df = spooki.GeorgeKIndex(src_df0).compute()
+    df = spookipy.GeorgeKIndex(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GeorgeKIndex] >> [WriterStd --output {destination_path} --ignoreExtended]
     # df.loc[df.nomvar=='KI','grtyp'] = 'X'
     # df.loc[df.nomvar=='KI','ig1'] = 0
@@ -86,7 +86,7 @@ def test_3(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GeorgeKIndex
-    df = spooki.GeorgeKIndex(src_df0).compute()
+    df = spookipy.GeorgeKIndex(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GeorgeKIndex] >> [WriterStd --output {destination_path} --ignoreExtended]
     # df.loc[:,'datyp'] = 5
     # df.loc[df.nomvar!='!!','nbits'] = 32
@@ -118,7 +118,7 @@ def test_4(plugin_test_dir):
 
     src_df = pd.concat([tt_df, es_df], ignore_index=True)
     # compute GeorgeKIndex
-    df = spooki.GeorgeKIndex(src_df).compute()
+    df = spookipy.GeorgeKIndex(src_df).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> ( ([Select --fieldName TT] >> [UnitConvert --unit kelvin]) + [Select --fieldName ES] ) >> [GeorgeKIndex] >> [WriterStd --output {destination_path} --ignoreExtended]
     # df.loc[:,'datyp'] = 5
     # df.loc[df.nomvar!='!!','nbits'] = 32
@@ -146,8 +146,8 @@ def test_4(plugin_test_dir):
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     #compute GeorgeKIndex
-#     # with pytest.raises(spooki.GeorgeKIndexError):
-#     df = spooki.GeorgeKIndex(src_df0).compute()
+#     # with pytest.raises(spookipy.GeorgeKIndexError):
+#     df = spookipy.GeorgeKIndex(src_df0).compute()
 #     print(df)
 #     assert(False)
 #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [GeorgeKIndex]
@@ -166,7 +166,7 @@ def test_6(plugin_test_dir):
     src_df = pd.concat([meta_df, fh6_df], ignore_index=True)
 
     # compute GeorgeKIndex
-    df = spooki.GeorgeKIndex(src_df).compute()
+    df = spookipy.GeorgeKIndex(src_df).compute()
     #['[ReaderStd --ignoreExtended --input {sources[0]}] >>', '[Select --forecastHour 6] >> [GeorgeKIndex] >> ', '[WriterStd --output {destination_path} --ignoreExtended]']
     # df.loc[:,'datyp'] = 5
     # df.loc[df.nomvar!='!!','nbits'] = 32

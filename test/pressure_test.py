@@ -5,7 +5,7 @@ check_test_ssm_package()
 
 import fstpy.all as fstpy
 import pytest
-import spookipy.all as spooki
+import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 
@@ -23,8 +23,8 @@ def test_1(plugin_test_dir):
     source0 = plugin_test_dir + "tt_eta_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute spooki.Pressure
-    df = spooki.Pressure(src_df0, "TT").compute()
+    # compute spookipy.Pressure
+    df = spookipy.Pressure(src_df0, "TT").compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Pressure --coordinateType ETA_COORDINATE --referenceField TT] >>
     # [Zap --pdsLabel R1580V0N] >>
@@ -38,7 +38,7 @@ def test_1(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "px_eta_file2cmp.std"
-    # file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_1"
+    # file_to_compare =  "/fs/site4/eccc/cmd/w/sbf000/testFiles/Pressure/result_test_1"
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
@@ -52,8 +52,8 @@ def test_2(plugin_test_dir):
     source0 = plugin_test_dir + "tt_eta_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute spooki.Pressure
-    df = spooki.Pressure(src_df0, "TT", standard_atmosphere=True).compute()
+    # compute spookipy.Pressure
+    df = spookipy.Pressure(src_df0, "TT", standard_atmosphere=True).compute()
 
     # df.loc[df.nomvar.isin(['>>','^^','P0','PT']),'etiket'] = 'R1580V0N'
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
@@ -68,7 +68,7 @@ def test_2(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "px_eta_std_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_2"
+    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/Pressure/result_test_2"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -83,8 +83,8 @@ def test_2(plugin_test_dir):
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
-# #     #compute spooki.Pressure
-# #     df = spooki.Pressure(src_df0).compute()
+# #     #compute spookipy.Pressure
+# #     df = spookipy.Pressure(src_df0).compute()
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType AUTODETECT --referenceField TT] >> [Zap --pdsLabel R1580V0N] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
 # #     #write the result
@@ -107,8 +107,8 @@ def test_2(plugin_test_dir):
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
-# #     #compute spooki.Pressure
-# #     df = spooki.Pressure(src_df0,True).compute()
+# #     #compute spookipy.Pressure
+# #     df = spookipy.Pressure(src_df0,True).compute()
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Zap --pdsLabel PRESSURE --doNotFlagAsZapped] >> [Pressure --coordinateType AUTODETECT --standardAtmosphere --referenceField TT ] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
 # #     #write the result
@@ -130,8 +130,8 @@ def test_5(plugin_test_dir):
     source0 = plugin_test_dir + "hu_sig_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute spooki.Pressure
-    df = spooki.Pressure(src_df0, "HU").compute()
+    # compute spookipy.Pressure
+    df = spookipy.Pressure(src_df0, "HU").compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Pressure --coordinateType SIGMA_COORDINATE --referenceField HU ] >>
     # [Zap --pdsLabel R1580V0N] >>
@@ -146,7 +146,7 @@ def test_5(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "px_sig_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_5"
+    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/Pressure/result_test_5"
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.1)
@@ -160,8 +160,8 @@ def test_6(plugin_test_dir):
     source0 = plugin_test_dir + "hu_sig_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute spooki.Pressure
-    df = spooki.Pressure(src_df0, "HU", standard_atmosphere=True).compute()
+    # compute spookipy.Pressure
+    df = spookipy.Pressure(src_df0, "HU", standard_atmosphere=True).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Zap --pdsLabel PRESSURE --doNotFlagAsZapped] >>
     # [Pressure --coordinateType SIGMA_COORDINATE --standardAtmosphere --referenceField HU] >>
@@ -175,7 +175,7 @@ def test_6(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "px_sig_std_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_6"
+    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/Pressure/result_test_6"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -190,8 +190,8 @@ def test_6(plugin_test_dir):
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
-# #     #compute spooki.Pressure
-# #     df = spooki.Pressure(src_df0).compute()
+# #     #compute spookipy.Pressure
+# #     df = spookipy.Pressure(src_df0).compute()
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType AUTODETECT --referenceField HU] >> [Zap --pdsLabel R1580V0N] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
 # #     #write the result
@@ -214,8 +214,8 @@ def test_6(plugin_test_dir):
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
-# #     #compute spooki.Pressure
-# #     df = spooki.Pressure(src_df0,True).compute()
+# #     #compute spookipy.Pressure
+# #     df = spookipy.Pressure(src_df0,True).compute()
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType AUTODETECT --standardAtmosphere --referenceField HU] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
 # #     #write the result
@@ -237,8 +237,8 @@ def test_9(plugin_test_dir):
     source0 = plugin_test_dir + "tt_hyb_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute spooki.Pressure
-    df = spooki.Pressure(src_df0, "TT").compute()
+    # compute spookipy.Pressure
+    df = spookipy.Pressure(src_df0, "TT").compute()
     # ['[ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Pressure --coordinateType HYBRID_COORDINATE --referenceField TT] >>
     # [Zap --pdsLabel R1580V0N] >>
@@ -252,7 +252,7 @@ def test_9(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "px_hyb_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_9"
+    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/Pressure/result_test_9"
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
@@ -266,8 +266,8 @@ def test_10(plugin_test_dir):
     source0 = plugin_test_dir + "tt_hyb_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute spooki.Pressure
-    df = spooki.Pressure(src_df0, "TT",standard_atmosphere=True).compute()
+    # compute spookipy.Pressure
+    df = spookipy.Pressure(src_df0, "TT",standard_atmosphere=True).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Zap --pdsLabel PRESSURE --doNotFlagAsZapped] >>
     # [Pressure --coordinateType HYBRID_COORDINATE --standardAtmosphere --referenceField TT] >>
@@ -282,7 +282,7 @@ def test_10(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "px_hyb_std_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_10"
+    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/Pressure/result_test_10"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -297,8 +297,8 @@ def test_10(plugin_test_dir):
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
-# #     #compute spooki.Pressure
-# #     df = spooki.Pressure(src_df0).compute()
+# #     #compute spookipy.Pressure
+# #     df = spookipy.Pressure(src_df0).compute()
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType AUTODETECT --referenceField TT] >> [WriterStd --output {destination_path} --ignoreExtended]
 
 # #     #write the result
@@ -321,8 +321,8 @@ def test_10(plugin_test_dir):
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
-# #     #compute spooki.Pressure
-# #     df = spooki.Pressure(src_df0,True).compute()
+# #     #compute spookipy.Pressure
+# #     df = spookipy.Pressure(src_df0,True).compute()
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Zap --pdsLabel PRESSURE --doNotFlagAsZapped] >> [Pressure --coordinateType AUTODETECT --standardAtmosphere --referenceField TT] >> [WriterStd --output {destination_path} --ignoreExtended]
 
 # #     #write the result
@@ -344,8 +344,8 @@ def test_13(plugin_test_dir):
     source0 = plugin_test_dir + "px_hyb_stg_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute spooki.Pressure
-    df = spooki.Pressure(src_df0, "UU").compute()
+    # compute spookipy.Pressure
+    df = spookipy.Pressure(src_df0, "UU").compute()
     # [ReaderStd --input {sources[0]}] >>
     # [Pressure --coordinateType HYBRID_STAGGERED_COORDINATE --referenceField UU] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
@@ -360,7 +360,7 @@ def test_13(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "px_hyb_stg_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_13"
+    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/Pressure/result_test_13"
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
@@ -374,8 +374,8 @@ def test_14(plugin_test_dir):
     source0 = plugin_test_dir + "px_hyb_stg_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute spooki.Pressure
-    df = spooki.Pressure(src_df0, "UU", standard_atmosphere=True).compute()
+    # compute spookipy.Pressure
+    df = spookipy.Pressure(src_df0, "UU", standard_atmosphere=True).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Pressure --coordinateType HYBRID_STAGGERED_COORDINATE --standardAtmosphere --referenceField UU] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
@@ -388,7 +388,7 @@ def test_14(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "px_hyb_stg_std_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_14"
+    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/Pressure/result_test_14"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -403,8 +403,8 @@ def test_14(plugin_test_dir):
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
-# #     #compute spooki.Pressure
-# #     df = spooki.Pressure(src_df0).compute()
+# #     #compute spookipy.Pressure
+# #     df = spookipy.Pressure(src_df0).compute()
 # #     #[ReaderStd --input {sources[0]}] >>
 # [Pressure --coordinateType AUTODETECT --referenceField UU] >>
 # [WriterStd --output {destination_path} --ignoreExtended]
@@ -429,8 +429,8 @@ def test_14(plugin_test_dir):
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
-# #     #compute spooki.Pressure
-# #     df = spooki.Pressure(src_df0,True).compute()
+# #     #compute spookipy.Pressure
+# #     df = spookipy.Pressure(src_df0,True).compute()
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType AUTODETECT --standardAtmosphere --referenceField UU] >> [WriterStd --output {destination_path} --ignoreExtended]
 
 # #     #write the result
@@ -452,8 +452,8 @@ def test_17(plugin_test_dir):
     source0 = plugin_test_dir + "tt_pres_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute spooki.Pressure
-    df = spooki.Pressure(src_df0, "TT").compute()
+    # compute spookipy.Pressure
+    df = spookipy.Pressure(src_df0, "TT").compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Pressure --coordinateType PRESSURE_COORDINATE --referenceField TT] >>
     # [Zap --pdsLabel R1580V0N] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
@@ -465,7 +465,7 @@ def test_17(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "px_pres_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_17"
+    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/Pressure/result_test_17"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -479,8 +479,8 @@ def test_18(plugin_test_dir):
     source0 = plugin_test_dir + "tt_pres_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute spooki.Pressure
-    df = spooki.Pressure(src_df0, "TT",standard_atmosphere=True).compute()
+    # compute spookipy.Pressure
+    df = spookipy.Pressure(src_df0, "TT",standard_atmosphere=True).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Zap --pdsLabel PRESSURE --doNotFlagAsZapped] >>
     # [Pressure --coordinateType PRESSURE_COORDINATE --standardAtmosphere --referenceField TT] >>
@@ -494,7 +494,7 @@ def test_18(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "px_pres_std_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_18"
+    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/Pressure/result_test_18"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -509,8 +509,8 @@ def test_18(plugin_test_dir):
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
-# #     #compute spooki.Pressure
-# #     df = spooki.Pressure(src_df0).compute()
+# #     #compute spookipy.Pressure
+# #     df = spookipy.Pressure(src_df0).compute()
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Zap --pdsLabel PRESSURE --doNotFlagAsZapped] >> [Pressure --coordinateType AUTODETECT --referenceField TT] >> [Zap --pdsLabel R1580V0N] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
 # #     #write the result
@@ -533,8 +533,8 @@ def test_18(plugin_test_dir):
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
-# #     #compute spooki.Pressure
-# #     df = spooki.Pressure(src_df0,True).compute()
+# #     #compute spookipy.Pressure
+# #     df = spookipy.Pressure(src_df0,True).compute()
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Zap --pdsLabel PRESSURE --doNotFlagAsZapped] >> [Pressure --coordinateType AUTODETECT --standardAtmosphere --referenceField TT] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
 # #     #write the result
@@ -557,8 +557,8 @@ def test_18(plugin_test_dir):
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
-# #     #compute spooki.Pressure
-# #     df = spooki.Pressure(src_df0,True).compute()
+# #     #compute spookipy.Pressure
+# #     df = spookipy.Pressure(src_df0,True).compute()
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType ETA_COORDINATE --standardAtmosphere --referenceField TT] >> [WriterStd --output {destination_path} --ignoreExtended]
 
 # #     #write the result
@@ -580,8 +580,8 @@ def test_18(plugin_test_dir):
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
-# #     #compute spooki.Pressure
-# #     df = spooki.Pressure(src_df0,True).compute()
+# #     #compute spookipy.Pressure
+# #     df = spookipy.Pressure(src_df0,True).compute()
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType ETA_COORDINATE --standardAtmosphere --referenceField TT] >> [WriterStd --output {destination_path} --ignoreExtended]
 
 # #     #write the result
@@ -603,8 +603,8 @@ def test_18(plugin_test_dir):
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
-# #     #compute spooki.Pressure
-# #     df = spooki.Pressure(src_df0,True).compute()
+# #     #compute spookipy.Pressure
+# #     df = spookipy.Pressure(src_df0,True).compute()
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType SIGMA_COORDINATE --standardAtmosphere --referenceField TT] >> [WriterStd --output {destination_path} --ignoreExtended]
 
 # #     #write the result
@@ -626,8 +626,8 @@ def test_18(plugin_test_dir):
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
-# #     #compute spooki.Pressure
-# #     df = spooki.Pressure(src_df0,True).compute()
+# #     #compute spookipy.y.Pressure
+# #     df = spookipy.y.Pressure(src_df0,True).compute()
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType SIGMA_COORDINATE --standardAtmosphere --referenceField HU] >> [WriterStd --output {destination_path} --ignoreExtended]
 
 # #     #write the result
@@ -649,8 +649,8 @@ def test_18(plugin_test_dir):
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
-# #     #compute spooki.Pressure
-# #     df = spooki.Pressure(src_df0,True).compute()
+# #     #compute spookipy.y.Pressure
+# #     df = spookipy.Pressure(src_df0,True).compute()
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType HYBRID_COORDINATE --standardAtmosphere --referenceField TT] >> [WriterStd --output {destination_path} --ignoreExtended]
 
 # #     #write the result
@@ -672,8 +672,8 @@ def test_18(plugin_test_dir):
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
-# #     #compute spooki.Pressure
-# #     df = spooki.Pressure(src_df0,True).compute()
+# #     #compute spookipy.Pressure
+# #     df = spookipy.Pressure(src_df0,True).compute()
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType HYBRID_COORDINATE --standardAtmosphere --referenceField TT] >> [WriterStd --output {destination_path} --ignoreExtended]
 
 # #     #write the result
@@ -695,8 +695,8 @@ def test_18(plugin_test_dir):
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
-# #     #compute spooki.Pressure
-# #     df = spooki.Pressure(src_df0,True).compute()
+# #     #compute spookipy.Pressure
+# #     df = spookipy.Pressure(src_df0,True).compute()
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType HYBRID_STAGGERED_COORDINATE --standardAtmosphere --referenceField TT] >> [WriterStd --output {destination_path} --ignoreExtended]
 
 # #     #write the result
@@ -718,8 +718,8 @@ def test_18(plugin_test_dir):
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
-# #     #compute spooki.Pressure
-# #     df = spooki.Pressure(src_df0,True).compute()
+# #     #compute spookipy.Pressure
+# #     df = spookipy.Pressure(src_df0,True).compute()
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType HYBRID_STAGGERED_COORDINATE --standardAtmosphere --referenceField TT] >> [WriterStd --output {destination_path} --ignoreExtended]
 
 # #     #write the result
@@ -741,8 +741,8 @@ def test_18(plugin_test_dir):
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
-# #     #compute spooki.Pressure
-# #     df = spooki.Pressure(src_df0,True).compute()
+# #     #compute spookipy.Pressure
+# #     df = spookipy.Pressure(src_df0,True).compute()
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType PRESSURE_COORDINATE --standardAtmosphere --referenceField TT] >> [WriterStd --output {destination_path} --ignoreExtended]
 
 # #     #write the result
@@ -763,8 +763,8 @@ def test_30(plugin_test_dir):
     source0 = plugin_test_dir + "input_vrpcp24_00_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute spooki.Pressure
-    df = spooki.Pressure(src_df0, "TT").compute()
+    # compute spookipy.Pressure
+    df = spookipy.Pressure(src_df0, "TT").compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Pressure --coordinateType AUTODETECT --referenceField TT] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --noMetadata]
@@ -776,7 +776,7 @@ def test_30(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "input_vrpcp24_00_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_30"
+    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/Pressure/result_test_30"
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
@@ -791,8 +791,8 @@ def test_30(plugin_test_dir):
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
-# #     #compute spooki.Pressure
-# #     df = spooki.Pressure(src_df0).compute()
+# #     #compute spookipy.Pressure
+# #     df = spookipy.Pressure(src_df0).compute()
 # #     #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '[Select --exclude --fieldName PX] >> ', '[Pressure --coordinateType AUTODETECT --referenceField TT] >>', '[Zap --pdsLabel EH02558_X --metadataZappable --doNotFlagAsZapped]>>', '[Select --metadataFieldName P0,>>,^^ --exclude] >>', '[WriterStd --output {destination_path} --ignoreExtended ]']
 
 # #     #write the result
@@ -815,8 +815,8 @@ def test_30(plugin_test_dir):
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
-# #     #compute spooki.Pressure
-# #     df = spooki.Pressure(src_df0).compute()
+# #     #compute spookipy.Pressure
+# #     df = spookipy.Pressure(src_df0).compute()
 # #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType HYBRID_STAGGERED_COORDINATE --referenceField TT] >>[WriterStd --output {destination_path} --ignoreExtended ]
 
 # #     #write the result
@@ -841,8 +841,8 @@ def test_33(plugin_test_dir):
     tt_df = fstpy.select_with_meta(src_df0, ['TT'])
     tt_df = tt_df.loc[tt_df.ip1 != 93423264]
 
-    # compute spooki.Pressure
-    df = spooki.Pressure(tt_df, "TT").compute()
+    # compute spookipy.Pressure
+    df = spookipy.Pressure(tt_df, "TT").compute()
 
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Pressure --coordinateType PRESSURE_COORDINATE --referenceField TT] >>
@@ -859,7 +859,7 @@ def test_33(plugin_test_dir):
     # open and read comparison file
     file_to_compare = plugin_test_dir + \
         "glbpres_pressure_coordinate_file2cmp.std+20210517"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_33"
+    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/Pressure/result_test_33"
     # !!   X  G1_4_0_0N           3      51     1 00000000 000000         52341     87193         0        0        0  E 64  X  2001     0     0     0 cmp_file
     # !!   X  G1_4_0_0N           3     164     1 00000000 000000         52341     87193         0        0        0  E 64  X  5002    75   450   450 spookipy
 
@@ -875,8 +875,8 @@ def test_34(plugin_test_dir):
     source0 = plugin_test_dir + "2019091000_000_input.orig"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute spooki.Pressure
-    df = spooki.Pressure(src_df0, "TT").compute()
+    # compute spookipy.Pressure
+    df = spookipy.Pressure(src_df0, "TT").compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Pressure --coordinateType ETA_COORDINATE --referenceField TT] >>
     # [Zap --pdsLabel G1_7_0_0N --nbitsForDataStorage e32]>>
@@ -889,7 +889,7 @@ def test_34(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "d.compute_pressure_varicelle_rslt.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_34"
+    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/Pressure/result_test_34"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -903,8 +903,8 @@ def test_35(plugin_test_dir):
     source0 = plugin_test_dir + "coord_5005_big.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute spooki.Pressure
-    df = spooki.Pressure(src_df0, "TT").compute()
+    # compute spookipy.Pressure
+    df = spookipy.Pressure(src_df0, "TT").compute()
     # ['[ReaderStd --ignoreExtended --input {sources[0]} ]>>
     # [Pressure --coordinateType HYBRID_5005_COORDINATE --referenceField TT] >>
     # [Zap --pdsLabel R1_V710_N --metadataZappable --doNotFlagAsZapped]  >>
@@ -920,7 +920,7 @@ def test_35(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "resulttest_35_TT.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_35"
+    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/Pressure/result_test_35"
 
     # compare results
     res = fstcomp(results_file, file_to_compare, exclude_meta=True, e_max=0.01)
@@ -934,8 +934,8 @@ def test_36(plugin_test_dir):
     source0 = plugin_test_dir + "coord_5005_big.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # compute spooki.Pressure
-    df = spooki.Pressure(src_df0, "UU").compute()
+    # compute spookipy.Pressure
+    df = spookipy.Pressure(src_df0, "UU").compute()
     # ['[ReaderStd --ignoreExtended --input {sources[0]} ]>>
     # [Pressure --coordinateType HYBRID_5005_COORDINATE --referenceField UU] >>
     # [Zap --pdsLabel R1_V710_N --metadataZappable --doNotFlagAsZapped]  >>
@@ -949,7 +949,7 @@ def test_36(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
     # open and read comparison file
     file_to_compare = plugin_test_dir + "resulttest_36_UU.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/spooki.Pressure/result_test_36"
+    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/Pressure/result_test_36"
 
     # compare results
     res = fstcomp(results_file, file_to_compare, exclude_meta=True, e_max=0.01)
@@ -964,8 +964,8 @@ def test_36(plugin_test_dir):
 # #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
-# #     #compute spooki.Pressure
-# #     df = spooki.Pressure(src_df0).compute()
+# #     #compute spookipy.Pressure
+# #     df = spookipy.Pressure(src_df0).compute()
 # #     #['[ReaderStd --ignoreExtended --input {sources[0]} ]>> ', '[Pressure --coordinateType HYBRID_5005_COORDINATE --referenceField CK] >> ', '[Zap --pdsLabel R1_V710_N --metadataZappable --doNotFlagAsZapped]  >>', '[Select --metadataFieldName P0,>>,^^ --exclude] >>', '[WriterStd --output {destination_path} --ignoreExtended]']
 
 # #     #write the result

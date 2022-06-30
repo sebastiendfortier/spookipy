@@ -34,6 +34,7 @@ class CoriolisParameter(Plugin):
     :param df: input DataFrame
     :type df: pd.DataFrame
     """
+    nomvar = "CORP"
     def __init__(self, df: pd.DataFrame):
         self.plugin_result_specifications = {
             'CORP': {

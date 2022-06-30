@@ -20,6 +20,7 @@ class Pressure(Plugin):
     :type dependency_check: bool, optional  
     """
 
+    nomvar = "PX"
     @initializer
     def __init__( self, df: pd.DataFrame, 
                 reference_field=None, 

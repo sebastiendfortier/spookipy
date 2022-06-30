@@ -38,6 +38,7 @@ class VapourPressure(Plugin):
     :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
     :type dependency_check: bool, optional  
     """
+    nomvar = "VPPR"
     @explicit_params_checker
     @initializer
     def __init__(

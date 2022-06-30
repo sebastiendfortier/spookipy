@@ -56,6 +56,7 @@ class CloudFractionDiagnostic(Plugin):
     :param use_constant: use a constant instead of algorithm, defaults to False
     :type use_constant: bool, optional
     """
+    nomvar = "CLD"
     @initializer
     def __init__(self, df: pd.DataFrame, use_constant=False):
         self.plugin_mandatory_dependencies = [

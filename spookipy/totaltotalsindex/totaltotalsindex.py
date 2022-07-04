@@ -22,7 +22,7 @@ def total_totals_index(
 
 
 class TotalTotalsIndex(Plugin):
-    nomvar = "TTI"
+    computable_plugin = "TTI"
 
     def __init__(self, df: pd.DataFrame):
         self.plugin_mandatory_dependencies = [{

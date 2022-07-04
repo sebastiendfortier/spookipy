@@ -23,7 +23,7 @@ class GeorgeKIndex(Plugin):
     :param df: input DataFrame
     :type df: pd.DataFrame
     """
-    nomvar = "KI"
+    computable_plugin = "KI"
     def __init__(self, df: pd.DataFrame):
 
         self.plugin_mandatory_dependencies = [

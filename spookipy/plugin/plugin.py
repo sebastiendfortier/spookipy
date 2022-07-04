@@ -29,7 +29,7 @@ class Plugin(abc.ABC):
     :type df: pd.DataFrame
     """
     base_parser = defines_base_argparser()
-    nomvar = None
+    computable_plugin = None
     def __init__(self, df: pd.DataFrame) -> None:
         self.df = df
         self.validate_input()

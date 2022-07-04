@@ -50,7 +50,7 @@ class Thickness(Plugin):
     :param coordinate_type: Type of vertical coordinate. choices: SIGMA_1001, ETA_1002, PRESSURE_2001,HYBRID_5001,UNKNOWN
     :type coordinate_type: str
     """
-    nomvar = "DZ"
+    computable_plugin = "DZ"
 
     @initializer
     def __init__(self,df: pd.DataFrame,

@@ -35,7 +35,7 @@ class TemperaturePotential(Plugin):
     :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
     :type dependency_check: bool, optional
     """
-    nomvar = "TH"
+    computable_plugin = "TH"
     @initializer
     def __init__( self, 
             df: pd.DataFrame,

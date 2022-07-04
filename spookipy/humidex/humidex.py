@@ -24,7 +24,7 @@ class Humidex(Plugin):
     :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
     :type dependency_check: bool, optional  
     """
-    nomvar = "HMX"
+    computable_plugin = "HMX"
     @initializer
     def __init__(
             self, 

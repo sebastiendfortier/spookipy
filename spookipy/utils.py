@@ -58,6 +58,12 @@ class DependencyError(Exception):
 class LevelIntersectionError(Exception):
     pass
 
+def get_computable_dependencies():
+    import sys
+    import spookipy
+    spookipy_members = inspect.getmembers(sys.modules["spookipy"], inspect.isclass)
+    plugin_dict ={p[1].computable_plugin:p[1] for p in spookipy_members if issubclass(p[1],spookipy.Plugin) and p[1].computable_plugin is not None}
+    return plugin_dict
 
 def get_plugin_dependencies(
         df: pd.DataFrame,
@@ -96,46 +102,8 @@ def get_plugin_dependencies(
     :return: dataframe of results
     :rtype: pd.DataFrame
     """
-    from .cloudfractiondiagnostic.cloudfractiondiagnostic import  CloudFractionDiagnostic
-    from .coriolisparameter.coriolisparameter import CoriolisParameter
-    from .dewpointdepression.dewpointdepression import DewPointDepression
-    from .georgekindex.georgekindex import GeorgeKIndex
-    from .humidex.humidex import Humidex
-    from .humidityrelative.humidityrelative import HumidityRelative
-    from .humidityspecific.humidityspecific import HumiditySpecific
-    from .pressure.pressure import Pressure
-    from .saturationvapourpressure.saturationvapourpressure import SaturationVapourPressure
-    from .temperaturedewpoint.temperaturedewpoint import TemperatureDewPoint
-    from .temperaturepotential.temperaturepotential import TemperaturePotential
-    from .temperaturevirtual.temperaturevirtual import TemperatureVirtual
-    from .thickness.thickness import Thickness
-    from .totaltotalsindex.totaltotalsindex import TotalTotalsIndex
-    from .vapourpressure.vapourpressure import VapourPressure
-    from .watervapourmixingratio.watervapourmixingratio import WaterVapourMixingRatio
-    from .windchill.windchill import WindChill
-    from .windmodulus.windmodulus import WindModulus
-
     # dependencies that can be computer according to the nomvar
-    computable_dependencies = {
-        'CLD': CloudFractionDiagnostic,
-        'CORP': CoriolisParameter,
-        'DZ': Thickness,
-        'ES': DewPointDepression,
-        'HMX': Humidex,
-        'HR': HumidityRelative,
-        'HU': HumiditySpecific,
-        'KI': GeorgeKIndex,
-        'PX': Pressure,
-        'QV': WaterVapourMixingRatio,
-        'RE': WindChill,
-        'SVP': SaturationVapourPressure,
-        'TD': TemperatureDewPoint,
-        'TH': TemperaturePotential,
-        'TTI': TotalTotalsIndex,
-        'UV': WindModulus,
-        'VPPR': VapourPressure,
-        'VT': TemperatureVirtual,
-    }
+    computable_dependencies = get_computable_dependencies()
 
     df_list = []
     # copy the dependencies dict for modification

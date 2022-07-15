@@ -25,13 +25,13 @@ class WaterVapourMixingRatio(Plugin):
 
     :param df: input DataFrame
     :type df: pd.DataFrame
-    :param ice_water_phase: ice water phase, defaults to None
+    :param ice_water_phase:  Switch to determine which phase to consider: ice and water ('both'), or, water only ('water'), defaults to 'both'
     :type ice_water_phase: str, optional
-    :param temp_phase_switch: temperature phase switch , defaults to None
+    :param temp_phase_switch: Temperature at which to change from the ice phase to the water phase, defaults to '-40'
     :type temp_phase_switch: float, optional
-    :param temp_phase_switch_unit: temperature phase switch unit, defaults to 'celsius'
+    :param temp_phase_switch_unit: Temperature phase switch unit, defaults to 'celsius'
     :type temp_phase_switch_unit: str, optional
-    :param rpn: use rpn library algorithm, defaults to False
+    :param rpn: Use rpn library algorithm, defaults to False
     :type rpn: bool, optional
     :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
     :type dependency_check: bool, optional   

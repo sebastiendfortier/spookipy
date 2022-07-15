@@ -353,11 +353,8 @@ def test_14(plugin_test_dir):
         ttes_df, ice_water_phase='water').compute()
     ttes_df = pd.concat([es_df, tt_df], ignore_index=True)
 
-    qv_df = spookipy.WaterVapourMixingRatio(
-        ttes_df,
-        ice_water_phase='both',
-        temp_phase_switch=-
-        40).compute()
+    qv_df = spookipy.WaterVapourMixingRatio(ttes_df).compute()
+    
     # compute HumiditySpecific
     df = spookipy.HumiditySpecific(qv_df, ice_water_phase='water').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
@@ -382,5 +379,52 @@ def test_14(plugin_test_dir):
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
+
+def test_15(plugin_test_dir):
+    """Calcul de l'humidité spécifique (HU) à partir de la température du point de rosée (TD)."""
+    # Permet de tester l'appel a HumiditySpecific, sans aucun parametre
+
+    # open and read source
+    source0 = plugin_test_dir + "2011100712_012_glbhyb_reduit"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    tthu_df = fstpy.select_with_meta(src_df0, ['TT', 'HU'])
+    tt_df = fstpy.select_with_meta(src_df0, ['TT'])
+
+    es_df = spookipy.DewPointDepression(tthu_df, 
+                                        ice_water_phase='both', 
+                                        temp_phase_switch=-40, 
+                                        temp_phase_switch_unit='celsius').compute()
+    estt_df = pd.concat([es_df, tt_df], ignore_index=True)
+
+    td_df = spookipy.TemperatureDewPoint(estt_df, 
+                                         ice_water_phase='both', 
+                                         temp_phase_switch=-40, 
+                                         temp_phase_switch_unit='celsius').compute()
+    tttd_df = pd.concat([td_df, tt_df], ignore_index=True)
+
+    df = spookipy.HumiditySpecific(tttd_df).compute()
+    # Nouveau test; fichier resultat cree a partir de spooki (version C++)
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [Select --fieldName TT,HU] >>
+    # ([DewPointDepression  --iceWaterPhase BOTH --temperaturePhaseSwitch -40C] + [Select --fieldName TT]) >>
+    # ([Select --fieldName TT] + [TemperatureDewPoint  --iceWaterPhase BOTH --temperaturePhaseSwitch -40C]) >>
+    # [HumiditySpecific] >>
+    # [Zap --pdsLabel G133K80N --doNotFlagAsZapped --metadataZappable  --nbitsForDataStorage E32] >>
+    # [WriterStd --output {destination_path} --ignoreExtended]
+    df.loc[:, 'etiket'] = 'G133K80N'
+
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "glbhyb_reduit_test15_file2cmp.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare, e_c_cor=0.0001)
     fstpy.delete_file(results_file)
     assert(res)

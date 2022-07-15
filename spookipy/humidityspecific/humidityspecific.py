@@ -6,6 +6,7 @@ import fstpy
 import numpy as np
 import pandas as pd
 
+
 from ..humidityutils import (get_temp_phase_switch, validate_humidity_parameters, 
                             mandatory_ice_water_phase_when_using_temp_phase_switch, 
                             mandatory_temp_phase_switch_when_using_ice_water_phase_both)
@@ -26,13 +27,13 @@ class HumiditySpecific(Plugin):
 
     :param df: input DataFrame  
     :type df: pd.DataFrame  
-    :param ice_water_phase: Switch to determine which phase to consider: ice and water ('both'), or, water only ('water'), defaults to None   
+    :param ice_water_phase: Switch to determine which phase to consider: ice and water ('both'), or, water only ('water'), defaults to 'both'
     :type ice_water_phase: str, optional
-    :param temp_phase_switch: Temperature at which to change from the ice phase to the water phase, defaults to None
+    :param temp_phase_switch: Temperature at which to change from the ice phase to the water phase, defaults to '-40'
     :type temp_phase_switch: float, optional
-    :param temp_phase_switch_unit: temp_phase_switch unit, can be kelvin or celcius, defaults to 'celsius'
+    :param temp_phase_switch_unit: Temperature phase switch unit,  defaults to 'celsius'
     :type temp_phase_switch_unit: str, optional
-    :param rpn: Use the RPN TdPack functions, defaults to False
+    :param rpn:  Use rpn library algorithm, defaults to False
     :type rpn: bool, optional
     :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
     :type dependency_check: bool, optional   
@@ -43,11 +44,21 @@ class HumiditySpecific(Plugin):
     def __init__(
             self,
             df: pd.DataFrame,
-            ice_water_phase="both",
+            ice_water_phase='both',
             temp_phase_switch=-40,
             temp_phase_switch_unit='celsius',
             rpn=False,
             dependency_check=False):
+
+        # Si ice_water_phase = water, on ne veut pas des valeurs par defaut pour temp_phase_switch
+        # car la validation ne passera pas.  Par contre, ces defauts sont necessaires pour tous les 
+        # autres cas... 
+        if (self.ice_water_phase == 'water'):
+            if ('temp_phase_switch' in self.explicit_params):
+                raise HumiditySpecificError(
+                'Cannot use ice_water_phase="water" with temp_phase_switch\n')
+            else:
+                self.temp_phase_switch = None
 
         self.plugin_params = {
             'ice_water_phase': self.ice_water_phase,
@@ -280,23 +291,25 @@ class HumiditySpecific(Plugin):
         # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
 
         px_df = get_from_dataframe(dependencies_df, 'PX')
-        hu_df = create_empty_result(
-            px_df,
-            self.plugin_result_specifications['HU'],
-            all_rows=True)
+        
         vppr_df = VapourPressure(
             pd.concat(
                 [dependencies_df,
                 self.meta_df],
                 ignore_index=True),
             ice_water_phase=self.ice_water_phase,
-            # need the None if the value is the default value, because vapourpressure raise an exception if the default value is passed
-            # only pass value if it is explicitly set
-            temp_phase_switch= self.temp_phase_switch if "temp_phase_switch" in self.explicit_params else None,
+            temp_phase_switch= self.explicit_params['temp_phase_switch'] if "temp_phase_switch" in self.explicit_params else self.temp_phase_switch,
             temp_phase_switch_unit=self.temp_phase_switch_unit, 
             dependency_check=self.dependency_check).compute()
+
         vppr_df = get_from_dataframe(vppr_df, 'VPPR')
         vpprpa_df = fstpy.unit_convert(vppr_df, 'pascal')
+
+        hu_df = create_empty_result(
+            px_df,
+            self.plugin_result_specifications['HU'],
+            all_rows=True)
+
         for i in hu_df.index:
             px = px_df.at[i, 'd']
             vppr = vpprpa_df.at[i, 'd']

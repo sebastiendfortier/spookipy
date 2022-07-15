@@ -272,8 +272,7 @@ def test_11(plugin_test_dir):
     df = spookipy.VapourPressure(
         src_df0,
         ice_water_phase='both',
-        temp_phase_switch=-
-        40).compute()
+        temp_phase_switch=-40).compute()
     # [ReaderStd --input {sources[0]}] >>
     # [VapourPressure ] >>
     # [Zap --nbitsForDataStorage E32] >>

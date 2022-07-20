@@ -242,6 +242,8 @@ def test_7(plugin_test_dir):
 
 def test_8(plugin_test_dir):
     """Calcul du ratio de mélange de de la vapeur d'eau à partir d'un fichier hybride. (PX,VPPR from TT,TD)"""
+    # Appel a WaterVapourMixingRatio sans parametres, utilisation des valeurs par defaut
+    
     # open and read source
     source0 = plugin_test_dir + "hyb_prog_2012071312_009_1HY"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -251,9 +253,7 @@ def test_8(plugin_test_dir):
 
     # compute WaterVapourMixingRatio
     df = spookipy.WaterVapourMixingRatio(pd.concat(
-        [tt_df, td_df], ignore_index=True), 
-        ice_water_phase='both', 
-        temp_phase_switch=-40).compute()
+        [tt_df, td_df], ignore_index=True)).compute()
     # [ReaderStd --input {sources[0]}] >>
     # ([Select --fieldName TT] + [TemperatureDewPoint --iceWaterPhase WATER]) >>
     # [WaterVapourMixingRatio] >>[WriterStd --output {destination_path} --noMetadata --ignoreExtended]

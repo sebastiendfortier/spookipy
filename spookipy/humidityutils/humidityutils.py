@@ -127,7 +127,7 @@ def validate_rpn(
     if not rpn:
         return
     if temp_phase_switch is not None or temp_phase_switch_unit is not None:
-        warnings.warn("temp_phase_switch and temp_phase_switch_unit will be ignore while using rpn.")
+        warnings.warn("temp_phase_switch and temp_phase_switch_unit will be ignored while using rpn.")
 
 def validate_humidity_parameters(
         error_class: type,

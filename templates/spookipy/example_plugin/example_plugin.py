@@ -106,7 +106,7 @@ class ExamplePlugin(Plugin):
             drop=True)  # get dataframe without metadata
 
         self.groups = self.df.groupby(
-            ['grid', 'dateo', 'forecast_hour', 'ip1_kind'])
+            ['grid', 'datev', 'ip1_kind'])
 
     def compute(self) -> pd.DataFrame:
         # return the existing results if we found them

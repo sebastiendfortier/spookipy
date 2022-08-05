@@ -75,7 +75,7 @@ class MatchLevelIndexToValue(Plugin):
         logging.info('MatchLevelIndexToValue - compute')
 
         df_list = []
-        for (grid, dateo, ip1_kind), group_df in self.groups:
+        for (grid, datev, ip1_kind), group_df in self.groups:
 
             # print(f'group_df: \n {group_df.ip2.unique()} \n\n')
             ind_df = group_df.loc[group_df.nomvar == self.nomvar_index].reset_index(drop=True)

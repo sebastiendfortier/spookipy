@@ -62,7 +62,7 @@ class GeorgeKIndex(Plugin):
         self.df = self.df.loc[~self.df.nomvar.isin(
             ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
 
-        self.groups = self.df.groupby(['grid', 'dateo', 'forecast_hour', 'ip1_kind'])
+        self.groups = self.df.groupby(['grid', 'datev', 'ip1_kind'])
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:

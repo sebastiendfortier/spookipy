@@ -95,7 +95,7 @@ class CloudFractionDiagnostic(Plugin):
             self.df, self.plugin_result_specifications)
 
         self.groups = self.df.groupby(
-            ['grid', 'dateo', 'forecast_hour', 'ip1_kind'])
+            ['grid', 'datev', 'ip1_kind'])
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:

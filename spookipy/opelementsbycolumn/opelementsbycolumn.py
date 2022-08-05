@@ -87,8 +87,7 @@ class OpElementsByColumn(Plugin):
 
         grouping = ['grid']
         if self.group_by_forecast_hour:
-            grouping.append('dateo')
-            grouping.append('forecast_hour')
+            grouping.append('datev')
         if self.group_by_level:
             grouping.append('level')
 
@@ -100,7 +99,8 @@ class OpElementsByColumn(Plugin):
         df_list = []
         for _, current_group in self.groups:
 
-            current_group.sort_values(by=['nomvar', 'dateo', 'forecast_hour'], inplace=True)
+            # current_group.sort_values(by=['nomvar', 'dateo', 'forecast_hour'], inplace=True)
+            current_group.sort_values(by=['nomvar', 'datev'], inplace=True)
             if len(current_group.index) == 1:
                 logging.warning(
                     'need more than one field for this operation - skipping')

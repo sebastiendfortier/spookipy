@@ -148,7 +148,6 @@ class MinMaxLevelIndex(Plugin):
             borne_sup  = var_df.iloc[-1].level
             kind       = var_df.iloc[0].ip1_kind
 
-            print(f' Borne inf = {borne_inf}  Borne_sup = {borne_sup} \n\n')
             min_idx_df = create_result_container(var_df,borne_inf, borne_sup, kind, self.nomvar_min_idx, 
                                                 self.bounded, self.plugin_result_specifications)
             max_idx_df = create_result_container(var_df,borne_inf, borne_sup, kind, self.nomvar_max_idx, 

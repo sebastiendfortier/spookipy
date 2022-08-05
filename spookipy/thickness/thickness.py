@@ -142,11 +142,12 @@ class Thickness(Plugin):
                 
         else:
             for dependencies_df, _ in dependencies_list:
-                gz_df = get_from_dataframe(dependencies_df, 'GZ')
-                gz_top_df = gz_df.loc[gz_df.level == self.top]
-                top_ip = gz_top_df.iloc[0].ip1
+                gz_df      = get_from_dataframe(dependencies_df, 'GZ')
+                gz_top_df  = gz_df.loc[gz_df.level == self.top]
+                top_ip     = gz_top_df.iloc[0].level
                 gz_base_df = gz_df.loc[gz_df.level == self.base]
-                base_ip = gz_base_df.iloc[0].ip1
+                base_ip    = gz_base_df.iloc[0].level
+                ip_kind    = gz_base_df.iloc[0].ip1_kind
            
                 if (self.base < self.top):
                     b_inf = top_ip
@@ -155,7 +156,7 @@ class Thickness(Plugin):
                     b_inf = base_ip
                     b_sup = top_ip
 
-                dz_df = create_result_container(gz_df,b_inf,b_sup,self.plugin_result_specifications)
+                dz_df = create_result_container(gz_df, b_inf, b_sup, self.plugin_result_specifications, ip_kind)
     
                 array = np.abs(gz_top_df.iloc[0].d - gz_base_df.iloc[0].d).astype(np.float32)
                 dz_df["d"] = [array]
@@ -164,9 +165,6 @@ class Thickness(Plugin):
 
         finally:
             return final_results(df_list, ThicknessError, self.meta_df, dependency_check=True)
-
-
-    
 
 
     @staticmethod
@@ -202,20 +200,13 @@ class Thickness(Plugin):
 
         return parsed_arg
 
-def create_result_container(df, b_inf, b_sup, dict1):
-    ip1 = b_inf
-    ip3 = b_sup
-    ip2 = df.ip2[0]
-    # kind = int(ip1_kind)
-    
-    # ip1_enc = rmn.ip1_val(ip1, kind)
-    # ip3_enc = rmn.ip1_val(ip3, kind)
-    # ip2_enc = rmn.ip1_val(ip2,rmn.KIND_HOURS)
+def create_result_container(df, b_inf, b_sup, dict1, ip1_kind):
+    ip1   = b_inf
+    ip3   = b_sup
+    kind  = int(ip1_kind)
+    inter = fstpy.Interval('ip1', ip1, ip3, kind)
 
-    dict1["DZ"]["ip1"] = ip1
-    dict1["DZ"]["ip2"] = ip2
-    dict1["DZ"]["ip3"] = ip3
-
-    res_df = create_empty_result(df, dict1['DZ'],all_rows=False)
+    dict1["DZ"]["interval"] = inter
+    res_df = create_empty_result(df, dict1['DZ'])
     
     return res_df

@@ -275,8 +275,8 @@ def get_intersecting_levels(
     first_df = df.loc[df.nomvar == list(
         plugin_mandatory_dependencies.keys())[0]]
 
+    # if first_df.empty:
     if df.empty:
-        # print('get_intersecting_levels - no records to intersect')
         raise LevelIntersectionError('No records to intersect')
 
     common_levels = set(first_df.ip1.unique())
@@ -494,44 +494,7 @@ def convip(df: pd.DataFrame, style: int = rmn.CONVIP_ENCODE, ip_str:str='ip1') -
     return df
 
 
-def encode_ip1_and_ip3(df):
-    for row in df.itertuples():
-        if row.nomvar in ['>>', '^^', '^>', '!!', 'P0', 'PT']:
-            continue
 
-        ip1 = row.ip1
-        ip2 = row.ip2
-        ip3 = row.ip3
-
-        (rp1, rp2, rp3) = rmn.DecodeIp(ip1, ip2, ip3)
-        rp1a = rmn.FLOAT_IP(rp1.v1,rp1.v1, rp1.kind)
-        rp2a = rmn.FLOAT_IP( 0., 0., rmn.TIME_KIND_HR)
-        rp3a = rmn.FLOAT_IP( rp3.v1, rp3.v1, rp1.kind)
-
-        (ip1, ip2,  ip3) = rmn.EncodeIp(rp1a, rp2a, rp3a)
-        df.at[row.Index,'ip1'] = ip1
-        df.at[row.Index,'ip3'] = ip3
-
-    return df 
-
-def encode_ip1_and_ip3_version2(df):
-
-    for row in df.itertuples():
-        if row.nomvar in ['>>', '^^', '^>', '!!', 'P0', 'PT']:
-            continue
-
-        ip1  = row.ip1
-        ip2  = row.ip2
-        ip3  = row.ip3
-        kind = row.ip1_kind
-
-        ip1_enc = rmn.ip1_val(ip1, kind)
-        ip3_enc = rmn.ip1_val(ip3, kind)
-
-        df.at[row.Index,'ip1'] = ip1_enc
-        df.at[row.Index,'ip3'] = ip3_enc
-
-    return df 
 
 
 def get_from_dataframe(df: pd.DataFrame, nomvar: str) -> pd.DataFrame:
@@ -754,18 +717,110 @@ def get_split_value(df:pd.DataFrame) -> float:
     num_rows = fstpy.get_num_rows_for_reading(df)
     return math.ceil(len(df.index)/num_rows)
 
-def encode_ip2_and_ip3(df:pd.DataFrame) -> pd.DataFrame:
-    """encode ip2 and ip3 to new style
+def get_encoded_ips_height(val1, val2, val3, kind):
+
+    (ip2,_) = rmn.convertIp(rmn.CONVIP_DECODE, int(val2))
+
+    rp1a = rmn.FLOAT_IP(val1, val3, int(kind))
+    rp2a = rmn.FLOAT_IP(ip2,  ip2, rmn.KIND_HOURS)
+    rp3a = rmn.FLOAT_IP(val1,  val3, int(kind))
+    (val1_encode, val2_encode, val3_encode) = rmn.EncodeIp(rp1a, rp2a, rp3a)
+
+    return (val1_encode, val2_encode, val3_encode)
+
+def get_encoded_ips_time(val2, val3):
+
+    rp1a = rmn.FLOAT_IP(0., 0., rmn.LEVEL_KIND_PMB)
+    rp2a = rmn.FLOAT_IP( val2, val3, rmn.TIME_KIND_HR)
+    rp3a = rmn.FLOAT_IP( val2, val3, rmn.TIME_KIND_HR)
+    (_, val2_encode, val3_encode) = rmn.EncodeIp(rp1a, rp2a, rp3a)
+
+    return (val2_encode, val3_encode)
+
+def adjust_ip3_time_interval(df:pd.DataFrame) -> pd.DataFrame:
+    """replace ip3 value with the difference between ip2 and ip3 (delta)
 
     :param df: input DataFrame
     :type df: pd.DataFrame
     :return: output DataFrame
     :rtype: pd.DataFrame
     """
+    # Fonction temporaire; en attendant que le writer prenne en charge
+    # l'encodage ou non des IPs
+
     for row in df.itertuples():
         if row.nomvar in ['>>', '^^', '^>', '!!']:
             continue
 
+        inter = row.interval
+        if isinstance(inter,fstpy.Interval):
+            ip2 = row.interval.high
+            ip3 = row.interval.low
+            delta = int((ip2-ip3)/3600)
+        else:
+            ip2 = row.ip2
+            ip3 = row.ip3
+            delta = int(ip2-ip3)
+
+        df.at[row.Index,'ip3'] =delta
+    return df
+
+# def encode_ip1_and_ip3(df):
+#     for row in df.itertuples():
+#         if row.nomvar in ['>>', '^^', '^>', '!!', 'P0', 'PT']:
+#             continue
+
+#         ip1 = row.ip1
+#         ip2 = row.ip2
+#         ip3 = row.ip3
+
+#         (rp1, rp2, rp3) = rmn.DecodeIp(ip1, ip2, ip3)
+#         rp1a = rmn.FLOAT_IP(rp1.v1,rp1.v1, rp1.kind)
+#         rp2a = rmn.FLOAT_IP( 0., 0., rmn.TIME_KIND_HR)
+#         rp3a = rmn.FLOAT_IP( rp3.v1, rp3.v1, rp1.kind)
+
+#         (ip1, ip2,  ip3) = rmn.EncodeIp(rp1a, rp2a, rp3a)
+#         df.at[row.Index,'ip1'] = ip1
+#         df.at[row.Index,'ip3'] = ip3
+
+#     return df 
+
+def encode_ip_when_interval(df:pd.DataFrame) -> pd.DataFrame:
+    # Fonction temporaire, utilise dans les tests de regression, en attendant d'avoir un 
+    # writer a la facon spooki.  
+    """encode les valeurs des IP des champs pour lesquels il existe un objet interval; sinon n'encode pas.
+    :param df: input DataFrame
+    :type df: pd.DataFrame
+    :return: output DataFrame
+    :rtype: pd.DataFrame
+    """
+
+    if 'level' not in df.columns:
+        df = fstpy.add_columns(df, 'ip_info')
+
+    for row in df.itertuples():
+        if row.nomvar in ['>>', '^^', '^>', '!!','HY']:
+            continue
+
+        (ip2,_) = rmn.convertIp(rmn.CONVIP_DECODE, int(row.ip2))
+        inter = row.interval
+
+        # if inter is not None and not math.isnan(inter):
+        if isinstance(inter,fstpy.Interval):
+            # print(f' Interval pour nomvar {row.nomvar}  = \n {inter} \n\n')
+            if inter.ip == 'ip1':
+                (val1_enc, val2_enc, val3_enc) = get_encoded_ips_height (inter.low, ip2, inter.high, inter.kind )
+                df.at[row.Index,'ip1'] = val1_enc
+                df.at[row.Index,'ip3'] = val3_enc
+            else:
+                val2 = (inter.high)/3600
+                val3 = (inter.low)/3600
+                (val2_enc, val3_enc) = get_encoded_ips_time (val2, val3)
+                df.at[row.Index,'ip2'] = val2_enc
+                df.at[row.Index,'ip3'] = val3_enc
+
+    return df
+    
 def encode_ip2_and_ip3_time(df:pd.DataFrame) -> pd.DataFrame:
     """encode ip2 and ip3 to new style
 
@@ -777,14 +832,19 @@ def encode_ip2_and_ip3_time(df:pd.DataFrame) -> pd.DataFrame:
     for row in df.itertuples():
         if row.nomvar in ['>>', '^^', '^>', '!!']:
             continue
-        ip2 = row.ip2
-        ip3 = row.ip3
-        rp1a = rmn.FLOAT_IP(0., 0., rmn.LEVEL_KIND_PMB)
-        rp2a = rmn.FLOAT_IP( ip2,  ip3, rmn.TIME_KIND_HR)
-        rp3a = rmn.FLOAT_IP( ip2-ip3,  0, rmn.TIME_KIND_HR)
-        (_, ip2, ip3) = rmn.EncodeIp(rp1a, rp2a, rp3a)
-        df.at[row.Index,'ip2'] = ip2
-        df.at[row.Index,'ip3'] = ip3
+
+        inter = row.interval
+        if inter is None:
+            ip2 = row.ip2
+            ip3 = row.ip3
+        else:
+            ip2 = (row.interval.high)/3600
+            ip3 = (row.interval.low)/3600
+
+        (val2_encode, val3_encode) = get_encoded_ips_time(ip2, ip3)
+        df.at[row.Index,'ip2'] = val2_encode
+        df.at[row.Index,'ip3'] = val3_encode
+        
     return df
 
 def encode_ip2_and_ip3_height(df:pd.DataFrame) -> pd.DataFrame:
@@ -802,19 +862,23 @@ def encode_ip2_and_ip3_height(df:pd.DataFrame) -> pd.DataFrame:
         if row.nomvar in ['>>', '^^', '^>', '!!','HY']:
             continue
 
-        (ip1,ip1_kind) = rmn.convertIp(rmn.CONVIP_DECODE, int(row.ip1))
+        inter = row.interval
+        if inter is None:
+            (ip1,interval_kind) = rmn.convertIp(rmn.CONVIP_DECODE, int(row.ip1))
+            (ip3,_)             = rmn.convertIp(rmn.CONVIP_DECODE, int(row.ip3))
+        else:
+            ip1           = row.interval.low
+            ip3           = row.interval.high
+            interval_kind = row.interval.kind
+
         (ip2,_) = rmn.convertIp(rmn.CONVIP_DECODE, int(row.ip2))
-        (ip3,_) = rmn.convertIp(rmn.CONVIP_DECODE, int(row.ip3))
+        (val1_enc, val2_enc, val3_enc) = get_encoded_ips_height (ip1, ip2, ip3, interval_kind)
 
-        rp1a = rmn.FLOAT_IP(ip1, ip3, int(ip1_kind))
-        rp2a = rmn.FLOAT_IP(ip2,  ip2, rmn.KIND_HOURS)
-        rp3a = rmn.FLOAT_IP(ip1,  ip3, int(ip1_kind))
-        (ip1, ip2, ip3) = rmn.EncodeIp(rp1a, rp2a, rp3a)
-
-        df.at[row.Index,'ip1'] = ip1
-        df.at[row.Index,'ip2'] = ip2
-        df.at[row.Index,'ip3'] = ip3
+        df.at[row.Index,'ip1'] = val1_enc
+        df.at[row.Index,'ip2'] = val2_enc
+        df.at[row.Index,'ip3'] = val3_enc
     return df
+
 
 def validate_list_of_times(param:'list(datetime.timedelta)|datetime.timedelta', exception_class:type) -> 'list(datetime.timedelta)|datetime.timedelta':
     """validate a list of time deltas
@@ -916,3 +980,4 @@ def get_0_ip1(model_ip1:int) -> int:
     else:
         ip1 = rmn.convertIp(rmn.CONVIP_ENCODE_OLD, 0., kind)
     return ip1
+

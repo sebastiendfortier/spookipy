@@ -9,7 +9,9 @@ import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin
-from ..utils import (create_empty_result, final_results, get_list_of_forecast_hours, initializer, to_numpy, validate_list_of_nomvar, validate_list_of_times, validate_list_of_tuples_of_times, validate_nomvar)
+from ..utils import (create_empty_result, final_results, get_list_of_forecast_hours, 
+                     initializer, to_numpy, validate_list_of_nomvar, validate_list_of_times, 
+                     validate_list_of_tuples_of_times, validate_nomvar)
 from ..configparsingutils import apply_lambda_to_list, convert_time_range, convert_time
 
 class TimeIntervalMinMaxError(Exception):
@@ -38,8 +40,11 @@ class TimeIntervalMinMax(Plugin):
     :type nomvar_max: str or list of str, optional
     """
     @initializer
-    def __init__(self, df: pd.DataFrame, nomvar:str=None, min:bool=False, max:bool=False, forecast_hour_range=None, interval=None, step=None, nomvar_min=None, nomvar_max=None):
-
+    def __init__(self, df: pd.DataFrame, 
+                 nomvar:str=None, min:bool=False, max:bool=False, 
+                 forecast_hour_range=None, interval=None, step=None, 
+                 nomvar_min=None, nomvar_max=None):
+        
         self.validate_input()
 
     def validate_input(self):
@@ -118,7 +123,6 @@ class TimeIntervalMinMax(Plugin):
         self.df_with_intervals = self.df.loc[(~self.df.nomvar.isin(
             ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])) & (~self.df.interval.isna()) & (self.df.nomvar.isin(self.nomvar))].reset_index(drop=True)
 
-
         self.groups_without_interval = self.df_without_intervals.groupby(['grid', 'nomvar'])
         self.groups_with_interval = self.df_with_intervals.groupby(['grid', 'nomvar'])
 
@@ -130,8 +134,6 @@ class TimeIntervalMinMax(Plugin):
 
         if len(self.forecast_hours) == 0:
             raise TimeIntervalMinMaxError('Unable to calculate intervals with provided parameters')
-
-        
         df_list = []
         for _, current_group in self.groups_with_interval:
             
@@ -160,7 +162,6 @@ class TimeIntervalMinMax(Plugin):
             if not incomplete:
                 for df in diffs:
                     df.drop(columns=['lower_bound','upper_bound'])
-                    df['interval'] = None
                     df_list.append(df)
 
         for _, current_group in self.groups_without_interval:
@@ -170,7 +171,7 @@ class TimeIntervalMinMax(Plugin):
             for forecast_hours in self.forecast_hours:
                 b_inf = forecast_hours[0]
                 b_sup = forecast_hours[1]
-
+        
                 interval_df = current_group.loc[current_group.forecast_hour.dt.total_seconds().astype('int32').between(b_inf,b_sup, inclusive='both')]
 
                 if interval_df.empty:
@@ -185,6 +186,7 @@ class TimeIntervalMinMax(Plugin):
             if not incomplete:
                 for df in diffs:
                     df_list.append(df)
+
 
         return final_results(df_list, TimeIntervalMinMaxError, self.meta_df)
 
@@ -255,11 +257,14 @@ class TimeIntervalMinMax(Plugin):
 
 def create_result_container(df, b_inf, b_sup, nomvar):
     deet = df.iloc[0]['deet']
+    npas = int(b_sup / deet)
     ip2 = int(b_sup/3600)
     ip3 = int((b_inf)/3600)
-    # ip3 = int((b_sup-b_inf)/3600)
-    npas = int((ip2 * 3600) / deet)
-    res_df = create_empty_result(df, {'nomvar':nomvar, 'etiket':'TIMNMX', 'ip2': ip2, 'ip3': ip3, 'npas': npas})
+    # npas = int((ip2 * 3600) / deet)
+
+    inter = fstpy.Interval('ip2', b_inf, b_sup, 10)
+    res_df = create_empty_result(df, {'nomvar':nomvar, 'etiket':'TIMNMX', 
+                                      'interval':inter, 'npas': npas})
     return res_df
 
 def check_for_negative_values(arr, location):

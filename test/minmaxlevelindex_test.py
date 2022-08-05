@@ -492,7 +492,9 @@ def test_20(plugin_test_dir):
         nomvar="TT",
         value_to_return=True).compute()
 
-    # df.loc[df.typvar=='PZ','typvar'] = 'P'
+    # Encodage des ip pour les champs ayant un objet interval 
+    df = spookipy.encode_ip_when_interval(df)
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_20.std"])
     fstpy.delete_file(results_file)
@@ -529,8 +531,8 @@ def test_21(plugin_test_dir):
     df.loc[df.nomvar.isin(["KMIN", "KMAX"]),'etiket'] = etiket2
     df.loc[df.nomvar == "TT",'etiket']                = etiket
 
-    # Encodage des ip2
-    df = spookipy.encode_ip2_and_ip3_height(df)
+    # Encodage des ip pour les champs ayant un objet intervalle
+    df = spookipy.encode_ip_when_interval(df)
     df.loc[(df.nomvar.isin(['KMAX','KMIN'])),'typvar'] = 'PB'
     
      # write the result
@@ -539,7 +541,7 @@ def test_21(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # # open and read comparison file
-    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test10-11_20210915.std"
+    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test21.std"
 
     # compare results 
     res = fstcomp(results_file, file_to_compare) 

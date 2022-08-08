@@ -73,7 +73,6 @@ class TimeIntervalDifference(Plugin):
         self.df_with_intervals = self.df.loc[(~self.df.nomvar.isin(
             ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])) & (~self.df.interval.isna()) & (self.df.nomvar.isin(self.nomvar))].reset_index(drop=True)
 
-
         self.groups_without_interval = self.df_without_intervals.groupby(['grid', 'nomvar'])
         self.groups_with_interval = self.df_with_intervals.groupby(['grid', 'nomvar'])
 
@@ -99,12 +98,12 @@ class TimeIntervalDifference(Plugin):
                 b_inf = forecast_hours[0]
                 b_sup = forecast_hours[1]
                 
-                end_df = current_group.loc[(current_group.lower_bound.astype('int32') == b_inf)]
+                end_df   = current_group.loc[(current_group.lower_bound.astype('int32') == b_inf)]
                 begin_df = current_group.loc[(current_group.lower_bound.astype('int32') == b_sup)]
 
                 if begin_df.empty or end_df.empty:
                     begin_df = current_group.loc[(current_group.upper_bound.astype('int32') == b_inf)]
-                    end_df = current_group.loc[(current_group.upper_bound.astype('int32') == b_sup)]
+                    end_df   = current_group.loc[(current_group.upper_bound.astype('int32') == b_sup)]
                     if begin_df.empty or end_df.empty:
                         logging.warning(f'No data found for interval: {int(b_inf/3600)} @ {int(b_sup/3600)}')
                         incomplete = True
@@ -117,7 +116,6 @@ class TimeIntervalDifference(Plugin):
             if not incomplete:
                 for df in diffs:
                     df.drop(columns=['lower_bound','upper_bound'])
-                    df['interval'] = None
                     df_list.append(df)
 
         for _, current_group in self.groups_without_interval:
@@ -128,7 +126,7 @@ class TimeIntervalDifference(Plugin):
                 b_sup = forecast_hours[1]
 
                 begin_df = current_group.loc[(current_group.forecast_hour.dt.total_seconds().astype('int32') == b_inf)]
-                end_df = current_group.loc[(current_group.forecast_hour.dt.total_seconds().astype('int32') == b_sup)]
+                end_df   = current_group.loc[(current_group.forecast_hour.dt.total_seconds().astype('int32') == b_sup)]
 
                 if begin_df.empty or end_df.empty:
                     logging.warning(f'No data found for interval: {int(b_inf/3600)} @ {int(b_sup/3600)}')
@@ -143,20 +141,18 @@ class TimeIntervalDifference(Plugin):
                 for df in diffs:
                     df_list.append(df)
 
-
-
         return final_results(df_list, TimeIntervalDifferenceError, self.meta_df)
 
     def process(self, current_group, b_inf, b_sup, begin_df, end_df):
         begin_arr = begin_df.iloc[0]['d']
-        end_arr = end_df.iloc[0]['d']    
+        end_arr   = end_df.iloc[0]['d']    
 
         check_for_negative_values(begin_arr, 'input')
         check_for_negative_values(end_arr, 'input')
 
         if self.strictly_positive:
             begin_arr = np.where(begin_arr < 0., 0., begin_arr)
-            end_arr = np.where(end_arr < 0., 0., end_arr)
+            end_arr   = np.where(end_arr < 0., 0., end_arr)
 
         # set new ip2, ip3 and npas
         res_df = create_result_container(current_group, b_inf, b_sup)
@@ -172,13 +168,13 @@ class TimeIntervalDifference(Plugin):
 
     def check_type_of_params(self):
         # make sure that nomvar is a list of str
-        self.nomvar = validate_list_of_nomvar(self.nomvar, 'TimeIntervalDifference', TimeIntervalDifferenceError)
+        self.nomvar   = validate_list_of_nomvar(self.nomvar, 'TimeIntervalDifference', TimeIntervalDifferenceError)
 
         # make sure that interval is a list of datetime.timedelta
         self.interval = validate_list_of_times(self.interval, TimeIntervalDifferenceError)
 
         # make sure that step is a list of datetime.timedelta
-        self.step = validate_list_of_times(self.step, TimeIntervalDifferenceError)
+        self.step    = validate_list_of_times(self.step, TimeIntervalDifferenceError)
 
         # make sure that forecast_hour_range is a list of tuple of 2 datetime.timedelta
         self.forecast_hour_range = validate_list_of_tuples_of_times(self.forecast_hour_range, TimeIntervalDifferenceError)
@@ -201,20 +197,26 @@ class TimeIntervalDifference(Plugin):
         parsed_arg = vars(parser.parse_args(args.split()))
 
         parsed_arg['interval'] = apply_lambda_to_list(parsed_arg['interval'].split(','), lambda a: convert_time(a))
-        parsed_arg['step'] = apply_lambda_to_list(parsed_arg['step'].split(','), lambda a: convert_time(a))
+        parsed_arg['step']     = apply_lambda_to_list(parsed_arg['step'].split(','), lambda a: convert_time(a))
         parsed_arg['forecast_hour_range'] = apply_lambda_to_list(parsed_arg['forecast_hour_range'].split(','), lambda a: convert_time_range(a))
 
-        parsed_arg['nomvar'] = parsed_arg['nomvar'].split(',')
+        parsed_arg['nomvar']   = parsed_arg['nomvar'].split(',')
         apply_lambda_to_list(parsed_arg['nomvar'],lambda a : validate_nomvar(a,"TimeIntervalDifference",TimeIntervalDifferenceError))
 
         return parsed_arg
 
 def create_result_container(df, b_inf, b_sup):
     deet = df.iloc[0]['deet']
+    npas = int(b_sup / deet)
     ip2 = int(b_sup/3600)
-    ip3 = int((b_sup-b_inf)/3600)
-    npas = int((ip2 * 3600) / deet)
-    res_df = create_empty_result(df, {'ip2': ip2, 'ip3': ip3, 'npas': npas})
+    ip3 = int(b_inf/3600)
+    # npas = int((ip2 * 3600) / deet)
+    delta = int((b_sup-b_inf)/3600)
+
+    kind  = int(df.iloc[0].ip2_kind)
+    inter = fstpy.Interval('ip2', b_inf, b_sup, kind)
+
+    res_df = create_empty_result(df, {'ip2': ip2, 'ip3': ip3, 'npas': npas, 'interval':inter })
     return res_df
 
 def check_for_negative_values(arr, location):

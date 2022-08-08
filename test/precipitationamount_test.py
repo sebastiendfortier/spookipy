@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+from json import encoder
 from test import TEST_PATH, TMP_PATH, check_test_ssm_package
+from spookipy.utils import adjust_ip3_time_interval, encode_ip2_and_ip3_time
 
 check_test_ssm_package()
 
@@ -62,6 +64,11 @@ def test_2(plugin_test_dir):
     # [Zap --pdsLabel R1558V0N] >> 
     # [WriterStd --output {destination_path} --ignoreExtended]
     df['etiket'] = 'R1558V0N'
+
+    # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
+    # Temporaire, en attendant que ce soit fait dans le writer
+    df = adjust_ip3_time_interval(df)
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
     fstpy.delete_file(results_file)
@@ -91,6 +98,11 @@ def test_3(plugin_test_dir):
     # [PrecipitationAmount --fieldName PR --rangeForecastHour 0@18,0@93 --interval 3,39 --step 3,18] >> ', '
     # [WriterStd --output {destination_path} --ignoreExtended]']
     df.loc[df.nomvar.isin(['>>','^^']),'etiket'] = 'G133K80_N'
+    
+    # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
+    # Temporaire, en attendant que ce soit fait dans le writer
+    df = adjust_ip3_time_interval(df)
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
     fstpy.delete_file(results_file)
@@ -98,6 +110,39 @@ def test_3(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "global20121217_file2cmp.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
+
+# Nouveau test - identique a test 3 avec encodage des IP selon les standards et moins d'intervalles demandes
+def test_4(plugin_test_dir):
+    """Tester avec une liste de valeurs pour rangeForecastHour, interval et step et encode selon les standards."""
+    # open and read source
+    source0 = plugin_test_dir + "global20121217_fileSrc.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    # compute PrecipitationAmount
+    df = spookipy.PrecipitationAmount(src_df0, nomvar='PR',
+                                       forecast_hour_range=[(datetime.timedelta(hours=0), datetime.timedelta(hours=93))],
+                                       interval=[datetime.timedelta(hours=39)],
+                                       step=[datetime.timedelta(hours=18)]).compute()
+    #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '
+    # [PrecipitationAmount --fieldName PR --rangeForecastHour 0@18,0@93 --interval 3,39 --step 3,18] >> ', '
+    # [WriterStd --output {destination_path} --ignoreExtended]']
+    df.loc[df.nomvar.isin(['>>','^^']),'etiket'] = 'G133K80_N'
+    
+    # Temporaire, en attendant que ce soit fait dans le writer
+    df = encode_ip2_and_ip3_time(df)
+
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "resulttest_4.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -223,6 +268,11 @@ def test_8(plugin_test_dir):
     # [PrecipitationAmount --fieldName PR --rangeForecastHour 22:30:00@23:00:00 --interval 0:30:00 --step 0:30:00] >> ', '
     # [WriterStd --output {destination_path} --ignoreExtended]']
     df.loc[df.nomvar!='PR', 'etiket'] = 'WE_1_2_0N'
+    
+    # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
+    # Temporaire, en attendant que ce soit fait dans le writer
+    df = adjust_ip3_time_interval(df)
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
     fstpy.delete_file(results_file)
@@ -230,6 +280,38 @@ def test_8(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "resulttest_8.std+20210517"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
+
+def test_9(plugin_test_dir):
+    """Test HourMinuteSecond  - avec encodage des ip"""
+    # open and read source
+    source0 = plugin_test_dir + "2020102212_023_lamwest_minimal.pres"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    # compute PrecipitationAmount
+    df = spookipy.PrecipitationAmount(src_df0, nomvar='PR',
+                                       forecast_hour_range=(datetime.timedelta(hours=22, minutes=30), datetime.timedelta(hours=23)),
+                                       interval=datetime.timedelta(minutes=30),
+                                       step=datetime.timedelta(minutes=30)).compute()
+    #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '
+    # [PrecipitationAmount --fieldName PR --rangeForecastHour 22:30:00@23:00:00 --interval 0:30:00 --step 0:30:00] >> ', '
+    # [WriterStd --output {destination_path} --ignoreExtended]']
+    df.loc[df.nomvar!='PR', 'etiket'] = 'WE_1_2_0N'
+    
+    # Temporaire, en attendant que ce soit fait dans le writer
+    df = encode_ip2_and_ip3_time(df)
+
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "resulttest_9.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 from spookipy.timeintervalminmax.timeintervalminmax import TimeIntervalMinMaxError
-from spookipy.utils import encode_ip2_and_ip3_time
+from spookipy.utils import adjust_ip3_time_interval, encode_ip2_and_ip3_time
 from test import TMP_PATH, TEST_PATH
 import pytest
 import fstpy
@@ -1139,3 +1139,36 @@ def test_38(plugin_test_dir):
     res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
+
+def test_39(plugin_test_dir):
+    """Teste HourMinuteSecond - objet interval - sans encodage des IPs"""
+    # open and read source
+    source0 = plugin_test_dir + "2020102212_023_lamwest_minimal.pres"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    # compute PrecipitationAmount
+    df = spookipy.TimeIntervalMinMax(src_df0, nomvar='PR', min=True,
+                                        forecast_hour_range=(datetime.timedelta(hours=22, minutes=30), datetime.timedelta(hours=23)),
+                                        interval=datetime.timedelta(minutes=30), nomvar_min='TTMN',
+                                        step=datetime.timedelta(minutes=30)).compute()
+    
+    df.loc[df.nomvar!='PR', 'etiket'] = 'WE_1_2_0N'
+
+    # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
+    # Temporaire, en attendant que ce soit fait dans le writer
+    # df = adjust_ip3_time_interval(df)
+    df_encode = encode_ip2_and_ip3_time(df)
+
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_39.std"])
+    fstpy.delete_file(results_file)
+    # fstpy.StandardFileWriter(results_file, df).to_fst()
+    fstpy.StandardFileWriter(results_file, df_encode).to_fst()
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "Test39_file2cmp.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
+

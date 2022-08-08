@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import datetime
-from spookipy.utils import encode_ip2_and_ip3_time
+from spookipy.utils import   encode_ip2_and_ip3_time, adjust_ip3_time_interval, encode_ip_when_interval
 from test import TMP_PATH, TEST_PATH
 import pytest
 import fstpy
@@ -39,6 +39,7 @@ def test_1(plugin_test_dir):
     # [Zap --doNotFlagAsZapped --nbitsForDataStorage R13] >> [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[df.nomvar=='PR', 'nbits'] = 13
     df.loc[df.nomvar=='PR', 'datyp'] = 1
+    df = adjust_ip3_time_interval(df)
     # df.loc[:,'nbits'] = 32
     # df.loc[:,'datyp'] = 5
     # write the result
@@ -78,6 +79,10 @@ def test_2(plugin_test_dir):
     # [ReaderStd --ignoreExtended --input {sources[1]}] >>
     # [ReaderStd --ignoreExtended --input {sources[2]}] >>
     # [TimeIntervalDifference --fieldName PR --rangeForecastHour 15@18,12@18 --interval 3,6 --step 1,1] >> [WriterStd --output {destination_path} --ignoreExtended ]
+
+    # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
+    # Temporaire, en attendant que ce soit fait dans le writer
+    df = adjust_ip3_time_interval(df)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
@@ -154,6 +159,10 @@ def test_4(plugin_test_dir):
     df.loc[df.nomvar=='PR', 'nbits'] = 13
     df.loc[df.nomvar=='PR', 'datyp'] = 1
 
+    # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
+    # Temporaire, en attendant que ce soit fait dans le writer
+    df = adjust_ip3_time_interval(df)
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
     fstpy.delete_file(results_file)
@@ -185,6 +194,10 @@ def test_5(plugin_test_dir):
     # [TimeIntervalDifference --fieldName PR --rangeForecastHour 0@177,0@60 --interval 12,3 --step 24,6] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
     
+    # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
+    # Temporaire, en attendant que ce soit fait dans le writer
+    df = adjust_ip3_time_interval(df)
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
     fstpy.delete_file(results_file)
@@ -250,6 +263,10 @@ def test_8(plugin_test_dir):
     # [TimeIntervalDifference --fieldName UV --rangeForecastHour 12@36,12@36 --interval 3,12 --step 3,12] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
 
+    # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
+    # Temporaire, en attendant que ce soit fait dans le writer
+    df = adjust_ip3_time_interval(df)
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
     fstpy.delete_file(results_file)
@@ -285,6 +302,10 @@ def test_9(plugin_test_dir):
     # [TimeIntervalDifference --fieldName PR --rangeForecastHour 3@9 --interval 6 --step 9] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
 
+    # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
+    # Temporaire, en attendant que ce soit fait dans le writer
+    df = adjust_ip3_time_interval(df)
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
     fstpy.delete_file(results_file)
@@ -319,6 +340,10 @@ def test_10(plugin_test_dir):
     # [TimeIntervalDifference --fieldName PR --rangeForecastHour 0@6 --interval 6 --step 9] >>
     # [WriterStd --output {destination_path} --ignoreExtended]']
 
+    # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
+    # Temporaire, en attendant que ce soit fait dans le writer
+    df = adjust_ip3_time_interval(df)
+        
     # df.loc[df.nomvar=='PR', 'nbits'] = 32
     # df.loc[df.nomvar=='PR', 'datyp'] = 5
     # write the result
@@ -355,6 +380,10 @@ def test_11(plugin_test_dir):
     # [TimeIntervalDifference --fieldName PR --rangeForecastHour 3@18 --interval 6 --step 9] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
 
+    # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
+    # Temporaire, en attendant que ce soit fait dans le writer
+    df = adjust_ip3_time_interval(df)
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
     fstpy.delete_file(results_file)
@@ -390,6 +419,11 @@ def test_12(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]
     # df.loc[df.nomvar=='PR', 'nbits'] = 32
     # df.loc[df.nomvar=='PR', 'datyp'] = 5
+    
+    # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
+    # Temporaire, en attendant que ce soit fait dans le writer
+    df = adjust_ip3_time_interval(df)
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
     fstpy.delete_file(results_file)
@@ -555,6 +589,10 @@ def test_19(plugin_test_dir):
     # [TimeIntervalDifference --fieldName UV --rangeForecastHour 12@36,12@36 --interval 3,12 --step 3,12 --strictlyPositive] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
 
+    # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
+    # Temporaire, en attendant que ce soit fait dans le writer
+    df = adjust_ip3_time_interval(df)
+
     # df.loc[df.nomvar=='UV', 'nbits'] = 32
     # df.loc[df.nomvar=='UV', 'datyp'] = 5
     # write the result
@@ -590,6 +628,11 @@ def test_20(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]']
     # df.loc[df.nomvar=='UV', 'nbits'] = 32
     # df.loc[df.nomvar=='UV', 'datyp'] = 5
+    
+    # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
+    # Temporaire, en attendant que ce soit fait dans le writer
+    df = adjust_ip3_time_interval(df)
+    
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_20.std"])
     fstpy.delete_file(results_file)
@@ -620,6 +663,75 @@ def test_21(plugin_test_dir):
     # [TimeIntervalDifference --fieldName UV --interval 3,12 --step 3,12 --strictlyPositive] >>
     # [WriterStd --output {destination_path} --ignoreExtended]']
 
+def test_25(plugin_test_dir):
+    """Teste HourMinuteSecond - objet interval - sans encodage des IPs"""
+    # IL EST A NOTER QUE SANS ENCODAGE DES IPs, ON EST INCAPABLE DE 
+    # PRODUIRE DES RESULTATS CORRECTS DU A LA PERTE DE PRECISION
+    # open and read source
+    source0 = plugin_test_dir + "2020102212_023_lamwest_minimal.pres"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    # compute PrecipitationAmount
+    df = spookipy.TimeIntervalDifference(src_df0, nomvar='PR',
+                                        forecast_hour_range=(datetime.timedelta(hours=22, minutes=30), datetime.timedelta(hours=23)),
+                                        interval=datetime.timedelta(minutes=30),
+                                        step=datetime.timedelta(minutes=30),
+                                        strictly_positive=True).compute()
+    
+    # Test extrait du fichier PrecipitationAmount, identique au test 8
+    df.loc[df.nomvar!='PR', 'etiket'] = 'WE_1_2_0N'
+    df.loc[df.nomvar=='PR', 'etiket'] = 'PCPAMT'
+
+    # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
+    # Temporaire, en attendant que ce soit fait dans le writer
+    df = adjust_ip3_time_interval(df)
+
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_25.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "TMIDIF_test25_file2cmp.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
+
+def test_26(plugin_test_dir):
+    """Teste HourMinuteSecond - objet interval - avec encodage des IPs"""
+    # open and read source
+    source0 = plugin_test_dir + "2020102212_023_lamwest_minimal.pres"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    # compute PrecipitationAmount
+    df = spookipy.TimeIntervalDifference(src_df0, nomvar='PR',
+                                        forecast_hour_range=(datetime.timedelta(hours=22, minutes=30), datetime.timedelta(hours=23)),
+                                        interval=datetime.timedelta(minutes=30),
+                                        step=datetime.timedelta(minutes=30),
+                                        strictly_positive=True).compute()
+    #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '
+    # [PrecipitationAmount --fieldName PR --rangeForecastHour 22:30:00@23:00:00 --interval 0:30:00 --step 0:30:00] >> ', '
+    # [WriterStd --output {destination_path} --ignoreExtended]']
+    df.loc[df.nomvar!='PR', 'etiket'] = 'WE_1_2_0N'
+    df.loc[df.nomvar=='PR', 'etiket'] = 'PCPAMT'
+
+    # IPs encodes
+    df = encode_ip2_and_ip3_time(df)
+
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_26.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "TMIDIF_test26_file2cmp.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
 
 # def test_22(plugin_test_dir):
 #     """Test interval patameter"""
@@ -713,3 +825,37 @@ def test_21(plugin_test_dir):
 #     res = fstcomp(results_file,file_to_compare) #
 #     fstpy.delete_file(results_file)
 #     assert(res)
+
+def test_27(plugin_test_dir):
+    """Tester avec un fichier resultat qui contient des champs TT (fichier d'entree) et des champs UV calcules par le plugin"""
+    # open and read source
+    source0 = plugin_test_dir + "UVTT_3a24hre_delta3_IP3_20_40_0_fileSrc.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    tt_df = src_df0.loc[(src_df0.nomvar == "TT")].reset_index(drop=True)
+
+    # compute TimeIntervalDifference
+    df = spookipy.TimeIntervalDifference(src_df0, nomvar='UV',  # forecast_hour_range=['12:00:00@36:00:00','12:00:00@36:00:00'] , interval=[3,12] , step=[3,12] , strictlyPositive=True).compute()
+                                       forecast_hour_range=[(datetime.timedelta(hours=12), datetime.timedelta(hours=36))],
+                                       interval=[datetime.timedelta(hours=12)],
+                                       step=[datetime.timedelta(hours=12)],
+                                       strictly_positive=True).compute()
+
+    df = pd.concat([df, tt_df],ignore_index=True)
+    
+    # Temporaire, en attendant que ce soit fait dans le writer
+    df = encode_ip_when_interval(df)
+    
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_27.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "TMIDIF_test27_file2cmp.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare) 
+    fstpy.delete_file(results_file)
+    assert(res)
+

@@ -76,7 +76,7 @@ class SetConstantValue(Plugin):
             ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
 
         self.groups = self.df.groupby(
-            by=['grid', 'nomvar', 'dateo', 'forecast_hour'])
+            by=['grid', 'nomvar', 'datev'])
 
         l = [self.min_index, self.max_index, self.nb_levels]
 

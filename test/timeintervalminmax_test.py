@@ -1141,7 +1141,7 @@ def test_38(plugin_test_dir):
     assert(res)
 
 def test_39(plugin_test_dir):
-    """Teste HourMinuteSecond - objet interval - sans encodage des IPs"""
+    """Teste HourMinuteSecond - objet interval - avec encodage des IPs"""
     # open and read source
     source0 = plugin_test_dir + "2020102212_023_lamwest_minimal.pres"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()

@@ -210,8 +210,6 @@ def create_result_container(df, b_inf, b_sup):
     npas = int(b_sup / deet)
     ip2 = int(b_sup/3600)
     ip3 = int(b_inf/3600)
-    # npas = int((ip2 * 3600) / deet)
-    delta = int((b_sup-b_inf)/3600)
 
     kind  = int(df.iloc[0].ip2_kind)
     inter = fstpy.Interval('ip2', b_inf, b_sup, kind)

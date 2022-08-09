@@ -733,6 +733,39 @@ def test_26(plugin_test_dir):
     fstpy.delete_file(results_file)
     assert(res)
 
+def test_27(plugin_test_dir):
+    """Tester avec un fichier resultat qui contient des champs TT (fichier d'entree) et des champs UV calcules par le plugin"""
+    # open and read source
+    source0 = plugin_test_dir + "UVTT_3a24hre_delta3_IP3_20_40_0_fileSrc.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    tt_df = src_df0.loc[(src_df0.nomvar == "TT")].reset_index(drop=True)
+
+    # compute TimeIntervalDifference
+    df = spookipy.TimeIntervalDifference(src_df0, nomvar='UV',  # forecast_hour_range=['12:00:00@36:00:00','12:00:00@36:00:00'] , interval=[3,12] , step=[3,12] , strictlyPositive=True).compute()
+                                       forecast_hour_range=[(datetime.timedelta(hours=12), datetime.timedelta(hours=36))],
+                                       interval=[datetime.timedelta(hours=12)],
+                                       step=[datetime.timedelta(hours=12)],
+                                       strictly_positive=True).compute()
+
+    df = pd.concat([df, tt_df],ignore_index=True)
+    
+    # Temporaire, en attendant que ce soit fait dans le writer
+    df = encode_ip_when_interval(df)
+    
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_27.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "TMIDIF_test27_file2cmp.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare) 
+    fstpy.delete_file(results_file)
+    assert(res)
+
 # def test_22(plugin_test_dir):
 #     """Test interval patameter"""
 #     # open and read source
@@ -825,37 +858,3 @@ def test_26(plugin_test_dir):
 #     res = fstcomp(results_file,file_to_compare) #
 #     fstpy.delete_file(results_file)
 #     assert(res)
-
-def test_27(plugin_test_dir):
-    """Tester avec un fichier resultat qui contient des champs TT (fichier d'entree) et des champs UV calcules par le plugin"""
-    # open and read source
-    source0 = plugin_test_dir + "UVTT_3a24hre_delta3_IP3_20_40_0_fileSrc.std"
-    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-
-    tt_df = src_df0.loc[(src_df0.nomvar == "TT")].reset_index(drop=True)
-
-    # compute TimeIntervalDifference
-    df = spookipy.TimeIntervalDifference(src_df0, nomvar='UV',  # forecast_hour_range=['12:00:00@36:00:00','12:00:00@36:00:00'] , interval=[3,12] , step=[3,12] , strictlyPositive=True).compute()
-                                       forecast_hour_range=[(datetime.timedelta(hours=12), datetime.timedelta(hours=36))],
-                                       interval=[datetime.timedelta(hours=12)],
-                                       step=[datetime.timedelta(hours=12)],
-                                       strictly_positive=True).compute()
-
-    df = pd.concat([df, tt_df],ignore_index=True)
-    
-    # Temporaire, en attendant que ce soit fait dans le writer
-    df = encode_ip_when_interval(df)
-    
-    # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_27.std"])
-    fstpy.delete_file(results_file)
-    fstpy.StandardFileWriter(results_file, df).to_fst()
-
-    # open and read comparison file
-    file_to_compare = plugin_test_dir + "TMIDIF_test27_file2cmp.std"
-
-    # compare results
-    res = fstcomp(results_file, file_to_compare) 
-    fstpy.delete_file(results_file)
-    assert(res)
-

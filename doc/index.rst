@@ -56,6 +56,7 @@ Documentation
 * :doc:`helicity`
 * :doc:`humidex`
 * :doc:`humidityrelative`
+* :doc:`humidityrelativeweightedmean`
 * :doc:`humidityspecific`
 * :doc:`humidityutils`
 * :doc:`interpolationhorizontalgrid`
@@ -114,6 +115,7 @@ Documentation
    helicity
    humidex
    humidityrelative
+   humidityrelativeweightedmean
    humidityspecific
    humidityutils
    interpolationhorizontalgrid

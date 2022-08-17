@@ -599,7 +599,7 @@ def get_dependencies(
     for _, current_group in groups:
 
         no_groupe += 1
-        logging.debug(f'\t  ************************ Boucle sur les groupes - Groupe no {no_groupe} ************************ \n ')
+        logging.debug(f'\t  ************************ Boucle sur les groupes - Groupe no {no_groupe} pour {plugin_name} ************************ \n ')
         logging.info(f'{plugin_name} - Checking dependencies')
 
         dependencies_df, option = find_matching_dependency_option(pd.concat(
@@ -619,7 +619,7 @@ def get_dependencies(
         raise DependencyError(
             f'{plugin_name} - No matching dependencies found')
 
-    logging.debug(f'\t  ************************ Fin de boucle sur les groupes ************************ \n ')
+    logging.debug(f'\t  ************************ Fin de boucle sur les groupes pour {plugin_name} ************************ \n ')
     return df_list
             
 def create_result_container(df: pd.DataFrame, plugin_result_specifications: dict, nomvar: str, all_rows: bool=False) -> pd.DataFrame:

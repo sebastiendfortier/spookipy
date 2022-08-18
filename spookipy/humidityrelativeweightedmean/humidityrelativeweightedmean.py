@@ -53,11 +53,10 @@ class HumidityRelativeWeightedMean(Plugin):
             }
         ]
 
-        self.plugin_result_specifications = {\
-            'HR': {
-                'etiket': 'HRWAWG',
-                'unit': 'percent'}
-                }
+        self.plugin_result_specifications = \
+            {
+                'HR'  : {'etiket': 'HRWAWG','unit': 'percent'}
+            }
 
         self.df = fstpy.metadata_cleanup(self.df)
         super().__init__(self.df)
@@ -93,12 +92,10 @@ class HumidityRelativeWeightedMean(Plugin):
             if not self.dependency_check:
                 raise DependencyError(f'{HumidityRelativeWeightedMean} - No matching dependencies found')
         else:
-             pd.set_option('display.max_columns', None)
              for dependencies_df, option in dependencies_list:
 
                 tt_df = get_from_dataframe(dependencies_df, 'TT')
                 hu_df = get_from_dataframe(dependencies_df, 'HU')
-                kind = hu_df.iloc[0].ip1_kind
 
                 tt1000_df = tt_df.loc[(tt_df.level == 1000)].reset_index(drop=True)
                 tt925_df  = tt_df.loc[(tt_df.level == 925)].reset_index(drop=True)
@@ -117,6 +114,8 @@ class HumidityRelativeWeightedMean(Plugin):
                     tt850_df, tt700_df, 
                     tt500_df],ignore_index=True)
 
+                # Pour calculer HUs (saturation specific humidity),  on remplace les valeurs de TD 
+                # par les valeurs de TT lors de l'appel a HumiditySpecific.
                 td_df = tt_reduit_df.copy(deep=True)
                 td_df.loc[:,'nomvar'] = "TD"
 
@@ -128,9 +127,8 @@ class HumidityRelativeWeightedMean(Plugin):
                 hus700_df  = hus_df.loc[(hus_df.level == 700)].reset_index(drop=True)
                 hus500_df  = hus_df.loc[(hus_df.level == 500)].reset_index(drop=True)
 
-                hrl_df = create_result_container(tt1000_df,'HR', 1000, 850, kind, self.plugin_result_specifications)
-                hrm_df = create_result_container(tt1000_df,'HR', 850,  500, kind, self.plugin_result_specifications)
-
+                hrl_df = create_result_container(tt1000_df,'HR', 1000, 850, self.plugin_result_specifications)
+                hrm_df = create_result_container(tt1000_df,'HR', 850,  500, self.plugin_result_specifications)
 
                 hrl_df.at[0,'d'] = hum_relative_weighted_mean(
                                                 hu1000_df.at [0,'d'],
@@ -190,12 +188,12 @@ class HumidityRelativeWeightedMean(Plugin):
         parsed_arg = vars(parser.parse_args(args.split()))
         return parsed_arg
 
-def create_result_container(df, nomvar, b_inf, b_sup, ip1_kind, result_specification):
+def create_result_container(df, nomvar, b_inf, b_sup, result_specification):
   
     ip1 = b_inf
     ip3 = b_sup
-    kind = int(ip1_kind)
-  
+    kind = int(df.iloc[0].ip1_kind)
+
     inter = fstpy.Interval('ip1', ip1, ip3, kind)
 
     result_specification["HR"]["nomvar"]   = nomvar

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from turtle import resetscreen
 from test import TEST_PATH, TMP_PATH, check_test_ssm_package
 
 check_test_ssm_package()
@@ -17,7 +16,6 @@ pytestmark = [pytest.mark.regressions, pytest.mark.humidity]
 @pytest.fixture
 def plugin_test_dir():
     return TEST_PATH + '/HumidityRelativeWeightedMean/testsFiles/'
-
 
 def test_1(plugin_test_dir):
     """Test avec un petit fichier contenant des valeurs verifiees a la main."""
@@ -61,7 +59,7 @@ def test_2(plugin_test_dir):
 
     df.loc[:, 'etiket'] = '__HRWAVGX'
     df.loc[df.nomvar.isin(['>>','^^']),'etiket'] = 'R1_V710_N'
-    df = spookipy. encode_ip2_and_ip3_height(df)
+    df = spookipy.encode_ip2_and_ip3_height(df)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
@@ -90,7 +88,7 @@ def test_3(plugin_test_dir):
     df.loc[df.nomvar == "HR", 'etiket'] = '__HRWAVGX'
     df.loc[df.nomvar.isin(['>>','^^']),'etiket'] = 'R1_V710_N'
 
-    df = spookipy. encode_ip2_and_ip3_height(df)
+    df = spookipy.encode_ip2_and_ip3_height(df)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])

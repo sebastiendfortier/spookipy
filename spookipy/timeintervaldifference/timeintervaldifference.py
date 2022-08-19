@@ -206,10 +206,10 @@ class TimeIntervalDifference(Plugin):
         return parsed_arg
 
 def create_result_container(df, b_inf, b_sup):
-    deet = df.iloc[0]['deet']
-    npas = int(b_sup / deet)
-    ip2 = int(b_sup/3600)
-    ip3 = int(b_inf/3600)
+    deet  = df.iloc[0]['deet']
+    npas  = int(b_sup / deet)
+    ip2   = int(b_sup/3600)
+    ip3   = int(b_inf/3600)
 
     kind  = int(df.iloc[0].ip2_kind)
     inter = fstpy.Interval('ip2', b_inf, b_sup, kind)

@@ -66,9 +66,10 @@ class Thickness(Plugin):
             }
         ]
 
-        self.plugin_result_specifications = {
-            'DZ': {'nomvar': 'DZ','unit':'decameter','etiket':'THCKNS'}
-        }
+        self.plugin_result_specifications = \
+            {
+                'DZ': {'nomvar': 'DZ','unit':'decameter','etiket':'THCKNS'}
+            }
 
         df = fstpy.set_vertical_coordinate_type(df)
         # self.df = fstpy.metadata_cleanup(self.df)
@@ -147,7 +148,7 @@ class Thickness(Plugin):
                 top_ip     = gz_top_df.iloc[0].level
                 gz_base_df = gz_df.loc[gz_df.level == self.base]
                 base_ip    = gz_base_df.iloc[0].level
-                ip_kind    = gz_base_df.iloc[0].ip1_kind
+
            
                 if (self.base < self.top):
                     b_inf = top_ip
@@ -156,7 +157,7 @@ class Thickness(Plugin):
                     b_inf = base_ip
                     b_sup = top_ip
 
-                dz_df = create_result_container(gz_df, b_inf, b_sup, self.plugin_result_specifications, ip_kind)
+                dz_df = create_result_container(gz_df, b_inf, b_sup, self.plugin_result_specifications)
     
                 array = np.abs(gz_top_df.iloc[0].d - gz_base_df.iloc[0].d).astype(np.float32)
                 dz_df["d"] = [array]
@@ -200,13 +201,14 @@ class Thickness(Plugin):
 
         return parsed_arg
 
-def create_result_container(df, b_inf, b_sup, dict1, ip1_kind):
+def create_result_container(df, b_inf, b_sup, result_specifications):
     ip1   = b_inf
     ip3   = b_sup
-    kind  = int(ip1_kind)
+    kind  = int(df.iloc[0].ip1_kind)
+
     inter = fstpy.Interval('ip1', ip1, ip3, kind)
 
-    dict1["DZ"]["interval"] = inter
-    res_df = create_empty_result(df, dict1['DZ'])
+    result_specifications["DZ"]["interval"] = inter
+    res_df = create_empty_result(df, result_specifications['DZ'])
     
     return res_df

@@ -146,15 +146,14 @@ class MinMaxLevelIndex(Plugin):
 
             borne_inf  = var_df.iloc[0].level
             borne_sup  = var_df.iloc[-1].level
-            kind       = var_df.iloc[0].ip1_kind
 
-            min_idx_df = create_result_container(var_df,borne_inf, borne_sup, kind, self.nomvar_min_idx, 
+            min_idx_df = create_result_container(var_df,borne_inf, borne_sup, self.nomvar_min_idx, 
                                                 self.bounded, self.plugin_result_specifications)
-            max_idx_df = create_result_container(var_df,borne_inf, borne_sup, kind, self.nomvar_max_idx, 
+            max_idx_df = create_result_container(var_df,borne_inf, borne_sup, self.nomvar_max_idx, 
                                                 self.bounded, self.plugin_result_specifications)
-            min_val_df = create_result_container(var_df,borne_inf, borne_sup, kind, self.nomvar_min_val, 
+            min_val_df = create_result_container(var_df,borne_inf, borne_sup, self.nomvar_min_val, 
                                                 self.bounded, self.plugin_result_specifications)
-            max_val_df = create_result_container(var_df,borne_inf, borne_sup, kind, self.nomvar_max_val, 
+            max_val_df = create_result_container(var_df,borne_inf, borne_sup, self.nomvar_max_val, 
                                                 self.bounded, self.plugin_result_specifications)
 
             array_3d   = get_3d_array(var_df,flatten=True)
@@ -263,6 +262,7 @@ class MinMaxLevelIndex(Plugin):
         parsed_arg = vars(parser.parse_args(args.split()))
         if parsed_arg['nomvar'] is not None:
             validate_nomvar(parsed_arg['nomvar'],"MinMaxLevelIndex",MinMaxLevelIndexError)
+            
         validate_nomvar(parsed_arg['nomvar_min'],"MinMaxLevelIndex",MinMaxLevelIndexError)
         validate_nomvar(parsed_arg['nomvar_max'],"MinMaxLevelIndex",MinMaxLevelIndexError)
 
@@ -294,17 +294,17 @@ def bound_array(a, kbas, ktop):
     arr = np.rot90(arr,k=-3)
     return arr
 
-def create_result_container(df, b_inf, b_sup, ip1_kind, nomvar, bounded, result_specification):
+def create_result_container(df, b_inf, b_sup, nomvar, bounded, result_specifications):
     ip1 = b_inf
     ip3 = b_sup
-    kind = int(ip1_kind)
+    kind = int(df.iloc[0].ip1_kind)
     
     inter = fstpy.Interval('ip1', ip1, ip3, kind)
   
-    result_specification["ALL"]["nomvar"]   = nomvar
-    result_specification["ALL"]["interval"] = inter
+    result_specifications["ALL"]["nomvar"]   = nomvar
+    result_specifications["ALL"]["interval"] = inter
 
-    res_df = create_empty_result(df, result_specification['ALL'])
+    res_df = create_empty_result(df, result_specifications['ALL'])
     if bounded:
         res_df = fstpy.add_flag_values(res_df)
         res_df.bounded = True 

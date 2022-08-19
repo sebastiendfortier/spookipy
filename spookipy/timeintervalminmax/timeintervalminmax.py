@@ -103,7 +103,7 @@ class TimeIntervalMinMax(Plugin):
         else:
             self.interval = validate_list_of_times(self.interval, TimeIntervalMinMaxError)   
 
-        l_int = len(self.interval)
+        l_int  = len(self.interval)
         l_step = len(self.step)
         
         if l_fcast != l_int or l_fcast != l_step:
@@ -124,7 +124,7 @@ class TimeIntervalMinMax(Plugin):
             ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])) & (~self.df.interval.isna()) & (self.df.nomvar.isin(self.nomvar))].reset_index(drop=True)
 
         self.groups_without_interval = self.df_without_intervals.groupby(['grid', 'nomvar'])
-        self.groups_with_interval = self.df_with_intervals.groupby(['grid', 'nomvar'])
+        self.groups_with_interval    = self.df_with_intervals.groupby(['grid', 'nomvar'])
 
 
     def compute(self) -> pd.DataFrame:
@@ -258,12 +258,10 @@ class TimeIntervalMinMax(Plugin):
 def create_result_container(df, b_inf, b_sup, nomvar):
     deet = df.iloc[0]['deet']
     npas = int(b_sup / deet)
-    ip2 = int(b_sup/3600)
-    ip3 = int((b_inf)/3600)
     # npas = int((ip2 * 3600) / deet)
 
-    inter = fstpy.Interval('ip2', b_inf, b_sup, 10)
-    res_df = create_empty_result(df, {'nomvar':nomvar, 'etiket':'TIMNMX', 
+    inter  = fstpy.Interval('ip2', b_inf, b_sup, 10)
+    res_df = create_empty_result(df, {'nomvar':nomvar, 'etiket':'TIMNMX',
                                       'interval':inter, 'npas': npas})
     return res_df
 

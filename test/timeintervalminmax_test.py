@@ -1027,7 +1027,7 @@ def test_35(plugin_test_dir):
 
 
 def test_36(plugin_test_dir):
-    """ Calcul d'un test BOTH avec 1 fieldName avec interval sans step. rangeForecastHour"""
+    """ Calcul d'un test BOTH avec 1 fieldName avec interval sans step."""
     # open and read source
     source0 = plugin_test_dir + "TT_125_100_75_50_25_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()

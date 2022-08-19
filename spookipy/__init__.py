@@ -23,6 +23,7 @@ from .gridpointdistance import *
 from .helicity import *
 from .humidex import *
 from .humidityrelative import *
+from .humidityrelativeweightedmean import *
 from .humidityspecific import *
 from .humidityutils import *
 from .interpolationhorizontalgrid import *

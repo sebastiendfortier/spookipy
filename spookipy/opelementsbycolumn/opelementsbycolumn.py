@@ -83,7 +83,7 @@ class OpElementsByColumn(Plugin):
 
         self.df = fstpy.add_columns(
             self.df, columns=[
-                'forecast_hour', 'ip_info'])
+                'forecast_hour', 'ip_info', 'unit'])
 
         grouping = ['grid']
         if self.group_by_forecast_hour:

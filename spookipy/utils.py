@@ -15,6 +15,12 @@ import pandas as pd
 import rpnpy.librmn.all as rmn
 from pandas.core import groupby
 
+class DataframeColumnError(Exception):
+    pass
+class DependencyError(Exception):
+    pass
+class LevelIntersectionError(Exception):
+    pass
 
 def initializer(func):
     """
@@ -52,11 +58,6 @@ def explicit_params_checker(func):
         setattr(self, 'explicit_params', set(list(varnames[:len(args)]) + list(kargs.keys())))
         return func(self, *args, **kargs)
     return wrapper
-
-class DependencyError(Exception):
-    pass
-class LevelIntersectionError(Exception):
-    pass
 
 def get_computable_dependencies():
     import sys
@@ -160,7 +161,6 @@ def get_plugin_dependencies(
 
     return res_df
 
-
 def compute_dependency(
         nomvar: str,
         computable_dependencies: dict,
@@ -182,7 +182,6 @@ def compute_dependency(
     :return: results dataframe
     :rtype: pd.DataFrame
     """
-
 
     if not(df.loc[df.nomvar == nomvar].empty):
         logging.debug(f'\t {nomvar} - Found ')
@@ -223,7 +222,6 @@ def compute_dependency(
         logging.debug(f'\t Compute_dependency - {nomvar} ne peut etre calcule!  \n\n')
 
     return df
-
 
 def get_existing_result(
         df: pd.DataFrame,
@@ -374,8 +372,10 @@ def create_empty_result(df: pd.DataFrame, plugin_result_specifications: dict, al
         res_df = pd.DataFrame([res_df])
 
     for k, v in plugin_result_specifications.items():
-        if (v != '') and (k in res_df.columns):
+        if (k in res_df.columns):
             res_df.loc[:, k] = v
+        else:
+            raise DataframeColumnError(f'In create_empty_result - Column "{k}" not found in dataframe!')
 
     if 'level' not in res_df.columns:
         res_df = fstpy.add_columns(res_df, columns=['ip_info'])
@@ -493,10 +493,6 @@ def convip(df: pd.DataFrame, style: int = rmn.CONVIP_ENCODE, ip_str:str='ip1') -
 
     return df
 
-
-
-
-
 def get_from_dataframe(df: pd.DataFrame, nomvar: str) -> pd.DataFrame:
     """Get a specific variable from a DataFrame and clears the index and sorts the levels according to kind
 
@@ -515,7 +511,6 @@ def get_from_dataframe(df: pd.DataFrame, nomvar: str) -> pd.DataFrame:
             drop=True)
 
     return pd.DataFrame(dtype=object)
-
 
 def find_matching_dependency_option(
         df: pd.DataFrame,
@@ -980,4 +975,3 @@ def get_0_ip1(model_ip1:int) -> int:
     else:
         ip1 = rmn.convertIp(rmn.CONVIP_ENCODE_OLD, 0., kind)
     return ip1
-

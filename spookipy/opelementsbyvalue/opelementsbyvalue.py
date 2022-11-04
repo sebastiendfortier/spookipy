@@ -69,12 +69,14 @@ class OpElementsByValue(Plugin):
         self.df = self.df.loc[~self.df.nomvar.isin(
             ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
 
+        self.df = fstpy.add_columns(self.df, columns=['unit'])
+
         if not (self.nomvar_out is None):
             self.plugin_result_specifications = {
                 'ALL': {
                     'nomvar': self.nomvar_out,
                     'etiket': self.etiket,
-                    'unit': self.unit}}
+                    'unit'  : self.unit}}
         else:
             self.plugin_result_specifications = {
                 'ALL': {'etiket': self.etiket, 'unit': self.unit}}

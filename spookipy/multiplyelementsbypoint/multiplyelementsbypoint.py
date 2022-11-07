@@ -21,17 +21,30 @@ class MultiplyElementsByPoint(Plugin):
     :type df: pd.DataFrame  
     :param group_by_forecast_hour: group fields by forecast hour, defaults to False
     :type group_by_forecast_hour: bool, optional
+    :param group_by_nomvar: group fields by field name, defaults to False
+    :type group_by_nomvar: bool, optional    
     :param nomvar_out: nomvar for output result, defaults to 'MUEP'
     :type nomvar_out: str, optional
+    :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
+    :type copy_input: bool, optional  
     """
     @initializer
     def __init__(
             self,
             df: pd.DataFrame,
-            group_by_forecast_hour=False,
-            nomvar_out='MUEP'):
+            group_by_forecast_hour: bool=False,
+            group_by_nomvar: bool=False,
+            nomvar_out=None,
+            copy_input=False):
 
-        pass
+        self.validate_params()
+
+    def validate_params(self):
+        if self.nomvar_out:
+            if self.group_by_nomvar:
+                raise MultiplyElementsByPointError(' Cannot use nomvar_out option with group_by_nomvar \n')
+        else:
+            self.nomvar_out ='MUEP'
 
     def compute(self) -> pd.DataFrame:
         logging.info('MultiplyElementsByPoint - compute')
@@ -42,8 +55,10 @@ class MultiplyElementsByPoint(Plugin):
             exception_class=MultiplyElementsByPointError,
             group_by_forecast_hour=self.group_by_forecast_hour,
             group_by_level=True,
+            group_by_nomvar=self.group_by_nomvar,
             nomvar_out=self.nomvar_out,
-            etiket='MULEPT').compute()
+            etiket='MULEPT',
+            copy_input=self.copy_input).compute()
 
     @staticmethod
     def parse_config(args: str) -> dict:
@@ -54,12 +69,14 @@ class MultiplyElementsByPoint(Plugin):
         :rtype: dict
         """
         parser = argparse.ArgumentParser(prog=MultiplyElementsByPoint.__name__, parents=[Plugin.base_parser])
-        parser.add_argument('--groupBy',type=str,choices=['FORECAST_HOUR'],dest='group_by_forecast_hour', help="Option to group fields by attribute when performing calculation.")
-        parser.add_argument('--outputFieldName',type=str,default="MUEP",dest='nomvar_out',help="Option to change the name of output field 'MUEP'.")
+        parser.add_argument('--groupBy',type=str,choices=['FORECAST_HOUR','FIELD_NAME'],dest='group_by', help="Option to group fields by attribute when performing calculation.")
+        parser.add_argument('--outputFieldName', type=str, dest='nomvar_out',help="Option to change the name of output field 'MUEP'.")
 
         parsed_arg = vars(parser.parse_args(args.split()))
 
-        parsed_arg['group_by_forecast_hour'] = (parsed_arg['group_by_forecast_hour'] == 'FORECAST_HOUR')
-        validate_nomvar(parsed_arg['nomvar_out'],"MultiplyElementsByPoint",MultiplyElementsByPointError)
+        parsed_arg['group_by_forecast_hour'] = (parsed_arg['group_by'] == 'FORECAST_HOUR')
+        parsed_arg['group_by_nomvar']        = (parsed_arg['group_by'] == 'FIELD_NAME')
+        if parsed_arg['nomvar_out']:
+            validate_nomvar(parsed_arg['nomvar_out'],"MultiplyElementsByPoint",MultiplyElementsByPointError)
 
         return parsed_arg

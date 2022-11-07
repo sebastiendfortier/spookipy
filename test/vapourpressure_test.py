@@ -94,8 +94,7 @@ def test_5(plugin_test_dir):
     df = spookipy.VapourPressure(
         tthu_df,
         ice_water_phase='both',
-        temp_phase_switch=-
-        40).compute()
+        temp_phase_switch=-40).compute()
     # [ReaderStd --input {sources[0]}] >>
     # [Select --fieldName TT,HU] >>
     # [VapourPressure ] >>
@@ -280,10 +279,6 @@ def test_11(plugin_test_dir):
 
     df.loc[df.nomvar.isin(['>>', '^^', 'P0']), 'etiket'] = '580V0'
     df.loc[df.nomvar=='VPPR', 'typvar'] = 'P'
-    # print(df[[]])
-
-    # df['datyp']=5
-    # df.loc[df.nomvar!='!!','nbits']=32
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
@@ -347,8 +342,7 @@ def test_13(plugin_test_dir):
         src_df0,
         rpn=True,
         ice_water_phase='both',
-        temp_phase_switch=-
-        40).compute()
+        temp_phase_switch=-40).compute()
     # ['[ReaderStd --input {sources[0]} ] >> ', '
     # [VapourPressure --RPN] >> ', '
     # [WriterStd --output {destination_path} --noMetadata --ignoreExtended]']
@@ -363,5 +357,40 @@ def test_13(plugin_test_dir):
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.001)
+    fstpy.delete_file(results_file)
+    assert(res)
+
+def test_14(plugin_test_dir):
+    """Calcul de la pression de vapeur avec un fichier hybrid (HU)"""
+     # Identique au test 7, avec un sous-ensemble du fichier d'input, pour tester option copy_input
+    
+    # open and read source
+    source0 = plugin_test_dir + "hyb_prog_2012071312_009_1HY"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    # Creation d'un fichier reduit a quelques niveaux 
+    meta_df = src_df0.loc[src_df0.nomvar.isin(
+            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
+    tthu_df = fstpy.select_with_meta(src_df0, ['TT', 'HU'])
+    tthu_df_reduit = tthu_df.loc[((tthu_df.level <= 1.0) & (tthu_df.level > 0.95))].reset_index(drop=True)
+    df_reduit = pd.concat([tthu_df_reduit, meta_df],ignore_index=True)
+
+    # compute VapourPressure
+    df = spookipy.VapourPressure(
+        df_reduit,
+        ice_water_phase='both',
+        temp_phase_switch=-40, 
+        copy_input=True).compute()
+
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "VapourPressure_test14_file2cmp.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)

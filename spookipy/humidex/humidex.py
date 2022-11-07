@@ -7,7 +7,7 @@ import pandas as pd
 
 from ..plugin import Plugin
 from ..science import hmx_from_svp
-from ..utils import (create_empty_result, existing_results, final_results,
+from ..utils import (create_empty_result, existing_results, 
                      get_dependencies, get_existing_result, get_from_dataframe,
                      initializer, DependencyError)
 
@@ -22,14 +22,17 @@ class Humidex(Plugin):
     :param df: input DataFrame
     :type df: pd.DataFrame
     :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
-    :type dependency_check: bool, optional  
+    :type dependency_check: bool, optional 
+    :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
+    :type copy_input: bool, optional  
     """
     computable_plugin = "HMX"
     @initializer
     def __init__(
             self, 
             df: pd.DataFrame,
-            dependency_check=False):
+            dependency_check=False,
+            copy_input=False):
 
         self.plugin_mandatory_dependencies = [
             {
@@ -40,11 +43,10 @@ class Humidex(Plugin):
 
         self.plugin_result_specifications = {
                 'HMX': {
-                    'nomvar': 'HMX',
-                    'etiket': 'HUMIDX',
-                    'unit': 'scalar',
-                    'ip1': 0,
-                    'surface': True,
+                    'nomvar' : 'HMX',
+                    'etiket' : 'HUMIDX',
+                    'unit'   : 'scalar',
+                    'ip1'    : 0,
                     'surface': True}
                     }
         self.plugin_params = {
@@ -65,15 +67,17 @@ class Humidex(Plugin):
             self.no_meta_df, self.plugin_result_specifications)
 
         # select surface only
-        self.no_meta_df = self.no_meta_df.loc[self.no_meta_df.surface]
+        self.no_meta_df_sfc = self.no_meta_df.loc[self.no_meta_df.surface]
 
-        self.groups = self.no_meta_df.groupby(
+        self.groups = self.no_meta_df_sfc.groupby(
             ['grid', 'datev', 'ip1_kind'])
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:
             return existing_results(
-                'Humidex', self.existing_result_df, self.meta_df)
+                'Humidex', 
+                self.existing_result_df, 
+                self.meta_df)
 
         logging.info('Humidex - compute')
         df_list = []
@@ -100,7 +104,9 @@ class Humidex(Plugin):
 
             df_list.append(hmx_df)
 
-        return final_results(df_list, HumidexError, self.meta_df)
+        return self.final_results(df_list, HumidexError, 
+                                  dependency_check = self.dependency_check, 
+                                  copy_input = self.copy_input)
 
     def humidex_from_tt_svp(self, dependencies_df, td_df, option):
         from ..saturationvapourpressure.saturationvapourpressure import \

@@ -234,3 +234,32 @@ def test_9(plugin_test_dir):
     res = fstcomp(results_file, file_to_compare, e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)
+
+def test_10(plugin_test_dir):
+    """Calcul à partir de la température du point de rosée, fichier reduit, copy_input = true."""
+    # Test en python seulement.  
+    # Fichier input meme que le test 9, cree de cette facon:
+    # [ReaderStd --input .../pluginsRelatedStuff/HumidityRelative/testsFiles/2011100712_glbhyb_9_file2cmp.std] 
+    #  >>  [GridCut --startPoint 50,50 --endPoint 100,100]
+    # open and read source
+    source0 = plugin_test_dir + "2011100712_012_glbhyb_ES_reduit.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    src_df0 = fstpy.select_with_meta(src_df0, ['TT', 'TD'])
+
+    # compute HumidityRelative
+    df = spookipy.HumidityRelative(src_df0, ice_water_phase='water',copy_input=True).compute()
+    df.loc[:, 'etiket'] = 'G133K80N'
+
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "2011100712_glbhyb_10_file2cmp.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)

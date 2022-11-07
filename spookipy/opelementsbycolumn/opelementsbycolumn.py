@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin
-from ..utils import (create_empty_result, final_results, get_3d_array,
+from ..utils import (create_empty_result, get_3d_array,
                      initializer, validate_nomvar)
 
 
@@ -35,6 +35,8 @@ class OpElementsByColumn(Plugin):
     :type unit: str, optional
     :param etiket: etiket to apply to results, defaults to None
     :type etiket: str, optional
+    :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
+    :type copy_input: bool, optional 
     """
     @initializer
     def __init__(
@@ -45,53 +47,50 @@ class OpElementsByColumn(Plugin):
             exception_class=OpElementsByColumnError,
             group_by_forecast_hour=False,
             group_by_level=False,
+            group_by_nomvar=False,
             nomvar_out=None,
             unit='scalar',
-            etiket=None):
+            etiket=None,
+            copy_input=False):
 
-        if self.etiket is None:
-            self.etiket = self.operation_name
-        self.validate_input()
         self.plugin_result_specifications = {
             'ALL': {
                 'nomvar': self.nomvar_out,
                 'etiket': self.operation_name,
-                'unit': self.unit}}
-
-    def validate_input(self):
-        if self.df.empty:
-            raise self.exception_class(
-                self.operation_name + ' - no data to process')
+                'unit'  : self.unit}}
 
         self.df = fstpy.metadata_cleanup(self.df)
+        super().__init__(df, copy_input)
+
+        if self.etiket is None:
+            self.etiket = self.operation_name
+        
+        self.prepare_groups()
+
+    def prepare_groups(self):
 
         validate_nomvar(
             self.nomvar_out,
             self.operation_name,
             self.exception_class)
 
-        self.meta_df = self.df.loc[self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
-        self.df = self.df.loc[~self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
-        if len(self.df) == 1:
+        if len(self.no_meta_df) == 1:
             raise self.exception_class(
                 self.operation_name +
                 ' - not enough records to process, need at least 2')
 
-        self.df = fstpy.add_columns(
-            self.df, columns=[
-                'forecast_hour', 'ip_info', 'unit'])
+        self.no_meta_df = fstpy.add_columns(
+            self.no_meta_df, columns=['forecast_hour', 'ip_info', 'unit'])
 
         grouping = ['grid']
+        if self.group_by_nomvar:
+            grouping.append('nomvar')  
         if self.group_by_forecast_hour:
             grouping.append('datev')
         if self.group_by_level:
             grouping.append('level')
 
-        self.groups = self.df.groupby(by=grouping)
+        self.groups = self.no_meta_df.groupby(by=grouping)
 
     def compute(self) -> pd.DataFrame:
         logging.info('OpElementsByColumn - compute')
@@ -106,12 +105,18 @@ class OpElementsByColumn(Plugin):
                     'need more than one field for this operation - skipping')
                 continue
 
-            res_df = create_empty_result(current_group, self.plugin_result_specifications['ALL'])
+            if self.group_by_nomvar:
+                self.plugin_result_specifications["ALL"]["nomvar"]         = current_group.iloc[0].nomvar
+                self.plugin_result_specifications["ALL"]["ip2"]            = [0]
+                self.plugin_result_specifications["ALL"]["forecast_hour"]  = [0]
+                self.plugin_result_specifications["ALL"]["npas"]           = [0]
 
+            res_df = create_empty_result(current_group, self.plugin_result_specifications['ALL'])
+            
             array_3d = get_3d_array(current_group)
 
             res_df.at[0, 'd'] = self.operator(array_3d, axis=0).astype(np.float32)
 
             df_list.append(res_df)
 
-        return final_results(df_list, self.exception_class, self.meta_df)
+        return self.final_results(df_list, self.exception_class)

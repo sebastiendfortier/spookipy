@@ -9,8 +9,9 @@ import pandas as pd
 import rpnpy.librmn.all as rmn
 
 from ..plugin import Plugin
-from ..utils import (create_empty_result, dataframe_arrays_to_dask, final_results, get_3d_array,
-                     get_dependencies, get_from_dataframe,initializer, reshape_arrays, validate_nomvar)
+from ..utils import (create_empty_result, dataframe_arrays_to_dask,
+                    get_3d_array,get_dependencies, get_from_dataframe, initializer, 
+                    reshape_arrays, validate_nomvar)
 
 class MinMaxLevelIndexError(Exception):
     pass
@@ -40,6 +41,8 @@ class MinMaxLevelIndex(Plugin):
     :type nomvar_min_val: str, optional
     :param nomvar_max_val: nomvar of the max result value, defaults to 'MAX'
     :type nomvar_max_val: str, optional
+    :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
+    :type copy_input: bool, optional 
     """
 
     @initializer
@@ -55,10 +58,12 @@ class MinMaxLevelIndex(Plugin):
             nomvar_min_idx='KMIN',
             nomvar_max_idx='KMAX',
             nomvar_min_val='MIN',
-            nomvar_max_val='MAX'
+            nomvar_max_val='MAX',
+            copy_input=False
             ):
 
         self.df = fstpy.metadata_cleanup(self.df)
+
         super().__init__(df)
 
         if self.nomvar is None:
@@ -236,12 +241,15 @@ class MinMaxLevelIndex(Plugin):
                     max_val_df = dataframe_arrays_to_dask(max_val_df)
                     df_list.append(max_val_df)
 
-            var_df = reshape_arrays(var_df)  
-            var_df = dataframe_arrays_to_dask(var_df)
+            # Lorsque l'option copy_input n'est pas a True, on garde le comportement original du plugin
+            # i.e. qu'on sort seulement le champ pour lequel on cherche le min/max et non tous les champs d'input
+            if not self.copy_input:
+                var_df = reshape_arrays(var_df)  
+                var_df = dataframe_arrays_to_dask(var_df)
+                df_list.append(var_df)
 
-            df_list.append(var_df)
-
-        return final_results(df_list, MinMaxLevelIndexError, self.meta_df)
+        return self.final_results(df_list, MinMaxLevelIndexError,
+                                  copy_input = self.copy_input)
 
     @staticmethod
     def parse_config(args: str) -> dict:

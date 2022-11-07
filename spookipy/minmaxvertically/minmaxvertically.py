@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+import argparse
 import logging
 
 import fstpy
@@ -15,6 +15,25 @@ class MinMaxVerticallyError(Exception):
     pass
 
 class MinMaxVertically(Plugin):
+    """Finds the maximum and/or minimum value in the column or part of it.
+
+    :param df: input DataFrame  
+    :type df: pd.DataFrame  
+    :param nomvar: Target nomvar for the computation
+    :type nomvar: str
+    :param min: get the  minimum, defaults to False
+    :type min: bool, optional
+    :param max: get the maximum, defaults to False
+    :type max: bool, optional
+    :param bounded: limit search between KBAS and KTOP, defaults to False
+    :type bounded: bool, optional
+    :param nomvar_min_val: nomvar of the min result value, defaults to 'MIN'
+    :type nomvar_min_val: str, optional
+    :param nomvar_max_val: nomvar of the max result value, defaults to 'MAX'
+    :type nomvar_max_val: str, optional
+    :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
+    :type copy_input: bool, optional 
+    """
     @initializer
     def __init__(
             self,
@@ -25,7 +44,9 @@ class MinMaxVertically(Plugin):
             bounded=False,
             ascending=True,
             nomvar_min: str = None,
-            nomvar_max: str = None):
+            nomvar_max: str = None,
+            copy_input=False
+            ):
         super().__init__(df)
         self.validate_params_and_input()
 
@@ -60,12 +81,12 @@ class MinMaxVertically(Plugin):
         if not (self.nomvar_min is None):
             min_out = self.nomvar_min
         else:
-            min_out = "KMIN"
+            min_out = "MIN"
 
         if not (self.nomvar_max is None):
             max_out = self.nomvar_max
         else:
-            max_out = "KMAX"
+            max_out = "MAX"
 
         df=MinMaxLevelIndex(self.df,
                             nomvar=self.nomvar, 
@@ -77,7 +98,8 @@ class MinMaxVertically(Plugin):
                             nomvar_min_val= min_out,
                             nomvar_max_idx= "_MAX",
                             nomvar_max_val= max_out,
-                            value_to_return=True).compute()
+                            value_to_return=True,
+                            copy_input=self.copy_input).compute()
 
         if self.min:
             min_df = get_from_dataframe(df, min_out)
@@ -91,4 +113,41 @@ class MinMaxVertically(Plugin):
             max_df = reshape_arrays(max_df)
             df_list.append(max_df)
 
-        return final_results(df_list, MinMaxVerticallyError, self.meta_df)
+        return self.final_results(df_list, MinMaxVerticallyError,
+                                  copy_input = self.copy_input)
+
+
+
+    @staticmethod
+    def parse_config(args: str) -> dict:
+        """method to translate spooki plugin parameters to python plugin parameters
+        :param args: input unparsed arguments
+        :type args: str
+        :return: a dictionnary of converted parameters
+        :rtype: dict
+        """
+
+        parser = argparse.ArgumentParser(prog=MinMaxVertically.__name__, parents=[Plugin.base_parser])
+        parser.add_argument('--minMax',type=str,choices=["MIN","MAX","BOTH"], help="Finds either the maximum or minimum value index or both")
+        parser.add_argument('--bounded',dest='bounded',action='store_true',default=False, help="Searches in part of the column (requires fields KBAS and KTOP as inputs) Default: searches the whole column")
+        parser.add_argument('--fieldName',type=str,dest='nomvar', help="Name of the field.")
+        parser.add_argument('--outputFieldName1',type=str,default="MIN",dest='nomvar_min',help="Option to change the name of output field KMIN")
+        parser.add_argument('--outputFieldName2',type=str,default="MAX",dest='nomvar_max',help="Option to change the name of output field KMAX")
+
+        parsed_arg = vars(parser.parse_args(args.split()))
+        if parsed_arg['nomvar'] is not None:
+            validate_nomvar(parsed_arg['nomvar'],"MinMaxVertically",MinMaxVerticallyError)
+            
+        validate_nomvar(parsed_arg['nomvar_min'],"MinMaxVertically",MinMaxVerticallyError)
+        validate_nomvar(parsed_arg['nomvar_max'],"MinMaxVertically",MinMaxVerticallyError)
+
+        if parsed_arg['minMax'] == "MIN":
+            parsed_arg['min'] = True
+        elif parsed_arg['minMax'] == "MAX":
+            parsed_arg['max'] = True
+        else:
+            parsed_arg['min'] = True
+            parsed_arg['max'] = True
+
+        return parsed_arg
+

@@ -60,7 +60,7 @@ class OpElementsByColumn(Plugin):
                 'unit'  : self.unit}}
 
         self.df = fstpy.metadata_cleanup(self.df)
-        super().__init__(df, copy_input)
+        super().__init__(df)
 
         if self.etiket is None:
             self.etiket = self.operation_name
@@ -119,4 +119,5 @@ class OpElementsByColumn(Plugin):
 
             df_list.append(res_df)
 
-        return self.final_results(df_list, self.exception_class)
+        return self.final_results(df_list, self.exception_class, 
+                                  copy_input = self.copy_input)

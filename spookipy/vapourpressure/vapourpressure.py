@@ -12,7 +12,7 @@ from ..humidityutils.humidityutils import (get_temp_phase_switch,
 from ..plugin.plugin import Plugin
 from ..science import (TDPACK_OFFSET_FIX, rpn_vppr_from_hu, rpn_vppr_from_td,
                        vppr_from_hr, vppr_from_hu, vppr_from_qv, vppr_from_td)
-from ..utils import (create_empty_result, existing_results, final_results,
+from ..utils import (create_empty_result, existing_results, 
                      get_dependencies, get_existing_result, get_from_dataframe,
                      initializer, explicit_params_checker, DependencyError)
 from ..configparsingutils import check_and_format_humidity_parsed_arguments
@@ -37,6 +37,8 @@ class VapourPressure(Plugin):
     :type rpn: bool, optional
     :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
     :type dependency_check: bool, optional  
+    :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
+    :type copy_input: bool, optional  
     """
     computable_plugin = "VPPR"
     @explicit_params_checker
@@ -48,7 +50,8 @@ class VapourPressure(Plugin):
             temp_phase_switch=-40,
             temp_phase_switch_unit='celsius',
             rpn=False,
-            dependency_check=False):
+            dependency_check=False,
+            copy_input=False):
 
         self.plugin_params = {
             'ice_water_phase': self.ice_water_phase,
@@ -116,9 +119,9 @@ class VapourPressure(Plugin):
             'VPPR': {
                 'nomvar': 'VPPR',
                 'etiket': 'VAPRES',
-                'unit': 'hectoPascal',
-                'nbits': 16,
-                'datyp': 1}}
+                'unit'  : 'hectoPascal',
+                'nbits' : 16,
+                'datyp' : 1}}
 
 
         self.df = fstpy.metadata_cleanup(self.df)
@@ -242,7 +245,9 @@ class VapourPressure(Plugin):
 
                 df_list.append(vppr_df)
         finally:
-            return final_results(df_list, VapourPressureError, self.meta_df, self.dependency_check)
+            return self.final_results(df_list, VapourPressureError,           
+                                      dependency_check = self.dependency_check, 
+                                      copy_input = self.copy_input)
 
     def vapourpressure_from_hu_px(self, dependencies_df, option):
         logging.info(f'VapourPressure - option {option+1}')

@@ -3,7 +3,7 @@ import pandas as pd
 
 import fstpy
 from ..plugin import Plugin
-from ..utils import final_results, initializer
+from ..utils import initializer
 
 class PressureError(Exception):
     pass
@@ -18,6 +18,8 @@ class Pressure(Plugin):
     :type standard_atmosphere: bool, optional
     :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
     :type dependency_check: bool, optional  
+    :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
+    :type copy_input: bool, optional 
     """
 
     computable_plugin = "PX"
@@ -25,7 +27,9 @@ class Pressure(Plugin):
     def __init__( self, df: pd.DataFrame, 
                 reference_field=None, 
                 standard_atmosphere: bool = False, 
-                dependency_check=False):
+                dependency_check=False,
+                copy_input=False):
+
         super().__init__(df)
         if not (self.reference_field is None):
             self.no_meta_df = self.no_meta_df.loc[self.no_meta_df.nomvar == self.reference_field]
@@ -45,4 +49,7 @@ class Pressure(Plugin):
         :rtype: pd.DataFrame
         """
         res_df = self.qp.compute()
-        return final_results([res_df],PressureError,self.meta_df,self.dependency_check)
+        return self.final_results([res_df], PressureError, 
+                                  dependency_check = self.dependency_check, 
+                                  copy_input = self.copy_input)
+

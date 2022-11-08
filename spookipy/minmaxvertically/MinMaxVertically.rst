@@ -20,11 +20,9 @@ Dependencies:
 Result(s):
 ~~~~~~~~~~
 
--  A field with the values, KMIN (2D), for which the value of the
-   meteorological field is minimum
+-  MIN (2D) : A field with the mimimum value of the meteorological field 
    *and/or*
--  A field with the values, KMAX (2D), for which the value of the
-   meteorological field is maximum
+-  MAX (2D) : A field with the maximum value of the meteorological field
 
 Algorithm:
 ~~~~~~~~~~

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import pandas as pd
 from test import TEST_PATH, TMP_PATH, check_test_ssm_package
 
 check_test_ssm_package()
@@ -157,6 +158,36 @@ def test_7(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "Multiply_test7_file2cmp.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
+
+
+def test_10(plugin_test_dir):
+    """Test multiplication avec parametre group_by_nomvar."""
+    # open and read source
+    source0 = plugin_test_dir + "TTUUVV_12h.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    source1 = plugin_test_dir + "TTUUVV_24h.std"
+    src_df1 = fstpy.StandardFileReader(source1).to_pandas()
+    src_df = pd.concat([src_df0 , src_df1])
+
+    # compute MultiplyElementsByPoint
+    df = spookipy.MultiplyElementsByPoint(src_df, group_by_nomvar=True).compute()
+
+    df.loc[~df.nomvar.isin(['!!', '^^', '>>', 'P0']), 'etiket'] = '__MULBYPX'
+    df.loc[~df.nomvar.isin(['!!', '^^', '>>', 'P0']), 'typvar'] = 'P'
+
+    df.sort_values(by=['nomvar', 'level'],ascending=[True, False],inplace=True)
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "test10_file2cmp.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)

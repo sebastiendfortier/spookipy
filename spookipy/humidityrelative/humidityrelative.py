@@ -10,7 +10,7 @@ from ..humidityutils import (get_temp_phase_switch, validate_humidity_parameters
                             mandatory_temp_phase_switch_when_using_ice_water_phase_both)
 from ..plugin import Plugin
 from ..science import hr_from_svp_vppr, rpn_hr_from_es, rpn_hr_from_hu
-from ..utils import (create_empty_result, existing_results, final_results,
+from ..utils import (create_empty_result, existing_results,
                      get_dependencies, get_existing_result, get_from_dataframe,
                      initializer, explicit_params_checker, DependencyError)
 from ..configparsingutils import check_and_format_humidity_parsed_arguments
@@ -34,7 +34,9 @@ class HumidityRelative(Plugin):
     :param rpn: Use rpn library algorithm, defaults to False
     :type rpn: bool, optional
     :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
-    :type dependency_check: bool, optional  
+    :type dependency_check: bool, optional
+    :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
+    :type copy_input: bool, optional 
     """
     computable_plugin = "HR"
     @explicit_params_checker
@@ -46,13 +48,14 @@ class HumidityRelative(Plugin):
             temp_phase_switch=None,
             temp_phase_switch_unit='celsius',
             rpn=False,
-            dependency_check=False):
+            dependency_check=False,
+            copy_input=False):
 
         self.plugin_params = {
-            'ice_water_phase': self.ice_water_phase,
-            'temp_phase_switch': self.temp_phase_switch,
+            'ice_water_phase'       : self.ice_water_phase,
+            'temp_phase_switch'     : self.temp_phase_switch,
             'temp_phase_switch_unit': self.temp_phase_switch_unit,
-            'rpn': self.rpn}
+            'rpn'                   : self.rpn}
         self.plugin_mandatory_dependencies_rpn = [
             {
                 'TT': {'nomvar': 'TT', 'unit': 'kelvin'},
@@ -102,9 +105,9 @@ class HumidityRelative(Plugin):
             'HR': {
                 'nomvar': 'HR',
                 'etiket': 'HUMREL',
-                'unit': 'scalar',
-                'nbits': 12,
-                'datyp': 1}}
+                'unit'  : 'scalar',
+                'nbits' : 12,
+                'datyp' : 1}}
         self.df = fstpy.metadata_cleanup(self.df)
         super().__init__(df)
         self.prepare_groups()
@@ -203,7 +206,9 @@ class HumidityRelative(Plugin):
 
                 df_list.append(hr_df)
         finally:
-            return final_results(df_list, HumidityRelativeError, self.meta_df, self.dependency_check)
+            return self.final_results(df_list, HumidityRelative, 
+                                      dependency_check = self.dependency_check, 
+                                      copy_input = self.copy_input)
 
     def rpn_humidityrelative_from_tt_hu_px(
             self, dependencies_df, hu_df, option):
@@ -233,7 +238,8 @@ class HumidityRelative(Plugin):
                 ignore_index=True),
             ice_water_phase=self.ice_water_phase,
             temp_phase_switch=self.temp_phase_switch,
-            rpn=True, dependency_check=self.dependency_check).compute()
+            rpn=True, 
+            dependency_check=self.dependency_check).compute()
         hu_df = get_from_dataframe(hu_df, 'HU')
         return hu_df
 
@@ -265,7 +271,8 @@ class HumidityRelative(Plugin):
                 ignore_index=True),
             ice_water_phase=self.ice_water_phase,
             temp_phase_switch=self.temp_phase_switch,
-            rpn=True, dependency_check=self.dependency_check).compute()
+            rpn=True, 
+            dependency_check=self.dependency_check).compute()
         es_df = get_from_dataframe(es_df, 'ES')
         return es_df
 

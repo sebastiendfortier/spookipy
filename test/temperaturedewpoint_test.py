@@ -229,6 +229,34 @@ def test_9(plugin_test_dir):
     fstpy.delete_file(results_file)
     assert(res)
 
+def test_10(plugin_test_dir):
+    """Calcul du point de rosée à partir d'un fichier du global hyb (TT et HU)."""
+    # Existe en python seulement 
+
+    # open and read source
+    source0 = plugin_test_dir + "2011100712_012_glbhyb_reduit"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    tthu_df = fstpy.select_with_meta(src_df0, ['TT', 'HU'])
+
+    # compute TemperatureDewPoint
+    df = spookipy.TemperatureDewPoint(tthu_df, ice_water_phase='water', copy_input=True).compute()
+
+    # df.loc[:,'datyp'] = 5
+    # df.loc[df.nomvar!='!!','nbits'] = 32
+
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "2011100712_test10_file2cmp.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare, e_max=0.01)
+    # fstpy.delete_file(results_file)
+    assert(res)
 
 def test_11(plugin_test_dir):
     """Calcul du point de rosée à partir d'un fichier du global hybrid (TT et QV)."""

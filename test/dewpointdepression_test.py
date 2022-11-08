@@ -196,3 +196,31 @@ def test_9(plugin_test_dir):
     fstpy.delete_file(results_file)
     assert(res)
 
+def test_10(plugin_test_dir):
+    """Calcul de l'écart du point de rosée (ES) à partir de l'humidité relative (HR) avec l'option copy_input."""
+    # open and read source
+    source0 = plugin_test_dir + "2011100712_012_glbhyb_reduit"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    src_df0 = fstpy.select_with_meta(src_df0, ['TT', 'HR'])
+
+    # compute spookipy.DewPointDepression
+    df = spookipy.DewPointDepression(src_df0, ice_water_phase='water', copy_input=True).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName TT,HR] >>
+    # [DewPointDepression --iceWaterPhase WATER ] >> [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended]
+
+    df.loc[df.nomvar == 'ES', 'etiket'] = 'G133K80N'
+    # df.loc[:,'nbits']=32
+    # df.loc[:,'datyp']=5
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "2011100712_glbhyb_hr_nonRpn_reduit.file2cmp.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)

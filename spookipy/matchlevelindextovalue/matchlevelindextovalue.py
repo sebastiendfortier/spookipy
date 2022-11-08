@@ -10,7 +10,7 @@ import pandas as pd
 import rpnpy.librmn.all as rmn
 
 from ..plugin import Plugin
-from ..utils import (create_empty_result, dataframe_arrays_to_dask, final_results, get_3d_array,
+from ..utils import (create_empty_result, dataframe_arrays_to_dask, get_3d_array,
                      initializer, reshape_arrays, to_numpy, validate_nomvar)
 
 class MatchLevelIndexToValueError(Exception):
@@ -29,6 +29,8 @@ class MatchLevelIndexToValue(Plugin):
     :type nomvar_index: str, optional
     :param use_interval: utilisation de l'objet intervalle, defaults to 'FALSE'
     :type use_interval: str, optional
+    :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
+    :type copy_input: bool, optional 
     """
     @initializer
     def __init__(
@@ -37,7 +39,8 @@ class MatchLevelIndexToValue(Plugin):
             error_value=-1,
             nomvar_out=None,
             nomvar_index='IND',
-            use_interval=False):
+            use_interval=False,
+            copy_input=False):
 
         self.plugin_result_specifications = \
             {
@@ -62,8 +65,7 @@ class MatchLevelIndexToValue(Plugin):
             MatchLevelIndexToValueError)
         
         if self.no_meta_df.loc[(self.no_meta_df.nomvar == self.nomvar_index)].empty:
-            raise MatchLevelIndexToValueError(
-                    f'Missing indices field {self.nomvar_index} !') 
+            raise MatchLevelIndexToValueError(f'Missing indices field {self.nomvar_index} !') 
 
         self.no_meta_df = fstpy.add_columns(
             self.no_meta_df, columns=[
@@ -151,7 +153,9 @@ class MatchLevelIndexToValue(Plugin):
                 
 
         if len(df_list):
-            return final_results(df_list, MatchLevelIndexToValueError, self.meta_df)
+            return self.final_results(df_list, MatchLevelIndexToValueError,  
+                                      copy_input = self.copy_input)
+
         else:
             raise MatchLevelIndexToValueError('No results produced !')
 

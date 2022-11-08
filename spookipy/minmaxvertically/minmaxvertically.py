@@ -131,8 +131,8 @@ class MinMaxVertically(Plugin):
         parser.add_argument('--minMax',type=str,choices=["MIN","MAX","BOTH"], help="Finds either the maximum or minimum value index or both")
         parser.add_argument('--bounded',dest='bounded',action='store_true',default=False, help="Searches in part of the column (requires fields KBAS and KTOP as inputs) Default: searches the whole column")
         parser.add_argument('--fieldName',type=str,dest='nomvar', help="Name of the field.")
-        parser.add_argument('--outputFieldName1',type=str,default="MIN",dest='nomvar_min',help="Option to change the name of output field KMIN")
-        parser.add_argument('--outputFieldName2',type=str,default="MAX",dest='nomvar_max',help="Option to change the name of output field KMAX")
+        parser.add_argument('--outputFieldName1',type=str,default="MIN",dest='nomvar_min',help="Option to change the name of output field MIN")
+        parser.add_argument('--outputFieldName2',type=str,default="MAX",dest='nomvar_max',help="Option to change the name of output field MAX")
 
         parsed_arg = vars(parser.parse_args(args.split()))
         if parsed_arg['nomvar'] is not None:

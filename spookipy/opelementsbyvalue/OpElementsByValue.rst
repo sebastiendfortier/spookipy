@@ -38,21 +38,21 @@ Usage:
 
 .. code:: python
 
-   python3
-   
    import os
    import fstpy
    import spookipy
 
-   spooki_dir = os.environ['SPOOKI_DIR']
+   spooki_dir     = os.environ['SPOOKI_DIR']
+   spooki_out_dir = os.environ['BIG_TMPDIR']
 
-   user = os.environ['USER']
+   input_file  = (f'{spooki_dir}/pluginsRelatedStuff/MultiplyElementBy/testsFiles/inputFile.std')
+   output_file = (f'{spooki_out_dir}/outputFile.std')
 
-   df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/MultiplyElementBy/testsFiles/inputFile.std').to_pandas()
+   df = fstpy.StandardFileReader(input_file).to_pandas()
 
    class MultiplyElementsByError(Exception):
       pass
-      
+
    def mult_value(a, v):
       return a * v
 
@@ -64,13 +64,13 @@ Usage:
                                  exception_class=MultiplyElementsByError,
                                  etiket='MULEBY').compute()
 
-   fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
+   fstpy.StandardFileWriter(output_file, res_df).to_fst()
 
 
 Contacts:
 ~~~~~~~~~
 
-- Author : `Sébastien Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
+- Author   : `Sébastien Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
 - Coded by : `Sébastien Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
-- Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ / `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+- Support  : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ / `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
 

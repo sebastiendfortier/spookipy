@@ -10,10 +10,7 @@ Use:
 - The compute method needs to be implemented.
 
 
-
 .. code:: python
-
-    python3
 
     import pandas as pd
     import spookipy
@@ -31,6 +28,6 @@ Use:
 Contacts:
 ~~~~~~~~~
 
-- Author : `Audrey Germain <https://wiki.cmc.ec.gc.ca/wiki/User:Germaina>`__
+- Author   : `Audrey Germain <https://wiki.cmc.ec.gc.ca/wiki/User:Germaina>`__
 - Coded by : `Audrey Germain <https://wiki.cmc.ec.gc.ca/wiki/User:Germaina>`__
-- Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ / `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+- Support  : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ / `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__

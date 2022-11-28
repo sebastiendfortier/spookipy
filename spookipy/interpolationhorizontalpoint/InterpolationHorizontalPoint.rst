@@ -42,21 +42,21 @@ Keywords:
 Usage:
 ~~~~~~
 
-
-
 .. code:: python
-
-    python3
     
     import os
+    import numpy as np
+    import pandas as pd
     import fstpy
     import spookipy
 
-    spooki_dir = os.environ['SPOOKI_DIR']
+    spooki_dir     = os.environ['SPOOKI_DIR']
+    spooki_out_dir = os.environ['BIG_TMPDIR']
 
-    user = os.environ['USER']
+    input_file  = (f'{spooki_dir}/pluginsRelatedStuff/InterpolationHorizontalPoint/testsFiles/inputFile.std')
+    output_file = (f'{spooki_out_dir}/outputFile.std')
 
-    df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/InterpolationHorizontalPoint/testsFiles/inputFile.std').to_pandas()
+    df = fstpy.StandardFileReader(input_file).to_pandas()
 
     # build lat lon dataframe
     base = {'shape': (1,1),  'dateo': 0,  'datev': 0, 'path': None, 'typvar': 'X', 'ni': 1, 
@@ -67,27 +67,28 @@ Usage:
     lon = base.copy()
     lon['nomvar'] = 'LON'
 
-    lat['d'] = np.expand_dims(np.array([45.73, 43.40, 49.18], dtype=np.float32), axis=-1)
+    lat['d']  = np.expand_dims(np.array([45.73, 43.40, 49.18], dtype=np.float32), axis=-1)
     lat['ni'] = lat['d'].shape[0]
     lat['nj'] = lat['d'].shape[1]
-    lon['d'] = np.expand_dims( np.array([-73.75, -79.38, -123.18], dtype=np.float32), axis=-1)
+    lon['d']  = np.expand_dims( np.array([-73.75, -79.38, -123.18], dtype=np.float32), axis=-1)
     lon['ni'] = lon['d'].shape[0]
     lon['nj'] = lon['d'].shape[1]
-    latlon = [lat, lon]
+    latlon    = [lat, lon]
     latlon_df =  pd.DataFrame(latlon)
 
+    df_and_lat_lon = pd.concat([df, latlon_df], ignore_index=True, sort=False)
+
     res_df = spookipy.InterpolationHorizontalPoint(
-        df,
-        latlon_df,
+        df_and_lat_lon,
         interpolation_type='bi-linear',
         extrapolation_type='value',
         extrapolation_value=99.9).compute()
 
 
-    fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
+    fstpy.StandardFileWriter(output_file, res_df).to_fst()
 
 
--  `Other exemples <https://wiki.cmc.ec.gc.ca/wiki/Spooki/Documentation/Exemples#Exemples_d.27interpolation_horizontale_sur_un_ensemble_de_points_de_latitudes_et_longitudes_donn.C3.A9es>`__
+-  `Other examples <https://wiki.cmc.ec.gc.ca/wiki/Spooki/en/Documentation/Examples#Examples_of_horizontal_interpolation_to_a_set_of_latitude.2Flongitude_points>`__
 
 Contacts:
 ~~~~~~~~~
@@ -100,6 +101,6 @@ Contacts:
 Spooki original documentation:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`Francais <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginInterpolationHorizontalPoint.html>`_
+`Français <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginInterpolationHorizontalPoint.html>`_
 
 `English <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_english_doc/html/pluginInterpolationHorizontalPoint.html>`_

@@ -68,21 +68,23 @@ Usage:
 
 .. code:: python
 
-    python3
-    
     import os
     import fstpy
     import spookipy
 
-    spooki_dir = os.environ['SPOOKI_DIR']
+   spooki_dir     = os.environ['SPOOKI_DIR']
+   spooki_out_dir = os.environ['BIG_TMPDIR']
 
-    user = os.environ['USER']
+   input_file  = (f'{spooki_dir}/pluginsRelatedStuff/GridPointDifference/testsFiles/inputFile.std')
+   output_file = (f'{spooki_out_dir}/outputFile.std')
 
-    df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/GridPointDifference/testsFiles/inputFile.std').to_pandas()
+   df = fstpy.StandardFileReader(input_file).to_pandas()
 
-    res_df = spookipy.GridPointDifference(df, axis=['x','y'], difference_type='centered').compute()
+   res_df = spookipy.GridPointDifference(df, 
+                                         axis=['x','y'], 
+                                         difference_type='centered').compute()
 
-    fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
+   fstpy.StandardFileWriter(output_file, res_df).to_fst()
 
 
 Contacts:
@@ -96,6 +98,6 @@ Contacts:
 Spooki original documentation:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`Francais <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginGridPointDifference.html>`_
+`Français <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginGridPointDifference.html>`_
 
 `English <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_english_doc/html/pluginGridPointDifference.html>`_

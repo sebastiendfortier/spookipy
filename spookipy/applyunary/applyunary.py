@@ -59,6 +59,7 @@ class ApplyUnary(Plugin):
         logging.info('ApplyUnary - compute')
 
         in_df = self.df.loc[self.df.nomvar == self.nomvar_in].reset_index(drop=True)
+        in_df = fstpy.add_columns(in_df, columns=['npak'])
 
         if in_df.empty:
             raise ApplyUnaryError(f'No data to process with nomvar {self.nomvar_in}')
@@ -67,7 +68,7 @@ class ApplyUnary(Plugin):
                                      {'nomvar': self.nomvar_out,
                                       'etiket': self.etiket,
                                       'datyp': 5,
-                                      'npak': 32},
+                                      'nbits': 32},
                                      all_rows=True)
 
         for i in res_df.index:

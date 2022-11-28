@@ -40,29 +40,27 @@ Keywords:
 Usage:
 ~~~~~~
 
-#. Call example:
-
 .. code:: python
 
-    python3
-    
     import os
     import fstpy
     import spookipy
-    
-    spooki_dir = os.environ['SPOOKI_DIR']
 
-    user = os.environ['USER']
+    spooki_dir     = os.environ['SPOOKI_DIR']
+    spooki_out_dir = os.environ['BIG_TMPDIR']
 
-    df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/WindDirection/testsFiles/inputFile.std').to_pandas()
+    input_file  = (f'{spooki_dir}/pluginsRelatedStuff/WindDirection/testsFiles/inputFile.std')
+    output_file = (f'{spooki_out_dir}/outputFile.std')
+
+    df = fstpy.StandardFileReader(input_file).to_pandas()
 
     res_df = spookipy.WindDirection(df).compute()
 
-    fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
+    fstpy.StandardFileWriter(output_file, res_df).to_fst()
 
 Contacts:
 ~~~~~~~~~
 
-- Author : `Maryse Beauchemin <https://wiki.cmc.ec.gc.ca/wiki/User:Beaucheminm>`__
+- Author   : `Maryse Beauchemin <https://wiki.cmc.ec.gc.ca/wiki/User:Beaucheminm>`__
 - Coded by : `François Fortin <https://wiki.cmc.ec.gc.ca/wiki/User:Fortinf>`__
-- Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__,  `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+- Support  : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__,  `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__

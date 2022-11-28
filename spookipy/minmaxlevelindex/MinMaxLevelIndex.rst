@@ -77,47 +77,60 @@ Usage:
 ~~~~~~
 
 .. code:: python
-
-   python3
    
    import os
    import fstpy
    import spookipy
 
-   spooki_dir = os.environ['SPOOKI_DIR']
+   spooki_dir     = os.environ['SPOOKI_DIR']
+   spooki_out_dir = os.environ['BIG_TMPDIR']
 
-   user = os.environ['USER']
+   input_file  = (f'{spooki_dir}/pluginsRelatedStuff/MinMaxLevelIndex/testsFiles/inputFile.std')
+   output_file = (f'{spooki_out_dir}/outputFile.std')
 
-   df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/MinMaxLevelIndex/testsFiles/inputFile.std').to_pandas()
+   df = fstpy.StandardFileReader(input_file).to_pandas()
 
-   res_df = spookipy.MinMaxLevelIndex(df, min=True, nomvar="UU", ascending=True).compute()
+   res_df = spookipy.MinMaxLevelIndex(df, 
+                                      min=True, 
+                                      nomvar="UU",
+                                      ascending=True).compute()
 
-   fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
+   fstpy.StandardFileWriter(output_file, res_df).to_fst()
 
 
 .. code:: python
 
-   python3
-   
    import os
    import fstpy
    import spookipy
+   import pandas as pd
 
-   spooki_dir = os.environ['SPOOKI_DIR']
+   spooki_dir     = os.environ['SPOOKI_DIR']
+   spooki_out_dir = os.environ['BIG_TMPDIR']
 
-   user = os.environ['USER']
+   input_file  = (f'{spooki_dir}/pluginsRelatedStuff/MinMaxLevelIndex/testsFiles/inputFile.std')
+   output_file = (f'{spooki_out_dir}/outputFile.std')
 
-   df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/MinMaxLevelIndex/testsFiles/inputFile.std').to_pandas()
+   df = fstpy.StandardFileReader(input_file).to_pandas()
 
-   minidx_df = spookipy.SetConstantValue(df, min_index=True, nomvar_out='KBAS', bi_dimensionnal=True).compute()
+   minidx_df = spookipy.SetConstantValue(df, 
+                                         min_index=True, 
+                                         nomvar_out='KBAS', 
+                                         bi_dimensionnal=True).compute()
 
-   maxidx_df = spookipy.SetConstantValue(df, max_index=True, nomvar_out='KTOP', bi_dimensionnal=True).compute()
+   maxidx_df = spookipy.SetConstantValue(df, 
+                                         max_index=True, 
+                                         nomvar_out='KTOP', 
+                                         bi_dimensionnal=True).compute()
 
    all_df = pd.concat([df,minidx_df,maxidx_df], ignore_index=True)
 
-   res_df = spookipy.MinMaxLevelIndex(all_df, nomvar="UU", min=True, ascending=True).compute()
+   res_df = spookipy.MinMaxLevelIndex(all_df, 
+                                      nomvar="UU", 
+                                      min=True, 
+                                      ascending=True).compute()
 
-   fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
+   fstpy.StandardFileWriter(output_file, res_df).to_fst()
 
 
 Contacts:
@@ -131,6 +144,6 @@ Contacts:
 Spooki original documentation:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`Francais <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginMinMaxLevelIndex.html>`_
+`Français <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginMinMaxLevelIndex.html>`_
 
 `English <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_english_doc/html/pluginMinMaxLevelIndex.html>`_

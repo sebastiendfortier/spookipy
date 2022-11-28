@@ -99,25 +99,24 @@ Keywords:
 Usage:
 ~~~~~~
 
-
-
 .. code:: python
 
-    python3
-    
     import os
     import fstpy
     import spookipy
     
-    spooki_dir = os.environ['SPOOKI_DIR']
+    spooki_dir     = os.environ['SPOOKI_DIR']
+    spooki_out_dir = os.environ['BIG_TMPDIR']
 
-    user = os.environ['USER']
+    input_file  = (f'{spooki_dir}/pluginsRelatedStuff/WaterVapourMixingRatio/testsFiles/inputFile.std')
+    output_file = (f'{spooki_out_dir}/outputFile.std')
 
-    df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/WaterVapourMixingRatio/testsFiles/inputFile.std').to_pandas()
+    df = fstpy.StandardFileReader(input_file).to_pandas()
 
     res_df = spookipy.WaterVapourMixingRatio(df).compute()
 
-    fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
+    fstpy.StandardFileWriter(output_file, res_df).to_fst()
+
 
 Contacts:
 ~~~~~~~~~

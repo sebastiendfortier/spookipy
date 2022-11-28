@@ -57,4 +57,4 @@ echo "Use the ssm package" >> $OUTPUT
 echo "" >> $OUTPUT
 echo "::" >> $OUTPUT
 echo "" >> $OUTPUT
-echo "    . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/spookipy/$VERSION" >> $OUTPUT
+echo "    .  r.load.dot /fs/ssm/eccc/cmd/cmdw/PRIVATE/spookipy/bundle/$VERSION" >> $OUTPUT

@@ -69,38 +69,36 @@ Keywords:
 Usage:
 ~~~~~~
 
-
-
 .. code:: python
-
-   python3
 
    import os
    import fstpy
    import spookipy
 
-   spooki_dir = os.environ['SPOOKI_DIR']
+   spooki_dir     = os.environ['SPOOKI_DIR']
+   spooki_out_dir = os.environ['BIG_TMPDIR']
 
-   user = os.environ['USER']
+   input_file  = (f'{spooki_dir}/pluginsRelatedStuff/TotalTotalsIndex/testsFiles/inputFile.std')
+   output_file = (f'{spooki_out_dir}/outputFile.std')
 
-   df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/TotalTotalsIndex/testsFiles/inputFile.std').to_pandas()
+   df = fstpy.StandardFileReader(input_file).to_pandas()
 
    res_df = spookipy.TotalTotalsIndex(df).compute()
 
-   fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
+   fstpy.StandardFileWriter(output_file, res_df).to_fst()
 
 
 Contacts:
 ~~~~~~~~~
 
--  Author : `George Karaganis <https://wiki.cmc.ec.gc.ca/wiki/User:Karaganisg>`__
+-  Author   : `George Karaganis <https://wiki.cmc.ec.gc.ca/wiki/User:Karaganisg>`__
 -  Coded by : `Sébastien Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
--  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ / `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+-  Support  : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ / `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
 
 
 Spooki original documentation:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`Francais <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginTotalTotalsIndex.html>`_
+`Français <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginTotalTotalsIndex.html>`_
 
 `English <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_english_doc/html/pluginTotalTotalsIndex.html>`_

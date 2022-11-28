@@ -86,41 +86,46 @@ Usage:
 
 .. code:: python
 
-   python3
-   
    import os
    import fstpy
    import spookipy
    import datetime
    
-   spooki_dir = os.environ['SPOOKI_DIR']
+   spooki_dir     = os.environ['SPOOKI_DIR']
+   spooki_out_dir = os.environ['BIG_TMPDIR']
 
-   user = os.environ['USER']
+   input_file  = (f'{spooki_dir}/pluginsRelatedStuff/TimeIntervalMinMax/testsFiles/inputFile.std')
+   output_file = (f'{spooki_out_dir}/outputFile.std')
 
-   df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/TimeIntervalMinMax/testsFiles/inputFile.std').to_pandas()
+   df = fstpy.StandardFileReader(input_file).to_pandas()
 
-   range1 = (datetime.timedelta(hours=0),datetime.timedelta(hours=177))
-   range2 = (datetime.timedelta(hours=0),datetime.timedelta(hours=160))
+   range1    = (datetime.timedelta(hours=0),datetime.timedelta(hours=177))
+   range2    = (datetime.timedelta(hours=0),datetime.timedelta(hours=160))
    interval1 = datetime.timedelta(hours=12)
    interval2 = datetime.timedelta(hours=3)
-   step1 = datetime.timedelta(hours=24)
-   step2 = datetime.timedelta(hours=6)
+   step1     = datetime.timedelta(hours=24)
+   step2     = datetime.timedelta(hours=6)
    
-   res_df = spookipy.TimeIntervalMinMax(df, nomvar='PR', min=True, forecast_hour_range=[range1, range2], interval=[interval1, interval2], step=[step1, step2]).compute()
+   res_df    = spookipy.TimeIntervalMinMax(df, 
+                                           nomvar='PR', 
+                                           min=True, 
+                                           forecast_hour_range=[range1, range2], 
+                                           interval=[interval1, interval2], 
+                                           step=[step1, step2]).compute()
 
-   fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
-      
+   fstpy.StandardFileWriter(output_file, res_df).to_fst()
+     
 Contacts:
 ~~~~~~~~~
 
 -  Auteur(e) : `Agnieszka Barszcz <https://wiki.cmc.ec.gc.ca/wiki/Agn%C3%A8s_Barszcz>`__
--  Codé par : `Philippe Lachapelle <https://wiki.cmc.ec.gc.ca/wiki/User:lachapellep>`__
--  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ / `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+-  Codé par  : `Philippe Lachapelle <https://wiki.cmc.ec.gc.ca/wiki/User:lachapellep>`__
+-  Support   : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ / `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
 
 
 Spooki original documentation:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`Francais <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginTimeIntervalMinMax.html>`_
+`Français <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginTimeIntervalMinMax.html>`_
 
 `English <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_english_doc/html/pluginTimeIntervalMinMax.html>`_

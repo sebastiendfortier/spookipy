@@ -45,21 +45,25 @@ Usage:
 ~~~~~~
 
 .. code:: python
-   python3
    
    import os
    import fstpy
    import spookipy
 
-   spooki_dir = os.environ['SPOOKI_DIR']
+   spooki_dir     = os.environ['SPOOKI_DIR']
+   spooki_out_dir = os.environ['BIG_TMPDIR']
 
-   user = os.environ['USER']
+   input_file  = (f'{spooki_dir}/pluginsRelatedStuff/Thickness/testsFiles/inputFile.std')
+   output_file = (f'{spooki_out_dir}/outputFile.std')
 
-   src_df0 = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/Thickness/testsFiles/inputFile.std').to_pandas()
+   df = fstpy.StandardFileReader(input_file).to_pandas()
 
-   df = spookipy.Thickness(src_df0,base=1.0,top=0.8346,coordinate_type='UNKNOWN').compute()
+   res_df = spookipy.Thickness(df, 
+                               base=1.0,
+                               top=0.8346,
+                               coordinate_type='UNKNOWN').compute()
 
-   fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', df).to_fst()
+   fstpy.StandardFileWriter(output_file, res_df).to_fst()
 
 Contacts:
 ~~~~~~~~~
@@ -72,6 +76,6 @@ Contacts:
 Spooki original documentation:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`Francais <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginThickness.html>`_
+`Français <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginThickness.html>`_
 
 `English <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_english_doc/html/pluginThickness.html>`_

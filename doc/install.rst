@@ -5,4 +5,4 @@ Use the ssm package
 
 ::
 
-    . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/spookipy/1.0.1
+    .  r.load.dot /fs/ssm/eccc/cmd/cmdw/PRIVATE/spookipy/bundle/2022.06.00

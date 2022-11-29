@@ -80,6 +80,7 @@ ssm_package_with_everything:
     - . ssmuse-sh -x ${UNIQUE_TEMP_DIR}/spookipy/$( cat ../VERSION )/all
     - ./test_ssm_package.py
     - mv spookipy_*.ssm ${temp_dir}
+    - echo ${temp_dir}
     - rm -r ${UNIQUE_TEMP_DIR}
 
 ssm_package_with_operation_yaml_list:

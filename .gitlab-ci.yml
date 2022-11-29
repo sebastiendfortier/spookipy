@@ -13,6 +13,7 @@ stages:
   - make_doc
   - install_doc
   - ssm_package
+  - deploy
 
 
 before_script:

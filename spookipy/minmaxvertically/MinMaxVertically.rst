@@ -69,12 +69,12 @@ Usage:
    import fstpy
    import spookipy
 
-   spooki_dir     = os.environ['SPOOKI_DIR']
-   spooki_out_dir = os.environ['BIG_TMPDIR']
+   spooki_dir  = os.environ['SPOOKI_DIR']
+   tmpdir      = os.environ['BIG_TMPDIR']
 
 
    input_file  = (f'{spooki_dir}/pluginsRelatedStuff/MinMaxVertically/testsFiles/inputFile.std')
-   output_file = (f'{spooki_out_dir}/outputFile.std')
+   output_file = (f'{tmpdir}/outputFile.std')
 
    df = fstpy.StandardFileReader(input_file).to_pandas()
 
@@ -93,8 +93,8 @@ Usage:
    import spookipy
    import pandas as pd
 
-   spooki_dir     = os.environ['SPOOKI_DIR']
-   spooki_out_dir = os.environ['BIG_TMPDIR']
+   spooki_dir  = os.environ['SPOOKI_DIR']
+   tmpdir      = os.environ['BIG_TMPDIR']
 
    input_file = (f'{spooki_dir}/pluginsRelatedStuff/MinMaxVertically/testsFiles/inputFile.std')
 
@@ -120,7 +120,7 @@ Usage:
                                          max=True, 
                                          bounded=True).compute()
 
-   fstpy.StandardFileWriter(f'{spooki_out_dir}/outputFile.std', res_df).to_fst()
+   fstpy.StandardFileWriter(f'{tmpdir}/outputFile.std', res_df).to_fst()
 
 
 Contacts:

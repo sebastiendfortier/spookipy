@@ -64,16 +64,15 @@ Usage:
    import fstpy
    import spookipy
 
-   spooki_dir     = os.environ['SPOOKI_DIR']
-   spooki_out_dir = os.environ['BIG_TMPDIR']
+   spooki_dir  = os.environ['SPOOKI_DIR']
+   tmpdir      = os.environ['BIG_TMPDIR']
 
    input_file  = (f'{spooki_dir}/pluginsRelatedStuff/Mask/testsFiles/inputFile.std')
-   output_file = (f'{spooki_out_dir}/outputFile.std')
+   output_file = (f'{tmpdir}/outputFile.std')
 
    df = fstpy.StandardFileReader(input_file).to_pandas()
 
-   res_df = spookipy.Mask(
-                           df,
+   res_df = spookipy.Mask( df,
                            thresholds=[0.0,10.0,15.0,20.0],
                            values=[0.0,10.0,15.0,20.0],
                            operators=['>=','>=','>=','>=']).compute()

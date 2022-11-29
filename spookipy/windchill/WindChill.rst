@@ -64,14 +64,14 @@ Usage:
     import fstpy
     import spookipy
 
-    spooki_dir     = os.environ['SPOOKI_DIR']
-    spooki_out_dir = os.environ['BIG_TMPDIR']
+    spooki_dir  = os.environ['SPOOKI_DIR']
+    tmpdir      = os.environ['BIG_TMPDIR']
 
     df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/WindChill/testsFiles/inputFile.std').to_pandas()
 
     res_df = spookipy.WindChill(df).compute()
 
-    fstpy.StandardFileWriter(f'{spooki_out_dir}/outputFile.std', res_df).to_fst()
+    fstpy.StandardFileWriter(f'{tmpdir}/outputFile.std', res_df).to_fst()
 
 Contacts:
 ~~~~~~~~~

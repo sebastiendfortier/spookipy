@@ -46,11 +46,11 @@ Usage:
     class MultiplyElementsByPointError(Exception):
         pass
 
-    spooki_dir     = os.environ['SPOOKI_DIR']
-    spooki_out_dir = os.environ['BIG_TMPDIR']
+    spooki_dir  = os.environ['SPOOKI_DIR']
+    tmpdir      = os.environ['BIG_TMPDIR']
 
     input_file  = (f'{spooki_dir}/pluginsRelatedStuff/MultiplyElementsByPoint/testsFiles/inputFile.std')
-    output_file = (f'{spooki_out_dir}/outputFile.std')
+    output_file = (f'{tmpdir}/outputFile.std')
 
     df = fstpy.StandardFileReader(input_file).to_pandas()
 

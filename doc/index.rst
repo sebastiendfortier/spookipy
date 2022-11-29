@@ -112,7 +112,7 @@ Documentation
    gridcut
    gridpointdifference
    gridpointdistance
-   helicity
+   .. helicity     Bug, not completed, Tests skipped
    humidex
    humidityrelative
    humidityrelativeweightedmean
@@ -120,7 +120,7 @@ Documentation
    humidityutils
    interpolationhorizontalgrid
    interpolationhorizontalpoint
-   interpolationvertical
+   .. interpolationvertical      Not coded !
    mask
    matchlevelindextovalue
    minmaxlevelindex
@@ -149,7 +149,7 @@ Documentation
    vapourpressure
    watervapourmixingratio
    windchill
-   winddirection
+   .. winddirection           Tests skipped !
    windmax
    windmodulus
 

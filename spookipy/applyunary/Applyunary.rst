@@ -42,22 +42,21 @@ Keywords:
 Usage:
 ~~~~~~
 
-
-
 .. code:: python
 
-    python3
-    
     import numpy as np
     import os
     import fstpy
     import spookipy
 
-    spooki_dir = os.environ['SPOOKI_DIR']
+    spooki_dir  = os.environ['SPOOKI_DIR']
+    tmpdir      = os.environ['BIG_TMPDIR']
 
-    user = os.environ['USER']
+    input_file  = (f'{spooki_dir}/pluginsRelatedStuff/AddToElement/testsFiles/inputFile.std')
+    output_file = (f'{tmpdir}/outputFile.std')
 
-    df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/AddToElement/testsFiles/inputFile.std').to_pandas()
+    df = fstpy.StandardFileReader(input_file).to_pandas()
+
 
     res_df = spookipy.ApplyUnary(df,
                                 function=np.sqrt,
@@ -66,7 +65,8 @@ Usage:
                                 etiket='SQRT'
                                 ).compute()
 
-    fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
+    fstpy.StandardFileWriter(output_file, res_df).to_fst()
+
 
 
 Contacts:

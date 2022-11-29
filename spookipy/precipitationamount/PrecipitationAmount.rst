@@ -51,39 +51,42 @@ Usage:
 
 .. code:: python
 
-    python3
-    
-    import os
-    import fstpy
-    import spookipy
-    import datetime
+   import os
+   import fstpy
+   import spookipy
+   import datetime
 
-    spooki_dir = os.environ['SPOOKI_DIR']
+   spooki_dir  = os.environ['SPOOKI_DIR']
+   tmpdir      = os.environ['BIG_TMPDIR']
 
-    user = os.environ['USER']
+   input_file  = (f'{spooki_dir}/pluginsRelatedStuff/PrecipitationAmount/testsFiles/inputFile.std')
+   output_file = (f'{tmpdir}/outputFile.std')
 
-    df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/PrecipitationAmount/testsFiles/inputFile.std').to_pandas()
+   df = fstpy.StandardFileReader(input_file).to_pandas()
 
-    range = (datetime.timedelta(hours=0),datetime.timedelta(hours=48))
-    interval = datetime.timedelta(hours=3)
-    step = datetime.timedelta(hours=1)
+   range    = (datetime.timedelta(hours=0),datetime.timedelta(hours=48))
+   interval = datetime.timedelta(hours=3)
+   step     = datetime.timedelta(hours=1)
 
-    res_df = spookipy.PrecipitationAmount(df, nomvar='SN', forecast_hour_range=range, interval=interval, step=step).compute()
+   res_df = spookipy.PrecipitationAmount(df, 
+                                         nomvar='SN', 
+                                         forecast_hour_range=range, 
+                                         interval=interval, 
+                                         step=step).compute()
 
-    fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
-
+   fstpy.StandardFileWriter(output_file, res_df).to_fst()
 
 Contacts:
 ~~~~~~~~~
 
--  Author : `Marc Klasa <https://wiki.cmc.ec.gc.ca/wiki/User:Klasam>`__
+-  Author   : `Marc Klasa <https://wiki.cmc.ec.gc.ca/wiki/User:Klasam>`__
 -  Coded by : `Guylaine Hardy <https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg>`__
--  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ / `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+-  Support  : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ / `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
 
 
 Spooki original documentation:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`Francais <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginPrecipitationAmount.html>`_
+`Français <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginPrecipitationAmount.html>`_
 
 `English <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_english_doc/html/pluginPrecipitationAmount.html>`_

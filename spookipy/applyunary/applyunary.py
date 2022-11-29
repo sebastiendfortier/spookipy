@@ -67,7 +67,7 @@ class ApplyUnary(Plugin):
                                      {'nomvar': self.nomvar_out,
                                       'etiket': self.etiket,
                                       'datyp': 5,
-                                      'npak': 32},
+                                      'nbits': 32},
                                      all_rows=True)
 
         for i in res_df.index:

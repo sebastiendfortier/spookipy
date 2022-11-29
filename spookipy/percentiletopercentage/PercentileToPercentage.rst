@@ -53,29 +53,30 @@ Usage:
 
 .. code:: python
 
-   python3
-   
    import os
    import fstpy
    import spookipy
 
-   spooki_dir = os.environ['SPOOKI_DIR']
+   spooki_dir  = os.environ['SPOOKI_DIR']
+   tmpdir      = os.environ['BIG_TMPDIR']
 
-   user = os.environ['USER']
+   input_file  = (f'{spooki_dir}/pluginsRelatedStuff/PercentileToPercentage/testsFiles/inputFile.std')
+   output_file = (f'{tmpdir}/outputFile.std')
 
-   df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/PercentileToPercentage/testsFiles/inputFile.std').to_pandas()
+   df = fstpy.StandardFileReader(input_file).to_pandas()
 
-   df_percentage = spookipy.PercentileToPercentage(df_field,   
-                                        threshold=0.3, 
-                                        operator='ge', 
-                                        etiket='GESTG1PALL',
-                                        nomvar='SSH', 
-                                        typvar='P@').compute()
+   df_percentage = spookipy.PercentileToPercentage(df,   
+                                                   threshold=0.3, 
+                                                   operator='ge', 
+                                                   etiket='GESTG1PALL',
+                                                   nomvar='SSH', 
+                                                   typvar='P@').compute()
 
-   fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', df_percentage).to_fst()                                        
+   fstpy.StandardFileWriter(output_file, df_percentage).to_fst()
+                                     
 
 Contacts:
 ~~~~~~~~~
-- Author : Benoit Pouliot
+- Author   : Benoit Pouliot
 - Coded by : Logan Yu 
-- Support: `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__
+- Support  : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__

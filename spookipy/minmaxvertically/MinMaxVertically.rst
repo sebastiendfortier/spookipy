@@ -65,56 +65,70 @@ Usage:
 
 .. code:: python
 
-   python3
-   
    import os
    import fstpy
    import spookipy
 
-   spooki_dir = os.environ['SPOOKI_DIR']
+   spooki_dir  = os.environ['SPOOKI_DIR']
+   tmpdir      = os.environ['BIG_TMPDIR']
 
-   user = os.environ['USER']
 
-   df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/MinMaxVertically/testsFiles/inputFile.std').to_pandas()
+   input_file  = (f'{spooki_dir}/pluginsRelatedStuff/MinMaxVertically/testsFiles/inputFile.std')
+   output_file = (f'{tmpdir}/outputFile.std')
 
-   res_df = spookipy.MinMaxVertically(df, nomvar="TT", max=True, ascending=False).compute()
+   df = fstpy.StandardFileReader(input_file).to_pandas()
 
-   fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
+   res_df = spookipy.MinMaxVertically(df, 
+                                      nomvar="TT", 
+                                      max=True, 
+                                      ascending=False).compute()
+
+   fstpy.StandardFileWriter(output_file, res_df).to_fst()
 
 
 .. code:: python
 
-   python3
-   
    import os
    import fstpy
    import spookipy
+   import pandas as pd
 
-   spooki_dir = os.environ['SPOOKI_DIR']
+   spooki_dir  = os.environ['SPOOKI_DIR']
+   tmpdir      = os.environ['BIG_TMPDIR']
 
-   user = os.environ['USER']
+   input_file = (f'{spooki_dir}/pluginsRelatedStuff/MinMaxVertically/testsFiles/inputFile.std')
 
-   df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/MinMaxVertically/testsFiles/inputFile.std').to_pandas()
+   df = fstpy.StandardFileReader(input_file).to_pandas()
 
-   tt_df = fstpy.select_with_meta(df, ['TT'])
+   tt_df     = fstpy.select_with_meta(df, ['TT'])
 
-   minidx_df = spookipy.SetConstantValue(tt_df, min_index=True, nomvar_out='KBAS', bi_dimensionnal=True).compute()
+   minidx_df = spookipy.SetConstantValue(tt_df, 
+                                         min_index=True, 
+                                         nomvar_out='KBAS', 
+                                         bi_dimensionnal=True).compute()
 
-   maxidx_df = spookipy.SetConstantValue(tt_df, max_index=True, nomvar_out='KTOP', bi_dimensionnal=True).compute()
+   maxidx_df = spookipy.SetConstantValue(tt_df, 
+                                         max_index=True, 
+                                         nomvar_out='KTOP', 
+                                         bi_dimensionnal=True).compute()
 
-   all_df = pd.concat([df,minidx_df,maxidx_df], ignore_index=True)
+   all_df    = pd.concat([df,minidx_df,maxidx_df], ignore_index=True)
 
-   res_df = spookipy.MinMaxVertically(all_df, nomvar="TT", min=True, max=True, bounded=True).compute()
+   res_df    = spookipy.MinMaxVertically(all_df, 
+                                         nomvar="TT", 
+                                         min=True, 
+                                         max=True, 
+                                         bounded=True).compute()
 
-   fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
+   fstpy.StandardFileWriter(f'{tmpdir}/outputFile.std', res_df).to_fst()
 
 
 Contacts:
 ~~~~~~~~~
 
--  Author : `Guylaine Hardy <https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg>`__ 
+-  Author   : `Guylaine Hardy <https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg>`__ 
 -  Coded by : `Guylaine Hardy <https://wiki.cmc.ec.gc.ca/wiki/User:Hardyg>`__
--  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ / `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+-  Support  : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ / `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
 
 
 Spooki original documentation:

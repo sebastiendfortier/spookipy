@@ -86,34 +86,36 @@ Usage:
 
 .. code:: python
 
-    python3
-    
     import os
     import fstpy
     import spookipy
 
-    spooki_dir = os.environ['SPOOKI_DIR']
+    spooki_dir  = os.environ['SPOOKI_DIR']
+    tmpdir      = os.environ['BIG_TMPDIR']
 
-    user = os.environ['USER']
+    input_file  = (f'{spooki_dir}/pluginsRelatedStuff/GridPointDistance/testsFiles/inputFile.std')
+    output_file = (f'{tmpdir}/outputFile.std')
 
-    df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/GridPointDistance/testsFiles/inputFile.std').to_pandas()
+    df = fstpy.StandardFileReader(input_file).to_pandas()
 
-    res_df = spookipy.GridPointDistance(df, axis=['x','y'], difference_type='centered').compute()
+    res_df = spookipy.GridPointDistance(df, 
+                                        axis=['x','y'], 
+                                        difference_type='centered').compute()
 
-    fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
+    fstpy.StandardFileWriter(output_file, res_df).to_fst()
       
 
 Contacts:
 ~~~~~~~~~
 
--  Author : `Marc Klasa <https://wiki.cmc.ec.gc.ca/wiki/User:Klasam>`__
+-  Author   : `Marc Klasa <https://wiki.cmc.ec.gc.ca/wiki/User:Klasam>`__
 -  Coded by : `François Fortin <https://wiki.cmc.ec.gc.ca/wiki/User:Fortinf>`__
--  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ / `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+-  Support  : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ / `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
 
 
 Spooki original documentation:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`Francais <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginGridPointDistance.html>`_
+`Français <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginGridPointDistance.html>`_
 
 `English <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_english_doc/html/pluginGridPointDistance.html>`_

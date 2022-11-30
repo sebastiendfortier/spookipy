@@ -198,6 +198,8 @@ def test_9(plugin_test_dir):
 
 def test_10(plugin_test_dir):
     """Calcul de l'écart du point de rosée (ES) à partir de l'humidité relative (HR) avec l'option copy_input."""
+    # Existe en python seulement 
+    
     # open and read source
     source0 = plugin_test_dir + "2011100712_012_glbhyb_reduit"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()

@@ -6,12 +6,14 @@ variables:
   doc_install_dir: "/home/spst900/public_html/spookipy/${CI_BUILD_REF_NAME}"
   latest_doc_install_dir: "/home/spst900/public_html/spookipy/latest"
   temp_dir: "/home/sgci800/cache/${CI_PROJECT_PATH}/${CI_BUILD_REF_NAME}/${CI_PIPELINE_ID}"
+  deploy_dir_prefix: /fs/site5/eccc/cmd/w/spst900/spooki/CI_spookipy/${CI_BUILD_REF_NAME}
 
 stages:
   - run_regtests
   - make_doc
   - install_doc
   - ssm_package
+  - deploy
 
 
 before_script:
@@ -74,14 +76,12 @@ ssm_package_with_everything:
   script:
     - cd livraison
     - export SSM_TEST_SPOOKIPY=1
-    - UNIQUE_TEMP_DIR=${temp_dir}/${CI_JOB_ID}
-    - echo ${UNIQUE_TEMP_DIR}
-    - ./make_ssm_package.py --install --temp ${UNIQUE_TEMP_DIR}
-    - . ssmuse-sh -x ${UNIQUE_TEMP_DIR}/spookipy/$( cat ../VERSION )/all
+    - DEPLOY_DIR=${deploy_dir_prefix}/${CI_PIPELINE_ID}
+    - echo ${DEPLOY_DIR}
+    - ./make_ssm_package.py --install --temp ${DEPLOY_DIR}
+    - . ssmuse-sh -x ${DEPLOY_DIR}/spookipy/$( cat ../VERSION )/all
     - ./test_ssm_package.py
     - mv spookipy_*.ssm ${temp_dir}
-    - echo ${temp_dir}
-    - rm -r ${UNIQUE_TEMP_DIR}
 
 ssm_package_with_operation_yaml_list:
   stage: ssm_package
@@ -95,3 +95,20 @@ ssm_package_with_operation_yaml_list:
     - ./test_ssm_package.py --yaml plugin_list_operation.yaml
     - mv spookipy_*.ssm ${temp_dir}
     - rm -r ${UNIQUE_TEMP_DIR}
+
+deploy:
+  stage: deploy
+  script:
+    - cd ${deploy_dir_prefix}
+    - rm -f latest
+    - ln -s ${CI_PIPELINE_ID} latest
+  only:
+    - master
+
+remove_ssm:
+  stage: deploy
+  script:
+    - DEPLOY_DIR=${deploy_dir_prefix}/${CI_PIPELINE_ID}
+    - rm -r ${DEPLOY_DIR}
+  except:
+    - master

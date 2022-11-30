@@ -383,7 +383,7 @@ def test_14(plugin_test_dir):
 
 def test_15(plugin_test_dir):
     """Calcul de l'humidité spécifique (HU) à partir de la température du point de rosée (TD)."""
-    # Permet de tester l'appel a HumiditySpecific, sans aucun parametre
+    # Existe en python seulement 
 
     # open and read source
     source0 = plugin_test_dir + "2011100712_012_glbhyb_reduit"
@@ -430,7 +430,7 @@ def test_15(plugin_test_dir):
 
 def test_16(plugin_test_dir):
     """Calcul de l'humidité spécifique (HU) à partir de TD, avec option copy_input."""
-    # Permet de tester l'appel a HumiditySpecific, sans aucun parametre
+    # Existe en python seulement 
 
     # open and read source
     source0 = plugin_test_dir + "2011100712_012_glbhyb_reduit"

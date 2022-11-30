@@ -76,7 +76,7 @@ ssm_package_with_everything:
   script:
     - cd livraison
     - export SSM_TEST_SPOOKIPY=1
-    - DEPLOY_DIR=${deploy_dir_prefix}/${CI_JOB_ID}
+    - DEPLOY_DIR=${deploy_dir_prefix}/${CI_PIPELINE_ID}
     - echo ${DEPLOY_DIR}
     - ./make_ssm_package.py --install --temp ${DEPLOY_DIR}
     - . ssmuse-sh -x ${DEPLOY_DIR}/spookipy/$( cat ../VERSION )/all
@@ -101,14 +101,14 @@ deploy:
   script:
     - cd ${deploy_dir_prefix}
     - rm -f latest
-    - ln -s ${CI_JOB_ID} latest
+    - ln -s ${CI_PIPELINE_ID} latest
   only:
     - master
 
 remove_ssm:
   stage: deploy
   script:
-    - DEPLOY_DIR=${deploy_dir_prefix}/${CI_JOB_ID}
+    - DEPLOY_DIR=${deploy_dir_prefix}/${CI_PIPELINE_ID}
     - rm -r ${DEPLOY_DIR}
   except:
     - master

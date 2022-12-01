@@ -39,37 +39,49 @@ class ApplyUnary(Plugin):
             nomvar_out=None,
             etiket=None):
 
-        self.validate_input()
-
-    def validate_input(self):
-        if self.df.empty:
-            raise ApplyUnaryError('No data to process')
-
-        validate_nomvar(self.nomvar_out, 'ApplyUnary', ApplyUnaryError)
-
+        self.plugin_result_specifications = \
+        {
+            'ALL': {'etiket': self.etiket,
+                    'datyp': 5,
+                    'nbits': 32}
+        }
         self.df = fstpy.metadata_cleanup(self.df)
+        super().__init__(df)
+        self.validate_params_and_input()
 
-        self.meta_df = self.df.loc[self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
+    def validate_params_and_input(self):
 
-        self.df = self.df.loc[~self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
+        if self.nomvar_in is None:
+            nomvar_list = self.no_meta_df.nomvar.unique()
+            if len(nomvar_list) == 1:
+                self.nomvar_in = nomvar_list[0]
+            elif not(self.nomvar_out is None):
+                raise ApplyUnaryError(
+                  f'whenever parameter nomvar_out is specified, only 1 input is allowed: got {nomvar_list} in input')
+        else:
+            validate_nomvar(self.nomvar_in, 'ApplyUnary', ApplyUnaryError)
+
+        if not(self.nomvar_out is None):
+            validate_nomvar(self.nomvar_out, 'ApplyUnary', ApplyUnaryError)
+
 
     def compute(self) -> pd.DataFrame:
         logging.info('ApplyUnary - compute')
 
-        in_df = self.df.loc[self.df.nomvar == self.nomvar_in].reset_index(drop=True)
+        if self.nomvar_in != None:
+            in_df = self.no_meta_df.loc[self.no_meta_df.nomvar == self.nomvar_in].reset_index(drop=True)
+        else:
+            in_df=self.no_meta_df
 
         if in_df.empty:
             raise ApplyUnaryError(f'No data to process with nomvar {self.nomvar_in}')
 
-        res_df = create_empty_result(in_df,
-                                     {'nomvar': self.nomvar_out,
-                                      'etiket': self.etiket,
-                                      'datyp': 5,
-                                      'nbits': 32},
-                                     all_rows=True)
+        if not(self.nomvar_out is None):
+            self.plugin_result_specifications["ALL"]["nomvar"]   = self.nomvar_out
 
+        res_df = create_empty_result(in_df,
+                                     self.plugin_result_specifications['ALL'],       
+                                     all_rows=True)
         for i in res_df.index:
             res_df.at[i, 'd'] = self.function(in_df.at[i, 'd'])
 

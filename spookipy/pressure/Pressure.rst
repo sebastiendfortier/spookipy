@@ -1,13 +1,13 @@
 Description:
 ~~~~~~~~~~~~
 
--  Calculation of the pressure field for a given vertical coordinate.
+-  Calculation of the pressure field.  The plugin will detect the vertical coordinate, make sure 
+   to provide the necessary metadata such as !!, PT, P0, etc. 
 -  The definition of the different coordinates are available in this
    `document. <https://wiki.cmc.ec.gc.ca/images/0/01/Spooki_-_Definitions_coordvert.pdf>`__
 -  Possibility to calculate the pressure in the case of a
    `standard atmosphere <https://en.wikipedia.org/wiki/International_Standard_Atmosphere>`__
    (constant pression ).
--  Others types of vertical coordinates could be added and documented in the future.
 
 Iteration method:
 ~~~~~~~~~~~~~~~~~

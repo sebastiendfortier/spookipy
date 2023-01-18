@@ -6,8 +6,8 @@ import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin
-from ..utils import (create_empty_result, get_3d_array,
-                     initializer, validate_nomvar)
+from ..utils import (create_empty_result, get_3d_array, get_intersecting_levels_new,get_intersecting_levels,
+                     initializer, validate_nomvar, LevelIntersectionError)
 
 
 class OpElementsByColumnError(Exception):
@@ -82,7 +82,35 @@ class OpElementsByColumn(Plugin):
         self.no_meta_df = fstpy.add_columns(
             self.no_meta_df, columns=['forecast_hour', 'ip_info', 'unit'])
 
-        grouping = ['grid']
+        grouping = ['grid','ip1_kind']
+
+        self.groups = self.no_meta_df.groupby(by=grouping)
+
+        all_group_df = pd.DataFrame()
+        for _, current_group in self.groups:
+
+            list_nomvar = current_group.nomvar.unique()
+    
+            if len(current_group.index) == 1 or len(list_nomvar) == 1:
+                continue
+
+            # Construction d'un dictionnaire contenant les champs du dataframe
+            # pour trouver les niveaux communs et eliminer les autres
+            dict_champs = dict.fromkeys(set(list_nomvar),{'nomvar':''})
+            for x in list_nomvar:
+                new_d = {'nomvar':x}
+                dict_champs[x]= new_d
+
+            try:
+                group_df = get_intersecting_levels_new(current_group, dict_champs)
+            except LevelIntersectionError:
+                 raise self.exception_class(
+                            self.operation_name +
+                            ' - not enough records to process, need at least 2')
+            else:
+                if not(group_df.empty):
+                    all_group_df = pd.concat([all_group_df, group_df], ignore_index=True)
+
         if self.group_by_nomvar:
             grouping.append('nomvar')  
         if self.group_by_forecast_hour:
@@ -90,7 +118,13 @@ class OpElementsByColumn(Plugin):
         if self.group_by_level:
             grouping.append('level')
 
-        self.groups = self.no_meta_df.groupby(by=grouping)
+        if not(all_group_df.empty):
+            self.groups = all_group_df.groupby(by=grouping)
+        else:
+            raise self.exception_class(           
+                        self.operation_name +
+                            ' -  invalid input !')
+        
 
     def compute(self) -> pd.DataFrame:
         logging.info('OpElementsByColumn - compute')

@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin
-from ..utils import (create_empty_result, get_3d_array, get_intersecting_levels_new,get_intersecting_levels,
+from ..utils import (create_empty_result, get_3d_array, get_intersecting_levels,
                      initializer, validate_nomvar, LevelIntersectionError)
 
 
@@ -102,7 +102,7 @@ class OpElementsByColumn(Plugin):
                 dict_champs[x]= new_d
 
             try:
-                group_df = get_intersecting_levels_new(current_group, dict_champs)
+                group_df = get_intersecting_levels(current_group, dict_champs)
             except LevelIntersectionError:
                  raise self.exception_class(
                             self.operation_name +

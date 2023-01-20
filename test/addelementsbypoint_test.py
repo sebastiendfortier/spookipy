@@ -259,5 +259,68 @@ def test_9(plugin_test_dir):
     fstpy.delete_file(results_file)
     assert(res)
 
+def test_10(plugin_test_dir):
+    """Additionne des champs qui n'ont pas le meme nombre de niveaux """
+    # open and read source
+    source0 = plugin_test_dir + "glbpres_TT_UU_VV.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    # Selection de 3 niveaux pour TT et UU (100, 925 et 850 mb)
+    tt_uu_df = fstpy.select_with_meta(src_df0, ['TT', 'UU'])
+    tt_uu_df = tt_uu_df.loc[tt_uu_df.ip1.isin([39945888, 41819464, 41744464])]
+
+    # Selection de  niveaux pour VV (100 et 925 mb)
+    vv_df = fstpy.select_with_meta(src_df0, ['VV'])
+    vv_df = vv_df.loc[vv_df.ip1.isin([39945888, 41819464])]
+
+    # Selection de UU et VV sur une autre grille
+    # source1 = plugin_test_dir + "test1.std"
+    source1 = plugin_test_dir + "UUVV5x5_enc_fileSrc.std"
+    src_df1 = fstpy.StandardFileReader(source1).to_pandas()
+    tt_uu_vv = pd.concat([tt_uu_df, vv_df, src_df1], ignore_index=True)
+
+    # compute AddElementsByPoint
+    df = spookipy.AddElementsByPoint(tt_uu_vv, nomvar_out='ACCU',copy_input=False).compute()
+    df['etiket'] = 'ADDFIELDS'
+
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "test10_file2cmp.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare, e_max=0.01)
+    fstpy.delete_file(results_file)
+    assert(res)
+
+def test_11(plugin_test_dir):
+    """Additionne des champs groupe selon le forecast hour """
+    # open and read source
+    # source0 = plugin_test_dir + "TTES2x2x4_manyForecastHours.std"
+    source0 ="/fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/ArithmeticMeanByPoint/testsFiles/TTES2x2x4_manyForecastHours.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    tt_es_df = fstpy.select_with_meta(src_df0, ['TT', 'ES'])
+
+    # compute AddElementsByPoint
+    df = spookipy.AddElementsByPoint(tt_es_df, group_by_forecast_hour=True, copy_input=False).compute()
+    df.loc[df.nomvar == 'ADEP','etiket'] = '__ADDFLDX'
+
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "test11_file2cmp.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
+
+
 if __name__ == "__main__":
     test_1(TEST_PATH + '/AddElementsByPoint/testsFiles/')

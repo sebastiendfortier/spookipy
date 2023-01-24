@@ -59,7 +59,7 @@ class HumidityRelativeWeightedMean(Plugin):
 
         self.plugin_result_specifications = \
             {
-                'HR'  : {'etiket': 'HRWAWG','unit': 'percent'}
+                'HR'  : {'etiket': 'HRWAVG','unit': 'percent'}
             }
 
         self.df = fstpy.metadata_cleanup(self.df)

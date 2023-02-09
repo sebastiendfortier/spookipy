@@ -981,3 +981,36 @@ def get_0_ip1(model_ip1:int) -> int:
         ip1 = rmn.convertIp(rmn.CONVIP_ENCODE_OLD, 0., kind)
     return ip1
 
+
+def modify_5005_record(df:pd.DataFrame):
+    # modify the dataframe itself, no return value
+
+    # add column surfacelevelfor5005 with none everywhere
+    df['levelfor5005'] = -999
+    df['kindfor5005'] = -999
+    # split in two those with flag 5005 (and vctype and HYBRID_5005) and not
+    mask = (df['vctype']==fstpy.VerticalCoordType.HYBRID_5005) & df['flag5005']
+    df_5005 = df.loc[mask]
+
+    group_nomvar = df_5005.groupby(by='nomvar')
+
+    for _, grouped_df in group_nomvar:
+        idx = grouped_df.loc[grouped_df['ip1_kind']==4].index
+        if idx.empty:
+            continue
+        level = df['level'].loc[idx]
+        df.loc[idx,'levelfor5005'] = level
+        kind = df['ip1_kind'].loc[idx]
+        df.loc[idx,'kindfor5005'] = kind
+        df.loc[idx,'level'] = 1.0
+        df.loc[idx,'ip1_kind'] = 5 # is this an ok assumption?
+
+def restore_5005_record(df:pd.DataFrame):
+    # modify the dataframe itself, no return value
+    # find places where the surfacelevelfor5005 column is and restore level and kind
+    if 'levelfor5005' in df.columns:
+        df['level'] = df.apply(lambda row: row['level'] if row['levelfor5005'] == -999 else row['levelfor5005'], axis=1)
+
+    if 'kindfor5005' in df.columns:
+        df['ip1_kind'] = df.apply(lambda row: row['ip1_kind'] if row['kindfor5005'] == -999 else row['kindfor5005'], axis=1)
+

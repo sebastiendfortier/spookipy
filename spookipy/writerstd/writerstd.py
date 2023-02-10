@@ -43,83 +43,63 @@ def create_encoded_ip(value: float, kind: int,mode:int=rmn.CONVIP_ENCODE):
             ip = 0
     return ip
 
+def encode_ip123_metadata(nomvar,ip1_kind,ip3_kind,ip1_value,ip2_value,ip3_value,encoding_mode_ip1,encode_ip2_and_ip3):
+    result_ip1 = ip1_value if nomvar in ["^>", ">>", "^^", "!!", "!!SF"] else create_encoded_ip(float(ip1_value),int(ip1_kind),mode=encoding_mode_ip1)
+    result_ip2 = ip2_value # forecast hour
+    result_ip3 = ip3_value # ??? _userDefinedIndex
+
+    if encode_ip2_and_ip3:
+        result_ip3 = create_encoded_ip(float(result_ip3),int(ip3_kind),mode=rmn.CONVIP_ENCODE)
+        # see spooki StdIO.hpp line 599
+        if nomvar == 'HY':
+            result_ip2 = round_half_down(result_ip2)
+
+    return result_ip1,result_ip2,result_ip3
+
+
 def encode_ip123(nomvar,ip1,ip2,ip3,ip1_kind,ip2_kind,ip3_kind,ip1_value,ip2_value,ip3_value,interval,ip1_encoding_newstyle:bool,encode_ip2_and_ip3:bool):
     
     result_ip1 = result_ip2 = result_ip3 = -999
     
-    # if ip >= 32768 # Verifie si IP2 est encode
-    # print("nomvar: {} ip1: {} ip2: {} ip3: {} ip1_kind: {} ip2_kind: {} ip3_kind: {} ip1_value: {} ip2_value: {} ip3_value: {} ip1_encoding_newstyle: {} encode_ip2_and_ip3: {} interval: {} - {} - {}".format(nomvar,ip1,ip2,ip3,ip1_kind,ip2_kind,ip3_kind,ip1_value,ip2_value,ip3_value,ip1_encoding_newstyle,encode_ip2_and_ip3,interval,type(interval),(type(interval) == fstpy.std_dec.Interval)))
-
     interval_type = INTERVAL_TYPE_NOT_SET
     encoding_mode_ip1 = rmn.CONVIP_ENCODE if ip1_encoding_newstyle else rmn.CONVIP_ENCODE_OLD
     
-    # TODO verifier le handling of meta data, why is P0's ip2 encoded
-    meta = ["^>", ">>", "^^", "!!", "!!SF", ]#"HY", 'P0', 'PT']
-
-    # if nomvar in meta:
-    #     return ip1_value,ip2_value,ip3_value
-
     # check if there's an interval
     if ip1 >= 32768 or ip1 == 0 and ip2 >= 32768 or ip2 == 0 and ip3 >= 32768 or ip3 == 0:
-        # print('seems to have interval')
-        # do something here
         if ip2_kind == ip3_kind:
-            # print("INTERVAL_TIME")
             interval_type = INTERVAL_TIME
-            # print('time interval')
         if ip1_kind == ip3_kind:
-            # print("INTERVAL_OTHER")
             interval_type = INTERVAL_OTHER
-            # print('other interval')
 
+    if nomvar in ["^>", ">>", "^^", "!!", "!!SF", 'HY']:
+        result_ip1,result_ip2,result_ip3 = encode_ip123_metadata(nomvar,ip1_kind,ip3_kind,ip1_value,ip2_value,ip3_value,encoding_mode_ip1,encode_ip2_and_ip3)
 
-
-    # IP1
-    if interval_type != INTERVAL_OTHER:
-        # print('should do this ip1')
-        # print('if nomvar {} in meta {} ip1 = {}'.format(nomvar,meta,ip1_value))
-        # print('else value: {} , {} kind: {} , {} mode: {}'.format(ip1_value,float(ip1_value),ip1_kind,int(ip1_kind),encoding_mode_ip1))
-        result_ip1 = ip1_value if nomvar in meta else create_encoded_ip(float(ip1_value),int(ip1_kind),mode=encoding_mode_ip1)
-        # print('error should have occured, ip1 : {}'.format(result_ip1))
-
-    if interval_type != INTERVAL_TIME:
-        # print('should do this, ip2, not time interval, {}'.format(nomvar))
+    elif interval_type == INTERVAL_TYPE_NOT_SET:
+        result_ip1 = create_encoded_ip(float(ip1_value),int(ip1_kind),mode=encoding_mode_ip1)
         result_ip2 = ip2_value # forecast hour
-
-    if interval_type == INTERVAL_TYPE_NOT_SET:
-        # print('should do this ip3')
         result_ip3 = ip3_value # ??? _userDefinedIndex
+
         if encode_ip2_and_ip3:
             result_ip3 = create_encoded_ip(float(result_ip3),int(ip3_kind),mode=rmn.CONVIP_ENCODE)
-            
-            # see spooki StdIO.hpp line 599
-            if nomvar in meta or nomvar == 'HY':
-                result_ip2 = round_half_down(result_ip2)
-            else:
-                result_ip2 = create_encoded_ip(float(result_ip2),int(ip2_kind),mode=rmn.CONVIP_ENCODE)
+            result_ip2 = create_encoded_ip(float(result_ip2),int(ip2_kind),mode=rmn.CONVIP_ENCODE)
 
-
-    if interval_type == INTERVAL_TIME:
+    elif interval_type == INTERVAL_TIME:
+        result_ip1 = create_encoded_ip(float(ip1_value),int(ip1_kind),mode=encoding_mode_ip1)
         result_ip2 = ip2_value if (type(interval) != fstpy.std_dec.Interval) else interval.high
-        # print('{} is time interval, ip2: {}'.format(nomvar,result_ip2))
         result_ip3 = ip3_value if (type(interval) != fstpy.std_dec.Interval) else interval.high - interval.low
 
         if encode_ip2_and_ip3:
             result_ip3 = ip3_value if (type(interval) != fstpy.std_dec.Interval) else interval.low
-            
             result_ip2, result_ip3 = fstpy.one_encode_ip2_and_ip3_as_time_interval(result_ip2,result_ip3)
-        
 
-
-
-    if interval_type == INTERVAL_OTHER:
+    elif interval_type == INTERVAL_OTHER:
+        result_ip2 = ip2_value # forecast hour
         result_ip1 = ip1_value if (type(interval) != fstpy.std_dec.Interval) else interval.low
         result_ip3 = ip3_value if (type(interval) != fstpy.std_dec.Interval) else interval.high - interval.low
         result_ip1 = create_encoded_ip(float(result_ip1),int(ip1_kind),mode=encoding_mode_ip1)
 
         if encode_ip2_and_ip3:
             result_ip3 = ip3_value if (type(interval) != fstpy.std_dec.Interval) else interval.high
-            # result_ip2, result_ip3 = fstpy.one_encode_ip2_and_ip3_as_time_interval(result_ip2,result_ip3)
             result_ip2 = create_encoded_ip(float(result_ip2),int(ip2_kind),mode=rmn.CONVIP_ENCODE)
             result_ip3 = create_encoded_ip(float(result_ip3),int(ip3_kind),mode=rmn.CONVIP_ENCODE)
 
@@ -127,8 +107,6 @@ def encode_ip123(nomvar,ip1,ip2,ip3,ip1_kind,ip2_kind,ip3_kind,ip1_value,ip2_val
         result_ip2 = round_half_down(result_ip2,False)
         result_ip3 = round_half_down(result_ip3)
 
-    # print(f'ip1: {result_ip1} - ip2: {result_ip2} - ip3: {result_ip3}')
-    # print("--------------------------------------------")
     return int(result_ip1), int(result_ip2), int(result_ip3)
 
 

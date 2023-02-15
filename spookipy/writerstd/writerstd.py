@@ -168,39 +168,9 @@ class WriterStd(Plugin):
             
             fstpy.delete_file(self.output)
 
-        # print(self.df)
-
         self.df = fstpy.add_columns(self.df)
-        # print(self.df)
-        # print(self.df[['ip2','ip2_dec','ip2_kind','ip3','ip3_dec','ip3_kind']])
-        # print(self.df['ip2'])
-        
-        # encoding_mode = rmn.CONVIP_ENCODE if self.ip1_encoding_newstyle else rmn.CONVIP_ENCODE_OLD
-        # meta = ["^>", ">>", "^^", "!!", "!!SF", "HY"]
-        # self.df['ip1'] = self.df.apply(lambda row: row['ip1'] if row['nomvar'] in meta else fstpy.create_encoded_ip1(row['level'],row['ip1_kind'],mode=encoding_mode), axis=1)
 
-        # # print("here")
-        # if self.encode_ip2_and_ip3:
-        #     # print("encoded ip2 ip3 true")
-
-        #     self.df['ip2'] = self.df.apply(lambda row: int(row['ip2_dec']) if row['nomvar'] in meta else fstpy.create_encoded_ip1(row['ip2_dec'],row['ip2_kind'],mode=rmn.CONVIP_ENCODE), axis=1)
-        #     self.df['ip3'] = self.df.apply(lambda row: int(row['ip3_dec']) if row['nomvar'] in meta else fstpy.create_encoded_ip1(row['ip3_dec'],row['ip3_kind'],mode=rmn.CONVIP_ENCODE), axis=1)
-        #     # print("ok")
-        # else:
-        #     # print("encoded ip2 ip3 false")
-
-        #     self.df['ip2'] = self.df.apply(lambda row: math.floor(row['ip2_dec']) if (row['ip2_dec'] - math.floor(row['ip2_dec'])) < 0.5 else math.ceil(row['ip2_dec']), axis=1)#TODO check this
-        #     self.df['ip3'] = self.df.apply(lambda row: math.floor(row['ip3_dec']) if (row['ip3_dec'] - math.floor(row['ip3_dec'])) < 0.5 else math.ceil(row['ip3_dec']), axis=1)#TODO check this
-        #     # self.df['ip3'] = self.df.apply(lambda row: my_func(row['ip3_dec']), axis=1)
-        #     # print("ok")
-        # # print(self.df['ip2'])
-
-        # print(self.df)
         restore_5005_record(self.df)
-        # print(self.df)
-        # raise Exception()
-
-        # nomvar,ip1,ip2,ip3,ip1_kind,ip2_kind,ip3_kind,ip1_value,ip2_value,ip3_value,interval,ip1_encoding_newstyle:bool,encode_ip2_and_ip3:bool
 
         self.df['ip1'], self.df['ip2'], self.df['ip3'] = vectorized_encode_ip123(self.df['nomvar'],
                                                                     self.df['ip1'],self.df['ip2'],self.df['ip3'],
@@ -208,10 +178,6 @@ class WriterStd(Plugin):
                                                                     self.df['level'],self.df['ip2_dec'],self.df['ip3_dec'],
                                                                     self.df['interval'],ip1_encoding_newstyle,encode_ip2_and_ip3)
 
-        # format etiket 
-
-        # self.df['etiket_format'] = "2,6,0,1" # test_9 problem with format ?? ask francois
-        # self.df['etiket_format'] = ""
         self.df['etiket'] = self.df.apply(lambda row: fstpy.create_encoded_etiket(
                                                                 row['label'], 
                                                                 # format_label(row['label']), 
@@ -223,33 +189,12 @@ class WriterStd(Plugin):
                                                                 override_pds_label=override_pds_label,
                                                                 ), axis=1)
 
-        # print(self.df.etiket)
         self.df.drop(columns=['label', 'run', 'implementation', 'ensemble_member', 'etiket_format'])
-        # label needs to be 6 char
 
         self.mode = self.writing_mode.lower() if self.writing_mode in ["APPEND","APPENDOVERWRITE"] else "write"
 
-
-        # TODO make this work wtf?????????
-        # # check len of nomvar (max 4)
-        # if any(len(df['nomvar'])>4):
-        #     for nomvar in df['nomvar'].unique():
-        #         if len(nomvar) > 4:
-        #             raise WriterStdError("CANNOT WRITE FIELD: '{}'" +
-        #                         "TO AN RPN STRANDARD FILE DUE TO THE LENGTH OF THE " +
-        #                         "FIELD'S NAME (_pdsName). THE FIELD'S NAME IS LIMITED TO A MAXIMUM OF 4 CHARACTERS " +
-        #                         "IN RPN STANDARD FILES.".format(nomvar))
-
-        
-        
-        # TODO faire un tri des donnees
-        # meta-informations, ordre alphabétique de noms de variables, 
-        # ordre de niveaux (de bas en haut), ordre temporel
-        # print("------------")
-        # print("in writer")
-        # print(self.df[['nomvar','etiket','ip1','level','ip1_kind','ip2','ip2_dec','ip2_kind','ip3','ip3_dec','ip3_kind','interval']])
         # TODO verifier unit
-        # print(self.df)
+
         super().__init__(self.df)
         
         
@@ -269,20 +214,13 @@ class WriterStd(Plugin):
 
         if self.no_metadata:
             print("no metadata")
-            # fstpy.StandardFileWriter(self.output,self.df,no_meta=True).to_fst()
-            # fstpy.StandardFileWriter(self.output,self.df,no_meta=True).to_fst()
-            # print(self.no_meta_df)
             fstpy.StandardFileWriter(self.output,self.no_meta_df,no_meta=True,mode=self.mode).to_fst()
         elif self.metadata_only:
             print("metadata only")
-            # print(self.meta_df)
             fstpy.StandardFileWriter(self.output,self.meta_df,meta_only=True,mode=self.mode).to_fst()
-            # fstpy.StandardFileWriter(self.output,self.df).to_fst()
         else:
             print("normal")
-            # print(self.df)
             fstpy.StandardFileWriter(self.output,self.df,mode=self.mode).to_fst()
-            # fstpy.StandardFileWriter(self.output,self.df,meta_only=True).to_fst()
             
         return self.df
 

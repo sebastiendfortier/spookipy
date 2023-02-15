@@ -12,7 +12,7 @@ from ..humidityutils import (get_temp_phase_switch, validate_humidity_parameters
                             mandatory_temp_phase_switch_when_using_ice_water_phase_both)
 from ..plugin import Plugin
 from ..science import hu_from_qv, hu_from_vppr, rpn_hu_from_es, rpn_hu_from_hr
-from ..utils import (create_empty_result, existing_results, final_results,
+from ..utils import (create_empty_result, existing_results,
                      get_dependencies, get_existing_result, get_from_dataframe,
                      initializer, explicit_params_checker, DependencyError)
 from ..configparsingutils import check_and_format_humidity_parsed_arguments
@@ -37,6 +37,8 @@ class HumiditySpecific(Plugin):
     :type rpn: bool, optional
     :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
     :type dependency_check: bool, optional   
+    :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
+    :type copy_input: bool, optional 
     """
     computable_plugin = "HU"
     @explicit_params_checker
@@ -48,7 +50,8 @@ class HumiditySpecific(Plugin):
             temp_phase_switch=-40,
             temp_phase_switch_unit='celsius',
             rpn=False,
-            dependency_check=False):
+            dependency_check=False,
+            copy_input=False):
 
         # Si ice_water_phase = water, on ne veut pas des valeurs par defaut pour temp_phase_switch
         # car la validation ne passera pas.  Par contre, ces defauts sont necessaires pour tous les 
@@ -61,10 +64,10 @@ class HumiditySpecific(Plugin):
                 self.temp_phase_switch = None
 
         self.plugin_params = {
-            'ice_water_phase': self.ice_water_phase,
-            'temp_phase_switch': self.temp_phase_switch,
+            'ice_water_phase'       : self.ice_water_phase,
+            'temp_phase_switch'     : self.temp_phase_switch,
             'temp_phase_switch_unit': self.temp_phase_switch_unit,
-            'rpn': self.rpn}
+            'rpn'                   : self.rpn}
 
         self.plugin_mandatory_dependencies_rpn = [
             {
@@ -111,9 +114,9 @@ class HumiditySpecific(Plugin):
             'HU': {
                 'nomvar': 'HU',
                 'etiket': 'HUMSPF',
-                'unit': 'kilogram_per_kilogram',
-                'nbits': 16,
-                'datyp': 1}}
+                'unit'  : 'kilogram_per_kilogram',
+                'nbits' : 16,
+                'datyp' : 1}}
 
         self.df = fstpy.metadata_cleanup(self.df)
         super().__init__(df)
@@ -219,7 +222,9 @@ class HumiditySpecific(Plugin):
 
                 df_list.append(hu_df)
         finally:
-            return final_results(df_list, HumiditySpecificError, self.meta_df, self.dependency_check)
+            return self.final_results(df_list, HumiditySpecificError,
+                                      dependency_check = self.dependency_check, 
+                                      copy_input = self.copy_input)
 
     def rpn_humnidityspecific_from_tt_hr_px(self, dependencies_df, option):
         logging.info(f'rpn option {option+1}')

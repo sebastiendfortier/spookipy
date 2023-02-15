@@ -27,11 +27,7 @@ def test_1(plugin_test_dir):
     df = spookipy.CoriolisParameter(src_df0).compute()
     # [ReaderStd --input {sources[0]}] >> [CoriolisParameter] >> [WriterStd --output {destination_path} ]
     df.loc[:, 'etiket'] = 'R1558V0_N'
-    df.loc[df.nomvar == 'CORP', 'ip1'] = 32505856
     df.loc[df.nomvar == 'CORP', 'etiket'] = '__CORIOPX'
-
-    # df.loc[:,'datyp'] = 5
-    # df.loc[:,'nbits'] = 32
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
@@ -39,8 +35,7 @@ def test_1(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "coriop_file2cmp_test_1.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/CoriolisParameter/test_1'
+    file_to_compare = plugin_test_dir + "coriop_file2cmp_test_1_20230124.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)  # ,e_max=0.13)
@@ -53,9 +48,22 @@ def test_2(plugin_test_dir):
     # open and read source
     source0 = plugin_test_dir + "2011100712_012_regpres"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.select_with_meta(src_df0, ["UU"])
 
     # compute CoriolisParameter
     df = spookipy.CoriolisParameter(src_df0).compute()
-    # [ReaderStd --input {sources[0]}] >>[CoriolisParameter]
+    
+    df.loc[:, 'etiket'] = 'R1580V0_N'
+    df.loc[df.nomvar == 'CORP', 'etiket'] = '__CORIOPX'
+    
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
 
-    assert(not df.empty)
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "coriop_file2cmp_test_2_20230124.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare) 
+    fstpy.delete_file(results_file)
+    assert(res)

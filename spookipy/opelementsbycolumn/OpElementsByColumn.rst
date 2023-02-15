@@ -38,21 +38,21 @@ Usage:
 
 .. code:: python
 
-    python3
-    
     import os
     import fstpy
     import spookipy
     import numpy as np
 
-    spooki_dir = os.environ['SPOOKI_DIR']
-
-    user = os.environ['USER']
-
-    df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/MultiplyElementsByPoint/testsFiles/inputFile.std').to_pandas()
-
     class MultiplyElementsByPointError(Exception):
         pass
+
+    spooki_dir  = os.environ['SPOOKI_DIR']
+    tmpdir      = os.environ['BIG_TMPDIR']
+
+    input_file  = (f'{spooki_dir}/pluginsRelatedStuff/MultiplyElementsByPoint/testsFiles/inputFile.std')
+    output_file = (f'{tmpdir}/outputFile.std')
+
+    df = fstpy.StandardFileReader(input_file).to_pandas()
 
     res_df = spookipy.OpElementsByColumn(df,
                                         operator=np.prod,
@@ -63,13 +63,13 @@ Usage:
                                         nomvar_out='MUEP',
                                         etiket='MULEPT').compute()
 
-    fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
+    fstpy.StandardFileWriter(output_file, res_df).to_fst()
 
 
 Contacts:
 ~~~~~~~~~
 
--  Author : `Sébastien Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
+-  Author   : `Sébastien Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
 -  Coded by : `Sébastien Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
--  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ / `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+-  Support  : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ / `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
 

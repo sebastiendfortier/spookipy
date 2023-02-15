@@ -37,25 +37,24 @@ Keywords:
 Usage:
 ~~~~~~
 
-
-
 .. code:: python
-
-   python3
    
    import os
    import fstpy
    import spookipy
 
-   spooki_dir = os.environ['SPOOKI_DIR']
+   spooki_dir  = os.environ['SPOOKI_DIR']
+   tmpdir      = os.environ['BIG_TMPDIR']
 
-   user = os.environ['USER']
+   input_file  = (f'{spooki_dir}/pluginsRelatedStuff/AddElementsByPoint/testsFiles/inputFile.std')
+   output_file = (f'{tmpdir}/outputFile.std')
 
-   df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/AddElementsByPoint/testsFiles/inputFile.std').to_pandas()
+   df = fstpy.StandardFileReader(input_file).to_pandas()
 
    res_df = spookipy.AddElementsByPoint(df).compute()
 
-   fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
+   fstpy.StandardFileWriter(output_file, res_df).to_fst()
+
 
 Results validation:
 ~~~~~~~~~~~~~~~~~~~
@@ -72,6 +71,6 @@ Contacts:
 Spooki original documentation:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`Francais <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginAddElementsByPoint.html>`_
+`Français <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginAddElementsByPoint.html>`_
 
 `English <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_english_doc/html/pluginAddElementsByPoint.html>`_

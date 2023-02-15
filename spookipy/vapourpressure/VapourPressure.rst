@@ -153,33 +153,34 @@ Keywords:
 Usage:
 ~~~~~~
 
-
-
 .. code:: python
-
-   python3
 
    import os
    import fstpy
    import spookipy
 
-   spooki_dir = os.environ['SPOOKI_DIR']
+   spooki_dir  = os.environ['SPOOKI_DIR']
+   tmpdir      = os.environ['BIG_TMPDIR']
 
-   user = os.environ['USER']
+   input_file  = (f'{spooki_dir}/pluginsRelatedStuff/VapourPressure/testsFiles/inputFile.std')
+   output_file = (f'{tmpdir}/outputFile.std')
 
-   df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/VapourPressure/testsFiles/inputFile.std').to_pandas()
+   df = fstpy.StandardFileReader(input_file).to_pandas()
 
-   res_df = spookipy.VapourPressure(df, ice_water_phase='both', temp_phase_switch=-40, temp_phase_switch_unit='celsius').compute()
+   res_df = spookipy.VapourPressure(df, 
+                                    ice_water_phase='both', 
+                                    temp_phase_switch=-40, 
+                                    temp_phase_switch_unit='celsius').compute()
 
-   fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
+   fstpy.StandardFileWriter(output_file, res_df).to_fst()
 
 
 Contacts:
 ~~~~~~~~~
 
--  Author : Neil Taylor
+-  Author   : Neil Taylor
 -  Coded by : Jonathan Cameron
--  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ / `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+-  Support  : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ / `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
 
 
 Spooki original documentation:

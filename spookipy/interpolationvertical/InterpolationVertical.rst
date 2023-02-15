@@ -113,23 +113,28 @@ Usage:
 
 .. code:: python
 
-    python3
-    
-    import os
-    import fstpy
-    import spookipy
+   import os
+   import fstpy
+   import spookipy
 
-    spooki_dir = os.environ['SPOOKI_DIR']
+   spooki_dir  = os.environ['SPOOKI_DIR']
+   tmpdir      = os.environ['BIG_TMPDIR']
 
-    user = os.environ['USER']
+   input_file  = (f'{spooki_dir}/pluginsRelatedStuff/InterpolationVertical/testsFiles/inputFile.std')
+   output_file = (f'{tmpdir}/outputFile.std')
 
-    df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/InterpolationVertical/testsFiles/inputFile.std').to_pandas()
+   df = fstpy.StandardFileReader(input_file).to_pandas()
 
-    res_df = spookipy.InterpolationVertical(df, mode='user_defined', vertical_levels=[1000,2000,3000,4000,6000], 
-                                          vertical_level_type='METER_SEA_LEVEL', interpolation_type='linear', 
-                                          extrapolation_type='fixed', value_above=999.0, value_below=999.0).compute()
+   res_df = spookipy.InterpolationVertical(df, 
+                                          mode='user_defined', 
+                                          vertical_levels=[1000,2000,3000,4000,6000], 
+                                          vertical_level_type='METER_SEA_LEVEL', 
+                                          interpolation_type='linear', 
+                                          extrapolation_type='fixed', 
+                                          value_above=999.0, 
+                                          value_below=999.0).compute()
 
-    fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
+   fstpy.StandardFileWriter(output_file, res_df).to_fst()
 
 -  `Other examples <https://wiki.cmc.ec.gc.ca/wiki/Spooki/en/Documentation/Examples#Example_of_vertical_interpolation>`__
 
@@ -146,7 +151,7 @@ Usage:
 Contacts:
 ~~~~~~~~~
 
--  Author : `Sandrine Édouard <https://wiki.cmc.ec.gc.ca/wiki/User:Edouards>`__
+-  Author   : `Sandrine Édouard <https://wiki.cmc.ec.gc.ca/wiki/User:Edouards>`__
 -  Coded by : `François Fortin <https://wiki.cmc.ec.gc.ca/wiki/User:Fortinf>`__
--  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ / `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+-  Support  : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ / `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
 

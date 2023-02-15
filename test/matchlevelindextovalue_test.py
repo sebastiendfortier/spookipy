@@ -29,10 +29,15 @@ def test_1(plugin_test_dir):
     uv_df = spookipy.WindModulus(src_df0).compute()
 
     minmax_df = spookipy.MinMaxLevelIndex(
-        uv_df, nomvar="UV", max=True, nomvar_max_idx='IND').compute()
+        uv_df, 
+        nomvar="UV", 
+        max=True, 
+        nomvar_max_idx='IND').compute()
 
     # compute MatchLevelIndexToValue
-    df = spookipy.MatchLevelIndexToValue(minmax_df, nomvar_out='TEST').compute()
+    df = spookipy.MatchLevelIndexToValue(
+        minmax_df, 
+        nomvar_out='TEST').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [WindModulus] >>
     # [MinMaxLevelIndex --minMax MAX --direction UPWARD --outputFieldName2 IND] >>
@@ -60,11 +65,15 @@ def test_2(plugin_test_dir):
     tt_df = select_with_meta(src_df0, ['TT'])
 
     minmax_df = spookipy.MinMaxLevelIndex(
-        src_df0, nomvar="TT", min=True, nomvar_min_idx='IND').compute()
+        src_df0, 
+        nomvar="TT", 
+        min=True, 
+        nomvar_min_idx='IND').compute()
 
     uuvv_df = select_with_meta(src_df0, ['UU', 'VV'])
 
     src_df = pd.concat([tt_df, minmax_df, uuvv_df], ignore_index=True)
+
     # compute MatchLevelIndexToValue
     with pytest.raises(MatchLevelIndexToValueError):
         _ = spookipy.MatchLevelIndexToValue(src_df, nomvar_out='TEST').compute()
@@ -84,10 +93,15 @@ def test_4(plugin_test_dir):
     uv_df = spookipy.WindModulus(src_df0).compute()
 
     minmax_df = spookipy.MinMaxLevelIndex(
-        uv_df, nomvar="UV", max=True, nomvar_max_idx='IND').compute()
+        uv_df, 
+        nomvar="UV", 
+        max=True, 
+        nomvar_max_idx='IND').compute()
 
     # compute MatchLevelIndexToValue
-    df = spookipy.MatchLevelIndexToValue(minmax_df, nomvar_out='TEST').compute()
+    df = spookipy.MatchLevelIndexToValue(
+        minmax_df, 
+        nomvar_out='TEST').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [WindModulus] >>
     # [MinMaxLevelIndex --minMax MAX --direction UPWARD --outputFieldName2 IND] >>
@@ -115,10 +129,16 @@ def test_5(plugin_test_dir):
 
     uv_df = spookipy.WindModulus(src_df0).compute()
 
-    minmax_df = spookipy.MinMaxLevelIndex(uv_df, nomvar="UV", max=True, nomvar_max_idx='IND').compute()
+    minmax_df = spookipy.MinMaxLevelIndex(
+        uv_df, 
+        nomvar="UV", 
+        max=True, 
+        nomvar_max_idx='IND').compute()
 
     # compute MatchLevelIndexToValue
-    df = spookipy.MatchLevelIndexToValue(minmax_df, nomvar_out='T5').compute()
+    df = spookipy.MatchLevelIndexToValue(
+        minmax_df, 
+        nomvar_out='T5').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [WindModulus] >>
     # [MinMaxLevelIndex --minMax MAX --direction UPWARD --outputFieldName2 IND] >>
@@ -147,12 +167,18 @@ def test_7(plugin_test_dir):
     uv_df = spookipy.WindModulus(src_df0).compute()
 
     #  ( [SetConstantValue --value -1.0 --bidimensional] >>  [Zap --fieldName IND --doNotFlagAsZapped]  )
-    ind_df = spookipy.SetConstantValue(uv_df, value=-1., nomvar_out="IND", bi_dimensionnal=True).compute()
+    ind_df = spookipy.SetConstantValue(
+        uv_df, 
+        value=-1., 
+        nomvar_out="IND", 
+        bi_dimensionnal=True).compute()
 
     src_df = pd.concat([uv_df, ind_df], ignore_index=True)
 
     # compute MatchLevelIndexToValue
-    df = spookipy.MatchLevelIndexToValue(src_df, nomvar_out='TEST').compute()
+    df = spookipy.MatchLevelIndexToValue(
+        src_df, 
+        nomvar_out='TEST').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WindModulus] >>
     # (
     # [Copy] +  ( [SetConstantValue --value -1.0 --bidimensional] >>  [Zap --fieldName IND --doNotFlagAsZapped]  )
@@ -183,8 +209,12 @@ def test_8(plugin_test_dir):
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
 
     src_df = pd.concat([src_df0, src_df1], ignore_index=True)
+
     # compute MatchLevelIndexToValue
-    df = spookipy.MatchLevelIndexToValue(src_df, nomvar_out='T7').compute()
+    df = spookipy.MatchLevelIndexToValue(
+        src_df, 
+        nomvar_out='T7').compute()
+
     # [ReaderStd --ignoreExtended --input {sources[0]} {sources[1]}] >>
     # [MatchLevelIndexToValue --outputFieldName T7] >>
     # [WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --makeIP1EncodingWorkWithTests]
@@ -311,7 +341,6 @@ def test_11(plugin_test_dir):
     df = spookipy.encode_ip2_and_ip3_height(df)
     df.loc[:,'typvar'] = 'P'
     
-
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
     fstpy.delete_file(results_file)
@@ -426,12 +455,16 @@ def test_15(plugin_test_dir):
     src_df = fstpy.StandardFileReader(source1).to_pandas()
     
     minmax_df = spookipy.MinMaxLevelIndex(
-        src_df, nomvar="TT", max=True, nomvar_max_idx='IND').compute()
+        src_df, 
+        nomvar="TT", 
+        max=True, 
+        nomvar_max_idx='IND').compute()
 
     # compute MatchLevelIndexToValue
-    df = spookipy.MatchLevelIndexToValue (minmax_df, 
-                                        nomvar_out='TEST',
-                                        use_interval=True).compute()
+    df = spookipy.MatchLevelIndexToValue (
+        minmax_df, 
+        nomvar_out='TEST',
+        use_interval=True).compute()
 
     # Encodage des ip2
     df = spookipy.encode_ip2_and_ip3_height(df)
@@ -460,7 +493,10 @@ def test_16(plugin_test_dir):
     es_df = src_df[(src_df["nomvar"] == "ES") & (src_df["ip2"]==30)]
 
     minmax_df = spookipy.MinMaxLevelIndex(
-        src_df, nomvar="TT", max=True, nomvar_max_idx='IND').compute()
+        src_df, 
+        nomvar="TT", 
+        max=True, 
+        nomvar_max_idx='IND').compute()
 
     src_df1 = pd.concat([minmax_df, es_df], ignore_index=True)
     

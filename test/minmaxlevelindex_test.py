@@ -39,7 +39,7 @@ def test_1(plugin_test_dir):
     # label = "MMLVLI"
     # df = spookipy.convip(df,spookipy.rmn.CONVIP_ENCODE,'ip2')
 
-    df_tt = df[df.nomvar == 'TT'].iloc[0]
+    # df_tt = df[df.nomvar == 'TT'].iloc[0]
 
     # etiket  = create_encoded_etiket(run=df_tt.run,label=label,ensemble_member=df_tt.ensemble_member,implementation=df_tt.implementation)
     # etiket2 = create_encoded_etiket(run='__',label=label,ensemble_member=df_tt.ensemble_member,implementation='X')
@@ -63,7 +63,7 @@ def test_1(plugin_test_dir):
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    # fstpy.delete_file(results_file)
     assert(res)
 
 
@@ -548,3 +548,78 @@ def test_21(plugin_test_dir):
     fstpy.delete_file(results_file)
     assert(res)
     
+def test_22(plugin_test_dir):
+    """ 7 niveaux de TT (valeurs decroissantes en montant); recherche MIN, direction ASCENDING, nomvar_min_idx IND """
+    # open and read source
+    source0 = plugin_test_dir + "TTGZUUVV_3x2x7_regpres.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    # compute spookipy.MinMaxLevelIndex
+    df = spookipy.MinMaxLevelIndex(
+        src_df0,
+        nomvar="TT",
+        min=True,
+        ascending=True,
+        nomvar_min_idx='IND',
+        copy_input=True).compute()
+
+    # etiket  = create_encoded_etiket(run=df_tt.run,label=label,ensemble_member=df_tt.ensemble_member,implementation=df_tt.implementation)
+    # etiket2 = create_encoded_etiket(run='__',label=label,ensemble_member=df_tt.ensemble_member,implementation='X')
+
+    etiket  = "R1MMLVLIN"
+    etiket2 = "__MMLVLIX"
+    df.loc[df.nomvar == "IND",'etiket'] = etiket2
+    df.loc[df.nomvar == "TT",'etiket']  = etiket
+    df.loc[(df.nomvar=='IND'),'typvar'] = 'P'
+
+    # Encodage des ip2
+    df = spookipy.encode_ip2_and_ip3_height(df)
+
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_22.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test1_20210915.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
+
+def test_22(plugin_test_dir):
+    """ 7 niveaux de TT (valeurs decroissantes en montant); identique au test 1 mais avec option copy_input  """
+    # open and read source
+    source0 = plugin_test_dir + "TTGZUUVV_3x2x7_regpres.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    # compute spookipy.MinMaxLevelIndex
+    # df = src_df0
+    df = spookipy.MinMaxLevelIndex(
+        src_df0,
+        nomvar="TT",
+        min=True,
+        ascending=True,
+        nomvar_min_idx='IND',
+        copy_input=True).compute()
+
+    etiket = "__MMLVLIX"
+    df.loc[df.nomvar == "IND",'etiket'] = etiket
+    df.loc[(df.nomvar=='IND'),'typvar'] = 'P'
+
+    # Encodage des ip2
+    df = spookipy.encode_ip2_and_ip3_height(df)
+
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_22.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test22.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)

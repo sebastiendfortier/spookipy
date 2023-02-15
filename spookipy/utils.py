@@ -15,6 +15,12 @@ import pandas as pd
 import rpnpy.librmn.all as rmn
 from pandas.core import groupby
 
+class DataframeColumnError(Exception):
+    pass
+class DependencyError(Exception):
+    pass
+class LevelIntersectionError(Exception):
+    pass
 
 def initializer(func):
     """
@@ -52,11 +58,6 @@ def explicit_params_checker(func):
         setattr(self, 'explicit_params', set(list(varnames[:len(args)]) + list(kargs.keys())))
         return func(self, *args, **kargs)
     return wrapper
-
-class DependencyError(Exception):
-    pass
-class LevelIntersectionError(Exception):
-    pass
 
 def get_computable_dependencies():
     import sys
@@ -160,7 +161,6 @@ def get_plugin_dependencies(
 
     return res_df
 
-
 def compute_dependency(
         nomvar: str,
         computable_dependencies: dict,
@@ -182,7 +182,6 @@ def compute_dependency(
     :return: results dataframe
     :rtype: pd.DataFrame
     """
-
 
     if not(df.loc[df.nomvar == nomvar].empty):
         logging.debug(f'\t {nomvar} - Found ')
@@ -224,7 +223,6 @@ def compute_dependency(
 
     return df
 
-
 def get_existing_result(
         df: pd.DataFrame,
         plugin_result_specifications: dict) -> pd.DataFrame:
@@ -256,48 +254,42 @@ def get_intersecting_levels(
         df: pd.DataFrame,
         plugin_mandatory_dependencies: dict) -> pd.DataFrame:
     """Gets the records of all intersecting levels for nomvars in list.
-    if TT,UU and VV are in the list, the output dataframe will contain all 3
-    varaibles at all the intersectiong levels between the 3 variables
+    The input data must be grouped by grid and ip1_kind info.  
+    If TT,UU and VV are in the list, the output dataframe will contain all 3
+    variables at all the intersecting levels between the 3 variables
 
-    :param df: input dataframe
+    :param df: input dataframe, must contain the ip_info
     :type df: pd.DataFrame
-    :param plugin_mandatory_dependencies: dict with of nomvars as keys
+    :param plugin_mandatory_dependencies: dict with nomvars as keys
     :type nomvars: dict
     :raises LevelIntersectionError: if a problem occurs this exception will be raised
     :return: dataframe subset
     :rtype: pd.DataFrame
     """
-    # logger.debug('1',df[['nomvar','surface','level','ip1_kind']])
+
     if len(plugin_mandatory_dependencies) <= 1:
-        # print('get_intersecting_levels - not enough nomvars to process')
         raise LevelIntersectionError('Not enough nomvars to process')
 
-    first_df = df.loc[df.nomvar == list(
-        plugin_mandatory_dependencies.keys())[0]]
+    first_df = df.loc[df.nomvar == list(plugin_mandatory_dependencies.keys())[0]]
 
     # if first_df.empty:
     if df.empty:
         raise LevelIntersectionError('No records to intersect')
 
-    common_levels = set(first_df.ip1.unique())
+    common_levels = set(first_df.level.unique())
 
     for nomvar, _ in plugin_mandatory_dependencies.items():
-        curr_df = df.loc[df.nomvar == nomvar]
-        levels = set(curr_df.ip1.unique())
+        curr_df       = df.loc[df.nomvar == nomvar]
+        levels        = set(curr_df.level.unique())
         common_levels = common_levels.intersection(levels)
 
     common_levels = list(common_levels)
-    # print('(nomvar in %s) and (ip1 in %s)'%(nomvars,common_levels))
-    nomvars = list(plugin_mandatory_dependencies.keys())
+    nomvars       = list(plugin_mandatory_dependencies.keys())
 
-    res_df = df.loc[(df.nomvar.isin(nomvars)) & (df.ip1.isin(common_levels))].drop_duplicates(subset=[
+    res_df = df.loc[(df.nomvar.isin(nomvars)) & 
+                    (df.level.isin(common_levels))].drop_duplicates(subset=[
         'nomvar', 'typvar', 'etiket', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'ig1', 'ig2', 'ig3', 'ig4'])
-    # print('query_res_df\n',query_res_df[['nomvar','typvar','etiket','ni','nj','nk','dateo','ip1','ip2','ip3','grid']].to_string(),len(query_res_df.index))
-    # df_list.append(query_res_df)
 
-    # res_df = pd.concat(df_list,ignore_index=True)
-    if 'level' not in res_df.columns:
-        res_df = fstpy.add_columns(res_df, columns=['ip_info'])
     res_df = res_df.sort_values(by='level',ascending=res_df.ascending.unique()[0])
     return res_df
 
@@ -374,8 +366,10 @@ def create_empty_result(df: pd.DataFrame, plugin_result_specifications: dict, al
         res_df = pd.DataFrame([res_df])
 
     for k, v in plugin_result_specifications.items():
-        if (v != '') and (k in res_df.columns):
+        if (k in res_df.columns):
             res_df.loc[:, k] = v
+        else:
+            raise DataframeColumnError(f'In create_empty_result - Column "{k}" not found in dataframe!')
 
     if 'level' not in res_df.columns:
         res_df = fstpy.add_columns(res_df, columns=['ip_info'])
@@ -493,10 +487,6 @@ def convip(df: pd.DataFrame, style: int = rmn.CONVIP_ENCODE, ip_str:str='ip1') -
 
     return df
 
-
-
-
-
 def get_from_dataframe(df: pd.DataFrame, nomvar: str) -> pd.DataFrame:
     """Get a specific variable from a DataFrame and clears the index and sorts the levels according to kind
 
@@ -515,7 +505,6 @@ def get_from_dataframe(df: pd.DataFrame, nomvar: str) -> pd.DataFrame:
             drop=True)
 
     return pd.DataFrame(dtype=object)
-
 
 def find_matching_dependency_option(
         df: pd.DataFrame,
@@ -571,6 +560,8 @@ def get_dependencies(
         intersect_levels: bool = False, 
         throw_error: bool = True) -> 'list[Tuple[pd.DataFrame,int]]':
     """For each provided grouping, tries to find the correcponding dependencies
+       When intersect_levels is True, the input should have been grouped with ip1_kind
+       before the call.
 
     :param groups: A DataFrameGroupBy object obtained from the groupby method
     :type groups: DataFrameGroupBy

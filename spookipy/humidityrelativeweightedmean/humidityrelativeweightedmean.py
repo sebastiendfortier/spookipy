@@ -9,7 +9,7 @@ import pandas as pd
 import rpnpy.librmn.all as rmn
 
 from ..plugin import Plugin
-from ..utils import (create_empty_result, dataframe_arrays_to_dask, final_results, get_3d_array,
+from ..utils import (create_empty_result, dataframe_arrays_to_dask,
                      get_dependencies, get_from_dataframe,initializer, reshape_arrays,
                      explicit_params_checker, DependencyError)
 
@@ -27,6 +27,10 @@ class HumidityRelativeWeightedMean(Plugin):
     :type df: pd.DataFrame  
     :type capped_value: float, optional
     :param capped_value: Highest value that the HR field can have
+    :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
+    :type dependency_check: bool, optional
+    :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
+    :type copy_input: bool, optional  
     """
 
     @explicit_params_checker
@@ -35,8 +39,8 @@ class HumidityRelativeWeightedMean(Plugin):
             self,
             df: pd.DataFrame,
             capped_value: float = None,
-            dependency_check=False
-            ):
+            dependency_check=False,
+            copy_input=False):
 
         self.plugin_mandatory_dependencies = [
             {
@@ -55,11 +59,11 @@ class HumidityRelativeWeightedMean(Plugin):
 
         self.plugin_result_specifications = \
             {
-                'HR'  : {'etiket': 'HRWAWG','unit': 'percent'}
+                'HR'  : {'etiket': 'HRWAVG','unit': 'percent'}
             }
 
         self.df = fstpy.metadata_cleanup(self.df)
-        super().__init__(self.df)
+        super().__init__(df)
         self.validate_params_and_input()
 
     def validate_params_and_input(self):
@@ -158,7 +162,9 @@ class HumidityRelativeWeightedMean(Plugin):
                 df_list.append(hrl_df)
                 df_list.append(hrm_df)
         finally:     
-            return final_results(df_list, HumidityRelativeWeightedMean, self.meta_df)
+            return self.final_results(df_list, HumidityRelativeWeightedMeanError,
+                                      dependency_check = self.dependency_check, 
+                                      copy_input = self.copy_input)
 
     def compute_hus(self, tt_df, td_df):
         from ..humidityspecific.humidityspecific import HumiditySpecific

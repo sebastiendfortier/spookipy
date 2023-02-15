@@ -20,8 +20,8 @@ Note: Be sure to provide the dependencies mentioned above
       the plug-ins called by this plug-in (See the "this plug-in
       uses" section). For more details on this
       alternative use, see the
-      `documentation <https://wiki.cmc.ec.gc.ca/wiki/Spooki/Documentation/Description_g%C3%A9n%C3%A9rale_du_syst%C3%A8me#RefDependances>`__
-    page.
+      `documentation <https://wiki.cmc.ec.gc.ca/wiki/Spooki/en/Documentation/General_system_description#How_does_it_work.3F>`__
+      page.
 
 Result(s):
 ~~~~~~~~~~
@@ -58,32 +58,27 @@ Keywords:
 Usage:
 ~~~~~~
 
-
-
 .. code:: python
 
-    python3
-    
     import os
     import fstpy
     import spookipy
-    
-    spooki_dir = os.environ['SPOOKI_DIR']
 
-    user = os.environ['USER']
+    spooki_dir  = os.environ['SPOOKI_DIR']
+    tmpdir      = os.environ['BIG_TMPDIR']
 
     df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/WindChill/testsFiles/inputFile.std').to_pandas()
 
     res_df = spookipy.WindChill(df).compute()
 
-    fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
+    fstpy.StandardFileWriter(f'{tmpdir}/outputFile.std', res_df).to_fst()
 
 Contacts:
 ~~~~~~~~~
 
--  Author : `Marc Besner <https://wiki.cmc.ec.gc.ca/wiki/User:Besnerm>`__
+-  Author   : `Marc Besner <https://wiki.cmc.ec.gc.ca/wiki/User:Besnerm>`__
 -  Coded by : `François Fortin <https://wiki.cmc.ec.gc.ca/wiki/User:Fortinf>`__ / `Sébastien Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
--  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ / `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+-  Support  : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ / `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
 
 
 Spooki original documentation:

@@ -11,7 +11,7 @@ from ..humidityutils import (get_temp_phase_switch, validate_humidity_parameters
 from ..plugin import Plugin
 from ..science import (TDPACK_OFFSET_FIX, es_from_td, rpn_es_from_hr,
                        rpn_es_from_hu)
-from ..utils import (create_empty_result, existing_results, final_results,
+from ..utils import (create_empty_result, existing_results,
                      get_dependencies, get_existing_result, get_from_dataframe,
                      initializer, explicit_params_checker, DependencyError)
 from ..configparsingutils import check_and_format_humidity_parsed_arguments
@@ -35,7 +35,9 @@ class DewPointDepression(Plugin):
     :param rpn: Use rpn library algorithm, defaults to False
     :type rpn: bool, optional
     :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
-    :type dependency_check: bool, optional  
+    :type dependency_check: bool, optional 
+    :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
+    :type copy_input: bool, optional  
     """
     computable_plugin = "ES"
     @explicit_params_checker
@@ -47,13 +49,15 @@ class DewPointDepression(Plugin):
             temp_phase_switch=None,
             temp_phase_switch_unit='celsius',
             rpn=False,
-            dependency_check=False):
+            dependency_check=False,
+            copy_input=False):
 
         self.plugin_params = {
-            'ice_water_phase': self.ice_water_phase,
-            'temp_phase_switch': self.temp_phase_switch,
+            'ice_water_phase'       : self.ice_water_phase,
+            'temp_phase_switch'     : self.temp_phase_switch,
             'temp_phase_switch_unit': self.temp_phase_switch_unit,
-            'rpn': self.rpn}
+            'rpn'                   : self.rpn}
+
         self.plugin_mandatory_dependencies_rpn = [
             {
                 'TT': {'nomvar': 'TT', 'unit': 'kelvin'},
@@ -207,7 +211,9 @@ class DewPointDepression(Plugin):
 
                 df_list.append(es_df)
         finally:
-            return final_results(df_list, DewPointDepression, self.meta_df, self.dependency_check)
+            return self.final_results(df_list, DewPointDepressionError, 
+                                      dependency_check = self.dependency_check, 
+                                      copy_input = self.copy_input)
 
     def rpn_dewpointdepression_from_tt_hr_px(self, dependencies_df, option):
         logging.info(f'rpn option {option+1}')
@@ -254,7 +260,8 @@ class DewPointDepression(Plugin):
                     self.meta_df],
                 ignore_index=True),
             ice_water_phase=self.ice_water_phase,
-            rpn=True, dependency_check= self.dependency_check).compute()
+            rpn=True, 
+            dependency_check= self.dependency_check).compute()
         hu_df = get_from_dataframe(hu_df, 'HU')
         return hu_df
 

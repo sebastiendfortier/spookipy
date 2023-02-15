@@ -11,7 +11,7 @@ from ..humidityutils import (get_temp_phase_switch, validate_humidity_parameters
                             mandatory_temp_phase_switch_when_using_ice_water_phase_both)
 from ..plugin import Plugin
 from ..science import TDPACK_OFFSET_FIX, td_from_es, td_from_vppr
-from ..utils import (create_empty_result, existing_results, final_results,
+from ..utils import (create_empty_result, existing_results,
                      get_dependencies, get_existing_result, get_from_dataframe,
                      initializer, explicit_params_checker, DependencyError)
 from ..configparsingutils import check_and_format_humidity_parsed_arguments
@@ -36,6 +36,8 @@ class TemperatureDewPoint(Plugin):
     :type rpn: bool, optional
     :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
     :type dependency_check: bool, optional
+    :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
+    :type copy_input: bool, optional 
     """
     computable_plugin = "TD"
     @explicit_params_checker
@@ -47,13 +49,14 @@ class TemperatureDewPoint(Plugin):
             temp_phase_switch=None,
             temp_phase_switch_unit='celsius',
             rpn=False,
-            dependency_check=False):
+            dependency_check=False,
+            copy_input=False):
 
         self.plugin_params = {
-            'ice_water_phase': self.ice_water_phase,
-            'temp_phase_switch': self.temp_phase_switch,
+            'ice_water_phase'       : self.ice_water_phase,
+            'temp_phase_switch'     : self.temp_phase_switch,
             'temp_phase_switch_unit': self.temp_phase_switch_unit,
-            'rpn': self.rpn}
+            'rpn'                   : self.rpn}
 
         self.plugin_mandatory_dependencies_rpn = [
             {
@@ -199,7 +202,9 @@ class TemperatureDewPoint(Plugin):
 
                 df_list.append(td_df)
         finally:
-            return final_results(df_list, TemperatureDewPointError, self.meta_df, self.dependency_check)
+            return self.final_results(df_list, TemperatureDewPointError, 
+                                      dependency_check = self.dependency_check, 
+                                      copy_input = self.copy_input)
 
     def temperaturedewpoint_from_tt_vppr(self, dependencies_df, option):
         logging.info(f'TemperatureDewPoint - option {option+1}')
@@ -233,6 +238,7 @@ class TemperatureDewPoint(Plugin):
             temp_phase_switch=self.temp_phase_switch,
             temp_phase_switch_unit=self.temp_phase_switch_unit, 
             dependency_check=self.dependency_check).compute()
+            
         vppr_df = get_from_dataframe(vppr_df, 'VPPR')
         return vppr_df
 

@@ -58,42 +58,39 @@ Keywords:
 Usage:
 ~~~~~~
 
-
-
 .. code:: python
-
-   python3
 
    import os
    import fstpy
    import spookipy
 
-   spooki_dir = os.environ['SPOOKI_DIR']
+   spooki_dir  = os.environ['SPOOKI_DIR']
+   tmpdir      = os.environ['BIG_TMPDIR']
 
-   user = os.environ['USER']
+   input_file  = (f'{spooki_dir}/pluginsRelatedStuff/Mask/testsFiles/inputFile.std')
+   output_file = (f'{tmpdir}/outputFile.std')
 
-   df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/Mask/testsFiles/inputFile.std').to_pandas()
+   df = fstpy.StandardFileReader(input_file).to_pandas()
 
-   res_df = spookipy.Mask(
-      df,
-      thresholds=[0.0,10.0,15.0,20.0],
-      values=[0.0,10.0,15.0,20.0],
-      operators=['>=','>=','>=','>=']).compute()
+   res_df = spookipy.Mask( df,
+                           thresholds=[0.0,10.0,15.0,20.0],
+                           values=[0.0,10.0,15.0,20.0],
+                           operators=['>=','>=','>=','>=']).compute()
 
+   fstpy.StandardFileWriter(output_file, res_df).to_fst()
 
-   fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
 
 Contacts:
 ~~~~~~~~~
 
 -  Auteur(e) : `Marc Verville <https://wiki.cmc.ec.gc.ca/wiki/Marc_Verville>`__, / `Daniel Figueras <https://wiki.cmc.ec.gc.ca/wiki/Daniel_Figueras>`__
--  Codé par : `Louise Faust <https://wiki.cmc.ec.gc.ca/wiki/User:Faustl>`__
--  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ / `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+-  Codé par  : `Louise Faust <https://wiki.cmc.ec.gc.ca/wiki/User:Faustl>`__
+-  Support   : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ / `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
 
 
 Spooki original documentation:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`Francais <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginMask.html>`_
+`Français <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginMask.html>`_
 
 `English <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_english_doc/html/pluginMask.html>`_

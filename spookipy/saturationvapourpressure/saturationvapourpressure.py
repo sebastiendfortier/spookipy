@@ -10,7 +10,7 @@ from ..humidityutils import (get_temp_phase_switch, validate_humidity_parameters
                             mandatory_temp_phase_switch_when_using_ice_water_phase_both)
 from ..plugin import Plugin
 from ..science import TDPACK_OFFSET_FIX, rpn_svp_from_tt, svp_from_tt
-from ..utils import (create_empty_result, existing_results, final_results,
+from ..utils import (create_empty_result, existing_results,
                      get_dependencies, get_existing_result, get_from_dataframe,
                      initializer, explicit_params_checker, DependencyError)
 from ..configparsingutils import check_and_format_humidity_parsed_arguments
@@ -35,6 +35,8 @@ class SaturationVapourPressure(Plugin):
     :type rpn: bool, optional
     :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
     :type dependency_check: bool, optional  
+    :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
+    :type copy_input: bool, optional  
     """
     computable_plugin = "SVP"
     @explicit_params_checker
@@ -46,13 +48,14 @@ class SaturationVapourPressure(Plugin):
             temp_phase_switch=None,
             temp_phase_switch_unit='celsius',
             rpn=False,
-            dependency_check=False):
+            dependency_check=False,
+            copy_input=False):
 
         self.plugin_params = {
-            'ice_water_phase': self.ice_water_phase,
-            'temp_phase_switch': self.temp_phase_switch,
+            'ice_water_phase'       : self.ice_water_phase,
+            'temp_phase_switch'     : self.temp_phase_switch,
             'temp_phase_switch_unit': self.temp_phase_switch_unit,
-            'rpn': self.rpn}
+            'rpn'                   : self.rpn}
 
         self.plugin_mandatory_dependencies_rpn = [
             {
@@ -69,9 +72,9 @@ class SaturationVapourPressure(Plugin):
             'SVP': {
                 'nomvar': 'SVP',
                 'etiket': 'SVPRES',
-                'unit': 'hectoPascal',
-                'nbits': 16,
-                'datyp': 1},
+                'unit'  : 'hectoPascal',
+                'nbits' : 16,
+                'datyp' : 1},
         }
 
         self.df = fstpy.metadata_cleanup(self.df)
@@ -164,7 +167,9 @@ class SaturationVapourPressure(Plugin):
 
                 df_list.append(svp_df)
         finally:
-            return final_results(df_list,SaturationVapourPressureError,self.meta_df,self.dependency_check)
+            return self.final_results(df_list,SaturationVapourPressureError, 
+                                      dependency_check = self.dependency_check, 
+                                      copy_input = self.copy_input)
 
     @staticmethod
     def parse_config(args: str) -> dict:

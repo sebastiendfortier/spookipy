@@ -32,7 +32,7 @@ English
 
    .. container:: textblock
 
-      `Francais <../../spooki_french_doc/html/pluginWindModulus.html>`__
+      `Français <../../spooki_french_doc/html/pluginWindModulus.html>`__
 
       **Description:**
 

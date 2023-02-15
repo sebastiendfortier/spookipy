@@ -14,7 +14,7 @@ pytestmark = [pytest.mark.regressions]
 
 @pytest.fixture
 def plugin_test_dir():
-    return TEST_PATH + "/PercentageToPercentile/testsFiles/"
+    return TEST_PATH + "/PercentileToPercentage/testsFiles/"
 
 
 def test_1(plugin_test_dir):

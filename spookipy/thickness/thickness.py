@@ -1,13 +1,15 @@
 import argparse
-from spookipy.plugin import Plugin
+import logging
+import fstpy
+
+from ..plugin import Plugin
 import pandas as pd
 import numpy as np
-import fstpy
-from spookipy.utils import (create_empty_result, existing_results, final_results,
+
+from ..utils import (create_empty_result, existing_results, final_results,
                      get_dependencies, get_existing_result, get_from_dataframe,
                      initializer, DependencyError)
 
-import logging
 
 class ThicknessError(Exception):
     pass
@@ -72,17 +74,21 @@ class Thickness(Plugin):
             }
 
         df = fstpy.set_vertical_coordinate_type(df)
-        # self.df = fstpy.metadata_cleanup(self.df)
+        self.df = fstpy.metadata_cleanup(self.df)
         super().__init__(df)
         self.prepare_groups()
-        self.verify_parameters_values()
+
         
 
     def prepare_groups(self):
         
         # self.no_meta_df = fstpy.set_vertical_coordinate_type(self.no_meta_df)
         # self.no_meta_df = fstpy.compute(self.no_meta_df)
+        self.verify_parameters_values()
+        self.no_meta_df = fstpy.add_columns(self.no_meta_df, columns=['unit', 'forecast_hour', 'ip_info'])
+
         self.existing_result_df = get_existing_result(self.no_meta_df, self.plugin_result_specifications)
+
         self.groups = self.no_meta_df.groupby(['grid', 'vctype','ip1_kind'])
 
        
@@ -117,8 +123,7 @@ class Thickness(Plugin):
 
 
     def compute(self)-> pd.DataFrame:
-        logging.info('Thickness - compute')
-        df_list = []
+
 
         # If a row DZ already exists in the dataframe we return the result
         if not self.existing_result_df.empty:
@@ -126,6 +131,9 @@ class Thickness(Plugin):
                 'Thickness',
                 self.existing_result_df,
                 self.meta_df)
+
+        logging.info('Thickness - compute')
+        df_list = []
 
         try:
             self.plugin_mandatory_dependencies[0]["GZ"]["vctype"]=self.coordinate

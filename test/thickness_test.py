@@ -21,7 +21,7 @@ def test_1(plugin_test_dir):
 
     # open and read source
     source0 = plugin_test_dir + "GZ_12000_10346_fileSrc.std"
-    src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
     # compute Thickness
     df = spookipy.Thickness(src_df0,base=1.0,top=0.8346,coordinate_type='UNKNOWN').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Thickness --base 1.0 --top 0.8346 --coordinateType SIGMA_COORDINATE] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
@@ -45,7 +45,7 @@ def test_2(plugin_test_dir):
     """Test #2 : Test avec un fichier de coordonnées UNKNOWN avec valeur de base plus basse dans l'atmosphère que valeur de top."""
     # open and read source
     source0 = plugin_test_dir + "GZ_12000_10346_fileSrc.std"
-    src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 
     #compute Thickness
@@ -72,7 +72,7 @@ def test_3(plugin_test_dir):
 
     # open and read source
     source0 = plugin_test_dir + "GZ_1000_500_fileSrc.std"
-    src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     #compute Thickness
     df = spookipy.Thickness(src_df0,base=1000,top=500,coordinate_type='PRESSURE_2001').compute()
@@ -98,7 +98,7 @@ def test_4(plugin_test_dir):
 
     # open and read source
     source0 = plugin_test_dir + "GZ_1000_500_fileSrc.std"
-    src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     #compute Thickness
     df = spookipy.Thickness(src_df0,base=500,top=1000,coordinate_type='PRESSURE_2001').compute()
@@ -125,7 +125,7 @@ def test_5(plugin_test_dir):
     with pytest.raises(ParametersValuesError):
         # open and read source
         source0 = plugin_test_dir + "GZ_1000_500_fileSrc.std"
-        src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
+        src_df0 = fstpy.StandardFileReader(source0).to_pandas()
         #compute Thickness
         spookipy.Thickness(src_df0,base=1000,top=1000,coordinate_type='PRESSURE_2001').compute()
         #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Thickness --base 1000 --top 1000 --coordinateType PRESSURE_COORDINATE]
@@ -136,8 +136,7 @@ def test_6(plugin_test_dir):
     """Test #6 : Test avec un fichier hybride."""
     # open and read source
     source0 = plugin_test_dir + "2016031600_024_reghyb"
-    src_df0 = fstpy.StandardFileReader(source0,decode_metadata=True).to_pandas()
-
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     #compute Thickness
     df = spookipy.Thickness(src_df0,base=1.0,top=0.607,coordinate_type='HYBRID_5001').compute()

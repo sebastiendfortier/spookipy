@@ -44,6 +44,7 @@ class CoriolisParameter(Plugin):
                 'ip1': 0,
                 'ip2': 0,
                 'ip3': 0,
+                'npas': 0,
                 'datyp': 134,
                 'nbits': 12}}
 

@@ -1,13 +1,13 @@
 Description:
 ~~~~~~~~~~~~
 
--  Calculation of the pressure field for a given vertical coordinate.
+-  Calculation of the pressure field.  The plugin will detect the vertical coordinate, make sure 
+   to provide the necessary metadata such as !!, PT, P0, etc. 
 -  The definition of the different coordinates are available in this
    `document. <https://wiki.cmc.ec.gc.ca/images/0/01/Spooki_-_Definitions_coordvert.pdf>`__
 -  Possibility to calculate the pressure in the case of a
    `standard atmosphere <https://en.wikipedia.org/wiki/International_Standard_Atmosphere>`__
    (constant pression ).
--  Others types of vertical coordinates could be added and documented in the future.
 
 Iteration method:
 ~~~~~~~~~~~~~~~~~
@@ -42,37 +42,36 @@ Keywords:
 Usage:
 ~~~~~~
 
-
 .. code:: python
-
-   python3
    
    import os
    import fstpy
    import spookipy
 
-   spooki_dir = os.environ['SPOOKI_DIR']
+   spooki_dir  = os.environ['SPOOKI_DIR']
+   tmpdir      = os.environ['BIG_TMPDIR']
 
-   user = os.environ['USER']
+   input_file  = (f'{spooki_dir}/pluginsRelatedStuff/Pressure/testsFiles/inputFile.std')
+   output_file = (f'{tmpdir}/outputFile.std')
 
-   df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/Pressure/testsFiles/inputFile.std').to_pandas()
+   df = fstpy.StandardFileReader(input_file).to_pandas()
 
    res_df = spookipy.Pressure(df, reference_field='TT').compute()
 
-   fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
+   fstpy.StandardFileWriter(output_file, res_df).to_fst()
 
 
 Contacts:
 ~~~~~~~~~
 
--  Author : `Sandrine Edouard <https://wiki.cmc.ec.gc.ca/wiki/User:Edouards>`__
+-  Author   : `Sandrine Edouard <https://wiki.cmc.ec.gc.ca/wiki/User:Edouards>`__
 -  Coded by : `Sébastien Fortier <https://wiki.cmc.ec.gc.ca/wiki/User:Fortiers>`__
--  Support : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ / `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+-  Support  : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__ / `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
 
 
 Spooki original documentation:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`Francais <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginPressure.html>`_
+`Français <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_french_doc/html/pluginPressure.html>`_
 
 `English <http://web.science.gc.ca/~spst900/spooki/doc/master/spooki_english_doc/html/pluginPressure.html>`_

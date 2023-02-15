@@ -177,6 +177,9 @@ class WriterStd(Plugin):
                                                                     self.df['ip1_kind'],self.df['ip2_kind'],self.df['ip3_kind'],
                                                                     self.df['level'],self.df['ip2_dec'],self.df['ip3_dec'],
                                                                     self.df['interval'],ip1_encoding_newstyle,encode_ip2_and_ip3)
+        
+        if ignore_extended:
+            df['typvar'] = df.apply(lambda row: row['typvar'][0], axis=1)
 
         self.df['etiket'] = self.df.apply(lambda row: fstpy.create_encoded_etiket(
                                                                 row['label'], 
@@ -225,12 +228,6 @@ class WriterStd(Plugin):
         return self.df
 
 
-# def format_label(label: str):
-#     label = label + "______"
-#     return  label[:6]
-
-
-# def my_func(num):
-#     return int(num)
-
-
+def applyIgnoreExtended(df):
+    df['label'] = df['etiket']
+    return df

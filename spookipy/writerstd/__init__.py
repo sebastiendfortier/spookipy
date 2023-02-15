@@ -1,1 +1,1 @@
-from .writerstd import WriterStd, WriterStdError
+from .writerstd import WriterStd, WriterStdError, applyIgnoreExtended

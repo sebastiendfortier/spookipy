@@ -114,6 +114,8 @@ def test_6(plugin_test_dir):
     # open and read source
     source0 = plugin_test_dir + "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.add_columns(src_df0,'etiket')
+    src_df0 = spookipy.applyIgnoreExtended(src_df0)
 
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
     fstpy.delete_file(results_file)
@@ -139,6 +141,8 @@ def test_7(plugin_test_dir):
     # open and read source
     source0 = plugin_test_dir + "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.add_columns(src_df0,'etiket')
+    src_df0 = spookipy.applyIgnoreExtended(src_df0)
 
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
     fstpy.delete_file(results_file)
@@ -163,6 +167,8 @@ def test_8(plugin_test_dir):
     # open and read source
     source0 = plugin_test_dir + "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.add_columns(src_df0,'etiket')
+    src_df0 = spookipy.applyIgnoreExtended(src_df0)
 
     with tempfile.TemporaryDirectory() as tmpdirname:
         # temp dir is created
@@ -300,11 +306,14 @@ def test_12(plugin_test_dir):
     res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
+
 def test_13(plugin_test_dir):
     """Test la lecture d'un fichier très simple, 1 grille et 2 champs"""
     # open and read source
     source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.add_columns(src_df0,'etiket')
+    src_df0 = spookipy.applyIgnoreExtended(src_df0)
 
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
     fstpy.delete_file(results_file)
@@ -329,6 +338,8 @@ def test_14(plugin_test_dir):
     # open and read source
     source0 = plugin_test_dir + "input_big_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.add_columns(src_df0,'etiket')
+    src_df0 = spookipy.applyIgnoreExtended(src_df0)
 
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
     fstpy.delete_file(results_file)
@@ -352,6 +363,8 @@ def test_15(plugin_test_dir):
     # open and read source
     source0 = plugin_test_dir + "input_model"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.add_columns(src_df0,'etiket')
+    src_df0 = spookipy.applyIgnoreExtended(src_df0)
 
     src_df0 = src_df0.loc[src_df0['nomvar'].isin(['UU','VV','TT','>>','^^'])]
 
@@ -377,6 +390,8 @@ def test_16(plugin_test_dir):
     # open and read source
     source0 = plugin_test_dir + "input_big_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.add_columns(src_df0,'etiket')
+    src_df0 = spookipy.applyIgnoreExtended(src_df0)
 
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_16.std"])
     fstpy.delete_file(results_file)
@@ -401,6 +416,8 @@ def test_17(plugin_test_dir):
     # open and read source
     source0 = plugin_test_dir + "input_big_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.add_columns(src_df0,'etiket')
+    src_df0 = spookipy.applyIgnoreExtended(src_df0)
 
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_17.std"])
     fstpy.delete_file(results_file)
@@ -425,6 +442,8 @@ def test_18(plugin_test_dir):
     # open and read source
     source0 = plugin_test_dir + "fstdWithDuplicatedGrid_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.add_columns(src_df0,'etiket')
+    src_df0 = spookipy.applyIgnoreExtended(src_df0)
 
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_18.std"])
     fstpy.delete_file(results_file)
@@ -449,6 +468,8 @@ def test_19(plugin_test_dir):
     # open and read source
     source0 = plugin_test_dir + "tt_stg_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.add_columns(src_df0,'etiket')
+    src_df0 = spookipy.applyIgnoreExtended(src_df0)
 
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_19.std"])
     fstpy.delete_file(results_file)
@@ -472,6 +493,8 @@ def test_20(plugin_test_dir):
     # open and read source
     source0 = plugin_test_dir + "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.add_columns(src_df0,'etiket')
+    src_df0 = spookipy.applyIgnoreExtended(src_df0)
 
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_17.std"])
     fstpy.delete_file(results_file)
@@ -491,6 +514,8 @@ def test_21(plugin_test_dir):
     # open and read source
     source0 = plugin_test_dir + "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.add_columns(src_df0,'etiket')
+    src_df0 = spookipy.applyIgnoreExtended(src_df0)
 
     src_df0.loc[src_df0['nomvar'] == 'UU', 'nomvar'] = 'UUUU'
 
@@ -748,6 +773,8 @@ def test_32(plugin_test_dir):
     # open and read source
     source0 = plugin_test_dir + "FichierStandardAvecDifferendKind_file2cmp.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.add_columns(src_df0,'etiket')
+    src_df0 = spookipy.applyIgnoreExtended(src_df0)
 
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_32.std"])
     fstpy.delete_file(results_file)
@@ -996,7 +1023,6 @@ def test_40(plugin_test_dir):
     spookipy.WriterStd(
             src_df0,
             output=results_file,
-            ignore_extended=True # TODO check that it's ok to add this, not in original test, but allows it to pass
             ).compute()
 
     # compare results 

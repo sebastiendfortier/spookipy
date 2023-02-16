@@ -259,7 +259,6 @@ def test_11(plugin_test_dir):
     src_df0 = fstpy.add_columns(src_df0)
 
     src_df0['ensemble_member'] = '077'
-    src_df0['etiket_format'] = '2,6,1,3' #TODO I think this should be automatic, need to find solution
 
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
     fstpy.delete_file(results_file)
@@ -354,7 +353,7 @@ def test_14(plugin_test_dir):
 
     # compare results 
     # if "file_to_compare": "" -> compare with the source file
-    res = fstcomp(results_file, source0, e_max=0.5) # TODO check this, seems like a big error
+    res = fstcomp(results_file, source0, e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -703,8 +702,6 @@ def test_27(plugin_test_dir):
     fstpy.delete_file(results_file)
     
     src_df0 = fstpy.add_columns(src_df0)
-    # TODO check if it's ok to do this, not in original test but how do you know it's X (result)
-    src_df0['implementation'] = 'X'
 
     spookipy.WriterStd(
             src_df0,

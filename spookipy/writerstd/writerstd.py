@@ -181,9 +181,8 @@ class WriterStd(Plugin):
         if ignore_extended:
             df['typvar'] = df.apply(lambda row: row['typvar'][0], axis=1)
 
-        self.df['etiket'] = self.df.apply(lambda row: fstpy.create_encoded_etiket(
+        self.df['etiket'] = self.df.apply(lambda row: fstpy.create_encoded_standard_etiket(
                                                                 row['label'], 
-                                                                # format_label(row['label']), 
                                                                 row['run'], 
                                                                 row['implementation'], 
                                                                 row['ensemble_member'], 

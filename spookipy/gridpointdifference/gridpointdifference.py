@@ -143,7 +143,7 @@ class GridPointDifference(Plugin):
                 raise GridPointDifferenceError('For Z axis centered, need at least 4 levels')
 
             grid_params = fstpy.get_grid_definition_params(nomvar_df)
-            (_, lon) = fstpy.get_2d_lan_lon_arr(grid_params)
+            (_, lon) = fstpy.get_2d_lat_lon_arr(grid_params)
 
             if ((grtyp != 'U') or (grtyp != 'X')) and ('x' in self.axis):
                 is_global, repetitions = fstpy.is_global_grid(grid_params, lon)

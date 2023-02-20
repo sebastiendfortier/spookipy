@@ -174,7 +174,7 @@ class GridPointDistance(Plugin):
 
                     # print(no_meta_df.columns)
                     grid_params = fstpy.get_grid_definition_params(grtyp_df)
-                    (lat, lon) = fstpy.get_2d_lan_lon_arr(grid_params)
+                    (lat, lon) = fstpy.get_2d_lat_lon_arr(grid_params)
 
                     # longitudes        
                     if (grtyp != 'U') and ('x' in self.axis):

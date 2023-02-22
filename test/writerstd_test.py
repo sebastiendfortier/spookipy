@@ -235,11 +235,10 @@ def test_10(plugin_test_dir):
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
     fstpy.delete_file(results_file)
 
-    # TODO "--runID R1"
-
     spookipy.WriterStd(
             src_df0,
             output=results_file,
+            run_id='R1',
             ).compute()
 
     # open and read comparison file
@@ -263,11 +262,10 @@ def test_11(plugin_test_dir):
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
     fstpy.delete_file(results_file)
 
-    # TODO "--runID R1"
-
     spookipy.WriterStd(
             src_df0,
             output=results_file,
+            run_id='R1',
             ).compute()
 
     # open and read comparison file
@@ -286,16 +284,13 @@ def test_12(plugin_test_dir):
 
     src_df0 = fstpy.add_columns(src_df0)
 
-    src_df0['run'] = 'G3' # TODO
-
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
     fstpy.delete_file(results_file)
-
-    # TODO "--runID G3"
 
     spookipy.WriterStd(
             src_df0,
             output=results_file,
+            run_id='G3',
             ).compute()
 
     # open and read comparison file
@@ -646,9 +641,6 @@ def test_25(plugin_test_dir):
 
     src_df0['label'] = 'ABCDEFG'
 
-    src_df0['implementation'] = 'N'
-    # TODO use "--implementation N", needs to be implemented
-
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_25.std"])
     fstpy.delete_file(results_file)
 
@@ -657,6 +649,7 @@ def test_25(plugin_test_dir):
                 src_df0,
                 output=results_file,
                 ip1_encoding_newstyle=False,
+                implementation = 'N',
                 ).compute()
 
 def test_26(plugin_test_dir):
@@ -672,9 +665,6 @@ def test_26(plugin_test_dir):
     # the zap in the original test add a Z in typvar
     src_df0['typvar'] = 'PZ'
 
-    src_df0['implementation'] = 'N'
-    # TODO use "--implementation N", needs to be implemented
-
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_26.std"])
     fstpy.delete_file(results_file)
 
@@ -682,6 +672,7 @@ def test_26(plugin_test_dir):
             src_df0,
             output=results_file,
             ip1_encoding_newstyle=False,
+            implementation = 'N',
             ).compute()
 
     # compare results 
@@ -750,11 +741,10 @@ def test_29(plugin_test_dir):
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_29.std"])
     fstpy.delete_file(results_file)
 
-    # TODO use "--runID R1", needs to be implemented
-
     spookipy.WriterStd(
             src_df0,
             output=results_file,
+            run_id='R1',
             ).compute()
 
     # compare results 
@@ -776,7 +766,6 @@ def test_32(plugin_test_dir):
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_32.std"])
     fstpy.delete_file(results_file)
 
-    # TODO --encodeIP2andIP3???
     spookipy.WriterStd(
             src_df0,
             output=results_file,
@@ -988,8 +977,6 @@ def test_39(plugin_test_dir):
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_39.std"])
     fstpy.delete_file(results_file)
 
-    # TODO use "--runID R1", needs to be implemented
-
     spookipy.WriterStd(
             src_df0,
             output=results_file,
@@ -1014,8 +1001,6 @@ def test_40(plugin_test_dir):
 
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_40.std"])
     fstpy.delete_file(results_file)
-
-    # TODO use "--runID R1", needs to be implemented
 
     spookipy.WriterStd(
             src_df0,

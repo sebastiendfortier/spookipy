@@ -138,6 +138,8 @@ class WriterStd(Plugin):
         encode_ip2_and_ip3:bool=False,
         ignore_extended:bool=False,
         override_pds_label:bool=False,
+        run_id:str=None,
+        implementation:str=None,
         ):
 
         if pd.Series(self.df['nomvar'].str.len() > 4).any():
@@ -181,6 +183,12 @@ class WriterStd(Plugin):
         
         if ignore_extended:
             df['typvar'] = df.apply(lambda row: row['typvar'][0], axis=1)
+
+        if run_id:
+            self.df['run'] = run_id
+
+        if implementation:
+            self.df['implementation'] = implementation
 
         self.df['etiket'] = self.df.apply(lambda row: fstpy.create_encoded_standard_etiket(
                                                                 row['label'], 
@@ -236,7 +244,7 @@ class WriterStd(Plugin):
         :rtype: dict
         """
         parser = argparse.ArgumentParser(prog=WriterStd.__name__, parents=[Plugin.base_parser])
-        
+
         parser.add_argument('--output',type=str,required=True, help="Output file name\nEx: --output /tmp/output.std")
         parser.add_argument('--IP1EncodingStyle',type=str,default="NEWSTYLE",choices=["NEWSTYLE","OLDSTYLE"],dest='ip1_encoding_newstyle', help="IP1 encoding style")
         parser.add_argument('--metadataOnly',action='store_true',default=False,dest="metadata_only", help="Write only meta-information fields e.g. >>, ^^, ^>, HY, PO, PT, E1, !!, !!SF")

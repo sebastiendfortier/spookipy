@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import argparse
 import logging
 import os
 import warnings
@@ -137,6 +138,8 @@ class WriterStd(Plugin):
         encode_ip2_and_ip3:bool=False,
         ignore_extended:bool=False,
         override_pds_label:bool=False,
+        run_id:str=None,
+        implementation:str=None,
         ):
 
         if pd.Series(self.df['nomvar'].str.len() > 4).any():
@@ -180,6 +183,12 @@ class WriterStd(Plugin):
         
         if ignore_extended:
             df['typvar'] = df.apply(lambda row: row['typvar'][0], axis=1)
+
+        if run_id:
+            self.df['run'] = run_id
+
+        if implementation:
+            self.df['implementation'] = implementation
 
         self.df['etiket'] = self.df.apply(lambda row: fstpy.create_encoded_standard_etiket(
                                                                 row['label'], 
@@ -225,6 +234,33 @@ class WriterStd(Plugin):
             fstpy.StandardFileWriter(self.output,self.df,mode=self.mode).to_fst()
             
         return self.df
+
+    @staticmethod
+    def parse_config(args: str) -> dict:
+        """method to translate spooki plugin parameters to python plugin parameters
+        :param args: input unparsed arguments
+        :type args: str
+        :return: a dictionnary of converted parameters
+        :rtype: dict
+        """
+        parser = argparse.ArgumentParser(prog=WriterStd.__name__, parents=[Plugin.base_parser])
+
+        parser.add_argument('--output',type=str,required=True, help="Output file name\nEx: --output /tmp/output.std")
+        parser.add_argument('--IP1EncodingStyle',type=str,default="NEWSTYLE",choices=["NEWSTYLE","OLDSTYLE"],dest='ip1_encoding_newstyle', help="IP1 encoding style")
+        parser.add_argument('--metadataOnly',action='store_true',default=False,dest="metadata_only", help="Write only meta-information fields e.g. >>, ^^, ^>, HY, PO, PT, E1, !!, !!SF")
+        parser.add_argument('--noMetadata',action='store_true',default=False,dest="no_metadata", help="No writing of meta-information fields e.g. >>, ^^, ^>, HY, PO, PT, E1, !!, !!SF")
+        parser.add_argument('--noUnitConversion',action='store_true',default=False,dest="no_unit_conversion", help="No unit conversion before fields are written")
+        parser.add_argument('--runID',type=str,dest='run_id', help="Run ID, 2 caractères. Exemples: r1, g1")
+        parser.add_argument('--implementation',type=str,choices=["N","P","X"],dest='implementation', help="Implementation")
+
+        parsed_arg = vars(parser.parse_args(args.split()))
+
+        parsed_arg['ip1_encoding_newstyle'] = parsed_arg['ip1_encoding_newstyle'] == "NEWSTYLE"
+
+        if parsed_arg['run_id'] is not None and len(parsed_arg['run_id']) > 2:
+            raise WriterStdError("RUN_ID INVALID! - {}".format(parsed_arg['run_id']))
+
+        return parsed_arg
 
 
 def applyIgnoreExtended(df):

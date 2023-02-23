@@ -153,6 +153,9 @@ class WriterStd(Plugin):
 
         dir = os.path.dirname(self.output)
 
+        if not dir:
+            dir = os.getcwd()
+
         if not os.path.exists(dir):
             raise WriterStdError("OUTPUT DIRECTORY '{}' DOESN'T EXIST, YOU HAVE TO CREATE IT BEFOREHAND".format(dir))
 

@@ -655,7 +655,7 @@ def rpn_es_from_hr(tt:np.ndarray, hr:np.ndarray, px:np.ndarray, swph:bool) -> np
     :return: dew point depression (celsius)
     :rtype: np.ndarray
     """
-    return np.max(shraes(hr, tt, px, swph), 0.)
+    return np.max(shraes(hr, tt, px, swph), axis=0)
 
 
 def rpn_es_from_hu(tt:np.ndarray, hu:np.ndarray, px:np.ndarray, swph:bool) ->np.ndarray:

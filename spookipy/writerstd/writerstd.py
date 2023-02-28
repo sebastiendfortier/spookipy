@@ -175,6 +175,8 @@ class WriterStd(Plugin):
             
             fstpy.delete_file(self.output)
 
+        self.df_input = self.df
+
         self.df = fstpy.add_columns(self.df)
 
         restore_5005_record(self.df)
@@ -234,7 +236,7 @@ class WriterStd(Plugin):
         else:
             fstpy.StandardFileWriter(self.output,self.df,overwrite=True,mode=self.mode).to_fst()
             
-        return self.df
+        return self.df_input
 
     @staticmethod
     def parse_config(args: str) -> dict:

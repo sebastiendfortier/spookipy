@@ -720,12 +720,17 @@ def test_28(plugin_test_dir):
             output=results_file,
             ).compute()
 
-    with pytest.raises(Exception):
-        spookipy.WriterStd(
-                src_df0,
-                output=results_file,
-                writing_mode="APPEND"
-                ).compute()
+    spookipy.WriterStd(
+            src_df0,
+            output=results_file,
+            writing_mode="APPEND"
+            ).compute()
+    
+    # compare results 
+    file_to_compare = plugin_test_dir + "test_28_file2cmp.std"
+    res = fstcomp(results_file, file_to_compare, e_max=0.01)
+    fstpy.delete_file(results_file)
+    assert(res)
 
 def test_29(plugin_test_dir):
     """Test que la partie implementation de l'etiket est bien écrit avec la bonne valeur OPERATIONAL = N, PARALLEL = P et EXPERIMENTAL = X et que la run est R1."""

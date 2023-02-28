@@ -134,6 +134,7 @@ class WriterStd(Plugin):
         metadata_only:bool=False,
         no_metadata:bool=False,
         no_unit_conversion:bool=False, # TODO implement this, check that the unit is ok for each field, convert if necessary, check unit_convert/unit_convert_array in fstpy
+        no_modification_flag:bool=False, # TODO implement this
         writing_mode:str="APPENDOVERWRITE",
         encode_ip2_and_ip3:bool=False,
         ignore_extended:bool=False,
@@ -173,6 +174,8 @@ class WriterStd(Plugin):
                 "the file will be deleted before creating a new one.".format())
             
             fstpy.delete_file(self.output)
+
+        self.df_input = self.df
 
         self.df = fstpy.add_columns(self.df)
 
@@ -227,13 +230,13 @@ class WriterStd(Plugin):
         # la meme nomenclature que pour les fonction des librairie en dessous
 
         if self.no_metadata:
-            fstpy.StandardFileWriter(self.output,self.no_meta_df,no_meta=True,mode=self.mode).to_fst()
+            fstpy.StandardFileWriter(self.output,self.no_meta_df,overwrite=True,no_meta=True,mode=self.mode).to_fst()
         elif self.metadata_only:
-            fstpy.StandardFileWriter(self.output,self.meta_df,meta_only=True,mode=self.mode).to_fst()
+            fstpy.StandardFileWriter(self.output,self.meta_df,overwrite=True,meta_only=True,mode=self.mode).to_fst()
         else:
-            fstpy.StandardFileWriter(self.output,self.df,mode=self.mode).to_fst()
+            fstpy.StandardFileWriter(self.output,self.df,overwrite=True,mode=self.mode).to_fst()
             
-        return self.df
+        return self.df_input
 
     @staticmethod
     def parse_config(args: str) -> dict:
@@ -250,10 +253,21 @@ class WriterStd(Plugin):
         parser.add_argument('--metadataOnly',action='store_true',default=False,dest="metadata_only", help="Write only meta-information fields e.g. >>, ^^, ^>, HY, PO, PT, E1, !!, !!SF")
         parser.add_argument('--noMetadata',action='store_true',default=False,dest="no_metadata", help="No writing of meta-information fields e.g. >>, ^^, ^>, HY, PO, PT, E1, !!, !!SF")
         parser.add_argument('--noUnitConversion',action='store_true',default=False,dest="no_unit_conversion", help="No unit conversion before fields are written")
+        parser.add_argument('--noModificationFlag',action='store_true',default=False,dest="no_modification_flag", help="Write raw unmodified typvar.")
+        parser.add_argument('--writingMode',type=str,default="APPENDOVERWRITE",choices=["NOPREVIOUS","APPEND","APPENDOVERWRITE","NEWFILEONLY"],dest='writing_mode', help="Writing mode.")
         parser.add_argument('--runID',type=str,dest='run_id', help="Run ID, 2 caractères. Exemples: r1, g1")
         parser.add_argument('--implementation',type=str,choices=["N","P","X"],dest='implementation', help="Implementation")
+        parser.add_argument('--ignoreExtended',action='store_true',default=False,dest="ignore_extended", help=argparse.SUPPRESS)
 
         parsed_arg = vars(parser.parse_args(args.split()))
+
+        if parsed_arg['ignore_extended']:
+            enable_ignore_extended = os.environ.get('SPOOKI_ENABLE_IGNORE_EXTENDED_ONE_LAST_TIME')
+    
+            if enable_ignore_extended is not None and enable_ignore_extended == '1':
+                warnings.warn("With 'SPOOKI_ENABLE_IGNORE_EXTENDED_ONE_LAST_TIME=1', '--ignoreExtended' parameter can be used one last time.\nIn a coming version, the parameter will be removed entirely and your code will need to be updated.")
+            else:
+                raise WriterStdError("IN PLUGIN: 'WriterStd', THE PARAMETER '--ignoreExtended' CAN'T BE USED WITHOUT 'SPOOKI_ENABLE_IGNORE_EXTENDED_ONE_LAST_TIME=1'")
 
         parsed_arg['ip1_encoding_newstyle'] = parsed_arg['ip1_encoding_newstyle'] == "NEWSTYLE"
 

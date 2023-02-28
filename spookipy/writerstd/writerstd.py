@@ -134,6 +134,7 @@ class WriterStd(Plugin):
         metadata_only:bool=False,
         no_metadata:bool=False,
         no_unit_conversion:bool=False, # TODO implement this, check that the unit is ok for each field, convert if necessary, check unit_convert/unit_convert_array in fstpy
+        no_modification_flag:bool=False, # TODO implement this
         writing_mode:str="APPENDOVERWRITE",
         encode_ip2_and_ip3:bool=False,
         ignore_extended:bool=False,
@@ -250,8 +251,11 @@ class WriterStd(Plugin):
         parser.add_argument('--metadataOnly',action='store_true',default=False,dest="metadata_only", help="Write only meta-information fields e.g. >>, ^^, ^>, HY, PO, PT, E1, !!, !!SF")
         parser.add_argument('--noMetadata',action='store_true',default=False,dest="no_metadata", help="No writing of meta-information fields e.g. >>, ^^, ^>, HY, PO, PT, E1, !!, !!SF")
         parser.add_argument('--noUnitConversion',action='store_true',default=False,dest="no_unit_conversion", help="No unit conversion before fields are written")
+        parser.add_argument('--noModificationFlag',action='store_true',default=False,dest="no_modification_flag", help="Write raw unmodified typvar.")
+        parser.add_argument('--writingMode',type=str,default="APPENDOVERWRITE",choices=["NOPREVIOUS","APPEND","APPENDOVERWRITE","NEWFILEONLY"],dest='writing_mode', help="Writing mode.")
         parser.add_argument('--runID',type=str,dest='run_id', help="Run ID, 2 caractères. Exemples: r1, g1")
         parser.add_argument('--implementation',type=str,choices=["N","P","X"],dest='implementation', help="Implementation")
+        parser.add_argument('--ignoreExtended',action='store_true',default=False,dest="ignore_extended", help="Ignore extended attributes when writing to file. Includes noModificationFlag")
 
         parsed_arg = vars(parser.parse_args(args.split()))
 

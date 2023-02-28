@@ -228,11 +228,11 @@ class WriterStd(Plugin):
         # la meme nomenclature que pour les fonction des librairie en dessous
 
         if self.no_metadata:
-            fstpy.StandardFileWriter(self.output,self.no_meta_df,no_meta=True,mode=self.mode).to_fst()
+            fstpy.StandardFileWriter(self.output,self.no_meta_df,overwrite=True,no_meta=True,mode=self.mode).to_fst()
         elif self.metadata_only:
-            fstpy.StandardFileWriter(self.output,self.meta_df,meta_only=True,mode=self.mode).to_fst()
+            fstpy.StandardFileWriter(self.output,self.meta_df,overwrite=True,meta_only=True,mode=self.mode).to_fst()
         else:
-            fstpy.StandardFileWriter(self.output,self.df,mode=self.mode).to_fst()
+            fstpy.StandardFileWriter(self.output,self.df,overwrite=True,mode=self.mode).to_fst()
             
         return self.df
 

@@ -175,7 +175,8 @@ class VapourPressure(Plugin):
                     'VapourPressure',
                     self.plugin_mandatory_dependencies_rpn,
                     self.plugin_params,
-                    intersect_levels=True)
+                    intersect_levels=True,
+                    dependency_check = self.dependency_check)
             else:
                 dependencies_list = get_dependencies(
                     self.groups,
@@ -183,7 +184,8 @@ class VapourPressure(Plugin):
                     'VapourPressure',
                     self.plugin_mandatory_dependencies,
                     self.plugin_params,
-                    intersect_levels=True)
+                    intersect_levels=True,
+                    dependency_check = self.dependency_check)
         except DependencyError:
             if not self.dependency_check:
                 raise DependencyError(f'{VapourPressure} - No matching dependencies found')

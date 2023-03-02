@@ -130,14 +130,16 @@ class SaturationVapourPressure(Plugin):
                     self.meta_df,
                     'SaturationVapourPressure',
                     self.plugin_mandatory_dependencies_rpn,
-                    self.plugin_params)
+                    self.plugin_params,
+                    dependency_check = self.dependency_check)
             else:
                 dependencies_list = get_dependencies(
                     self.groups,
                     self.meta_df,
                     'SaturationVapourPressure',
                     self.plugin_mandatory_dependencies,
-                    self.plugin_params)
+                    self.plugin_params,
+                    dependency_check = self.dependency_check)
         except DependencyError:
             if not self.dependency_check:
                 raise DependencyError(f'{SaturationVapourPressure} - No matching dependencies found')

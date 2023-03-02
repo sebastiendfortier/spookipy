@@ -87,7 +87,8 @@ class Humidex(Plugin):
             'Humidex',
             self.plugin_mandatory_dependencies,
             self.plugin_params,
-            intersect_levels=True)
+            intersect_levels=True,
+            dependency_check = self.dependency_check)
 
         for dependencies_df, option in dependencies_list:
             if option == 0:
@@ -121,7 +122,12 @@ class Humidex(Plugin):
         rentd_df = td_df
         rentd_df.loc[rentd_df.nomvar == 'TD', 'nomvar'] = 'TT'
         svp_df = SaturationVapourPressure(
-            rentd_df, ice_water_phase='water').compute()
+            rentd_df, ice_water_phase='water', 
+            dependency_check = True).compute()
+        
+        if svp_df.empty:
+            raise HumidexError('No results produced by SaturationVapourPressure, unable to calculate Humidex!')
+
         svp_df = get_from_dataframe(svp_df, 'SVP')
 
         for i in hmx_df.index:

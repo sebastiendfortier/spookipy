@@ -7,7 +7,7 @@ import fstpy
 import spookipy
 import pytest
 
-pytestmark = [pytest.mark.regressions, pytest.mark.minmaxvertically]
+pytestmark = [pytest.mark.regressions]
 
 @pytest.fixture
 def plugin_test_dir():

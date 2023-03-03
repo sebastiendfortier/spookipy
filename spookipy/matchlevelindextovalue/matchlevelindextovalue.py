@@ -71,13 +71,13 @@ class MatchLevelIndexToValue(Plugin):
             self.no_meta_df, columns=[
                 'forecast_hour', 'ip_info'])
 
-        self.groups = self.no_meta_df.groupby(by=['grid', 'datev', 'ip1_kind'])
+        self.groups = self.no_meta_df.groupby(by=['grid', 'datev'])
 
     def compute(self) -> pd.DataFrame:
         logging.info('MatchLevelIndexToValue - compute')
 
         df_list = []
-        for (grid, datev, ip1_kind), group_df in self.groups:
+        for (grid, datev), group_df in self.groups:
 
             # print(f'group_df: \n {group_df.ip2.unique()} \n\n')
             ind_df = group_df.loc[group_df.nomvar == self.nomvar_index].reset_index(drop=True)
@@ -115,6 +115,7 @@ class MatchLevelIndexToValue(Plugin):
                         levels     = var_df.level.unique()
                         borne_inf  = levels[0]
                         borne_sup  = levels[-1]
+                        ip1_kind   = var_df.iloc[0].ip1_kind
                         res_df     = create_result_container(var_df,borne_inf, borne_sup, ip1_kind)
                     else:
                         # Si le champ d'indice a un interval, on prend ses infos

@@ -1035,12 +1035,8 @@ def print_voir(df: pd.DataFrame, message: str):
     :return: code retour
     :rtype: int
     """
-    df=df.sort_values(by=['ig1','nomvar'])
-    df=df.reset_index()
-    print(f'\n{message}\n')
-    print("\n***************************************************************************************************************************************\n")
-    print(df[['nomvar','typvar','etiket','ni','nj','nk','dateo','ip1','ip2','ip3','deet','npas','datyp','nbits','grtyp','ig1','ig2','ig3','ig4']].to_string())
-    print("\n***************************************************************************************************************************************\n\n")
+    message_log = print_style_voir(df, message)
+    print(message_log)
 
 def print_style_voir(df: pd.DataFrame, message: str) -> str:
     """Impression du contenu du dataframe style <voir> dans une string

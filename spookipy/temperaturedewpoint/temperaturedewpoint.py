@@ -162,7 +162,8 @@ class TemperatureDewPoint(Plugin):
                     'TemperatureDewPoint',
                     self.plugin_mandatory_dependencies_rpn,
                     self.plugin_params,
-                    intersect_levels=True)
+                    intersect_levels=True,
+                    dependency_check = self.dependency_check)
             else:
                 dependencies_list = get_dependencies(
                     self.groups,
@@ -170,7 +171,8 @@ class TemperatureDewPoint(Plugin):
                     'TemperatureDewPoint',
                     self.plugin_mandatory_dependencies,
                     self.plugin_params,
-                    intersect_levels=True)
+                    intersect_levels=True,
+                    dependency_check = self.dependency_check)
         except DependencyError:
             if not self.dependency_check:
                 raise DependencyError(f'{TemperatureDewPoint} - No matching dependencies found')
@@ -273,7 +275,8 @@ class TemperatureDewPoint(Plugin):
             temp_phase_switch=self.temp_phase_switch,
             temp_phase_switch_unit=self.temp_phase_switch_unit,
             rpn=True, 
-            dependency_check=self.dependency_check).compute()
+            dependency_check=self.dependency_check
+            ).compute()
         es_df = get_from_dataframe(es_df, 'ES')
         return es_df
 

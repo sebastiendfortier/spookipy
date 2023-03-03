@@ -87,7 +87,8 @@ class Humidex(Plugin):
             'Humidex',
             self.plugin_mandatory_dependencies,
             self.plugin_params,
-            intersect_levels=True)
+            intersect_levels=True,
+            dependency_check = self.dependency_check)
 
         for dependencies_df, option in dependencies_list:
             if option == 0:
@@ -120,8 +121,18 @@ class Humidex(Plugin):
             all_rows=True)
         rentd_df = td_df
         rentd_df.loc[rentd_df.nomvar == 'TD', 'nomvar'] = 'TT'
+
+        # A noter que l'option dependency_check est a True pour l'appel a SaturationVapourPressure:
+        #       On veut eviter de faire le nettoyage des metadata inutilement puisqu'il a deja ete fait.
+        #       Aussi, puisque l'option est a true, on doit verifier si le dataframe est vide suite a 
+        #       l'appel (pas de resultats calcules) car si c'est le cas, le plugin ne retournera pas une erreur.
         svp_df = SaturationVapourPressure(
-            rentd_df, ice_water_phase='water').compute()
+            rentd_df, ice_water_phase='water', 
+            dependency_check = True).compute()
+        
+        if svp_df.empty:
+            raise HumidexError('No results produced by SaturationVapourPressure, unable to calculate Humidex!')
+
         svp_df = get_from_dataframe(svp_df, 'SVP')
 
         for i in hmx_df.index:

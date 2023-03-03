@@ -182,7 +182,7 @@ def compute_dependency(
     :return: results dataframe
     :rtype: pd.DataFrame
     """
-
+    logger = logging.getLogger('root') 
     if not(df.loc[df.nomvar == nomvar].empty):
         logging.debug(f'\t {nomvar} - Found ')
     elif (nomvar in computable_dependencies.keys()) and (select_only == False):
@@ -216,6 +216,12 @@ def compute_dependency(
                 tmp_df = plugin(df, **plugin_params_only_dep_check).compute()
                 
         logging.debug(f'\t Resultats calcules pour {nomvar} ! \n')
+        if not tmp_df.empty:
+            if logger.isEnabledFor(logging.DEBUG):
+                message = (f' Resultats calcules pour {nomvar}: ')
+                logging.debug(f'{print_style_voir(tmp_df, message)}')
+        else:
+            logging.debug(f'\t Pas de resultats calcules pour {nomvar}  !!! \n')
 
         df = pd.concat([df, tmp_df], ignore_index=True)
     else:
@@ -356,7 +362,8 @@ def create_empty_result(df: pd.DataFrame, plugin_result_specifications: dict, al
     :rtype: pd.DataFrame
     """
     if df.empty:
-        logging.warning('cant create, model dataframe empty')
+        logging.error('\t Cant create, model dataframe empty \n')
+        raise DataframeColumnError(f'In create_empty_result - Model dataframe is empty!')
 
     # df = df.drop('d', axis=1)
     if all_rows:
@@ -533,18 +540,18 @@ def find_matching_dependency_option(
             df, plugin_params, plugin_mandatory_dependencies[i], throw_error=False)
         option = i
         if not (dependencies_df.empty):
-            logging.info('Found following depency: ')
+            logging.info('\t Found following depency: ')
             for k, v in plugin_mandatory_dependencies[i].items():
-                logging.info(f'{k}:{v}')
+                logging.info(f'\t {k}:{v}')
             if intersect_levels and len(plugin_mandatory_dependencies[i]) > 1:
                 dependencies_df = get_intersecting_levels(
                     dependencies_df, plugin_mandatory_dependencies[i])
                 if dependencies_df.empty:
                     logging.warning(
-                        'Intersecting levels requested and not found for this dataframe')
+                        '\t Intersecting levels requested and not found for this dataframe')
                     return pd.DataFrame(dtype=object), 0
                 else:
-                    logging.info('Intersecting levels requested and found')
+                    logging.info('\t Intersecting levels requested and found')
 
             return dependencies_df, option
 
@@ -558,7 +565,8 @@ def get_dependencies(
         plugin_mandatory_dependencies: 'list[dict]',
         plugin_params: dict = None,
         intersect_levels: bool = False, 
-        throw_error: bool = True) -> 'list[Tuple[pd.DataFrame,int]]':
+        throw_error: bool = True,
+        dependency_check = False) -> 'list[Tuple[pd.DataFrame,int]]':
     """For each provided grouping, tries to find the correcponding dependencies
        When intersect_levels is True, the input should have been grouped with ip1_kind
        before the call.
@@ -581,7 +589,8 @@ def get_dependencies(
     :return: list of matching dataframes
     :rtype: list[pd.DataFrame]
     """
-        
+
+    logger = logging.getLogger('root')  
     df_list = []
     # nb_group = len(groups)
     # print(f'\n Get_dependencies - Nbre groupes = {nb_group}')
@@ -593,17 +602,29 @@ def get_dependencies(
         logging.debug(f'\t  ************************ Boucle sur les groupes - Groupe no {no_groupe} pour {plugin_name} ************************ \n ')
         logging.info(f'{plugin_name} - Checking dependencies')
 
-        dependencies_df, option = find_matching_dependency_option(pd.concat(
-                [current_group, meta_df], ignore_index=True), plugin_params, 
-                plugin_mandatory_dependencies, intersect_levels)
-
+        if dependency_check:
+            logging.debug(f'\t Pas besoin de cleaner metadata - sous-plugin ! \n\n')
+            dependencies_df, option = find_matching_dependency_option(pd.concat(
+                                        [current_group, meta_df], ignore_index=True), plugin_params, 
+                                        plugin_mandatory_dependencies, intersect_levels)
+        else:
+            new_df = pd.concat([current_group, meta_df])
+            new_df = fstpy.metadata_cleanup(new_df)
+            dependencies_df, option = find_matching_dependency_option(
+                                        new_df, plugin_params, 
+                                        plugin_mandatory_dependencies, intersect_levels)
+        
         if dependencies_df.empty:
-            logging.warning(f'{plugin_name} - No matching dependencies found for this group \n%s' %
+            logging.info(f'{plugin_name} - No matching dependencies found for this group \n%s' %
                             current_group[['nomvar', 'typvar', 'etiket', 'dateo', 'forecast_hour', 'ip1_kind', 'grid']])
+            if logger.isEnabledFor(logging.DEBUG):
+                logging.debug(f'{plugin_name} - {print_style_voir(current_group, " No matching dependencies found for this group: ")}')
             continue
         else:
             logging.info(f'{plugin_name} - Matching dependencies found for this group \n%s' %
                         current_group[['nomvar', 'typvar', 'etiket', 'dateo', 'forecast_hour', 'ip1_kind', 'grid']])
+            if logger.isEnabledFor(logging.DEBUG):
+                logging.debug(f'{plugin_name} - {print_style_voir(current_group, " Matching dependencies found for this group: ")}')
         df_list.append((dependencies_df, option))
 
     if not df_list and throw_error:
@@ -825,6 +846,7 @@ def encode_ip2_and_ip3_time(df:pd.DataFrame) -> pd.DataFrame:
             continue
 
         inter = row.interval
+
         if inter is None:
             ip2 = row.ip2
             ip3 = row.ip3
@@ -1005,3 +1027,31 @@ def restore_5005_record(df:pd.DataFrame):
     if 'kindfor5005' in df.columns:
         df['ip1_kind'] = df.apply(lambda row: row['ip1_kind'] if row['kindfor5005'] == -999 else row['kindfor5005'], axis=1)
 
+def print_voir(df: pd.DataFrame, message: str):
+    """Impression du contenu du dataframe style <voir>
+
+    :param df: dataframe dont on veut voir les valeurs
+    :type df: pd.DataFrame
+    :return: code retour
+    :rtype: int
+    """
+    message_log = print_style_voir(df, message)
+    print(message_log)
+
+def print_style_voir(df: pd.DataFrame, message: str) -> str:
+    """Impression du contenu du dataframe style <voir> dans une string
+
+    :param df: dataframe dont on veut voir les valeurs
+    :type df: pd.DataFrame
+    :return: code retour
+    :rtype: int
+    """
+    df=df.sort_values(by=['ig1','nomvar'])
+    df=df.reset_index()
+ 
+    ligne1 = "\n***************************************************************************************************************************************\n"
+    info   = df[['nomvar','typvar','etiket','ni','nj','nk','dateo','ip1','ip2','ip3','deet','npas','datyp','nbits','grtyp','ig1','ig2','ig3','ig4']].to_string()
+    ligne2 = "\n***************************************************************************************************************************************\n\n"
+
+    message_log = "".join([message, ligne1, info, ligne2])
+    return message_log

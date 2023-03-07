@@ -158,6 +158,32 @@ def test_8(plugin_test_dir):
     fstpy.delete_file(results_file) 
     assert(res)
 
+# Nouveau test en python seulement (test 9 inexistant en C++) - identique au test 8 mais avec option BOTH
+def test_9(plugin_test_dir):
+    """Calcul de l'humidité spécifique (HU) à partir de l'humidité relative (HR)."""
+    # open and read source
+    source0 = plugin_test_dir + "2011100712_012_regpres"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    tthr_df = fstpy.select_with_meta(src_df0, ['TT', 'HR'])
+
+    # compute HumiditySpecific
+    df = spookipy.HumiditySpecific(tthr_df, ice_water_phase='both', temp_phase_switch=273, temp_phase_switch_unit='celsius').compute()
+
+    df.loc[:, 'etiket'] = 'R1580V0N'
+    df = spookipy.convip(df)
+
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "regpres_testWithHR_test9_file2cmp.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file) 
+    assert(res)
 
 def test_10(plugin_test_dir):
     """Calcul de l'humidité spécifique (HU) à partir de ES et TT."""

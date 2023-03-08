@@ -258,6 +258,8 @@ class WriterStd(Plugin):
         parser.add_argument('--runID',type=str,dest='run_id', help="Run ID, 2 caractères. Exemples: r1, g1")
         parser.add_argument('--implementation',type=str,choices=["N","P","X"],dest='implementation', help="Implementation")
         parser.add_argument('--ignoreExtended',action='store_true',default=False,dest="ignore_extended", help=argparse.SUPPRESS)
+        parser.add_argument('--encodeIP2andIP3',action='store_true',default=False,dest="encode_ip2_and_ip3", help=argparse.SUPPRESS)
+        parser.add_argument('--overridePdsLabel',action='store_true',default=False,dest="override_pds_label", help=argparse.SUPPRESS)
 
         parsed_arg = vars(parser.parse_args(args.split()))
 

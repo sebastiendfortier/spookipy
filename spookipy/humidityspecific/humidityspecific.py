@@ -305,7 +305,7 @@ class HumiditySpecific(Plugin):
                 self.meta_df],
                 ignore_index=True),
             ice_water_phase=self.ice_water_phase,
-            temp_phase_switch= self.explicit_params['temp_phase_switch'] if "temp_phase_switch" in self.explicit_params else self.temp_phase_switch,
+            temp_phase_switch=self.temp_phase_switch,
             temp_phase_switch_unit=self.temp_phase_switch_unit, 
             dependency_check=self.dependency_check).compute()
 

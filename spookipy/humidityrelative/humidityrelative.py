@@ -182,25 +182,22 @@ class HumidityRelative(Plugin):
                     if option == 0:
                         # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
                         hu_df = get_from_dataframe(dependencies_df, 'HU')
-                        self.rpn_humidityrelative_from_tt_hu_px(
-                            dependencies_df, hu_df, option)
+                        hr_df = self.rpn_humidityrelative_from_tt_hu_px(dependencies_df, hu_df, option)
 
                     elif option == 1:
                         # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
                         hu_df = self.compute_hu(dependencies_df)
-                        self.rpn_humidityrelative_from_tt_hu_px(
+                        hr_df = self.rpn_humidityrelative_from_tt_hu_px(
                             dependencies_df, hu_df, option)
 
                     elif option == 2:
                         # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
                         es_df = get_from_dataframe(dependencies_df, 'ES')
-                        self.rpn_humidityrelative_from_tt_es_px(
-                            dependencies_df, es_df, option)
+                        hr_df = self.rpn_humidityrelative_from_tt_es_px(dependencies_df, es_df, option)
                     else:
                         # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
                         es_df = self.compute_es(dependencies_df)
-                        self.rpn_humidityrelative_from_tt_es_px(
-                            dependencies_df, es_df, option)
+                        hr_df = self.rpn_humidityrelative_from_tt_es_px(dependencies_df, es_df, option)
 
                 else:  # not rpn
                     hr_df = self.humidityrelative_from_svp_vppr(
@@ -216,19 +213,22 @@ class HumidityRelative(Plugin):
             self, dependencies_df, hu_df, option):
         logging.info(f'HumidityRelative - rpn option {option+1}')
 
-        ttk_df = get_from_dataframe(dependencies_df, 'TT')
+        ttk_df  = get_from_dataframe(dependencies_df, 'TT')
         pxpa_df = get_from_dataframe(dependencies_df, 'PX')
-        hr_df = create_empty_result(
-            ttk_df,
-            self.plugin_result_specifications['HR'],
-            all_rows=True)
+        hr_df   = create_empty_result(
+                                        ttk_df,
+                                        self.plugin_result_specifications['HR'],
+                                        all_rows=True)
 
         for i in hr_df.index:
             ttk = ttk_df.at[i, 'd']
             pxpa = pxpa_df.at[i, 'd']
             hu = hu_df.at[i, 'd']
-            hr_df.at[i, 'd'] = rpn_hr_from_hu(
-                tt=ttk, hu=hu, px=pxpa, swph=self.ice_water_phase == 'both').astype(np.float32)
+            hr_df.at[i, 'd'] = rpn_hr_from_hu(tt=ttk, 
+                                              hu=hu, 
+                                              px=pxpa,
+                                              swph=self.ice_water_phase == 'both').astype(np.float32)
+        return hr_df
 
     def compute_hu(self, dependencies_df):
         from ..humidityspecific.humidityspecific import HumiditySpecific
@@ -239,7 +239,6 @@ class HumidityRelative(Plugin):
                     self.meta_df],
                 ignore_index=True),
             ice_water_phase=self.ice_water_phase,
-            temp_phase_switch=self.temp_phase_switch,
             rpn=True, 
             dependency_check=self.dependency_check).compute()
         hu_df = get_from_dataframe(hu_df, 'HU')
@@ -249,22 +248,26 @@ class HumidityRelative(Plugin):
             self, dependencies_df, es_df, option):
         logging.info(f'HumidityRelative - rpn option {option+1}')
 
-        ttk_df = get_from_dataframe(dependencies_df, 'TT')
+        ttk_df  = get_from_dataframe(dependencies_df, 'TT')
         pxpa_df = get_from_dataframe(dependencies_df, 'PX')
-        hr_df = create_empty_result(
-            ttk_df,
-            self.plugin_result_specifications['HR'],
-            all_rows=True)
+        hr_df   = create_empty_result(
+                                        ttk_df,
+                                        self.plugin_result_specifications['HR'],
+                                        all_rows=True)
 
         for i in hr_df.index:
             ttk = ttk_df.at[i, 'd']
             pxpa = pxpa_df.at[i, 'd']
             es = es_df.at[i, 'd']
-            hr_df.at[i, 'd'] = rpn_hr_from_es(
-                tt=ttk, es=es, px=pxpa, swph=self.ice_water_phase == 'both').astype(np.float32)
+            hr_df.at[i, 'd'] = rpn_hr_from_es(tt=ttk,
+                                              es=es,
+                                              px=pxpa, 
+                                              swph=self.ice_water_phase == 'both').astype(np.float32)
+        return hr_df
 
     def compute_es(self, dependencies_df):
         from ..dewpointdepression.dewpointdepression import DewPointDepression
+
         es_df = DewPointDepression(
             pd.concat(
                 [
@@ -272,7 +275,6 @@ class HumidityRelative(Plugin):
                     self.meta_df],
                 ignore_index=True),
             ice_water_phase=self.ice_water_phase,
-            temp_phase_switch=self.temp_phase_switch,
             rpn=True, 
             dependency_check=self.dependency_check).compute()
         es_df = get_from_dataframe(es_df, 'ES')
@@ -285,12 +287,12 @@ class HumidityRelative(Plugin):
         logging.info(f'HumidityRelative - option {option+1}')
         # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
 
-        tt_df = get_from_dataframe(dependencies_df, 'TT')
-        hr_df = create_empty_result(
-            tt_df,
-            self.plugin_result_specifications['HR'],
-            all_rows=True)
-        svp_df = SaturationVapourPressure(
+        tt_df   = get_from_dataframe(dependencies_df, 'TT')
+        hr_df   = create_empty_result(
+                                        tt_df,
+                                        self.plugin_result_specifications['HR'],
+                                        all_rows=True)
+        svp_df  = SaturationVapourPressure(
             pd.concat(
                 [
                     dependencies_df,
@@ -300,7 +302,7 @@ class HumidityRelative(Plugin):
             temp_phase_switch=(
                 self.temp_phase_switch if self.ice_water_phase != 'water' else None),
                 dependency_check=self.dependency_check).compute()
-        svp_df = get_from_dataframe(svp_df, 'SVP')
+        svp_df  = get_from_dataframe(svp_df, 'SVP')
         vppr_df = VapourPressure(
             pd.concat(
                 [
@@ -311,12 +313,12 @@ class HumidityRelative(Plugin):
             temp_phase_switch=(
                 self.temp_phase_switch if self.ice_water_phase != 'water' else None),
                 dependency_check=self.dependency_check).compute()
-        vppr_df = get_from_dataframe(vppr_df, 'VPPR')
+        vppr_df  = get_from_dataframe(vppr_df, 'VPPR')
         for i in hr_df.index:
-            svp = svp_df.at[i, 'd']
+            svp  = svp_df.at[i, 'd']
             vppr = vppr_df.at[i, 'd']
-            hr_df.at[i, 'd'] = hr_from_svp_vppr(
-                svp=svp, vppr=vppr).astype(np.float32)
+            hr_df.at[i, 'd'] = hr_from_svp_vppr(svp=svp, 
+                                                vppr=vppr).astype(np.float32)
         return hr_df
 
     @staticmethod

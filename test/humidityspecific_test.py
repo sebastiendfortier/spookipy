@@ -208,7 +208,8 @@ def test_10(plugin_test_dir):
     tt_df   = fstpy.select_with_meta(tthu_df, ['TT'])
     dpdtt_df= pd.concat([es_df, tt_df], ignore_index=True)
 
-    df = spookipy.HumiditySpecific(dpdtt_df, ice_water_phase='water').compute()
+    df      = spookipy.HumiditySpecific(dpdtt_df, 
+                                        ice_water_phase='water').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Select --fieldName TT,HU] >>
     # ([DewPointDepression --iceWaterPhase WATER] + [Select --fieldName TT]) >>
@@ -246,7 +247,7 @@ def test_11(plugin_test_dir):
     # compute HumiditySpecific
     es_df   = spookipy.DewPointDepression(tthu_df, 
                                           ice_water_phase='water',
-                                           rpn=True).compute()
+                                          rpn=True).compute()
 
     tt_df   = fstpy.select_with_meta(tthu_df, ['TT'])
 
@@ -505,17 +506,23 @@ def test_16(plugin_test_dir):
     assert(res)
 
 # Nouveau test - identique au test 8 mais avec option BOTH
-# Pour tester la mecanique.
 def test_17(plugin_test_dir):
     """Calcul de l'humidité spécifique (HU) à partir de l'humidité relative (HR), ice_water_phase = BOTH."""
     # open and read source
     source0 = plugin_test_dir + "2011100712_012_regpres"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    tthr_df = fstpy.select_with_meta(src_df0, ['TT', 'HR'])
+    meta_df = src_df0.loc[src_df0.nomvar.isin(
+        ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
+
+    tthr_df = src_df0.loc[(src_df0.nomvar.isin(["TT", "HR"])) & (src_df0.ip2 == 12)].reset_index(drop=True)
+
+    new_df = pd.concat([meta_df, tthr_df], ignore_index=True)
+
+    # tthr_df = fstpy.select_with_meta(src_df0, ['TT', 'HR'])
 
     # compute HumiditySpecific
-    df      = spookipy.HumiditySpecific( tthr_df, 
+    df      = spookipy.HumiditySpecific(new_df, 
                                         ice_water_phase='both', 
                                         temp_phase_switch=273, 
                                         temp_phase_switch_unit='celsius'
@@ -545,11 +552,10 @@ def test_18(plugin_test_dir):
     ttes_df = fstpy.select_with_meta(src_df0, ['TT', 'ES'])
     tt_df   = fstpy.select_with_meta(src_df0, ['TT'])
 
-    es_df   = spookipy.DewPointDepression(
-                                            ttes_df, 
-                                            ice_water_phase='water',
-                                            rpn=True
-                                            ).compute()
+    es_df   = spookipy.DewPointDepression(ttes_df, 
+                                          ice_water_phase='water',
+                                          rpn=True
+                                          ).compute()
     ttes_df = pd.concat([es_df, tt_df], ignore_index=True)
 
     qv_df   = spookipy.WaterVapourMixingRatio(ttes_df, 

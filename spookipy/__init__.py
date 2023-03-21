@@ -28,7 +28,6 @@ from .humidityspecific import *
 from .humidityutils import *
 from .interpolationhorizontalgrid import *
 from .interpolationhorizontalpoint import *
-from .interpolationvertical import *
 from .mask import *
 from .matchlevelindextovalue import *
 from .minmaxlevelindex import *

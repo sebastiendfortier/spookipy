@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 import rpnpy.librmn.all as rmn
 
-from ..plugin import Plugin
+from ..plugin import Plugin, PluginParser
 from ..utils import (create_empty_result, dataframe_arrays_to_dask,
                      get_dependencies, get_from_dataframe,initializer, reshape_arrays,
                      explicit_params_checker, DependencyError)
@@ -188,7 +188,7 @@ class HumidityRelativeWeightedMean(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = argparse.ArgumentParser(prog=HumidityRelativeWeightedMean.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=HumidityRelativeWeightedMean.__name__, parents=[Plugin.base_parser])
         parser.add_argument('--capped',type=float, help="The highest value that the HR field can have")
 
         parsed_arg = vars(parser.parse_args(args.split()))

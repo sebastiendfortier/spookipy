@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 
 import fstpy
-from ..plugin import Plugin
+from ..plugin import Plugin, PluginParser
 from ..utils import create_empty_result, initializer, final_results, to_numpy
 
 NOMVAR_X: Final[str] = 'FDX'
@@ -259,7 +259,7 @@ class GridPointDifference(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = argparse.ArgumentParser(prog=GridPointDifference.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=GridPointDifference.__name__, parents=[Plugin.base_parser])
         parser.add_argument('--differenceType',type=str,default="CENTERED",choices=['CENTERED','FORWARD','BACKWARD'],dest='difference_type', help="Type of difference.")
         parser.add_argument('--axis',type=str,required=True,help="Comma separated list of axis on which the differences will be calculated.")
 

@@ -9,7 +9,7 @@ import pandas as pd
 from ..humidityutils.humidityutils import (get_temp_phase_switch,
                                            validate_humidity_parameters, 
                                            mandatory_ice_water_phase_when_using_temp_phase_switch)
-from ..plugin.plugin import Plugin
+from ..plugin import Plugin, PluginParser
 from ..science import (TDPACK_OFFSET_FIX, rpn_vppr_from_hu, rpn_vppr_from_td,
                        vppr_from_hr, vppr_from_hu, vppr_from_qv, vppr_from_td)
 from ..utils import (create_empty_result, existing_results, 
@@ -386,7 +386,7 @@ class VapourPressure(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = argparse.ArgumentParser(prog=VapourPressure.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=VapourPressure.__name__, parents=[Plugin.base_parser])
 
         parser.add_argument('--iceWaterPhase',type=str,required=False,choices=["WATER","BOTH"],dest='ice_water_phase', help="Switch to determine which phase to consider: ice and water, or, water only.\nMandatory when using --temperaturePhaseSwitch (Default: BOTH)")
         parser.add_argument('--temperaturePhaseSwitch',type=str,help="Temperature at which to change from the ice phase to the water phase. (Default: -40C)")

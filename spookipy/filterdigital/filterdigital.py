@@ -7,7 +7,7 @@ import fstpy
 import numpy as np
 import pandas as pd
 
-from ..plugin import Plugin
+from ..plugin import Plugin, PluginParser
 from ..utils import (final_results, get_split_value, initializer, to_dask, validate_nomvar)
 from .f_stenfilt import f_stenfilt
 
@@ -101,7 +101,7 @@ class FilterDigital(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = argparse.ArgumentParser(prog=FilterDigital.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=FilterDigital.__name__, parents=[Plugin.base_parser])
         parser.add_argument('--filter',type=str,required=True, help="List of weights that define the filter.")
         parser.add_argument('--repetitions',type=int,required=True, help="The number of times the filter will be applied.")
         parser.add_argument('--outputFieldName',type=str,dest="nomvar_out", help="Option to give the output field a different name from the input field name.")

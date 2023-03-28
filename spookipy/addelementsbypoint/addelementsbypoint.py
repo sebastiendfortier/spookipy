@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 
 from ..opelementsbycolumn import OpElementsByColumn
-from ..plugin import Plugin
+from ..plugin import Plugin, PluginParser
 from ..utils import initializer, validate_nomvar
 
 class AddElementsByPointError(Exception):
@@ -68,7 +68,7 @@ class AddElementsByPoint(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = argparse.ArgumentParser(prog=AddElementsByPoint.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=AddElementsByPoint.__name__, parents=[Plugin.base_parser])
         parser.add_argument('--outputFieldName',type=str, dest='nomvar_out', help="Option to change the name of output field 'ADEP'.")
         parser.add_argument('--groupBy',type=str,choices=['FORECAST_HOUR','FIELD_NAME'],dest='group_by', help="Option to group fields by attribute when performing calculation.")
 

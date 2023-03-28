@@ -27,6 +27,7 @@ def defines_base_argparser() -> PluginParser:
     parser.add_argument('--uses',action='store_true', help="Prints out the plugins that this module uses - can only be used with full configuration because the dependencies need to be created.")
     parser.add_argument('--verbose',"-v",action='store_true', help="Increases verbosity level.")
     parser.add_argument('--version',action='store_true', help="Gets version number.")
+    parser.add_argument('--plugin_language',type=str,choices=["PYTHON","CPP"], help="Force spooki_run to use the plugin in this language despite the --plugin_language_option.")
 
     return parser
 

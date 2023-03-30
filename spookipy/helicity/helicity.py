@@ -100,7 +100,7 @@ class Helicity(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = PluginParser(prog=Helicity.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=Helicity.__name__, parents=[Plugin.base_parser],add_help=False)
         parser.add_argument('--Z3',type=float,dest='z3', help="First vertical level default 850mb")
         parser.add_argument('--Z4',type=float,dest='z4', help="Last vertical level default 300mb")
 

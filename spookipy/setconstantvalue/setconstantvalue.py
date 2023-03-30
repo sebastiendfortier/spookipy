@@ -125,7 +125,7 @@ class SetConstantValue(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = PluginParser(prog=SetConstantValue.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=SetConstantValue.__name__, parents=[Plugin.base_parser],add_help=False)
         parser.add_argument('--value',type=str,required=True, help="Replacement constant value.")
         parser.add_argument('--outputFieldName',type=str,dest='nomvar_out',help="Option to give the output field a different name from the input field name.")
         parser.add_argument('--bidimensional',action='store_true',dest='bi_dimensionnal',help="2D field output even if the input is a 3D field")

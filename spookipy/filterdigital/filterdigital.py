@@ -101,7 +101,7 @@ class FilterDigital(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = PluginParser(prog=FilterDigital.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=FilterDigital.__name__, parents=[Plugin.base_parser],add_help=False)
         parser.add_argument('--filter',type=str,required=True, help="List of weights that define the filter.")
         parser.add_argument('--repetitions',type=int,required=True, help="The number of times the filter will be applied.")
         parser.add_argument('--outputFieldName',type=str,dest="nomvar_out", help="Option to give the output field a different name from the input field name.")

@@ -69,7 +69,7 @@ class ArithmeticMeanByPoint(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = PluginParser(prog=ArithmeticMeanByPoint.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=ArithmeticMeanByPoint.__name__, parents=[Plugin.base_parser],add_help=False)
         parser.add_argument('--outputFieldName',type=str, dest='nomvar_out', help="Option to change the name of output field 'MEAN'.")
         parser.add_argument('--groupBy',type=str,choices=['FORECAST_HOUR','FIELD_NAME'],dest='group_by', help="Option to group fields by attribute when performing calculation.")
 

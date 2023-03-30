@@ -94,7 +94,7 @@ class Mask(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = PluginParser(prog=Mask.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=Mask.__name__, parents=[Plugin.base_parser],add_help=False)
         parser.add_argument('--thresholds',type=str,required=True, help="List of threshold values to take into account.")
         parser.add_argument('--values',type=str,required=True, help="List of values the mask will take (will be used in the same order as the threshold values).")
         parser.add_argument('--operators',type=str,required=True, help="List of comparison operators (will be used in the same order as the threshold values).")

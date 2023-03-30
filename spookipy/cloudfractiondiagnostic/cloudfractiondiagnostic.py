@@ -142,7 +142,7 @@ class CloudFractionDiagnostic(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = PluginParser(prog=CloudFractionDiagnostic.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=CloudFractionDiagnostic.__name__, parents=[Plugin.base_parser],add_help=False)
         parser.add_argument('--useConstant',action='store_true',dest='use_constant', help="Use constant instead of algorithm (0.8 cte Slingo 1987)")
 
         parsed_arg = vars(parser.parse_args(args.split()))

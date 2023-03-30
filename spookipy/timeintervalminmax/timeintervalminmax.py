@@ -218,7 +218,7 @@ class TimeIntervalMinMax(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = PluginParser(prog=TimeIntervalMinMax.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=TimeIntervalMinMax.__name__, parents=[Plugin.base_parser],add_help=False)
         parser.add_argument('--fieldName',required=True,type=str,dest='nomvar', help="List of field names.")
         parser.add_argument('--interval',type=str, help="List of each time range used for the minimum/maximum calculation")
         parser.add_argument('--rangeForecastHour',required=True,type=str,dest='forecast_hour_range', help="List of time ranges in hours.")

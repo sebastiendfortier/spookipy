@@ -127,7 +127,7 @@ class MinMaxVertically(Plugin):
         :rtype: dict
         """
 
-        parser = PluginParser(prog=MinMaxVertically.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=MinMaxVertically.__name__, parents=[Plugin.base_parser],add_help=False)
         parser.add_argument('--minMax',type=str,choices=["MIN","MAX","BOTH"], help="Finds either the maximum or minimum value index or both")
         parser.add_argument('--bounded',dest='bounded',action='store_true',default=False, help="Searches in part of the column (requires fields KBAS and KTOP as inputs) Default: searches the whole column")
         parser.add_argument('--fieldName',type=str,dest='nomvar', help="Name of the field.")

@@ -259,7 +259,7 @@ class MinMaxLevelIndex(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = PluginParser(prog=MinMaxLevelIndex.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=MinMaxLevelIndex.__name__, parents=[Plugin.base_parser],add_help=False)
         parser.add_argument('--minMax',type=str,choices=["MIN","MAX","BOTH"], help="Finds either the maximum or minimum value index or both")
         parser.add_argument('--direction',type=str,default="ASCENDING",choices=["ASCENDING","DESCENDING"], help="The level iteration direction (upward or downward)")
         parser.add_argument('--bounded',dest='bounded',action='store_true',default=False, help="Searches in part of the column (requires fields KBAS and KTOP as inputs) Default: searches the whole column")

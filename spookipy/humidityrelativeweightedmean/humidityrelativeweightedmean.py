@@ -188,7 +188,7 @@ class HumidityRelativeWeightedMean(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = PluginParser(prog=HumidityRelativeWeightedMean.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=HumidityRelativeWeightedMean.__name__, parents=[Plugin.base_parser],add_help=False)
         parser.add_argument('--capped',type=float, help="The highest value that the HR field can have")
 
         parsed_arg = vars(parser.parse_args(args.split()))

@@ -187,7 +187,7 @@ class TimeIntervalDifference(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = PluginParser(prog=TimeIntervalDifference.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=TimeIntervalDifference.__name__, parents=[Plugin.base_parser],add_help=False)
         parser.add_argument('--fieldName',required=True,type=str,dest='nomvar', help="List of field names.")
         parser.add_argument('--interval',required=True,type=str, help="List of the time intervals between inputs within each time range.")
         parser.add_argument('--rangeForecastHour',required=True,type=str,dest='forecast_hour_range', help="List of time ranges.")

@@ -313,7 +313,7 @@ class InterpolationHorizontalGrid(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = PluginParser(prog=InterpolationHorizontalGrid.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=InterpolationHorizontalGrid.__name__, parents=[Plugin.base_parser],add_help=False)
         parser.add_argument('--outputGridDefinitionMethod','-m',type=str,dest="method",choices=["FIELD_DEFINED","USER_DEFINED"],required=True, help="Manner in how the target grid is defined")
         parser.add_argument('--fieldName',type=str,dest='nomvar', help="Name of the field on the grid to which interpolate. \nMandatory if '--outputGridDefinitionMethod FIELD_DEFINED' is used.")
         parser.add_argument('--gridType',type=str,choices=["TYPE_A","TYPE_B","TYPE_G","TYPE_L","TYPE_N","TYPE_S"],dest='grtyp', help="Type of target grid (see the reference: Grid types supported by RPN Standard Files). \nMandatory if '--outputGridDefinitionMethod USER_DEFINED' is used.")

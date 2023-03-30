@@ -329,7 +329,7 @@ class HumidityRelative(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = PluginParser(prog=HumidityRelative.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=HumidityRelative.__name__, parents=[Plugin.base_parser],add_help=False)
 
         parser.add_argument('--iceWaterPhase',type=str,required=True,choices=["WATER","BOTH"],dest='ice_water_phase', help="Switch to determine which phase to consider: ice and water, or, water only.")
         parser.add_argument('--temperaturePhaseSwitch',type=str,help="Temperature at which to change from the ice phase to the water phase.\nMandatory if '--iceWaterPhase BOTH' is usedwithout '--RPN'. \nNot accepted if '--RPN is used'.")

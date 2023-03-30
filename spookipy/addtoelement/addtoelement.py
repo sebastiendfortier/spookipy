@@ -48,7 +48,7 @@ class AddToElement(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = PluginParser(prog=AddToElement.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=AddToElement.__name__, parents=[Plugin.base_parser],add_help=False)
         parser.add_argument('--outputFieldName',type=str,dest='nomvar_out', help="Option to give the output field a different name from the input field name.")
         parser.add_argument('--value',type=float,required=True, help="Value to add to field.")
 

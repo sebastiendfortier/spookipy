@@ -5,7 +5,7 @@ import logging
 import fstpy
 import pandas as pd
 
-from ..plugin import Plugin
+from ..plugin import Plugin, PluginParser
 from ..utils import initializer, to_numpy
 
 
@@ -124,7 +124,7 @@ class GridCut(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = argparse.ArgumentParser(prog=GridCut.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=GridCut.__name__, parents=[Plugin.base_parser],add_help=False)
         parser.add_argument('--startPoint',type=str,required=True,dest="start_point", help="Starting point of the selected matrix.")
         parser.add_argument('--endPoint',type=str,required=True,dest="end_point", help="Ending point of the selected matrix.")
 

@@ -5,7 +5,7 @@ import logging
 import fstpy
 import pandas as pd
 
-from ..plugin import Plugin
+from ..plugin import Plugin, PluginParser
 from ..utils import (create_empty_result, existing_results, final_results,
                      get_existing_result, get_intersecting_levels)
 
@@ -100,7 +100,7 @@ class Helicity(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = argparse.ArgumentParser(prog=Helicity.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=Helicity.__name__, parents=[Plugin.base_parser],add_help=False)
         parser.add_argument('--Z3',type=float,dest='z3', help="First vertical level default 850mb")
         parser.add_argument('--Z4',type=float,dest='z4', help="Last vertical level default 300mb")
 

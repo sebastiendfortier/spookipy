@@ -2,7 +2,7 @@ import argparse
 import logging
 import fstpy
 
-from ..plugin import Plugin
+from ..plugin import Plugin, PluginParser
 import pandas as pd
 import numpy as np
 
@@ -179,7 +179,7 @@ class Thickness(Plugin):
     @staticmethod
     def parse_config(args: str) -> dict:
 
-        parser = argparse.ArgumentParser(prog=Thickness.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=Thickness.__name__, parents=[Plugin.base_parser],add_help=False)
         # parser.add_argument('--df',pd.DataFrame,help="dataframe with the data")
         parser.add_argument('--base',type=float,dest='base',help='Base of the thickness layer (model or pressure level)')
         parser.add_argument('--top',type=float,dest='top',help='Top of the thickness layer (model or pressure level)')

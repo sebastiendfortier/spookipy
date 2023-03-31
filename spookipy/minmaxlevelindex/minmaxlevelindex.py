@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 import rpnpy.librmn.all as rmn
 
-from ..plugin import Plugin
+from ..plugin import Plugin, PluginParser
 from ..utils import (create_empty_result, dataframe_arrays_to_dask,
                     get_3d_array,get_dependencies, get_from_dataframe, initializer, 
                     reshape_arrays, validate_nomvar)
@@ -259,7 +259,7 @@ class MinMaxLevelIndex(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = argparse.ArgumentParser(prog=MinMaxLevelIndex.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=MinMaxLevelIndex.__name__, parents=[Plugin.base_parser],add_help=False)
         parser.add_argument('--minMax',type=str,choices=["MIN","MAX","BOTH"], help="Finds either the maximum or minimum value index or both")
         parser.add_argument('--direction',type=str,default="ASCENDING",choices=["ASCENDING","DESCENDING"], help="The level iteration direction (upward or downward)")
         parser.add_argument('--bounded',dest='bounded',action='store_true',default=False, help="Searches in part of the column (requires fields KBAS and KTOP as inputs) Default: searches the whole column")

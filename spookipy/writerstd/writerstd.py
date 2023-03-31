@@ -11,11 +11,10 @@ import fstpy
 import numpy as np
 import pandas as pd
 
-from ..plugin import Plugin
+from ..plugin import Plugin, PluginParser
 from ..utils import (DependencyError, create_empty_result, existing_results, final_results,
                      get_dependencies, get_existing_result, get_from_dataframe, restore_5005_record,
                      initializer)
-from colorama import Fore, Style
 
 
 INTERVAL_TYPE_NOT_SET = 0
@@ -246,7 +245,7 @@ class WriterStd(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = argparse.ArgumentParser(prog=WriterStd.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=WriterStd.__name__, parents=[Plugin.base_parser],add_help=False)
 
         parser.add_argument('--output',type=str,required=True, help="Output file name\nEx: --output /tmp/output.std")
         parser.add_argument('--IP1EncodingStyle',type=str,default="NEWSTYLE",choices=["NEWSTYLE","OLDSTYLE"],dest='ip1_encoding_newstyle', help="IP1 encoding style")

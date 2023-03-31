@@ -10,7 +10,7 @@ import pandas as pd
 from ..humidityutils import (get_temp_phase_switch, validate_humidity_parameters, 
                             mandatory_ice_water_phase_when_using_temp_phase_switch, 
                             mandatory_temp_phase_switch_when_using_ice_water_phase_both)
-from ..plugin import Plugin
+from ..plugin import Plugin, PluginParser
 from ..science import hu_from_qv, hu_from_vppr, rpn_hu_from_es, rpn_hu_from_hr
 from ..utils import (create_empty_result, existing_results,
                      get_dependencies, get_existing_result, get_from_dataframe,
@@ -332,7 +332,7 @@ class HumiditySpecific(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = argparse.ArgumentParser(prog=HumiditySpecific.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=HumiditySpecific.__name__, parents=[Plugin.base_parser],add_help=False)
 
         parser.add_argument('--iceWaterPhase',type=str,required=False,choices=["WATER","BOTH"],dest='ice_water_phase', help="Switch to determine which phase to consider: ice and water, or, water only. (Default: BOTH)")
         parser.add_argument('--temperaturePhaseSwitch',type=str,help="Temperature at which to change from the ice phase to the water phase.\nMandatory if '--iceWaterPhase BOTH' is used explicitly and without '--RPN'.\nNot accepted if '--RPN is used'. (Default: -40C")

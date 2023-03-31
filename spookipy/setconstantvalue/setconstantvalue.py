@@ -7,7 +7,7 @@ import fstpy
 import numpy as np
 import pandas as pd
 
-from ..plugin import Plugin
+from ..plugin import Plugin, PluginParser
 from ..utils import create_empty_result, final_results, initializer, validate_nomvar
 from ..configparsingutils import preprocess_negative_args
 
@@ -125,7 +125,7 @@ class SetConstantValue(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = argparse.ArgumentParser(prog=SetConstantValue.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=SetConstantValue.__name__, parents=[Plugin.base_parser],add_help=False)
         parser.add_argument('--value',type=str,required=True, help="Replacement constant value.")
         parser.add_argument('--outputFieldName',type=str,dest='nomvar_out',help="Option to give the output field a different name from the input field name.")
         parser.add_argument('--bidimensional',action='store_true',dest='bi_dimensionnal',help="2D field output even if the input is a 3D field")

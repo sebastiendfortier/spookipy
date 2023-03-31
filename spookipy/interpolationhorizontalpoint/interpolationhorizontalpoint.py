@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 import rpnpy.librmn.all as rmn
 
-from ..plugin import Plugin
+from ..plugin import Plugin, PluginParser
 from ..utils import get_split_value, initializer, to_dask, to_numpy
 
 
@@ -254,7 +254,7 @@ class InterpolationHorizontalPoint(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = argparse.ArgumentParser(prog=InterpolationHorizontalPoint.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=InterpolationHorizontalPoint.__name__, parents=[Plugin.base_parser],add_help=False)
         parser.add_argument('--interpolationType',type=str,default="BI-CUBIC",choices=["NEAREST","BI-LINEAR","BI-CUBIC"],dest='interpolation_type', help="Type of interpolation.")
         parser.add_argument('--extrapolationType',type=str,default="MAXIMUM",dest='extrapolation_type',help="Type of extrapolation.")
 

@@ -8,7 +8,7 @@ import pandas as pd
 
 from ..humidityutils import (get_temp_phase_switch, validate_humidity_parameters, 
                             mandatory_temp_phase_switch_when_using_ice_water_phase_both)
-from ..plugin import Plugin
+from ..plugin import Plugin, PluginParser
 from ..science import TDPACK_OFFSET_FIX, rpn_svp_from_tt, svp_from_tt
 from ..utils import (create_empty_result, existing_results,
                      get_dependencies, get_existing_result, get_from_dataframe,
@@ -181,7 +181,7 @@ class SaturationVapourPressure(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = argparse.ArgumentParser(prog=SaturationVapourPressure.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=SaturationVapourPressure.__name__, parents=[Plugin.base_parser],add_help=False)
 
         parser.add_argument('--iceWaterPhase',type=str,required=True,choices=["WATER","BOTH"],dest='ice_water_phase', help="Switch to determine which phase to consider: ice and water, or, water only.")
         parser.add_argument('--temperaturePhaseSwitch',type=str,help="Temperature at which to change from the ice phase to the water phase.\nMandatory if '--iceWaterPhase BOTH' is used explicitly and without  '--RPN'. \n")

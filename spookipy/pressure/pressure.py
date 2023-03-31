@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 
 import fstpy
-from ..plugin import Plugin
+from ..plugin import Plugin, PluginParser
 from ..utils import (initializer, validate_nomvar)
 
 class PressureError(Exception):
@@ -84,7 +84,7 @@ class Pressure(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = argparse.ArgumentParser(prog=Pressure.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=Pressure.__name__, parents=[Plugin.base_parser],add_help=False)
         parser.add_argument('--coordinateType',type=str,dest='coordinate_type', help="Deprecated - default to AUTODETECT ")
         parser.add_argument('--referenceField',type=str,dest='reference_field',help="Reference field used to define the grid on which PX is calculated.")
         parser.add_argument('--standardAtmosphere',dest='standard_atmosphere',action='store_true',default=False, help="Standard atmosphere condition (constant pressure).")

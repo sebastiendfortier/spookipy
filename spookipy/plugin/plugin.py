@@ -1,15 +1,24 @@
 # -*- coding: utf-8 -*-
 import abc
-from distutils import dep_util
 import argparse
-from distutils import dep_util
 
 import pandas as pd
 from ..utils import (dataframe_arrays_to_dask, reshape_arrays)
 import fstpy
 
-def defines_base_argparser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="Plugin", description=__doc__, add_help=False)
+class PluginParser(argparse.ArgumentParser):
+    def parse_args(self, args=None, namespace=None):
+        parsed_arg = super().parse_args(args,namespace)
+
+        parsed_arg_dict = vars(parsed_arg)
+        if "help" in parsed_arg_dict and parsed_arg_dict['help'] or "help-module" in parsed_arg_dict:
+            self.print_help()
+
+        return parsed_arg
+
+def defines_base_argparser() -> PluginParser:
+    parser = PluginParser(prog="Plugin", description=__doc__, add_help=False)
+    parser.add_argument('--help','-h',action='store_true', help="Produces this help message.")
     parser.add_argument('--help-module',type=str,choices=["generic","specific"], help="Produces a help for a given module.")
     parser.add_argument('--optimizationLevel',type=int,choices=[0,1,2], help="Sets level of optimization")
     parser.add_argument('--threads','-T',type=int, help="Sets the maximum amount of threads to be used.")
@@ -18,6 +27,7 @@ def defines_base_argparser() -> argparse.ArgumentParser:
     parser.add_argument('--uses',action='store_true', help="Prints out the plugins that this module uses - can only be used with full configuration because the dependencies need to be created.")
     parser.add_argument('--verbose',"-v",action='store_true', help="Increases verbosity level.")
     parser.add_argument('--version',action='store_true', help="Gets version number.")
+    parser.add_argument('--plugin_language',type=str,choices=["PYTHON","CPP"], help="Force spooki_run to use the plugin in this language despite the --plugin_language_option.")
 
     return parser
 
@@ -118,6 +128,6 @@ class Plugin(abc.ABC):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = argparse.ArgumentParser(prog=__class__.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=__class__.__name__, parents=[Plugin.base_parser],add_help=False)
         return vars(parser.parse_args(args.split()))
 

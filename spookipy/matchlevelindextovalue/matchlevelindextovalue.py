@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 import rpnpy.librmn.all as rmn
 
-from ..plugin import Plugin
+from ..plugin import Plugin, PluginParser
 from ..utils import (create_empty_result, dataframe_arrays_to_dask, get_3d_array,
                      initializer, reshape_arrays, to_numpy, validate_nomvar)
 
@@ -169,7 +169,7 @@ class MatchLevelIndexToValue(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = argparse.ArgumentParser(prog=MatchLevelIndexToValue.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=MatchLevelIndexToValue.__name__, parents=[Plugin.base_parser],add_help=False)
         parser.add_argument('--indexFieldName',type=str,default="IND",dest='nomvar_index', help="Option to use a different field name other than IND for the field of indices.")
         parser.add_argument('--outputFieldName',type=str,dest='nomvar_out',help="Option to give the output field a different name from the input field name applicable only with one input meteorological field.")
 

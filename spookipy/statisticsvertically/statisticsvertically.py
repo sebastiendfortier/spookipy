@@ -6,7 +6,7 @@ from typing import Final
 import fstpy
 import numpy as np
 import pandas as pd
-from ..plugin import Plugin
+from ..plugin import Plugin, PluginParser
 from ..utils import create_empty_result, final_results, get_3d_array, initializer, validate_nomvar
 import rpnpy.librmn.all as rmn
 
@@ -274,7 +274,7 @@ class StatisticsVertically(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = argparse.ArgumentParser(prog=StatisticsVertically.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=StatisticsVertically.__name__, parents=[Plugin.base_parser],add_help=False)
         parser.add_argument('--outputFieldName',type=str,dest='nomvar_out',help="Option to give the output field a different name from the input field name.")
         parser.add_argument('--direction',required=True,type=str,default="ASCENDING",choices=["ASCENDING","DESCENDING"], help="Direction of vertical iteration.")
 

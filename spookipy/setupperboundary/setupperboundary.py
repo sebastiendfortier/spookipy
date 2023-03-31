@@ -8,7 +8,7 @@ import warnings
 import numpy as np
 import pandas as pd
 
-from ..plugin import Plugin
+from ..plugin import Plugin, PluginParser
 from ..utils import (create_empty_result, final_results, initializer, validate_nomvar)
 
 ETIKET: Final[str] = 'SETUPR'
@@ -61,7 +61,7 @@ class SetUpperBoundary(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = argparse.ArgumentParser(prog=SetUpperBoundary.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=SetUpperBoundary.__name__, parents=[Plugin.base_parser],add_help=False)
         parser.add_argument('--value',type=float,required=True, help="Value of upper boundary.")
         parser.add_argument('--outputFieldName',type=str,dest='nomvar_out',help="Option to give the output field a different name from the input field name.")
 

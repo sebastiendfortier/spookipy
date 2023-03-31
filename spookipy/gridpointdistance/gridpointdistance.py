@@ -10,7 +10,7 @@ import pandas as pd
 
 import fstpy
 import rpnpy.librmn.all as rmn
-from ..plugin import Plugin
+from ..plugin import Plugin, PluginParser
 from ..utils import create_empty_result, get_0_ip1, initializer, to_dask, final_results
 
 
@@ -261,7 +261,7 @@ class GridPointDistance(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = argparse.ArgumentParser(prog=GridPointDistance.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=GridPointDistance.__name__, parents=[Plugin.base_parser],add_help=False)
         parser.add_argument('--differenceType',type=str,default="CENTERED",choices=['CENTERED','FORWARD','BACKWARD'],dest='difference_type', help="Type of difference.")
         parser.add_argument('--axis',type=str,required=True,help="Comma separated list of axis on which the differences will be calculated.")
 

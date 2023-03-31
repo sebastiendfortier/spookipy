@@ -4,7 +4,7 @@ import logging
 from typing import Final
 import pandas as pd
 from ..timeintervaldifference.timeintervaldifference import TimeIntervalDifference
-from ..plugin import Plugin
+from ..plugin import Plugin, PluginParser
 from ..utils import final_results, initializer, validate_nomvar
 from ..configparsingutils import apply_lambda_to_list, convert_time_range, convert_time
 
@@ -51,7 +51,7 @@ class PrecipitationAmount(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = argparse.ArgumentParser(prog=PrecipitationAmount.__name__, parents=[Plugin.base_parser])
+        parser = PluginParser(prog=PrecipitationAmount.__name__, parents=[Plugin.base_parser],add_help=False)
         parser.add_argument('--fieldName',required=True,type=str,dest='nomvar', help="List of field names.")
         parser.add_argument('--interval',required=True,type=str, help="List of each time range used for the minimum/maximum calculation")
         parser.add_argument('--rangeForecastHour',required=True,type=str,dest='forecast_hour_range', help="List of time ranges in hours.")

@@ -187,7 +187,7 @@ class WriterStd(Plugin):
                                                                     self.df['interval'],ip1_encoding_newstyle,encode_ip2_and_ip3)
         
         if ignore_extended:
-            df['typvar'] = df.apply(lambda row: row['typvar'][0], axis=1)
+            self.df['typvar'] = self.df.apply(lambda row: row['typvar'][0], axis=1)
 
         if run_id:
             self.df['run'] = run_id

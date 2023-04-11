@@ -51,7 +51,11 @@ class SetLowerBoundary(Plugin):
             res_df['d'] = np.split(np.where(data < self.value, self.value, data),data.shape[0])
             
         df_list.append(res_df)
-        return final_results(df_list, SetLowerBoundaryError, self.meta_df)
+
+        df_final = final_results(df_list, SetLowerBoundaryError, self.meta_df)
+        df_final['d'] = df_final.apply(lambda row: np.squeeze(row['d']), axis=1)
+
+        return df_final
 
     @staticmethod
     def parse_config(args: str) -> dict:

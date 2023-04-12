@@ -132,7 +132,7 @@ class WriterStd(Plugin):
         ip1_encoding_newstyle:bool=True,
         metadata_only:bool=False,
         no_metadata:bool=False,
-        no_unit_conversion:bool=False, # TODO implement this, check that the unit is ok for each field, convert if necessary, check unit_convert/unit_convert_array in fstpy
+        no_unit_conversion:bool=False,
         no_modification_flag:bool=False, # TODO implement this
         writing_mode:str="APPENDOVERWRITE",
         encode_ip2_and_ip3:bool=False,
@@ -209,7 +209,8 @@ class WriterStd(Plugin):
 
         self.mode = self.writing_mode.lower() if self.writing_mode in ["APPEND","APPENDOVERWRITE"] else "write"
 
-        # TODO verifier unit
+        if not self.no_unit_conversion:
+            self.df = fstpy.unit_convert(self.df,standard_unit=True)
 
         super().__init__(self.df)
         

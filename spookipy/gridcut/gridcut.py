@@ -89,6 +89,10 @@ class GridCut(Plugin):
         for i in cptic_df.index:
             # dask has problems with slicing, get the real array
             cptic_df.at[i, 'd'] = to_numpy(cptic_df.at[i, 'd'])
+
+            if cptic_df.at[i, 'd'].ndim == 1:
+                cptic_df.at[i, 'd'] = cptic_df.at[i, 'd'].reshape(cptic_df.at[i, 'ni'],cptic_df.at[i, 'nj'])
+
             cptic_df.at[i, 'd'] = cptic_df.at[i, 'd'][0:1,self.start_point[1]:self.end_point[1] + 1]
 
             cptic_df.at[i, 'nj'] = cptic_df.at[i, 'd'].shape[1]

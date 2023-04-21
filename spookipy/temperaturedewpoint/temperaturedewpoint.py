@@ -104,7 +104,7 @@ class TemperatureDewPoint(Plugin):
         self.plugin_result_specifications = {
             'TD': {
                 'nomvar': 'TD', 
-                'etiket': 'DEWPTT', 
+                'label': 'DEWPTT', 
                 'unit': 'celsius'}
         }
 

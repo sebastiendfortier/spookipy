@@ -75,11 +75,11 @@ class OpElementsByValue(Plugin):
             self.plugin_result_specifications = {
                 'ALL': {
                     'nomvar': self.nomvar_out,
-                    'etiket': self.etiket,
+                    'label': self.etiket,
                     'unit'  : self.unit}}
         else:
             self.plugin_result_specifications = {
-                'ALL': {'etiket': self.etiket, 'unit': self.unit}}
+                'ALL': {'label': self.etiket, 'unit': self.unit}}
 
     def compute(self) -> pd.DataFrame:
         logging.info('OpElementsByValue - compute')

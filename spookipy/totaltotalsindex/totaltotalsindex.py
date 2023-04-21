@@ -33,7 +33,7 @@ class TotalTotalsIndex(Plugin):
         self.plugin_result_specifications = {
             'TTI': {
                 'nomvar': 'TTI',
-                'etiket': 'TOTALI',
+                'label': 'TOTALI',
                 'unit': 'celsius',
                 'ip1': 0}}
         self.df = df

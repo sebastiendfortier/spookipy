@@ -44,7 +44,7 @@ class MatchLevelIndexToValue(Plugin):
 
         self.plugin_result_specifications = \
             {
-                'ALL': {'etiket': 'MLIVAL', 'ip1': 0}
+                'ALL': {'label': 'MLIVAL', 'ip1': 0}
             }
 
         self.df = fstpy.metadata_cleanup(self.df)
@@ -119,7 +119,7 @@ class MatchLevelIndexToValue(Plugin):
                         res_df     = create_result_container(var_df,borne_inf, borne_sup, ip1_kind)
                     else:
                         # Si le champ d'indice a un interval, on prend ses infos
-                        res_df = create_empty_result(ind_df, {'etiket':'MLIVAL'})
+                        res_df = create_empty_result(ind_df, {'label':'MLIVAL'})
                 else:
                     res_df = create_empty_result(var_df, self.plugin_result_specifications['ALL'])  
 
@@ -189,5 +189,5 @@ def create_result_container(df, b_inf, b_sup, ip1_kind):
     ip1_enc = rmn.ip1_val(ip1, kind)
     ip3_enc = rmn.ip1_val(ip3, kind)
 
-    res_df = create_empty_result(df, {'etiket':'MLIVAL', 'ip1': ip1_enc, 'ip3': ip3_enc})
+    res_df = create_empty_result(df, {'label':'MLIVAL', 'ip1': ip1_enc, 'ip3': ip3_enc})
     return res_df

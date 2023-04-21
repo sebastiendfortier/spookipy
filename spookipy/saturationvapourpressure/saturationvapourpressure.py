@@ -71,7 +71,7 @@ class SaturationVapourPressure(Plugin):
         self.plugin_result_specifications = {
             'SVP': {
                 'nomvar': 'SVP',
-                'etiket': 'SVPRES',
+                'label': 'SVPRES',
                 'unit'  : 'hectoPascal',
                 'nbits' : 16,
                 'datyp' : 1},

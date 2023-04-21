@@ -64,7 +64,7 @@ class ExamplePlugin(Plugin):
         self.plugin_result_specifications = {                                    # define the resulting fields specifications
             # in this case, we want the comvar to be UV, the etiket to be
             # WNDMOD
-            'UV': {'nomvar': 'UV', 'etiket': 'WNDMOD', 'unit': 'knot'}
+            'UV': {'nomvar': 'UV', 'label': 'WNDMOD', 'unit': 'knot'}
         }                                                                        # and since the result is in knots, we want to set the unit to knots
 
         # here, since we didn't use the @initializer decorator, we have to set

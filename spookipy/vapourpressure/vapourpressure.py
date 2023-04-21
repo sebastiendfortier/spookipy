@@ -118,7 +118,7 @@ class VapourPressure(Plugin):
         self.plugin_result_specifications = {
             'VPPR': {
                 'nomvar': 'VPPR',
-                'etiket': 'VAPRES',
+                'label': 'VAPRES',
                 'unit'  : 'hectoPascal',
                 'nbits' : 16,
                 'datyp' : 1}}

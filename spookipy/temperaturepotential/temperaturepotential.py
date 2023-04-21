@@ -51,7 +51,7 @@ class TemperaturePotential(Plugin):
         self.plugin_result_specifications = {
             'TH': {
                 'nomvar': 'TH', 
-                'etiket': 'PTNLTT', 
+                'label': 'PTNLTT', 
                 'unit': 'kelvin'}
         }
         self.df = fstpy.metadata_cleanup(self.df)

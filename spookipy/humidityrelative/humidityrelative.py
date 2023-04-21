@@ -104,7 +104,7 @@ class HumidityRelative(Plugin):
         self.plugin_result_specifications = {
             'HR': {
                 'nomvar': 'HR',
-                'etiket': 'HUMREL',
+                'label': 'HUMREL',
                 'unit'  : 'scalar',
                 'nbits' : 12,
                 'datyp' : 1}}

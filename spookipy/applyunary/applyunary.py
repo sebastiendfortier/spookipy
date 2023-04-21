@@ -41,7 +41,7 @@ class ApplyUnary(Plugin):
 
         self.plugin_result_specifications = \
         {
-            'ALL': {'etiket': self.etiket,
+            'ALL': {'label': self.etiket,
                     'datyp': 5,
                     'nbits': 32}
         }

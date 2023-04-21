@@ -53,7 +53,7 @@ class WindModulus(Plugin):
         ]
 
         self.plugin_result_specifications = {
-            'UV': {'nomvar': 'UV', 'etiket': 'WNDMOD', 'unit': 'knot'}
+            'UV': {'nomvar': 'UV', 'label': 'WNDMOD', 'unit': 'knot'}
         }
 
         #ajouter forecast_hour et unit

@@ -39,7 +39,7 @@ class CoriolisParameter(Plugin):
         self.plugin_result_specifications = {
             'CORP': {
                 'nomvar': 'CORP',
-                'etiket': 'CORIOP',
+                'label': 'CORIOP',
                 'unit': 'divergence',
                 'ip1': 0,
                 'ip2': 0,

@@ -33,7 +33,7 @@ class WindDirection(Plugin):
         'VV': {'nomvar': 'VV', 'unit': 'knot'},
     }
     plugin_result_specifications = {
-        'WD': {'nomvar': 'WD', 'etiket': 'WNDDIR', 'unit': 'degree'}
+        'WD': {'nomvar': 'WD', 'label': 'WNDDIR', 'unit': 'degree'}
     }
 
     def __init__(self, df: pd.DataFrame):

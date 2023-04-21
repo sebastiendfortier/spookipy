@@ -85,7 +85,7 @@ class MinMaxLevelIndex(Plugin):
 
         self.plugin_result_specifications = \
             {
-                'ALL': {'etiket': 'MMLVLI', 'unit': 'scalar'}
+                'ALL': {'label': 'MMLVLI', 'unit': 'scalar'}
             }
 
         self.validate_params_and_input()

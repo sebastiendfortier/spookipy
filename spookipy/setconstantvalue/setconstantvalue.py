@@ -55,7 +55,7 @@ class SetConstantValue(Plugin):
             bi_dimensionnal=False):
 
         self.plugin_result_specifications = {
-            'ALL': {'etiket': 'SETVAL', 'unit': 'scalar'}
+            'ALL': {'label': 'SETVAL', 'unit': 'scalar'}
         }
         self.validate_input()
 

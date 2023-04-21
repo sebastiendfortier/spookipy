@@ -156,7 +156,7 @@ class StatisticsVertically(Plugin):
         df_list = []
         for pl, pu in zip(self.interpercentiles_lower, self.interpercentiles_upper):
             new_etiket = create_etiket(df, ''.join([STATS['INTERPERCENTILES'], str(remove_decimals(pl))[:2],str(remove_decimals(pu))[:2]]))
-            res_df = create_empty_result(df,{'etiket':new_etiket})
+            res_df = create_empty_result(df,{'label':new_etiket})
             plres = np.percentile(array_3d, pl, axis=0)
             pures = np.percentile(array_3d, pu, axis=0)
             res = pures - plres
@@ -171,7 +171,7 @@ class StatisticsVertically(Plugin):
         df_list = []
         for op, val in zip(self.threshold_operators, self.threshold_values):
             new_etiket = create_etiket(df, ''.join([op, str(remove_decimals(val))]))
-            res_df = create_empty_result(df,{'etiket':new_etiket, 'unit':'percent'})
+            res_df = create_empty_result(df,{'label':new_etiket, 'unit':'percent'})
             if op == 'LT':
                 tresh = np.sum(array_3d < val, axis=0) * 100.0 / array_3d.shape[0]
             elif op == 'LE':
@@ -197,7 +197,7 @@ class StatisticsVertically(Plugin):
         df_list = []
         for p in self.percentiles:
             new_etiket = create_etiket(df, ''.join([STATS['PERCENTILES'], str(remove_decimals(p))]))
-            res_df = create_empty_result(df,{'etiket':new_etiket})
+            res_df = create_empty_result(df,{'label':new_etiket})
             df_list.append(res_df)
         res_df = pd.concat(df_list, ignore_index=True)
         res = np.percentile(array_3d, self.percentiles, axis=0)
@@ -207,7 +207,7 @@ class StatisticsVertically(Plugin):
     def STD(self, df) -> pd.DataFrame:    
         new_etiket = create_etiket(df, STATS['STD'])
         array_3d = get_3d_array(df)
-        res_df = create_empty_result(df,{'etiket':new_etiket})
+        res_df = create_empty_result(df,{'label':new_etiket})
         res = np.std(array_3d, axis=0, ddof=1)
         res_df['d'] = [res]
         return res_df
@@ -216,7 +216,7 @@ class StatisticsVertically(Plugin):
         new_etiket = create_etiket(df, STATS['MEAN'])
 
         array_3d = get_3d_array(df)
-        res_df = create_empty_result(df,{'etiket':new_etiket})
+        res_df = create_empty_result(df,{'label':new_etiket})
         res = np.mean(array_3d, axis=0)
         res_df['d'] = [res]
         return res_df

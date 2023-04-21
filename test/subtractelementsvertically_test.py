@@ -65,7 +65,7 @@ def test_3(plugin_test_dir):
     file_to_compare = plugin_test_dir + "SubVert_test3_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -90,7 +90,7 @@ def test_4(plugin_test_dir):
     file_to_compare = plugin_test_dir + "SubVert_test4_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -121,7 +121,7 @@ def test_5(plugin_test_dir):
     file_to_compare = plugin_test_dir + "SubVert_test5_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)#, exclude_meta=True)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])#, exclude_meta=True)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -161,7 +161,7 @@ def test_7(plugin_test_dir):
     file_to_compare = plugin_test_dir + "SubVert_test7_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)#, exclude_meta=True)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])#, exclude_meta=True)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -188,6 +188,6 @@ def test_8(plugin_test_dir):
     file_to_compare = plugin_test_dir + "SubVert_test8_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)#, exclude_meta=True)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])#, exclude_meta=True)
     fstpy.delete_file(results_file)
     assert(res)

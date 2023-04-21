@@ -42,7 +42,7 @@ def test_1(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/GeorgeKIndex/result_test_1'
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.1)
+    res = fstcomp(results_file, file_to_compare, e_max=0.1,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -74,7 +74,7 @@ def test_2(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/GeorgeKIndex/result_test_2'
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)  # ,e_max=0.01)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])  # ,e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -101,7 +101,7 @@ def test_3(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/GeorgeKIndex/result_test_3'
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -134,7 +134,7 @@ def test_4(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/GeorgeKIndex/result_test_4'
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)  # ,e_max=0.001)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])  # ,e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -181,6 +181,6 @@ def test_6(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/GeorgeKIndex/result_test_6'
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)

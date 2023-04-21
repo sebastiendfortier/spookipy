@@ -51,7 +51,7 @@ def test_1(plugin_test_dir):
     file_to_compare = plugin_test_dir + "18_12_diff_file2cmp_noEncoding.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)#, exclude_meta=True, cmp_number_of_fields=False)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])#, exclude_meta=True, cmp_number_of_fields=False)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -93,7 +93,7 @@ def test_2(plugin_test_dir):
     file_to_compare = plugin_test_dir + "18_15_12_diff_file2cmp_noEncoding.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)#, cmp_number_of_fields=False)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])#, cmp_number_of_fields=False)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -131,7 +131,7 @@ def test_3(plugin_test_dir):
     file_to_compare = plugin_test_dir + "12_06_diff_file2cmp_noEncoding.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)#, cmp_number_of_fields=False)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])#, cmp_number_of_fields=False)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -172,7 +172,7 @@ def test_4(plugin_test_dir):
     file_to_compare = plugin_test_dir + "18_12_threshold0.02_diff_file2cmp_noEncoding.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)#, cmp_number_of_fields=False)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])#, cmp_number_of_fields=False)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -207,7 +207,7 @@ def test_5(plugin_test_dir):
     file_to_compare = plugin_test_dir + "global20121217_file2cmp_noEncoding.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)#, cmp_number_of_fields=False)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])#, cmp_number_of_fields=False)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -276,7 +276,7 @@ def test_8(plugin_test_dir):
     file_to_compare = plugin_test_dir + "UV_15a36_delta_3et12_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)#, cmp_number_of_fields=False)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])#, cmp_number_of_fields=False)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -605,7 +605,7 @@ def test_19(plugin_test_dir):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/TimeIntervalDifference/result_test_19"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare) #
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4']) #
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -643,7 +643,7 @@ def test_20(plugin_test_dir):
     # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/TimeIntervalDifference/result_test_20"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare) #
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4']) #
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -762,7 +762,7 @@ def test_27(plugin_test_dir):
     file_to_compare = plugin_test_dir + "TMIDIF_test27_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare) 
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4']) 
     fstpy.delete_file(results_file)
     assert(res)
 

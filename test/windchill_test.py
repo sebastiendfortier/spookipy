@@ -43,7 +43,7 @@ def test_1(plugin_test_dir):
     file_to_compare = plugin_test_dir + "windChill_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.01)  # ,e_max=0.001)
+    res = fstcomp(results_file, file_to_compare, e_max=0.01,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])  # ,e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)
 

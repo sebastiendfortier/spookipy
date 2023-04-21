@@ -372,11 +372,26 @@ def create_empty_result(df: pd.DataFrame, plugin_result_specifications: dict, al
         res_df = df.iloc[0].to_dict()
         res_df = pd.DataFrame([res_df])
 
+    res_df = fstpy.add_columns(res_df, columns=['etiket'])
+
     for k, v in plugin_result_specifications.items():
         if (k in res_df.columns):
             res_df.loc[:, k] = v
         else:
             raise DataframeColumnError(f'In create_empty_result - Column "{k}" not found in dataframe!')
+
+    # set to default parameters
+    res_df['run'] = '__'
+    res_df['implementation'] = 'X'
+    res_df['etiket_format'] = ''
+    
+    res_df['etiket'] = res_df.apply(lambda row: fstpy.create_encoded_standard_etiket(
+                                                                row['label'], 
+                                                                row['run'], 
+                                                                row['implementation'], 
+                                                                row['ensemble_member'], 
+                                                                row['etiket_format'],
+                                                                ), axis=1)
 
     if 'level' not in res_df.columns:
         res_df = fstpy.add_columns(res_df, columns=['ip_info'])

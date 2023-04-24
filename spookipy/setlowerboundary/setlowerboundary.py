@@ -7,6 +7,7 @@ from typing import Final
 import numpy as np
 import pandas as pd
 import warnings 
+import fstpy
 
 from ..plugin import Plugin, PluginParser
 from ..utils import (create_empty_result, final_results, initializer, validate_nomvar)
@@ -43,14 +44,20 @@ class SetLowerBoundary(Plugin):
         logging.info('SetLowerBoundary - compute')
         df_list=[]
         res_df = create_empty_result(self.no_meta_df, self.plugin_result_specifications, all_rows=True)
+
         if  (self.no_meta_df.nomvar.unique().size == 1) and (not (self.nomvar_out is None)):
             res_df['nomvar'] = self.nomvar_out
+            
         data = np.stack(res_df.d)
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             res_df['d'] = np.split(np.where(data < self.value, self.value, data),data.shape[0])
             
         df_list.append(res_df)
+
+        # Conversion du dask array en numpy array, pour que le squeeze fonctionne bien 
+        for i in self.meta_df.index:
+            self.meta_df.at[i,'d'] = fstpy.to_numpy(self.meta_df.at[i,'d'])
 
         df_final = final_results(df_list, SetLowerBoundaryError, self.meta_df)
         df_final['d'] = df_final.apply(lambda row: np.squeeze(row['d']), axis=1)

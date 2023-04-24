@@ -190,10 +190,10 @@ class WriterStd(Plugin):
             self.df['typvar'] = self.df.apply(lambda row: row['typvar'][0], axis=1)
 
         if run_id:
-            self.df['run'] = run_id
+            self.df.loc[self.df['run']=='__','run'] = run_id
 
         if implementation:
-            self.df['implementation'] = implementation
+            self.df.loc[self.df['run']=='__','implementation'] = implementation
 
         self.df['etiket'] = self.df.apply(lambda row: fstpy.create_encoded_standard_etiket(
                                                                 row['label'], 

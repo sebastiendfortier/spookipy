@@ -1,0 +1,70 @@
+# -*- coding: utf-8 -*-
+from test import TEST_PATH, TMP_PATH, check_test_ssm_package
+
+check_test_ssm_package()
+
+import fstpy
+import pytest
+import rpnpy.librmn.all as rmn
+import spookipy
+from ci_fstcomp import fstcomp
+import secrets
+
+pytestmark = [pytest.mark.regressions]
+
+
+@pytest.fixture
+def plugin_test_dir():
+    return TEST_PATH + '/MultiplyElementBy/testsFiles/'
+
+
+def test_1(plugin_test_dir):
+    """test_factor1"""
+    # open and read source
+    source0 = plugin_test_dir + "UUVV5x5_1_fileSrc.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    # compute MultiplyElementBy
+    df = spookipy.MultiplyElementBy(src_df0, value=3).compute()
+    # [ReaderStd --input {sources[0]}] >> [MultiplyElementBy --value 3.0] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
+
+    df = spookipy.convip(df, style=rmn.CONVIP_ENCODE_OLD)
+    df.loc[:,'typvar'] = 'P'
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "factor_file2cmp.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
+
+
+def test_2(plugin_test_dir):
+    """test_factor2"""
+    # open and read source
+    source0 = plugin_test_dir + "UUVV5x5_1_fileSrc.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    # compute MultiplyElementBy
+    df = spookipy.MultiplyElementBy(src_df0, value=0.333).compute()
+    # [ReaderStd --input {sources[0]}] >> [MultiplyElementBy --value 0.333] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
+
+    df = spookipy.convip(df, style=rmn.CONVIP_ENCODE_OLD)
+    df.loc[:,'typvar'] = 'P'
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "factor2_file2cmp.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)

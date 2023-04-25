@@ -1,0 +1,6 @@
+plugins:
+  - addelementsbypoint
+  - addtoelement
+  - applyunary
+  - arithmeticmeanbypoint
+  - coriolisparameter

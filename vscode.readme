@@ -1,0 +1,69 @@
+Setup de vscode
+---------------
+suivre la demarche du wiki https://wiki.cmc.ec.gc.ca/wiki/Visual_Studio_Code
+
+une fois vscode installe
+
+demarrer vscode
+
+installer extension -> remote-ssh
+
+connecter a un ppp (coin inf gauche, petit carre en vert -> connect to host -> tapez ppp[3|4])
+
+ensuite dans file -> preferences -> settings Remote [SSH:ppp[3|4]]
+
+chercher "python interpreter", changer default a  /fs/ssm/eccc/cmd/cmde/surge/surgepy/1.0.8/surgepy_1.0.8_all/bin/python
+
+
+ensuite dans file -> preferences -> settings - chercher "rulers" -> edit settings.json 
+ajouter
+"editor.rulers": [120],
+
+
+ensuite dans file -> preferences -> settings - chercher "encoding"
+File: Encoding
+choisir UTF-8
+
+installer extension - Python docstring generator
+ensuite dans file -> preferences -> settings - chercher "docstring", changer Auto Docstring: Docstring Format pour sphinx
+
+
+installer extension - pylance
+
+optionnel
+(pour que ca marche, il faut faire ssmuse surgepy et ensuite faire pip install snooty rstcheck - il est pas dans le package)
+
+installer extension - reStructuredText v166
+
+
+ensuite dans file -> preferences -> settings - chercher "autopep8", changer Auto Docstring: Docstring Format pour sphinx
+cliquer sur add item
+mettre 
+--max-line-length 120
+ensuite ok
+
+
+la premiere fois qu'on ouvre le code fstpy ou spookipy
+
+ctrl-shift-p
+tapez
+Tasks:
+cliquez sur Manage automatic tasks in folder
+cliquez sur Allow...
+
+
+Jupyter notebook dans vscode
+----------------------------
+
+Pour unraison que j'ignore, il y a une methode pour creer les notebooks dans vscode
+
+Dans la partie gauche (EXPLORER) de la fenetre de vscode
+
+A l'endroit ou on veut creer un jupyter notebook (dans un dossier)
+
+faire bouton de droite -> New file
+
+et creer un fichier avec l'extension .ipynb
+
+voila!
+

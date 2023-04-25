@@ -1,0 +1,13 @@
+Pour le deboguagge
+- j'ai ajouter un launch.json qui permet de parametrer les tests pour un fichier selectionne
+- on doit mettre un fichier .env dans le root du projet, soit env > spookipy/.env
+- dans la variable PYTHONPATH du fichier .env il devrait y avoir tout ce qu'on veut que l'interpreteur python voie
+- dans le cas de tests de spookipy j'ai mis rpnpy, spookipy, fstpy et surgepy dans le PYTHONPATH
+pour moi ca ressemble a ca
+PYTHONPATH=/fs/ssm/eccc/mrd/rpn/MIG/ENV/d/rpnpy/rpnpy_2.1.2/rpnpy_2.1.2_all/lib:/fs/ssm/eccc/mrd/rpn/libs/19.6.0/ubuntu-18.04-skylake-64/lib/ubuntu-18.04-skylake-64/intel-19.0.3.199:/fs/ssm/eccc/mrd/rpn/vgrid/6.5.0/ubuntu-18.04-skylake-64/lib/ubuntu-18.04-skylake-64/intel-19.0.3.199:/fs/ssm/eccc/cmd/cmda/libs/19.6.0/intel-19.0.3.199/ubuntu-18.04-skylake-64/lib:/fs/ssm/eccc/mrd/rpn/utils/19.6.0/env-python_1.3.0_all/share/Python/PythonAllRevs:/fs/ssm/eccc/cmd/cmds/apps/ci_fstcomp/1.0.8/all/lib/python:/fs/ssm/eccc/cmd/cmds/fstpy/2.1.13/all/lib/python:/home/sbf000/guylaine/spookipy
+voir le dernier repertoire, c'est ou ce trouve mon spookipy actuel soit :/home/sbf000/guylaine/spookipy
+- j'ai fait un main dans AddElementsByPoint pour deboguagge du test 1
+if __name__ == "__main__":
+    test_1(TEST_PATH + '/AddElementsByPoint/testsFiles/')
+- on peu mettre des breakpoints ou on veut
+- le main ne derange pas lest tests

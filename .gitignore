@@ -1,0 +1,20 @@
+
+*.doctree
+*.o
+.cache
+.coverage
+.ipynb_checkpoints
+.pytest_cache
+# .vscode
+__pycache__
+diff.png
+global.lock
+map.html
+mydask.png
+out.std
+perf.png
+plot.png
+purge.lock
+test/out.txt
+doc/_build/*
+.env

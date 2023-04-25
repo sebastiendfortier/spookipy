@@ -1,0 +1,51 @@
+addelementsbypoint
+addtoelement
+applyunary
+arithmeticmeanbypoint
+cloudfractiondiagnostic
+configparsingutils
+coriolisparameter
+dewpointdepression
+filterdigital
+georgekindex
+gridcut
+gridpointdifference
+gridpointdistance
+helicity
+humidex
+humidityrelative
+humidityspecific
+humidityutils
+interpolationhorizontalgrid
+interpolationhorizontalpoint
+mask
+matchlevelindextovalue
+minmaxlevelindex
+minmaxvertically
+multiplyelementby
+multiplyelementsbypoint
+opelementsbycolumn              # always keep
+opelementsbyvalue               # always keep
+percentiletopercentage
+plugin                          # always keep
+precipitationamount
+pressure
+saturationvapourpressure
+science                         # always keep
+setconstantvalue
+setlowerboundary
+setupperboundary
+subtractelementsvertically
+temperaturedewpoint
+temperaturepotential
+temperaturevirtual
+thickness
+timeintervaldifference
+timeintervalminmax
+totaltotalsindex
+vapourpressure
+watervapourmixingratio
+windchill
+# winddirection
+windmax
+windmodulus

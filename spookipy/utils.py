@@ -1027,7 +1027,7 @@ def restore_5005_record(df:pd.DataFrame):
     if 'kindfor5005' in df.columns:
         df['ip1_kind'] = df.apply(lambda row: row['ip1_kind'] if row['kindfor5005'] == -999 else row['kindfor5005'], axis=1)
 
-def print_voir(df: pd.DataFrame, message: str):
+def print_voir(df: pd.DataFrame, message: str = ""):
     """Impression du contenu du dataframe style <voir>
 
     :param df: dataframe dont on veut voir les valeurs

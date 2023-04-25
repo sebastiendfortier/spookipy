@@ -42,7 +42,7 @@ class GeorgeKIndex(Plugin):
         self.plugin_result_specifications = {
             'KI': {
                 'nomvar': 'KI',
-                'etiket': 'GEORKI',
+                'label': 'GEORKI',
                 'unit'  : 'scalar',
                 'ip1'   : 0}
                 }

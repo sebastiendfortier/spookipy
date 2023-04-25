@@ -52,7 +52,7 @@ class WindChill(Plugin):
         self.plugin_result_specifications = {
             'RE': {
                 'nomvar': 'RE',
-                'etiket': 'WNDCHL',
+                'label': 'WNDCHL',
                 'unit': 'celsius',
                 'ip1': 0}}
 

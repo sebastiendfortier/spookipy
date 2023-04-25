@@ -39,7 +39,7 @@ class Mask(Plugin):
             parallel: bool = False):
 
         self.plugin_result_specifications = {
-            'ALL': {'etiket': 'MASK'}
+            'ALL': {'label': 'MASK'}
             }
         
         self.validate_input()

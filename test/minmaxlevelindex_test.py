@@ -504,7 +504,7 @@ def test_20(plugin_test_dir):
     file_to_compare = plugin_test_dir + "MinMax_file2cmp_test20.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 

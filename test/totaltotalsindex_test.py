@@ -40,6 +40,6 @@ def test_1(plugin_test_dir):
     # file_to_compare = '/home/sbf000/data/testFiles/TotalTotalsIndex/result_test_1'
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.1)
+    res = fstcomp(results_file, file_to_compare, e_max=0.1,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)

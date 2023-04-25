@@ -70,7 +70,7 @@ class Thickness(Plugin):
 
         self.plugin_result_specifications = \
             {
-                'DZ': {'nomvar': 'DZ','unit':'decameter','etiket':'THCKNS'}
+                'DZ': {'nomvar': 'DZ','unit':'decameter','label':'THCKNS'}
             }
 
         df = fstpy.set_vertical_coordinate_type(df)

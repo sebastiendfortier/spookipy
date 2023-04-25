@@ -134,7 +134,7 @@ class PercentileToPercentage(Plugin):
             msk_group_df = self.msk_df.loc[self.msk_df['forecast_hour'] == forecast_hour]
 
             # Rewrite the etiket field name to the validated input name
-            mask_df = create_empty_result(msk_group_df,{'etiket':self.etiket})
+            mask_df = create_empty_result(msk_group_df,{'label':self.etiket})
 
             # Select a row of data to update the field to the exceedence percentage
             group_df = fstpy.compute(group_df)
@@ -149,7 +149,7 @@ class PercentileToPercentage(Plugin):
                 percentile_field = np.apply_along_axis(field_to_percentage_le, 0, group_field_stacked, self.threshold, percentiles)
             percentile_field = np.where(mask_df['d'].iloc[0] == 0.0, 0, percentile_field)
 
-            data_df = create_empty_result(group_df,{'etiket':self.etiket})
+            data_df = create_empty_result(group_df,{'label':self.etiket})
 
             data_df['d'] = [percentile_field.astype(np.float32)]
 

@@ -111,7 +111,7 @@ def test_5(plugin_test_dir):
     file_to_compare = plugin_test_dir + "VapourPressure_hu_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001)
+    res = fstcomp(results_file, file_to_compare, e_max=0.001,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -148,7 +148,7 @@ def test_6(plugin_test_dir):
     file_to_compare = plugin_test_dir + "rpnVapourPressure_hu_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001)
+    res = fstcomp(results_file, file_to_compare, e_max=0.001,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -183,7 +183,7 @@ def test_7(plugin_test_dir):
     file_to_compare = plugin_test_dir + "rpnVapourPressure_hu_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001)
+    res = fstcomp(results_file, file_to_compare, e_max=0.001,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -218,7 +218,7 @@ def test_8(plugin_test_dir):
     file_to_compare = plugin_test_dir + "VapourPressure_hr_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001)
+    res = fstcomp(results_file, file_to_compare, e_max=0.001,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -253,7 +253,7 @@ def test_9(plugin_test_dir):
     file_to_compare = plugin_test_dir + "VapourPressure_es_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.1)
+    res = fstcomp(results_file, file_to_compare, e_max=0.1,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -289,7 +289,7 @@ def test_11(plugin_test_dir):
     file_to_compare = plugin_test_dir + "2011100712_012_regeta_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001)
+    res = fstcomp(results_file, file_to_compare, e_max=0.001,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -326,7 +326,7 @@ def test_12(plugin_test_dir):
     file_to_compare = plugin_test_dir + "2011100712_012_regeta_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001)
+    res = fstcomp(results_file, file_to_compare, e_max=0.001,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -356,7 +356,7 @@ def test_13(plugin_test_dir):
     file_to_compare = plugin_test_dir + "resulttest_13.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001)
+    res = fstcomp(results_file, file_to_compare, e_max=0.001,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -391,6 +391,6 @@ def test_14(plugin_test_dir):
     file_to_compare = plugin_test_dir + "VapourPressure_test14_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)

@@ -68,7 +68,7 @@ class CloudFractionDiagnostic(Plugin):
         self.plugin_result_specifications = {
             'CLD': {
                 'nomvar': 'CLD',
-                'etiket': 'CloudFractionDiagnostic',
+                'label': 'CloudFractionDiagnostic',
                 'unit': 'scalar'}}
 
         self.constant = 0.8

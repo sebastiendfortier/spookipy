@@ -126,7 +126,7 @@ class GridPointDistance(Plugin):
     """
     @initializer
     def __init__(self, df: pd.DataFrame, difference_type: str = None, axis: 'list(str)' = ['x', 'y']):
-        self.plugin_result_specifications = {'etiket': ETIKET}
+        self.plugin_result_specifications = {'label': ETIKET}
         super().__init__(df)
         self.validate_params()
         if 'path' not in self.df.columns:

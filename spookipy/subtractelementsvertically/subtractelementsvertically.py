@@ -27,7 +27,7 @@ class SubtractElementsVertically(Plugin):
     """
     @initializer
     def __init__(self, df: pd.DataFrame, direction: str='ascending', nomvar_out: str = None):
-        self.plugin_result_specifications = {'etiket': ETIKET}
+        self.plugin_result_specifications = {'label': ETIKET}
         super().__init__(df)
         self.no_meta_df = fstpy.add_columns(self.no_meta_df,'ip_info')
         self.validate_params()

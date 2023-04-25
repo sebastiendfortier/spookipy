@@ -261,7 +261,7 @@ def create_result_container(df, b_inf, b_sup, nomvar):
     # npas = int((ip2 * 3600) / deet)
 
     inter  = fstpy.Interval('ip2', b_inf, b_sup, 10)
-    res_df = create_empty_result(df, {'nomvar':nomvar, 'etiket':'TIMNMX',
+    res_df = create_empty_result(df, {'nomvar':nomvar, 'label':'TIMNMX',
                                       'interval':inter, 'npas': npas})
     return res_df
 

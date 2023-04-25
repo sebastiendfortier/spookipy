@@ -39,7 +39,7 @@ class TemperatureVirtual(Plugin):
         self.plugin_result_specifications = {
                 'VT': {
                 'nomvar': 'VT',
-                'etiket': 'VIRTT',
+                'label': 'VIRTT',
                 'unit': 'celsius',
                 'nbits': 16,
                 'datyp': 1}}

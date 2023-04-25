@@ -31,7 +31,7 @@ class Helicity(Plugin):
             'VV': {'nomvar': 'VV', 'unit': 'knot'},
         }]
         self.plugin_result_specifications = {
-            'UV': {'nomvar': 'UV', 'etiket': 'WNDMOD', 'unit': 'knot'}
+            'UV': {'nomvar': 'UV', 'label': 'WNDMOD', 'unit': 'knot'}
         }
         self.df = df
         # ajouter forecast_hour et unit

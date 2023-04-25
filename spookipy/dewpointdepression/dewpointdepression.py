@@ -104,7 +104,7 @@ class DewPointDepression(Plugin):
         self.plugin_result_specifications = {
             'ES': {
                 'nomvar': 'ES',
-                'etiket': 'DEWPTD',
+                'label': 'DEWPTD',
                 'unit': 'celsius',
                 'nbits': 16,
                 'datyp': 1}}

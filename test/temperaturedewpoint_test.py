@@ -89,7 +89,7 @@ def test_4(plugin_test_dir):
     file_to_compare = plugin_test_dir + "TemperatureDewPoint_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.1)
+    res = fstcomp(results_file, file_to_compare, e_max=0.1,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -123,7 +123,7 @@ def test_5(plugin_test_dir):
     file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_es_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.1)
+    res = fstcomp(results_file, file_to_compare, e_max=0.1,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -158,7 +158,7 @@ def test_6(plugin_test_dir):
     file_to_compare = plugin_test_dir + "rpn2011100712_012_glbhyb_es_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.1)
+    res = fstcomp(results_file, file_to_compare, e_max=0.1,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -193,7 +193,7 @@ def test_7(plugin_test_dir):
     file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_hr_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.01)
+    res = fstcomp(results_file, file_to_compare, e_max=0.01,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -225,7 +225,7 @@ def test_9(plugin_test_dir):
     file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_hu_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.01)
+    res = fstcomp(results_file, file_to_compare, e_max=0.01,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -254,7 +254,7 @@ def test_10(plugin_test_dir):
     file_to_compare = plugin_test_dir + "2011100712_test10_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.01)
+    res = fstcomp(results_file, file_to_compare, e_max=0.01,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     # fstpy.delete_file(results_file)
     assert(res)
 
@@ -282,7 +282,7 @@ def test_11(plugin_test_dir):
     file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_qv_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.01)
+    res = fstcomp(results_file, file_to_compare, e_max=0.01,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -315,7 +315,7 @@ def test_12(plugin_test_dir):
     file_to_compare = plugin_test_dir + "resulttest_12.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.01)
+    res = fstcomp(results_file, file_to_compare, e_max=0.01,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -339,6 +339,6 @@ def test_13(plugin_test_dir):
     file_to_compare = plugin_test_dir + "TemperatureDewPoint_test13_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)

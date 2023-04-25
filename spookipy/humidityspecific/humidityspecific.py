@@ -113,7 +113,7 @@ class HumiditySpecific(Plugin):
         self.plugin_result_specifications = {
             'HU': {
                 'nomvar': 'HU',
-                'etiket': 'HUMSPF',
+                'label': 'HUMSPF',
                 'unit'  : 'kilogram_per_kilogram',
                 'nbits' : 16,
                 'datyp' : 1}}

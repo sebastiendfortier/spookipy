@@ -75,7 +75,7 @@ class WaterVapourMixingRatio(Plugin):
         self.plugin_result_specifications = {
             'QV': {
                 'nomvar': 'QV',
-                'etiket': 'WVMXRT',
+                'label': 'WVMXRT',
                 'unit': 'gram_per_kilogram'}}
 
         self.df = fstpy.metadata_cleanup(self.df)

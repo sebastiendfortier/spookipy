@@ -37,7 +37,7 @@ def test_1(plugin_test_dir):
     file_to_compare = plugin_test_dir + "XCentered_file2cmp_rmn19.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -60,7 +60,7 @@ def test_2(plugin_test_dir):
     file_to_compare = plugin_test_dir + "YCentered_file2cmp_rmn19.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -83,7 +83,7 @@ def test_3(plugin_test_dir):
     file_to_compare = plugin_test_dir + "XForward_file2cmp_rmn12.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -106,7 +106,7 @@ def test_4(plugin_test_dir):
     file_to_compare = plugin_test_dir + "YForward_file2cmp_rmn12.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -129,7 +129,7 @@ def test_5(plugin_test_dir):
     file_to_compare = plugin_test_dir + "XBackward_file2cmp_rmn12.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -152,7 +152,7 @@ def test_6(plugin_test_dir):
     file_to_compare = plugin_test_dir + "YBackward_file2cmp_rmn12.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -175,7 +175,7 @@ def test_7(plugin_test_dir):
     file_to_compare = plugin_test_dir + "XYCentered_file2cmp_rmn19.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -202,7 +202,7 @@ def test_8(plugin_test_dir):
     file_to_compare = plugin_test_dir + "GlbPres_test8_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -228,7 +228,7 @@ def test_9(plugin_test_dir):
     file_to_compare = plugin_test_dir + "GlbPres_test9_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -253,7 +253,7 @@ def test_10(plugin_test_dir):
     file_to_compare = plugin_test_dir + "GlbPres_test10_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -494,7 +494,7 @@ def test_19(plugin_test_dir):
     file_to_compare = plugin_test_dir + "XYCentered_YY_file2cmp_py.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -519,7 +519,7 @@ def test_20(plugin_test_dir):
     file_to_compare = plugin_test_dir + "XYForward_YY_file2cmp_py.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -544,6 +544,6 @@ def test_21(plugin_test_dir):
     file_to_compare = plugin_test_dir + "XYBackward_YY_file2cmp_py.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
+    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)    

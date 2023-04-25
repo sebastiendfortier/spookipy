@@ -35,7 +35,7 @@ def test_1(plugin_test_dir):
     file_to_compare = plugin_test_dir + "PercentileToPercentage_file1cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001)
+    res = fstcomp(results_file, file_to_compare, e_max=0.001,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -70,7 +70,7 @@ def test_3(plugin_test_dir):
     file_to_compare = plugin_test_dir+ "PercentileToPercentage_file3cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001)
+    res = fstcomp(results_file, file_to_compare, e_max=0.001,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -105,7 +105,7 @@ def test_5(plugin_test_dir):
     file_to_compare = plugin_test_dir + "PercentileToPercentage_file5cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001)
+    res = fstcomp(results_file, file_to_compare, e_max=0.001,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 

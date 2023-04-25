@@ -282,6 +282,7 @@ def test_12(plugin_test_dir):
     source0 = plugin_test_dir + "UUVVTT5x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
+    src_df0['etiket'] = src_df0.apply(lambda row : "__"+row['etiket'][2:], axis=1)
     src_df0 = fstpy.add_columns(src_df0)
 
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])

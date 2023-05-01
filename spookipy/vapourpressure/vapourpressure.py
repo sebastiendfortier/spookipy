@@ -74,7 +74,7 @@ class VapourPressure(Plugin):
             {
                 'TT': {'nomvar': 'TT', 'unit': 'kelvin'},
                 'HR': {'nomvar': 'HR', 'unit': 'scalar', 'select_only': True},
-                'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'}
+                'PX': {'nomvar': 'PX', 'unit': 'pascal'}
             },
             # ES + TTk
             {
@@ -356,8 +356,6 @@ class VapourPressure(Plugin):
                     self.meta_df],
                 ignore_index=True),
             ice_water_phase=self.ice_water_phase,
-            temp_phase_switch=self.temp_phase_switch,
-            temp_phase_switch_unit=self.temp_phase_switch_unit,
             rpn=True, 
             dependency_check=self.dependency_check).compute()
         hu_df = get_from_dataframe(hu_df, 'HU')

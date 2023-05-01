@@ -51,6 +51,16 @@ class WaterVapourMixingRatio(Plugin):
             dependency_check=False,
             copy_input=False):
 
+        # Si ice_water_phase = water, on ne veut pas des valeurs par defaut pour temp_phase_switch
+        # car la validation ne passera pas.  Par contre, ces defauts sont necessaires pour tous les 
+        # autres cas... 
+        if (self.ice_water_phase == 'water'):
+            if ('temp_phase_switch' in self.explicit_params):
+                raise WaterVapourMixingRatioError(
+                'Cannot use ice_water_phase="water" with temp_phase_switch\n')
+            else:
+                self.temp_phase_switch = None
+                
         self.plugin_params = {
             'ice_water_phase'       : self.ice_water_phase,
             'temp_phase_switch'     : self.temp_phase_switch,

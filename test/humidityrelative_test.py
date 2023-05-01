@@ -94,13 +94,10 @@ def test_5(plugin_test_dir):
     df      = spookipy.HumidityRelative(src_df0, 
                                         ice_water_phase='water').compute()
 
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [ReaderStd --input {sources[0]}] >>
     # [Select --fieldName TT,HU] >> [HumidityRelative --iceWaterPhase WATER] >>
-    # [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >>
     # [Select --verticalLevel 1@0.859,0.126@0.103,0.00153@0.125] >>
-    # [WriterStd --output {destination_path} --ignoreExtended]
-    df.loc[:, 'etiket'] = 'G133K80N'
-
+    # [WriterStd --output {destination_path}]
     meta_df = df.loc[df.nomvar.isin(['!!', '^^', '>>', 'P0', 'PT', 'HY'])]
     ips = [
         93423264,
@@ -156,13 +153,12 @@ def test_5(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "2011100712_glbhyb_5_file2cmp.std"
+    file_to_compare = plugin_test_dir + "2011100712_glbhyb_5_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.01)
+    res = fstcomp(results_file, file_to_compare, e_max=0.001, columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
-
 
 def test_6(plugin_test_dir):
     """Calcul de l'humidité relative (HR) à partir de l'humidité spécifique (HU), option RPN."""
@@ -177,11 +173,10 @@ def test_6(plugin_test_dir):
                                         ice_water_phase='water',
                                         rpn=True).compute()
 
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [ReaderStd --input {sources[0]}] >>
     # [Select --fieldName TT,HU] >> [HumidityRelative --iceWaterPhase WATER --RPN] >>
-    # [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >>
     # [Select --verticalLevel 1@0.859,0.126@0.103,0.00153@0.125] >>
-    # [WriterStd --output {destination_path} --ignoreExtended]
+    # [WriterStd --output {destination_path} ]
     df.loc[:, 'etiket'] = 'G133K80N'
 
     meta_df = df.loc[df.nomvar.isin(['!!', '^^', '>>', 'P0', 'PT', 'HY'])]
@@ -239,10 +234,10 @@ def test_6(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "2011100712_glbhyb_6_file2cmp_202308.std"
+    file_to_compare = plugin_test_dir + "2011100712_glbhyb_6_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001)
+    res = fstcomp(results_file, file_to_compare, e_max=0.001, columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -258,12 +253,10 @@ def test_7(plugin_test_dir):
     # compute HumidityRelative
     df      = spookipy.HumidityRelative(src_df0, 
                                         ice_water_phase='water').compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [ReaderStd --input {sources[0]}] >>
     # [Select --fieldName TT,QV] >>
     # [HumidityRelative --iceWaterPhase WATER] >>
-    # [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >>
-    # [WriterStd --output {destination_path} --ignoreExtended]
-    df.loc[:, 'etiket'] = 'G133K80N'
+    # [WriterStd --output {destination_path}]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
@@ -271,10 +264,10 @@ def test_7(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "2011100712_glbhyb_7_file2cmp.std"
+    file_to_compare = plugin_test_dir + "2011100712_glbhyb_7_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.01)
+    res = fstcomp(results_file, file_to_compare, e_max=0.001, columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -299,10 +292,10 @@ def test_8(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "2011100712_glbhyb_8_file2cmp_20230308.std"
+    file_to_compare = plugin_test_dir + "2011100712_glbhyb_8_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001)
+    res = fstcomp(results_file, file_to_compare, e_max=0.001, columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -317,12 +310,10 @@ def test_9(plugin_test_dir):
     # compute HumidityRelative
     df      = spookipy.HumidityRelative(src_df0,
                                         ice_water_phase='water').compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [ReaderStd --input {sources[0]}] >>
     # [Select --fieldName TT,TD] >>
     # [HumidityRelative --iceWaterPhase WATER] >>
-    # [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >>
-    # [WriterStd --output {destination_path} --ignoreExtended]
-    df.loc[:, 'etiket'] = 'G133K80N'
+    # [WriterStd --output {destination_path}]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
@@ -330,10 +321,10 @@ def test_9(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "2011100712_glbhyb_9_file2cmp.std"
+    file_to_compare = plugin_test_dir + "2011100712_glbhyb_9_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001)
+    res = fstcomp(results_file, file_to_compare, e_max=0.002, columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -353,7 +344,6 @@ def test_10(plugin_test_dir):
     df      = spookipy.HumidityRelative(src_df0, 
                                         ice_water_phase='water',
                                         copy_input=True).compute()
-    df.loc[:, 'etiket'] = 'G133K80N'
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
@@ -361,7 +351,7 @@ def test_10(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "2011100712_glbhyb_10_file2cmp.std"
+    file_to_compare = plugin_test_dir + "2011100712_glbhyb_10_file2cmp_20230426.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -381,12 +371,10 @@ def test_11(plugin_test_dir):
     df      = spookipy.HumidityRelative(src_df0,
                                         ice_water_phase='water',
                                         rpn=True).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [ReaderStd --input {sources[0]}] >>
     # [Select --fieldName TT,TD] >>
     # [HumidityRelative --iceWaterPhase WATER --RPN] >>
-    # [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >>
-    # [WriterStd --output {destination_path} --ignoreExtended]
-    df.loc[:, 'etiket'] = 'G133K80N'
+    # [WriterStd --output {destination_path} ]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
@@ -394,9 +382,66 @@ def test_11(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "2011100712_glbhyb_11_file2cmp.std"
+    file_to_compare = plugin_test_dir + "2011100712_glbhyb_11_file2cmp_20230426.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare, e_max=0.001, columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    fstpy.delete_file(results_file)
+    assert(res)
+
+def test_12(plugin_test_dir):
+    """Calcul de l'humidité relative (HR) avec un fichier regpres (HU), ice_water_phase = both."""
+    # open and read source
+    source0 = plugin_test_dir + "2011100712_012_regpres"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    tthu_df   = fstpy.select_with_meta(src_df0, ['TT','HU'])
+
+    # compute 
+    df      = spookipy.HumidityRelative(tthu_df, 
+                                        ice_water_phase='both',
+                                        temp_phase_switch=273,
+                                        temp_phase_switch_unit='celsius').compute()
+
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "2011100712_regpres_test12_file2cmp.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.001)
+    fstpy.delete_file(results_file)
+    assert(res)
+
+def test_13(plugin_test_dir):
+    """Calcul de l'humidité relative (HR) avec un fichier regpres (HU), option RPN, ice_water_phase = both."""
+    # open and read source
+    source0 = plugin_test_dir + "2011100712_012_regpres"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    hu_df   = fstpy.select_with_meta(src_df0, ['HU'])
+    tt_df   = fstpy.select_with_meta(src_df0, ['TT'])
+    tt_df   = spookipy.SetUpperBoundary(tt_df, 
+                                        value=0.0).compute()
+
+    tthu_df = pd.concat([tt_df, hu_df],ignore_index=True)
+
+    # compute 
+    df      = spookipy.HumidityRelative(tthu_df, 
+                                        ice_water_phase='both',
+                                        rpn=True).compute()
+
+
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "2011100712_regpres_rpn_test13_file2cmp.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare, e_max=0.002)
     fstpy.delete_file(results_file)
     assert(res)

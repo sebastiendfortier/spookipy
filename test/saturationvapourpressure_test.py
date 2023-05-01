@@ -95,63 +95,55 @@ def test_5(plugin_test_dir):
 
 
 def test_6(plugin_test_dir):
-    """Calcul de la pression de vapeur saturante avec un fichier hybrid."""
+    """Calcul de la pression de vapeur saturante avec un fichier hybrid,  ice_water_phase = water."""
     # open and read source
     source0 = plugin_test_dir + "hyb_prog_2012071312_009_1HY"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute SaturationVapourPressure
-    df = spookipy.SaturationVapourPressure(
-        src_df0, ice_water_phase='water').compute()
-    # [ReaderStd --input {sources[0]}] >> [SaturationVapourPressure --iceWaterPhase WATER] >> [WriterStd --output {destination_path} --ignoreExtended]
+    df      = spookipy.SaturationVapourPressure(src_df0, 
+                                                ice_water_phase='water').compute()
+    # [ReaderStd --input {sources[0]}] >> [SaturationVapourPressure --iceWaterPhase WATER] >>
+    #  [WriterStd --output {destination_path} --noMetadata]
 
-    df.loc[df.nomvar.isin(['HY', 'P0']), 'etiket'] = '580V0'
-
-    # df['datyp']=5
-    # df.loc[df.nomvar!='!!','nbits']=32
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
     fstpy.delete_file(results_file)
-    fstpy.StandardFileWriter(results_file, df).to_fst()
+    fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "SaturationVapourPressure_file2cmp.std"
+    file_to_compare = plugin_test_dir + "SaturationVapourPressure_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.1,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file, file_to_compare, e_max=0.002)
     fstpy.delete_file(results_file)
     assert(res)
 
-
 def test_7(plugin_test_dir):
-    """Calcul de la pression de vapeur saturante avec un fichier hybrid 5005."""
+    """Calcul de la pression de vapeur saturante avec un fichier hybrid 5005,  ice_water_phase = both."""
     # open and read source
     source0 = plugin_test_dir + "minimal_4conve_5005.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute SaturationVapourPressure
-    df = spookipy.SaturationVapourPressure(
-        src_df0,
-        ice_water_phase='both',
-        temp_phase_switch=-40,
-        temp_phase_switch_unit='celsius').compute()
+    df      = spookipy.SaturationVapourPressure(src_df0,
+                                                ice_water_phase='both',
+                                                temp_phase_switch=-40,
+                                                temp_phase_switch_unit='celsius').compute()
+
     # ['[ReaderStd --input {sources[0]}] >> ', '[SaturationVapourPressure --iceWaterPhase BOTH --temperaturePhaseSwitch -40C] >>
-    # [WriterStd --output {destination_path} --ignoreExtended]']
+    # [WriterStd --output {destination_path} --noMetadata]'] 
 
-    df.loc[df.nomvar.isin(['!!', '^^', '>>', 'HY', 'P0']), 'etiket'] = '_V710_'
-
-    # df['datyp']=5
-    # df.loc[df.nomvar!='!!','nbits']=32
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
     fstpy.delete_file(results_file)
-    fstpy.StandardFileWriter(results_file, df).to_fst()
+    fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "resulttest_7.std"
+    file_to_compare = plugin_test_dir + "SaturationVapourPressure_test7_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.01,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file, file_to_compare, e_max=0.002)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -162,18 +154,16 @@ def test_7(plugin_test_dir):
 # [Select --fieldName WW,WD,UU,VV,UV --exclude] >>
 # [GridCut --startPoint 0,0 --endPoint 90,110]
 def test_8(plugin_test_dir):
-    """Calcul de la pression de vapeur saturante avec un fichier hybrid, option rpn."""
+    """Calcul de la pression de vapeur saturante avec un fichier hybrid, option rpn, ice_water_phase = water."""
 
     # open and read source
     source0 = plugin_test_dir + "hyb_prog_2012071312_009_1HY_reduit"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute SaturationVapourPressure
-    df = spookipy.SaturationVapourPressure(
-        src_df0, ice_water_phase='water',rpn=True).compute()
-
-    df.loc[df.nomvar.isin(['HY', 'P0']), 'etiket'] = 'R1580V0_N'
-    df.loc[df.nomvar.isin(['SVP']), 'etiket']      = '__SVPRESX'
+    df      = spookipy.SaturationVapourPressure(src_df0, 
+                                                ice_water_phase='water',
+                                                rpn=True).compute()
 
     # write the result
     results_file = TMP_PATH + "test_8.std"
@@ -184,7 +174,34 @@ def test_8(plugin_test_dir):
     file_to_compare = plugin_test_dir + "SaturationVapourPressure_test8_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.01)
+    res = fstcomp(results_file, file_to_compare, e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)
     
+def test_9(plugin_test_dir):
+    """Calcul de la pression de vapeur saturante avec un fichier regeta, option rpn, ice_water_phase = both."""
+
+    # open and read source
+    source0 = plugin_test_dir + "2011100712_012_regeta"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    tt_df   = fstpy.select_with_meta(src_df0, ['TT'])
+
+    # compute SaturationVapourPressure
+    df      = spookipy.SaturationVapourPressure(tt_df, 
+                                                ice_water_phase='both',
+                                                temp_phase_switch=273,
+                                                temp_phase_switch_unit='celsius',
+                                                rpn=True).compute()
+
+    # write the result
+    results_file = TMP_PATH + "test_9.std"
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "SaturationVapourPressure_test9_file2cmp.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare, e_max=0.001)
+    fstpy.delete_file(results_file)
+    assert(res)

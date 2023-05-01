@@ -393,7 +393,7 @@ def test_14(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "WaterVapourMixingRatioPXVPPR_test14_file2cmp.std"
+    file_to_compare = plugin_test_dir + "WaterVapourMixingRatioPXVPPR_test14_file2cmp_20230426.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)

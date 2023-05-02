@@ -412,8 +412,6 @@ def test_15(plugin_test_dir):
     df      = spookipy.WaterVapourMixingRatio(tthr_df,
                                               ice_water_phase='water').compute()
 
-    df.loc[df.nomvar == 'QV', 'etiket']            = '__WVMXRTX'
-
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
     fstpy.delete_file(results_file)

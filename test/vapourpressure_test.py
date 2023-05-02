@@ -123,8 +123,8 @@ def test_6(plugin_test_dir):
 
     # [ReaderStd --input {sources[0]}] >>
     # [Select --fieldName TT,HU] >>
-    #  [VapourPressure --RPN] >>
-    #  [WriterStd --output {destination_path} --noMetadata]
+    # [VapourPressure --RPN] >>
+    # [WriterStd --output {destination_path} --noMetadata]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])

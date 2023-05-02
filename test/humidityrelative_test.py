@@ -177,7 +177,6 @@ def test_6(plugin_test_dir):
     # [Select --fieldName TT,HU] >> [HumidityRelative --iceWaterPhase WATER --RPN] >>
     # [Select --verticalLevel 1@0.859,0.126@0.103,0.00153@0.125] >>
     # [WriterStd --output {destination_path} ]
-    df.loc[:, 'etiket'] = 'G133K80N'
 
     meta_df = df.loc[df.nomvar.isin(['!!', '^^', '>>', 'P0', 'PT', 'HY'])]
     ips = [
@@ -283,8 +282,6 @@ def test_8(plugin_test_dir):
     df      = spookipy.HumidityRelative(src_df0, 
                                         ice_water_phase='water',
                                         rpn=True).compute()
-
-    df.loc[:, 'etiket'] = 'G133K80N'
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])

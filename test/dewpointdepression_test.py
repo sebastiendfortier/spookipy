@@ -46,7 +46,7 @@ def test_2(plugin_test_dir):
                                           ice_water_phase='water', 
                                           rpn=True).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName TT,HU] >>
-    # [DewPointDepression --iceWaterPhase WATER --RPN ] >> [Zap --pdsLabel G133K80N --doNotFlagAsZapped] 
+    # [DewPointDepression --iceWaterPhase WATER --RPN ] 
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
@@ -57,7 +57,7 @@ def test_2(plugin_test_dir):
     file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_hu_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.01,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file, file_to_compare, e_max=0.005,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -72,10 +72,8 @@ def test_3(plugin_test_dir):
     # compute spookipy.DewPointDepression
     df      = spookipy.DewPointDepression(src_df0, 
                                           ice_water_phase='water').compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName TT,HU] >>
-    # [DewPointDepression --iceWaterPhase WATER ] >> [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended]
-
-    df.loc[df.nomvar == 'ES', 'etiket'] = 'G133K80N'
+    # [ReaderStd --input {sources[0]}] >> [Select --fieldName TT,HU] >>
+    # [DewPointDepression --iceWaterPhase WATER ] >> [WriterStd --output {destination_path}]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
@@ -83,10 +81,10 @@ def test_3(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_hu_nonRpn_file2cmp.std"
+    file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_hu_nonRpn_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.01)
+    res = fstcomp(results_file, file_to_compare, e_max=0.005,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -103,9 +101,7 @@ def test_4(plugin_test_dir):
                                           ice_water_phase='water', 
                                           rpn=True).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName TT,HR] >>
-    # [DewPointDepression --iceWaterPhase WATER ] >> [Zap --pdsLabel G133K80N --doNotFlagAsZapped]
-
-    df.loc[df.nomvar == 'ES', 'etiket'] = 'G133K80N'
+    # [DewPointDepression --iceWaterPhase WATER ]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
@@ -113,10 +109,10 @@ def test_4(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_hr_file2cmp_20230313.std"
+    file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_hr_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.1)
+    res = fstcomp(results_file, file_to_compare, e_max=0.005,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -131,11 +127,9 @@ def test_5(plugin_test_dir):
     # compute spookipy.DewPointDepression
     df      = spookipy.DewPointDepression(src_df0, 
                                           ice_water_phase='water').compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName TT,HR] >>
-    # [DewPointDepression --iceWaterPhase WATER ] >> [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >>
-    #  [WriterStd --output {destination_path} --ignoreExtended]
-
-    df.loc[df.nomvar == 'ES', 'etiket'] = 'G133K80N'
+    # [ReaderStd --input {sources[0]}] >> [Select --fieldName TT,HR] >>
+    # [DewPointDepression --iceWaterPhase WATER ] >> 
+    #  [WriterStd --output {destination_path}]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
@@ -143,13 +137,12 @@ def test_5(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_hr_nonRpn_file2cmp.std"
+    file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_hr_nonRpn_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.1)
+    res = fstcomp(results_file, file_to_compare, e_max=0.005,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
-
 
 def test_6(plugin_test_dir):
     """Calcul de l'écart du point de rosée (ES) à partir de la température du point de rosée (TD), option --RPN, ice_water_phase = water ."""
@@ -169,11 +162,10 @@ def test_6(plugin_test_dir):
     df       = spookipy.DewPointDepression(src_df1,
                                             ice_water_phase='water',
                                             rpn=True).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName TT,HU] >>
-    # ([Select --fieldName TT] + [TemperatureDewPoint --iceWaterPhase WATER])
-    #  >> [DewPointDepression --iceWaterPhase WATER --RPN] >>
-    # [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended]
-    df.loc[df.nomvar == 'ES', 'etiket'] = 'G133K80N'
+    # [ReaderStd --input {sources[0]}] >> [Select --fieldName TT,HU] >>
+    # ([Select --fieldName TT] + [TemperatureDewPoint --iceWaterPhase WATER]) >>
+    # [DewPointDepression --iceWaterPhase WATER --RPN] >>
+    # [WriterStd --output {destination_path}]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
@@ -181,13 +173,12 @@ def test_6(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_td_file2cmp.std"
+    file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_td_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.01,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file, file_to_compare, e_max=0.005,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
-
 
 def test_7(plugin_test_dir):
     """Calcul de l'écart du point de rosée (ES) à partir de la température du point de rosée (TD), ice_water_phase = water ."""
@@ -207,12 +198,11 @@ def test_7(plugin_test_dir):
     df      = spookipy.DewPointDepression(src_df1, 
                                           ice_water_phase='water').compute()
 
-    df.loc[:, 'etiket'] = 'G133K80N'
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [ReaderStd --input {sources[0]}] >>
     # [Select --fieldName TT,HU] >>
     # ([Select --fieldName TT] + [TemperatureDewPoint --iceWaterPhase WATER]) >>
-    # [DewPointDepression --iceWaterPhase WATER] >> [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >> 
-    # [WriterStd --output {destination_path} --ignoreExtended]
+    # [DewPointDepression --iceWaterPhase WATER] >> 
+    # [WriterStd --output {destination_path}]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
@@ -220,10 +210,10 @@ def test_7(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_td_file2cmp.std"
+    file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_td_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.01)
+    res = fstcomp(results_file, file_to_compare, e_max=0.005,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -237,10 +227,8 @@ def test_8(plugin_test_dir):
     df      = spookipy.DewPointDepression(src_df0, 
                                           ice_water_phase='water',
                                           rpn=True).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
-    # [DewPointDepression --iceWaterPhase WATER] >> [Zap --pdsLabel G133K80N --doNotFlagAsZapped] 
-
-    df.loc[:, 'etiket'] = 'G133K80N'
+    # [ReaderStd --input {sources[0]}] >>
+    # [DewPointDepression --iceWaterPhase WATER]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
@@ -248,10 +236,10 @@ def test_8(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_qv_file2cmp_20230313.std"
+    file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_qv_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.01)  # ,e_max=)
+    res = fstcomp(results_file, file_to_compare, e_max=0.005,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -264,10 +252,8 @@ def test_9(plugin_test_dir):
     # compute spookipy.DewPointDepression
     df      = spookipy.DewPointDepression(src_df0, 
                                           ice_water_phase='water').compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
-    # [DewPointDepression --iceWaterPhase WATER] >> [Zap --pdsLabel G133K80N --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended]
-
-    df.loc[:, 'etiket'] = 'G133K80N'
+    # [ReaderStd  --input {sources[0]}] >>
+    # [DewPointDepression --iceWaterPhase WATER] >> [WriterStd --output {destination_path}]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
@@ -275,10 +261,10 @@ def test_9(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_qv_nonRpn_file2cmp.std"
+    file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_qv_nonRpn_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.01)
+    res = fstcomp(results_file, file_to_compare, e_max=0.005,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
 

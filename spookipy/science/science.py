@@ -206,8 +206,7 @@ def shuaes(hu:np.ndarray, tt:np.ndarray, px:np.ndarray, swph:bool) -> np.ndarray
     cte = np.log(e / AERK1W)
     td = (AERK3W * cte - AERK2W * TRPL) / (cte - AERK2W)
     if swph:
-        td = np.where(td < TRPL, ((AERK3I * (cte + alpha) - AERK2I)
-                      * TRPL) / (cte + alpha - AERK2I), td)
+        td = np.where(td < TRPL, ((AERK3I * (cte + alpha) - AERK2I * TRPL)) / (cte + alpha - AERK2I), td)
     return (tt - td)
 
 
@@ -655,7 +654,8 @@ def rpn_es_from_hr(tt:np.ndarray, hr:np.ndarray, px:np.ndarray, swph:bool) -> np
     :return: dew point depression (celsius)
     :rtype: np.ndarray
     """
-    return np.max(shraes(hr, tt, px, swph), axis=0)
+
+    return np.maximum(shraes(hr, tt, px, swph), 0.0)
 
 
 def rpn_es_from_hu(tt:np.ndarray, hu:np.ndarray, px:np.ndarray, swph:bool) ->np.ndarray:

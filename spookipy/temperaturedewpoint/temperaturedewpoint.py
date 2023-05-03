@@ -62,17 +62,17 @@ class TemperatureDewPoint(Plugin):
             {
                 'TT': {'nomvar': 'TT', 'unit': 'celsius'},
                 'HU': {'nomvar': 'HU', 'unit': 'kilogram_per_kilogram', 'select_only': True},
-                'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'},
+                'PX': {'nomvar': 'PX', 'unit': 'pascal'},
             },
             {
                 'TT': {'nomvar': 'TT', 'unit': 'celsius'},
                 'QV': {'nomvar': 'QV', 'unit': 'kilogram_per_kilogram', 'select_only': True},
-                'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'},
+                'PX': {'nomvar': 'PX', 'unit': 'pascal'},
             },
             {
                 'TT': {'nomvar': 'TT', 'unit': 'celsius'},
                 'HR': {'nomvar': 'HR', 'unit': 'scalar', 'select_only': True},
-                'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'},
+                'PX': {'nomvar': 'PX', 'unit': 'pascal'},
             },
             {
                 'TT': {'nomvar': 'TT', 'unit': 'celsius'},
@@ -272,8 +272,6 @@ class TemperatureDewPoint(Plugin):
                     self.meta_df],
                 ignore_index=True),
             ice_water_phase=self.ice_water_phase,
-            temp_phase_switch=self.temp_phase_switch,
-            temp_phase_switch_unit=self.temp_phase_switch_unit,
             rpn=True, 
             dependency_check=self.dependency_check
             ).compute()

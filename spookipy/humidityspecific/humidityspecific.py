@@ -15,7 +15,7 @@ from ..science import hu_from_qv, hu_from_vppr, rpn_hu_from_es, rpn_hu_from_hr
 from ..utils import (create_empty_result, existing_results,
                      get_dependencies, get_existing_result, get_from_dataframe,
                      initializer, explicit_params_checker, DependencyError)
-from ..configparsingutils import check_and_format_humidity_parsed_arguments
+from ..configparsingutils import check_and_format_humidity_parsed_arguments, preprocess_negative_args
 
 
 class HumiditySpecificError(Exception):
@@ -338,7 +338,7 @@ class HumiditySpecific(Plugin):
         parser.add_argument('--temperaturePhaseSwitch',type=str,help="Temperature at which to change from the ice phase to the water phase.\nMandatory if '--iceWaterPhase BOTH' is used explicitly and without '--RPN'.\nNot accepted if '--RPN is used'. (Default: -40C")
         parser.add_argument('--RPN',action='store_true',default=False,dest="rpn", help="Use of the RPN TdPack functions")
 
-        parsed_arg = vars(parser.parse_args(args.split()))
+        parsed_arg = vars(parser.parse_args(preprocess_negative_args(args.split(),["--temperaturePhaseSwitch"])))
 
         check_and_format_humidity_parsed_arguments(parsed_arg, error_class=HumiditySpecificError)
 

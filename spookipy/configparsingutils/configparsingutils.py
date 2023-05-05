@@ -6,8 +6,8 @@ def preprocess_negative_args(argv:list, flags:list) -> list:
     code taken from https://stackoverflow.com/a/64379138
     :param argv: list of arguments (split config)
     :type argv: list[str]
-    :param argv: list of argument with a non numerical value that might start with a -
-    :type argv: list[str]
+    :param flags: list of argument with a non numerical value that might start with a -
+    :type flags: list[str]
     :return: list of argument ready to be parse with the parse
     :rtype: list[str]
     """

@@ -291,7 +291,7 @@ def test_9(plugin_test_dir):
     # [ReaderStd --input {sources[0]}] >> [WaterVapourMixingRatio --iceWaterPhase BOTH --temperaturePhaseSwitch -30G]
 
 def test_10(plugin_test_dir):
-    """Calcul du ratio de mélange de la vapeur d'eau; utilisation de valeur invalide ( < borne minimale) pour --temperaturePhaseSwitch."""
+    """Calcul du ratio de mélange de la vapeur d'eau; utilisation de valeur invalide ( < borne minimale en kelvin) pour --temperaturePhaseSwitch."""
     # open and read source
     source0 = plugin_test_dir + "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -301,12 +301,11 @@ def test_10(plugin_test_dir):
         _ = spookipy.WaterVapourMixingRatio(
             src_df0,
             ice_water_phase='both',
-            temp_phase_switch=-273.16,
+            temp_phase_switch=-5,
             temp_phase_switch_unit='kelvin').compute()
-    # [ReaderStd --input {sources[0]}] >> [WaterVapourMixingRatio --iceWaterPhase BOTH --temperaturePhaseSwitch -273.16K]
 
 def test_11(plugin_test_dir):
-    """Calcul du ratio de mélange de la vapeur d'eau; utilisation d'une valeur invalide ( > borne maximale) pour --temperaturePhaseSwitch."""
+    """Calcul du ratio de mélange de la vapeur d'eau; utilisation d'une valeur invalide ( < borne minimale en celsius) pour --temperaturePhaseSwitch."""
     # open and read source
     source0 = plugin_test_dir + "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -316,9 +315,8 @@ def test_11(plugin_test_dir):
         _ = spookipy.WaterVapourMixingRatio(
             src_df0,
             ice_water_phase='both',
-            temp_phase_switch=273.17,
-            temp_phase_switch_unit='kelvin').compute()
-    # [ReaderStd --input {sources[0]}] >> [WaterVapourMixingRatio --iceWaterPhase BOTH --temperaturePhaseSwitch 273.17K]
+            temp_phase_switch=-275,
+            temp_phase_switch_unit='celsius').compute()
 
 def test_12(plugin_test_dir):
     """Calcul du ratio de mélange de la vapeur d'eau; utilisation d'une valeur invalide pour --iceWaterPhase."""

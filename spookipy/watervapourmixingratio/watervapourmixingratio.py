@@ -114,9 +114,10 @@ class WaterVapourMixingRatio(Plugin):
             self.temp_phase_switch,
             self.temp_phase_switch_unit,
             explicit_temp_phase_switch = ("temp_phase_switch" in self.explicit_params),
-            rpn=self.rpn)
-
-        self.temp_phase_switch = get_temp_phase_switch(
+            rpn=self.rpn,
+            rpn_no_warning=self.dependency_check)
+        
+        self.temp_phase_switch, self.temp_phase_switch_unit  = get_temp_phase_switch(
             WaterVapourMixingRatioError,
             self.ice_water_phase == 'both',
             self.temp_phase_switch,

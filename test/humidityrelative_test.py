@@ -61,7 +61,7 @@ def test_3(plugin_test_dir):
         _ = spookipy.HumidityRelative(
             src_df0,
             ice_water_phase='both',
-            temp_phase_switch=273.17,
+            temp_phase_switch=-275,
             temp_phase_switch_unit='kelvin').compute()
     # [ReaderStd --input {sources[0]}] >> [HumidityRelative --iceWaterPhase BOTH --temperaturePhaseSwitch 273.17K]
 

@@ -78,7 +78,7 @@ def test_4(plugin_test_dir):
 
 
 def test_5(plugin_test_dir):
-    """Calcul de l'humidité spécifique; utilisation de valeur invalide ( < borne minimale) pour -temperaturePhaseSwitch."""
+    """Calcul de l'humidité spécifique; utilisation de valeur invalide ( < borne minimale en Celsius) pour -temperaturePhaseSwitch."""
     # open and read source
     source0 = plugin_test_dir + "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -88,13 +88,13 @@ def test_5(plugin_test_dir):
         _ = spookipy.HumiditySpecific(
             src_df0,
             ice_water_phase='both',
-            temp_phase_switch=-273.76,
-            temp_phase_switch_unit='kelvin').compute()
+            temp_phase_switch=-280,
+            temp_phase_switch_unit='celsius').compute()
     # [ReaderStd --input {sources[0]}] >> [HumiditySpecific --iceWaterPhase BOTH --temperaturePhaseSwitch -273.16K]
 
 
 def test_6(plugin_test_dir):
-    """Calcul de l'humidité spécifique; utilisation d'une valeur invalide ( > borne maximale) pour -temperaturePhaseSwitch."""
+    """Calcul de l'humidité spécifique; utilisation d'une valeur invalide ( < borne minimale en kelvin) pour -temperaturePhaseSwitch."""
     # open and read source
     source0 = plugin_test_dir + "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -104,9 +104,8 @@ def test_6(plugin_test_dir):
         _ = spookipy.HumiditySpecific(
             src_df0,
             ice_water_phase='both',
-            temp_phase_switch=273.17,
+            temp_phase_switch=-10,
             temp_phase_switch_unit='kelvin').compute()
-    # [ReaderStd --input {sources[0]}] >> [HumiditySpecific --iceWaterPhase BOTH --temperaturePhaseSwitch 273.17K]
 
 
 def test_7(plugin_test_dir):

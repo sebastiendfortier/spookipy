@@ -142,9 +142,10 @@ class VapourPressure(Plugin):
             self.temp_phase_switch,
             self.temp_phase_switch_unit,
             explicit_temp_phase_switch = ("temp_phase_switch" in self.explicit_params),
-            rpn=self.rpn)
+            rpn=self.rpn,
+            rpn_no_warning=self.dependency_check)
 
-        self.temp_phase_switch = get_temp_phase_switch(
+        self.temp_phase_switch, self.temp_phase_switch_unit  = get_temp_phase_switch(
             VapourPressureError,
             self.ice_water_phase == 'both',
             self.temp_phase_switch,
@@ -357,7 +358,14 @@ class VapourPressure(Plugin):
                 ignore_index=True),
             ice_water_phase=self.ice_water_phase,
             rpn=True, 
-            dependency_check=self.dependency_check).compute()
+            dependency_check=True
+            ).compute()
+        # A noter que l'option dependency_check est a True pour l'appel a HumiditySpecific:
+        #       On veut eviter de faire le nettoyage des metadata inutilement puisqu'il a deja ete fait.
+        #       Aussi, puisque l'option est a true, on doit verifier si le dataframe est vide suite a 
+        #       l'appel (pas de resultats calcules) car si c'est le cas, le plugin ne retournera pas une erreur
+        if hu_df.empty:
+            raise VapourPressureError('No results produced by VapourPressure, unable to calculate HumiditySpecific!')
         hu_df = get_from_dataframe(hu_df, 'HU')
         return hu_df
 
@@ -372,7 +380,12 @@ class VapourPressure(Plugin):
             ice_water_phase=self.ice_water_phase,
             temp_phase_switch=self.temp_phase_switch,
             temp_phase_switch_unit=self.temp_phase_switch_unit, 
-            dependency_check=self.dependency_check).compute()
+            dependency_check=True
+            ).compute()
+        # A noter que l'option dependency_check est a True pour l'appel a TemperatureDewPoint, voir note
+        # dans compute_hu
+        if td_df.empty:
+            raise VapourPressureError('No results produced by VapourPressure, unable to calculate TemperatureDewPoint!')
         td_df = get_from_dataframe(td_df, 'TD')
         return td_df
 

@@ -98,9 +98,10 @@ class SaturationVapourPressure(Plugin):
             self.ice_water_phase,
             self.temp_phase_switch,
             self.temp_phase_switch_unit,
-            rpn=self.rpn)
+            rpn=self.rpn,
+            rpn_no_warning=self.dependency_check)
 
-        self.temp_phase_switch = get_temp_phase_switch(
+        self.temp_phase_switch, self.temp_phase_switch_unit  = get_temp_phase_switch(
             SaturationVapourPressureError,
             self.ice_water_phase == 'both',
             self.temp_phase_switch,

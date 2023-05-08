@@ -44,13 +44,12 @@ def test_2(plugin_test_dir):
         _ = spookipy.SaturationVapourPressure(
             src_df0,
             ice_water_phase='both',
-            temp_phase_switch=-273.16,
+            temp_phase_switch=-5,
             temp_phase_switch_unit='kelvin').compute()
-    # [ReaderStd --input {sources[0]}] >> [SaturationVapourPressure --iceWaterPhase BOTH --temperaturePhaseSwitch -273.16K]
 
 
 def test_3(plugin_test_dir):
-    """Calcul de la pression de vapeur saturante; utilisation d'une valeur invalide ( > borne maximale) pour -temperaturePhaseSwitch."""
+    """Calcul de la pression de vapeur saturante; utilisation d'une valeur invalide ( < borne minimale en celsius) pour -temperaturePhaseSwitch."""
     # open and read source
     source0 = plugin_test_dir + "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -60,9 +59,8 @@ def test_3(plugin_test_dir):
         _ = spookipy.SaturationVapourPressure(
             src_df0,
             ice_water_phase='both',
-            temp_phase_switch=273.17,
-            temp_phase_switch_unit='kelvin').compute()
-    # [ReaderStd --input {sources[0]}] >> [SaturationVapourPressure --iceWaterPhase BOTH --temperaturePhaseSwitch 273.17K]
+            temp_phase_switch=-275,
+            temp_phase_switch_unit='celsius').compute()
 
 
 def test_4(plugin_test_dir):

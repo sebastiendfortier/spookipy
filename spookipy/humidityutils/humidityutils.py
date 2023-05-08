@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import warnings
 import fstpy
+import spookipy
 import numpy as np
 
 
@@ -9,7 +10,7 @@ def get_temp_phase_switch(
         ice_water_phase_both: bool,
         temp_phase_switch: float,
         temp_phase_switch_unit: str,
-        rpn: bool) -> float:
+        rpn: bool) :
     """Gets the phase switch temperature from the provided parameters
 
     :param error_class: Exception to raise
@@ -24,17 +25,23 @@ def get_temp_phase_switch(
     :type rpn: bool
     :return: phase switch temperature
     :rtype: float
+    :return: new phase switch temperature unit
+    :rtype: str
     """
     if ice_water_phase_both:
-        validate_temp_phase_switch(error_class, temp_phase_switch)
+        validate_temp_phase_switch(error_class, temp_phase_switch, temp_phase_switch_unit )
+
         if rpn:
             if temp_phase_switch_unit == 'celsius':
                 temp_phase_switch = fstpy.unit_convert_array(
-                    np.array([temp_phase_switch], dtype=np.float32), 'celsius', 'kelvin')[0]
-        elif temp_phase_switch_unit == 'kelvin':
+                                    np.array([temp_phase_switch], dtype=np.float32), 'celsius', 'kelvin')[0]
+                temp_phase_switch_unit = 'kelvin'
+        elif temp_phase_switch_unit == 'kelvin':  # non rpn on veut des Celsius
             temp_phase_switch = fstpy.unit_convert_array(
-                np.array([temp_phase_switch], dtype=np.float32), 'kelvin', 'celsius')[0]
-    return temp_phase_switch
+                                    np.array([temp_phase_switch], dtype=np.float32), 'kelvin', 'celsius')[0]
+            temp_phase_switch_unit = 'celsius'
+         
+    return temp_phase_switch, temp_phase_switch_unit
 
 
 def validate_temp_phase_switch_unit(
@@ -61,21 +68,30 @@ def validate_ice_water_phase(error_class: type, ice_water_phase: str):
         raise error_class(f'Invalid {ice_water_phase} not in {phases}')
 
 
-def validate_temp_phase_switch(error_class: type, temp_phase_switch: float):
-    """Validates that the phase switch temperature is between  -273.15 and 273.16
+def validate_temp_phase_switch(
+        error_class: type, 
+        temp_phase_switch: float, 
+        temp_phase_switch_unit: str):
+    """Validates that the phase switch temperature is greater than -273.15C or 0 kelvin
 
     :param error_class: exception to raise
     :type error_class: type
     :param temp_phase_switch: phase switch temperature
     :type temp_phase_switch: float
+    :param temp_phase_switch_unit: phase switch temperature unit
+    :type temp_phase_switch_unit: str
     :raises error_class: raised exception
     """
     if temp_phase_switch is None:
         # can happen when using rpn
         return
-    if temp_phase_switch < -273.15 or temp_phase_switch > 273.16:
+    if temp_phase_switch_unit == 'celsius' and temp_phase_switch < -273.15:
         raise error_class(
-            f'Temp_phase_switch {temp_phase_switch} not within range [-273.15,273.16]\n')
+            f'Temp_phase_switch {temp_phase_switch} {temp_phase_switch_unit} less than  -273.15 celsius.  Invalid value! \n')
+    if temp_phase_switch_unit == 'kelvin' and temp_phase_switch < 0:
+        raise error_class(
+            f'Temp_phase_switch {temp_phase_switch} {temp_phase_switch_unit} less than 0 kelvin.  Invalid value! \n')
+
 
 
 def validate_parameter_combinations(
@@ -135,7 +151,8 @@ def validate_humidity_parameters(
         temp_phase_switch: float,
         temp_phase_switch_unit: str,
         explicit_temp_phase_switch: bool = False,
-        rpn: bool = False):
+        rpn: bool = False, 
+        rpn_no_warning = False):
     """validate the humidity plugin parameters. Validates the paramter combinations, the phase switch temperature unit and value and the ice water phase value
 
     :param error_class: Exception to raise
@@ -150,12 +167,18 @@ def validate_humidity_parameters(
     :type explicit_temp_phase_switch: bool
     :param rpn: use rpn (default: False)
     :type rpn: bool
+    :param rpn_no_warning: do not print warning for temp_phase_switch (default: False)
+    :type rpn_no_warning: bool 
     """
     validate_parameter_combinations(
         error_class, ice_water_phase, temp_phase_switch, explicit_temp_phase_switch, rpn)
     validate_temp_phase_switch_unit(error_class, temp_phase_switch_unit)
     validate_ice_water_phase(error_class, ice_water_phase)
-    validate_rpn(temp_phase_switch, temp_phase_switch_unit, rpn)
+
+    # Affichage du warning seulement si on ne verifie pas une dependance ET que
+    # ce n'est pas un des 2 plugins suivants, SVP ou VapourPressure.
+    if not (rpn_no_warning or error_class == spookipy.VapourPressureError or error_class == spookipy.SaturationVapourPressureError):
+        validate_rpn(temp_phase_switch, temp_phase_switch_unit, rpn)
 
 def mandatory_ice_water_phase_when_using_temp_phase_switch(
         error_class: type,

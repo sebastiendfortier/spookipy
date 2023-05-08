@@ -128,9 +128,10 @@ class HumidityRelative(Plugin):
             self.ice_water_phase,
             self.temp_phase_switch,
             self.temp_phase_switch_unit,
-            rpn=self.rpn)
+            rpn=self.rpn,
+            rpn_no_warning=self.dependency_check)
 
-        self.temp_phase_switch = get_temp_phase_switch(
+        self.temp_phase_switch, self.temp_phase_switch_unit  = get_temp_phase_switch(
             HumidityRelativeError,
             self.ice_water_phase == 'both',
             self.temp_phase_switch,
@@ -240,7 +241,13 @@ class HumidityRelative(Plugin):
                 ignore_index=True),
             ice_water_phase=self.ice_water_phase,
             rpn=True, 
-            dependency_check=self.dependency_check).compute()
+            dependency_check=True).compute()
+        # A noter que l'option dependency_check est a True pour l'appel a HumiditySpecific:
+        #       On veut eviter de faire le nettoyage des metadata inutilement puisqu'il a deja ete fait.
+        #       Aussi, puisque l'option est a true, on doit verifier si le dataframe est vide suite a 
+        #       l'appel (pas de resultats calcules) car si c'est le cas, le plugin ne retournera pas une erreur
+        if hu_df.empty:
+            raise HumidityRelativeError('No results produced by HumitityRelative, unable to calculate HumiditySpecific!')
         hu_df = get_from_dataframe(hu_df, 'HU')
         return hu_df
 
@@ -276,7 +283,10 @@ class HumidityRelative(Plugin):
                 ignore_index=True),
             ice_water_phase=self.ice_water_phase,
             rpn=True, 
-            dependency_check=self.dependency_check).compute()
+            dependency_check=True).compute()
+        # A noter que l'option dependency_check est a True, voir note pour compute_hu
+        if es_df.empty:
+            raise HumidityRelativeError('No results produced by HumitityRelative, unable to calculate DewPointDepression!')
         es_df = get_from_dataframe(es_df, 'ES')
         return es_df
 

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import datetime
-from spookipy.utils import   encode_ip2_and_ip3_time, adjust_ip3_time_interval, encode_ip_when_interval
 from test import TMP_PATH, TEST_PATH
 import pytest
 import fstpy
@@ -39,7 +38,6 @@ def test_1(plugin_test_dir):
     # [Zap --doNotFlagAsZapped --nbitsForDataStorage R13] >> [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[df.nomvar=='PR', 'nbits'] = 13
     df.loc[df.nomvar=='PR', 'datyp'] = 1
-    df = adjust_ip3_time_interval(df)
     # df.loc[:,'nbits'] = 32
     # df.loc[:,'datyp'] = 5
     # write the result
@@ -82,7 +80,6 @@ def test_2(plugin_test_dir):
 
     # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
     # Temporaire, en attendant que ce soit fait dans le writer
-    df = adjust_ip3_time_interval(df)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
@@ -161,7 +158,6 @@ def test_4(plugin_test_dir):
 
     # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
     # Temporaire, en attendant que ce soit fait dans le writer
-    df = adjust_ip3_time_interval(df)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
@@ -196,7 +192,6 @@ def test_5(plugin_test_dir):
     
     # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
     # Temporaire, en attendant que ce soit fait dans le writer
-    df = adjust_ip3_time_interval(df)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
@@ -265,7 +260,6 @@ def test_8(plugin_test_dir):
 
     # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
     # Temporaire, en attendant que ce soit fait dans le writer
-    df = adjust_ip3_time_interval(df)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
@@ -304,7 +298,6 @@ def test_9(plugin_test_dir):
 
     # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
     # Temporaire, en attendant que ce soit fait dans le writer
-    df = adjust_ip3_time_interval(df)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
@@ -342,7 +335,6 @@ def test_10(plugin_test_dir):
 
     # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
     # Temporaire, en attendant que ce soit fait dans le writer
-    df = adjust_ip3_time_interval(df)
         
     # df.loc[df.nomvar=='PR', 'nbits'] = 32
     # df.loc[df.nomvar=='PR', 'datyp'] = 5
@@ -382,7 +374,6 @@ def test_11(plugin_test_dir):
 
     # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
     # Temporaire, en attendant que ce soit fait dans le writer
-    df = adjust_ip3_time_interval(df)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
@@ -422,7 +413,6 @@ def test_12(plugin_test_dir):
     
     # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
     # Temporaire, en attendant que ce soit fait dans le writer
-    df = adjust_ip3_time_interval(df)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
@@ -459,7 +449,12 @@ def test_13(plugin_test_dir):
     # [ReaderStd --ignoreExtended --input {sources[1]}] >>
     # [TimeIntervalDifference --fieldName PR --rangeForecastHour 0@6 --interval 6 --step 9] >>
     # [WriterStd --output {destination_path} --ignoreExtended --encodeIP2andIP3]
-    df = encode_ip2_and_ip3_time(df)
+    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
+                                                                    df['ip1'],df['ip2'],df['ip3'],
+                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
+                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
+                                                                    df['interval'],False,True)
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
     fstpy.delete_file(results_file)
@@ -591,7 +586,6 @@ def test_19(plugin_test_dir):
 
     # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
     # Temporaire, en attendant que ce soit fait dans le writer
-    df = adjust_ip3_time_interval(df)
 
     # df.loc[df.nomvar=='UV', 'nbits'] = 32
     # df.loc[df.nomvar=='UV', 'datyp'] = 5
@@ -631,7 +625,6 @@ def test_20(plugin_test_dir):
     
     # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
     # Temporaire, en attendant que ce soit fait dans le writer
-    df = adjust_ip3_time_interval(df)
     
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_20.std"])
@@ -684,7 +677,6 @@ def test_25(plugin_test_dir):
 
     # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
     # Temporaire, en attendant que ce soit fait dans le writer
-    df = adjust_ip3_time_interval(df)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_25.std"])
@@ -718,7 +710,11 @@ def test_26(plugin_test_dir):
     df.loc[df.nomvar=='PR', 'etiket'] = 'PCPAMT'
 
     # IPs encodes
-    df = encode_ip2_and_ip3_time(df)
+    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
+                                                                    df['ip1'],df['ip2'],df['ip3'],
+                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
+                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
+                                                                    df['interval'],False,True)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_26.std"])
@@ -727,6 +723,8 @@ def test_26(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "TMIDIF_test26_file2cmp.std"
+
+
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -751,7 +749,14 @@ def test_27(plugin_test_dir):
     df = pd.concat([df, tt_df],ignore_index=True)
     
     # Temporaire, en attendant que ce soit fait dans le writer
-    df = encode_ip_when_interval(df)
+    print(df)
+    df = fstpy.add_columns(df,"ip_info")
+    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
+                                                                    df['ip1'],df['ip2'],df['ip3'],
+                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
+                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
+                                                                    df['interval'],False,df['nomvar']=='UV')
+
     
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_27.std"])

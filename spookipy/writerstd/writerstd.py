@@ -140,6 +140,9 @@ class WriterStd(Plugin):
         override_pds_label:bool=False,
         run_id:str=None,
         implementation:str=None,
+        replace_missing_data:bool=False,
+        flag_missing_data:bool=False,
+        missing_data_replacement_value:float=-999.0,
         ):
 
         if pd.Series(self.df['nomvar'].str.len() > 4).any():
@@ -260,6 +263,9 @@ class WriterStd(Plugin):
         parser.add_argument('--ignoreExtended',action='store_true',default=False,dest="ignore_extended", help=argparse.SUPPRESS)
         parser.add_argument('--encodeIP2andIP3',action='store_true',default=False,dest="encode_ip2_and_ip3", help=argparse.SUPPRESS)
         parser.add_argument('--overridePdsLabel',action='store_true',default=False,dest="override_pds_label", help=argparse.SUPPRESS)
+        parser.add_argument('--replaceMissingData',action='store_true',default=False,dest="replace_missing_data", help=argparse.SUPPRESS)
+        parser.add_argument('--flagMissingData',action='store_true',default=False,dest="flag_missing_data", help=argparse.SUPPRESS)
+        parser.add_argument('--missingDataReplacementValue',type=float,default=-999,dest="missing_data_replacement_value", help=argparse.SUPPRESS)
 
         parsed_arg = vars(parser.parse_args(args.split()))
 

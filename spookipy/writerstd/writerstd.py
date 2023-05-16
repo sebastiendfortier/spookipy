@@ -71,6 +71,12 @@ def encode_ip123(nomvar,ip1,ip2,ip3,ip1_kind,ip2_kind,ip3_kind,ip1_value,ip2_val
         if ip1_kind == ip3_kind:
             interval_type = INTERVAL_OTHER
 
+    if type(interval) == fstpy.Interval:
+        if interval.ip == "ip1":
+            interval_type = INTERVAL_OTHER
+        elif interval.ip == "ip2":
+            interval_type = INTERVAL_TIME
+
     if nomvar in ["^>", ">>", "^^", "!!", "!!SF", 'HY']:
         result_ip1,result_ip2,result_ip3 = encode_ip123_metadata(nomvar,ip1_kind,ip3_kind,ip1_value,ip2_value,ip3_value,encoding_mode_ip1,encode_ip2_and_ip3)
 

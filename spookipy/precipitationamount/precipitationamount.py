@@ -28,7 +28,7 @@ class PrecipitationAmount(Plugin):
     :type step: datetime.timedelta or list of datetime.timedelta
     """
     @initializer
-    def __init__(self, df: pd.DataFrame, nomvar=None, forecast_hour_range=None, interval=None, step=None, strictly_positive=False):
+    def __init__(self, df: pd.DataFrame, nomvar=None, forecast_hour_range=None, interval=None, step=None):
         super().__init__(df)
         # self.validate_nomvar()
 

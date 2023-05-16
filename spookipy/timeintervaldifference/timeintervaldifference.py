@@ -57,15 +57,12 @@ class TimeIntervalDifference(Plugin):
                 raise TimeIntervalDifferenceError(
                     'The interval must be lower or equal to upper bound minus lower bound of forecast_hour_range.')
 
-        if not isinstance(self.nomvar,list):
-            self.nomvar = [self.nomvar]
         for nomvar in self.nomvar:
             if nomvar not in list(self.df.nomvar.unique()):
                 raise TimeIntervalDifferenceError(f'Variable {nomvar}, missing from DataFrame!')
 
         self.meta_df = self.df.loc[self.df.nomvar.isin(
             ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
 
         self.df_without_intervals = self.df.loc[(~self.df.nomvar.isin(
             ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])) & (self.df.interval.isna()) & (self.df.nomvar.isin(self.nomvar))].reset_index(drop=True)
@@ -208,11 +205,13 @@ class TimeIntervalDifference(Plugin):
 def create_result_container(df, b_inf, b_sup):
     deet  = df.iloc[0]['deet']
     npas  = int(b_sup / deet)
-    ip2   = int(b_sup/3600)
-    ip3   = int(b_inf/3600)
+    b_sup_hour = b_sup/3600.0
+    b_inf_hour = b_inf/3600.0
+    ip2   = int(b_sup_hour)
+    ip3   = int(b_sup_hour-b_inf_hour)
 
     kind  = int(df.iloc[0].ip2_kind)
-    inter = fstpy.Interval('ip2', b_inf, b_sup, kind)
+    inter = fstpy.Interval('ip2', b_inf_hour, b_sup_hour, kind)
 
     res_df = create_empty_result(df, {'ip2': ip2, 'ip3': ip3, 'npas': npas, 'interval':inter })
     return res_df

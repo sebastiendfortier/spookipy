@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from json import encoder
 from test import TEST_PATH, TMP_PATH, check_test_ssm_package
-from spookipy.utils import adjust_ip3_time_interval, encode_ip2_and_ip3_time
 
 check_test_ssm_package()
 
@@ -65,10 +64,6 @@ def test_2(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]
     df['etiket'] = 'R1558V0N'
 
-    # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
-    # Temporaire, en attendant que ce soit fait dans le writer
-    df = adjust_ip3_time_interval(df)
-
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
     fstpy.delete_file(results_file)
@@ -98,10 +93,6 @@ def test_3(plugin_test_dir):
     # [PrecipitationAmount --fieldName PR --rangeForecastHour 0@18,0@93 --interval 3,39 --step 3,18] >> ', '
     # [WriterStd --output {destination_path} --ignoreExtended]']
     df.loc[df.nomvar.isin(['>>','^^']),'etiket'] = 'G133K80_N'
-    
-    # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
-    # Temporaire, en attendant que ce soit fait dans le writer
-    df = adjust_ip3_time_interval(df)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
@@ -133,8 +124,11 @@ def test_4(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]']
     df.loc[df.nomvar.isin(['>>','^^']),'etiket'] = 'G133K80_N'
     
-    # Temporaire, en attendant que ce soit fait dans le writer
-    df = encode_ip2_and_ip3_time(df)
+    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
+                                                                    df['ip1'],df['ip2'],df['ip3'],
+                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
+                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
+                                                                    df['interval'],False,True)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
@@ -269,10 +263,6 @@ def test_8(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]']
     df.loc[df.nomvar!='PR', 'etiket'] = 'WE_1_2_0N'
     
-    # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
-    # Temporaire, en attendant que ce soit fait dans le writer
-    df = adjust_ip3_time_interval(df)
-
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
     fstpy.delete_file(results_file)
@@ -302,8 +292,11 @@ def test_9(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended]']
     df.loc[df.nomvar!='PR', 'etiket'] = 'WE_1_2_0N'
     
-    # Temporaire, en attendant que ce soit fait dans le writer
-    df = encode_ip2_and_ip3_time(df)
+    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
+                                                                    df['ip1'],df['ip2'],df['ip3'],
+                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
+                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
+                                                                    df['interval'],False,True)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])

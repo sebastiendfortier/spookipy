@@ -41,6 +41,7 @@ from .plugin import *
 from .precipitationamount import *
 from .pressure import *
 from .printdf import *
+from .replacedataifcondition import *
 from .saturationvapourpressure import *
 from .science import *
 from .setconstantvalue import *

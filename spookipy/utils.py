@@ -764,34 +764,6 @@ def get_encoded_ips_time(val2, val3):
 
     return (val2_encode, val3_encode)
 
-def adjust_ip3_time_interval(df:pd.DataFrame) -> pd.DataFrame:
-    """replace ip3 value with the difference between ip2 and ip3 (delta)
-
-    :param df: input DataFrame
-    :type df: pd.DataFrame
-    :return: output DataFrame
-    :rtype: pd.DataFrame
-    """
-    # Fonction temporaire; en attendant que le writer prenne en charge
-    # l'encodage ou non des IPs
-
-    for row in df.itertuples():
-        if row.nomvar in ['>>', '^^', '^>', '!!']:
-            continue
-
-        inter = row.interval
-        if isinstance(inter,fstpy.Interval):
-            ip2 = row.interval.high
-            ip3 = row.interval.low
-            delta = int((ip2-ip3)/3600)
-        else:
-            ip2 = row.ip2
-            ip3 = row.ip3
-            delta = int(ip2-ip3)
-
-        df.at[row.Index,'ip3'] =delta
-    return df
-
 # def encode_ip1_and_ip3(df):
 #     for row in df.itertuples():
 #         if row.nomvar in ['>>', '^^', '^>', '!!', 'P0', 'PT']:
@@ -846,33 +818,6 @@ def encode_ip_when_interval(df:pd.DataFrame) -> pd.DataFrame:
                 df.at[row.Index,'ip2'] = val2_enc
                 df.at[row.Index,'ip3'] = val3_enc
 
-    return df
-    
-def encode_ip2_and_ip3_time(df:pd.DataFrame) -> pd.DataFrame:
-    """encode ip2 and ip3 to new style
-
-    :param df: input DataFrame
-    :type df: pd.DataFrame
-    :return: output DataFrame
-    :rtype: pd.DataFrame
-    """
-    for row in df.itertuples():
-        if row.nomvar in ['>>', '^^', '^>', '!!']:
-            continue
-
-        inter = row.interval
-
-        if inter is None:
-            ip2 = row.ip2
-            ip3 = row.ip3
-        else:
-            ip2 = (row.interval.high)/3600
-            ip3 = (row.interval.low)/3600
-
-        (val2_encode, val3_encode) = get_encoded_ips_time(ip2, ip3)
-        df.at[row.Index,'ip2'] = val2_encode
-        df.at[row.Index,'ip3'] = val3_encode
-        
     return df
 
 def encode_ip2_and_ip3_height(df:pd.DataFrame) -> pd.DataFrame:

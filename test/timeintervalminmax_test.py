@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import datetime
 from spookipy.timeintervalminmax.timeintervalminmax import TimeIntervalMinMaxError
-from spookipy.utils import adjust_ip3_time_interval, encode_ip2_and_ip3_time
 from test import TMP_PATH, TEST_PATH
 import pytest
 import fstpy
@@ -491,7 +490,11 @@ def test_21(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3_time(df)
+    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
+                                                                    df['ip1'],df['ip2'],df['ip3'],
+                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
+                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
+                                                                    df['interval'],True,True)
     # print(df)
     
     # write the result
@@ -530,7 +533,11 @@ def test_22(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3_time(df)
+    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
+                                                                    df['ip1'],df['ip2'],df['ip3'],
+                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
+                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
+                                                                    df['interval'],True,True)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_22.std"])
@@ -568,7 +575,11 @@ def test_23(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3_time(df)
+    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
+                                                                    df['ip1'],df['ip2'],df['ip3'],
+                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
+                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
+                                                                    df['interval'],True,True)
     
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_23.std"])
@@ -606,7 +617,11 @@ def test_24(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3_time(df)
+    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
+                                                                    df['ip1'],df['ip2'],df['ip3'],
+                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
+                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
+                                                                    df['interval'],True,True)
 
 
     # write the result
@@ -645,7 +660,11 @@ def test_25(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3_time(df)
+    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
+                                                                    df['ip1'],df['ip2'],df['ip3'],
+                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
+                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
+                                                                    df['interval'],True,True)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_25.std"])
@@ -682,7 +701,11 @@ def test_26(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3_time(df)
+    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
+                                                                    df['ip1'],df['ip2'],df['ip3'],
+                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
+                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
+                                                                    df['interval'],True,True)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_26.std"])
@@ -721,7 +744,11 @@ def test_27(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3_time(df)
+    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
+                                                                    df['ip1'],df['ip2'],df['ip3'],
+                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
+                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
+                                                                    df['interval'],True,True)
     
 
     # write the result
@@ -761,7 +788,11 @@ def test_28(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3_time(df)
+    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
+                                                                    df['ip1'],df['ip2'],df['ip3'],
+                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
+                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
+                                                                    df['interval'],True,True)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_28.std"])
@@ -800,7 +831,11 @@ def test_29(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3_time(df)
+    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
+                                                                    df['ip1'],df['ip2'],df['ip3'],
+                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
+                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
+                                                                    df['interval'],True,True)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_29.std"])
@@ -840,7 +875,11 @@ def test_30(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3_time(df)
+    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
+                                                                    df['ip1'],df['ip2'],df['ip3'],
+                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
+                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
+                                                                    df['interval'],True,True)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_30.std"])
@@ -932,7 +971,11 @@ def test_33(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3_time(df)
+    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
+                                                                    df['ip1'],df['ip2'],df['ip3'],
+                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
+                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
+                                                                    df['interval'],True,True)
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_33.std"])
     fstpy.delete_file(results_file)
@@ -969,7 +1012,11 @@ def test_34(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3_time(df)
+    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
+                                                                    df['ip1'],df['ip2'],df['ip3'],
+                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
+                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
+                                                                    df['interval'],True,True)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_34.std"])
@@ -1009,7 +1056,11 @@ def test_35(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3_time(df)
+    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
+                                                                    df['ip1'],df['ip2'],df['ip3'],
+                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
+                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
+                                                                    df['interval'],True,True)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_35.std"])
@@ -1049,7 +1100,11 @@ def test_36(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3_time(df)
+    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
+                                                                    df['ip1'],df['ip2'],df['ip3'],
+                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
+                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
+                                                                    df['interval'],True,True)
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_36.std"])
     fstpy.delete_file(results_file)
@@ -1087,7 +1142,11 @@ def test_37(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3_time(df)
+    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
+                                                                    df['ip1'],df['ip2'],df['ip3'],
+                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
+                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
+                                                                    df['interval'],True,True)
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_35.std"])
     fstpy.delete_file(results_file)
@@ -1124,7 +1183,11 @@ def test_38(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    df = encode_ip2_and_ip3_time(df)
+    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
+                                                                    df['ip1'],df['ip2'],df['ip3'],
+                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
+                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
+                                                                    df['interval'],True,True)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_36.std"])
@@ -1156,14 +1219,16 @@ def test_39(plugin_test_dir):
 
     # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
     # Temporaire, en attendant que ce soit fait dans le writer
-    # df = adjust_ip3_time_interval(df)
-    df_encode = encode_ip2_and_ip3_time(df)
+    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
+                                                                    df['ip1'],df['ip2'],df['ip3'],
+                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
+                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
+                                                                    df['interval'],True,True)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_39.std"])
     fstpy.delete_file(results_file)
-    # fstpy.StandardFileWriter(results_file, df).to_fst()
-    fstpy.StandardFileWriter(results_file, df_encode).to_fst()
+    fstpy.StandardFileWriter(results_file, df).to_fst()
     # open and read comparison file
     file_to_compare = plugin_test_dir + "Test39_file2cmp.std"
 

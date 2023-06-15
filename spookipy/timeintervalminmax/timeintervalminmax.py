@@ -259,8 +259,10 @@ def create_result_container(df, b_inf, b_sup, nomvar):
     deet = df.iloc[0]['deet']
     npas = int(b_sup / deet)
     # npas = int((ip2 * 3600) / deet)
+    b_sup_hour = b_sup/3600.0
+    b_inf_hour = b_inf/3600.0
 
-    inter  = fstpy.Interval('ip2', b_inf, b_sup, 10)
+    inter  = fstpy.Interval('ip2', b_inf_hour, b_sup_hour, 10)
     res_df = create_empty_result(df, {'nomvar':nomvar, 'label':'TIMNMX',
                                       'interval':inter, 'npas': npas})
     return res_df

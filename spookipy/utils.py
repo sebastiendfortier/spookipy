@@ -840,8 +840,8 @@ def encode_ip_when_interval(df:pd.DataFrame) -> pd.DataFrame:
                 df.at[row.Index,'ip1'] = val1_enc
                 df.at[row.Index,'ip3'] = val3_enc
             else:
-                val2 = (inter.high)/3600
-                val3 = (inter.low)/3600
+                val2 = (inter.high)
+                val3 = (inter.low)
                 (val2_enc, val3_enc) = get_encoded_ips_time (val2, val3)
                 df.at[row.Index,'ip2'] = val2_enc
                 df.at[row.Index,'ip3'] = val3_enc

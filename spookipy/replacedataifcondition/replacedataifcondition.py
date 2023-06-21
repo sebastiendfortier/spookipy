@@ -36,9 +36,10 @@ class ReplaceDataIfCondition(Plugin):
         condition:str,
         value:float,
         nomvar_out:str = None,
-        clear_missing_data:bool = False,
+        clear_missing_data:bool = False, #TODO
         ):
-        super().__init__(df)
+        self.get_dataframes()
+        self.validate_input()
         
     
     def validate_input(self):
@@ -49,7 +50,9 @@ class ReplaceDataIfCondition(Plugin):
         super().validate_input() # check empty
 
         if self.nomvar_out is not None:
-            validate_nomvar(self.nomvar_out,"AddToElement",ReplaceDataIfConditionError)
+            validate_nomvar(self.nomvar_out,"ReplaceDataIfCondition",ReplaceDataIfConditionError)
+            if len(self.no_meta_df.nomvar.unique()) > 1:
+                raise ReplaceDataIfConditionError("ReplaceDataIfConditionError -- MORE THAN ONE INPUT FIELD NAME - CANNOT USE OPTION nomvar_out (outputFieldName)")
 
         self.condition_operator, self.condition_value = parse_condition(self.condition)
         if self.condition_operator is not None:
@@ -65,12 +68,15 @@ class ReplaceDataIfCondition(Plugin):
         """
 
         if self.condition_operator is None:
-            self.df['d'] = np.nan_to_num(self.df['d'],nan=self.value)
+            self.no_meta_df['d'] = np.nan_to_num(self.no_meta_df['d'],nan=self.value)
             
         else:
-            self.df['d'] = self.df.apply(lambda row: replace_data_if_condition(row['d'],self.value,self.condition_operator,self.condition_value), axis=1)
+            self.no_meta_df['d'] = self.no_meta_df.apply(lambda row: replace_data_if_condition(row['d'],self.value,self.condition_operator,self.condition_value), axis=1)
 
-        return self.df
+        if self.nomvar_out is not None:
+            self.no_meta_df['nomvar'] = self.nomvar_out
+
+        return self.final_results([self.no_meta_df],ReplaceDataIfConditionError)
     
     @staticmethod
     def parse_config(args: str) -> dict:

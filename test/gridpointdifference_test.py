@@ -38,6 +38,9 @@ def test_1(plugin_test_dir):
     # ([Copy] + [GridPointDifference --axis X,Y --differenceType CENTERED]) >> 
     # [ZapSmart --fieldNameFrom FDX --fieldNameTo FFDX] >> [ZapSmart --fieldNameFrom FDY --fieldNameTo FFDY] >> 
     # [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion]
+
+    df['etiket'] = df['label'] #--ignoreExtended
+
     df = pd.concat([src_df0,df], ignore_index=True)
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
@@ -104,6 +107,8 @@ def test_3(plugin_test_dir):
     # [ZapSmart --fieldNameFrom FDX --fieldNameTo FFDX] >> [ZapSmart --fieldNameFrom FDY --fieldNameTo FFDY] >> 
     # [WriterStd --output {destination_path} --ignoreExtended]
 
+    df['etiket'] = df['label'] #--ignoreExtended
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
     fstpy.delete_file(results_file)
@@ -168,6 +173,8 @@ def test_5(plugin_test_dir):
     # [ZapSmart --fieldNameFrom FDX --fieldNameTo FFDX] >> [ZapSmart --fieldNameFrom FDY --fieldNameTo FFDY] >> 
     # [WriterStd --output {destination_path} --ignoreExtended]
 
+    df['etiket'] = df['label'] #--ignoreExtended
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
     fstpy.delete_file(results_file)
@@ -227,6 +234,9 @@ def test_7(plugin_test_dir):
     # [ZapSmart --fieldNameFrom FDX --fieldNameTo UUDX] >> 
     # [ZapSmart --fieldNameFrom FDY --fieldNameTo UUDY] >> 
     # [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion --IP1EncodingStyle OLDSTYLE]
+
+    df['etiket'] = df['label'] #--ignoreExtended
+    
     res_df = pd.concat([src_df0, df], ignore_index=True)
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
@@ -321,7 +331,6 @@ def test_12(plugin_test_dir):
     # [GridPointDifference --axis X,Y --differenceType CENTERED] >> 
     # [WriterStd --output {destination_path} --noUnitConversion]
     df = spookipy.convip(df,rmn.CONVIP_ENCODE)
-    df.loc[df.nomvar.isin(['FDX', 'FDY']), 'etiket'] = '__GPTDIFX'
     df.loc[df.nomvar.isin(['^>','!!']), 'etiket'] = 'G1_5_0X'
 
 
@@ -355,7 +364,6 @@ def test_13(plugin_test_dir):
     # [Select --fieldName TT --verticalLevel 1000] >> 
     # [GridPointDifference --axis X,Y --differenceType FORWARD] >> 
     # [WriterStd --output {destination_path} --noUnitConversion]
-    df.loc[df.nomvar.isin(['FDX', 'FDY']), 'etiket'] = '__GPTDIFX'
     df.loc[df.nomvar.isin(['^>','!!']), 'etiket'] = 'G1_5_0X'
     df = spookipy.convip(df,rmn.CONVIP_ENCODE)
     # write the result
@@ -388,7 +396,6 @@ def test_14(plugin_test_dir):
     # [Select --fieldName TT --verticalLevel 1000] >> 
     # [GridPointDifference --axis X,Y --differenceType BACKWARD] >> 
     # [WriterStd --output {destination_path} --noUnitConversion]
-    df.loc[df.nomvar.isin(['FDX', 'FDY']), 'etiket'] = '__GPTDIFX'
     df.loc[df.nomvar.isin(['^>','!!']), 'etiket'] = 'G1_5_0X'
     df = spookipy.convip(df,rmn.CONVIP_ENCODE)
     # write the result
@@ -420,7 +427,6 @@ def test_15(plugin_test_dir):
 #                 "[Select --fieldName TT --verticalLevel 1000] >> ",
 #                 "[GridPointDifference --axis X --differenceType BACKWARD] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
-    df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
     df.loc[~(df.nomvar=='TT'), 'etiket'] = 'G1_7_1X'
     
     # write the result
@@ -452,7 +458,6 @@ def test_16(plugin_test_dir):
 #                 "[Select --fieldName TT --verticalLevel 1000] >> ",
 #                 "[GridPointDifference --axis X --differenceType FORWARD] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
-    df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
     df.loc[~(df.nomvar=='TT'), 'etiket'] = 'G1_7_1X'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_16.std"])
@@ -484,7 +489,6 @@ def test_17(plugin_test_dir):
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
-    df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
     df.loc[~(df.nomvar=='TT'), 'etiket'] = 'G1_7_1X'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_17.std"])
@@ -512,7 +516,6 @@ def test_18(plugin_test_dir):
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
-    df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
     df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_18.std"])
@@ -540,7 +543,6 @@ def test_19(plugin_test_dir):
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
-    df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
     df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_19.std"])
@@ -568,7 +570,6 @@ def test_20(plugin_test_dir):
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
-    df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
     df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_20.std"])
@@ -596,7 +597,6 @@ def test_21(plugin_test_dir):
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
-    df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
     df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_21.std"])
@@ -624,7 +624,6 @@ def test_22(plugin_test_dir):
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ", 
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
-    df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
     df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_22.std"])
@@ -652,7 +651,6 @@ def test_23(plugin_test_dir):
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ", 
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
-    df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
     df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_23.std"])
@@ -680,7 +678,6 @@ def test_24(plugin_test_dir):
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
-    df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
     df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_24.std"])
@@ -709,7 +706,6 @@ def test_25(plugin_test_dir):
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
-    df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
     df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_25.std"])
@@ -736,7 +732,6 @@ def test_26(plugin_test_dir):
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
-    df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
     df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_26.std"])
@@ -763,7 +758,6 @@ def test_27(plugin_test_dir):
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
-    df.loc[df.nomvar=='TT', 'etiket'] = '__GPTDIFX'
     df.loc[~(df.nomvar=='TT'), 'etiket'] = 'Y3H9DNX'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_27.std"])

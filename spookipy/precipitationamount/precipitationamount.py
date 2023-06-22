@@ -39,7 +39,7 @@ class PrecipitationAmount(Plugin):
                                        interval=self.interval,
                                        step=self.step,
                                        strictly_positive=True).compute()
-        df['etiket'] = ETIKET
+        df['label'] = ETIKET
 
         return final_results([df], PrecipitationAmountError, self.meta_df)
 

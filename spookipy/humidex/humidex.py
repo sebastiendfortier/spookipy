@@ -44,7 +44,7 @@ class Humidex(Plugin):
         self.plugin_result_specifications = {
                 'HMX': {
                     'nomvar' : 'HMX',
-                    'etiket' : 'HUMIDX',
+                    'label' : 'HUMIDX',
                     'unit'   : 'scalar',
                     'ip1'    : 0,
                     'surface': True}

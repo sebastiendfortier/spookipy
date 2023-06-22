@@ -97,7 +97,7 @@ class InterpolationHorizontalPoint(Plugin):
             self.lat_lon_df.loc[:, 'ig2'] = 100
             self.lat_lon_df.loc[:, 'ig3'] = 9000
             self.lat_lon_df.loc[:, 'ig4'] = 0
-            self.lat_lon_df.loc[:, 'etiket'] = 'INTHPT'
+            self.lat_lon_df.loc[:, 'label'] = 'INTHPT'
 
 
         else:

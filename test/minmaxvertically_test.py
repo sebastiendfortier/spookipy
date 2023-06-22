@@ -6,6 +6,7 @@ import pandas as pd
 import fstpy
 import spookipy
 import pytest
+import numpy as np
 
 pytestmark = [pytest.mark.regressions]
 
@@ -60,6 +61,8 @@ def test_3(plugin_test_dir):
     # Encodage des ip pour les champs ayant un objet intervalle
     df = spookipy.encode_ip_when_interval(df)
 
+    df.etiket = np.where(df.label.isna(),df.etiket,df.label) #--ignoreExtended
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
     fstpy.delete_file(results_file)
@@ -90,6 +93,7 @@ def test_4(plugin_test_dir):
     
     # Encodage des ip pour les champs ayant un objet intervalle
     df = spookipy.encode_ip_when_interval(df)
+    df.etiket = np.where(df.label.isna(),df.etiket,df.label) #--ignoreExtended
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
@@ -125,6 +129,7 @@ def test_5(plugin_test_dir):
     
     # Encodage des ip pour les champs ayant un objet intervalle
     df = spookipy.encode_ip_when_interval(df)
+    df.etiket = np.where(df.label.isna(),df.etiket,df.label) #--ignoreExtended
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])

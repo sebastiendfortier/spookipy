@@ -11,7 +11,7 @@ import spookipy
 from ci_fstcomp import fstcomp
 import secrets
 import datetime
-
+import numpy as np
 
 pytestmark = [pytest.mark.regressions]
 
@@ -93,6 +93,7 @@ def test_3(plugin_test_dir):
     # [PrecipitationAmount --fieldName PR --rangeForecastHour 0@18,0@93 --interval 3,39 --step 3,18] >> ', '
     # [WriterStd --output {destination_path} --ignoreExtended]']
     df.loc[df.nomvar.isin(['>>','^^']),'etiket'] = 'G133K80_N'
+    df.etiket = np.where(df.label.isna(),df.etiket,df.label) #--ignoreExtended
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
@@ -129,6 +130,7 @@ def test_4(plugin_test_dir):
                                                                     df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
                                                                     df['level'],df['ip2_dec'],df['ip3_dec'],
                                                                     df['interval'],False,True)
+    df.etiket = np.where(df.label.isna(),df.etiket,df.label) #--ignoreExtended
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
@@ -261,7 +263,7 @@ def test_8(plugin_test_dir):
     #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '
     # [PrecipitationAmount --fieldName PR --rangeForecastHour 22:30:00@23:00:00 --interval 0:30:00 --step 0:30:00] >> ', '
     # [WriterStd --output {destination_path} --ignoreExtended]']
-    df.loc[df.nomvar!='PR', 'etiket'] = 'WE_1_2_0N'
+    df.etiket = np.where(df.label.isna(),df.etiket,df.label) #--ignoreExtended
     
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
@@ -290,13 +292,13 @@ def test_9(plugin_test_dir):
     #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '
     # [PrecipitationAmount --fieldName PR --rangeForecastHour 22:30:00@23:00:00 --interval 0:30:00 --step 0:30:00] >> ', '
     # [WriterStd --output {destination_path} --ignoreExtended]']
-    df.loc[df.nomvar!='PR', 'etiket'] = 'WE_1_2_0N'
     
     _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
                                                                     df['ip1'],df['ip2'],df['ip3'],
                                                                     df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
                                                                     df['level'],df['ip2_dec'],df['ip3_dec'],
                                                                     df['interval'],False,True)
+    df.etiket = np.where(df.label.isna(),df.etiket,df.label) #--ignoreExtended
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])

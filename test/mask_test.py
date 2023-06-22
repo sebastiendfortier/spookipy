@@ -35,6 +35,9 @@ def test_1(plugin_test_dir):
     # [Mask --thresholds 0.0,10.0,15.0,20.0 --values 0.0,10.0,15.0,20.0 --operators ge,ge,ge,ge] >>
     # [WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
+    import numpy as np
+    df.etiket = np.where(df.label.isna(),df.etiket,df.label) #--ignoreExtended
+    
     df = spookipy.convip(df, rmn.CONVIP_ENCODE_OLD)
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])

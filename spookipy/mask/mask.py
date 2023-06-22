@@ -77,7 +77,8 @@ class Mask(Plugin):
         df_list = []
         # holds data from all the groups
 
-        self.df['etiket'] = 'MASK'
+        self.df['label'] = 'MASK'
+
         if not(self.nomvar_out is None):
             self.df['nomvar'] = self.nomvar_out
 

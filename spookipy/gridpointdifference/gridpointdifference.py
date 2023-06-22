@@ -155,7 +155,6 @@ class GridPointDifference(Plugin):
             
 
             model_df = create_empty_result(nomvar_df, self.plugin_result_specifications)
-            model_df['etiket'] = ETIKET
 
             if 'x' in self.axis or 'y' in self.axis:
                 for row in nomvar_df.itertuples():

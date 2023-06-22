@@ -27,8 +27,6 @@ def test_1(plugin_test_dir):
     df = spookipy.Humidex(src_df0).compute()
     # [ReaderStd --input {sources[0]}] >> [Humidex] >> [WriterStd --output {destination_path} --noMetadata]
 
-    df.loc[:, 'etiket'] = '__HUMIDXX000'
-
     # df.loc[df.nomvar!='!!','nbits']=32
     # df.loc[:,'datyp']=5
 

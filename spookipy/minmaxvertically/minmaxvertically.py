@@ -103,13 +103,13 @@ class MinMaxVertically(Plugin):
 
         if self.min:
             min_df = get_from_dataframe(df, min_out)
-            min_df['etiket'] = "MNMXVY"
+            min_df['label'] = "MNMXVY"
             min_df = reshape_arrays(min_df)
             df_list.append(min_df)
             
         if self.max:
             max_df = get_from_dataframe(df, max_out)
-            max_df['etiket'] = "MNMXVY"
+            max_df['label'] = "MNMXVY"
             max_df = reshape_arrays(max_df)
             df_list.append(max_df)
 

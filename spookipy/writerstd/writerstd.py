@@ -1,21 +1,18 @@
 # -*- coding: utf-8 -*-
 
 import argparse
-import logging
+import math
 import os
 import warnings
-import math
-import rpnpy.librmn.all as rmn
 
 import fstpy
 import numpy as np
 import pandas as pd
+import rpnpy.librmn.all as rmn
 
 from ..plugin import Plugin, PluginParser
-from ..utils import (DependencyError, create_empty_result, existing_results, final_results,
-                     get_dependencies, get_existing_result, get_from_dataframe, restore_5005_record,
-                     initializer)
-
+from ..replacedataifcondition import ReplaceDataIfCondition
+from ..utils import initializer, restore_5005_record
 
 INTERVAL_TYPE_NOT_SET = 0
 INTERVAL_TIME = 1
@@ -141,7 +138,7 @@ class WriterStd(Plugin):
         run_id:str=None,
         implementation:str=None,
         replace_missing_data:bool=False,
-        flag_missing_data:bool=False,
+        flag_missing_data:bool=False, #TODO
         missing_data_replacement_value:float=-999.0,
         ):
 
@@ -214,6 +211,9 @@ class WriterStd(Plugin):
 
         if not self.no_unit_conversion:
             self.df = fstpy.unit_convert(self.df,standard_unit=True)
+
+        if replace_missing_data:
+            self.df = ReplaceDataIfCondition(self.df,'isnan',missing_data_replacement_value).compute()
 
         super().__init__(self.df)
         

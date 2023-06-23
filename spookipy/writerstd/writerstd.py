@@ -1,21 +1,18 @@
 # -*- coding: utf-8 -*-
 
 import argparse
-import logging
+import math
 import os
 import warnings
-import math
-import rpnpy.librmn.all as rmn
 
 import fstpy
 import numpy as np
 import pandas as pd
+import rpnpy.librmn.all as rmn
 
 from ..plugin import Plugin, PluginParser
-from ..utils import (DependencyError, create_empty_result, existing_results, final_results,
-                     get_dependencies, get_existing_result, get_from_dataframe, restore_5005_record,
-                     initializer)
-
+from ..replacedataifcondition import ReplaceDataIfCondition
+from ..utils import initializer, restore_5005_record
 
 INTERVAL_TYPE_NOT_SET = 0
 INTERVAL_TIME = 1
@@ -146,6 +143,9 @@ class WriterStd(Plugin):
         override_pds_label:bool=False,
         run_id:str=None,
         implementation:str=None,
+        replace_missing_data:bool=False,
+        flag_missing_data:bool=False, #TODO
+        missing_data_replacement_value:float=-999.0,
         ):
 
         if pd.Series(self.df['nomvar'].str.len() > 4).any():
@@ -218,6 +218,9 @@ class WriterStd(Plugin):
         if not self.no_unit_conversion:
             self.df = fstpy.unit_convert(self.df,standard_unit=True)
 
+        if replace_missing_data:
+            self.df = ReplaceDataIfCondition(self.df,'isnan',missing_data_replacement_value).compute()
+
         super().__init__(self.df)
         
         
@@ -266,6 +269,9 @@ class WriterStd(Plugin):
         parser.add_argument('--ignoreExtended',action='store_true',default=False,dest="ignore_extended", help=argparse.SUPPRESS)
         parser.add_argument('--encodeIP2andIP3',action='store_true',default=False,dest="encode_ip2_and_ip3", help=argparse.SUPPRESS)
         parser.add_argument('--overridePdsLabel',action='store_true',default=False,dest="override_pds_label", help=argparse.SUPPRESS)
+        parser.add_argument('--replaceMissingData',action='store_true',default=False,dest="replace_missing_data", help=argparse.SUPPRESS)
+        parser.add_argument('--flagMissingData',action='store_true',default=False,dest="flag_missing_data", help=argparse.SUPPRESS)
+        parser.add_argument('--missingDataReplacementValue',type=float,default=-999,dest="missing_data_replacement_value", help=argparse.SUPPRESS)
 
         parsed_arg = vars(parser.parse_args(args.split()))
 

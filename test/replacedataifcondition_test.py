@@ -1,8 +1,7 @@
 
 
 # -*- coding: utf-8 -*-
-import os
-import tempfile
+import numpy as np
 from test import TEST_PATH, TMP_PATH, check_test_ssm_package
 
 check_test_ssm_package()
@@ -30,9 +29,7 @@ def test_1(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     for i in src_df0.index:
-        x = src_df0.at[i, 'd']
-        src_df0.at[i, 'd'] = x/0
-
+        src_df0.at[i, 'd'] = np.where(src_df0.at[i, 'd']==1,np.NaN,src_df0.at[i, 'd'])
     # compute ReplaceDataIfCondition
     df = spookipy.ReplaceDataIfCondition(src_df0,'isnan',-999).compute()
     #['[ReaderCsv --input {sources[0]}] >>', '[DivideElementBy --value 0] >>', '[ReplaceDataIfCondition --condition isnan --value -999] >>', '[PrintIMO --extended]']
@@ -44,11 +41,12 @@ def test_1(plugin_test_dir):
 
     # # open and read comparison file
     # file_to_compare = plugin_test_dir + "resulttest_1"
+    file_to_compare = plugin_test_dir + "resulttest_6"
 
     # # compare results
-    # res = fstcomp(results_file, file_to_compare)
-    # fstpy.delete_file(results_file)
-    # assert(res)
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
 
 def test_2(plugin_test_dir):
     """< 1"""

@@ -67,11 +67,7 @@ class ReplaceDataIfCondition(Plugin):
         :rtype: pd.DataFrame
         """
 
-        if self.condition_operator is None:
-            self.no_meta_df['d'] = np.nan_to_num(self.no_meta_df['d'],nan=self.value)
-            
-        else:
-            self.no_meta_df['d'] = self.no_meta_df.apply(lambda row: replace_data_if_condition(row['d'],self.value,self.condition_operator,self.condition_value), axis=1)
+        self.no_meta_df['d'] = self.no_meta_df.apply(lambda row: replace_data_if_condition(row['d'],self.value,self.condition_operator,self.condition_value), axis=1)
 
         if self.nomvar_out is not None:
             self.no_meta_df['nomvar'] = self.nomvar_out
@@ -135,5 +131,8 @@ def replace_data_if_condition(arr: np.ndarray, replace_value:float, condition_op
     :return: data with replaced value
     :rtype: np.ndarray
     """
+    if condition_operator is None:
+        return np.where(np.isnan(arr), replace_value, arr)
+
     return np.where(condition_operator(arr,condition_value), replace_value, arr)
 

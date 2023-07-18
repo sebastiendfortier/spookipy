@@ -110,8 +110,9 @@ class GridCut(Plugin):
                            cptac_df], ignore_index=True)
 
         res_df = fstpy.metadata_cleanup(res_df)
-        
-        res_df['grid'] = '00000000000'
+
+        res_df['origin_point'] = [self.start_point] * len(res_df)
+
         return res_df
 
     def check_limits(self, shape):

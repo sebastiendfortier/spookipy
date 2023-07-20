@@ -102,9 +102,9 @@ def parse_condition(condition):
     if condition == 'isnan':
         return None, None
     
-    match_operator = "(>=|<=|==|\>|\<)"
+    match_operator = r"(>=|<=|==|\>|\<)"
     match_optional_underscore = "_*"
-    match_float = "(\d+\.?\d?)"
+    match_float = r"(\d+\.?\d?)"
     match_all = match_operator+match_optional_underscore+match_float
 
     if not re.match(match_all, condition):

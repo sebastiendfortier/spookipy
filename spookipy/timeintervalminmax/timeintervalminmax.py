@@ -270,7 +270,7 @@ def create_result_container(df, b_inf, b_sup, nomvar):
 def check_for_negative_values(arr, location):
     if np.any(np.where(arr < 0.,True,False)):
         logging.warning(f"Found a negative value in the {location}! Probable cause is loss of precision when converting to float computational type")
-        logging.warning(f'The lowest found negative value was : {to_numpy(np.min(arr))}')
+        logging.warning(f'The lowest found negative value was : {np.min(arr)}')
 
 
 def get_lower_bound(interval):

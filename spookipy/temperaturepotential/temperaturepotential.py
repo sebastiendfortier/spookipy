@@ -99,7 +99,7 @@ class TemperaturePotential(Plugin):
                     ttk = tt_df.at[i, 'd']
                     px  = px_df.at[i, 'd']
                     th_df.at[i, 'd'] = (ttk * (1000./px)**(RD/CPD)).astype(np.float32)
-            df_list.append(th_df)
+                df_list.append(th_df)
 
         finally:
             return final_results(df_list, TemperaturePotentialError, self.meta_df, self.dependency_check)

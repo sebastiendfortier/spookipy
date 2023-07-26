@@ -69,7 +69,8 @@ class HumidityRelative(Plugin):
             },
             {
                 'TT': {'nomvar': 'TT', 'unit': 'kelvin'},
-                'ES': {'nomvar': 'ES', 'unit': 'kelvin', 'select_only': True},
+                'ES': {'nomvar': 'ES', 'unit': 'celsius', 'select_only': True},
+                #'ES': {'nomvar': 'ES', 'unit': 'kelvin', 'select_only': True},
                 'PX': {'nomvar': 'PX', 'unit': 'pascal'},
             },
             {

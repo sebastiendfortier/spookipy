@@ -46,13 +46,16 @@ class SetUpperBoundary(Plugin):
         res_df = create_empty_result(self.no_meta_df, self.plugin_result_specifications, all_rows=True)
         if  (self.no_meta_df.nomvar.unique().size == 1) and (not (self.nomvar_out is None)):
             res_df['nomvar'] = self.nomvar_out
-        data = np.stack(res_df.d)
 
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore")
-            res_df['d'] = np.split(np.where(data > self.value, self.value, data),data.shape[0])
+        groups_dim = res_df.groupby(['ni', 'nj'])
+        for _, dim_df in groups_dim:
+            data = np.stack(dim_df.d)
 
-        df_list.append(res_df)
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                dim_df['d'] = np.split(np.where(data > self.value, self.value, data),data.shape[0])
+
+            df_list.append(dim_df)
 
         # Conversion du dask array en numpy array, pour que le squeeze fonctionne bien 
         for i in self.meta_df.index:

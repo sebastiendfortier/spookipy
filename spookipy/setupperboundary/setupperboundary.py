@@ -47,7 +47,7 @@ class SetUpperBoundary(Plugin):
         if  (self.no_meta_df.nomvar.unique().size == 1) and (not (self.nomvar_out is None)):
             res_df['nomvar'] = self.nomvar_out
 
-        groups_dim = res_df.groupby(['ni', 'nj'])
+        groups_dim = res_df.groupby(['grid'])
         for _, dim_df in groups_dim:
             data = np.stack(dim_df.d)
 

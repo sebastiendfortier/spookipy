@@ -47,15 +47,15 @@ class SetUpperBoundary(Plugin):
         if  (self.no_meta_df.nomvar.unique().size == 1) and (not (self.nomvar_out is None)):
             res_df['nomvar'] = self.nomvar_out
 
-        groups_dim = res_df.groupby(['grid'])
-        for _, dim_df in groups_dim:
-            data = np.stack(dim_df.d)
+        groups_grid = res_df.groupby(['grid'])
+        for _, grid_df in groups_grid:
+            data = np.stack(grid_df.d)
 
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore")
-                dim_df['d'] = np.split(np.where(data > self.value, self.value, data),data.shape[0])
+                grid_df['d'] = np.split(np.where(data > self.value, self.value, data),data.shape[0])
 
-            df_list.append(dim_df)
+            df_list.append(grid_df)
 
         # Conversion du dask array en numpy array, pour que le squeeze fonctionne bien 
         for i in self.meta_df.index:

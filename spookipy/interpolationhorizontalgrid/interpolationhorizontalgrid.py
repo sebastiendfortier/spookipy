@@ -274,10 +274,6 @@ class InterpolationHorizontalGrid(Plugin):
                 self.ig2,
                 self.ig3,
                 self.ig4)
-            for i in res_df.index:
-                if res_df.at[i, 'nomvar'] == '!!':
-                    continue
-                
 
         no_mod_df = pd.DataFrame(dtype=object)
 

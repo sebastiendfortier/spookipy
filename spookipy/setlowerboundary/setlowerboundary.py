@@ -10,8 +10,6 @@ import fstpy
 from ..plugin import Plugin, PluginParser
 from ..utils import (create_empty_result, initializer, validate_nomvar)
 
-ETIKET: Final[str] = 'SETLWR'
-
 class SetLowerBoundaryError(Exception):
     pass
 
@@ -46,7 +44,12 @@ class SetLowerBoundary(Plugin):
     def compute(self) -> pd.DataFrame:    
         logging.info('SetLowerBoundary - compute')
         df_list=[]
-        res_df = create_empty_result(self.no_meta_df, self.plugin_result_specifications, all_rows=True)
+
+        res_df = create_empty_result(self.no_meta_df, 
+                                     self.plugin_result_specifications, 
+                                     all_rows=True)
+        res_df = fstpy.add_flag_values(res_df)
+        res_df.bounded = True 
 
         if  (self.no_meta_df.nomvar.unique().size == 1) and (not (self.nomvar_out is None)):
             res_df['nomvar'] = self.nomvar_out
@@ -70,6 +73,13 @@ class SetLowerBoundary(Plugin):
                                       copy_input=False)
         df_final['d'] = df_final.apply(lambda row: np.squeeze(row['d']), axis=1)
 
+        ip_columns = ['level', 'ip1_kind', 'ip1_pkind', 'ip2_dec', 'ip2_kind', 'ip2_pkind', 'ip3_dec',
+                      'ip3_kind', 'ip3_pkind', 'interval', 'surface', 'follow_topography', 'ascending']
+        
+        # Suppression des colonnes reliees aux ip, on sait qu'elles n'ont pas ete modifiees
+        df_final = fstpy.remove_list_of_columns(df_final, ip_columns)
+        df_final = fstpy.reduce_columns(df_final)
+        
         return df_final
 
     @staticmethod

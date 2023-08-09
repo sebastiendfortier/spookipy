@@ -26,18 +26,15 @@ def test_1(plugin_test_dir):
     # compute SetLowerBoundary
     df = spookipy.SetLowerBoundary(src_df0, value=0.).compute()
     # [ReaderStd --input {sources[0]}] >> 
-    # [SetLowerBoundary --value 0] >> 
-    # [WriterStd --output {destination_path} ]
-    df['etiket'] = '__SETLWRX'
-    # le plugin devrait set bounded
-    df['typvar'] = 'PB'
+    # [SetLowerBoundary --value 0] 
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "test1_minimum_file2cmp_20201019.std"
+    file_to_compare = plugin_test_dir + "test1_minimum_file2cmp_20210413.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -56,18 +53,15 @@ def test_2(plugin_test_dir):
     df = spookipy.SetLowerBoundary(src_df, value= 0.).compute()
     # [ReaderStd --input {sources[0]}] >> 
     # [Select --fieldName UU] >> 
-    # [SetLowerBoundary --value 0] >> 
-    # [WriterStd --output {destination_path} ]
-    df['etiket'] = '__SETLWRX'
-    # le plugin devrait set bounded
-    df['typvar'] = 'PB'
+    # [SetLowerBoundary --value 0] 
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "test2_minimum_file2cmp_20201019.std"
+    file_to_compare = plugin_test_dir + "test2_minimum_file2cmp_20210413.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -99,16 +93,15 @@ def test_4(plugin_test_dir):
     # [ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> 
     # [SetLowerBoundary --value 0 --outputFieldName TEST] >> 
     # [WriterStd --output {destination_path} --noUnitConversion ]
-    df['etiket'] = '__SETLWRX'
-    # le plugin devrait set bounded
-    df['typvar'] = 'PB'
+    # [SetLowerBoundary --value 0 --outputFieldName TEST] 
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "test4_minimum_file2cmp_20201019.std"
+    file_to_compare = plugin_test_dir + "test4_minimum_file2cmp_20210413.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -138,7 +131,5 @@ def test_6(plugin_test_dir):
     src_df = fstpy.select_with_meta(src_df0,['UU'])
     # compute SetLowerBoundary
     with pytest.raises(spookipy.SetLowerBoundaryError):
-        _ = spookipy.SetLowerBoundary(src_df, value=0., nomvar_out='T').compute()
-    # [ReaderStd --input {sources[0]}] >> 
-    # [Select --fieldName UU] >> 
+        _ = spookipy.SetLowerBoundary(src_df, value=0., nomvar_out='T').compute() 
     # [SetLowerBoundary --value 0 --outputFieldName T]

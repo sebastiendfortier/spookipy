@@ -134,12 +134,17 @@ class InterpolationHorizontalGrid(Plugin):
                     None,
                     None)
             else:
+                self.ig1 = int(self.param1)
+                self.ig2 = int(self.param2)
+                self.ig3 = int(self.param3)
+                self.ig4 = int(self.param4)
+
                 self.output_grid = define_grid(
-                    self.grtyp, '', self.ni, self.nj, int(
-                        self.param1), int(
-                        self.param2), int(
-                        self.param3), int(
-                        self.param4), None, None, None)
+                    self.grtyp, '', self.ni, self.nj,
+                    self.ig1,
+                    self.ig2,
+                    self.ig3,
+                    self.ig4, None, None, None)
 
         else:  # method field defined
             if self.nomvar is None:

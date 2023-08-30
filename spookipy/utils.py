@@ -384,7 +384,14 @@ def create_empty_result(df: pd.DataFrame, plugin_result_specifications: dict, al
     res_df['run'] = '__'
     res_df['implementation'] = 'X'
     res_df['etiket_format'] = ''
-    
+
+    # au lieu de faire un drop des colonnes de flag, il faudrait faire une réduction de colonne
+    flag_col = [x for x in ['masked','multiple_modifications','zapped','filtered','interpolated','bounded','unit_converted'] if x in res_df.columns]
+    res_df = res_df.drop(flag_col,axis=1)
+
+    # if only one char leave it, if 2 char remove the second unless it's ! (ensemble extra info)
+    res_df['typvar'] = res_df['typvar'] if len(res_df['typvar']) < 2 or res_df['typvar'][1] == '!' else res_df['typvar'][0]
+
     res_df['etiket'] = res_df.apply(lambda row: fstpy.create_encoded_standard_etiket(
                                                                 row['label'], 
                                                                 row['run'], 

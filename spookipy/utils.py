@@ -386,11 +386,11 @@ def create_empty_result(df: pd.DataFrame, plugin_result_specifications: dict, al
     res_df['etiket_format'] = ''
 
     # au lieu de faire un drop des colonnes de flag, il faudrait faire une réduction de colonne
-    flag_col = [x for x in ['masked','multiple_modifications','zapped','filtered','interpolated','bounded','unit_converted'] if x in res_df.columns]
+    flag_col = [x for x in ['multiple_modifications','zapped','filtered','interpolated','bounded','unit_converted'] if x in res_df.columns]
     res_df = res_df.drop(flag_col,axis=1)
 
     # if only one char leave it, if 2 char remove the second unless it's ! (ensemble extra info)
-    res_df['typvar'] = res_df['typvar'] if len(res_df['typvar']) < 2 or res_df['typvar'][1] == '!' else res_df['typvar'][0]
+    res_df['typvar'] = res_df.apply(lambda row: row['typvar'] if len(row['typvar']) < 2 or row['typvar'][1] in ['!','@'] else row['typvar'][0], axis=1)
 
     res_df['etiket'] = res_df.apply(lambda row: fstpy.create_encoded_standard_etiket(
                                                                 row['label'], 
@@ -408,6 +408,28 @@ def create_empty_result(df: pd.DataFrame, plugin_result_specifications: dict, al
         ascending=res_df.ascending.unique()[0]).reset_index(drop=True)
 
     return res_df
+
+def f(typvar):
+    print(typvar)
+    if len(typvar) < 2 or typvar[1] in ['!','@']:
+
+        # print('just keep it')
+        return typvar
+    
+    # if len(typvar) < 2:
+    #     return typvar
+    
+    # if typvar[1] == '!':
+    #     print('it is !, keep it')
+    #     return typvar
+
+    # if typvar[1] == '@':
+    #     print('it is @, keep it')
+    #     return typvar
+
+    print("nope remove the other char")
+    return typvar[0]
+
 
 def get_3d_array(df: pd.DataFrame, flatten:bool=False, reverse:bool=False) -> np.ndarray:
     """stacks the arrays of the 'd' row of a dataframe

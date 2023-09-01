@@ -409,28 +409,6 @@ def create_empty_result(df: pd.DataFrame, plugin_result_specifications: dict, al
 
     return res_df
 
-def f(typvar):
-    print(typvar)
-    if len(typvar) < 2 or typvar[1] in ['!','@']:
-
-        # print('just keep it')
-        return typvar
-    
-    # if len(typvar) < 2:
-    #     return typvar
-    
-    # if typvar[1] == '!':
-    #     print('it is !, keep it')
-    #     return typvar
-
-    # if typvar[1] == '@':
-    #     print('it is @, keep it')
-    #     return typvar
-
-    print("nope remove the other char")
-    return typvar[0]
-
-
 def get_3d_array(df: pd.DataFrame, flatten:bool=False, reverse:bool=False) -> np.ndarray:
     """stacks the arrays of the 'd' row of a dataframe
 

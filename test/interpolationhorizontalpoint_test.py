@@ -284,6 +284,7 @@ def test_1(plugin_test_dir, latlon_df):
     df['etiket'] = 'R1558V0_N'
     df.loc[df.nomvar == '^^', 'etiket'] = 'R1INTHPTN'
     df.loc[df.nomvar == '>>', 'etiket'] = 'R1INTHPTN'
+    # Le plugin devrait set Interpolated
     df.loc[df.typvar == 'P', 'typvar'] = 'PI'
 
     # df['datyp']=5
@@ -321,6 +322,7 @@ def test_2(plugin_test_dir, latlon_df):
     df['etiket'] = 'R1558V0_N'
     df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
     df.loc[df.nomvar == '>>', 'etiket'] = '__INTHPTX'
+    # Le plugin devrait set Interpolated
     df.loc[df.typvar == 'P', 'typvar'] = 'PI'
     # df['dateo']=368660482
 
@@ -365,6 +367,7 @@ def test_3(plugin_test_dir, latlon_df):
     # df['nbits']=32
 
     df.loc[df.nomvar == 'VS', 'etiket'] = 'XVSHEAR_X'
+    # Le plugin devrait set Interpolated
     df.loc[df.typvar == 'P', 'typvar'] = 'PI'
 
     # write the result
@@ -403,6 +406,7 @@ def test_4(plugin_test_dir, latlon2_df):
     df.loc[:, 'etiket'] = 'R1580V0_N'
     df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
     df.loc[df.nomvar == '>>', 'etiket'] = '__INTHPTX'
+    # Le plugin devrait set Interpolated
     df.loc[df.typvar == 'P', 'typvar'] = 'PI'
     # df = df.loc[df.nomvar!='PT']
     # print('df\n',df[['nomvar', 'typvar', 'etiket', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'datyp', 'nbits', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4','grid']].to_string())
@@ -447,6 +451,7 @@ def test_5(plugin_test_dir, latlon_df):
     df['etiket'] = 'R1558V0_N'
     df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
     df.loc[df.nomvar == '>>', 'etiket'] = '__INTHPTX'
+    # Le plugin devrait set Interpolated
     df.loc[df.typvar == 'P', 'typvar'] = 'PI'
     # df['dateo']=368660482
 
@@ -487,6 +492,7 @@ def test_6(plugin_test_dir, latlon_df):
     df['etiket'] = 'R1558V0_N'
     df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
     df.loc[df.nomvar == '>>', 'etiket'] = '__INTHPTX'
+    # Le plugin devrait set Interpolated
     df.loc[df.typvar == 'P', 'typvar'] = 'PI'
     # df['dateo']=368660482
 
@@ -528,6 +534,7 @@ def test_7(plugin_test_dir, latlon_with_grid_df):
     df['etiket'] = 'R1558V0_N'
     df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
     df.loc[df.nomvar == '>>', 'etiket'] = '__INTHPTX'
+    # Le plugin devrait set Interpolated
     df.loc[df.typvar == 'P', 'typvar'] = 'PI'
     # df['dateo']=368660482
 
@@ -572,6 +579,7 @@ def test_8(plugin_test_dir, latlon_extrapolation_df):
     df['etiket'] = 'R1558V0_N'
     df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
     df.loc[df.nomvar == '>>', 'etiket'] = '__INTHPTX'
+    # Le plugin devrait set Interpolated
     df.loc[df.typvar == 'P', 'typvar'] = 'PI'
     # df['dateo']=368660482
 
@@ -617,6 +625,7 @@ def test_9(plugin_test_dir, latlon_extrapolation_df):
     df['etiket'] = 'R1558V0_N'
     df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
     df.loc[df.nomvar == '>>', 'etiket'] = '__INTHPTX'
+    # Le plugin devrait set Interpolated
     df.loc[df.typvar == 'P', 'typvar'] = 'PI'
 
     # df['datyp']=5
@@ -659,6 +668,7 @@ def test_10(plugin_test_dir, latlon_extrapolation_df):
     df['etiket'] = 'R1558V0_N'
     df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
     df.loc[df.nomvar == '>>', 'etiket'] = '__INTHPTX'
+    # Le plugin devrait set Interpolated
     df.loc[df.typvar == 'P', 'typvar'] = 'PI'
 
     # df['datyp']=5
@@ -703,6 +713,7 @@ def test_11(plugin_test_dir, latlon_extrapolation_df):
     df['etiket'] = 'R1558V0_N'
     df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
     df.loc[df.nomvar == '>>', 'etiket'] = '__INTHPTX'
+    # Le plugin devrait set Interpolated
     df.loc[df.typvar == 'P', 'typvar'] = 'PI'
 
     # df['datyp']=5
@@ -782,6 +793,7 @@ def test_13(plugin_test_dir, latlon_df):
 
     df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
     df.loc[df.nomvar == '>>', 'etiket'] = '__INTHPTX'
+    # Le plugin devrait set Interpolated
     df.loc[df.typvar == 'P', 'typvar'] = 'PI'
     # df['dateo']=368660482
 
@@ -836,6 +848,7 @@ def test_14(plugin_test_dir):
     df.loc[df.nomvar.isin(['^^', '>>']), 'ni'] = 1
     df.loc[df.nomvar.isin(['^^', '>>']), 'nj'] = 177
     df.loc[df.nomvar.isin(['^^', '>>']), 'typvar'] = 'X'
+    # Le plugin devrait set Interpolated
     df.loc[(df.nomvar=='2Z') & (df.typvar == 'P'), 'typvar'] = 'PI'
     df.loc[df.nomvar=='2Z','etiket'] = 'EDYNTRP_X'
     # df['datyp']=5
@@ -887,6 +900,7 @@ def test_15(plugin_test_dir):
     df.loc[df.nomvar.isin(['^^', '>>']), 'ni'] = 1
     df.loc[df.nomvar.isin(['^^', '>>']), 'nj'] = 177
     df.loc[df.nomvar.isin(['^^', '>>']), 'typvar'] = 'X'
+    # Le plugin devrait set Interpolated
     df.loc[df.typvar == 'P', 'typvar'] = 'PI'
     # df['datyp']=5
     # df['nbits']=32
@@ -930,6 +944,7 @@ def test_16(plugin_test_dir, simple_input_df):
 
     df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
     df.loc[df.nomvar == '>>', 'etiket'] = '__INTHPTX'
+    # Le plugin devrait set Interpolated
     df.loc[df.typvar == 'P', 'typvar'] = 'PI'
     # df['datyp']=5
     # df['nbits']=32
@@ -976,6 +991,7 @@ def test_17(plugin_test_dir, latlon_yy_df):
 
     df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
     df.loc[df.nomvar == '>>', 'etiket'] = '__INTHPTX'
+    # Le plugin devrait set Interpolated
     df.loc[df.typvar == 'P', 'typvar'] = 'PI'
     # df['datyp']=5
     # df['nbits']=32
@@ -1023,6 +1039,7 @@ def test_18(plugin_test_dir, latlon_yy_df):
 
     df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
     df.loc[df.nomvar == '>>', 'etiket'] = '__INTHPTX'
+    # Le plugin devrait set Interpolated
     df.loc[df.typvar == 'P', 'typvar'] = 'PI'
     # df['datyp']=5
     # df['nbits']=32

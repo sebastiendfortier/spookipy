@@ -29,6 +29,7 @@ def test_1(plugin_test_dir):
     # [SetLowerBoundary --value 0] >> 
     # [WriterStd --output {destination_path} ]
     df['etiket'] = '__SETLWRX'
+    # le plugin devrait set bounded
     df['typvar'] = 'PB'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
@@ -58,6 +59,7 @@ def test_2(plugin_test_dir):
     # [SetLowerBoundary --value 0] >> 
     # [WriterStd --output {destination_path} ]
     df['etiket'] = '__SETLWRX'
+    # le plugin devrait set bounded
     df['typvar'] = 'PB'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
@@ -98,6 +100,7 @@ def test_4(plugin_test_dir):
     # [SetLowerBoundary --value 0 --outputFieldName TEST] >> 
     # [WriterStd --output {destination_path} --noUnitConversion ]
     df['etiket'] = '__SETLWRX'
+    # le plugin devrait set bounded
     df['typvar'] = 'PB'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])

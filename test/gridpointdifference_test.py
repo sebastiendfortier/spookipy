@@ -516,7 +516,6 @@ def test_18(plugin_test_dir):
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
-    df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_18.std"])
     fstpy.delete_file(results_file)
@@ -543,7 +542,6 @@ def test_19(plugin_test_dir):
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
-    df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_19.std"])
     fstpy.delete_file(results_file)
@@ -570,7 +568,6 @@ def test_20(plugin_test_dir):
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
-    df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_20.std"])
     fstpy.delete_file(results_file)
@@ -597,7 +594,6 @@ def test_21(plugin_test_dir):
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
-    df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_21.std"])
     fstpy.delete_file(results_file)
@@ -624,7 +620,6 @@ def test_22(plugin_test_dir):
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ", 
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
-    df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_22.std"])
     fstpy.delete_file(results_file)
@@ -651,7 +646,6 @@ def test_23(plugin_test_dir):
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ", 
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
-    df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_23.std"])
     fstpy.delete_file(results_file)
@@ -678,7 +672,6 @@ def test_24(plugin_test_dir):
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
-    df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_24.std"])
     fstpy.delete_file(results_file)
@@ -706,7 +699,6 @@ def test_25(plugin_test_dir):
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
-    df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_25.std"])
     fstpy.delete_file(results_file)
@@ -732,7 +724,6 @@ def test_26(plugin_test_dir):
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
-    df.loc[df.typvar == 'PI','typvar'] = 'P'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_26.std"])
     fstpy.delete_file(results_file)

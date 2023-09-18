@@ -256,6 +256,7 @@ def test_11(plugin_test_dir):
     # [VapourPressure ] >>
     # [Zap --nbitsForDataStorage E32] >>
     #  [WriterStd --output {destination_path}]
+    df.loc[df.nomvar == 'VPPR','typvar'] = 'PZ' # zapped in original test
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
@@ -283,6 +284,7 @@ def test_12(plugin_test_dir):
     # [ReaderStd --input {sources[0]}] >>
     # [VapourPressure --RPN] >> [Zap --nbitsForDataStorage E32] >>
     # [WriterStd --output {destination_path}]
+    df.loc[df.nomvar == 'VPPR','typvar'] = 'PZ' # zapped in original test
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])

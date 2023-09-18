@@ -48,7 +48,6 @@ def test_1(plugin_test_dir):
     etiket2 = "__MMLVLIX"
     df.loc[df.nomvar == "IND",'etiket'] = etiket2
     df.loc[df.nomvar == "TT",'etiket']  = etiket
-    df.loc[(df.nomvar=='IND'),'typvar'] = 'P'
 
     # Encodage des ip2
     df = spookipy.encode_ip2_and_ip3_height(df)
@@ -92,7 +91,6 @@ def test_2(plugin_test_dir):
 
     # Encodage des ip2
     df = spookipy.encode_ip2_and_ip3_height(df)
-    df.loc[(df.nomvar=='IND'),'typvar'] = 'P'
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
@@ -134,7 +132,6 @@ def test_3(plugin_test_dir):
 
     # Encodage des ip2
     df = spookipy.encode_ip2_and_ip3_height(df)
-    df.loc[(df.nomvar.isin(['MAX','MIN'])),'typvar'] = 'P'
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
@@ -174,7 +171,6 @@ def test_4(plugin_test_dir):
 
     # Encodage des ip2
     df = spookipy.encode_ip2_and_ip3_height(df)
-    df.loc[(df.nomvar.isin(['MAX','MIN'])),'typvar'] = 'P'
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
@@ -215,7 +211,6 @@ def test_5(plugin_test_dir):
 
     # Encodage des ip2
     df = spookipy.encode_ip2_and_ip3_height(df)
-    df.loc[(df.nomvar.isin(['MAX','MIN'])),'typvar'] = 'P'
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
@@ -257,7 +252,6 @@ def test_6(plugin_test_dir):
 
     # Encodage des ip2
     df = spookipy.encode_ip2_and_ip3_height(df)
-    df.loc[(df.nomvar.isin(['MAX','MIN'])),'typvar'] = 'P'
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
@@ -299,7 +293,6 @@ def test_7(plugin_test_dir):
 
     # Encodage des ip2
     df = spookipy.encode_ip2_and_ip3_height(df)
-    df.loc[(df.nomvar.isin(['MAX','MIN'])),'typvar'] = 'P'
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
@@ -342,6 +335,7 @@ def test_9(plugin_test_dir):
 
     # Encodage des ip2
     df = spookipy.encode_ip2_and_ip3_height(df)
+    # Le plugin devrait set bounded quand l'option bounded est True
     df.loc[df.nomvar=='IND','typvar'] = 'PB'
     
     # write the result
@@ -386,6 +380,7 @@ def test_10(plugin_test_dir):
 
     # Encodage des ip2
     df = spookipy.encode_ip2_and_ip3_height(df)
+    # Le plugin devrait set bounded quand l'option bounded est True
     df.loc[(df.nomvar.isin(['KMAX','KMIN'])),'typvar'] = 'PB'
         
     # write the result
@@ -430,6 +425,7 @@ def test_11(plugin_test_dir):
 
     # Encodage des ip2
     df = spookipy.encode_ip2_and_ip3_height(df)
+    # Le plugin devrait set bounded quand l'option bounded est True
     df.loc[(df.nomvar.isin(['KMAX','KMIN'])),'typvar'] = 'PB'
         
     # write the result
@@ -494,6 +490,8 @@ def test_20(plugin_test_dir):
 
     # Encodage des ip pour les champs ayant un objet interval 
     df = spookipy.encode_ip_when_interval(df)
+    # le tests n'existe pas dans spooki, le fichier de comparaison a été créé sans porter attention au typvar
+    df.loc[df.ni == 3,'typvar'] = 'PZ'
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_20.std"])
@@ -533,6 +531,7 @@ def test_21(plugin_test_dir):
 
     # Encodage des ip pour les champs ayant un objet intervalle
     df = spookipy.encode_ip_when_interval(df)
+    # Le plugin devrait set bounded quand l'option bounded est True
     df.loc[(df.nomvar.isin(['KMAX','KMIN'])),'typvar'] = 'PB'
     
      # write the result
@@ -570,7 +569,6 @@ def test_22(plugin_test_dir):
     etiket2 = "__MMLVLIX"
     df.loc[df.nomvar == "IND",'etiket'] = etiket2
     df.loc[df.nomvar == "TT",'etiket']  = etiket
-    df.loc[(df.nomvar=='IND'),'typvar'] = 'P'
 
     # Encodage des ip2
     df = spookipy.encode_ip2_and_ip3_height(df)
@@ -606,7 +604,6 @@ def test_22(plugin_test_dir):
 
     etiket = "__MMLVLIX"
     df.loc[df.nomvar == "IND",'etiket'] = etiket
-    df.loc[(df.nomvar=='IND'),'typvar'] = 'P'
 
     # Encodage des ip2
     df = spookipy.encode_ip2_and_ip3_height(df)

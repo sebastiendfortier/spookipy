@@ -339,7 +339,6 @@ def test_11(plugin_test_dir):
 
     # Encodage des ip2
     df = spookipy.encode_ip2_and_ip3_height(df)
-    df.loc[:,'typvar'] = 'P'
     
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
@@ -383,7 +382,6 @@ def test_12(plugin_test_dir):
 
     # Encodage des ip2
     df = spookipy.encode_ip2_and_ip3_height(df)
-    df.loc[df.typvar=='PZ','typvar'] = 'P'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
     fstpy.delete_file(results_file)
@@ -468,7 +466,6 @@ def test_15(plugin_test_dir):
 
     # Encodage des ip2
     df = spookipy.encode_ip2_and_ip3_height(df)
-    df.loc[df.typvar=='PZ','typvar'] = 'P'
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_15.std"])

@@ -271,6 +271,8 @@ def test_11(plugin_test_dir):
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
     df['etiket'] = 'GPTDISX'
+    # Le plugin a un comportement different des autres et garde le interpolated du fichier en input
+    df.loc[df.typvar == 'P', 'typvar'] = 'PI'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
     fstpy.delete_file(results_file)
@@ -297,6 +299,8 @@ def test_12(plugin_test_dir):
 #                 "[GridPointDistance --axis X --differenceType BACKWARD] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
     df['etiket'] = 'GPTDISX'
+    # Le plugin a un comportement different des autres et garde le interpolated du fichier en input
+    df.loc[df.typvar == 'P', 'typvar'] = 'PI'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
     fstpy.delete_file(results_file)
@@ -322,6 +326,8 @@ def test_13(plugin_test_dir):
 #                 "[GridPointDistance --axis X --differenceType FORWARD] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
     df['etiket'] = 'GPTDISX'
+    # Le plugin a un comportement different des autres et garde le interpolated du fichier en input
+    df.loc[df.typvar == 'P', 'typvar'] = 'PI'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
     fstpy.delete_file(results_file)
@@ -348,6 +354,8 @@ def test_14(plugin_test_dir):
 #                 "[GridPointDistance --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
     df['etiket'] = 'GPTDISX'
+    # Le plugin a un comportement different des autres et garde le interpolated du fichier en input
+    df.loc[df.typvar == 'P', 'typvar'] = 'PI'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
     fstpy.delete_file(results_file)
@@ -374,6 +382,8 @@ def test_15(plugin_test_dir):
 #                 "[GridPointDistance --axis X --differenceType BACKWARD] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
     df['etiket'] = 'GPTDISX'
+    # Le plugin a un comportement different des autres et garde le interpolated du fichier en input
+    df.loc[df.typvar == 'P', 'typvar'] = 'PI'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
     fstpy.delete_file(results_file)
@@ -430,6 +440,8 @@ def test_17(plugin_test_dir):
 #                 "[GridPointDistance --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
     df['etiket'] = 'GPTDISX'
+    # Le plugin a un comportement different des autres et garde le interpolated du fichier en input
+    df.loc[df.typvar == 'P', 'typvar'] = 'PI'
     # df['nbits'] = 32
     # df['datyp'] = 5
     # write the result
@@ -459,6 +471,8 @@ def test_18(plugin_test_dir):
 #                 "[GridPointDistance --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
     df['etiket'] = 'GPTDISX'
+    # Le plugin a un comportement different des autres et garde le interpolated du fichier en input
+    df.loc[df.typvar == 'P', 'typvar'] = 'PI'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_18.std"])
     fstpy.delete_file(results_file)

@@ -122,7 +122,6 @@ def test_6(plugin_test_dir):
     df = spookipy.AddElementsByPoint(src_df, group_by_nomvar=True).compute()
     # df['etiket'] = '__ADDEPTX'
     df.loc[~df.nomvar.isin(['!!', '^^', '>>', 'P0']), 'etiket'] = '__ADDEPTX'
-    df.loc[~df.nomvar.isin(['!!', '^^', '>>', 'P0']), 'typvar'] = 'P'
     # [ReaderStd --input {sources[0]}] >> [AddElementsByPoint --outputFieldName ACCU] >> [Zap --pdsLabel ADDFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --noUnitConversion]
 
     df.sort_values(by=['nomvar', 'level'],ascending=[True, False],inplace=True)
@@ -307,6 +306,8 @@ def test_11(plugin_test_dir):
     # compute AddElementsByPoint
     df = spookipy.AddElementsByPoint(tt_es_df, group_by_forecast_hour=True, copy_input=False).compute()
     df.loc[df.nomvar == 'ADEP','etiket'] = '__ADDFLDX'
+    # this test doesn't exist in cpp, the file to compare was created without taking into account the proper typvar
+    df.loc[df.nomvar == 'ADEP','typvar'] = 'PZ'
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])

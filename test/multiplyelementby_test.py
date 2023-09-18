@@ -29,7 +29,6 @@ def test_1(plugin_test_dir):
     # [ReaderStd --input {sources[0]}] >> [MultiplyElementBy --value 3.0] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     df = spookipy.convip(df, style=rmn.CONVIP_ENCODE_OLD)
-    df.loc[:,'typvar'] = 'P'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
     fstpy.delete_file(results_file)
@@ -55,7 +54,6 @@ def test_2(plugin_test_dir):
     # [ReaderStd --input {sources[0]}] >> [MultiplyElementBy --value 0.333] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     df = spookipy.convip(df, style=rmn.CONVIP_ENCODE_OLD)
-    df.loc[:,'typvar'] = 'P'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
     fstpy.delete_file(results_file)

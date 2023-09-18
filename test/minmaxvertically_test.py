@@ -62,7 +62,8 @@ def test_3(plugin_test_dir):
     df = spookipy.encode_ip_when_interval(df)
 
     df.etiket = np.where(df.label.isna(),df.etiket,df.label) #--ignoreExtended
-
+    # le tests n'existe pas dans spooki, le fichier de comparaison a été créé sans porter attention au typvar
+    df.loc[df.nomvar.isin(['UMIN','UMAX']),'typvar'] = 'PZ'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
     fstpy.delete_file(results_file)
@@ -130,7 +131,8 @@ def test_5(plugin_test_dir):
     # Encodage des ip pour les champs ayant un objet intervalle
     df = spookipy.encode_ip_when_interval(df)
     df.etiket = np.where(df.label.isna(),df.etiket,df.label) #--ignoreExtended
-
+    # le tests n'existe pas dans spooki, le fichier de comparaison a été créé sans porter attention au typvar
+    df.loc[df.ni == 3,'typvar'] = 'PZ'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
     fstpy.delete_file(results_file)

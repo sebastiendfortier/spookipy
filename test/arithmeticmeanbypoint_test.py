@@ -138,7 +138,6 @@ def test_6(plugin_test_dir):
 
     df.loc[df.nomvar.isin(['!!', '^^', '>>', 'P0']), 'etiket'] = 'R1_V700_N'
 
-    df.loc[df.nomvar == 'MEAN','typvar'] = 'P'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
     fstpy.delete_file(results_file)
@@ -162,13 +161,7 @@ def test_7(plugin_test_dir):
     # compute ArithmeticMeanByPoint
     df = spookipy.ArithmeticMeanByPoint(src_df0).compute()
     # [ReaderStd --input {sources[0]}] >> [ArithmeticMeanByPoint] >> [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} ]
-    # df['etiket']='__MEANFIX'
     df.loc[~df.nomvar.isin(['!!', '^^', '>>', 'P0']), 'etiket'] = '__MEANFIX'
-    df.loc[df.nomvar == 'MEAN','typvar'] = 'P'
-    # df['typvar']='P'
-    # df['ip2']=30
-    # df['deet']=300
-    # df['npas']=360
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
@@ -192,10 +185,9 @@ def test_8(plugin_test_dir):
     # compute ArithmeticMeanByPoint
     df = spookipy.ArithmeticMeanByPoint(src_df0, group_by_nomvar=True).compute()
     # [ReaderStd --input {sources[0]}] >> [ArithmeticMeanByPoint] >> [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} ]
-    # df['etiket']='__MEANFIX'
     df.loc[~df.nomvar.isin(['!!', '^^', '>>', 'P0']), 'etiket'] = '__MEANFIX'
-    df.loc[df.nomvar == 'MEAN','typvar'] = 'P'
-
+    # this test doesn't exist in cpp, the file to compare was created without taking into account the proper typvar
+    df.loc[df.nomvar.isin(['ES','TT']),'typvar'] = 'PZ'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
     fstpy.delete_file(results_file)

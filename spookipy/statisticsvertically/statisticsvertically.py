@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import argparse
 import logging
 from typing import Final
 
@@ -7,7 +6,7 @@ import fstpy
 import numpy as np
 import pandas as pd
 from ..plugin import Plugin, PluginParser
-from ..utils import create_empty_result, final_results, get_3d_array, initializer, validate_nomvar
+from ..utils import create_empty_result, get_3d_array, initializer, validate_nomvar
 import rpnpy.librmn.all as rmn
 
 
@@ -32,7 +31,8 @@ class StatisticsVertically(Plugin):
         norm_nomvars:list = None,
         stats: list='ALL', 
         ):
-        super().__init__(df)
+
+        super().__init__(self.df)
         self.validate_params()
         self.prepare_groups()
 
@@ -264,7 +264,9 @@ class StatisticsVertically(Plugin):
 
                 df_list.append(res_df)
 
-        return final_results(df_list, StatisticsVerticallyError, self.meta_df)
+        return self.final_results(df_list, 
+                                  StatisticsVerticallyError, 
+                                  copy_input=False)
 
     @staticmethod
     def parse_config(args: str) -> dict:

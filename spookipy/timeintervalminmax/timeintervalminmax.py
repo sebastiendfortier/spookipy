@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import argparse
 import datetime
 import logging
 
@@ -9,7 +8,7 @@ import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin, PluginParser
-from ..utils import (create_empty_result, final_results, get_list_of_forecast_hours, 
+from ..utils import (create_empty_result, get_list_of_forecast_hours, 
                      initializer, to_numpy, validate_list_of_nomvar, validate_list_of_times, 
                      validate_list_of_tuples_of_times, validate_nomvar)
 from ..configparsingutils import apply_lambda_to_list, convert_time_range, convert_time
@@ -45,15 +44,13 @@ class TimeIntervalMinMax(Plugin):
                  forecast_hour_range=None, interval=None, step=None, 
                  nomvar_min=None, nomvar_max=None):
         
-        self.validate_input()
-
-    def validate_input(self):
-        if self.df.empty:
-            raise TimeIntervalMinMaxError('No data to process')
-
         self.df = fstpy.metadata_cleanup(self.df)
+        super().__init__(self.df)
+        self.prepare_groups()
 
-        self.df = fstpy.add_columns(self.df, ['forecast_hour'])
+    def prepare_groups(self):
+
+        self.no_meta_df = fstpy.add_columns(self.no_meta_df, ['forecast_hour'])
 
         if (self.nomvar is None) or (self.forecast_hour_range is None):
             raise TimeIntervalMinMaxError(
@@ -77,17 +74,17 @@ class TimeIntervalMinMax(Plugin):
             l_nbmin = len(self.nomvar_min)
             if l_nomvar != l_nbmin:
                 raise TimeIntervalMinMaxError('There must be the same number of output nomvar as there are inputs')
-            self.df['nomvar_min'] = None
+            self.no_meta_df['nomvar_min'] = None
             for nomvar,nomvar_min in zip(self.nomvar,self.nomvar_min):
-                self.df.loc[self.df.nomvar==nomvar,'nomvar_min'] = nomvar_min
+                self.no_meta_df.loc[self.no_meta_df.nomvar==nomvar,'nomvar_min'] = nomvar_min
         if self.max:    
             self.nomvar_max = validate_list_of_nomvar(self.nomvar_max, 'TimeIntervalMinMax', TimeIntervalMinMaxError)
             l_nbmax = len(self.nomvar_max)
             if l_nomvar != l_nbmax:
                 raise TimeIntervalMinMaxError('There must be the same number of output nomvar as there are inputs')
-            self.df['nomvar_max'] = None
+            self.no_meta_df['nomvar_max'] = None
             for nomvar,nomvar_max in zip(self.nomvar,self.nomvar_max):
-                self.df.loc[self.df.nomvar==nomvar,'nomvar_max'] = nomvar_max    
+                self.no_meta_df.loc[self.no_meta_df.nomvar==nomvar,'nomvar_max'] = nomvar_max    
 
 
         self.forecast_hour_range = validate_list_of_tuples_of_times(self.forecast_hour_range, TimeIntervalMinMaxError)
@@ -114,14 +111,9 @@ class TimeIntervalMinMax(Plugin):
                 raise TimeIntervalMinMaxError(
                     'The interval must be lower or equal to upper bound minus lower bound of forecast_hour_range.')
 
-        self.meta_df = self.df.loc[self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
+        self.df_without_intervals = self.no_meta_df.loc[(self.no_meta_df.interval.isna()) & (self.no_meta_df.nomvar.isin(self.nomvar))].reset_index(drop=True)
 
-        self.df_without_intervals = self.df.loc[(~self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])) & (self.df.interval.isna()) & (self.df.nomvar.isin(self.nomvar))].reset_index(drop=True)
-
-        self.df_with_intervals = self.df.loc[(~self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])) & (~self.df.interval.isna()) & (self.df.nomvar.isin(self.nomvar))].reset_index(drop=True)
+        self.df_with_intervals    = self.no_meta_df.loc[(~self.no_meta_df.interval.isna()) & (self.no_meta_df.nomvar.isin(self.nomvar))].reset_index(drop=True)
 
         self.groups_without_interval = self.df_without_intervals.groupby(['grid', 'nomvar','level','ip1_kind'])
         self.groups_with_interval    = self.df_with_intervals.groupby(['grid', 'nomvar','level', 'ip1_kind'])
@@ -187,8 +179,9 @@ class TimeIntervalMinMax(Plugin):
                 for df in diffs:
                     df_list.append(df)
 
-
-        return final_results(df_list, TimeIntervalMinMaxError, self.meta_df)
+        return self.final_results(df_list, 
+                                  TimeIntervalMinMaxError, 
+                                  copy_input=False)
 
     def process(self, current_group, interval_df, b_inf, b_sup):
         arr3d = da.stack(interval_df['d'])

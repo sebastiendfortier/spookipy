@@ -8,9 +8,11 @@ import pandas as pd
 
 
 from ..plugin import Plugin
-from ..utils import (create_empty_result, existing_results, final_results,
-                     get_existing_result)
+from ..utils import (create_empty_result, existing_results, 
+                     get_existing_result, initializer)
 
+class CoriolisParameterError(Exception):
+    pass
 
 def coriolis_parameter(lat_2d: np.ndarray) -> np.ndarray:
     """computes the coriolis parameter for each latitude obtained from gdll (2d grid size latitudes)
@@ -35,35 +37,35 @@ class CoriolisParameter(Plugin):
     :type df: pd.DataFrame
     """
     computable_plugin = "CORP"
-    def __init__(self, df: pd.DataFrame):
+    @initializer
+    def __init__(self, 
+                 df: pd.DataFrame,
+                 copy_input=False
+                 ):
+        
         self.plugin_result_specifications = {
             'CORP': {
                 'nomvar': 'CORP',
-                'label': 'CORIOP',
-                'unit': 'divergence',
-                'ip1': 0,
-                'ip2': 0,
-                'ip3': 0,
-                'npas': 0,
-                'datyp': 134,
-                'nbits': 12}}
+                'label' : 'CORIOP',
+                'unit'  : 'divergence',
+                'ip1'   : 0,
+                'ip2'   : 0,
+                'ip3'   : 0,
+                'npas'  : 0,
+                'datyp' : 134,
+                'nbits' : 12}}
 
-        self.df = df
+        self.df = fstpy.metadata_cleanup(self.df)
+        super().__init__(self.df)
 
-        self.validate_input()
+        self.prepare_groups()
 
-    def validate_input(self):
-        if self.df.empty:
-            raise CoriolisParameterError('No data to process')
+    def prepare_groups(self):
 
         self.df = fstpy.add_columns(self.df, columns=['unit', 'ip_info'])
 
-        self.df = fstpy.metadata_cleanup(self.df)
-
         # print(self.df[['nomvar','typvar','etiket','unit','surface','grid','forecast_hour']].sort_values(by=['grid','nomvar']).to_string())
-        self.meta_df = self.df.loc[self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
+    
         # check if result already exists
         self.existing_result_df = get_existing_result(
             self.df, self.plugin_result_specifications)
@@ -106,14 +108,16 @@ class CoriolisParameter(Plugin):
 
             df_list.append(corp_df)
 
-        return final_results(df_list, CoriolisParameterError, self.meta_df)
+        return self.final_results(df_list, CoriolisParameterError,
+                                  copy_input = self.copy_input)
 
 
 def adjust_column_values(current_group, corp_df):
     corp_df.loc[:, 'typvar'] = current_group.typvar.unique()[0]
-    corp_df.loc[:, 'grtyp'] = current_group.grtyp.unique()[0]
-    corp_df.loc[:, 'ig1'] = current_group.ig1.unique()[0]
-    corp_df.loc[:, 'ig2'] = current_group.ig2.unique()[0]
-    corp_df.loc[:, 'ig3'] = current_group.ig3.unique()[0]
-    corp_df.loc[:, 'ig4'] = current_group.ig4.unique()[0]
+    corp_df.loc[:, 'grtyp']  = current_group.grtyp.unique()[0]
+    corp_df.loc[:, 'ig1']    = current_group.ig1.unique()[0]
+    corp_df.loc[:, 'ig2']    = current_group.ig2.unique()[0]
+    corp_df.loc[:, 'ig3']    = current_group.ig3.unique()[0]
+    corp_df.loc[:, 'ig4']    = current_group.ig4.unique()[0]
+
     return corp_df

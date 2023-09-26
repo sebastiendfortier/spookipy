@@ -56,11 +56,11 @@ class OpElementsByColumn(Plugin):
         self.plugin_result_specifications = {
             'ALL': {
                 'nomvar': self.nomvar_out,
-                'label': self.operation_name,
+                'label' : self.operation_name,
                 'unit'  : self.unit}}
 
         self.df = fstpy.metadata_cleanup(self.df)
-        super().__init__(df)
+        super().__init__(self.df)
 
         if self.etiket is None:
             self.etiket = self.operation_name

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import argparse
 import logging
 import warnings
 
@@ -63,8 +62,7 @@ class MinMaxLevelIndex(Plugin):
             ):
 
         self.df = fstpy.metadata_cleanup(self.df)
-
-        super().__init__(df)
+        super().__init__(self.df)
 
         if self.nomvar is None:
             nomvar_list = self.no_meta_df[~self.no_meta_df.nomvar.isin(["KBAS","KTOP"])].nomvar.unique()

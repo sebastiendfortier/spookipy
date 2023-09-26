@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import argparse
 import pandas as pd
 import numpy as np
 
@@ -33,7 +32,7 @@ class Pressure(Plugin):
                 copy_input=False):
 
         self.df = fstpy.metadata_cleanup(self.df)
-        super().__init__(df)
+        super().__init__(self.df)
 
         if not (self.reference_field is None):
             self.no_meta_df = self.no_meta_df.loc[self.no_meta_df.nomvar == self.reference_field]

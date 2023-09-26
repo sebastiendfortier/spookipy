@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-import argparse
 import logging
 from typing import Final
+import fstpy
 import pandas as pd
 from ..timeintervaldifference.timeintervaldifference import TimeIntervalDifference
 from ..plugin import Plugin, PluginParser
-from ..utils import final_results, initializer, validate_nomvar
+from ..utils import initializer, validate_nomvar
 from ..configparsingutils import apply_lambda_to_list, convert_time_range, convert_time
 
 ETIKET: Final[str] = 'PCPAMT'
@@ -28,20 +28,29 @@ class PrecipitationAmount(Plugin):
     :type step: datetime.timedelta or list of datetime.timedelta
     """
     @initializer
-    def __init__(self, df: pd.DataFrame, nomvar=None, forecast_hour_range=None, interval=None, step=None):
-        super().__init__(df)
+    def __init__(self, 
+                 df: pd.DataFrame, 
+                 nomvar=None, 
+                 forecast_hour_range=None, 
+                 interval=None, 
+                 step=None):
+        
+        super().__init__(self.df)
         # self.validate_nomvar()
 
     def compute(self) -> pd.DataFrame:
         logging.info('PrecipitationAmount - compute\n')
-        df = TimeIntervalDifference(self.df, nomvar=self.nomvar,
-                                       forecast_hour_range=self.forecast_hour_range,
-                                       interval=self.interval,
-                                       step=self.step,
-                                       strictly_positive=True).compute()
+        df = TimeIntervalDifference(self.df, 
+                                    nomvar=self.nomvar,
+                                    forecast_hour_range=self.forecast_hour_range,
+                                    interval=self.interval,
+                                    step=self.step,
+                                    strictly_positive=True).compute()
         df['label'] = ETIKET
-
-        return final_results([df], PrecipitationAmountError, self.meta_df)
+    
+        return self.final_results([df], 
+                                  PrecipitationAmountError, 
+                                  copy_input = False)
 
     @staticmethod
     def parse_config(args: str) -> dict:

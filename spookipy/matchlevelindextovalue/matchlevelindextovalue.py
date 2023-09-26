@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import argparse
 import copy
 import logging
 import warnings
@@ -48,7 +47,7 @@ class MatchLevelIndexToValue(Plugin):
             }
 
         self.df = fstpy.metadata_cleanup(self.df)
-        super().__init__(df)
+        super().__init__(self.df)
         self.validate_params_and_input()
 
     def validate_params_and_input(self):

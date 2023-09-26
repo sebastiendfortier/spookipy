@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
-import argparse
 import logging
-
 import fstpy
 import pandas as pd
-
 from ..plugin import Plugin, PluginParser
-from ..utils import (create_empty_result, existing_results, final_results,
-                     get_existing_result, get_intersecting_levels)
+from ..utils import (create_empty_result, existing_results,
+                     get_existing_result, get_intersecting_levels, initializer)
 
 
 class HelicityError(Exception):
@@ -24,7 +21,12 @@ class Helicity(Plugin):
     :param z4: vertical level corresponding to ~300mb, defaults to 0.297078
     :type z4: float, optional
     """
-    def __init__(self, df: pd.DataFrame, z3=0.851343, z4=0.297078):
+    @initializer
+    def __init__(self, 
+                 df: pd.DataFrame, 
+                 z3=0.851343, 
+                 z4=0.297078, 
+                 copy_input=False):
 
         self.plugin_mandatory_dependencies = [{
             'UU': {'nomvar': 'UU', 'unit': 'knot'},
@@ -33,20 +35,15 @@ class Helicity(Plugin):
         self.plugin_result_specifications = {
             'UV': {'nomvar': 'UV', 'label': 'WNDMOD', 'unit': 'knot'}
         }
-        self.df = df
+        self.df = fstpy.metadata_cleanup(self.df)
+        super().__init__(self.df)
+
+        self.prepare_groups()
         # ajouter forecast_hour et unit
-        self.validate_input()
 
     # might be able to move
-    def validate_input(self):
-        if self.df.empty:
-            raise HelicityError('No data to process')
-
-        self.df = fstpy.metadata_cleanup(self.df)
-
-        self.meta_df = self.df.loc[self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
+    def prepare_groups(self):
+       
         self.df = fstpy.add_columns(
             self.df, columns=[
                 'unit', 'forecast_hour', 'ip_info'])
@@ -55,9 +52,6 @@ class Helicity(Plugin):
         self.existing_result_df = get_existing_result(
             self.df, self.plugin_result_specifications)
 
-        # remove meta data from DataFrame
-        self.df = self.df.loc[~self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
         # print(self.df[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']].to_string())
         self.groups = self.df.groupby(
             ['grid', 'datev', 'ip1_kind'])
@@ -90,7 +84,9 @@ class Helicity(Plugin):
 
             df_list.append(uv_df)
 
-        return final_results(df_list, HelicityError, self.meta_df)
+        return self.final_results(df_list, 
+                                  HelicityError, 
+                                  copy_input = self.copy_input)
 
     @staticmethod
     def parse_config(args: str) -> dict:

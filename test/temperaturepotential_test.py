@@ -19,7 +19,7 @@ def plugin_test_dir():
 
 
 def test_1(plugin_test_dir):
-    """ Calcule de la température potentiel à partir d'un fichier standard."""
+    """ Calcul de la température potentielle à partir d'un fichier standard."""
     # open and read source
     source0 = plugin_test_dir + "2011100712_012_reghyb"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -45,7 +45,7 @@ def test_1(plugin_test_dir):
     assert(res)
 
 def test_2(plugin_test_dir):
-    """ Calcule de la température potentiel à partir d'un fichier standard."""
+    """ Calcul de la température potentielle à partir d'un fichier standard."""
     # open and read source
     source0 = plugin_test_dir + "2011100712_012_reghyb"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()

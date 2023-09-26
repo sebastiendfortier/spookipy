@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import argparse
 import logging
 
 import fstpy
@@ -125,7 +124,7 @@ class VapourPressure(Plugin):
 
 
         self.df = fstpy.metadata_cleanup(self.df)
-        super().__init__(df)
+        super().__init__(self.df)
         self.prepare_groups()
 
     def prepare_groups(self):
@@ -339,7 +338,7 @@ class VapourPressure(Plugin):
 
         pxpa_df = get_from_dataframe(dependencies_df, 'PX')
         vppr_df = create_empty_result(
-            pxpa_df, self.plugin_result_specifications['VPPR'], all_rows=True)
+            hu_df, self.plugin_result_specifications['VPPR'], all_rows=True)
         # pxpa_df = fstpy.unit_convert(px_df, 'pascal')
         for i in vppr_df.index:
             pxpa = pxpa_df.at[i, 'd']

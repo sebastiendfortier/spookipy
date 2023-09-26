@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 import logging
+import fstpy
+
 from typing import Tuple
 import warnings
 
-import fstpy
 import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin
-from ..utils import (create_result_container, existing_results, final_results,
+from ..utils import (create_result_container, existing_results,
                      get_dependencies, get_existing_result, to_dask)
 
 
@@ -51,44 +52,36 @@ class WindMax(Plugin):
     :type df: pd.DataFrame
     """
     def __init__(self, df: pd.DataFrame):
-        self.plugin_mandatory_dependencies = [{
-            'UV': {'nomvar': 'UV', 'unit': 'knot'},
-            'UU': {'nomvar': 'UU', 'unit': 'knot'},
-            'VV': {'nomvar': 'VV', 'unit': 'knot'},
-            'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'},
-        }]
+        self.plugin_mandatory_dependencies = [
+                {
+                'UV': {'nomvar': 'UV', 'unit': 'knot'},
+                'UU': {'nomvar': 'UU', 'unit': 'knot'},
+                'VV': {'nomvar': 'VV', 'unit': 'knot'},
+                'PX': {'nomvar': 'PX', 'unit': 'hectoPascal'},  
+                 }
+        ]
         self.plugin_result_specifications = {
             'UV': {'nomvar': 'UV', 'label': 'WNDMAX', 'unit': 'knot', 'ip1': 0},
             'UU': {'nomvar': 'UU', 'label': 'WNDMAX', 'unit': 'knot', 'ip1': 0},
             'VV': {'nomvar': 'VV', 'label': 'WNDMAX', 'unit': 'knot', 'ip1': 0},
             'PX': {'nomvar': 'PX', 'label': 'WNDMAX', 'unit': 'hectoPascal', 'ip1': 0},
         }
-        self.df = df
-        self.validate_input()
+        self.df = fstpy.metadata_cleanup(df)      
+        super().__init__(self.df)
+        self.prepare_groups()
 
     # might be able to move
-    def validate_input(self):
-        if self.df.empty:
-            raise WindMaxError('No data to process')
+    def prepare_groups(self):
 
-        self.df = fstpy.metadata_cleanup(self.df)
-
-        self.meta_df = self.df.loc[self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
-        self.df = fstpy.add_columns(
-            self.df, columns=[
+        self.no_meta_df = fstpy.add_columns(
+            self.no_meta_df, columns=[
                 'unit', 'forecast_hour', 'ip_info'])
 
         # check if result already exists
         self.existing_result_df = get_existing_result(
-            self.df, self.plugin_result_specifications)
+            self.no_meta_df, self.plugin_result_specifications)
 
-        # remove meta data from DataFrame
-        self.df = self.df.loc[~self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
-        self.groups = self.df.groupby(
+        self.groups = self.no_meta_df.groupby(
             ['grid', 'datev', 'ip1_kind'])
 
     def compute(self) -> pd.DataFrame:
@@ -133,4 +126,5 @@ class WindMax(Plugin):
             df_list.append(uv_res_df)
             df_list.append(px_res_df)
 
-        return final_results(df_list, WindMaxError, self.meta_df)
+        return self.final_results(df_list, WindMaxError,
+                                  copy_input=False)

@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
-import argparse
 import fstpy
 import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin, PluginParser
-from ..utils import final_results, initializer, validate_nomvar
+from ..utils  import initializer, validate_nomvar
 from ..configparsingutils import preprocess_negative_args,apply_lambda_to_list
 
 class MaskError(Exception):
@@ -41,20 +40,11 @@ class Mask(Plugin):
         self.plugin_result_specifications = {
             'ALL': {'label': 'MASK'}
             }
-        
-        self.validate_input()
-
-    def validate_input(self):
-        if self.df.empty:
-            raise MaskError('No data to process')
-
         self.df = fstpy.metadata_cleanup(self.df)
+        super().__init__(self.df)
+        self.validate_params()
 
-        self.meta_df = self.df.loc[self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
-        self.df = self.df.loc[~self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
+    def validate_params(self):
 
         length = len(self.thresholds)
         if not all(
@@ -64,7 +54,6 @@ class Mask(Plugin):
             raise MaskError(
                 'Threshholds, values and operators lists, must have the same lenght')
 
-
         ops = ['>', '>=', '==', '<=', '<', '!=']
 
         for op in self.operators:
@@ -73,18 +62,19 @@ class Mask(Plugin):
 
         
     def compute(self) -> pd.DataFrame:
-        
         df_list = []
         # holds data from all the groups
 
-        self.df['label'] = 'MASK'
+        self.no_meta_df['label'] = 'MASK'
 
         if not(self.nomvar_out is None):
-            self.df['nomvar'] = self.nomvar_out
+            self.no_meta_df['nomvar'] = self.nomvar_out
 
-        df_list = apply_mask(self.df, self.values[::-1], self.operators[::-1], self.thresholds[::-1])
+        df_list = apply_mask(self.no_meta_df, self.values[::-1], self.operators[::-1], self.thresholds[::-1])
 
-        return final_results(df_list, MaskError, self.meta_df)
+        return self.final_results(df_list, 
+                                  MaskError, 
+                                  copy_input = False)
 
 
     @staticmethod

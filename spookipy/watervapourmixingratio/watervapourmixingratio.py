@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import argparse
 import logging
 
 import fstpy
@@ -89,7 +88,7 @@ class WaterVapourMixingRatio(Plugin):
                 'unit': 'gram_per_kilogram'}}
 
         self.df = fstpy.metadata_cleanup(self.df)
-        super().__init__(df)
+        super().__init__(self.df)
         self.prepare_groups()
 
     def prepare_groups(self):

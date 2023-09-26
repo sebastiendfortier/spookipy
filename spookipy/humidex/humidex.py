@@ -9,7 +9,7 @@ from ..plugin import Plugin
 from ..science import hmx_from_svp
 from ..utils import (create_empty_result, existing_results, 
                      get_dependencies, get_existing_result, get_from_dataframe,
-                     initializer, DependencyError)
+                     initializer)
 
 
 class HumidexError(Exception):
@@ -52,8 +52,8 @@ class Humidex(Plugin):
         self.plugin_params = {
                 'ice_water_phase': 'water'}
 
-        self.df = fstpy.metadata_cleanup(df)
-        super().__init__(df)
+        self.df = fstpy.metadata_cleanup(self.df)
+        super().__init__(self.df)
         self.prepare_groups()
 
     def prepare_groups(self):

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import argparse
 import logging
 
 import fstpy
@@ -8,7 +7,7 @@ import pandas as pd
 
 from ..minmaxlevelindex import MinMaxLevelIndex
 from ..plugin import Plugin, PluginParser
-from ..utils import (final_results,get_from_dataframe, initializer, 
+from ..utils import (get_from_dataframe, initializer, 
                     reshape_arrays, validate_nomvar)
 
 class MinMaxVerticallyError(Exception):
@@ -47,7 +46,7 @@ class MinMaxVertically(Plugin):
             nomvar_max: str = None,
             copy_input=False
             ):
-        super().__init__(df)
+        super().__init__(self.df)
         self.validate_params_and_input()
 
     def validate_params_and_input(self):   

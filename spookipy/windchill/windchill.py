@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin
-from ..utils import (create_empty_result, existing_results, final_results,
+from ..utils import (create_empty_result, existing_results,
                      get_dependencies, get_existing_result, get_from_dataframe,
                      initializer, DependencyError)
 
@@ -41,7 +41,8 @@ class WindChill(Plugin):
     def __init__(
         self, 
         df: pd.DataFrame,
-        dependency_check=False):
+        dependency_check=False,
+        copy_input=False):
 
         self.plugin_mandatory_dependencies = [
                 {
@@ -56,8 +57,8 @@ class WindChill(Plugin):
                 'unit': 'celsius',
                 'ip1': 0}}
 
-        self.df = fstpy.metadata_cleanup(df)      
-        super().__init__(df)
+        self.df = fstpy.metadata_cleanup(self.df)      
+        super().__init__(self.df)
         self.prepare_groups()
 
     def prepare_groups(self):
@@ -105,4 +106,6 @@ class WindChill(Plugin):
 
                 df_list.append(re_df)
         finally:
-            return final_results(df_list, WindChillError, self.meta_df, self.dependency_check)
+            return self.final_results(df_list, WindChillError,
+                                      dependency_check = self.dependency_check, 
+                                      copy_input = self.copy_input)

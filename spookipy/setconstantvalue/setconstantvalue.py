@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import argparse
 import logging
 
 import dask.array as da
@@ -8,7 +7,7 @@ import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin, PluginParser
-from ..utils import create_empty_result, final_results, initializer, validate_nomvar
+from ..utils import create_empty_result, initializer, validate_nomvar
 from ..configparsingutils import preprocess_negative_args
 
 
@@ -56,26 +55,18 @@ class SetConstantValue(Plugin):
 
         self.plugin_result_specifications = {
             'ALL': {'label': 'SETVAL', 'unit': 'scalar'}
-        }
-        self.validate_input()
-
-    def validate_input(self):
-        if self.df.empty:
-            raise SetConstantValueError('No data to process')
-
+        }     
         self.df = fstpy.metadata_cleanup(self.df)
+        super().__init__(self.df)
+        self.prepare_groups()
 
-        self.meta_df = self.df.loc[self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
-        self.df = fstpy.add_columns(
-            self.df, columns=[
+    def prepare_groups(self):
+    
+        self.no_meta_df = fstpy.add_columns(
+            self.no_meta_df, columns=[
                 'unit', 'forecast_hour', 'ip_info'])
 
-        self.df = self.df.loc[~self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
-        self.groups = self.df.groupby(
+        self.groups = self.no_meta_df.groupby(
             by=['grid', 'nomvar', 'datev'])
 
         l = [self.min_index, self.max_index, self.nb_levels]
@@ -101,7 +92,7 @@ class SetConstantValue(Plugin):
                 self.value = len(df.index)
 
             res_df = create_empty_result(
-                self.df, self.plugin_result_specifications['ALL'], all_rows=True)
+                df, self.plugin_result_specifications['ALL'], all_rows=True)
 
             if not (self.nomvar_out is None):
                 res_df['nomvar'] = self.nomvar_out
@@ -115,7 +106,9 @@ class SetConstantValue(Plugin):
                 res_df.loc[:, 'ip1'] = 0
             df_list.append(res_df)
 
-        return final_results(df_list, SetConstantValueError, self.meta_df)
+        return self.final_results(df_list, 
+                                  SetConstantValueError,                                  
+                                  copy_input = False)
 
     @staticmethod
     def parse_config(args: str) -> dict:

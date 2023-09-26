@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
-
 import fstpy
 import pandas as pd
-
 from ..plugin import Plugin
 from ..utils import (create_empty_result, existing_results, initializer,
                      get_dependencies, get_existing_result, get_from_dataframe)
@@ -47,8 +45,8 @@ class GeorgeKIndex(Plugin):
                 'ip1'   : 0}
                 }
 
-        self.df = fstpy.metadata_cleanup(df)
-        super().__init__(df)
+        self.df = fstpy.metadata_cleanup(self.df)
+        super().__init__(self.df)
         self.prepare_groups()
 
     def prepare_groups(self):

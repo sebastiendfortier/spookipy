@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import argparse
 import copy
 import logging
 import math
@@ -10,7 +9,7 @@ import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin, PluginParser
-from ..utils import (create_empty_result, existing_results, final_results,
+from ..utils import (create_empty_result, existing_results,
                      get_dependencies, get_existing_result, initializer)
 
 
@@ -58,7 +57,11 @@ class CloudFractionDiagnostic(Plugin):
     """
     computable_plugin = "CLD"
     @initializer
-    def __init__(self, df: pd.DataFrame, use_constant=False):
+    def __init__(self, 
+                 df: pd.DataFrame, 
+                 use_constant=False,
+                 copy_input=False
+                ):
         self.plugin_mandatory_dependencies = [
             {
                 'HR': {'nomvar': 'HR', 'unit': 'scalar', 'select_only': True},
@@ -72,30 +75,22 @@ class CloudFractionDiagnostic(Plugin):
                 'unit': 'scalar'}}
 
         self.constant = 0.8
-        self.validate_input()
-
-    def validate_input(self):
-        if self.df.empty:
-            raise CloudFractionDiagnosticError('No data to process')
-
         self.df = fstpy.metadata_cleanup(self.df)
+        super().__init__(self.df)
+        self.validate_params_and_input()
+
+    def validate_params_and_input(self):
 
         self.df = fstpy.add_columns(
             self.df, columns=[
                 'unit', 'forecast_hour', 'ip_info'])
-
-        self.meta_df = self.df.loc[self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
-        self.df = self.df.loc[~self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
 
         # check if result already exists
         self.existing_result_df = get_existing_result(
             self.df, self.plugin_result_specifications)
 
         self.groups = self.df.groupby(
-            ['grid', 'datev', 'ip1_kind'])
+                ['grid', 'datev', 'ip1_kind'])
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:
@@ -132,7 +127,8 @@ class CloudFractionDiagnostic(Plugin):
 
             df_list.append(cld_df)
 
-        return final_results(df_list, CloudFractionDiagnosticError, self.meta_df)
+        return self.final_results(df_list, CloudFractionDiagnosticError,
+                                  copy_input = self.copy_input)
 
     @staticmethod
     def parse_config(args: str) -> dict:

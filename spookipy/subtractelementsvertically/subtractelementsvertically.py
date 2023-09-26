@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
-import argparse
 import logging
 from typing import Final
 import fstpy
 import numpy as np
 import pandas as pd
 from ..plugin import Plugin, PluginParser
-from ..utils import create_empty_result, final_results, initializer, validate_nomvar
+from ..utils import create_empty_result, initializer, validate_nomvar
 import rpnpy.librmn.all as rmn
 
 ETIKET: Final[str] =  'SUBEVY'
@@ -26,9 +25,15 @@ class SubtractElementsVertically(Plugin):
     :type nomvar_out: str, optional
     """
     @initializer
-    def __init__(self, df: pd.DataFrame, direction: str='ascending', nomvar_out: str = None):
+    def __init__(self, 
+                 df: pd.DataFrame, 
+                 direction: str='ascending', 
+                 nomvar_out: str = None):
+        
         self.plugin_result_specifications = {'label': ETIKET}
-        super().__init__(df)
+
+        self.df = fstpy.metadata_cleanup(self.df)
+        super().__init__(self.df)
         self.no_meta_df = fstpy.add_columns(self.no_meta_df,'ip_info')
         self.validate_params()
 
@@ -83,7 +88,9 @@ class SubtractElementsVertically(Plugin):
 
             df_list.append(res_df)
 
-        return final_results(df_list, SubtractElementsVerticallyError, self.meta_df)
+        return self.final_results(df_list, 
+                                  SubtractElementsVerticallyError, 
+                                  copy_input=False)
 
     @staticmethod
     def parse_config(args: str) -> dict:

@@ -6,8 +6,7 @@ import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin
-from ..utils import (create_empty_result, final_results, initializer,
-                     validate_nomvar)
+from ..utils import (create_empty_result, initializer, validate_nomvar)
 
 
 class OpElementsByValueError(Exception):
@@ -48,28 +47,21 @@ class OpElementsByValue(Plugin):
 
         if self.etiket is None:
             self.etiket = self.operation_name
-        self.validate_input()
-
-    def validate_input(self):
-        if self.df.empty:
-            raise self.exception_class(
-                self.operation_name + ' - no data to process')
 
         self.df = fstpy.metadata_cleanup(self.df)
+        super().__init__(self.df)
 
+        self.prepare_groups()
+
+    def prepare_groups(self):
+ 
         if not (self.nomvar_out is None):
             validate_nomvar(
                 self.nomvar_out,
                 self.operation_name,
                 self.exception_class)
 
-        self.meta_df = self.df.loc[self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
-        self.df = self.df.loc[~self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
-        self.df = fstpy.add_columns(self.df, columns=['unit'])
+        self.no_meta_df = fstpy.add_columns(self.no_meta_df, columns=['unit'])
 
         if not (self.nomvar_out is None):
             self.plugin_result_specifications = {
@@ -85,11 +77,11 @@ class OpElementsByValue(Plugin):
         logging.info('OpElementsByValue - compute')
         df_list = []
         res_df = create_empty_result(
-            self.df,
+            self.no_meta_df,
             self.plugin_result_specifications['ALL'],
             all_rows=True)
 
         res_df['d'] = self.operator(res_df['d'], self.value)
         df_list.append(res_df)
 
-        return final_results(df_list, self.exception_class, self.meta_df)
+        return self.final_results(df_list, self.exception_class, copy_input=False)

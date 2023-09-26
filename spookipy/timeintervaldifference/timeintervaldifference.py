@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import argparse
 import logging
 
 import fstpy
@@ -7,7 +6,7 @@ import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin, PluginParser
-from ..utils import create_empty_result, final_results, get_list_of_forecast_hours, initializer, to_numpy, validate_list_of_nomvar, validate_list_of_times, validate_list_of_tuples_of_times, validate_nomvar
+from ..utils import create_empty_result, get_list_of_forecast_hours, initializer, to_numpy, validate_list_of_nomvar, validate_list_of_times, validate_list_of_tuples_of_times, validate_nomvar
 from ..configparsingutils import apply_lambda_to_list, convert_time_range, convert_time
 
 class TimeIntervalDifferenceError(Exception):
@@ -28,16 +27,20 @@ class TimeIntervalDifference(Plugin):
     :type step: datetime.timedelta or list of datetime.timedelta
     """
     @initializer
-    def __init__(self, df: pd.DataFrame, nomvar=None, forecast_hour_range=None, interval=None, step=None, strictly_positive=False):
-        self.validate_input()
-
-    def validate_input(self):
-        if self.df.empty:
-            raise TimeIntervalDifferenceError('No data to process')
-
+    def __init__(self, 
+                 df: pd.DataFrame, 
+                 nomvar=None, 
+                 forecast_hour_range=None, 
+                 interval=None, 
+                 step=None, 
+                 strictly_positive=False):
         self.df = fstpy.metadata_cleanup(self.df)
+        super().__init__(self.df)
+        self.prepare_groups()
 
-        self.df = fstpy.add_columns(self.df, ['forecast_hour'])
+    def prepare_groups(self):
+
+        self.no_meta_df = fstpy.add_columns(self.no_meta_df, ['forecast_hour'])
 
         if self.nomvar is None or self.forecast_hour_range is None or self.interval is None or self.step is None:
             raise TimeIntervalDifferenceError(
@@ -58,20 +61,14 @@ class TimeIntervalDifference(Plugin):
                     'The interval must be lower or equal to upper bound minus lower bound of forecast_hour_range.')
 
         for nomvar in self.nomvar:
-            if nomvar not in list(self.df.nomvar.unique()):
+            if nomvar not in list(self.no_meta_df.nomvar.unique()):
                 raise TimeIntervalDifferenceError(f'Variable {nomvar}, missing from DataFrame!')
 
-        self.meta_df = self.df.loc[self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
-        self.df_without_intervals = self.df.loc[(~self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])) & (self.df.interval.isna()) & (self.df.nomvar.isin(self.nomvar))].reset_index(drop=True)
-
-        self.df_with_intervals = self.df.loc[(~self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])) & (~self.df.interval.isna()) & (self.df.nomvar.isin(self.nomvar))].reset_index(drop=True)
+        self.df_without_intervals = self.no_meta_df.loc[(self.no_meta_df.interval.isna())  & (self.no_meta_df.nomvar.isin(self.nomvar))].reset_index(drop=True)
+        self.df_with_intervals    = self.no_meta_df.loc[(~self.no_meta_df.interval.isna()) & (self.no_meta_df.nomvar.isin(self.nomvar))].reset_index(drop=True)
 
         self.groups_without_interval = self.df_without_intervals.groupby(['grid', 'nomvar','ip1_kind'])
-        self.groups_with_interval = self.df_with_intervals.groupby(['grid', 'nomvar','ip1_kind'])
+        self.groups_with_interval    = self.df_with_intervals.groupby(['grid', 'nomvar','ip1_kind'])
 
 
     def compute(self) -> pd.DataFrame:
@@ -138,7 +135,9 @@ class TimeIntervalDifference(Plugin):
                 for df in diffs:
                     df_list.append(df)
 
-        return final_results(df_list, TimeIntervalDifferenceError, self.meta_df)
+        return self.final_results(df_list, 
+                                  TimeIntervalDifferenceError, 
+                                  copy_input=False)
 
     def process(self, current_group, b_inf, b_sup, begin_df, end_df):
         begin_arr = begin_df.iloc[0]['d']

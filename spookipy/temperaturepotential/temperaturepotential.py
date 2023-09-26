@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 import logging
 from typing import Final
 
@@ -8,7 +7,7 @@ import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin
-from ..utils import (create_empty_result, existing_results, final_results,
+from ..utils import (create_empty_result, existing_results,
                      get_dependencies, get_existing_result, get_from_dataframe,
                      initializer, DependencyError)
 
@@ -39,7 +38,8 @@ class TemperaturePotential(Plugin):
     @initializer
     def __init__( self, 
             df: pd.DataFrame,
-            dependency_check=False):
+            dependency_check=False,
+            copy_input=False):
         
         self.plugin_mandatory_dependencies = [
             {
@@ -54,13 +54,15 @@ class TemperaturePotential(Plugin):
                 'label': 'PTNLTT', 
                 'unit': 'kelvin'}
         }
+
         self.df = fstpy.metadata_cleanup(self.df)
-        super().__init__(df)
+        super().__init__(self.df)
         self.prepare_groups()
 
     def prepare_groups(self):
 
-        self.no_meta_df = fstpy.add_columns(self.no_meta_df, columns=['unit', 'forecast_hour', 'ip_info'])
+        self.no_meta_df = fstpy.add_columns(
+            self.no_meta_df, columns=['unit', 'forecast_hour', 'ip_info'])
 
         self.existing_result_df = get_existing_result(self.no_meta_df, self.plugin_result_specifications)
 
@@ -102,6 +104,8 @@ class TemperaturePotential(Plugin):
                 df_list.append(th_df)
 
         finally:
-            return final_results(df_list, TemperaturePotentialError, self.meta_df, self.dependency_check)
+            return self.final_results(df_list, TemperaturePotentialError,
+                                      dependency_check = self.dependency_check, 
+                                      copy_input = self.copy_input)
 
     

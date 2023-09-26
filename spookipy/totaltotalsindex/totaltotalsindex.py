@@ -6,8 +6,8 @@ import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin
-from ..utils import (create_empty_result, existing_results, final_results,
-                     get_dependencies, get_existing_result, get_from_dataframe)
+from ..utils import (create_empty_result, existing_results,
+                     get_dependencies, get_existing_result, get_from_dataframe, initializer)
 
 
 class TotalTotalsIndexError(Exception):
@@ -23,44 +23,41 @@ def total_totals_index(
 
 class TotalTotalsIndex(Plugin):
     computable_plugin = "TTI"
+    @initializer
+    def __init__(self, df: pd.DataFrame, copy_input=False):
 
-    def __init__(self, df: pd.DataFrame):
-        self.plugin_mandatory_dependencies = [{
-            'TT1': {'nomvar': 'TT', 'unit': 'celsius', 'level': 850, 'ip1_pkind': 'mb'},
-            'TT2': {'nomvar': 'TT', 'unit': 'celsius', 'level': 500, 'ip1_pkind': 'mb'},
-            'OTHERS': {'level': 850, 'ip1_pkind': 'mb'},
-        }]
+        self.plugin_mandatory_dependencies = [
+            {
+                'TT1': {'nomvar': 'TT', 'unit': 'celsius', 'level': 850, 'ip1_pkind': 'mb'},
+                'TT2': {'nomvar': 'TT', 'unit': 'celsius', 'level': 500, 'ip1_pkind': 'mb'},
+                'OTHERS': {'level': 850, 'ip1_pkind': 'mb'},
+            }
+        ]
+
         self.plugin_result_specifications = {
             'TTI': {
                 'nomvar': 'TTI',
                 'label' : 'TOTALI',
                 'unit'  : 'celsius',
                 'ip1'   : 0,
-                'level' : 0}}
-        self.df = df
-        self.validate_input()
-
-    def validate_input(self):
-        if self.df.empty:
-            raise TotalTotalsIndexError('No data to process')
-
+                'level' : 0}
+        }
+        
         self.df = fstpy.metadata_cleanup(self.df)
+        super().__init__(self.df)
+        self.prepare_groups()
 
-        self.meta_df = self.df.loc[self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
-        self.df = fstpy.add_columns(
-            self.df, columns=[
+    def prepare_groups(self):
+    
+        self.no_meta_df = fstpy.add_columns(
+            self.no_meta_df, columns=[
                 'unit', 'forecast_hour', 'ip_info'])
+        
         # check if result already exists
         self.existing_result_df = get_existing_result(
-            self.df, self.plugin_result_specifications)
+            self.no_meta_df, self.plugin_result_specifications)
 
-        # remove meta data from DataFrame
-        self.df = self.df.loc[~self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
-        self.groups = self.df.groupby(
+        self.groups = self.no_meta_df.groupby(
             ['grid', 'datev', 'ip1_kind'])
 
     def compute(self) -> pd.DataFrame:
@@ -97,4 +94,6 @@ class TotalTotalsIndex(Plugin):
                     tt850_df.at[i, 'd'], tt500_df.at[i, 'd'], td850_df.at[i, 'd'])
             df_list.append(tti_df)
 
-        return final_results(df_list, TotalTotalsIndexError, self.meta_df)
+        return self.final_results(df_list, 
+                                  TotalTotalsIndexError, 
+                                  copy_input = self.copy_input)

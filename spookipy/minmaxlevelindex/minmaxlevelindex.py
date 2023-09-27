@@ -131,7 +131,7 @@ class MinMaxLevelIndex(Plugin):
         if (keep.loc[keep.nomvar == self.nomvar]).empty:
                 raise MinMaxLevelIndexError(f'INVALID INPUT - MISSING {self.nomvar} !')    
 
-        self.nomvar_groups = keep.groupby(by=['grid', 'datev','ip1_kind'])
+        self.nomvar_groups = keep.groupby(by=['grid', 'datev'])
 
         self.dependencies_list = get_dependencies(
             self.nomvar_groups,

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import argparse
 import copy
 import dask.array as da
 from typing import Final
@@ -11,7 +10,7 @@ import pandas as pd
 import fstpy
 import rpnpy.librmn.all as rmn
 from ..plugin import Plugin, PluginParser
-from ..utils import create_empty_result, get_0_ip1, initializer, to_dask, final_results
+from ..utils import create_empty_result, get_0_ip1, initializer, to_dask
 
 
 EARTH_RADIUS: Final = 6370997.
@@ -68,7 +67,7 @@ VEZCALCDIST_F: Final = np.vectorize(rmn.ezcalcdist)
 # ETIKET: Final[str] = 'GPTDIS'
 NOMVAR_X: Final[str] = 'GDX'
 NOMVAR_Y: Final[str] = 'GDY'
-ETIKET: Final[str] = 'GPTDIS'
+LABEL:    Final[str] = 'GPTDIS'
 def centered_distance(lats: np.ndarray, lons: np.ndarray, is_global: bool = False, grid_wraps: bool = False) -> np.ndarray:
     center_res = VEZCALCDIST_F(lats[2:], lons[2:], lats[:-2], lons[:-2])
     if is_global and (not grid_wraps):
@@ -125,9 +124,14 @@ class GridPointDistance(Plugin):
     :type axis: list, optional
     """
     @initializer
-    def __init__(self, df: pd.DataFrame, difference_type: str = None, axis: 'list(str)' = ['x', 'y']):
-        self.plugin_result_specifications = {'label': ETIKET}
-        super().__init__(df)
+    def __init__(self, df: pd.DataFrame, 
+                 difference_type: str = None, 
+                 axis: 'list(str)' = ['x', 'y'],
+                 copy_input=False):
+        
+        self.plugin_result_specifications = {'label': LABEL}
+        
+        super().__init__(self.df)
         self.validate_params()
         if 'path' not in self.df.columns:
             self.df = fstpy.add_path_and_key_columns(self.df)
@@ -251,8 +255,9 @@ class GridPointDistance(Plugin):
                                 gdy_df['d'] = [to_dask(np.hstack([res1,res2]))]
                                 df_list.append(gdy_df)
 
-        return final_results(df_list, GridPointDistanceError, self.meta_df)
-
+        return self.final_results(df_list, 
+                                  GridPointDistanceError, 
+                                  copy_input = self.copy_input)
     @staticmethod
     def parse_config(args: str) -> dict:
         """method to translate spooki plugin parameters to python plugin parameters

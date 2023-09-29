@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 import logging
 
 import fstpy
@@ -7,7 +6,7 @@ import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin
-from ..utils import (DependencyError, create_empty_result, existing_results, final_results,
+from ..utils import (DependencyError, create_empty_result, existing_results, 
                      get_dependencies, get_existing_result, get_from_dataframe,
                      initializer)
 
@@ -42,7 +41,8 @@ class WindModulus(Plugin):
     def __init__(
         self,
         df:pd.DataFrame,
-        dependency_check=False
+        dependency_check=False,
+        copy_input=False
         ):
 
         self.plugin_mandatory_dependencies = [
@@ -58,7 +58,7 @@ class WindModulus(Plugin):
 
         #ajouter forecast_hour et unit
         self.df = fstpy.metadata_cleanup(self.df)
-        super().__init__(df)    
+        super().__init__(self.df)    
         self.prepare_groups()
 
     # might be able to move
@@ -106,4 +106,6 @@ class WindModulus(Plugin):
                 df_list.append(uv_df)
 
         finally:
-            return final_results(df_list, WindModulusError, self.meta_df, self.dependency_check)
+            return self.final_results(df_list, WindModulusError, 
+                                      self.dependency_check,
+                                      copy_input=self.copy_input)

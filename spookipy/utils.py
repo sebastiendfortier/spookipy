@@ -457,45 +457,6 @@ def existing_results(
     return res_df
 
 
-def final_results(
-        df_list: "list[pd.DataFrame]",
-        error_class: 'type',
-        meta_df: pd.DataFrame,
-        dependency_check = False) -> pd.DataFrame:
-    """Returns the final results dataframe, created from the list of dataframes and the meta data
-
-    :param df_list: list of dataframes, one per grouping method in the plugin
-    :type df_list: list[pd.DataFrame]
-    :param error_class: Exception to raise if list is empty
-    :type error_class: Exception
-    :param meta_df: meta data dataframe
-    :type meta_df: pd.DataFrame
-    :raises error_class: error class to raise
-    :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
-    :type dependency_check: bool, optional
-    :return: clean and sorted resulting dataframe
-    :rtype: pd.DataFrame
-    """
-    new_list = []
-    for df in df_list:
-        if not df.empty:
-            new_list.append(df)
-
-    if not len(new_list):
-        if dependency_check:
-            return pd.DataFrame(dtype=object)
-        else:
-            raise error_class('No results were produced')
-
-    new_list.append(meta_df)
-    # merge all results together
-    res_df = pd.concat(new_list, ignore_index=True)
-
-    res_df = fstpy.metadata_cleanup(res_df)
-
-    return res_df
-
-
 def convip(df: pd.DataFrame, style: int = rmn.CONVIP_ENCODE, ip_str:str='ip1') -> pd.DataFrame:
     """Converts ip1 column of dataframe from new style ips to old style and vice versa
 
@@ -634,7 +595,7 @@ def get_dependencies(
                                         [current_group, meta_df], ignore_index=True), plugin_params, 
                                         plugin_mandatory_dependencies, intersect_levels)
         else:
-            new_df = pd.concat([current_group, meta_df])
+            new_df = pd.concat([current_group, meta_df],ignore_index=True)
             new_df = fstpy.metadata_cleanup(new_df)
             dependencies_df, option = find_matching_dependency_option(
                                         new_df, plugin_params, 

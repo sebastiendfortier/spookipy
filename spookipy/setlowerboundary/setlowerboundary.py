@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-
-import argparse
 import logging
 from typing import Final
 
@@ -10,7 +8,7 @@ import warnings
 import fstpy
 
 from ..plugin import Plugin, PluginParser
-from ..utils import (create_empty_result, final_results, initializer, validate_nomvar)
+from ..utils import (create_empty_result, initializer, validate_nomvar)
 
 ETIKET: Final[str] = 'SETLWR'
 
@@ -28,9 +26,14 @@ class SetLowerBoundary(Plugin):
     :type nomvar_out: str, optional
     """
     @initializer
-    def __init__(self, df: pd.DataFrame, value: float = None, nomvar_out: str = None):
+    def __init__(self, 
+                 df: pd.DataFrame, 
+                 value: float = None, 
+                 nomvar_out: str = None):
+        
         self.plugin_result_specifications = {'label': ETIKET}
-        super().__init__(df)
+        
+        super().__init__(self.df)
         self.validate_params()
 
     def validate_params(self):
@@ -62,7 +65,9 @@ class SetLowerBoundary(Plugin):
         for i in self.meta_df.index:
             self.meta_df.at[i,'d'] = fstpy.to_numpy(self.meta_df.at[i,'d'])
 
-        df_final = final_results(df_list, SetLowerBoundaryError, self.meta_df)
+        df_final = self.final_results(df_list, 
+                                      SetLowerBoundaryError, 
+                                      copy_input=False)
         df_final['d'] = df_final.apply(lambda row: np.squeeze(row['d']), axis=1)
 
         return df_final

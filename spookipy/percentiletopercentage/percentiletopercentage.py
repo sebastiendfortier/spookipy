@@ -7,8 +7,7 @@ import copy
 import re
 import os   
 from ..plugin import Plugin
-from ..utils import (create_empty_result, existing_results, final_results,
-                     get_dependencies, get_existing_result, get_from_dataframe, initializer)
+from ..utils import (create_empty_result,  initializer)
 
 
 class PercentileToPercentageError(Exception):
@@ -80,8 +79,16 @@ class PercentileToPercentage(Plugin):
     :type typvar: str, optional
     """
     @initializer
-    def __init__(self, df: pd.DataFrame, threshold: float = 0.3, operator: str = 'ge', etiket: str = 'GESTG1PALL', nomvar: str = 'SSH', typvar: str = 'P@'):
-        super().__init__(df)
+    def __init__(self, 
+                 df: pd.DataFrame, 
+                 threshold: float = 0.3, 
+                 operator: str = 'ge', 
+                 etiket: str = 'GESTG1PALL', 
+                 nomvar: str = 'SSH', 
+                 typvar: str = 'P@'):
+        
+        self.df = fstpy.metadata_cleanup(self.df)
+        super().__init__(self.df)
         self.validate_parameters()
         self.prepare_groups()
 
@@ -156,4 +163,6 @@ class PercentileToPercentage(Plugin):
             df_list.append(data_df)
             df_list.append(mask_df)
 
-        return final_results(df_list, PercentileToPercentageError, self.meta_df)
+        return self.final_results(df_list, 
+                                  PercentileToPercentageError, 
+                                  copy_input = False)

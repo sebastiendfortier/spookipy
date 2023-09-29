@@ -7,7 +7,7 @@ import pandas as pd
 
 from ..plugin import Plugin
 from ..science import vt_from_qv
-from ..utils import (create_empty_result, final_results, existing_results,
+from ..utils import (create_empty_result, existing_results,
                      get_dependencies,  get_existing_result, get_from_dataframe,
                      initializer, DependencyError)
 
@@ -27,7 +27,8 @@ class TemperatureVirtual(Plugin):
     def __init__(
         self,
         df: pd.DataFrame,
-        dependency_check=False
+        dependency_check=False,
+        copy_input=False
         ):
 
         self.plugin_mandatory_dependencies = [
@@ -44,8 +45,8 @@ class TemperatureVirtual(Plugin):
                 'nbits': 16,
                 'datyp': 1}}
 
-        self.df = fstpy.metadata_cleanup(df)
-        super().__init__(df)
+        self.df = fstpy.metadata_cleanup(self.df)
+        super().__init__(self.df)
         self.prepare_groups()
 
     def prepare_groups(self):
@@ -96,4 +97,6 @@ class TemperatureVirtual(Plugin):
         
                 df_list.append(vt_df)
         finally:
-            return final_results(df_list, TemperatureVirtualError, self.meta_df, self.dependency_check)
+            return self.final_results(df_list, TemperatureVirtualError,
+                                      dependency_check = self.dependency_check, 
+                                      copy_input = self.copy_input)

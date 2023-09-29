@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import argparse
 import logging
 from multiprocessing.pool import ThreadPool
 
@@ -8,7 +7,7 @@ import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin, PluginParser
-from ..utils import (final_results, get_split_value, initializer, to_dask, validate_nomvar)
+from ..utils import (get_split_value, initializer, to_dask, validate_nomvar)
 from .f_stenfilt import f_stenfilt
 
 class FilterDigitalError(Exception):
@@ -43,12 +42,12 @@ class FilterDigital(Plugin):
             # 'etiket':'FLTRDG',
         }
 
-        self.validate_input()
+        self.df = fstpy.metadata_cleanup(self.df)
+        super().__init__(self.df)
+        self.prepare_groups()
 
-    def validate_input(self):
-        if self.df.empty:
-            raise FilterDigitalError('No data to process')
-
+    def prepare_groups(self):
+      
         if not (self.nomvar_out is None):
             validate_nomvar(self.nomvar_out, 'FilterDigital', FilterDigitalError)
 
@@ -61,12 +60,6 @@ class FilterDigital(Plugin):
         if not (self.repetitions > 0):
             raise FilterDigitalError('Repetitions must be a positive integer')
 
-        self.meta_df = self.df.loc[self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
-        self.df = self.df.loc[~self.df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-
     def compute(self) -> pd.DataFrame:
         logging.info('FilterDigital - compute')
 
@@ -76,8 +69,8 @@ class FilterDigital(Plugin):
         # self.df = fstpy.compute(self.df)
 
         if not (self.nomvar_out is None):
-            self.df['nomvar'] = self.nomvar_out
-        self.df['filtered'] = True
+            self.no_meta_df['nomvar'] = self.nomvar_out
+        self.no_meta_df['filtered'] = True
 
         # new_df = create_empty_result(self.df,self.plugin_result_specifications['ALL'],all_rows=True)
 
@@ -86,12 +79,12 @@ class FilterDigital(Plugin):
         filter_arr = np.array(self.filter, dtype=np.int32, order='F')
 
         if self.parallel:
-            df_list = apply_filter_parallel(self.df, self.repetitions, filter_arr, filter_len)
+            df_list = apply_filter_parallel(self.no_meta_df, self.repetitions, filter_arr, filter_len)
         else:    
-            df_list = apply_filter(self.df, self.repetitions, filter_arr, filter_len)
+            df_list = apply_filter(self.no_meta_df, self.repetitions, filter_arr, filter_len)
 
 
-        return final_results(df_list, FilterDigitalError, self.meta_df)
+        return self.final_results(df_list, FilterDigitalError, copy_input=False)
 
     @staticmethod
     def parse_config(args: str) -> dict:

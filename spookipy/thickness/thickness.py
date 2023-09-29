@@ -1,4 +1,3 @@
-import argparse
 import logging
 import fstpy
 
@@ -6,7 +5,7 @@ from ..plugin import Plugin, PluginParser
 import pandas as pd
 import numpy as np
 
-from ..utils import (create_empty_result, existing_results, final_results,
+from ..utils import (create_empty_result, existing_results,
                      get_dependencies, get_existing_result, get_from_dataframe,
                      initializer, DependencyError)
 
@@ -59,7 +58,8 @@ class Thickness(Plugin):
                 base: float,
                 top: float,
                 coordinate_type: str,
-                dependency_check = False):
+                dependency_check = False,
+                copy_input=False):
 
         self.plugin_mandatory_dependencies = [
             {
@@ -72,13 +72,11 @@ class Thickness(Plugin):
             {
                 'DZ': {'nomvar': 'DZ','unit':'decameter','label':'THCKNS'}
             }
-
-        df = fstpy.set_vertical_coordinate_type(df)
         self.df = fstpy.metadata_cleanup(self.df)
-        super().__init__(df)
+        super().__init__(self.df)
+        self.df = fstpy.set_vertical_coordinate_type(self.df)
         self.prepare_groups()
 
-        
 
     def prepare_groups(self):
         
@@ -173,7 +171,9 @@ class Thickness(Plugin):
             df_list.append(dz_df)
 
         finally:
-            return final_results(df_list, ThicknessError, self.meta_df, dependency_check=True)
+            return self.final_results(df_list, ThicknessError, 
+                                      dependency_check = self.dependency_check, 
+                                      copy_input = self.copy_input)
 
 
     @staticmethod

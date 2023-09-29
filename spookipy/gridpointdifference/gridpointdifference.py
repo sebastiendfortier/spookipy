@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import argparse
 import copy
 from typing import Final
 import logging
@@ -8,12 +7,12 @@ import pandas as pd
 
 import fstpy
 from ..plugin import Plugin, PluginParser
-from ..utils import create_empty_result, initializer, final_results, to_numpy
+from ..utils import create_empty_result, initializer
 
 NOMVAR_X: Final[str] = 'FDX'
 NOMVAR_Y: Final[str] = 'FDY'
 NOMVAR_Z: Final[str] = 'FDZ'
-ETIKET: Final[str] = 'GPTDIF'
+LABEL   : Final[str] = 'GPTDIF'
 
 def centered_difference(data: np.ndarray, is_global: bool = False, grid_wraps: bool = False) -> np.ndarray:
     center_res = (data[2:] - data[0:-2])
@@ -105,9 +104,15 @@ class GridPointDifference(Plugin):
     :type axis: list, optional
     """
     @initializer
-    def __init__(self, df: pd.DataFrame, difference_type: str = None, axis: 'list(str)' = ['x', 'y']):
-        self.plugin_result_specifications = {'label': ETIKET}
-        super().__init__(df)
+    def __init__(self, 
+                 df: pd.DataFrame, 
+                 difference_type: str = None, 
+                 axis: 'list(str)' = ['x', 'y'],
+                 copy_input=False
+            ):
+        self.plugin_result_specifications = {'label': LABEL}
+        
+        super().__init__(self.df)
         self.change_nomvar = False  
         self.validate_params()
         if 'level' not in self.df.columns:
@@ -248,7 +253,8 @@ class GridPointDifference(Plugin):
 
                 df_list.append(fdz_df)
 
-        return final_results(df_list, GridPointDifferenceError, self.meta_df)
+        return self.final_results(df_list, GridPointDifferenceError,
+                                  copy_input = self.copy_input)
 
     @staticmethod
     def parse_config(args: str) -> dict:

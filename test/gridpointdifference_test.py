@@ -30,18 +30,22 @@ def test_1(plugin_test_dir):
     src_df0['datyp'] = 1
 
     # compute GridPointDifference
-    df = spookipy.GridPointDifference(src_df0, axis=['x','y'], difference_type='centered').compute()
+    df = spookipy.GridPointDifference(src_df0, 
+                                      axis=['x','y'], 
+                                      difference_type='centered',
+                                      copy_input=True).compute()
     df.loc[df.nomvar=='FDX','nomvar'] = 'FFDX'
     df.loc[df.nomvar=='FDY','nomvar'] = 'FFDY'
+
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
     # [Zap --dateOfOrigin 20080529T133415 --nbitsForDataStorage R16 --unit scalar --doNotFlagAsZapped] >> 
     # ([Copy] + [GridPointDifference --axis X,Y --differenceType CENTERED]) >> 
     # [ZapSmart --fieldNameFrom FDX --fieldNameTo FFDX] >> [ZapSmart --fieldNameFrom FDY --fieldNameTo FFDY] >> 
     # [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion]
 
-    df['etiket'] = df['label'] #--ignoreExtended
+    df['etiket']                      = df['label'] #--ignoreExtended
+    df.loc[df.nomvar=='FF','etiket']  = 'CSVREADER'
 
-    df = pd.concat([src_df0,df], ignore_index=True)
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
     fstpy.delete_file(results_file)
@@ -66,7 +70,9 @@ def test_2(plugin_test_dir):
     src_df0['datyp'] = 1
 
     # compute GridPointDifference
-    df = spookipy.GridPointDifference(src_df0, axis=['z'], difference_type='centered').compute()
+    df = spookipy.GridPointDifference(src_df0, 
+                                      axis=['z'], 
+                                      difference_type='centered').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
     # [Zap --dateOfOrigin 20080529T133415 --nbitsForDataStorage R16 --doNotFlagAsZapped] >> 
     # [GridPointDifference --axis Z --differenceType CENTERED] >> [Zap --fieldName FFDZ --doNotFlagAsZapped] >> 
@@ -98,7 +104,9 @@ def test_3(plugin_test_dir):
     src_df0['datyp'] = 1
 
     # compute GridPointDifference
-    df = spookipy.GridPointDifference(src_df0, axis=['x','y'], difference_type='forward').compute()
+    df = spookipy.GridPointDifference(src_df0, 
+                                      axis=['x','y'], 
+                                      difference_type='forward').compute()
     df.loc[df.nomvar=='FDX','nomvar'] = 'FFDX'
     df.loc[df.nomvar=='FDY','nomvar'] = 'FFDY'
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
@@ -133,13 +141,16 @@ def test_4(plugin_test_dir):
     src_df0['datyp'] = 1
 
     # compute GridPointDifference
-    df = spookipy.GridPointDifference(src_df0, axis=['z'], difference_type='forward').compute()
+    df = spookipy.GridPointDifference(src_df0, 
+                                      axis=['z'], 
+                                      difference_type='forward').compute()
     df.loc[df.nomvar=='FF','nomvar'] = 'FFDZ'
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
     # [Zap --dateOfOrigin 20080529T133415 --nbitsForDataStorage R16 --doNotFlagAsZapped] >> 
     # [GridPointDifference --axis Z --differenceType FORWARD] >> [Zap --fieldName FFDZ --doNotFlagAsZapped] >> 
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
     df = spookipy.convip(df, rmn.CONVIP_ENCODE_OLD)
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
     fstpy.delete_file(results_file)
@@ -164,7 +175,9 @@ def test_5(plugin_test_dir):
     src_df0['datyp'] = 1
 
     # compute GridPointDifference
-    df = spookipy.GridPointDifference(src_df0, axis=['x','y'], difference_type='backward').compute()
+    df = spookipy.GridPointDifference(src_df0, 
+                                      axis=['x','y'], 
+                                      difference_type='backward').compute()
     df.loc[df.nomvar=='FDX','nomvar'] = 'FFDX'
     df.loc[df.nomvar=='FDY','nomvar'] = 'FFDY'    
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
@@ -199,13 +212,16 @@ def test_6(plugin_test_dir):
     src_df0['datyp'] = 1
 
     # compute GridPointDifference
-    df = spookipy.GridPointDifference(src_df0, axis=['z'], difference_type='backward').compute()
+    df = spookipy.GridPointDifference(src_df0, 
+                                      axis=['z'], 
+                                      difference_type='backward').compute()
     df.loc[df.nomvar=='FF','nomvar'] = 'FFDZ'    
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
     # [Zap --dateOfOrigin 20080529T133415 --nbitsForDataStorage R16 --doNotFlagAsZapped] >> 
     # [GridPointDifference --axis Z --differenceType BACKWARD] >> [Zap --fieldName FFDZ --doNotFlagAsZapped] >> 
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
     df = spookipy.convip(df, rmn.CONVIP_ENCODE_OLD)
+    
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
     fstpy.delete_file(results_file)
@@ -226,7 +242,10 @@ def test_7(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDifference
-    df = spookipy.GridPointDifference(src_df0, axis=['x','y'], difference_type='centered').compute()
+    df = spookipy.GridPointDifference(src_df0,
+                                      axis=['x','y'], 
+                                      difference_type='centered',
+                                      copy_input=True).compute()
     df.loc[df.nomvar=='FDX','nomvar'] = 'UUDX'    
     df.loc[df.nomvar=='FDY','nomvar'] = 'UUDY'    
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
@@ -236,12 +255,12 @@ def test_7(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion --IP1EncodingStyle OLDSTYLE]
 
     df['etiket'] = df['label'] #--ignoreExtended
+    df.loc[df.nomvar=='UU','etiket'] = 'R1558V0N'
     
-    res_df = pd.concat([src_df0, df], ignore_index=True)
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
     fstpy.delete_file(results_file)
-    fstpy.StandardFileWriter(results_file, res_df).to_fst()
+    fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "XYCentered2_file2cmp.std"
@@ -264,7 +283,9 @@ def test_8(plugin_test_dir):
 
     # compute GridPointDifference
     with pytest.raises(spookipy.GridPointDifferenceError):
-        _ = spookipy.GridPointDifference(src_df0, axis=['z'], difference_type='centered').compute()
+        _ = spookipy.GridPointDifference(src_df0, 
+                                         axis=['z'], 
+                                         difference_type='centered').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
     # [Select --verticalLevel 0] >> 
     # [Zap --dateOfOrigin 20080529T133415 --nbitsForDataStorage R16 --doNotFlagAsZapped] >> 
@@ -281,7 +302,9 @@ def test_9(plugin_test_dir):
 
     # compute GridPointDifference
     with pytest.raises(spookipy.GridPointDifferenceError):
-        _ = spookipy.GridPointDifference(src_df0, axis=['x'], difference_type='centered').compute()
+        _ = spookipy.GridPointDifference(src_df0, 
+                                         axis=['x'], 
+                                         difference_type='centered').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
     # [Select --fieldName BB] >> 
     # [GridPointDifference --axis X --differenceType CENTERED]
@@ -297,7 +320,9 @@ def test_10(plugin_test_dir):
 
     # compute GridPointDifference
     with pytest.raises(spookipy.GridPointDifferenceError):
-        _ = spookipy.GridPointDifference(src_df0, axis=['y'], difference_type='centered').compute()
+        _ = spookipy.GridPointDifference(src_df0, 
+                                         axis=['y'], 
+                                         difference_type='centered').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
     # [Select --fieldName AA] >> [GridPointDifference --axis Y --differenceType CENTERED]
 
@@ -325,7 +350,9 @@ def test_12(plugin_test_dir):
     src_df0 = pd.concat([src_df0,meta_df], ignore_index=0)
 
     # compute GridPointDifference
-    df = spookipy.GridPointDifference(src_df0, axis=['x','y'], difference_type='centered').compute()
+    df = spookipy.GridPointDifference(src_df0, 
+                                      axis=['x','y'], 
+                                      difference_type='centered').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
     # [Select --fieldName TT --verticalLevel 1000] >> 
     # [GridPointDifference --axis X,Y --differenceType CENTERED] >> 
@@ -359,7 +386,9 @@ def test_13(plugin_test_dir):
     src_df0 = pd.concat([src_df0,meta_df], ignore_index=0)
 
     # compute GridPointDifference
-    df = spookipy.GridPointDifference(src_df0, axis=['x','y'], difference_type='forward').compute()
+    df = spookipy.GridPointDifference(src_df0, 
+                                      axis=['x','y'], 
+                                      difference_type='forward').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
     # [Select --fieldName TT --verticalLevel 1000] >> 
     # [GridPointDifference --axis X,Y --differenceType FORWARD] >> 
@@ -391,13 +420,16 @@ def test_14(plugin_test_dir):
     src_df0 = pd.concat([src_df0,meta_df], ignore_index=0)
 
     # compute GridPointDifference
-    df = spookipy.GridPointDifference(src_df0, axis=['x','y'], difference_type='backward').compute()
+    df = spookipy.GridPointDifference(src_df0, 
+                                      axis=['x','y'], 
+                                      difference_type='backward').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
     # [Select --fieldName TT --verticalLevel 1000] >> 
     # [GridPointDifference --axis X,Y --differenceType BACKWARD] >> 
     # [WriterStd --output {destination_path} --noUnitConversion]
     df.loc[df.nomvar.isin(['^>','!!']), 'etiket'] = 'G1_5_0X'
     df = spookipy.convip(df,rmn.CONVIP_ENCODE)
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
     fstpy.delete_file(results_file)
@@ -421,8 +453,11 @@ def test_15(plugin_test_dir):
     src_df0 = fstpy.add_columns(src_df0, 'ip_info')
     src_df0 = src_df0.loc[(src_df0.nomvar=='TT') & (src_df0.level==1000.)]
     src_df0 = pd.concat([src_df0,meta_df], ignore_index=0)
+
     # compute GridPointDifference
-    df = spookipy.GridPointDifference(src_df0, axis=['x'], difference_type='backward').compute()
+    df = spookipy.GridPointDifference(src_df0, 
+                                      axis=['x'], 
+                                      difference_type='backward').compute()
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
 #                 "[Select --fieldName TT --verticalLevel 1000] >> ",
 #                 "[GridPointDifference --axis X --differenceType BACKWARD] >> ",
@@ -452,13 +487,17 @@ def test_16(plugin_test_dir):
     src_df0 = fstpy.add_columns(src_df0, 'ip_info')
     src_df0 = src_df0.loc[(src_df0.nomvar=='TT') & (src_df0.level==1000.)]
     src_df0 = pd.concat([src_df0,meta_df], ignore_index=0)
+
     # compute GridPointDifference
-    df = spookipy.GridPointDifference(src_df0, axis=['x'], difference_type='forward').compute()
+    df = spookipy.GridPointDifference(src_df0, 
+                                      axis=['x'], 
+                                      difference_type='forward').compute()
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >>",
 #                 "[Select --fieldName TT --verticalLevel 1000] >> ",
 #                 "[GridPointDifference --axis X --differenceType FORWARD] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
     df.loc[~(df.nomvar=='TT'), 'etiket'] = 'G1_7_1X'
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_16.std"])
     fstpy.delete_file(results_file)
@@ -482,14 +521,18 @@ def test_17(plugin_test_dir):
     src_df0 = fstpy.add_columns(src_df0, 'ip_info')
     src_df0 = src_df0.loc[(src_df0.nomvar=='TT') & (src_df0.level==1000.)]
     src_df0 = pd.concat([src_df0,meta_df], ignore_index=0)
+
     # compute GridPointDifference
-    df = spookipy.GridPointDifference(src_df0, axis=['x'], difference_type='centered').compute()
+    df = spookipy.GridPointDifference(src_df0, 
+                                      axis=['x'], 
+                                      difference_type='centered').compute()
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
 #                 "[Select --fieldName TT --verticalLevel 1000] >> ",
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
     df.loc[~(df.nomvar=='TT'), 'etiket'] = 'G1_7_1X'
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_17.std"])
     fstpy.delete_file(results_file)
@@ -511,7 +554,9 @@ def test_18(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDifference
-    df = spookipy.GridPointDifference(src_df0, axis=['x'], difference_type='centered').compute()
+    df = spookipy.GridPointDifference(src_df0, 
+                                      axis=['x'], 
+                                      difference_type='centered').compute()
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >>",
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
@@ -537,7 +582,9 @@ def test_19(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDifference
-    df = spookipy.GridPointDifference(src_df0, axis=['x'], difference_type='centered').compute()
+    df = spookipy.GridPointDifference(src_df0, 
+                                      axis=['x'], 
+                                      difference_type='centered').compute()
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
@@ -563,7 +610,9 @@ def test_20(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDifference
-    df = spookipy.GridPointDifference(src_df0, axis=['x'], difference_type='centered').compute()
+    df = spookipy.GridPointDifference(src_df0, 
+                                      axis=['x'], 
+                                      difference_type='centered').compute()
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
@@ -615,7 +664,9 @@ def test_22(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDifference
-    df = spookipy.GridPointDifference(src_df0, axis=['x'], difference_type='centered').compute()
+    df = spookipy.GridPointDifference(src_df0, 
+                                      axis=['x'], 
+                                      difference_type='centered').compute()
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ", 
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ", 
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
@@ -641,7 +692,9 @@ def test_23(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDifference
-    df = spookipy.GridPointDifference(src_df0, axis=['x'], difference_type='centered').compute()
+    df = spookipy.GridPointDifference(src_df0, 
+                                      axis=['x'], 
+                                      difference_type='centered').compute()
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ", 
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
@@ -667,7 +720,9 @@ def test_24(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDifference
-    df = spookipy.GridPointDifference(src_df0, axis=['x'], difference_type='centered').compute()
+    df = spookipy.GridPointDifference(src_df0, 
+                                      axis=['x'], 
+                                      difference_type='centered').compute()
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
@@ -694,7 +749,9 @@ def test_25(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDifference
-    df = spookipy.GridPointDifference(src_df0, axis=['x'], difference_type='centered').compute()
+    df = spookipy.GridPointDifference(src_df0, 
+                                      axis=['x'], 
+                                      difference_type='centered').compute()
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
@@ -720,7 +777,9 @@ def test_26(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDifference
-    df = spookipy.GridPointDifference(src_df0, axis=['x'], difference_type='centered').compute()
+    df = spookipy.GridPointDifference(src_df0, 
+                                      axis=['x'], 
+                                      difference_type='centered').compute()
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
@@ -745,11 +804,14 @@ def test_27(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDifference
-    df = spookipy.GridPointDifference(src_df0, axis=['x'], difference_type='centered').compute()
+    df = spookipy.GridPointDifference(src_df0, 
+                                      axis=['x'], 
+                                      difference_type='centered').compute()
 #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
     df.loc[~(df.nomvar=='TT'), 'etiket'] = 'Y3H9DNX'
+    
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_27.std"])
     fstpy.delete_file(results_file)

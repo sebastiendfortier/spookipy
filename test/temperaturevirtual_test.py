@@ -43,8 +43,6 @@ def test_1(plugin_test_dir):
     fstpy.delete_file(results_file)
     assert(True)
 
-
-@pytest.mark.skip(reason="probleme avec le calcul de pression au niveau de surface")
 def test_2(plugin_test_dir):
     """Calcul avec un fichier hybrid 5005."""
     # open and read source
@@ -68,7 +66,6 @@ def test_2(plugin_test_dir):
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
     fstpy.delete_file(results_file)
-    
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file

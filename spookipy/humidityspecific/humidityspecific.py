@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import argparse
 import logging
 
 import fstpy
@@ -119,7 +118,7 @@ class HumiditySpecific(Plugin):
                 'datyp' : 1}}
 
         self.df = fstpy.metadata_cleanup(self.df)
-        super().__init__(df)
+        super().__init__(self.df)
         self.prepare_groups()
 
     # might be able to move
@@ -253,6 +252,7 @@ class HumiditySpecific(Plugin):
 
         ttk_df = get_from_dataframe(dependencies_df, 'TT')
         pxpa_df = get_from_dataframe(dependencies_df, 'PX')
+
         hu_df = create_empty_result(
             ttk_df,
             self.plugin_result_specifications['HU'],
@@ -315,7 +315,8 @@ class HumiditySpecific(Plugin):
             ice_water_phase=self.ice_water_phase,
             temp_phase_switch=self.temp_phase_switch,
             temp_phase_switch_unit=self.temp_phase_switch_unit, 
-            dependency_check=True
+            dependency_check=True,
+            copy_input=False
             ).compute()
         # A noter que l'option dependency_check est a True pour l'appel a VapourPressure, voir note
         # dans compute_es
@@ -324,9 +325,8 @@ class HumiditySpecific(Plugin):
 
         vppr_df = get_from_dataframe(vppr_df, 'VPPR')
         vpprpa_df = fstpy.unit_convert(vppr_df, 'pascal')
-
         hu_df = create_empty_result(
-            px_df,
+            vppr_df,
             self.plugin_result_specifications['HU'],
             all_rows=True)
 

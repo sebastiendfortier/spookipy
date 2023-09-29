@@ -5,8 +5,7 @@ import fstpy
 import pandas as pd
 
 from ..plugin import Plugin
-from ..utils import (create_empty_result, final_results, initializer,
-                     validate_nomvar)
+from ..utils import (create_empty_result, initializer, validate_nomvar)
 
 # see functions without arguments from numpy lib
 # https://numpy.org/doc/stable/reference/routines.math.html
@@ -46,7 +45,7 @@ class ApplyUnary(Plugin):
                     'nbits': 32}
         }
         self.df = fstpy.metadata_cleanup(self.df)
-        super().__init__(df)
+        super().__init__(self.df)
         self.validate_params_and_input()
 
     def validate_params_and_input(self):
@@ -85,4 +84,4 @@ class ApplyUnary(Plugin):
         for i in res_df.index:
             res_df.at[i, 'd'] = self.function(in_df.at[i, 'd'])
 
-        return final_results([res_df], ApplyUnaryError, self.meta_df)
+        return self.final_results([res_df], ApplyUnaryError, copy_input = False)

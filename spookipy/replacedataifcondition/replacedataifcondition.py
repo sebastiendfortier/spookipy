@@ -2,9 +2,7 @@
 
 import operator
 import re
-
 import numpy as np
-
 import fstpy
 import pandas as pd
 
@@ -31,23 +29,24 @@ class ReplaceDataIfCondition(Plugin):
 
     @initializer
     def __init__(
-        self,
-        df:pd.DataFrame,
-        condition:str,
-        value:float,
-        nomvar_out:str = None,
-        clear_missing_data:bool = False, #TODO
-        ):
-        self.get_dataframes()
-        self.validate_input()
+            self,
+            df:pd.DataFrame,
+            condition:str,
+            value:float,
+            nomvar_out:str = None,
+            clear_missing_data:bool = False #TODO
+            ):
+
+        self.df = fstpy.metadata_cleanup(self.df)
+        super().__init__(self.df)
+        self.validate_params()
         
     
-    def validate_input(self):
+    def validate_params(self):
         """Checks that the plugin's input are valid
 
         :raises EmptyDataframeError: The plugin's dataframe is empty, no data to process.
         """
-        super().validate_input() # check empty
 
         if self.nomvar_out is not None:
             validate_nomvar(self.nomvar_out,"ReplaceDataIfCondition",ReplaceDataIfConditionError)
@@ -72,7 +71,9 @@ class ReplaceDataIfCondition(Plugin):
         if self.nomvar_out is not None:
             self.no_meta_df['nomvar'] = self.nomvar_out
 
-        return self.final_results([self.no_meta_df],ReplaceDataIfConditionError)
+        return self.final_results([self.no_meta_df],
+                                  ReplaceDataIfConditionError, 
+                                  copy_input=False)
     
     @staticmethod
     def parse_config(args: str) -> dict:

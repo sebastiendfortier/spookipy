@@ -11,7 +11,8 @@ class InterpolationVerticalError(Exception):
 class InterpolationVertical(Plugin):
 
     def __init__(self, df: pd.DataFrame):
-        super().__init__(df)
+        self.df = fstpy.metadata_cleanup(self.df)
+        super().__init__(self.df)
 
 
     def compute(self) -> pd.DataFrame:

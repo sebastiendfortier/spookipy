@@ -292,9 +292,13 @@ def get_intersecting_levels(
     common_levels = list(common_levels)
     nomvars       = list(plugin_mandatory_dependencies.keys())
 
+    df.sort_values(by=['nomvar','typvar','level'])
+    df['typvar_char1'] = df.apply(lambda row: row['typvar'] if len(row['typvar']) < 2 else row['typvar'][0], axis=1)
     res_df = df.loc[(df.nomvar.isin(nomvars)) & 
                     (df.level.isin(common_levels))].drop_duplicates(subset=[
-        'nomvar', 'typvar', 'etiket', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'ig1', 'ig2', 'ig3', 'ig4'])
+                        'nomvar', 'typvar_char1','etiket', 'ni', 'nj', 'nk', 'dateo', 
+                        'ip1', 'ip2', 'ip3', 'deet', 'npas', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res_df = res_df.drop(columns=['typvar_char1'])
 
     res_df = res_df.sort_values(by='level',ascending=res_df.ascending.unique()[0])
     return res_df
@@ -384,7 +388,14 @@ def create_empty_result(df: pd.DataFrame, plugin_result_specifications: dict, al
     res_df['run'] = '__'
     res_df['implementation'] = 'X'
     res_df['etiket_format'] = ''
-    
+
+    # au lieu de faire un drop des colonnes de flag, il faudrait faire une réduction de colonne
+    flag_col = [x for x in ['multiple_modifications','zapped','filtered','interpolated','bounded','unit_converted'] if x in res_df.columns]
+    res_df = res_df.drop(flag_col,axis=1)
+
+    # if only one char leave it, if 2 char remove the second unless it's ! (ensemble extra info)
+    res_df['typvar'] = res_df.apply(lambda row: row['typvar'] if len(row['typvar']) < 2 or row['typvar'][1] in ['!','@'] else row['typvar'][0], axis=1)
+
     res_df['etiket'] = res_df.apply(lambda row: fstpy.create_encoded_standard_etiket(
                                                                 row['label'], 
                                                                 row['run'], 

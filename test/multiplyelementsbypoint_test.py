@@ -122,7 +122,6 @@ def test_6(plugin_test_dir):
 
     df.loc[:, 'etiket'] = '__MULBYPX'
     df.loc[df.nomvar.isin(['!!', '^^', '>>', 'P0']), 'etiket'] = 'R1_V700_N'
-    df.loc[df.nomvar=='MUEP','typvar'] = 'P'
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
@@ -150,7 +149,6 @@ def test_7(plugin_test_dir):
 
     df.loc[:, 'etiket'] = '__MULBYPX'
     df.loc[df.nomvar.isin(['!!', '^^', '>>', 'P0']), 'etiket'] = 'R1_V700_N'
-    df.loc[df.nomvar=='MUEP','typvar'] = 'P'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
     fstpy.delete_file(results_file)
@@ -178,7 +176,6 @@ def test_10(plugin_test_dir):
     df = spookipy.MultiplyElementsByPoint(src_df, group_by_nomvar=True).compute()
 
     df.loc[~df.nomvar.isin(['!!', '^^', '>>', 'P0']), 'etiket'] = '__MULBYPX'
-    df.loc[~df.nomvar.isin(['!!', '^^', '>>', 'P0']), 'typvar'] = 'P'
 
     df.sort_values(by=['nomvar', 'level'],ascending=[True, False],inplace=True)
     # write the result

@@ -99,6 +99,7 @@ def test_3(plugin_test_dir):
     df.loc[~df.nomvar.isin(["VT"]), 'etiket'] = etiket_meta 
     df.loc[:,'datyp'] = 5
     df.loc[df.nomvar!='!!','nbits'] = 32
+    df.loc[df.nomvar == "VT",'typvar'] = 'PZ' # zapped in original test
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
@@ -137,6 +138,7 @@ def test_4(plugin_test_dir):
     df.loc[~df.nomvar.isin(["VT"]), 'etiket'] = etiket_meta 
     df.loc[:,'datyp'] = 5
     df.loc[df.nomvar!='!!','nbits'] = 32
+    df.loc[df.nomvar == "VT",'typvar'] = 'PZ' # zapped in original test
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
@@ -172,6 +174,7 @@ def test_5(plugin_test_dir):
     df.loc[~df.nomvar.isin(["VT"]), 'etiket'] = etiket_meta 
     df.loc[:,'datyp'] = 5
     df.loc[df.nomvar!='!!','nbits'] = 32
+    df.loc[df.nomvar == "VT",'typvar'] = 'PZ' # zapped in original test
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])

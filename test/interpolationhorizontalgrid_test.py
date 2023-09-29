@@ -42,10 +42,10 @@ def test_1(plugin_test_dir):
     # [InterpolationHorizontalGrid -m USER_DEFINED --gridType TYPE_N --xyDimensions 191,141 -p 79.0,117.0,57150.0,21.0 --interpolationType BI-LINEAR --extrapolationType MAXIMUM] >>
     # [Zap --nbitsForDataStorage E32]>>
     # [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]"
-    # df.loc[:,'typvar'] = 'PI'
     df.loc[df.etiket == 'R1558V0N', 'etiket'] = 'R1558V0_N'
     df.loc[df.etiket == 'G0928V4N', 'etiket'] = 'G0928V4_N'
     df.loc[df.etiket == 'MXWIND', 'etiket'] = 'MXWIND__X'
+    # Le plugin devrait set Interpolated
     df.loc[df.typvar == 'P', 'typvar'] = 'PI'
     # df['datyp'] = 5
     # df['nbits'] = 32
@@ -88,6 +88,7 @@ def test_2(plugin_test_dir):
     # [InterpolationHorizontalGrid -m USER_DEFINED --gridType TYPE_N --xyDimensions 191,141 -p 79.0,117.0,57150.0,21.0 --interpolationType BI-LINEAR --extrapolationType MAXIMUM] >>
     # [Zap --nbitsForDataStorage E32]>>
     # [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]",
+    # Le plugin devrait set Interpolated
     df.loc[:, 'typvar'] = 'PI'
     df.loc[df.etiket == 'R1558V0N', 'etiket'] = 'R1558V0_N'
     df.loc[df.etiket == 'G0928V4N', 'etiket'] = 'G0928V4_N'
@@ -132,6 +133,7 @@ def test_3(plugin_test_dir):
     # [InterpolationHorizontalGrid -m USER_DEFINED --gridType TYPE_N --xyDimensions 191,141 -p 79.0,117.0,57150.0,21.0 --interpolationType BI-LINEAR --extrapolationType MAXIMUM] >>
     # [Zap --nbitsForDataStorage E32]>>
     # [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]"
+    # Le plugin devrait set Interpolated
     df.loc[:, 'typvar'] = 'PI'
     df.loc[df.etiket == 'R1558V0N', 'etiket'] = 'R1558V0_N'
     df.loc[df.etiket == 'G0928V4N', 'etiket'] = 'G0928V4_N'
@@ -172,6 +174,7 @@ def test_5(plugin_test_dir):
     # [WriterStd --output {destination_path} --makeIP1EncodingWorkWithTests]
 
     df = spookipy.convip(df, style=rmn.CONVIP_ENCODE_OLD)
+    # Le plugin devrait set Interpolated
     df.loc[(~df.nomvar.isin(['KT','PT','RT'])) & (df.typvar == 'P'), 'typvar'] = 'PI'
 
     # df.loc[:,'datyp'] = 5
@@ -212,6 +215,7 @@ def test_6(plugin_test_dir):
     # [InterpolationHorizontalGrid -m FIELD_DEFINED --fieldName RT --interpolationType NEAREST --extrapolationType NEAREST] >>
     # [WriterStd --output {destination_path} ]
 
+    # Le plugin devrait set Interpolated
     df.loc[(df.nomvar!='RT') & (df.typvar == 'P'), 'typvar'] = 'PI'
     # df['datyp'] = 5
     # df['nbits'] = 32
@@ -256,6 +260,7 @@ def test_7(plugin_test_dir):
     # ([ReaderStd --input {sources[1]}] >> [Select --fieldName ES]) >>
     # [InterpolationHorizontalGrid -m FIELD_DEFINED --fieldName ES --interpolationType BI-CUBIC --extrapolationType NEAREST] >>
     # [WriterStd --output {destination_path}]
+    # Le plugin devrait set Interpolated
     df.loc[(df.nomvar=='TT') & (df.typvar == 'P'), 'typvar'] = 'PI'
 
     # df['datyp'] = 5
@@ -306,6 +311,7 @@ def test_8(plugin_test_dir):
     # ([ReaderStd --input {sources[1]}] >> [Select --fieldName TT]) >>
     # [InterpolationHorizontalGrid -m FIELD_DEFINED --fieldName ES --interpolationType BI-CUBIC --extrapolationType NEAREST] >>
     # [Zap --nbitsForDataStorage E32]>>[WriterStd --output {destination_path} ]",
+    # Le plugin devrait set Interpolated
     df.loc[df.nomvar.isin(['TT','P0']) & (df.typvar == 'P'), 'typvar'] = 'PI'
     # for i in df.index:
     #     if df.at[i,'nomvar'] != 'ES':
@@ -356,6 +362,7 @@ def test_9(plugin_test_dir):
     # [WriterStd --output {destination_path} ]
 
     df = fstpy.select_with_meta(df, ['UU', 'VV'])
+    # Le plugin devrait set Interpolated
     df.loc[df.typvar == 'P', 'typvar'] = 'PI'
 
     # df['datyp'] = 5
@@ -406,6 +413,7 @@ def test_10(plugin_test_dir):
 
     df = fstpy.select_with_meta(df, ['UU', 'VV'])
     df = df.loc[df.nomvar != 'P0']
+    # Le plugin devrait set Interpolated
     df.loc[df.typvar == 'P', 'typvar'] = 'PI'
     # df['datyp'] = 5
     # df.loc[df.nomvar!='!!','nbits']=32
@@ -455,6 +463,7 @@ def test_11(plugin_test_dir):
     # df[df.nomvar!='!!','nbits'] = 32
     # df.loc[df.nomvar=='!!','nbits']=64
     df = spookipy.convip(df)
+    # Le plugin devrait set Interpolated
     df.loc[(df.nomvar!='ES') & (df.typvar == 'P'), 'typvar'] = 'PI'
 
     # print('df\n',df[['nomvar', 'typvar', 'etiket', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'datyp', 'nbits', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4','grid']].to_string())
@@ -504,6 +513,7 @@ def test_13(plugin_test_dir):
     # df.loc[df.nomvar=='!!','nbits']=64
 
     df = df.loc[df.nomvar != 'HY']
+    # Le plugin devrait set Interpolated
     df.loc[df.typvar == 'P', 'typvar'] = 'PI'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
@@ -548,6 +558,7 @@ def test_14(plugin_test_dir):
     # [WriterStd --output {destination_path} ]
 
     df = fstpy.select_with_meta(df, ['UU', 'VV'])
+    # Le plugin devrait set Interpolated
     df.loc[df.typvar == 'P', 'typvar'] = 'PI'
     # df['datyp'] = 5
     # df.loc[df.nomvar!='!!','nbits'] = 32

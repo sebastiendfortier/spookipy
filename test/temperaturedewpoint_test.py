@@ -335,8 +335,6 @@ def test_13(plugin_test_dir):
     df      = spookipy.TemperatureDewPoint(src_df0,
                                            ice_water_phase='water').compute()
 
-    df.loc[df.typvar == 'PZ','typvar'] = 'P'
-
     # write the result
     results_file = TMP_PATH + "test_13.std"
     fstpy.delete_file(results_file)

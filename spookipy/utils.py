@@ -292,9 +292,13 @@ def get_intersecting_levels(
     common_levels = list(common_levels)
     nomvars       = list(plugin_mandatory_dependencies.keys())
 
+    df.sort_values(by=['nomvar','typvar','level'])
+    df['typvar_char1'] = df.apply(lambda row: row['typvar'] if len(row['typvar']) < 2 else row['typvar'][0], axis=1)
     res_df = df.loc[(df.nomvar.isin(nomvars)) & 
                     (df.level.isin(common_levels))].drop_duplicates(subset=[
-        'nomvar', 'typvar', 'etiket', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'ig1', 'ig2', 'ig3', 'ig4'])
+                        'nomvar', 'typvar_char1','etiket', 'ni', 'nj', 'nk', 'dateo', 
+                        'ip1', 'ip2', 'ip3', 'deet', 'npas', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res_df = res_df.drop(columns=['typvar_char1'])
 
     res_df = res_df.sort_values(by='level',ascending=res_df.ascending.unique()[0])
     return res_df

@@ -98,13 +98,13 @@ def encode_ip123(nomvar,ip1,ip2,ip3,ip1_kind,ip2_kind,ip3_kind,ip1_value,ip2_val
     elif interval_type == INTERVAL_OTHER:
         result_ip2 = ip2_value # forecast hour
         result_ip1 = ip1_value if (type(interval) != fstpy.std_dec.Interval) else interval.low
-        result_ip3 = ip3_value if (type(interval) != fstpy.std_dec.Interval) else interval.high - interval.low
+        result_ip3 = ip3_value if (type(interval) != fstpy.std_dec.Interval) else abs(interval.high - interval.low)
         result_ip1 = create_encoded_ip(float(result_ip1),int(ip1_kind),mode=encoding_mode_ip1)
 
         if encode_ip2_and_ip3:
             result_ip3 = ip3_value if (type(interval) != fstpy.std_dec.Interval) else interval.high
             result_ip2 = create_encoded_ip(float(result_ip2),int(ip2_kind),mode=rmn.CONVIP_ENCODE)
-            result_ip3 = create_encoded_ip(float(result_ip3),int(ip3_kind),mode=rmn.CONVIP_ENCODE)
+            result_ip3 = create_encoded_ip(float(result_ip3),int(ip1_kind),mode=rmn.CONVIP_ENCODE)
 
     if not encode_ip2_and_ip3:
         result_ip2 = round_half_down(result_ip2,False)

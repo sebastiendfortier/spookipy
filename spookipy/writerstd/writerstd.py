@@ -104,6 +104,8 @@ def encode_ip123(nomvar,ip1,ip2,ip3,ip1_kind,ip2_kind,ip3_kind,ip1_value,ip2_val
         if encode_ip2_and_ip3:
             result_ip3 = ip3_value if (type(interval) != fstpy.std_dec.Interval) else interval.high
             result_ip2 = create_encoded_ip(float(result_ip2),int(ip2_kind),mode=rmn.CONVIP_ENCODE)
+            # Pour l'encodage du ip3, on utilise le ip1_kind car le ip3_kind a une valeur de 0 dans certains cas.
+            # Comme c'est un intervalle de hauteur, on est "safe" avec le ip1_kind.
             result_ip3 = create_encoded_ip(float(result_ip3),int(ip1_kind),mode=rmn.CONVIP_ENCODE)
 
     if not encode_ip2_and_ip3:

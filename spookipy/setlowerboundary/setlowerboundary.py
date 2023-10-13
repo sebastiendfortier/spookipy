@@ -29,7 +29,7 @@ class SetLowerBoundary(Plugin):
                  value: float = None, 
                  nomvar_out: str = None):
         
-        self.plugin_result_specifications = {'label': ETIKET}
+        self.plugin_result_specifications = {}
         
         super().__init__(self.df)
         self.validate_params()
@@ -70,15 +70,10 @@ class SetLowerBoundary(Plugin):
 
         df_final = self.final_results(df_list, 
                                       SetLowerBoundaryError, 
-                                      copy_input=False)
-        df_final['d'] = df_final.apply(lambda row: np.squeeze(row['d']), axis=1)
+                                      copy_input=False,
+                                      reduce_df = True)
 
-        ip_columns = ['level', 'ip1_kind', 'ip1_pkind', 'ip2_dec', 'ip2_kind', 'ip2_pkind', 'ip3_dec',
-                      'ip3_kind', 'ip3_pkind', 'interval', 'surface', 'follow_topography', 'ascending']
-        
-        # Suppression des colonnes reliees aux ip, on sait qu'elles n'ont pas ete modifiees
-        df_final = fstpy.remove_list_of_columns(df_final, ip_columns)
-        df_final = fstpy.reduce_columns(df_final)
+        df_final['d'] = df_final.apply(lambda row: np.squeeze(row['d']), axis=1)
         
         return df_final
 

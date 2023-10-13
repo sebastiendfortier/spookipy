@@ -25,7 +25,8 @@ def test_1(plugin_test_dir):
 
     # compute SetUpperBoundary
     df = spookipy.SetUpperBoundary(src_df0, value=5.).compute()
-    # [ReaderStd --input {sources[0]}] >> [SetUpperBoundary --value 5] >> [WriterStd --output {destination_path} ]
+    # [ReaderStd --input {sources[0]}] >> [SetUpperBoundary --value 5] >>
+    #  [WriterStd --output {destination_path} ]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
@@ -50,7 +51,8 @@ def test_2(plugin_test_dir):
 
     # compute SetUpperBoundary
     df = spookipy.SetUpperBoundary(src_df, value=0.).compute()
-    # [ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> [SetUpperBoundary --value 0] >> [WriterStd --output {destination_path}]
+    # [ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> 
+    # [SetUpperBoundary --value 0] >> [WriterStd --output {destination_path}]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
@@ -87,7 +89,9 @@ def test_4(plugin_test_dir):
 
     # compute SetUpperBoundary
     df = spookipy.SetUpperBoundary(src_df, value=0., nomvar_out='TEST').compute()
-    # [ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> [SetUpperBoundary --value 0 --outputFieldName TEST] >> [WriterStd --output {destination_path} --noUnitConversion]
+    # [ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >>
+    # [SetUpperBoundary --value 0 --outputFieldName TEST] >> 
+    # [WriterStd --output {destination_path} --noUnitConversion]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])

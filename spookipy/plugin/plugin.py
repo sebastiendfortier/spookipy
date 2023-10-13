@@ -68,13 +68,19 @@ class Plugin(abc.ABC):
             ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
         if self.no_meta_df.empty:
             raise EmptyDataframeError("Plugin" + ' - no data to process')    
+        
+        # Ajout des colonnes reliees a l'etiket aux meta donnees.
+        # Cet ajout est fait automatiquement pour les donnees dans create_empty_result.
+        if ~self.meta_df.empty:
+            self.meta_df = fstpy.add_columns(self.meta_df, columns=['etiket'])  
 
     def final_results(
         self,
         df_list: "list[pd.DataFrame]",
         error_class: 'type',
         dependency_check = False,
-        copy_input = False) -> pd.DataFrame:
+        copy_input = False,
+        reduce_df = False) -> pd.DataFrame:
         """Returns the final results dataframe, created from the list of dataframes and the meta data
 
         :param df_list: list of dataframes, one per grouping method in the plugin
@@ -90,6 +96,8 @@ class Plugin(abc.ABC):
         new_list = []
         for df in df_list:
             if not df.empty:
+                if reduce_df:
+                    df = fstpy.reduce_columns(df)
                 new_list.append(df)
 
         if not len(new_list):
@@ -98,10 +106,14 @@ class Plugin(abc.ABC):
             else:
                 raise error_class('No results were produced')
 
+        if reduce_df:
+            self.meta_df = fstpy.reduce_columns(self.meta_df)
         new_list.append(self.meta_df)
 
         # Ajout des données recues en input
         if copy_input:
+            self.no_meta_df = fstpy.add_columns(self.no_meta_df, columns=['etiket'])
+            self.no_meta_df = fstpy.reduce_columns(self.no_meta_df)
             new_list.append(self.no_meta_df)
 
         # merge all results together

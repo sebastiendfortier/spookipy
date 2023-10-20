@@ -99,7 +99,7 @@ class CoriolisParameter(Plugin):
                 continue
 
             corp_df = create_empty_result(
-                lat_df, self.plugin_result_specifications['CORP'])
+                current_group, self.plugin_result_specifications['CORP'])
             corp_df = adjust_column_values(current_group, corp_df)
 
             for i in corp_df.index:
@@ -108,8 +108,15 @@ class CoriolisParameter(Plugin):
 
             df_list.append(corp_df)
 
-        return self.final_results(df_list, CoriolisParameterError,
+        result = self.final_results(df_list, CoriolisParameterError,
                                   copy_input = self.copy_input)
+        # on pourra enlever ça quand on aura la réduction de colonne
+        return result.drop(['level', 'ip1_kind', 'ip1_pkind', 
+                            'ip2_dec', 'ip2_kind', 'ip2_pkind', 
+                            'ip3_dec', 'ip3_kind', 'ip3_pkind',
+                            'surface', 'follow_topography', 
+                            'ascending', 'interval', 'vctype'], axis=1)
+
 
 
 def adjust_column_values(current_group, corp_df):

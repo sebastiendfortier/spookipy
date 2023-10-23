@@ -58,7 +58,8 @@ class MinMaxLevelIndex(Plugin):
             nomvar_max_idx='KMAX',
             nomvar_min_val='MIN',
             nomvar_max_val='MAX',
-            copy_input=False
+            copy_input=False,
+            reduce_df=False
             ):
 
         self.df = fstpy.metadata_cleanup(self.df)
@@ -247,7 +248,8 @@ class MinMaxLevelIndex(Plugin):
                 df_list.append(var_df)
 
         return self.final_results(df_list, MinMaxLevelIndexError,
-                                  copy_input = self.copy_input)
+                                  copy_input = self.copy_input,
+                                  reduce_df=self.reduce_df)
 
     @staticmethod
     def parse_config(args: str) -> dict:

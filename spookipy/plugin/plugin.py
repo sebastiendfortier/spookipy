@@ -112,8 +112,9 @@ class Plugin(abc.ABC):
 
         # Ajout des données recues en input
         if copy_input:
-            self.no_meta_df = fstpy.add_columns(self.no_meta_df, columns=['etiket'])
-            self.no_meta_df = fstpy.reduce_columns(self.no_meta_df)
+            if reduce_df:
+                self.no_meta_df = fstpy.add_columns(self.no_meta_df, columns=['etiket'])
+                self.no_meta_df = fstpy.reduce_columns(self.no_meta_df)
             new_list.append(self.no_meta_df)
 
         # merge all results together

@@ -6,10 +6,11 @@ import logging
 import math
 from functools import wraps
 from inspect import signature
-from typing import Tuple
+from typing import Tuple, Final
 
 import dask.array as da
 import fstpy
+from   fstpy.utils import vectorize
 import numpy as np
 import pandas as pd
 import rpnpy.librmn.all as rmn
@@ -824,6 +825,53 @@ def encode_ip2_and_ip3_height(df:pd.DataFrame) -> pd.DataFrame:
         df.at[row.Index,'ip3'] = val3_enc
     return df
 
+def decode_ip_info(nomvar:str, ip1: int, ip2: int, ip3: int):
+    """A partir des ips encodes, retourne la valeur du ip1,
+       la valeur de la borne sup de l'objet interval ainsi
+       que le delta de l'objet interval. Fonction utilisee
+       dans les tests de regression pour fins de compatibilite,
+       particulierement avec l'utilisation des intervalles de temps.
+
+    :param ip1: encoded value stored in ip1
+    :type ip1 : int
+    :param ip2: encoded value stored in ip2
+    :type ip2 : int
+    :param ip3: encoded value stored in ip3
+    :type ip3 : int
+    :return: level value, ip2 and ip3 from the interval object
+    :rtype: float, int, int
+    """
+
+    i1, i2, i3 = fstpy.decode_ip123(nomvar, ip1, ip2, ip3) 
+    interval   = fstpy.get_interval(ip1, ip2, ip3, i1, i2, i3)
+    ip2        = interval.high
+    ip3        = interval.delta()
+
+    return i1['v1'],  ip2,  ip3
+
+VDECODE_IP_INFO: Final = vectorize(decode_ip_info, otypes=['float32', 'int32', 'int32'])
+
+def decode_ip2(nomvar:str, ip1: int, ip2: int, ip3: int):
+    """A partir des ips encodes, retourne la valeur du ip2.
+       Fonction utilisee dans les tests de regression pour 
+       fins de compatibilite, particulierement avec l'utilisation 
+       des intervalles de temps.
+
+    :param ip1: encoded value stored in ip1
+    :type ip1 : int
+    :param ip2: encoded value stored in ip2
+    :type ip2 : int
+    :param ip3: encoded value stored in ip3
+    :type ip3 : int
+    :return: ip2 decoded value
+    :rtype:  int
+    """
+
+    i1, i2, i3 = fstpy.decode_ip123(nomvar, ip1, ip2, ip3) 
+
+    return i2['v1']
+
+VDECODE_IP2_INFO: Final = vectorize(decode_ip2, otypes=['int32'])
 
 def validate_list_of_times(param:'list(datetime.timedelta)|datetime.timedelta', exception_class:type) -> 'list(datetime.timedelta)|datetime.timedelta':
     """validate a list of time deltas

@@ -62,10 +62,15 @@ class CoriolisParameter(Plugin):
 
     def prepare_groups(self):
 
-        self.df = fstpy.add_columns(self.df, columns=['unit', 'ip_info'])
+        self.df = fstpy.add_columns(self.df, columns=['unit'])
+        # on pourra enlever ça quand on aura la réduction de colonne
+        self.df = self.df.drop(['level', 'ip1_kind', 'ip1_pkind',
+                            'ip2_dec', 'ip2_kind', 'ip2_pkind',
+                            'ip3_dec', 'ip3_kind', 'ip3_pkind',
+                            'surface', 'follow_topography',
+                            'ascending', 'interval', 'vctype'],
+                            axis=1, errors='ignore')
 
-        # print(self.df[['nomvar','typvar','etiket','unit','surface','grid','forecast_hour']].sort_values(by=['grid','nomvar']).to_string())
-    
         # check if result already exists
         self.existing_result_df = get_existing_result(
             self.df, self.plugin_result_specifications)
@@ -99,7 +104,7 @@ class CoriolisParameter(Plugin):
                 continue
 
             corp_df = create_empty_result(
-                lat_df, self.plugin_result_specifications['CORP'])
+                current_group, self.plugin_result_specifications['CORP'])
             corp_df = adjust_column_values(current_group, corp_df)
 
             for i in corp_df.index:

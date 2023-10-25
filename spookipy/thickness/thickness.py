@@ -39,6 +39,8 @@ class Thickness(Plugin):
 
     "HYBRID_5001": HYBRID_COORDINATE
 
+    "HYBRID_5002": HYBRID_STAGGERED_COORDINATE
+
     "UNKNOWN": UNKNOWN,
 
 
@@ -184,7 +186,7 @@ class Thickness(Plugin):
         parser.add_argument('--base',type=float,dest='base',help='Base of the thickness layer (model or pressure level)')
         parser.add_argument('--top',type=float,dest='top',help='Top of the thickness layer (model or pressure level)')
         parser.add_argument('--coordinateType',type=str,dest='coordinate_type',
-        choices=['SIGMA_COORDINATE','HYBRID_COORDINATE','ETA_COORDINATE','PRESSURE_COORDINATE','UNKNOWN'],help='Type of vertical coordinate')   
+        choices=['SIGMA_COORDINATE','HYBRID_COORDINATE','ETA_COORDINATE','PRESSURE_COORDINATE','UNKNOWN','HYBRID_STAGGERED_COORDINATE'],help='Type of vertical coordinate')   
 
         parsed_arg = vars(parser.parse_args(args.split()))
 
@@ -206,6 +208,9 @@ class Thickness(Plugin):
 
         if parsed_arg['coordinate_type'] == 'HYBRID_COORDINATE':
             parsed_arg['coordinate_type'] = parsed_arg['coordinate_type'].replace("COORDINATE","5001")
+
+        if parsed_arg['coordinate_type'] == 'HYBRID_STAGGERED_COORDINATE':
+            parsed_arg['coordinate_type'] = parsed_arg['coordinate_type'].replace("STAGGERED_COORDINATE","5002")
 
         return parsed_arg
 

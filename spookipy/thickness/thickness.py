@@ -150,9 +150,10 @@ class Thickness(Plugin):
         else:
             for dependencies_df, _ in dependencies_list:
                 gz_df      = get_from_dataframe(dependencies_df, 'GZ')
-                gz_top_df  = gz_df.loc[gz_df.level == self.top]
+                gz_df.level= gz_df.level.astype('float32')
+                gz_top_df  = gz_df.loc[np.isclose(gz_df.level,self.top)]
                 top_ip     = gz_top_df.iloc[0].level
-                gz_base_df = gz_df.loc[gz_df.level == self.base]
+                gz_base_df = gz_df.loc[np.isclose(gz_df.level,self.base)]
                 base_ip    = gz_base_df.iloc[0].level
 
            

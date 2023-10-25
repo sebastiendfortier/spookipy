@@ -81,15 +81,13 @@ class Thickness(Plugin):
 
 
     def prepare_groups(self):
-        
-        # self.no_meta_df = fstpy.set_vertical_coordinate_type(self.no_meta_df)
-        # self.no_meta_df = fstpy.compute(self.no_meta_df)
+
         self.verify_parameters_values()
         self.no_meta_df = fstpy.add_columns(self.no_meta_df, columns=['unit', 'forecast_hour', 'ip_info'])
 
         self.existing_result_df = get_existing_result(self.no_meta_df, self.plugin_result_specifications)
 
-        self.groups = self.no_meta_df.groupby(['grid', 'vctype','ip1_kind'])
+        self.groups = self.no_meta_df.groupby(['grid', 'vctype','ip1_kind'], dropna=False)
 
        
     def verify_parameters_values(self):
@@ -170,7 +168,7 @@ class Thickness(Plugin):
                 array = np.abs(gz_top_df.iloc[0].d - gz_base_df.iloc[0].d).astype(np.float32)
                 dz_df["d"] = [array]
 
-            df_list.append(dz_df)
+                df_list.append(dz_df)
 
         finally:
             return self.final_results(df_list, ThicknessError, 

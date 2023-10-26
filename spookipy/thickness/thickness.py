@@ -39,6 +39,8 @@ class Thickness(Plugin):
 
     "HYBRID_5001": HYBRID_COORDINATE
 
+    "HYBRID_5002": HYBRID_STAGGERED_COORDINATE
+
     "UNKNOWN": UNKNOWN,
 
 
@@ -79,9 +81,7 @@ class Thickness(Plugin):
 
 
     def prepare_groups(self):
-        
-        # self.no_meta_df = fstpy.set_vertical_coordinate_type(self.no_meta_df)
-        # self.no_meta_df = fstpy.compute(self.no_meta_df)
+
         self.verify_parameters_values()
         self.no_meta_df = fstpy.add_columns(self.no_meta_df, columns=['unit', 'forecast_hour', 'ip_info'])
 
@@ -150,9 +150,10 @@ class Thickness(Plugin):
         else:
             for dependencies_df, _ in dependencies_list:
                 gz_df      = get_from_dataframe(dependencies_df, 'GZ')
-                gz_top_df  = gz_df.loc[gz_df.level == self.top]
+                gz_df.level= gz_df.level.astype('float32')
+                gz_top_df  = gz_df.loc[np.isclose(gz_df.level,self.top)]
                 top_ip     = gz_top_df.iloc[0].level
-                gz_base_df = gz_df.loc[gz_df.level == self.base]
+                gz_base_df = gz_df.loc[np.isclose(gz_df.level,self.base)]
                 base_ip    = gz_base_df.iloc[0].level
 
            
@@ -168,7 +169,7 @@ class Thickness(Plugin):
                 array = np.abs(gz_top_df.iloc[0].d - gz_base_df.iloc[0].d).astype(np.float32)
                 dz_df["d"] = [array]
 
-            df_list.append(dz_df)
+                df_list.append(dz_df)
 
         finally:
             return self.final_results(df_list, ThicknessError, 
@@ -184,7 +185,7 @@ class Thickness(Plugin):
         parser.add_argument('--base',type=float,dest='base',help='Base of the thickness layer (model or pressure level)')
         parser.add_argument('--top',type=float,dest='top',help='Top of the thickness layer (model or pressure level)')
         parser.add_argument('--coordinateType',type=str,dest='coordinate_type',
-        choices=['SIGMA_COORDINATE','HYBRID_COORDINATE','ETA_COORDINATE','PRESSURE_COORDINATE','UNKNOWN'],help='Type of vertical coordinate')   
+        choices=['SIGMA_COORDINATE','HYBRID_COORDINATE','ETA_COORDINATE','PRESSURE_COORDINATE','UNKNOWN','HYBRID_STAGGERED_COORDINATE'],help='Type of vertical coordinate')   
 
         parsed_arg = vars(parser.parse_args(args.split()))
 
@@ -206,6 +207,9 @@ class Thickness(Plugin):
 
         if parsed_arg['coordinate_type'] == 'HYBRID_COORDINATE':
             parsed_arg['coordinate_type'] = parsed_arg['coordinate_type'].replace("COORDINATE","5001")
+
+        if parsed_arg['coordinate_type'] == 'HYBRID_STAGGERED_COORDINATE':
+            parsed_arg['coordinate_type'] = parsed_arg['coordinate_type'].replace("STAGGERED_COORDINATE","5002")
 
         return parsed_arg
 

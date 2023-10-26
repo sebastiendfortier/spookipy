@@ -87,7 +87,7 @@ class Thickness(Plugin):
 
         self.existing_result_df = get_existing_result(self.no_meta_df, self.plugin_result_specifications)
 
-        self.groups = self.no_meta_df.groupby(['grid', 'vctype','ip1_kind'], dropna=False)
+        self.groups = self.no_meta_df.groupby(['grid', 'vctype','ip1_kind'])
 
        
     def verify_parameters_values(self):

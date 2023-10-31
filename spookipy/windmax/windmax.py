@@ -9,8 +9,8 @@ import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin
-from ..utils import (create_result_container, existing_results,
-                     get_dependencies, get_existing_result, to_dask)
+from ..utils import (create_empty_result, existing_results, get_3d_array,
+                     get_dependencies, get_existing_result, get_from_dataframe)
 
 
 class WindMaxError(Exception):
@@ -102,25 +102,25 @@ class WindMax(Plugin):
 
         for dependencies_df, _ in dependencies_list:
 
-            dependencies_df.sort_values(by='level',ascending=dependencies_df.ascending.unique()[0],inplace=True)
-            ds = fstpy.to_cmc_xarray(dependencies_df)
+            uu_df = get_from_dataframe(dependencies_df,'UU')
+            uu_res_df = create_empty_result(uu_df,self.plugin_result_specifications['UU'])
 
-            uvmaxpos = ds.UV.compute().argmax(dim='level') # if no compute xarray and dask dont work atm
-            uumax = ds.UU.isel({'level':uvmaxpos})
-            vvmax = ds.VV.isel({'level':uvmaxpos})
-            uvmax = ds.UV.isel({'level':uvmaxpos})
-            pxmax = ds.PX.isel({'level':uvmaxpos})
-            
-            uu_res_df = create_result_container(dependencies_df,self.plugin_result_specifications, 'UU')
-            vv_res_df = create_result_container(dependencies_df,self.plugin_result_specifications, 'VV')
-            uv_res_df = create_result_container(dependencies_df,self.plugin_result_specifications, 'UV')
-            px_res_df = create_result_container(dependencies_df,self.plugin_result_specifications, 'PX')
-            
-            uu_res_df.at[0, 'd'] = to_dask(uumax.values)
-            vv_res_df.at[0, 'd'] = to_dask(vvmax.values)
-            uv_res_df.at[0, 'd'] = to_dask(uvmax.values)
-            px_res_df.at[0, 'd'] = to_dask(pxmax.values)
-            
+            vv_df = get_from_dataframe(dependencies_df,'VV')
+            vv_res_df = create_empty_result(vv_df,self.plugin_result_specifications['VV'])
+
+            uv_df = get_from_dataframe(dependencies_df,'UV')
+            uv_res_df = create_empty_result(uv_df,self.plugin_result_specifications['UV'])
+
+            px_df = get_from_dataframe(dependencies_df,'PX')
+            px_res_df = create_empty_result(px_df,self.plugin_result_specifications['PX'])
+
+            uu_3d = get_3d_array(uu_df)
+            vv_3d = get_3d_array(vv_df)
+            px_3d = get_3d_array(px_df)
+            uv_3d = get_3d_array(uv_df)
+
+            uu_res_df.at[0,'d'],vv_res_df.at[0,'d'],uv_res_df.at[0,'d'],px_res_df.at[0,'d'] = wind_max(uu_3d,vv_3d,uv_3d,px_3d)
+
             df_list.append(uu_res_df)
             df_list.append(vv_res_df)
             df_list.append(uv_res_df)

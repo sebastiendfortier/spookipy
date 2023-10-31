@@ -10,8 +10,6 @@ import fstpy
 from ..plugin import Plugin, PluginParser
 from ..utils import (create_empty_result, initializer, validate_nomvar)
 
-ETIKET: Final[str] = 'SETLWR'
-
 class SetLowerBoundaryError(Exception):
     pass
 
@@ -31,7 +29,7 @@ class SetLowerBoundary(Plugin):
                  value: float = None, 
                  nomvar_out: str = None):
         
-        self.plugin_result_specifications = {'label': ETIKET}
+        self.plugin_result_specifications = {}
         
         super().__init__(self.df)
         self.validate_params()
@@ -46,7 +44,12 @@ class SetLowerBoundary(Plugin):
     def compute(self) -> pd.DataFrame:    
         logging.info('SetLowerBoundary - compute')
         df_list=[]
-        res_df = create_empty_result(self.no_meta_df, self.plugin_result_specifications, all_rows=True)
+
+        res_df = create_empty_result(self.no_meta_df, 
+                                     self.plugin_result_specifications, 
+                                     all_rows=True)
+        res_df = fstpy.add_flag_values(res_df)
+        res_df.bounded = True 
 
         if  (self.no_meta_df.nomvar.unique().size == 1) and (not (self.nomvar_out is None)):
             res_df['nomvar'] = self.nomvar_out
@@ -67,9 +70,11 @@ class SetLowerBoundary(Plugin):
 
         df_final = self.final_results(df_list, 
                                       SetLowerBoundaryError, 
-                                      copy_input=False)
-        df_final['d'] = df_final.apply(lambda row: np.squeeze(row['d']), axis=1)
+                                      copy_input=False,
+                                      reduce_df = True)
 
+        df_final['d'] = df_final.apply(lambda row: np.squeeze(row['d']), axis=1)
+        
         return df_final
 
     @staticmethod

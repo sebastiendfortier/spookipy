@@ -8,7 +8,7 @@ from ..plugin import Plugin, PluginParser
 from ..utils import initializer, validate_nomvar
 from ..configparsingutils import apply_lambda_to_list, convert_time_range, convert_time
 
-ETIKET: Final[str] = 'PCPAMT'
+LABEL: Final[str] = 'PCPAMT'
 
 class PrecipitationAmountError(Exception):
     pass
@@ -33,7 +33,8 @@ class PrecipitationAmount(Plugin):
                  nomvar=None, 
                  forecast_hour_range=None, 
                  interval=None, 
-                 step=None):
+                 step=None,
+                 reduce_df = False):
         
         super().__init__(self.df)
         # self.validate_nomvar()
@@ -45,12 +46,15 @@ class PrecipitationAmount(Plugin):
                                     forecast_hour_range=self.forecast_hour_range,
                                     interval=self.interval,
                                     step=self.step,
-                                    strictly_positive=True).compute()
-        df['label'] = ETIKET
-    
+                                    strictly_positive=True,
+                                    reduce_df = False).compute()
+        
+        df.loc[df['nomvar'] == self.nomvar, 'label'] = LABEL
+
         return self.final_results([df], 
                                   PrecipitationAmountError, 
-                                  copy_input = False)
+                                  copy_input = False,
+                                  reduce_df=True)
 
     @staticmethod
     def parse_config(args: str) -> dict:

@@ -10,8 +10,6 @@ import fstpy
 from ..plugin import Plugin, PluginParser
 from ..utils import (create_empty_result, initializer, validate_nomvar)
 
-ETIKET: Final[str] = 'SETUPR'
-
 class SetUpperBoundaryError(Exception):
     pass
 
@@ -31,7 +29,7 @@ class SetUpperBoundary(Plugin):
                  value: float = None, 
                  nomvar_out: str = None):
         
-        self.plugin_result_specifications = {'label': ETIKET}
+        self.plugin_result_specifications = {}
         
         super().__init__(self.df)
         self.validate_params()
@@ -46,7 +44,13 @@ class SetUpperBoundary(Plugin):
     def compute(self) -> pd.DataFrame:    
         logging.info('SetUpperBoundary - compute')
         df_list=[]
-        res_df = create_empty_result(self.no_meta_df, self.plugin_result_specifications, all_rows=True)
+
+        res_df = create_empty_result(self.no_meta_df, 
+                                     self.plugin_result_specifications, 
+                                     all_rows=True)
+        res_df = fstpy.add_flag_values(res_df)
+        res_df.bounded = True 
+
         if  (self.no_meta_df.nomvar.unique().size == 1) and (not (self.nomvar_out is None)):
             res_df['nomvar'] = self.nomvar_out
 
@@ -64,9 +68,18 @@ class SetUpperBoundary(Plugin):
         for i in self.meta_df.index:
             self.meta_df.at[i,'d'] = fstpy.to_numpy(self.meta_df.at[i,'d'])
 
+        # # Suppression des colonnes reliees aux ip, on sait qu'elles n'ont pas ete modifiees
+        # new_list = []
+        # ip_columns = ['level', 'ip1_kind', 'ip1_pkind', 'ip2_dec', 'ip2_kind', 'ip2_pkind', 'ip3_dec',
+        #               'ip3_kind', 'ip3_pkind', 'interval', 'surface', 'follow_topography', 'ascending']
+        # for df in df_list:
+        #     df = fstpy.remove_list_of_columns(df, ip_columns)
+        #     new_list.append(df)
+
         df_final = self.final_results(df_list, 
                                       SetUpperBoundaryError, 
-                                      copy_input=False)
+                                      copy_input=False,
+                                      reduce_df = True)
 
         df_final['d'] = df_final.apply(lambda row: np.squeeze(row['d']), axis=1)
 

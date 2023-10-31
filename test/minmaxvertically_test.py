@@ -1,6 +1,7 @@
 
 from test import TMP_PATH, TEST_PATH
 from ci_fstcomp import fstcomp
+from spookipy.utils import VDECODE_IP2_INFO
 import secrets
 import pandas as pd
 import fstpy
@@ -58,19 +59,22 @@ def test_3(plugin_test_dir):
         nomvar_max='UMAX',
         nomvar_min='UMIN').compute()
 
-    # Encodage des ip pour les champs ayant un objet intervalle
-    df = spookipy.encode_ip_when_interval(df)
+    # Par defaut, les intervalles sont encodes.  On ajoute du code pour decoder
+    # le ip2 pour fins de comparaison
+    meta_df   = df.loc[df.nomvar.isin (["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    simple_df = df.loc[~df.nomvar.isin(["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    simple_df['ip2']= \
+                VDECODE_IP2_INFO(simple_df['nomvar'], simple_df['ip1'], simple_df['ip2'], simple_df['ip3']) 
 
-    df.etiket = np.where(df.label.isna(),df.etiket,df.label) #--ignoreExtended
-    # le tests n'existe pas dans spooki, le fichier de comparaison a été créé sans porter attention au typvar
-    df.loc[df.nomvar.isin(['UMIN','UMAX']),'typvar'] = 'PZ'
+    res_df   = pd.concat([meta_df, simple_df], ignore_index=True)
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
     fstpy.delete_file(results_file)
-    fstpy.StandardFileWriter(results_file, df).to_fst()
+    fstpy.StandardFileWriter(results_file, res_df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "MinMaxVert_file2cmp_test3.std"
+    file_to_compare = plugin_test_dir + "MinMaxVert_file2cmp_test3_20231016.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -92,17 +96,13 @@ def test_4(plugin_test_dir):
         max=True,
         nomvar_max='UMAX').compute()
     
-    # Encodage des ip pour les champs ayant un objet intervalle
-    df = spookipy.encode_ip_when_interval(df)
-    df.etiket = np.where(df.label.isna(),df.etiket,df.label) #--ignoreExtended
-
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "MinMaxVert_file2cmp_test4.std"
+    file_to_compare = plugin_test_dir + "MinMaxVert_file2cmp_test4_20231016.std"
 
     # # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -128,18 +128,22 @@ def test_5(plugin_test_dir):
         nomvar_max='UMAX',
         nomvar_min='UMIN').compute()
     
-    # Encodage des ip pour les champs ayant un objet intervalle
-    df = spookipy.encode_ip_when_interval(df)
-    df.etiket = np.where(df.label.isna(),df.etiket,df.label) #--ignoreExtended
-    # le tests n'existe pas dans spooki, le fichier de comparaison a été créé sans porter attention au typvar
-    df.loc[df.ni == 3,'typvar'] = 'PZ'
+    # Par defaut, les intervalles sont encodes.  On ajoute du code pour decoder
+    # le ip2 pour fins de comparaison
+    meta_df   = df.loc[df.nomvar.isin (["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    simple_df = df.loc[~df.nomvar.isin(["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    simple_df['ip2']= \
+                VDECODE_IP2_INFO(simple_df['nomvar'], simple_df['ip1'], simple_df['ip2'], simple_df['ip3']) 
+
+    res_df   = pd.concat([meta_df, simple_df], ignore_index=True)
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
     fstpy.delete_file(results_file)
-    fstpy.StandardFileWriter(results_file, df).to_fst()
+    fstpy.StandardFileWriter(results_file, res_df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "MinMaxVert_file2cmp_test5.std"
+    file_to_compare = plugin_test_dir + "MinMaxVert_file2cmp_test5_20231016.std"
 
     # # compare results
     res = fstcomp(results_file, file_to_compare)

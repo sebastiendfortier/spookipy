@@ -25,11 +25,8 @@ def test_1(plugin_test_dir):
 
     # compute SetUpperBoundary
     df = spookipy.SetUpperBoundary(src_df0, value=5.).compute()
-    # [ReaderStd --input {sources[0]}] >> [SetUpperBoundary --value 5] >> [WriterStd --output {destination_path} ]
-
-    df['etiket'] = '__SETUPRX'
-    # le plugin devrait set bounded
-    df['typvar'] = 'PB'
+    # [ReaderStd --input {sources[0]}] >> [SetUpperBoundary --value 5] >>
+    #  [WriterStd --output {destination_path} ]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
@@ -37,7 +34,7 @@ def test_1(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "test1_maximum_file2cmp_20201019.std"
+    file_to_compare = plugin_test_dir + "test1_maximum_file2cmp_20210413.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -54,11 +51,8 @@ def test_2(plugin_test_dir):
 
     # compute SetUpperBoundary
     df = spookipy.SetUpperBoundary(src_df, value=0.).compute()
-    # [ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> [SetUpperBoundary --value 0] >> [WriterStd --output {destination_path}]
-
-    df['etiket'] = '__SETUPRX'
-    # le plugin devrait set bounded
-    df['typvar'] = 'PB'
+    # [ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> 
+    # [SetUpperBoundary --value 0] >> [WriterStd --output {destination_path}]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
@@ -66,7 +60,7 @@ def test_2(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "test2_maximum_file2cmp_20201019.std"
+    file_to_compare = plugin_test_dir + "test2_maximum_file2cmp_20210413.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -95,11 +89,9 @@ def test_4(plugin_test_dir):
 
     # compute SetUpperBoundary
     df = spookipy.SetUpperBoundary(src_df, value=0., nomvar_out='TEST').compute()
-    # [ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> [SetUpperBoundary --value 0 --outputFieldName TEST] >> [WriterStd --output {destination_path} --noUnitConversion]
-
-    df['etiket'] = '__SETUPRX'
-    # le plugin devrait set bounded
-    df['typvar'] = 'PB'
+    # [ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >>
+    # [SetUpperBoundary --value 0 --outputFieldName TEST] >> 
+    # [WriterStd --output {destination_path} --noUnitConversion]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
@@ -107,7 +99,7 @@ def test_4(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "test4_maximum_file2cmp_20201019.std"
+    file_to_compare = plugin_test_dir + "test4_maximum_file2cmp_20210413.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)

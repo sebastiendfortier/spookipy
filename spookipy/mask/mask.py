@@ -6,10 +6,12 @@ import pandas as pd
 from ..plugin import Plugin, PluginParser
 from ..utils  import initializer, validate_nomvar
 from ..configparsingutils import preprocess_negative_args,apply_lambda_to_list
+from typing import Final
+
+LABEL   : Final[str] = 'MASK'
 
 class MaskError(Exception):
     pass
-
 
 class Mask(Plugin):
     """This plug-in creates a mask according to the threshold value(s) given.
@@ -37,9 +39,6 @@ class Mask(Plugin):
             nomvar_out=None,
             parallel: bool = False):
 
-        self.plugin_result_specifications = {
-            'ALL': {'label': 'MASK'}
-            }
         self.df = fstpy.metadata_cleanup(self.df)
         super().__init__(self.df)
         self.validate_params()
@@ -65,7 +64,11 @@ class Mask(Plugin):
         df_list = []
         # holds data from all the groups
 
-        self.no_meta_df['label'] = 'MASK'
+        self.no_meta_df['label']          = LABEL
+        # Parametres par defaut
+        self.no_meta_df['run']            = '__'
+        self.no_meta_df['implementation'] = 'X'
+        self.no_meta_df['etiket_format']  = ''
 
         if not(self.nomvar_out is None):
             self.no_meta_df['nomvar'] = self.nomvar_out
@@ -74,7 +77,8 @@ class Mask(Plugin):
 
         return self.final_results(df_list, 
                                   MaskError, 
-                                  copy_input = False)
+                                  copy_input = False,
+                                  reduce_df=True)
 
 
     @staticmethod

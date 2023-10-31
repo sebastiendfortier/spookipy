@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 from test import TMP_PATH, TEST_PATH
+from spookipy.utils import VDECODE_IP_INFO
 import pytest
 import fstpy
 import spookipy
@@ -38,21 +39,28 @@ def test_1(plugin_test_dir):
     # [Zap --doNotFlagAsZapped --nbitsForDataStorage R13] >> [WriterStd --output {destination_path} --ignoreExtended]
     df.loc[df.nomvar=='PR', 'nbits'] = 13
     df.loc[df.nomvar=='PR', 'datyp'] = 1
-    # df.loc[:,'nbits'] = 32
-    # df.loc[:,'datyp'] = 5
+
+    # Par defaut, les intervalles sont encodes.  On ajoute du code pour les decoder
+    # pour fins de comparaison
+    meta_df   = df.loc[df.nomvar.isin (["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    simple_df = df.loc[~df.nomvar.isin(["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    _, simple_df['ip2'],simple_df['ip3'] = \
+                VDECODE_IP_INFO(simple_df['nomvar'], simple_df['ip1'], simple_df['ip2'], simple_df['ip3']) 
+
+    res_df   = pd.concat([meta_df, simple_df], ignore_index=True)
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
     fstpy.delete_file(results_file)
-    fstpy.StandardFileWriter(results_file, df).to_fst()
+    fstpy.StandardFileWriter(results_file, res_df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "18_12_diff_file2cmp_noEncoding.std"
+    file_to_compare = plugin_test_dir + "18_12_diff_file2cmp_noEncoding_20231016.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])#, exclude_meta=True, cmp_number_of_fields=False)
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
-
 
 def test_2(plugin_test_dir):
     """Tester avec deux groupes d'interval."""
@@ -76,24 +84,30 @@ def test_2(plugin_test_dir):
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [ReaderStd --ignoreExtended --input {sources[1]}] >>
     # [ReaderStd --ignoreExtended --input {sources[2]}] >>
-    # [TimeIntervalDifference --fieldName PR --rangeForecastHour 15@18,12@18 --interval 3,6 --step 1,1] >> [WriterStd --output {destination_path} --ignoreExtended ]
+    # [TimeIntervalDifference --fieldName PR --rangeForecastHour 15@18,12@18 --interval 3,6 --step 1,1] >> 
+    # [WriterStd --output {destination_path} --ignoreExtended ]
 
-    # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
-    # Temporaire, en attendant que ce soit fait dans le writer
+    # Par defaut, les intervalles sont encodes.  On ajoute du code pour les decoder
+    # pour fins de comparaison
+    meta_df   = df.loc[df.nomvar.isin (["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    simple_df = df.loc[~df.nomvar.isin(["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    _, simple_df['ip2'],simple_df['ip3'] = \
+                VDECODE_IP_INFO(simple_df['nomvar'], simple_df['ip1'], simple_df['ip2'], simple_df['ip3']) 
+
+    res_df   = pd.concat([meta_df, simple_df], ignore_index=True)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
     fstpy.delete_file(results_file)
-    fstpy.StandardFileWriter(results_file, df).to_fst()
+    fstpy.StandardFileWriter(results_file, res_df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "18_15_12_diff_file2cmp_noEncoding.std"
+    file_to_compare = plugin_test_dir + "18_15_12_diff_file2cmp_noEncoding_20231016.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])#, cmp_number_of_fields=False)
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
-
 
 def test_3(plugin_test_dir):
     """Tester avec un interval=6 sur un range de 6 a 12 et a tous les sauts de 1."""
@@ -119,16 +133,25 @@ def test_3(plugin_test_dir):
     df.loc[df.nomvar=='PR', 'nbits'] = 13
     df.loc[df.nomvar=='PR', 'datyp'] = 1
 
+    # Par defaut, les intervalles sont encodes.  On ajoute du code pour les decoder
+    # pour fins de comparaison
+    meta_df   = df.loc[df.nomvar.isin (["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    simple_df = df.loc[~df.nomvar.isin(["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    _, simple_df['ip2'],simple_df['ip3'] = \
+                VDECODE_IP_INFO(simple_df['nomvar'], simple_df['ip1'], simple_df['ip2'], simple_df['ip3']) 
+
+    res_df   = pd.concat([meta_df, simple_df], ignore_index=True)
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
     fstpy.delete_file(results_file)
-    fstpy.StandardFileWriter(results_file, df).to_fst()
+    fstpy.StandardFileWriter(results_file, res_df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "12_06_diff_file2cmp_noEncoding.std"
+    file_to_compare = plugin_test_dir + "12_06_diff_file2cmp_noEncoding_20231016.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])#, cmp_number_of_fields=False)
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -156,22 +179,27 @@ def test_4(plugin_test_dir):
     df.loc[df.nomvar=='PR', 'nbits'] = 13
     df.loc[df.nomvar=='PR', 'datyp'] = 1
 
-    # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
-    # Temporaire, en attendant que ce soit fait dans le writer
+    # Par defaut, les intervalles sont encodes.  On ajoute du code pour les decoder
+    # pour fins de comparaison
+    meta_df   = df.loc[df.nomvar.isin (["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    simple_df = df.loc[~df.nomvar.isin(["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    _, simple_df['ip2'],simple_df['ip3'] = \
+                VDECODE_IP_INFO(simple_df['nomvar'], simple_df['ip1'], simple_df['ip2'], simple_df['ip3']) 
+
+    res_df   = pd.concat([meta_df, simple_df], ignore_index=True)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
-    fstpy.delete_file(results_file)
-    fstpy.StandardFileWriter(results_file, df).to_fst()
+    # fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, res_df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "18_12_threshold0.02_diff_file2cmp_noEncoding.std"
+    file_to_compare = plugin_test_dir + "18_12_threshold0.02_diff_file2cmp_noEncoding_20231016.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])#, cmp_number_of_fields=False)
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
-
 
 def test_5(plugin_test_dir):
     """Tester avec un fichier qui vient de regeta."""
@@ -190,19 +218,25 @@ def test_5(plugin_test_dir):
     # [TimeIntervalDifference --fieldName PR --rangeForecastHour 0@177,0@60 --interval 12,3 --step 24,6] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
     
-    # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
-    # Temporaire, en attendant que ce soit fait dans le writer
+    # Par defaut, les intervalles sont encodes.  On ajoute du code pour les decoder
+    # pour fins de comparaison
+    meta_df   = df.loc[df.nomvar.isin (["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    simple_df = df.loc[~df.nomvar.isin(["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    _, simple_df['ip2'],simple_df['ip3'] = \
+                VDECODE_IP_INFO(simple_df['nomvar'], simple_df['ip1'], simple_df['ip2'], simple_df['ip3']) 
+
+    res_df   = pd.concat([meta_df, simple_df], ignore_index=True)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
     fstpy.delete_file(results_file)
-    fstpy.StandardFileWriter(results_file, df).to_fst()
+    fstpy.StandardFileWriter(results_file, res_df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "global20121217_file2cmp_noEncoding.std"
+    file_to_compare = plugin_test_dir + "global20121217_file2cmp_noEncoding_20231016.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])#, cmp_number_of_fields=False)
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -258,19 +292,25 @@ def test_8(plugin_test_dir):
     # [TimeIntervalDifference --fieldName UV --rangeForecastHour 12@36,12@36 --interval 3,12 --step 3,12] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
 
-    # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
-    # Temporaire, en attendant que ce soit fait dans le writer
+    # Par defaut, les intervalles sont encodes.  On ajoute du code pour les decoder
+    # pour fins de comparaison
+    meta_df   = df.loc[df.nomvar.isin (["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    simple_df = df.loc[~df.nomvar.isin(["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    _, simple_df['ip2'],simple_df['ip3'] = \
+                VDECODE_IP_INFO(simple_df['nomvar'], simple_df['ip1'], simple_df['ip2'], simple_df['ip3']) 
+
+    res_df   = pd.concat([meta_df, simple_df], ignore_index=True)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
     fstpy.delete_file(results_file)
-    fstpy.StandardFileWriter(results_file, df).to_fst()
+    fstpy.StandardFileWriter(results_file, res_df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "UV_15a36_delta_3et12_file2cmp.std"
+    file_to_compare = plugin_test_dir + "UV_15a36_delta_3et12_file2cmp_20231016.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])#, cmp_number_of_fields=False)
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -296,19 +336,25 @@ def test_9(plugin_test_dir):
     # [TimeIntervalDifference --fieldName PR --rangeForecastHour 3@9 --interval 6 --step 9] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
 
-    # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
-    # Temporaire, en attendant que ce soit fait dans le writer
+    # Par defaut, les intervalles sont encodes.  On ajoute du code pour les decoder
+    # pour fins de comparaison
+    meta_df   = df.loc[df.nomvar.isin (["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    simple_df = df.loc[~df.nomvar.isin(["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    _, simple_df['ip2'],simple_df['ip3'] = \
+                VDECODE_IP_INFO(simple_df['nomvar'], simple_df['ip1'], simple_df['ip2'], simple_df['ip3']) 
+
+    res_df   = pd.concat([meta_df, simple_df], ignore_index=True)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
     fstpy.delete_file(results_file)
-    fstpy.StandardFileWriter(results_file, df).to_fst()
+    fstpy.StandardFileWriter(results_file, res_df).to_fst()
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "03_09_interval_lb_file2cmp_noEncoding.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare) #
+    res = fstcomp(results_file, file_to_compare) 
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -333,24 +379,29 @@ def test_10(plugin_test_dir):
     # [TimeIntervalDifference --fieldName PR --rangeForecastHour 0@6 --interval 6 --step 9] >>
     # [WriterStd --output {destination_path} --ignoreExtended]']
 
-    # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
-    # Temporaire, en attendant que ce soit fait dans le writer
-        
+    # Par defaut, les intervalles sont encodes.  On ajoute du code pour les decoder
+    # pour fins de comparaison
+    meta_df   = df.loc[df.nomvar.isin (["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    simple_df = df.loc[~df.nomvar.isin(["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    _, simple_df['ip2'],simple_df['ip3'] = \
+                VDECODE_IP_INFO(simple_df['nomvar'], simple_df['ip1'], simple_df['ip2'], simple_df['ip3']) 
+
+    res_df   = pd.concat([meta_df, simple_df], ignore_index=True)
+
     # df.loc[df.nomvar=='PR', 'nbits'] = 32
     # df.loc[df.nomvar=='PR', 'datyp'] = 5
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
     fstpy.delete_file(results_file)
-    fstpy.StandardFileWriter(results_file, df).to_fst()
+    fstpy.StandardFileWriter(results_file, res_df).to_fst()
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "00_06_interval_ub_diff_file2cmp_noEncoding.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/TimeIntervalDifference/result_test_10"
+
     # compare results
     res = fstcomp(results_file, file_to_compare) #
     fstpy.delete_file(results_file)
     assert(res)
-
 
 def test_11(plugin_test_dir):
     """Tester avec deux Interval de 0@3 et 9@12 et de 0@9 et 9@18 sur un range de 3@18 avec un interval=de 6 et un saut de 9."""
@@ -372,22 +423,27 @@ def test_11(plugin_test_dir):
     # [TimeIntervalDifference --fieldName PR --rangeForecastHour 3@18 --interval 6 --step 9] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
 
-    # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
-    # Temporaire, en attendant que ce soit fait dans le writer
+    # Par defaut, les intervalles sont encodes.  On ajoute du code pour les decoder
+    # pour fins de comparaison
+    meta_df   = df.loc[df.nomvar.isin (["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    simple_df = df.loc[~df.nomvar.isin(["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    _, simple_df['ip2'],simple_df['ip3'] = \
+                VDECODE_IP_INFO(simple_df['nomvar'], simple_df['ip1'], simple_df['ip2'], simple_df['ip3']) 
+
+    res_df   = pd.concat([meta_df, simple_df], ignore_index=True)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
     fstpy.delete_file(results_file)
-    fstpy.StandardFileWriter(results_file, df).to_fst()
+    fstpy.StandardFileWriter(results_file, res_df).to_fst()
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "03-09_12-18_intervals_lb_diff_file2cmp_noEncoding.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare) #
+    res = fstcomp(results_file, file_to_compare) 
     fstpy.delete_file(results_file)
     assert(res)
-
 
 def test_12(plugin_test_dir):
     """Tester avec un Interval de 0@9 et de 6@9 sur un range de 0@6 avec un interval=de 6 et un saut de 9."""
@@ -408,26 +464,28 @@ def test_12(plugin_test_dir):
     # [ReaderStd --ignoreExtended --input {sources[1]}] >>
     # [TimeIntervalDifference --fieldName PR --rangeForecastHour 0@15 --interval 6 --step 9] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
-    # df.loc[df.nomvar=='PR', 'nbits'] = 32
-    # df.loc[df.nomvar=='PR', 'datyp'] = 5
     
-    # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
-    # Temporaire, en attendant que ce soit fait dans le writer
+    # Par defaut, les intervalles sont encodes.  On ajoute du code pour les decoder
+    # pour fins de comparaison
+    meta_df   = df.loc[df.nomvar.isin (["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    simple_df = df.loc[~df.nomvar.isin(["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    _, simple_df['ip2'],simple_df['ip3'] = \
+                VDECODE_IP_INFO(simple_df['nomvar'], simple_df['ip1'], simple_df['ip2'], simple_df['ip3']) 
+
+    res_df   = pd.concat([meta_df, simple_df], ignore_index=True)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
     fstpy.delete_file(results_file)
-    fstpy.StandardFileWriter(results_file, df).to_fst()
+    fstpy.StandardFileWriter(results_file, res_df).to_fst()
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "00-06_09-15_intervals_ub_diff_file2cmp_noEncoding.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/TimeIntervalDifference/result_test_12"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare) #
+    res = fstcomp(results_file, file_to_compare) 
     fstpy.delete_file(results_file)
     assert(res)
-
 
 def test_13(plugin_test_dir):
     """Tester avec un Interval de 0@9 et de 6@9 sur un range de 0@6 avec un interval=de 6 et un saut de 9 en encodant la sortie."""
@@ -449,11 +507,6 @@ def test_13(plugin_test_dir):
     # [ReaderStd --ignoreExtended --input {sources[1]}] >>
     # [TimeIntervalDifference --fieldName PR --rangeForecastHour 0@6 --interval 6 --step 9] >>
     # [WriterStd --output {destination_path} --ignoreExtended --encodeIP2andIP3]
-    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
-                                                                    df['ip1'],df['ip2'],df['ip3'],
-                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
-                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
-                                                                    df['interval'],False,True)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
@@ -462,13 +515,11 @@ def test_13(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "00_06_interval_ub_diff_file2cmp_encoded.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/TimeIntervalDifference/result_test_13"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare) #
+    res = fstcomp(results_file, file_to_compare) 
     fstpy.delete_file(results_file)
     assert(res)
-
 
 def test_14(plugin_test_dir):
     """Tester avec une valeur invalide pour forecast_hour_range=."""
@@ -584,22 +635,25 @@ def test_19(plugin_test_dir):
     # [TimeIntervalDifference --fieldName UV --rangeForecastHour 12@36,12@36 --interval 3,12 --step 3,12 --strictlyPositive] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
 
-    # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
-    # Temporaire, en attendant que ce soit fait dans le writer
+    # Par defaut, les intervalles sont encodes.  On ajoute du code pour les decoder
+    # pour fins de comparaison
+    meta_df   = df.loc[df.nomvar.isin (["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    simple_df = df.loc[~df.nomvar.isin(["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    _, simple_df['ip2'],simple_df['ip3'] = \
+                VDECODE_IP_INFO(simple_df['nomvar'], simple_df['ip1'], simple_df['ip2'], simple_df['ip3']) 
 
-    # df.loc[df.nomvar=='UV', 'nbits'] = 32
-    # df.loc[df.nomvar=='UV', 'datyp'] = 5
+    res_df   = pd.concat([meta_df, simple_df], ignore_index=True)
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_19.std"])
     fstpy.delete_file(results_file)
-    fstpy.StandardFileWriter(results_file, df).to_fst()
+    fstpy.StandardFileWriter(results_file, res_df).to_fst()
 
-    # open and read comparison file
-    file_to_compare = plugin_test_dir + "UV_15a36_delta_3et12_positive_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/TimeIntervalDifference/result_test_19"
+    # open and read comparison fileUV_15a36_delta_3et12_
+    file_to_compare = plugin_test_dir + "UV_15a36_delta_3et12_positive_file2cmp_20231016.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4']) #
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -620,23 +674,26 @@ def test_20(plugin_test_dir):
     # ['[ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [TimeIntervalDifference --fieldName UV --rangeForecastHour 12:00:00@36:00:00,12:00:00@36:00:00 --interval 3,12 --step 3,12 --strictlyPositive] >>
     # [WriterStd --output {destination_path} --ignoreExtended]']
-    # df.loc[df.nomvar=='UV', 'nbits'] = 32
-    # df.loc[df.nomvar=='UV', 'datyp'] = 5
     
-    # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
-    # Temporaire, en attendant que ce soit fait dans le writer
-    
+    # Par defaut, les intervalles sont encodes.  On ajoute du code pour les decoder
+    # pour fins de comparaison
+    meta_df   = df.loc[df.nomvar.isin (["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    simple_df = df.loc[~df.nomvar.isin(["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    _, simple_df['ip2'],simple_df['ip3'] = \
+                VDECODE_IP_INFO(simple_df['nomvar'], simple_df['ip1'], simple_df['ip2'], simple_df['ip3']) 
+
+    res_df   = pd.concat([meta_df, simple_df], ignore_index=True)
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_20.std"])
     fstpy.delete_file(results_file)
-    fstpy.StandardFileWriter(results_file, df).to_fst()
+    fstpy.StandardFileWriter(results_file, res_df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "UV_15a36_delta_3et12_positive_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/TimeIntervalDifference/result_test_20"
+    file_to_compare = plugin_test_dir + "UV_15a36_delta_3et12_positive_file2cmp_20231016.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4']) #
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -675,13 +732,19 @@ def test_25(plugin_test_dir):
     df.loc[df.nomvar!='PR', 'etiket'] = 'WE_1_2_0N'
     df.loc[df.nomvar=='PR', 'etiket'] = 'PCPAMT'
 
-    # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
-    # Temporaire, en attendant que ce soit fait dans le writer
+    # Par defaut, les intervalles sont encodes.  On ajoute du code pour les decoder
+    # pour fins de comparaison
+    meta_df   = df.loc[df.nomvar.isin (["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    simple_df = df.loc[~df.nomvar.isin(["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    _, simple_df['ip2'],simple_df['ip3'] = \
+                VDECODE_IP_INFO(simple_df['nomvar'], simple_df['ip1'], simple_df['ip2'], simple_df['ip3']) 
+
+    res_df   = pd.concat([meta_df, simple_df], ignore_index=True)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_25.std"])
     fstpy.delete_file(results_file)
-    fstpy.StandardFileWriter(results_file, df).to_fst()
+    fstpy.StandardFileWriter(results_file, res_df).to_fst()
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "TMIDIF_test25_file2cmp.std"
@@ -709,13 +772,6 @@ def test_26(plugin_test_dir):
     df.loc[df.nomvar!='PR', 'etiket'] = 'WE_1_2_0N'
     df.loc[df.nomvar=='PR', 'etiket'] = 'PCPAMT'
 
-    # IPs encodes
-    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
-                                                                    df['ip1'],df['ip2'],df['ip3'],
-                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
-                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
-                                                                    df['interval'],False,True)
-
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_26.std"])
     fstpy.delete_file(results_file)
@@ -723,8 +779,6 @@ def test_26(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "TMIDIF_test26_file2cmp.std"
-
-
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -748,26 +802,16 @@ def test_27(plugin_test_dir):
 
     df = pd.concat([df, tt_df],ignore_index=True)
     
-    # Temporaire, en attendant que ce soit fait dans le writer
-    print(df)
-    df = fstpy.add_columns(df,"ip_info")
-    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
-                                                                    df['ip1'],df['ip2'],df['ip3'],
-                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
-                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
-                                                                    df['interval'],False,df['nomvar']=='UV')
-
-    
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_27.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "TMIDIF_test27_file2cmp.std"
+    file_to_compare = plugin_test_dir + "TMIDIF_test27_file2cmp_20231016.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4']) 
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 

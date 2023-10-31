@@ -9,6 +9,9 @@ from ..minmaxlevelindex import MinMaxLevelIndex
 from ..plugin import Plugin, PluginParser
 from ..utils import (get_from_dataframe, initializer, 
                     reshape_arrays, validate_nomvar)
+from typing import Final
+
+LABEL   : Final[str] = 'MNMXVY'
 
 class MinMaxVerticallyError(Exception):
     pass
@@ -102,18 +105,19 @@ class MinMaxVertically(Plugin):
 
         if self.min:
             min_df = get_from_dataframe(df, min_out)
-            min_df['label'] = "MNMXVY"
+            min_df['label'] = LABEL
             min_df = reshape_arrays(min_df)
             df_list.append(min_df)
             
         if self.max:
             max_df = get_from_dataframe(df, max_out)
-            max_df['label'] = "MNMXVY"
+            max_df['label'] = LABEL
             max_df = reshape_arrays(max_df)
             df_list.append(max_df)
 
         return self.final_results(df_list, MinMaxVerticallyError,
-                                  copy_input = self.copy_input)
+                                  copy_input = self.copy_input,
+                                  reduce_df=True)
 
 
 

@@ -33,7 +33,8 @@ class TimeIntervalDifference(Plugin):
                  forecast_hour_range=None, 
                  interval=None, 
                  step=None, 
-                 strictly_positive=False):
+                 strictly_positive=False,
+                 reduce_df=True):
         self.df = fstpy.metadata_cleanup(self.df)
         super().__init__(self.df)
         self.prepare_groups()
@@ -137,7 +138,8 @@ class TimeIntervalDifference(Plugin):
 
         return self.final_results(df_list, 
                                   TimeIntervalDifferenceError, 
-                                  copy_input=False)
+                                  copy_input=False,
+                                  reduce_df = self.reduce_df)
 
     def process(self, current_group, b_inf, b_sup, begin_df, end_df):
         begin_arr = begin_df.iloc[0]['d']
@@ -208,11 +210,12 @@ def create_result_container(df, b_inf, b_sup):
     b_inf_hour = b_inf/3600.0
     ip2   = int(b_sup_hour)
     ip3   = int(b_sup_hour-b_inf_hour)
+    forecast_hour = fstpy.get_forecast_hour(deet,npas)
 
     kind  = int(df.iloc[0].ip2_kind)
     inter = fstpy.Interval('ip2', b_inf_hour, b_sup_hour, kind)
 
-    res_df = create_empty_result(df, {'ip2': ip2, 'ip3': ip3, 'npas': npas, 'interval':inter })
+    res_df = create_empty_result(df, {'ip2': ip2, 'ip3': ip3, 'npas': npas, 'forecast_hour': forecast_hour, 'interval':inter })
     return res_df
 
 def check_for_negative_values(arr, location):

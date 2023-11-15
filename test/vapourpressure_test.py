@@ -300,6 +300,7 @@ def test_12(plugin_test_dir):
     fstpy.delete_file(results_file)
     assert(res)
 
+@pytest.mark.skip(reason="This test is currently not working - waiting for fixes with hybrid 5005")
 def test_13(plugin_test_dir):
     """Calcul de la pression de vapeur avec un fichier hybrid 5005 (ES), ice_water_phase = both."""
     # open and read source

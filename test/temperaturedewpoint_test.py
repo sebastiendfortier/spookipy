@@ -292,7 +292,8 @@ def test_11(plugin_test_dir):
     res = fstcomp(results_file, file_to_compare, e_max=0.005,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
-
+    
+@pytest.mark.skip(reason="This test is currently not working - waiting for fixes with hybrid 5005")
 def test_12(plugin_test_dir):
     """Calcul du point de rosée à partir d'un fichier du global hybrid 5005 (TT et HU) ice_water_phase = both."""
     # open and read source

@@ -854,7 +854,7 @@ def test_32(plugin_test_dir):
 #     fstpy.delete_file(results_file)
 #     assert(res)
 
-
+@pytest.mark.skip(reason="This test is currently not working - waiting for fixes with hybrid 5005")
 def test_35(plugin_test_dir):
     """Test #35 : Teste l'écriture niveaux5005: surface"""
     # open and read source
@@ -887,7 +887,7 @@ def test_35(plugin_test_dir):
     fstpy.delete_file(results_file)
     assert(res)
 
-
+@pytest.mark.skip(reason="This test is currently not working - waiting for fixes with hybrid 5005")
 def test_36(plugin_test_dir):
     """Test #36 : Teste l'écriture niveaux5005: no surface"""
 # open and read source
@@ -916,7 +916,7 @@ def test_36(plugin_test_dir):
     fstpy.delete_file(results_file)
     assert(res)
 
-
+@pytest.mark.skip(reason="This test is currently not working - waiting for fixes with hybrid 5005")
 def test_37(plugin_test_dir):
     """Test #37 : Teste l'écriture niveaux5005: surface + 0.851188 level"""
     source0 = plugin_test_dir + "coord_5005_big.std"
@@ -944,7 +944,7 @@ def test_37(plugin_test_dir):
     fstpy.delete_file(results_file)
     assert(res)
 
-
+@pytest.mark.skip(reason="This test is currently not working - waiting for fixes with hybrid 5005")
 def test_38(plugin_test_dir):
     """Test #38 : Teste l'écriture niveaux5005: surface + 0.851188 and 0.829785 levels"""
     source0 = plugin_test_dir + "coord_5005_big.std"

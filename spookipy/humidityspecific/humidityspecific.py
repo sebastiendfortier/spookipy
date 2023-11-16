@@ -38,6 +38,8 @@ class HumiditySpecific(Plugin):
     :type dependency_check: bool, optional   
     :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
     :type copy_input: bool, optional 
+    :param reduce_df: Indicates to reduce the dataframe to its minimum, defaults to True
+    :type reduce_df: bool, optional
     """
     computable_plugin = "HU"
     @explicit_params_checker
@@ -45,12 +47,13 @@ class HumiditySpecific(Plugin):
     def __init__(
             self,
             df: pd.DataFrame,
-            ice_water_phase='both',
-            temp_phase_switch=-40,
-            temp_phase_switch_unit='celsius',
-            rpn=False,
-            dependency_check=False,
-            copy_input=False):
+            ice_water_phase        = 'both',
+            temp_phase_switch      = -40,
+            temp_phase_switch_unit = 'celsius',
+            rpn                    = False,
+            dependency_check       = False,
+            copy_input             = False,
+            reduce_df              = True):
 
         # Si ice_water_phase = water, on ne veut pas des valeurs par defaut pour temp_phase_switch
         # car la validation ne passera pas.  Par contre, ces defauts sont necessaires pour tous les 
@@ -112,7 +115,7 @@ class HumiditySpecific(Plugin):
         self.plugin_result_specifications = {
             'HU': {
                 'nomvar': 'HU',
-                'label': 'HUMSPF',
+                'label' : 'HUMSPF',
                 'unit'  : 'kilogram_per_kilogram',
                 'nbits' : 16,
                 'datyp' : 1}}
@@ -226,7 +229,8 @@ class HumiditySpecific(Plugin):
         finally:
             return self.final_results(df_list, HumiditySpecificError,
                                       dependency_check = self.dependency_check, 
-                                      copy_input = self.copy_input)
+                                      copy_input       = self.copy_input,
+                                      reduce_df        = self.reduce_df)
 
     def rpn_humnidityspecific_from_tt_hr_px(self, dependencies_df, option):
         logging.info(f'rpn option {option+1}')
@@ -240,17 +244,19 @@ class HumiditySpecific(Plugin):
             self.plugin_result_specifications['HU'],
             all_rows=True)
         for i in hu_df.index:
-            ttk = ttk_df.at[i, 'd']
+            ttk  = ttk_df.at[i, 'd']
             pxpa = pxpa_df.at[i, 'd']
-            hr = hr_df.at[i, 'd']
-            hu_df.at[i, 'd'] = rpn_hu_from_hr(
-                tt=ttk, hr=hr, px=pxpa, swph=self.ice_water_phase == 'both').astype(np.float32)
+            hr   = hr_df.at[i, 'd']
+            hu_df.at[i, 'd'] = rpn_hu_from_hr(tt=ttk, 
+                                              hr=hr, 
+                                              px=pxpa, 
+                                              swph=self.ice_water_phase == 'both').astype(np.float32)
         return hu_df
 
     def rpn_humidity_specific_from_tt_es_px(self, es_df, dependencies_df, option):
         logging.info(f'rpn option {option+1}')
 
-        ttk_df = get_from_dataframe(dependencies_df, 'TT')
+        ttk_df  = get_from_dataframe(dependencies_df, 'TT')
         pxpa_df = get_from_dataframe(dependencies_df, 'PX')
 
         hu_df = create_empty_result(
@@ -259,20 +265,22 @@ class HumiditySpecific(Plugin):
             all_rows=True)
 
         for i in hu_df.index:
-            ttk = ttk_df.at[i, 'd']
-            es = es_df.at[i, 'd']
+            ttk  = ttk_df.at[i, 'd']
+            es   = es_df.at[i, 'd']
             pxpa = pxpa_df.at[i, 'd']
             hu_df.at[i, 'd'] = rpn_hu_from_es(
-                tt=ttk, es=es, px=pxpa, swph=self.ice_water_phase == 'both').astype(np.float32)
+                tt=ttk, es=es, px=pxpa, 
+                swph=self.ice_water_phase == 'both').astype(np.float32)
         return hu_df
 
     def compute_es(self, dependencies_df):
         from spookipy.dewpointdepression.dewpointdepression import \
             DewPointDepression
-        es_df = DewPointDepression(pd.concat(
-            [dependencies_df, self.meta_df], ignore_index=True), 
-            ice_water_phase='water', 
-            dependency_check=True
+        es_df = DewPointDepression(
+            pd.concat([dependencies_df, self.meta_df], ignore_index=True), 
+            ice_water_phase  = 'water', 
+            dependency_check = True,
+            reduce_df        = False
             ).compute()
         # A noter que l'option dependency_check est a True pour l'appel a DewPointDepression:
         #       On veut eviter de faire le nettoyage des metadata inutilement puisqu'il a deja ete fait.
@@ -308,16 +316,13 @@ class HumiditySpecific(Plugin):
         px_df = get_from_dataframe(dependencies_df, 'PX')
         
         vppr_df = VapourPressure(
-            pd.concat(
-                [dependencies_df,
-                self.meta_df],
-                ignore_index=True),
-            ice_water_phase=self.ice_water_phase,
-            temp_phase_switch=self.temp_phase_switch,
-            temp_phase_switch_unit=self.temp_phase_switch_unit, 
-            dependency_check=True,
-            copy_input=False
-            ).compute()
+            pd.concat([dependencies_df,self.meta_df],ignore_index=True),
+            ice_water_phase        = self.ice_water_phase,
+            temp_phase_switch      = self.temp_phase_switch,
+            temp_phase_switch_unit = self.temp_phase_switch_unit, 
+            dependency_check       = True,
+            copy_input             = False,
+            reduce_df              = False).compute()
         # A noter que l'option dependency_check est a True pour l'appel a VapourPressure, voir note
         # dans compute_es
         if vppr_df.empty:
@@ -331,7 +336,7 @@ class HumiditySpecific(Plugin):
             all_rows=True)
 
         for i in hu_df.index:
-            px = px_df.at[i, 'd']
+            px   = px_df.at[i, 'd']
             vppr = vpprpa_df.at[i, 'd']
             hu_df.at[i, 'd'] = hu_from_vppr(
                 vppr=vppr, px=px).astype(np.float32)

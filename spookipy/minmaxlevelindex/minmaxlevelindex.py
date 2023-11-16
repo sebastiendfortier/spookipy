@@ -42,24 +42,26 @@ class MinMaxLevelIndex(Plugin):
     :type nomvar_max_val: str, optional
     :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
     :type copy_input: bool, optional 
+    :param reduce_df: Indicates to reduce the dataframe to its minimum, defaults to True
+    :type reduce_df: bool, optional
     """
 
     @initializer
     def __init__(
             self,
             df: pd.DataFrame,
-            nomvar : str=None,
-            ascending=True,
-            min=False,
-            max=False,
-            bounded=False,
-            value_to_return=False,
-            nomvar_min_idx='KMIN',
-            nomvar_max_idx='KMAX',
-            nomvar_min_val='MIN',
-            nomvar_max_val='MAX',
-            copy_input=False,
-            reduce_df=False
+            nomvar : str    = None,
+            ascending       = True,
+            min             = False,
+            max             = False,
+            bounded         = False,
+            value_to_return = False,
+            nomvar_min_idx  = 'KMIN',
+            nomvar_max_idx  = 'KMAX',
+            nomvar_min_val  = 'MIN',
+            nomvar_max_val  = 'MAX',
+            copy_input      = False,
+            reduce_df       = True
             ):
 
         self.df = fstpy.metadata_cleanup(self.df)
@@ -243,13 +245,14 @@ class MinMaxLevelIndex(Plugin):
             # Lorsque l'option copy_input n'est pas a True, on garde le comportement original du plugin
             # i.e. qu'on sort seulement le champ pour lequel on cherche le min/max et non tous les champs d'input
             if not self.copy_input:
+                var_df = fstpy.add_columns(var_df, columns=['etiket'])
                 var_df = reshape_arrays(var_df)  
                 var_df = dataframe_arrays_to_dask(var_df)
                 df_list.append(var_df)
 
         return self.final_results(df_list, MinMaxLevelIndexError,
                                   copy_input = self.copy_input,
-                                  reduce_df=self.reduce_df)
+                                  reduce_df  = self.reduce_df)
 
     @staticmethod
     def parse_config(args: str) -> dict:

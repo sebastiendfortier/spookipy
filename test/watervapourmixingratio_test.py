@@ -8,6 +8,7 @@ import pandas as pd
 import pytest
 import spookipy
 from ci_fstcomp import fstcomp
+import rpnpy.librmn.all as rmn
 import secrets
 
 pytestmark = [pytest.mark.regressions, pytest.mark.humidity]
@@ -391,7 +392,7 @@ def test_14(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "WaterVapourMixingRatioPXVPPR_test14_file2cmp_20230426.std"
+    file_to_compare = plugin_test_dir + "WaterVapourMixingRatioPXVPPR_test14_file2cmp_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -409,6 +410,9 @@ def test_15(plugin_test_dir):
     # compute WaterVapourMixingRatio
     df      = spookipy.WaterVapourMixingRatio(tthr_df,
                                               ice_water_phase='water').compute()
+    
+    # Equivalent a --IP1EncodingStyle OLDSTYLE
+    df = spookipy.convip(df, style=rmn.CONVIP_ENCODE_OLD)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_15.std"])

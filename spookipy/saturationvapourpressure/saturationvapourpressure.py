@@ -36,6 +36,8 @@ class SaturationVapourPressure(Plugin):
     :type dependency_check: bool, optional  
     :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
     :type copy_input: bool, optional  
+    :param reduce_df: Indicates to reduce the dataframe to its minimum, defaults to True
+    :type reduce_df: bool, optional
     """
     computable_plugin = "SVP"
     @explicit_params_checker
@@ -44,11 +46,12 @@ class SaturationVapourPressure(Plugin):
             self,
             df: pd.DataFrame,
             ice_water_phase,
-            temp_phase_switch=None,
-            temp_phase_switch_unit='celsius',
-            rpn=False,
-            dependency_check=False,
-            copy_input=False):
+            temp_phase_switch      = None,
+            temp_phase_switch_unit = 'celsius',
+            rpn                    = False,
+            dependency_check       = False,
+            copy_input             = False,
+            reduce_df              = True):
 
         self.plugin_params = {
             'ice_water_phase'       : self.ice_water_phase,
@@ -70,7 +73,7 @@ class SaturationVapourPressure(Plugin):
         self.plugin_result_specifications = {
             'SVP': {
                 'nomvar': 'SVP',
-                'label': 'SVPRES',
+                'label' : 'SVPRES',
                 'unit'  : 'hectoPascal',
                 'nbits' : 16,
                 'datyp' : 1},
@@ -169,9 +172,10 @@ class SaturationVapourPressure(Plugin):
 
                 df_list.append(svp_df)
         finally:
-            return self.final_results(df_list,SaturationVapourPressureError, 
+            return self.final_results(df_list, SaturationVapourPressureError, 
                                       dependency_check = self.dependency_check, 
-                                      copy_input = self.copy_input)
+                                      copy_input       = self.copy_input,
+                                      reduce_df        = self.reduce_df)
 
     @staticmethod
     def parse_config(args: str) -> dict:

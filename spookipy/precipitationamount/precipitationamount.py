@@ -26,15 +26,17 @@ class PrecipitationAmount(Plugin):
     :type interval: datetime.timedelta or list of datetime.timedelta
     :param step: List of the time steps between successive start times within each time range
     :type step: datetime.timedelta or list of datetime.timedelta
+    :param reduce_df: Indicates to reduce the dataframe to its minimum, defaults to True
+    :type reduce_df: bool, optional
     """
     @initializer
     def __init__(self, 
                  df: pd.DataFrame, 
-                 nomvar=None, 
-                 forecast_hour_range=None, 
-                 interval=None, 
-                 step=None,
-                 reduce_df = False):
+                 nomvar              = None, 
+                 forecast_hour_range = None, 
+                 interval            = None, 
+                 step                = None,
+                 reduce_df           = True):
         
         super().__init__(self.df)
         # self.validate_nomvar()
@@ -42,19 +44,19 @@ class PrecipitationAmount(Plugin):
     def compute(self) -> pd.DataFrame:
         logging.info('PrecipitationAmount - compute\n')
         df = TimeIntervalDifference(self.df, 
-                                    nomvar=self.nomvar,
-                                    forecast_hour_range=self.forecast_hour_range,
-                                    interval=self.interval,
-                                    step=self.step,
-                                    strictly_positive=True,
-                                    reduce_df = False).compute()
+                                    nomvar              = self.nomvar,
+                                    forecast_hour_range = self.forecast_hour_range,
+                                    interval            = self.interval,
+                                    step                = self.step,
+                                    strictly_positive   = True,
+                                    reduce_df           = False).compute()
         
         df.loc[df['nomvar'] == self.nomvar, 'label'] = LABEL
 
         return self.final_results([df], 
                                   PrecipitationAmountError, 
                                   copy_input = False,
-                                  reduce_df=True)
+                                  reduce_df  = self.reduce_df)
 
     @staticmethod
     def parse_config(args: str) -> dict:
@@ -73,10 +75,10 @@ class PrecipitationAmount(Plugin):
         parsed_arg = vars(parser.parse_args(args.split()))
 
         parsed_arg['interval'] = apply_lambda_to_list(parsed_arg['interval'].split(','), lambda a: convert_time(a))
-        parsed_arg['step'] = apply_lambda_to_list(parsed_arg['step'].split(','), lambda a: convert_time(a))
+        parsed_arg['step']     = apply_lambda_to_list(parsed_arg['step'].split(','), lambda a: convert_time(a))
         parsed_arg['forecast_hour_range'] = apply_lambda_to_list(parsed_arg['forecast_hour_range'].split(','), lambda a: convert_time_range(a))
 
-        parsed_arg['nomvar'] = parsed_arg['nomvar'].split(',')
+        parsed_arg['nomvar']   = parsed_arg['nomvar'].split(',')
         apply_lambda_to_list(parsed_arg['nomvar'],lambda a : validate_nomvar(a,"PrecipitationAmount",PrecipitationAmountError))
 
         return parsed_arg

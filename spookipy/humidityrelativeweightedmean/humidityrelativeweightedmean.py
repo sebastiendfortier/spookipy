@@ -30,6 +30,8 @@ class HumidityRelativeWeightedMean(Plugin):
     :type dependency_check: bool, optional
     :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
     :type copy_input: bool, optional  
+    :param reduce_df: Indicates to reduce the dataframe to its minimum, defaults to True
+    :type reduce_df: bool, optional
     """
 
     @explicit_params_checker
@@ -38,8 +40,9 @@ class HumidityRelativeWeightedMean(Plugin):
             self,
             df: pd.DataFrame,
             capped_value: float = None,
-            dependency_check=False,
-            copy_input=False):
+            dependency_check    = False,
+            copy_input          = False,
+            reduce_df           = True):
 
         self.plugin_mandatory_dependencies = [
             {
@@ -58,7 +61,8 @@ class HumidityRelativeWeightedMean(Plugin):
 
         self.plugin_result_specifications = \
             {
-                'HR'  : {'label': 'HRWAVG','unit': 'percent'}
+                'HR'  : {'label': 'HRWAVG',
+                         'unit': 'percent'}
             }
 
         self.df = fstpy.metadata_cleanup(self.df)
@@ -72,7 +76,8 @@ class HumidityRelativeWeightedMean(Plugin):
                 raise HumidityRelativeWeightedMeanError(
                         f'The capped_value is negative =  {self.capped_value} !') 
 
-        self.no_meta_df = fstpy.add_columns(self.no_meta_df, columns=['forecast_hour', 'ip_info'])
+        self.no_meta_df = fstpy.add_columns(self.no_meta_df, 
+                                            columns=['forecast_hour', 'ip_info'])
 
         keep = self.no_meta_df.loc[self.no_meta_df.nomvar.isin(["TT","HU"])].reset_index(drop=True) 
 
@@ -163,16 +168,18 @@ class HumidityRelativeWeightedMean(Plugin):
         finally:     
             return self.final_results(df_list, HumidityRelativeWeightedMeanError,
                                       dependency_check = self.dependency_check, 
-                                      copy_input = self.copy_input)
+                                      copy_input       = self.copy_input,
+                                      reduce_df        = self.reduce_df)
 
     def compute_hus(self, tt_df, td_df):
         from ..humidityspecific.humidityspecific import HumiditySpecific
         hus_df = HumiditySpecific(
             pd.concat(
-                [   tt_df,
-                    td_df],
+                [ tt_df,
+                  td_df ],
             ignore_index=True), 
-            dependency_check=self.dependency_check).compute()
+            dependency_check = self.dependency_check,
+            reduce_df        = False).compute()
         hus_df = get_from_dataframe(hus_df, 'HU')
         hus_df.loc[:,'nomvar'] = "HUS"
 

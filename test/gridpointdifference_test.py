@@ -34,6 +34,7 @@ def test_1(plugin_test_dir):
                                       axis=['x','y'], 
                                       difference_type='centered',
                                       copy_input=True).compute()
+    
     df.loc[df.nomvar=='FDX','nomvar'] = 'FFDX'
     df.loc[df.nomvar=='FDY','nomvar'] = 'FFDY'
 
@@ -43,16 +44,13 @@ def test_1(plugin_test_dir):
     # [ZapSmart --fieldNameFrom FDX --fieldNameTo FFDX] >> [ZapSmart --fieldNameFrom FDY --fieldNameTo FFDY] >> 
     # [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion]
 
-    df['etiket']                      = df['label'] #--ignoreExtended
-    df.loc[df.nomvar=='FF','etiket']  = 'CSVREADER'
-
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "XYCentered_file2cmp.std"
+    file_to_compare = plugin_test_dir + "XYCentered_file2cmp_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -79,17 +77,17 @@ def test_2(plugin_test_dir):
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     df.loc[df.nomvar=='FF','nomvar'] = 'FFDZ'
-    df = spookipy.convip(df,rmn.CONVIP_ENCODE_OLD)
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "new_ZCentered_file2cmp.std"
+    file_to_compare = plugin_test_dir + "new_ZCentered_file2cmp_20231026.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -107,15 +105,15 @@ def test_3(plugin_test_dir):
     df = spookipy.GridPointDifference(src_df0, 
                                       axis=['x','y'], 
                                       difference_type='forward').compute()
-    df.loc[df.nomvar=='FDX','nomvar'] = 'FFDX'
-    df.loc[df.nomvar=='FDY','nomvar'] = 'FFDY'
+
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
     # [Zap --dateOfOrigin 20080529T133415 --nbitsForDataStorage R16 --doNotFlagAsZapped] >> 
     # [GridPointDifference --axis X,Y --differenceType FORWARD] >> 
     # [ZapSmart --fieldNameFrom FDX --fieldNameTo FFDX] >> [ZapSmart --fieldNameFrom FDY --fieldNameTo FFDY] >> 
     # [WriterStd --output {destination_path} --ignoreExtended]
-
-    df['etiket'] = df['label'] #--ignoreExtended
+    
+    df.loc[df.nomvar=='FDX','nomvar'] = 'FFDX'
+    df.loc[df.nomvar=='FDY','nomvar'] = 'FFDY'
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
@@ -123,7 +121,7 @@ def test_3(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "XYForward_file2cmp.std"
+    file_to_compare = plugin_test_dir + "XYForward_file2cmp_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -144,12 +142,13 @@ def test_4(plugin_test_dir):
     df = spookipy.GridPointDifference(src_df0, 
                                       axis=['z'], 
                                       difference_type='forward').compute()
+    
     df.loc[df.nomvar=='FF','nomvar'] = 'FFDZ'
+
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
     # [Zap --dateOfOrigin 20080529T133415 --nbitsForDataStorage R16 --doNotFlagAsZapped] >> 
     # [GridPointDifference --axis Z --differenceType FORWARD] >> [Zap --fieldName FFDZ --doNotFlagAsZapped] >> 
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
-    df = spookipy.convip(df, rmn.CONVIP_ENCODE_OLD)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
@@ -157,10 +156,10 @@ def test_4(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "new_ZForward_file2cmp.std"
+    file_to_compare = plugin_test_dir + "new_ZForward_file2cmp_20231026.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -178,15 +177,15 @@ def test_5(plugin_test_dir):
     df = spookipy.GridPointDifference(src_df0, 
                                       axis=['x','y'], 
                                       difference_type='backward').compute()
+    
     df.loc[df.nomvar=='FDX','nomvar'] = 'FFDX'
     df.loc[df.nomvar=='FDY','nomvar'] = 'FFDY'    
+
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
     # [Zap --dateOfOrigin 20080529T133415 --nbitsForDataStorage R16 --doNotFlagAsZapped] >> 
     # [GridPointDifference --axis X,Y --differenceType BACKWARD] >> 
     # [ZapSmart --fieldNameFrom FDX --fieldNameTo FFDX] >> [ZapSmart --fieldNameFrom FDY --fieldNameTo FFDY] >> 
     # [WriterStd --output {destination_path} --ignoreExtended]
-
-    df['etiket'] = df['label'] #--ignoreExtended
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
@@ -194,7 +193,7 @@ def test_5(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "XYBackward_file2cmp.std"
+    file_to_compare = plugin_test_dir + "XYBackward_file2cmp_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -215,12 +214,13 @@ def test_6(plugin_test_dir):
     df = spookipy.GridPointDifference(src_df0, 
                                       axis=['z'], 
                                       difference_type='backward').compute()
+    
     df.loc[df.nomvar=='FF','nomvar'] = 'FFDZ'    
+
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
     # [Zap --dateOfOrigin 20080529T133415 --nbitsForDataStorage R16 --doNotFlagAsZapped] >> 
     # [GridPointDifference --axis Z --differenceType BACKWARD] >> [Zap --fieldName FFDZ --doNotFlagAsZapped] >> 
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
-    df = spookipy.convip(df, rmn.CONVIP_ENCODE_OLD)
     
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
@@ -228,10 +228,10 @@ def test_6(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "new_ZBackward_file2cmp.std"
+    file_to_compare = plugin_test_dir + "new_ZBackward_file2cmp_20231026.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -246,6 +246,7 @@ def test_7(plugin_test_dir):
                                       axis=['x','y'], 
                                       difference_type='centered',
                                       copy_input=True).compute()
+    
     df.loc[df.nomvar=='FDX','nomvar'] = 'UUDX'    
     df.loc[df.nomvar=='FDY','nomvar'] = 'UUDY'    
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
@@ -253,9 +254,6 @@ def test_7(plugin_test_dir):
     # [ZapSmart --fieldNameFrom FDX --fieldNameTo UUDX] >> 
     # [ZapSmart --fieldNameFrom FDY --fieldNameTo UUDY] >> 
     # [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion --IP1EncodingStyle OLDSTYLE]
-
-    df['etiket'] = df['label'] #--ignoreExtended
-    df.loc[df.nomvar=='UU','etiket'] = 'R1558V0N'
     
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
@@ -263,7 +261,7 @@ def test_7(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "XYCentered2_file2cmp.std"
+    file_to_compare = plugin_test_dir + "XYCentered2_file2cmp_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -357,9 +355,10 @@ def test_12(plugin_test_dir):
     # [Select --fieldName TT --verticalLevel 1000] >> 
     # [GridPointDifference --axis X,Y --differenceType CENTERED] >> 
     # [WriterStd --output {destination_path} --noUnitConversion]
-    df = spookipy.convip(df,rmn.CONVIP_ENCODE)
-    df.loc[df.nomvar.isin(['^>','!!']), 'etiket'] = 'G1_5_0X'
 
+    # On convertit les ip1 car les donnees d'input sont en mb non encodes
+    # et dans le fichier de comparaison, les ips etaient encodes.
+    df = spookipy.convip(df,rmn.CONVIP_ENCODE)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
@@ -367,7 +366,7 @@ def test_12(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "XYCentered_YY_file2cmp.std"
+    file_to_compare = plugin_test_dir + "XYCentered_YY_file2cmp_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -389,19 +388,23 @@ def test_13(plugin_test_dir):
     df = spookipy.GridPointDifference(src_df0, 
                                       axis=['x','y'], 
                                       difference_type='forward').compute()
+    
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
     # [Select --fieldName TT --verticalLevel 1000] >> 
     # [GridPointDifference --axis X,Y --differenceType FORWARD] >> 
     # [WriterStd --output {destination_path} --noUnitConversion]
-    df.loc[df.nomvar.isin(['^>','!!']), 'etiket'] = 'G1_5_0X'
+
+    # On convertit les ip1 car les donnees d'input sont en mb non encodes
+    # et dans le fichier de comparaison, les ips etaient encodes.
     df = spookipy.convip(df,rmn.CONVIP_ENCODE)
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "XYForward_YY_file2cmp.std"
+    file_to_compare = plugin_test_dir + "XYForward_YY_file2cmp_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -427,7 +430,9 @@ def test_14(plugin_test_dir):
     # [Select --fieldName TT --verticalLevel 1000] >> 
     # [GridPointDifference --axis X,Y --differenceType BACKWARD] >> 
     # [WriterStd --output {destination_path} --noUnitConversion]
-    df.loc[df.nomvar.isin(['^>','!!']), 'etiket'] = 'G1_5_0X'
+    
+    # On convertit les ip1 car les donnees d'input sont en mb non encodes
+    # et dans le fichier de comparaison, les ips etaient encodes.
     df = spookipy.convip(df,rmn.CONVIP_ENCODE)
 
     # write the result
@@ -436,13 +441,12 @@ def test_14(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "XYBackward_YY_file2cmp.std"
+    file_to_compare = plugin_test_dir + "XYBackward_YY_file2cmp_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
-
 
 def test_15(plugin_test_dir):
     """Différence vers l'arriere avec un fichier global réduit (grille type Z)."""
@@ -462,7 +466,6 @@ def test_15(plugin_test_dir):
 #                 "[Select --fieldName TT --verticalLevel 1000] >> ",
 #                 "[GridPointDifference --axis X --differenceType BACKWARD] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
-    df.loc[~(df.nomvar=='TT'), 'etiket'] = 'G1_7_1X'
     
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
@@ -470,13 +473,12 @@ def test_15(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "glbpres_test15_file2cmp.std"
+    file_to_compare = plugin_test_dir + "glbpres_test15_file2cmp_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
-
 
 def test_16(plugin_test_dir):
     """Différence vers l'avant avec un fichier global réduit (grille type Z)."""
@@ -496,7 +498,6 @@ def test_16(plugin_test_dir):
 #                 "[Select --fieldName TT --verticalLevel 1000] >> ",
 #                 "[GridPointDifference --axis X --differenceType FORWARD] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
-    df.loc[~(df.nomvar=='TT'), 'etiket'] = 'G1_7_1X'
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_16.std"])
@@ -504,13 +505,12 @@ def test_16(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "glbpres_test16_file2cmp.std"
+    file_to_compare = plugin_test_dir + "glbpres_test16_file2cmp_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
-
 
 def test_17(plugin_test_dir):
     """Différence centrée avec un fichier global réduit (grille type Z)."""
@@ -531,21 +531,18 @@ def test_17(plugin_test_dir):
 #                 "[GridPointDifference --axis X --differenceType CENTERED] >> ",
 #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
-    df.loc[~(df.nomvar=='TT'), 'etiket'] = 'G1_7_1X'
-
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_17.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "glbpres_test17_file2cmp.std"
+    file_to_compare = plugin_test_dir + "glbpres_test17_file2cmp_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
-
 
 def test_18(plugin_test_dir):
     """Différence centrée avec un fichier global réduit (grille type A)."""
@@ -573,7 +570,6 @@ def test_18(plugin_test_dir):
     res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
-
 
 def test_19(plugin_test_dir):
     """Différence centrée avec un fichier global réduit (grille type B)."""

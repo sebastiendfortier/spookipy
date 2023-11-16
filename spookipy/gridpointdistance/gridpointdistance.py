@@ -10,7 +10,7 @@ import pandas as pd
 import fstpy
 import rpnpy.librmn.all as rmn
 from ..plugin import Plugin, PluginParser
-from ..utils import create_empty_result, get_0_ip1, initializer, to_dask
+from ..utils import create_empty_result, initializer, to_dask
 
 
 EARTH_RADIUS: Final = 6370997.
@@ -64,10 +64,10 @@ def calc_dist3(lat1, lon1, lat2, lon2):
 VEZCALCDIST_F: Final = np.vectorize(rmn.ezcalcdist)
 # VEZCALCDIST_F: Final = np.vectorize(calc_dist)
 # VEZCALCDIST_F: Final = np.vectorize(calc_dist3)
-# ETIKET: Final[str] = 'GPTDIS'
+
 NOMVAR_X: Final[str] = 'GDX'
 NOMVAR_Y: Final[str] = 'GDY'
-LABEL:    Final[str] = 'GPTDIS'
+
 def centered_distance(lats: np.ndarray, lons: np.ndarray, is_global: bool = False, grid_wraps: bool = False) -> np.ndarray:
     center_res = VEZCALCDIST_F(lats[2:], lons[2:], lats[:-2], lons[:-2])
     if is_global and (not grid_wraps):
@@ -122,14 +122,19 @@ class GridPointDistance(Plugin):
     :type difference_type: str, optional
     :param axis: a choice in ['x', 'y'], defaults to ['x', 'y']
     :type axis: list, optional
+    :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
+    :type copy_input: bool, optional 
+    :param reduce_df: Indicates to reduce the dataframe to its minimum, defaults to True
+    :type reduce_df: bool, optional
     """
     @initializer
     def __init__(self, df: pd.DataFrame, 
                  difference_type: str = None, 
                  axis: 'list(str)' = ['x', 'y'],
-                 copy_input=False):
+                 copy_input = False,
+                 reduce_df  = True):
         
-        self.plugin_result_specifications = {'label': LABEL}
+        self.plugin_result_specifications = {'label': 'GPTDIS'}
         
         super().__init__(self.df)
         self.validate_params()
@@ -168,12 +173,16 @@ class GridPointDistance(Plugin):
 
                     model_df = create_empty_result(grtyp_df, self.plugin_result_specifications)
                     # model_df = pd.DataFrame([grtyp_df.iloc[0].to_dict()])
-                    current_ip1 = model_df.iloc[0].ip1
-                    model_df['ip1'] = get_0_ip1(current_ip1)
-                    model_df['nomvar'] = NOMVAR_X
-                    gdx_df = copy.deepcopy(model_df)
-                    model_df['nomvar'] = NOMVAR_Y
-                    gdy_df = copy.deepcopy(model_df)
+                    current_ip1          = model_df.iloc[0].ip1
+                    current_ip1_kind     = model_df.iloc[0].ip1_kind
+                    model_df['level']    = 0
+                    model_df['ip1_kind'] = current_ip1_kind
+
+                    model_df['nomvar']   = NOMVAR_X
+                    gdx_df               = copy.deepcopy(model_df)
+
+                    model_df['nomvar']   = NOMVAR_Y
+                    gdy_df               = copy.deepcopy(model_df)
 
 
                     # print(no_meta_df.columns)
@@ -257,7 +266,8 @@ class GridPointDistance(Plugin):
 
         return self.final_results(df_list, 
                                   GridPointDistanceError, 
-                                  copy_input = self.copy_input)
+                                  copy_input = self.copy_input,
+                                  reduce_df  = self.reduce_df)
     @staticmethod
     def parse_config(args: str) -> dict:
         """method to translate spooki plugin parameters to python plugin parameters

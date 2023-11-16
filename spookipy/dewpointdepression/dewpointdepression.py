@@ -37,6 +37,8 @@ class DewPointDepression(Plugin):
     :type dependency_check: bool, optional 
     :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
     :type copy_input: bool, optional  
+    :param reduce_df: Indicates to reduce the dataframe to its minimum, defaults to True
+    :type reduce_df: bool, optional
     """
     computable_plugin = "ES"
     @explicit_params_checker
@@ -45,11 +47,12 @@ class DewPointDepression(Plugin):
             self,
             df: pd.DataFrame,
             ice_water_phase,
-            temp_phase_switch=None,
-            temp_phase_switch_unit='celsius',
-            rpn=False,
-            dependency_check=False,
-            copy_input=False):
+            temp_phase_switch      = None,
+            temp_phase_switch_unit = 'celsius',
+            rpn                    = False,
+            dependency_check       = False,
+            copy_input             = False,
+            reduce_df              = True):
 
         self.plugin_params = {
             'ice_water_phase'       : self.ice_water_phase,
@@ -210,12 +213,13 @@ class DewPointDepression(Plugin):
                         td_df = get_from_dataframe(dependencies_df, 'TD')
                         es_df = self.dewpointdepression_from_tt_td(
                             td_df, dependencies_df, option)
-
+ 
                 df_list.append(es_df)
         finally:
             return self.final_results(df_list, DewPointDepressionError, 
                                       dependency_check = self.dependency_check, 
-                                      copy_input = self.copy_input)
+                                      copy_input       = self.copy_input,
+                                      reduce_df        = self.reduce_df)
 
     def rpn_dewpointdepression_from_tt_hr_px(self, dependencies_df, option):
         logging.info(f'rpn option {option+1}')
@@ -263,7 +267,8 @@ class DewPointDepression(Plugin):
                 ignore_index=True),
             ice_water_phase=self.ice_water_phase,
             rpn=True, 
-            dependency_check= True).compute()
+            dependency_check= True,
+            reduce_df=False).compute()
         # A noter que l'option dependency_check est a True pour l'appel a HumiditySpecific:
         #       On veut eviter de faire le nettoyage des metadata inutilement puisqu'il a deja ete fait.
         #       Aussi, puisque l'option est a true, on doit verifier si le dataframe est vide suite a 
@@ -309,7 +314,9 @@ class DewPointDepression(Plugin):
             ice_water_phase=self.ice_water_phase,
             temp_phase_switch=self.temp_phase_switch,
             temp_phase_switch_unit=self.temp_phase_switch_unit, 
-            dependency_check=True).compute()
+            dependency_check=True,
+            reduce_df=False).compute()
+
         # A noter que l'option dependency_check est a True pour l'appel a TemperatureDewPoint:
         #       On veut eviter de faire le nettoyage des metadata inutilement puisqu'il a deja ete fait.
         #       Aussi, puisque l'option est a true, on doit verifier si le dataframe est vide suite a 

@@ -44,11 +44,12 @@ class HumidityRelative(Plugin):
             self,
             df: pd.DataFrame,
             ice_water_phase,
-            temp_phase_switch=None,
-            temp_phase_switch_unit='celsius',
-            rpn=False,
-            dependency_check=False,
-            copy_input=False):
+            temp_phase_switch      = None,
+            temp_phase_switch_unit ='celsius',
+            rpn                    = False,
+            dependency_check       = False,
+            copy_input             = False,
+            reduce_df              = True):
 
         self.plugin_params = {
             'ice_water_phase'       : self.ice_water_phase,
@@ -206,9 +207,19 @@ class HumidityRelative(Plugin):
 
                 df_list.append(hr_df)
         finally:
+            # Code en commentaire, a reevaluer plus tard si on veut faire ce traitement ou non
+            #  # Suppression des colonnes reliees aux ip, on sait qu'elles n'ont pas ete modifiees
+            # new_list = []
+            # ip_columns = ['level', 'ip1_kind', 'ip1_pkind', 'ip2_dec', 'ip2_kind', 'ip2_pkind', 'ip3_dec',
+            #               'ip3_kind', 'ip3_pkind', 'interval', 'surface', 'follow_topography', 'ascending']
+            # for df in df_list:
+            #     df = fstpy.remove_list_of_columns(df, ip_columns)
+            #     new_list.append(df)
+
             return self.final_results(df_list, HumidityRelative, 
                                       dependency_check = self.dependency_check, 
-                                      copy_input = self.copy_input)
+                                      copy_input       = self.copy_input,
+                                      reduce_df        = self.reduce_df)
 
     def rpn_humidityrelative_from_tt_hu_px(
             self, dependencies_df, hu_df, option):
@@ -222,9 +233,9 @@ class HumidityRelative(Plugin):
                                         all_rows=True)
 
         for i in hr_df.index:
-            ttk = ttk_df.at[i, 'd']
+            ttk  = ttk_df.at[i, 'd']
             pxpa = pxpa_df.at[i, 'd']
-            hu = hu_df.at[i, 'd']
+            hu   = hu_df.at[i, 'd']
             hr_df.at[i, 'd'] = rpn_hr_from_hu(tt=ttk, 
                                               hu=hu, 
                                               px=pxpa,
@@ -239,9 +250,10 @@ class HumidityRelative(Plugin):
                     dependencies_df,
                     self.meta_df],
                 ignore_index=True),
-            ice_water_phase=self.ice_water_phase,
-            rpn=True, 
-            dependency_check=True).compute()
+            ice_water_phase  = self.ice_water_phase,
+            rpn              = True, 
+            dependency_check = True,
+            reduce_df        = False).compute()
         # A noter que l'option dependency_check est a True pour l'appel a HumiditySpecific:
         #       On veut eviter de faire le nettoyage des metadata inutilement puisqu'il a deja ete fait.
         #       Aussi, puisque l'option est a true, on doit verifier si le dataframe est vide suite a 
@@ -281,9 +293,10 @@ class HumidityRelative(Plugin):
                     dependencies_df,
                     self.meta_df],
                 ignore_index=True),
-            ice_water_phase=self.ice_water_phase,
-            rpn=True, 
-            dependency_check=True).compute()
+            ice_water_phase  = self.ice_water_phase,
+            rpn              = True, 
+            dependency_check = True,
+            reduce_df        = False).compute()
         # A noter que l'option dependency_check est a True, voir note pour compute_hu
         if es_df.empty:
             raise HumidityRelativeError('No results produced by HumitityRelative, unable to calculate DewPointDepression!')
@@ -304,26 +317,28 @@ class HumidityRelative(Plugin):
                                         all_rows=True)
         svp_df  = SaturationVapourPressure(
             pd.concat(
-                [
-                    dependencies_df,
-                    self.meta_df],
+                [ dependencies_df,
+                  self.meta_df ],
                 ignore_index=True),
-            ice_water_phase=self.ice_water_phase,
-            temp_phase_switch=(
-                self.temp_phase_switch if self.ice_water_phase != 'water' else None),
-                dependency_check=self.dependency_check).compute()
+            ice_water_phase   = self.ice_water_phase,
+            temp_phase_switch = (self.temp_phase_switch if self.ice_water_phase != 'water' else None),
+            dependency_check  = self.dependency_check,
+            copy_input        = False,
+            reduce_df         = False).compute()
         svp_df  = get_from_dataframe(svp_df, 'SVP')
+
         vppr_df = VapourPressure(
             pd.concat(
-                [
-                    dependencies_df,
-                    self.meta_df],
+                [ dependencies_df,
+                  self.meta_df ],
                 ignore_index=True),
-            ice_water_phase=self.ice_water_phase,
-            temp_phase_switch=(
-                self.temp_phase_switch if self.ice_water_phase != 'water' else None),
-                dependency_check=self.dependency_check).compute()
+            ice_water_phase   = self.ice_water_phase,
+            temp_phase_switch = (self.temp_phase_switch if self.ice_water_phase != 'water' else None),
+            dependency_check  = self.dependency_check,
+            copy_input        = False,
+            reduce_df         = False).compute()
         vppr_df  = get_from_dataframe(vppr_df, 'VPPR')
+
         for i in hr_df.index:
             svp  = svp_df.at[i, 'd']
             vppr = vppr_df.at[i, 'd']

@@ -26,15 +26,17 @@ def test_1(plugin_test_dir):
 
     # compute WindModulus
     df = spookipy.WindModulus(src_df0).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WindModulus] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
-    df.loc[:, 'etiket'] = 'WINDMODULUS'
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [WindModulus] >> 
+    # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
+ 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "windModulus_file2cmp.std"
+    file_to_compare = plugin_test_dir + "windModulus_file2cmp_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -50,15 +52,17 @@ def test_2(plugin_test_dir):
 
     # compute WindModulus
     df = spookipy.WindModulus(src_df0).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WindModulus] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
-    df.loc[:, 'etiket'] = 'WINDMODULUS'
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [WindModulus] >> 
+    # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
+   
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "windModulus3D_file2cmp.std"
+    file_to_compare = plugin_test_dir + "windModulus3D_file2cmp_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -77,7 +81,9 @@ def test_4(plugin_test_dir):
 
     # compute WindModulus
     df = spookipy.WindModulus(src_df0).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WindModulus] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [WindModulus] >> 
+    # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
@@ -101,7 +107,10 @@ def test_5(plugin_test_dir):
 
     # compute WindModulus
     df = spookipy.WindModulus(src_df0).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName UV,UU,VV] >> [WindModulus --optimizationLevel 1] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [Select --fieldName UV,UU,VV] >> 
+    # [WindModulus --optimizationLevel 1] >>
+    # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
@@ -125,7 +134,9 @@ def test_6(plugin_test_dir):
 
     # compute WindModulus
     df = spookipy.WindModulus(src_df0).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WindModulus] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [WindModulus] >> 
+    # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
@@ -156,20 +167,21 @@ def test_9(plugin_test_dir):
     source1 = plugin_test_dir + "vv_850.std"
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
 
-    src_df = pd.concat([src_df0, src_df1], ignore_index=True)
+    src_df  = pd.concat([src_df0, src_df1], ignore_index=True)
 
     # compute WindModulus
     df = spookipy.WindModulus(src_df).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]} {sources[1]}] >> [WindModulus] >> [WriterStd --output {destination_path} --ignoreExtended]
-    # pourquoi ca devrait pas fonctionner?
-    df.loc[:, 'etiket'] = 'WINDMODULUS'
+    # [ReaderStd --ignoreExtended --input {sources[0]} {sources[1]}] >> 
+    # [WindModulus] >> 
+    # [WriterStd --output {destination_path} --ignoreExtended]
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "windmodulus3D850_file2cmp.std"
+    file_to_compare = plugin_test_dir + "windmodulus3D850_file2cmp_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)

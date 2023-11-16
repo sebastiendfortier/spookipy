@@ -25,7 +25,7 @@ def wind_chill(tt: np.ndarray, uv: np.ndarray) -> np.ndarray:
     :rtype: np.ndarray
     """
     return np.where((tt <= 0) & (uv >= 5), 13.12 + 0.6215 *
-                    tt + (0.3965 * tt - 11.37) * (uv**0.16), tt)
+                     tt + (0.3965 * tt - 11.37) * (uv**0.16), tt)
 
 
 class WindChill(Plugin):
@@ -35,14 +35,17 @@ class WindChill(Plugin):
     :type df: pd.DataFrame
     :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
     :type dependency_check: bool, optional   
+    :param reduce_df: Indicates to reduce the dataframe to its minimum, defaults to True
+    :type reduce_df: bool, optiona
     """
     computable_plugin = "RE"
     @initializer
     def __init__(
         self, 
         df: pd.DataFrame,
-        dependency_check=False,
-        copy_input=False):
+        dependency_check = False,
+        copy_input       = False,
+        reduce_df        = True):
 
         self.plugin_mandatory_dependencies = [
                 {
@@ -52,10 +55,12 @@ class WindChill(Plugin):
             ]
         self.plugin_result_specifications = {
             'RE': {
-                'nomvar': 'RE',
-                'label': 'WNDCHL',
-                'unit': 'celsius',
-                'ip1': 0}}
+                    'nomvar'   : 'RE',
+                    'label'    : 'WNDCHL',
+                    'unit'     : 'celsius',
+                    'level'    : 0,
+                    'ip1_kind' : 2}
+        }
 
         self.df = fstpy.metadata_cleanup(self.df)      
         super().__init__(self.df)
@@ -108,4 +113,5 @@ class WindChill(Plugin):
         finally:
             return self.final_results(df_list, WindChillError,
                                       dependency_check = self.dependency_check, 
-                                      copy_input = self.copy_input)
+                                      copy_input       = self.copy_input,
+                                      reduce_df        = self.reduce_df)

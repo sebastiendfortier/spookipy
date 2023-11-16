@@ -4,11 +4,8 @@ import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin, PluginParser
-from ..utils  import initializer, validate_nomvar
+from ..utils import (create_empty_result, initializer, validate_nomvar)
 from ..configparsingutils import preprocess_negative_args,apply_lambda_to_list
-from typing import Final
-
-LABEL   : Final[str] = 'MASK'
 
 class MaskError(Exception):
     pass
@@ -26,19 +23,21 @@ class Mask(Plugin):
     :type operators: list(str), optional
     :param nomvar_out: nomvar for output result, defaults to None
     :type nomvar_out: str, optional
-    :param parallel: execute in parallel, defaults to False
-    :type parallel: bool, optional
     """
     @initializer
     def __init__(
             self,
             df: pd.DataFrame,
-            thresholds=None,
-            values=None,
-            operators=None,
-            nomvar_out=None,
-            parallel: bool = False):
+            thresholds = None,
+            values     = None,
+            operators  = None,
+            nomvar_out = None,
+            reduce_df  = True):
 
+        self.plugin_result_specifications = \
+            {
+                'ALL': {'label': 'MASK'}
+            }
         self.df = fstpy.metadata_cleanup(self.df)
         super().__init__(self.df)
         self.validate_params()
@@ -62,23 +61,23 @@ class Mask(Plugin):
         
     def compute(self) -> pd.DataFrame:
         df_list = []
-        # holds data from all the groups
 
-        self.no_meta_df['label']          = LABEL
-        # Parametres par defaut
-        self.no_meta_df['run']            = '__'
-        self.no_meta_df['implementation'] = 'X'
-        self.no_meta_df['etiket_format']  = ''
-
+        res_df = create_empty_result(self.no_meta_df, 
+                                     self.plugin_result_specifications['ALL'], 
+                                     all_rows=True)
+        
+        res_df = fstpy.add_flag_values(res_df)
+        res_df.masks = True
+            
         if not(self.nomvar_out is None):
-            self.no_meta_df['nomvar'] = self.nomvar_out
+            res_df['nomvar'] = self.nomvar_out
 
-        df_list = apply_mask(self.no_meta_df, self.values[::-1], self.operators[::-1], self.thresholds[::-1])
+        df_list = apply_mask(res_df, self.values[::-1], self.operators[::-1], self.thresholds[::-1])
 
         return self.final_results(df_list, 
                                   MaskError, 
                                   copy_input = False,
-                                  reduce_df=True)
+                                  reduce_df  = self.reduce_df)
 
 
     @staticmethod

@@ -36,6 +36,8 @@ class WaterVapourMixingRatio(Plugin):
     :type dependency_check: bool, optional  
     :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
     :type copy_input: bool, optional   
+    :param reduce_df: Indicates to reduce the dataframe to its minimum, defaults to True
+    :type reduce_df: bool, optional
     """
     computable_plugin = "QV"
     @explicit_params_checker
@@ -43,12 +45,13 @@ class WaterVapourMixingRatio(Plugin):
     def __init__(
             self,
             df: pd.DataFrame,
-            ice_water_phase='both',
-            temp_phase_switch=-40,
-            temp_phase_switch_unit='celsius',
-            rpn=False, 
-            dependency_check=False,
-            copy_input=False):
+            ice_water_phase        = 'both',
+            temp_phase_switch      = -40,
+            temp_phase_switch_unit = 'celsius',
+            rpn                    = False, 
+            dependency_check       = False,
+            copy_input             = False,
+            reduce_df              = True):
 
         # Si ice_water_phase = water, on ne veut pas des valeurs par defaut pour temp_phase_switch
         # car la validation ne passera pas.  Par contre, ces defauts sont necessaires pour tous les 
@@ -68,24 +71,24 @@ class WaterVapourMixingRatio(Plugin):
 
         self.plugin_mandatory_dependencies_rpn = [
                 {
-                    'HU': {'nomvar': 'HU', 'unit': 'kilogram_per_kilogram'},
+                    'HU'  : {'nomvar': 'HU', 'unit': 'kilogram_per_kilogram'},
                 }
             ]
         self.plugin_mandatory_dependencies = [
                 {
-                    'HU': {'nomvar': 'HU','unit': 'kilogram_per_kilogram', 'select_only': True}, 
+                    'HU'  : {'nomvar': 'HU','unit': 'kilogram_per_kilogram', 'select_only': True}, 
                 },
                 {
                     'VPPR': {'nomvar': 'VPPR', 'unit': 'pascal'},
-                    'PX':   {'nomvar': 'PX',   'unit': 'pascal'}, 
+                    'PX'  : {'nomvar': 'PX',   'unit': 'pascal'}, 
                 }
             ]
 
         self.plugin_result_specifications = {
             'QV': {
                 'nomvar': 'QV',
-                'label': 'WVMXRT',
-                'unit': 'gram_per_kilogram'}}
+                'label' : 'WVMXRT',
+                'unit'  : 'gram_per_kilogram'}}
 
         self.df = fstpy.metadata_cleanup(self.df)
         super().__init__(self.df)
@@ -174,7 +177,8 @@ class WaterVapourMixingRatio(Plugin):
         finally:
             return self.final_results(df_list, WaterVapourMixingRatioError,
                                       dependency_check = self.dependency_check, 
-                                      copy_input = self.copy_input)
+                                      copy_input       = self.copy_input,
+                                      reduce_df        = self.reduce_df)
 
 
     def watervapourmixingratio_from_vppr(self, dependencies_df, option):
@@ -190,7 +194,7 @@ class WaterVapourMixingRatio(Plugin):
 
         for i in qv_df.index:
             vpprpa = vpprpa_df.at[i, 'd']
-            pxpa = pxpa_df.at[i, 'd']
+            pxpa   = pxpa_df.at[i, 'd']
             qv_df.at[i, 'd'] = qv_from_vppr(
                 px=pxpa, vppr=vpprpa).astype(np.float32)
                 

@@ -36,20 +36,7 @@ def test_1(plugin_test_dir):
     # [MinMaxLevelIndex --minMax MIN --direction ASCENDING --outputFieldName1 IND] >>
     # [WriterStd --output {destination_path} --encodeIP2andIP3]",
 
-    # label = "MMLVLI"
-    # df = spookipy.convip(df,spookipy.rmn.CONVIP_ENCODE,'ip2')
-
-    # df_tt = df[df.nomvar == 'TT'].iloc[0]
-
-    # etiket  = create_encoded_etiket(run=df_tt.run,label=label,ensemble_member=df_tt.ensemble_member,implementation=df_tt.implementation)
-    # etiket2 = create_encoded_etiket(run='__',label=label,ensemble_member=df_tt.ensemble_member,implementation='X')
-
-    etiket  = "R1MMLVLIN"
-    etiket2 = "__MMLVLIX"
-    df.loc[df.nomvar == "IND",'etiket'] = etiket2
-    df.loc[df.nomvar == "TT",'etiket']  = etiket
-
-    # Encodage des ip2
+    # Conserver car on encode les ip2/ip3 de tous les champs, pas juste les champs resultats
     df = spookipy.encode_ip2_and_ip3_height(df)
 
     # write the result
@@ -58,11 +45,11 @@ def test_1(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test1_20210915.std"
+    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test1_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
-    # fstpy.delete_file(results_file)
+    fstpy.delete_file(results_file)
     assert(res)
 
 
@@ -83,13 +70,7 @@ def test_2(plugin_test_dir):
     # [MinMaxLevelIndex --minMax MAX --direction ASCENDING --outputFieldName2 IND] 
     # [WriterStd --output {destination_path} --encodeIP2andIP3]",
 
-    etiket  = "R1MMLVLIN"
-    etiket2 = "__MMLVLIX"
-
-    df.loc[df.nomvar == "IND",'etiket'] = etiket2
-    df.loc[df.nomvar == "TT",'etiket']  = etiket
-
-    # Encodage des ip2
+    # Conserver car on encode les ip2/ip3 de tous les champs, pas juste les champs resultats
     df = spookipy.encode_ip2_and_ip3_height(df)
 
     # write the result
@@ -98,7 +79,7 @@ def test_2(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test2_20210915.std"
+    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test2_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -124,13 +105,7 @@ def test_3(plugin_test_dir):
     # [MinMaxLevelIndex --minMax BOTH --direction DESCENDING --outputFieldName1 MIN --outputFieldName2 MAX] >>
     # [WriterStd --output {destination_path} --encodeIP2andIP3]",
 
-    etiket  = "R1MMLVLIN"
-    etiket2 = "__MMLVLIX"
-
-    df.loc[df.nomvar.isin(["MIN", "MAX"]),'etiket'] = etiket2
-    df.loc[df.nomvar == "TT",'etiket']              = etiket
-
-    # Encodage des ip2
+    # Conserver car on encode les ip2/ip3 de tous les champs, pas juste les champs resultats
     df = spookipy.encode_ip2_and_ip3_height(df)
 
     # write the result
@@ -139,7 +114,7 @@ def test_3(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test3_20210915.std"
+    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test3_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -164,12 +139,7 @@ def test_4(plugin_test_dir):
     # [MinMaxLevelIndex --minMax BOTH --direction ASCENDING --outputFieldName1 MIN --outputFieldName2 MAX] >>
     # [WriterStd --output {destination_path} --encodeIP2andIP3]"
 
-    etiket  = "R1MMLVLIN"
-    etiket2 = "__MMLVLIX"
-    df.loc[df.nomvar.isin(["MIN", "MAX"]),'etiket'] = etiket2
-    df.loc[df.nomvar == "GZ",'etiket']              = etiket
-
-    # Encodage des ip2
+    # Conserver car on encode les ip2/ip3 de tous les champs, pas juste les champs resultats
     df = spookipy.encode_ip2_and_ip3_height(df)
 
     # write the result
@@ -178,7 +148,7 @@ def test_4(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test4-5_20210915.std"
+    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test4-5_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -204,12 +174,7 @@ def test_5(plugin_test_dir):
 #     # [MinMaxLevelIndex --minMax BOTH --direction ASCENDING --outputFieldName1 MIN --outputFieldName2 MAX] >>
 #     # [WriterStd --output {destination_path} --encodeIP2andIP3]",
 
-    etiket  = "R1MMLVLIN"
-    etiket2 = "__MMLVLIX"
-    df.loc[df.nomvar.isin(["MIN", "MAX"]),'etiket'] = etiket2
-    df.loc[df.nomvar == "GZ",'etiket']              = etiket
-
-    # Encodage des ip2
+    # Conserver car on encode les ip2/ip3 de tous les champs, pas juste les champs resultats
     df = spookipy.encode_ip2_and_ip3_height(df)
 
     # write the result
@@ -218,7 +183,7 @@ def test_5(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test4-5_20210915.std"
+    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test4-5_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -245,12 +210,7 @@ def test_6(plugin_test_dir):
     # [MinMaxLevelIndex --minMax BOTH --direction DESCENDING --outputFieldName1 MIN --outputFieldName2 MAX] >>
     # [WriterStd --output {destination_path} --encodeIP2andIP3]"
 
-    etiket  = "R1MMLVLIN"
-    etiket2 = "__MMLVLIX"
-    df.loc[df.nomvar.isin(["MIN", "MAX"]),'etiket'] = etiket2
-    df.loc[df.nomvar == "UU",'etiket']              = etiket
-
-    # Encodage des ip2
+    # Conserver car on encode les ip2/ip3 de tous les champs, pas juste les champs resultats
     df = spookipy.encode_ip2_and_ip3_height(df)
 
     # write the result
@@ -259,7 +219,7 @@ def test_6(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test6-7_20210915.std"
+    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test6-7_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -286,12 +246,7 @@ def test_7(plugin_test_dir):
     # [MinMaxLevelIndex --minMax BOTH --direction DESCENDING --outputFieldName1 MIN --outputFieldName2 MAX] >>
     # [WriterStd --output {destination_path} --encodeIP2andIP3]"
 
-    etiket  = "R1MMLVLIN"
-    etiket2 = "__MMLVLIX"
-    df.loc[df.nomvar.isin(["MIN", "MAX"]),'etiket'] = etiket2
-    df.loc[df.nomvar == "UU",'etiket']              = etiket
-
-    # Encodage des ip2
+    # Conserver car on encode les ip2/ip3 de tous les champs, pas juste les champs resultats
     df = spookipy.encode_ip2_and_ip3_height(df)
 
     # write the result
@@ -300,7 +255,7 @@ def test_7(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test6-7_20210915.std"
+    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test6-7_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -326,17 +281,16 @@ def test_9(plugin_test_dir):
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [MinMaxLevelIndex --bounded --minMax MAX --outputFieldName2 IND] >>
     # [Zap --pdsLabel MinMaxBoundedIndexLevel --doNotFlagAsZapped] >>
-    # [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
+    # [WriterStd --output {destination_path} --encodeIP2andIP3]]
 
+    # On conserve ces modif pour respecter le zap du test en C++
     etiket  = "MINMAXX"
     etiket2 = "__MINMAXX"
     df.loc[df.nomvar == 'ICGA','etiket']   = etiket
     df.loc[df.nomvar == 'IND' ,'etiket']   = etiket2
 
-    # Encodage des ip2
+    # Conserver car on encode les ip2/ip3 de tous les champs, pas juste les champs resultats
     df = spookipy.encode_ip2_and_ip3_height(df)
-    # Le plugin devrait set bounded quand l'option bounded est True
-    df.loc[df.nomvar=='IND','typvar'] = 'PB'
     
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
@@ -373,15 +327,8 @@ def test_10(plugin_test_dir):
     # [MinMaxLevelIndex --bounded --minMax BOTH --direction ASCENDING] >>
     # [WriterStd --output {destination_path} --encodeIP2andIP3]",
 
-    etiket  = "R1MMLVLIN"
-    etiket2 = "__MMLVLIX"
-    df.loc[df.nomvar.isin(["KMIN", "KMAX"]),'etiket'] = etiket2
-    df.loc[df.nomvar == "TT",'etiket']                = etiket
-
-    # Encodage des ip2
+    # Conserver car on encode les ip2/ip3 de tous les champs, pas juste les champs resultats
     df = spookipy.encode_ip2_and_ip3_height(df)
-    # Le plugin devrait set bounded quand l'option bounded est True
-    df.loc[(df.nomvar.isin(['KMAX','KMIN'])),'typvar'] = 'PB'
         
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
@@ -389,7 +336,7 @@ def test_10(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test10-11_20210915.std"
+    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test10-11_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -418,15 +365,8 @@ def test_11(plugin_test_dir):
 #     # [MinMaxLevelIndex --bounded --minMax BOTH --direction ASCENDING] >>
 #     # [WriterStd --output {destination_path} --encodeIP2andIP3]",
 
-    etiket  = "R1MMLVLIN"
-    etiket2 = "__MMLVLIX"
-    df.loc[df.nomvar.isin(["KMIN", "KMAX"]),'etiket'] = etiket2
-    df.loc[df.nomvar == "TT",'etiket']                = etiket
-
-    # Encodage des ip2
+    # Conserver car on encode les ip2/ip3 de tous les champs, pas juste les champs resultats
     df = spookipy.encode_ip2_and_ip3_height(df)
-    # Le plugin devrait set bounded quand l'option bounded est True
-    df.loc[(df.nomvar.isin(['KMAX','KMIN'])),'typvar'] = 'PB'
         
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
@@ -434,14 +374,13 @@ def test_11(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test10-11_20210915.std"
+    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test10-11_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     
     assert(res)
-
 
 def test_12(plugin_test_dir):
     """Invalid request -- missing mandatory fields KBAS and KTOP with bounded option """
@@ -488,21 +427,16 @@ def test_20(plugin_test_dir):
         nomvar="TT",
         value_to_return=True).compute()
 
-    # Encodage des ip pour les champs ayant un objet interval 
-    df = spookipy.encode_ip_when_interval(df)
-    # le tests n'existe pas dans spooki, le fichier de comparaison a été créé sans porter attention au typvar
-    df.loc[df.ni == 3,'typvar'] = 'PZ'
-
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_20.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # # open and read comparison file
-    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test20.std"
+    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test20_20231026.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -523,16 +457,6 @@ def test_21(plugin_test_dir):
         src_df, 
         nomvar="TT",
         bounded=True).compute()
-
-    etiket  = "R1MMLVLIN"
-    etiket2 = "__MMLVLIX"
-    df.loc[df.nomvar.isin(["KMIN", "KMAX"]),'etiket'] = etiket2
-    df.loc[df.nomvar == "TT",'etiket']                = etiket
-
-    # Encodage des ip pour les champs ayant un objet intervalle
-    df = spookipy.encode_ip_when_interval(df)
-    # Le plugin devrait set bounded quand l'option bounded est True
-    df.loc[(df.nomvar.isin(['KMAX','KMIN'])),'typvar'] = 'PB'
     
      # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_21.std"])
@@ -540,7 +464,7 @@ def test_21(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # # open and read comparison file
-    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test21.std"
+    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test21_20231026.std"
 
     # compare results 
     res = fstcomp(results_file, file_to_compare) 
@@ -562,59 +486,13 @@ def test_22(plugin_test_dir):
         nomvar_min_idx='IND',
         copy_input=True).compute()
 
-    # etiket  = create_encoded_etiket(run=df_tt.run,label=label,ensemble_member=df_tt.ensemble_member,implementation=df_tt.implementation)
-    # etiket2 = create_encoded_etiket(run='__',label=label,ensemble_member=df_tt.ensemble_member,implementation='X')
-
-    etiket  = "R1MMLVLIN"
-    etiket2 = "__MMLVLIX"
-    df.loc[df.nomvar == "IND",'etiket'] = etiket2
-    df.loc[df.nomvar == "TT",'etiket']  = etiket
-
-    # Encodage des ip2
-    df = spookipy.encode_ip2_and_ip3_height(df)
-
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_22.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test1_20210915.std"
-
-    # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
-    assert(res)
-
-def test_22(plugin_test_dir):
-    """ 7 niveaux de TT (valeurs decroissantes en montant); identique au test 1 mais avec option copy_input  """
-    # open and read source
-    source0 = plugin_test_dir + "TTGZUUVV_3x2x7_regpres.std"
-    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-
-    # compute spookipy.MinMaxLevelIndex
-    # df = src_df0
-    df = spookipy.MinMaxLevelIndex(
-        src_df0,
-        nomvar="TT",
-        min=True,
-        ascending=True,
-        nomvar_min_idx='IND',
-        copy_input=True).compute()
-
-    etiket = "__MMLVLIX"
-    df.loc[df.nomvar == "IND",'etiket'] = etiket
-
-    # Encodage des ip2
-    df = spookipy.encode_ip2_and_ip3_height(df)
-
-    # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_22.std"])
-    fstpy.delete_file(results_file)
-    fstpy.StandardFileWriter(results_file, df).to_fst()
-
-    # open and read comparison file
-    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test22.std"
+    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test22_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)

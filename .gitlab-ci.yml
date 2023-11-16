@@ -27,7 +27,7 @@ before_script:
   - . r.load.dot /fs/ssm/main/opt/intelcomp/inteloneapi-2022.1.2/intelcomp+mpi+mkl
   - . r.load.dot /fs/ssm/eccc/mrd/rpn/MIG/ENV/migdep/5.1.1 /fs/ssm/eccc/mrd/rpn/MIG/ENV/rpnpy/2.1-u2.4
   - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/apps/ci_fstcomp/1.0.8
-  - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/202310/00
+  - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/202311/00
   
 
 

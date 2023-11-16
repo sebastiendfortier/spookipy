@@ -33,13 +33,16 @@ class TemperaturePotential(Plugin):
     :type df: pd.DataFrame
     :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
     :type dependency_check: bool, optional
+    :param reduce_df: Indicates to reduce the dataframe to its minimum, defaults to True
+    :type reduce_df: bool, optional
     """
     computable_plugin = "TH"
     @initializer
     def __init__( self, 
             df: pd.DataFrame,
-            dependency_check=False,
-            copy_input=False):
+            dependency_check = False,
+            copy_input       = False,
+            reduce_df        = True):
         
         self.plugin_mandatory_dependencies = [
             {
@@ -51,8 +54,8 @@ class TemperaturePotential(Plugin):
         self.plugin_result_specifications = {
             'TH': {
                 'nomvar': 'TH', 
-                'label': 'PTNLTT', 
-                'unit': 'kelvin'}
+                'label' : 'PTNLTT', 
+                'unit'  : 'kelvin'}
         }
 
         self.df = fstpy.metadata_cleanup(self.df)
@@ -106,6 +109,7 @@ class TemperaturePotential(Plugin):
         finally:
             return self.final_results(df_list, TemperaturePotentialError,
                                       dependency_check = self.dependency_check, 
-                                      copy_input = self.copy_input)
+                                      copy_input       = self.copy_input,
+                                      reduce_df        = self.reduce_df)
 
     

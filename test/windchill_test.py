@@ -22,28 +22,28 @@ def plugin_test_dir():
 def test_1(plugin_test_dir):
     """Calculate with a simple test data """
     # open and read source
-    source0 = plugin_test_dir + "UUVVTT_fileSrc.std"
-    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    source0   = plugin_test_dir + "UUVVTT_fileSrc.std"
+    src_df0   = fstpy.StandardFileReader(source0).to_pandas()
 
-    uv_df = spookipy.WindModulus(src_df0).compute()
+    uv_df     = spookipy.WindModulus(src_df0).compute()
 
     uv_src_df = pd.concat([src_df0, uv_df], ignore_index=True)
+
     # compute WindChill
     df = spookipy.WindChill(uv_src_df).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WindChill] >> [WriterStd --output {destination_path} --ignoreExtended]
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [WindChill] >> [WriterStd --output {destination_path} --ignoreExtended]
 
-    # df['datyp']=5
-    # df['nbits']=32
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "windChill_file2cmp.std"
+    file_to_compare = plugin_test_dir + "windChill_file2cmp_20231026.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.01,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])  # ,e_max=0.001)
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -53,17 +53,14 @@ def test_2(plugin_test_dir):
     # open and read source
     source0 = plugin_test_dir + "2011100712_012_glbhyb"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-    # print(src_df0[['nomvar','typvar','etiket','ni','nj','nk','dateo','d']])
-    # print(src_df0.nomvar.unique())
 
-    uv_df = src_df0.loc[src_df0.nomvar .isin(
+    uv_df   = src_df0.loc[src_df0.nomvar .isin(
         ["UU", "VV"])].reset_index(drop=True)
-    uv_df = spookipy.WindModulus(uv_df).compute()
+    uv_df   = spookipy.WindModulus(uv_df).compute()
     uv_src_df = pd.concat([src_df0, uv_df], ignore_index=True)
 
     uv_src_df = fstpy.add_columns(uv_src_df, columns=['ip_info'])
-    src_df0 = uv_src_df.loc[uv_src_df.surface == False].reset_index(drop=True)
-    # print(src_df0[['level','surface']])
+    src_df0   = uv_src_df.loc[uv_src_df.surface == False].reset_index(drop=True)
 
     # compute WindChill
     with pytest.raises(spookipy.WindChillError):

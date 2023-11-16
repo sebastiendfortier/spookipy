@@ -20,15 +20,18 @@ class TemperatureVirtual(Plugin):
     :param df: input DataFrame  
     :type df: pd.DataFrame 
     :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
-    :type dependency_check: bool, optional   
+    :type dependency_check: bool, optional  
+    :param reduce_df: Indicates to reduce the dataframe to its minimum, defaults to True
+    :type reduce_df: bool, optional
     """
     computable_plugin = "VT"
     @initializer
     def __init__(
         self,
         df: pd.DataFrame,
-        dependency_check=False,
-        copy_input=False
+        dependency_check = False,
+        copy_input       = False,
+        reduce_df        = True
         ):
 
         self.plugin_mandatory_dependencies = [
@@ -38,12 +41,12 @@ class TemperatureVirtual(Plugin):
             }
         ]
         self.plugin_result_specifications = {
-                'VT': {
-                'nomvar': 'VT',
-                'label': 'VIRTT',
-                'unit': 'celsius',
-                'nbits': 16,
-                'datyp': 1}}
+            'VT': { 'nomvar': 'VT',
+                    'label' : 'VIRTTT',
+                    'unit'  : 'celsius',
+                    'nbits' : 16,
+                    'datyp' : 1}
+        }
 
         self.df = fstpy.metadata_cleanup(self.df)
         super().__init__(self.df)
@@ -99,4 +102,5 @@ class TemperatureVirtual(Plugin):
         finally:
             return self.final_results(df_list, TemperatureVirtualError,
                                       dependency_check = self.dependency_check, 
-                                      copy_input = self.copy_input)
+                                      copy_input       = self.copy_input,
+                                      reduce_df        = self.reduce_df)

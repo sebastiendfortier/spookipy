@@ -35,19 +35,22 @@ class MinMaxVertically(Plugin):
     :type nomvar_max_val: str, optional
     :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
     :type copy_input: bool, optional 
+    :param reduce_df: Indicates to reduce the dataframe to its minimum, defaults to True
+    :type reduce_df: bool, optional
     """
     @initializer
     def __init__(
             self,
             df: pd.DataFrame,
-            nomvar=str,
-            min=False,
-            max=False,
-            bounded=False,
-            ascending=True,
+            nomvar          = str,
+            min             = False,
+            max             = False,
+            bounded         = False,
+            ascending       = True,
             nomvar_min: str = None,
             nomvar_max: str = None,
-            copy_input=False
+            copy_input      = False,
+            reduce_df       = True
             ):
         super().__init__(self.df)
         self.validate_params_and_input()
@@ -91,17 +94,18 @@ class MinMaxVertically(Plugin):
             max_out = "MAX"
 
         df=MinMaxLevelIndex(self.df,
-                            nomvar=self.nomvar, 
-                            min=self.min, 
-                            max=self.max,
-                            bounded=self.bounded,
-                            ascending=self.ascending,
-                            nomvar_min_idx= "_MIN",
-                            nomvar_min_val= min_out,
-                            nomvar_max_idx= "_MAX",
-                            nomvar_max_val= max_out,
-                            value_to_return=True,
-                            copy_input=self.copy_input).compute()
+                            nomvar          = self.nomvar, 
+                            min             = self.min, 
+                            max             = self.max,
+                            bounded         = self.bounded,
+                            ascending       = self.ascending,
+                            nomvar_min_idx  = "_MIN",
+                            nomvar_min_val  = min_out,
+                            nomvar_max_idx  = "_MAX",
+                            nomvar_max_val  = max_out,
+                            value_to_return = True,
+                            copy_input      = self.copy_input,
+                            reduce_df       = False).compute()
 
         if self.min:
             min_df = get_from_dataframe(df, min_out)
@@ -117,7 +121,7 @@ class MinMaxVertically(Plugin):
 
         return self.final_results(df_list, MinMaxVerticallyError,
                                   copy_input = self.copy_input,
-                                  reduce_df=True)
+                                  reduce_df  = self.reduce_df)
 
 
 

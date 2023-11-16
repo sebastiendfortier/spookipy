@@ -33,6 +33,7 @@ def test_1(plugin_test_dir):
         forecast_hour_range=(datetime.timedelta(hours=12), datetime.timedelta(hours=18)), 
         interval=datetime.timedelta(hours=6), 
         step=datetime.timedelta(hours=1)).compute()
+
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [ReaderStd --ignoreExtended --input {sources[1]}] >>
     # [TimeIntervalDifference --fieldName PR --rangeForecastHour 12@18 --interval 6 --step 1] >>
@@ -55,7 +56,7 @@ def test_1(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, res_df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "18_12_diff_file2cmp_noEncoding_20231016.std"
+    file_to_compare = plugin_test_dir + "18_12_diff_file2cmp_noEncoding_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -102,7 +103,7 @@ def test_2(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, res_df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "18_15_12_diff_file2cmp_noEncoding_20231016.std"
+    file_to_compare = plugin_test_dir + "18_15_12_diff_file2cmp_noEncoding_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -148,7 +149,7 @@ def test_3(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, res_df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "12_06_diff_file2cmp_noEncoding_20231016.std"
+    file_to_compare = plugin_test_dir + "12_06_diff_file2cmp_noEncoding_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -190,11 +191,11 @@ def test_4(plugin_test_dir):
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
-    # fstpy.delete_file(results_file)
+    fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, res_df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "18_12_threshold0.02_diff_file2cmp_noEncoding_20231016.std"
+    file_to_compare = plugin_test_dir + "18_12_threshold0.02_diff_file2cmp_noEncoding_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -769,8 +770,6 @@ def test_26(plugin_test_dir):
     #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '
     # [PrecipitationAmount --fieldName PR --rangeForecastHour 22:30:00@23:00:00 --interval 0:30:00 --step 0:30:00] >> ', '
     # [WriterStd --output {destination_path} --ignoreExtended]']
-    df.loc[df.nomvar!='PR', 'etiket'] = 'WE_1_2_0N'
-    df.loc[df.nomvar=='PR', 'etiket'] = 'PCPAMT'
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_26.std"])
@@ -778,7 +777,7 @@ def test_26(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "TMIDIF_test26_file2cmp.std"
+    file_to_compare = plugin_test_dir + "TMIDIF_test26_file2cmp_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)

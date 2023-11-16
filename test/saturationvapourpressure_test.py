@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from test import TEST_PATH, TMP_PATH, check_test_ssm_package
+from spookipy.utils import VDECODE_IP_INFO
 
 check_test_ssm_package()
 
@@ -7,6 +8,7 @@ import fstpy
 import pytest
 import spookipy
 from ci_fstcomp import fstcomp
+import rpnpy.librmn.all as rmn
 import secrets
 
 pytestmark = [pytest.mark.regressions, pytest.mark.humidity]
@@ -190,6 +192,9 @@ def test_9(plugin_test_dir):
                                                 temp_phase_switch=273,
                                                 temp_phase_switch_unit='celsius',
                                                 rpn=True).compute()
+                                                
+    # Equivalent a --IP1EncodingStyle OLDSTYLE
+    df = spookipy.convip(df, style=rmn.CONVIP_ENCODE_OLD)
 
     # write the result
     results_file = TMP_PATH + "test_9.std"

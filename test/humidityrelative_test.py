@@ -156,7 +156,7 @@ def test_5(plugin_test_dir):
     file_to_compare = plugin_test_dir + "2011100712_glbhyb_5_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001, columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file, file_to_compare, e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -236,7 +236,7 @@ def test_6(plugin_test_dir):
     file_to_compare = plugin_test_dir + "2011100712_glbhyb_6_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001, columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file, file_to_compare, e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -266,7 +266,7 @@ def test_7(plugin_test_dir):
     file_to_compare = plugin_test_dir + "2011100712_glbhyb_7_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001, columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file, file_to_compare, e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -292,7 +292,7 @@ def test_8(plugin_test_dir):
     file_to_compare = plugin_test_dir + "2011100712_glbhyb_8_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001, columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file, file_to_compare, e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -321,7 +321,7 @@ def test_9(plugin_test_dir):
     file_to_compare = plugin_test_dir + "2011100712_glbhyb_9_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.002, columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file, file_to_compare, e_max=0.002)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -332,7 +332,7 @@ def test_10(plugin_test_dir):
     # [ReaderStd --input .../pluginsRelatedStuff/HumidityRelative/testsFiles/2011100712_glbhyb_9_file2cmp.std] 
     #  >>  [GridCut --startPoint 50,50 --endPoint 100,100]
     # open and read source
-    source0 = plugin_test_dir + "2011100712_012_glbhyb_ES_reduit.std"
+    source0 = plugin_test_dir + "2011100712_012_glbhyb_ES_reduit_20231013.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     src_df0 = fstpy.select_with_meta(src_df0, ['TT', 'TD'])
@@ -348,7 +348,7 @@ def test_10(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "2011100712_glbhyb_10_file2cmp_20230426.std"
+    file_to_compare = plugin_test_dir + "2011100712_glbhyb_10_file2cmp_20231013.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -382,7 +382,7 @@ def test_11(plugin_test_dir):
     file_to_compare = plugin_test_dir + "2011100712_glbhyb_11_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001, columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file, file_to_compare, e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)
 

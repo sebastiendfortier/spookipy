@@ -102,13 +102,18 @@ class GridPointDifference(Plugin):
     :type difference_type: str, optional
     :param axis: a choice in ['x', 'y', 'z'], defaults to ['x', 'y', 'z']
     :type axis: list, optional
+    :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
+    :type copy_input: bool, optional 
+    :param reduce_df: Indicates to reduce the dataframe to its minimum, defaults to True
+    :type reduce_df: bool, optional
     """
     @initializer
     def __init__(self, 
                  df: pd.DataFrame, 
                  difference_type: str = None, 
                  axis: 'list(str)' = ['x', 'y'],
-                 copy_input=False
+                 copy_input = False,
+                 reduce_df  = True
             ):
         self.plugin_result_specifications = {'label': LABEL}
         
@@ -254,7 +259,8 @@ class GridPointDifference(Plugin):
                 df_list.append(fdz_df)
 
         return self.final_results(df_list, GridPointDifferenceError,
-                                  copy_input = self.copy_input)
+                                  copy_input = self.copy_input,
+                                  reduce_df  = self.reduce_df)
 
     @staticmethod
     def parse_config(args: str) -> dict:

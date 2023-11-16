@@ -6,7 +6,9 @@ import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin, PluginParser
-from ..utils import create_empty_result, get_list_of_forecast_hours, initializer, to_numpy, validate_list_of_nomvar, validate_list_of_times, validate_list_of_tuples_of_times, validate_nomvar
+from ..utils import (create_empty_result, define_time_interval_infos, get_list_of_forecast_hours, initializer,
+                     validate_list_of_nomvar, validate_list_of_times, validate_list_of_tuples_of_times, 
+                     validate_nomvar)
 from ..configparsingutils import apply_lambda_to_list, convert_time_range, convert_time
 
 class TimeIntervalDifferenceError(Exception):
@@ -25,16 +27,18 @@ class TimeIntervalDifference(Plugin):
     :type interval: datetime.timedelta or list of datetime.timedelta
     :param step: List of the time steps between successive start times within each time range
     :type step: datetime.timedelta or list of datetime.timedelta
+    :param reduce_df: Indicates to reduce the dataframe to its minimum, defaults to True
+    :type reduce_df: bool, optional
     """
     @initializer
     def __init__(self, 
                  df: pd.DataFrame, 
-                 nomvar=None, 
-                 forecast_hour_range=None, 
-                 interval=None, 
-                 step=None, 
-                 strictly_positive=False,
-                 reduce_df=True):
+                 nomvar              = None, 
+                 forecast_hour_range = None, 
+                 interval            = None, 
+                 step                = None, 
+                 strictly_positive   = False,
+                 reduce_df           = True):
         self.df = fstpy.metadata_cleanup(self.df)
         super().__init__(self.df)
         self.prepare_groups()
@@ -51,8 +55,8 @@ class TimeIntervalDifference(Plugin):
         self.check_type_of_params()
 
         l_fcast = len(self.forecast_hour_range)
-        l_int = len(self.interval)
-        l_step = len(self.step)
+        l_int   = len(self.interval)
+        l_step  = len(self.step)
         if l_fcast != l_int or l_fcast != l_step:
             raise TimeIntervalDifferenceError('All list must be the same length')
 
@@ -138,8 +142,8 @@ class TimeIntervalDifference(Plugin):
 
         return self.final_results(df_list, 
                                   TimeIntervalDifferenceError, 
-                                  copy_input=False,
-                                  reduce_df = self.reduce_df)
+                                  copy_input = False,
+                                  reduce_df  = self.reduce_df)
 
     def process(self, current_group, b_inf, b_sup, begin_df, end_df):
         begin_arr = begin_df.iloc[0]['d']
@@ -204,18 +208,10 @@ class TimeIntervalDifference(Plugin):
         return parsed_arg
 
 def create_result_container(df, b_inf, b_sup):
-    deet  = df.iloc[0]['deet']
-    npas  = int(b_sup / deet)
-    b_sup_hour = b_sup/3600.0
-    b_inf_hour = b_inf/3600.0
-    ip2   = int(b_sup_hour)
-    ip3   = int(b_sup_hour-b_inf_hour)
-    forecast_hour = fstpy.get_forecast_hour(deet,npas)
 
-    kind  = int(df.iloc[0].ip2_kind)
-    inter = fstpy.Interval('ip2', b_inf_hour, b_sup_hour, kind)
+    info_inter = define_time_interval_infos(df, b_inf, b_sup)
+    res_df     = create_empty_result(df, info_inter)
 
-    res_df = create_empty_result(df, {'ip2': ip2, 'ip3': ip3, 'npas': npas, 'forecast_hour': forecast_hour, 'interval':inter })
     return res_df
 
 def check_for_negative_values(arr, location):

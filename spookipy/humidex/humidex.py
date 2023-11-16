@@ -24,15 +24,18 @@ class Humidex(Plugin):
     :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
     :type dependency_check: bool, optional 
     :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
-    :type copy_input: bool, optional  
+    :type copy_input: bool, optional
+    :param reduce_df: Indicates to reduce the dataframe to its minimum, defaults to True
+    :type reduce_df: bool, optional
     """
     computable_plugin = "HMX"
     @initializer
     def __init__(
             self, 
             df: pd.DataFrame,
-            dependency_check=False,
-            copy_input=False):
+            dependency_check = False,
+            copy_input       = False,
+            reduce_df        = True):
 
         self.plugin_mandatory_dependencies = [
             {
@@ -43,11 +46,12 @@ class Humidex(Plugin):
 
         self.plugin_result_specifications = {
                 'HMX': {
-                    'nomvar' : 'HMX',
-                    'label' : 'HUMIDX',
-                    'unit'   : 'scalar',
-                    'ip1'    : 0,
-                    'surface': True}
+                    'nomvar'  : 'HMX',
+                    'label'   : 'HUMIDX',
+                    'unit'    : 'scalar',
+                    'level'   : 0,
+                    'ip1_kind': 2,
+                    'surface' : True}
                     }
         self.plugin_params = {
                 'ice_water_phase': 'water'}
@@ -87,7 +91,7 @@ class Humidex(Plugin):
             'Humidex',
             self.plugin_mandatory_dependencies,
             self.plugin_params,
-            intersect_levels=True,
+            intersect_levels = True,
             dependency_check = self.dependency_check)
 
         for dependencies_df, option in dependencies_list:
@@ -107,7 +111,8 @@ class Humidex(Plugin):
 
         return self.final_results(df_list, HumidexError, 
                                   dependency_check = self.dependency_check, 
-                                  copy_input = self.copy_input)
+                                  copy_input       = self.copy_input,
+                                  reduce_df        = self.reduce_df)
 
     def humidex_from_tt_svp(self, dependencies_df, td_df, option):
         from ..saturationvapourpressure.saturationvapourpressure import \
@@ -127,8 +132,10 @@ class Humidex(Plugin):
         #       Aussi, puisque l'option est a true, on doit verifier si le dataframe est vide suite a 
         #       l'appel (pas de resultats calcules) car si c'est le cas, le plugin ne retournera pas une erreur.
         svp_df = SaturationVapourPressure(
-            rentd_df, ice_water_phase='water', 
-            dependency_check = True).compute()
+            rentd_df, 
+            ice_water_phase  = 'water', 
+            dependency_check = True,
+            reduce_df        = False).compute()
         
         if svp_df.empty:
             raise HumidexError('No results produced by SaturationVapourPressure, unable to calculate Humidex!')
@@ -144,7 +151,9 @@ class Humidex(Plugin):
     def compute_td(self, dependencies_df):
         from ..temperaturedewpoint.temperaturedewpoint import \
             TemperatureDewPoint
-        td_df = TemperatureDewPoint(pd.concat(
-            [dependencies_df, self.meta_df], ignore_index=True), ice_water_phase='water').compute()
+        td_df = TemperatureDewPoint(
+                                pd.concat([dependencies_df, self.meta_df], ignore_index=True), 
+                                ice_water_phase = 'water',
+                                reduce_df       = False).compute()
         return td_df
   

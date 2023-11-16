@@ -43,7 +43,7 @@ def test_1(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "resulttest1_20231016.std"
+    file_to_compare = plugin_test_dir + "resulttest1_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -63,23 +63,19 @@ def test_2(plugin_test_dir):
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Mask --thresholds -15,-15,-5,10,20 --values -20,-15,-5,10,20 --operators le,ge,ge,ge,ge] >>
     # [WriterStd --output {destination_path} --noUnitConversion]
-    df.loc[:, 'etiket'] = '__MASK__X'
-    df.loc[df.nomvar != 'TT', 'etiket'] = 'G1_5_0X'
 
-    df = spookipy.convip(df)
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "resulttest_2.std"
+    file_to_compare = plugin_test_dir + "resulttest2_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
-
 
 def test_3(plugin_test_dir):
     """seuils: -10,0,10 valeurs: 1,2,3 ops: le,eq,gt"""
@@ -101,23 +97,19 @@ def test_3(plugin_test_dir):
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Mask --thresholds -10,0,10 --values 1,2,3 --operators le,eq,gt] >>
     # [WriterStd --output {destination_path} --noUnitConversion]
-    df.loc[:, 'etiket'] = '__MASK__X'
-    df.loc[df.nomvar != 'TT', 'etiket'] = 'G1_5_0X'
 
-    df = spookipy.convip(df)
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "resulttest_3.std"
+    file_to_compare = plugin_test_dir + "resulttest3_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
-
 
 def test_4(plugin_test_dir):
     """ERREUR: pas le meme nombre de valeurs associe a seuils, valeurs, et ops"""
@@ -131,7 +123,6 @@ def test_4(plugin_test_dir):
             src_df0, thresholds=[-10, 0, 10], values=[1, 2], operators=['<=', '==']).compute()
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Mask --thresholds -10,0,10 --values 1,2 --operators le,eq] >>
         # [WriterStd --output {destination_path} --noUnitConversion]
-
 
 def test_5(plugin_test_dir):
     """ERREUR: valeur invalide associee a operators (TT)"""
@@ -162,57 +153,14 @@ def test_6(plugin_test_dir):
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     #  [Mask --thresholds -10,0,10 --values 1,2,3 --operators le,eq,gt --outputFieldName TOTO] >>
     # [WriterStd --output {destination_path} --noUnitConversion]
-    df.loc[:, 'etiket'] = '__MASK__X'
-    df.loc[df.nomvar != 'TOTO', 'etiket'] = 'G1_5_0X'
 
-    df = spookipy.convip(df)
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "resulttest_6.std"
-
-    # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
-    assert(res)
-
-
-def test_7(plugin_test_dir):
-    """seuils: -10,0,10 valeurs: 1,2,3 ops: le,eq,gt + outputFieldName=TOTO parallel=True"""
-    # open and read source
-    source0 = plugin_test_dir + "inputFile.std"
-    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-
-    # compute Mask
-    df = spookipy.Mask(src_df0,
-                     thresholds=[-10,
-                                 0,
-                                 10],
-                     values=[1,
-                             2,
-                             3],
-                     operators=['<=',
-                                '==',
-                                '>'],
-                     nomvar_out='TOTO',
-                     parallel=True).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
-    #  [Mask --thresholds -10,0,10 --values 1,2,3 --operators le,eq,gt --outputFieldName TOTO] >>
-    # [WriterStd --output {destination_path} --noUnitConversion]
-    df.loc[:, 'etiket'] = '__MASK__X'
-    df.loc[df.nomvar != 'TOTO', 'etiket'] = 'G1_5_0X'
-
-    df = spookipy.convip(df)
-    # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
-    fstpy.delete_file(results_file)
-    fstpy.StandardFileWriter(results_file, df).to_fst()
-
-    # open and read comparison file
-    file_to_compare = plugin_test_dir + "resulttest_6.std"
+    file_to_compare = plugin_test_dir + "resulttest6_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)

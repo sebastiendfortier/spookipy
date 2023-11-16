@@ -107,7 +107,7 @@ class Plugin(abc.ABC):
                 raise error_class('No results were produced')
 
         if reduce_df:
-            self.meta_df = fstpy.reduce_columns(self.meta_df)
+            self.meta_df = fstpy.reduce_parsed_etiket_columns(self.meta_df)
         new_list.append(self.meta_df)
 
         # Ajout des données recues en input

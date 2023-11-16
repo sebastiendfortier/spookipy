@@ -201,18 +201,24 @@ def compute_dependency(
 
         plugin_params_only_dep_check = {}
         plugin_params_only_dep_check["dependency_check"] = True
+        plugin_params_only_dep_check["reduce_df"]        = False
         # run the plugin without parameters but with the bool for the dependency
         if plugin_params is None:
+            logging.debug(f'\n 1 - pluginsParams is None ---- {plugin=} {plugin_params_only_dep_check=}\n')
             tmp_df = plugin(df, **plugin_params_only_dep_check).compute()
+            
         # run the plugin with parameters
         else:
             # check if plugin has matching parameters to the ones defined in
             # plugin_params
             plugin_params["dependency_check"] = True
+            plugin_params["reduce_df"]        = False
             if set(plugin_params.keys()).issubset(function_keys):
+                logging.debug(f'\n 2 -  pluginsParams is not None ---- {plugin=} {plugin_params=}\n')
                 # call plugin with params
                 tmp_df = plugin(df, **plugin_params).compute()
             else:
+                logging.debug(f'\n 3- {plugin=} {plugin_params_only_dep_check=} {plugin_params=}\n')
                 # call plugin without params
                 tmp_df = plugin(df, **plugin_params_only_dep_check).compute()
                 
@@ -378,6 +384,7 @@ def create_empty_result(df: pd.DataFrame, plugin_result_specifications: dict, al
         res_df = pd.DataFrame([res_df])
 
     res_df = fstpy.add_columns(res_df, columns=['etiket'])
+    
 
     for k, v in plugin_result_specifications.items():
         if (k in res_df.columns):
@@ -413,6 +420,34 @@ def create_empty_result(df: pd.DataFrame, plugin_result_specifications: dict, al
         ascending=res_df.ascending.unique()[0]).reset_index(drop=True)
 
     return res_df
+
+def define_time_interval_infos(df: pd.DataFrame, b_inf: int, b_sup: int):
+    """ Creates a dictionnary with values to use for the creation of a result dataframe with 
+        a time interval.
+    
+    :param df: input dataframe
+    :type df: pd.DataFrame
+    :b_inf: borne inferieure 
+    :rtype: int
+    :b_sup: borne superieure 
+    :rtype: int
+    :return: a dictionnary containing the values for the creation of a df with a time interval object
+    :rtype: dict
+    """
+    deet          = df.iloc[0]['deet']
+    npas          = int(b_sup / deet)
+    b_sup_hour    = b_sup/3600.0
+    b_inf_hour    = b_inf/3600.0
+    ip2           = int(b_sup_hour)
+    ip3           = int(b_sup_hour-b_inf_hour)
+    kind          = int(df.iloc[0].ip2_kind)
+    forecast_hour = fstpy.get_forecast_hour(deet,npas)
+
+    inter         = fstpy.Interval('ip2', b_inf_hour, b_sup_hour, kind)
+
+    info_inter    = {'ip2': ip2, 'ip3': ip3, 'npas': npas, 'forecast_hour': forecast_hour, 'interval':inter }
+
+    return info_inter
 
 def get_3d_array(df: pd.DataFrame, flatten:bool=False, reverse:bool=False) -> np.ndarray:
     """stacks the arrays of the 'd' row of a dataframe
@@ -604,13 +639,13 @@ def get_dependencies(
         
         if dependencies_df.empty:
             logging.info(f'{plugin_name} - No matching dependencies found for this group \n%s' %
-                            current_group[['nomvar', 'typvar', 'etiket', 'dateo', 'forecast_hour', 'ip1_kind', 'grid']])
+                            current_group[['nomvar', 'typvar', 'etiket', 'dateo', 'ip1_kind', 'grid']])
             if logger.isEnabledFor(logging.DEBUG):
                 logging.debug(f'{plugin_name} - {print_style_voir(current_group, " No matching dependencies found for this group: ")}')
             continue
         else:
             logging.info(f'{plugin_name} - Matching dependencies found for this group \n%s' %
-                        current_group[['nomvar', 'typvar', 'etiket', 'dateo', 'forecast_hour', 'ip1_kind', 'grid']])
+                        current_group[['nomvar', 'typvar', 'etiket', 'dateo', 'ip1_kind', 'grid']])
             if logger.isEnabledFor(logging.DEBUG):
                 logging.debug(f'{plugin_name} - {print_style_voir(current_group, " Matching dependencies found for this group: ")}')
         df_list.append((dependencies_df, option))

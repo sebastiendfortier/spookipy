@@ -21,29 +21,33 @@ class Pressure(Plugin):
     :type dependency_check: bool, optional  
     :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
     :type copy_input: bool, optional 
+    :param reduce_df: Indicates to reduce the dataframe to its minimum, defaults to True
+    :type reduce_df: bool, optional
     """
 
     computable_plugin = "PX"
     @initializer
-    def __init__( self, df: pd.DataFrame, 
-                reference_field=None, 
+    def __init__( self, 
+                df: pd.DataFrame, 
+                reference_field           = None, 
                 standard_atmosphere: bool = False, 
-                dependency_check=False,
-                copy_input=False):
+                dependency_check          = False,
+                copy_input                = False,
+                reduce_df                 = False):
 
         self.df = fstpy.metadata_cleanup(self.df)
         super().__init__(self.df)
 
         if not (self.reference_field is None):
             self.no_meta_df = self.no_meta_df.loc[self.no_meta_df.nomvar == self.reference_field]
-            self.df = pd.concat([self.meta_df,self.no_meta_df], ignore_index=True)
+            self.df         = pd.concat([self.meta_df,self.no_meta_df], ignore_index=True)
 
         if 'path' not in df.columns:
             self.dropPath = True
         else:
             self.dropPath = False
 
-        self.df = fstpy.add_path_and_key_columns(self.df)
+        self.df        = fstpy.add_path_and_key_columns(self.df)
         self.df.loc[self.df.path.isna(), 'path'] = '/TMP_PATH_TO_MAKE_PRESSURE_WORK'
         self.df["key"] = np.where(self.df.key.isna(), None, self.df.key)
 
@@ -52,7 +56,8 @@ class Pressure(Plugin):
                                         'ascending', 'interval', 'vctype'],
                                errors='ignore')
 
-        self.qp = fstpy.QuickPressure(self.df,self.standard_atmosphere)
+        self.qp = fstpy.QuickPressure(self.df,
+                                      self.standard_atmosphere)
 
 
     def compute(self, test_dependency=False) -> pd.DataFrame:
@@ -73,7 +78,8 @@ class Pressure(Plugin):
         return self.final_results([res_df], 
                                   PressureError, 
                                   dependency_check = self.dependency_check, 
-                                  copy_input = self.copy_input)
+                                  copy_input       = self.copy_input,
+                                  reduce_df        = False)
 
     @staticmethod
     def parse_config(args: str) -> dict:

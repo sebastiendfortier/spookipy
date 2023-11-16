@@ -148,7 +148,7 @@ def test_8(plugin_test_dir):
     file_to_compare = plugin_test_dir + "regpres_testWithHR_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -213,7 +213,7 @@ def test_10(plugin_test_dir):
     file_to_compare = plugin_test_dir + "regpres_testWithES_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -253,7 +253,7 @@ def test_11(plugin_test_dir):
     file_to_compare = plugin_test_dir + "regpres_testWithES_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -292,7 +292,7 @@ def test_12(plugin_test_dir):
     file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_4_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -334,7 +334,7 @@ def test_13(plugin_test_dir):
     file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_4_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -373,7 +373,7 @@ def test_14(plugin_test_dir):
     file_to_compare = plugin_test_dir + "regpres_testWithQV_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 

@@ -29,20 +29,16 @@ def test_1(plugin_test_dir):
     df = spookipy.GeorgeKIndex(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GeorgeKIndex] >> [WriterStd --output {destination_path} --ignoreExtended]
 
-    # df.loc[:,'datyp'] = 5
-    # df.loc[df.nomvar!='!!','nbits'] = 32
-
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "TTES_GeorgeKIndex_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/GeorgeKIndex/result_test_1'
+    file_to_compare = plugin_test_dir + "TTES_GeorgeKIndex_file2cmp_20231026.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.1,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -56,12 +52,6 @@ def test_2(plugin_test_dir):
     # compute GeorgeKIndex
     df = spookipy.GeorgeKIndex(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GeorgeKIndex] >> [WriterStd --output {destination_path} --ignoreExtended]
-    # df.loc[df.nomvar=='KI','grtyp'] = 'X'
-    # df.loc[df.nomvar=='KI','ig1'] = 0
-    # df.loc[df.nomvar=='KI','ig2'] = 0
-
-    # df.loc[:,'datyp'] = 5
-    # df.loc[df.nomvar!='!!','nbits'] = 32
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
@@ -69,12 +59,10 @@ def test_2(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    # file_to_compare = plugin_test_dir + "GeorgeKIndex_file2cmp.std"
-    file_to_compare = plugin_test_dir + "GeorgeKIndex_file2cmp.std+PY20210812"
-    # file_to_compare = '/home/sbf000/data/testFiles/GeorgeKIndex/result_test_2'
+    file_to_compare = plugin_test_dir + "GeorgeKIndex_file2cmp_20231026.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])  # ,e_max=0.01)
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -88,8 +76,6 @@ def test_3(plugin_test_dir):
     # compute GeorgeKIndex
     df = spookipy.GeorgeKIndex(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GeorgeKIndex] >> [WriterStd --output {destination_path} --ignoreExtended]
-    # df.loc[:,'datyp'] = 5
-    # df.loc[df.nomvar!='!!','nbits'] = 32
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
@@ -97,11 +83,10 @@ def test_3(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "TTTD_GeorgeKIndex_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/GeorgeKIndex/result_test_3'
+    file_to_compare = plugin_test_dir + "TTTD_GeorgeKIndex_file2cmp_20231026.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -120,8 +105,6 @@ def test_4(plugin_test_dir):
     # compute GeorgeKIndex
     df = spookipy.GeorgeKIndex(src_df).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> ( ([Select --fieldName TT] >> [UnitConvert --unit kelvin]) + [Select --fieldName ES] ) >> [GeorgeKIndex] >> [WriterStd --output {destination_path} --ignoreExtended]
-    # df.loc[:,'datyp'] = 5
-    # df.loc[df.nomvar!='!!','nbits'] = 32
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
@@ -129,12 +112,10 @@ def test_4(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    # file_to_compare = plugin_test_dir + "TTES_GeorgeKIndex_file2cmp.std"
-    file_to_compare = plugin_test_dir + "TTES_GeorgeKIndex_file2cmp.std+PY20210812"
-    # file_to_compare = '/home/sbf000/data/testFiles/GeorgeKIndex/result_test_4'
+    file_to_compare = plugin_test_dir + "TTES_GeorgeKIndex_file2cmp_20231026.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])  # ,e_max=0.001)
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -146,8 +127,8 @@ def test_4(plugin_test_dir):
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     #compute GeorgeKIndex
-#     # with pytest.raises(spookipy.GeorgeKIndexError):
-#     df = spookipy.GeorgeKIndex(src_df0).compute()
+#     with pytest.raises(spookipy.GeorgeKIndexError):
+#         df = spookipy.GeorgeKIndex(src_df0).compute()
 #     print(df)
 #     assert(False)
 #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [GeorgeKIndex]
@@ -167,9 +148,9 @@ def test_6(plugin_test_dir):
 
     # compute GeorgeKIndex
     df = spookipy.GeorgeKIndex(src_df).compute()
-    #['[ReaderStd --ignoreExtended --input {sources[0]}] >>', '[Select --forecastHour 6] >> [GeorgeKIndex] >> ', '[WriterStd --output {destination_path} --ignoreExtended]']
-    # df.loc[:,'datyp'] = 5
-    # df.loc[df.nomvar!='!!','nbits'] = 32
+    #['[ReaderStd --ignoreExtended --input {sources[0]}] >>', 
+    # '[Select --forecastHour 6] >> [GeorgeKIndex] >> ', 
+    # '[WriterStd --output {destination_path} --ignoreExtended]']
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
@@ -177,10 +158,9 @@ def test_6(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "TTES_2016122000_file2cmp.std+20210517"
-    # file_to_compare = '/home/sbf000/data/testFiles/GeorgeKIndex/result_test_6'
+    file_to_compare = plugin_test_dir + "TTES_2016122000_file2cmp_20231026.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)

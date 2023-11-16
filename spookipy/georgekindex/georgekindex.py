@@ -20,13 +20,18 @@ class GeorgeKIndex(Plugin):
 
     :param df: input DataFrame
     :type df: pd.DataFrame
+    :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
+    :type copy_input: bool, optional 
+    :param reduce_df: Indicates to reduce the dataframe to its minimum, defaults to True
+    :type reduce_df: bool, optional
     """
     computable_plugin = "KI"
     @initializer
     def __init__(
             self, 
             df: pd.DataFrame,
-            copy_input=False):
+            copy_input = False,
+            reduce_df  = True):
 
         self.plugin_mandatory_dependencies = [
             {
@@ -39,10 +44,11 @@ class GeorgeKIndex(Plugin):
         ]
         self.plugin_result_specifications = {
             'KI': {
-                'nomvar': 'KI',
-                'label': 'GEORKI',
-                'unit'  : 'scalar',
-                'ip1'   : 0}
+                'nomvar'  : 'KI',
+                'label'   : 'GEORKI',
+                'unit'    : 'scalar',
+                'level'   : 0,
+                'ip1_kind': 2}
                 }
 
         self.df = fstpy.metadata_cleanup(self.df)
@@ -67,8 +73,9 @@ class GeorgeKIndex(Plugin):
         logging.info('GeorgeKIndex - compute')
         df_list = []
         dependencies_list = get_dependencies(
-            self.groups, self.meta_df, 'GeorgeKIndex', self.plugin_mandatory_dependencies, {
-                'ice_water_phase': 'water'})
+                                self.groups, self.meta_df, 'GeorgeKIndex', 
+                                self.plugin_mandatory_dependencies, 
+                                {'ice_water_phase': 'water'})
 
         for dependencies_df, _ in dependencies_list:
 
@@ -92,4 +99,5 @@ class GeorgeKIndex(Plugin):
 
         return self.final_results(df_list, 
                                   GeorgeKIndexError, 
-                                  copy_input = self.copy_input)
+                                  copy_input = self.copy_input,
+                                  reduce_df  = self.reduce_df)

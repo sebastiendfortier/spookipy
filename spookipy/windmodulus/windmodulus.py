@@ -34,15 +34,18 @@ class WindModulus(Plugin):
     :param df: input DataFrame
     :type df: pd.DataFrame
     :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
-    :type dependency_check: bool, optional
+    :type dependency_check: bool, 
+    :param reduce_df: Indicates to reduce the dataframe to its minimum, defaults to True
+    :type reduce_df: bool, optional
     """
     computable_plugin = "UV"
     @initializer
     def __init__(
         self,
         df:pd.DataFrame,
-        dependency_check=False,
-        copy_input=False
+        dependency_check = False,
+        copy_input       = False,
+        reduce_df        = True
         ):
 
         self.plugin_mandatory_dependencies = [
@@ -53,7 +56,9 @@ class WindModulus(Plugin):
         ]
 
         self.plugin_result_specifications = {
-            'UV': {'nomvar': 'UV', 'label': 'WNDMOD', 'unit': 'knot'}
+            'UV': {'nomvar': 'UV', 
+                   'label' : 'WNDMOD', 
+                   'unit'  : 'knot'}
         }
 
         #ajouter forecast_hour et unit
@@ -65,7 +70,7 @@ class WindModulus(Plugin):
     def prepare_groups(self):
         self.no_meta_df = fstpy.add_columns(
             self.no_meta_df, columns=[
-                'unit', 'forecast_hour', 'ip_info'])
+                'unit', 'ip_info'])
 
         # check if result already exists
         self.existing_result_df = get_existing_result(self.no_meta_df, self.plugin_result_specifications)
@@ -107,5 +112,6 @@ class WindModulus(Plugin):
 
         finally:
             return self.final_results(df_list, WindModulusError, 
-                                      self.dependency_check,
-                                      copy_input=self.copy_input)
+                                      dependency_check = self.dependency_check,
+                                      copy_input       = self.copy_input,
+                                      reduce_df        = self.reduce_df)

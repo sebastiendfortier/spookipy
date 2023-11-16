@@ -36,6 +36,8 @@ class TemperatureDewPoint(Plugin):
     :type dependency_check: bool, optional
     :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
     :type copy_input: bool, optional 
+    :param reduce_df: Indicates to reduce the dataframe to its minimum, defaults to True
+    :type reduce_df: bool, optional
     """
     computable_plugin = "TD"
     @explicit_params_checker
@@ -44,11 +46,12 @@ class TemperatureDewPoint(Plugin):
             self,
             df: pd.DataFrame,
             ice_water_phase,
-            temp_phase_switch=None,
-            temp_phase_switch_unit='celsius',
-            rpn=False,
-            dependency_check=False,
-            copy_input=False):
+            temp_phase_switch      = None,
+            temp_phase_switch_unit = 'celsius',
+            rpn                    = False,
+            dependency_check       = False,
+            copy_input             = False,
+            reduce_df              = True):
 
         self.plugin_params = {
             'ice_water_phase'       : self.ice_water_phase,
@@ -102,8 +105,8 @@ class TemperatureDewPoint(Plugin):
         self.plugin_result_specifications = {
             'TD': {
                 'nomvar': 'TD', 
-                'label': 'DEWPTT', 
-                'unit': 'celsius'}
+                'label' : 'DEWPTT', 
+                'unit'  : 'celsius'}
         }
 
         self.df = fstpy.metadata_cleanup(self.df)
@@ -182,13 +185,13 @@ class TemperatureDewPoint(Plugin):
                         # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
                         es_df = self.compute_es(dependencies_df)
                         td_df = self.temperaturedewpoint_from_tt_es(
-                            es_df, dependencies_df, option, True)
+                                                es_df, dependencies_df, option, True)
 
                     else:
                         # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies_rpn[option])
                         es_df = get_from_dataframe(dependencies_df, 'ES')
                         td_df = self.temperaturedewpoint_from_tt_es(
-                            es_df, dependencies_df, option)
+                                                es_df, dependencies_df, option)
 
                 else:
                     if option in range(0, 3):
@@ -199,13 +202,14 @@ class TemperatureDewPoint(Plugin):
                         # dependencies_df = get_intersecting_levels(dependencies_df,self.plugin_mandatory_dependencies[option])
                         es_df = get_from_dataframe(dependencies_df, 'ES')
                         td_df = self.temperaturedewpoint_from_tt_es(
-                            es_df, dependencies_df, option)
+                                                es_df, dependencies_df, option)
 
                 df_list.append(td_df)
         finally:
             return self.final_results(df_list, TemperatureDewPointError, 
                                       dependency_check = self.dependency_check, 
-                                      copy_input = self.copy_input)
+                                      copy_input       = self.copy_input,
+                                      reduce_df        = self.reduce_df)
 
     def temperaturedewpoint_from_tt_vppr(self, dependencies_df, option):
         logging.info(f'TemperatureDewPoint - option {option+1}')
@@ -218,7 +222,7 @@ class TemperatureDewPoint(Plugin):
             self.plugin_result_specifications['TD'],
             all_rows=True)
         for i in td_df.index:
-            tt = tt_df.at[i, 'd']
+            tt   = tt_df.at[i, 'd']
             vppr = vppr_df.at[i, 'd']
             td_df.at[i,
                      'd'] = td_from_vppr(tt=tt - TDPACK_OFFSET_FIX,
@@ -231,14 +235,14 @@ class TemperatureDewPoint(Plugin):
         from ..vapourpressure.vapourpressure import VapourPressure
         vppr_df = VapourPressure(
             pd.concat(
-                [
-                    dependencies_df,
-                    self.meta_df],
+                [ dependencies_df,
+                  self.meta_df ],
                 ignore_index=True),
-            ice_water_phase=self.ice_water_phase,
-            temp_phase_switch=self.temp_phase_switch,
-            temp_phase_switch_unit=self.temp_phase_switch_unit, 
-            dependency_check=True).compute()
+            ice_water_phase        = self.ice_water_phase,
+            temp_phase_switch      = self.temp_phase_switch,
+            temp_phase_switch_unit = self.temp_phase_switch_unit, 
+            dependency_check       = True,
+            reduce_df              = False).compute()
         # A noter que l'option dependency_check est a True pour l'appel a VapourPressure:
         #       On veut eviter de faire le nettoyage des metadata inutilement puisqu'il a deja ete fait.
         #       Aussi, puisque l'option est a true, on doit verifier si le dataframe est vide suite a 
@@ -248,8 +252,7 @@ class TemperatureDewPoint(Plugin):
         vppr_df = get_from_dataframe(vppr_df, 'VPPR')
         return vppr_df
 
-    def temperaturedewpoint_from_tt_es(
-            self, es_df, dependencies_df, option, rpn=False):
+    def temperaturedewpoint_from_tt_es(self, es_df, dependencies_df, option, rpn=False):
         if rpn:
             logging.info(f'TemperatureDewPoint - rpn option {option+1}')
         else:
@@ -271,14 +274,13 @@ class TemperatureDewPoint(Plugin):
         from ..dewpointdepression.dewpointdepression import DewPointDepression
         es_df = DewPointDepression(
             pd.concat(
-                [
-                    dependencies_df,
-                    self.meta_df],
+                [ dependencies_df,
+                  self.meta_df ],
                 ignore_index=True),
-            ice_water_phase=self.ice_water_phase,
-            rpn=True, 
-            dependency_check=True
-            ).compute()
+            ice_water_phase  = self.ice_water_phase,
+            rpn              = True, 
+            dependency_check = True,
+            reduce_df        = False).compute()
         # A noter que l'option dependency_check est a True pour l'appel a DewPointDepression, voir 
         # note dans compute_vppr
         if es_df.empty:

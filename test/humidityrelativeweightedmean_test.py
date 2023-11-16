@@ -29,9 +29,6 @@ def test_1(plugin_test_dir):
     # [HumidityRelativeWeightedMean ] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
 
-    df.loc[:, 'etiket'] = '__HRWAVGX'
-    df = spookipy.encode_ip2_and_ip3_height(df)
-
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
     fstpy.delete_file(results_file)
@@ -57,10 +54,6 @@ def test_2(plugin_test_dir):
     # [HumidityRelativeWeightedMean ] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
 
-    df.loc[:, 'etiket'] = '__HRWAVGX'
-    df.loc[df.nomvar.isin(['>>','^^']),'etiket'] = 'R1_V710_N'
-    df = spookipy.encode_ip2_and_ip3_height(df)
-
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
     fstpy.delete_file(results_file)
@@ -68,6 +61,7 @@ def test_2(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "2020030412_test2_encoded_file2Cmp.std"
+
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
     fstpy.delete_file(results_file)
@@ -84,11 +78,6 @@ def test_3(plugin_test_dir):
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [HumidityRelativeWeightedMean --capped 1.0] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
-
-    df.loc[df.nomvar == "HR", 'etiket'] = '__HRWAVGX'
-    df.loc[df.nomvar.isin(['>>','^^']),'etiket'] = 'R1_V710_N'
-
-    df = spookipy.encode_ip2_and_ip3_height(df)
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])

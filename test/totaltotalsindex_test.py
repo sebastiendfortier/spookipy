@@ -23,23 +23,24 @@ def test_1(plugin_test_dir):
     source0 = plugin_test_dir + "TT850_500_ES_850_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    # print(src_df0[['nomvar','ip1']])
     # compute TotalTotalsIndex
     df = spookipy.TotalTotalsIndex(src_df0).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [TotalTotalsIndex] >> [WriterStd --output {destination_path} --ignoreExtended]
 
-    df['nbits'] = 32
-    df['datyp'] = 5
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [TotalTotalsIndex] >> 
+    # [WriterStd --output {destination_path} --ignoreExtended]
+
+    # Note:  Fichier de comparaison recree en 20231026 en ne tenant pas compte du ignoreExtended.
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "TotalTotalsIndex_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/TotalTotalsIndex/result_test_1'
+    file_to_compare = plugin_test_dir + "TotalTotalsIndex_file2cmp_20231026.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.1,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)

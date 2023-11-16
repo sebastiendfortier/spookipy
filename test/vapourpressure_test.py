@@ -267,8 +267,7 @@ def test_11(plugin_test_dir):
     file_to_compare = plugin_test_dir + "2011100712_012_regeta_file2cmp_20230426.std"
 
     # compare results
-    # res = fstcomp(results_file, file_to_compare, e_max=0.001)
-    res = fstcomp(results_file, file_to_compare, e_max=0.001,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file, file_to_compare, e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -296,7 +295,7 @@ def test_12(plugin_test_dir):
 
     # compare results
     # res = fstcomp(results_file, file_to_compare, e_max=0.001)
-    res = fstcomp(results_file, file_to_compare, e_max=0.001,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file, file_to_compare, e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -352,7 +351,7 @@ def test_14(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "VapourPressure_test14_file2cmp_20230426.std"
+    file_to_compare = plugin_test_dir + "VapourPressure_test14_file2cmp_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)

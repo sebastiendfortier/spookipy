@@ -40,42 +40,36 @@ class CoriolisParameter(Plugin):
     @initializer
     def __init__(self, 
                  df: pd.DataFrame,
-                 copy_input=False
+                 copy_input = False,
+                 reduce_df  = True
                  ):
         
         self.plugin_result_specifications = {
             'CORP': {
-                'nomvar': 'CORP',
-                'label' : 'CORIOP',
-                'unit'  : 'divergence',
-                'ip1'   : 0,
-                'ip2'   : 0,
-                'ip3'   : 0,
-                'npas'  : 0,
-                'datyp' : 134,
-                'nbits' : 12}}
+                'nomvar'  : 'CORP',
+                'label'   : 'CORIOP',
+                'unit'    : 'divergence',
+                'level'   : 0,
+                'ip1_kind': 2,
+                'ip2_dec' : 0,
+                'ip3_dec' : 0,
+                'npas'    : 0,
+                'datyp'   : 134,
+                'nbits'   : 12}}
 
         self.df = fstpy.metadata_cleanup(self.df)
         super().__init__(self.df)
-
         self.prepare_groups()
 
     def prepare_groups(self):
 
-        self.df = fstpy.add_columns(self.df, columns=['unit'])
-        # on pourra enlever ça quand on aura la réduction de colonne
-        self.df = self.df.drop(['level', 'ip1_kind', 'ip1_pkind',
-                            'ip2_dec', 'ip2_kind', 'ip2_pkind',
-                            'ip3_dec', 'ip3_kind', 'ip3_pkind',
-                            'surface', 'follow_topography',
-                            'ascending', 'interval', 'vctype'],
-                            axis=1, errors='ignore')
+        self.no_meta_df = fstpy.add_columns(self.no_meta_df, columns=['unit', 'ip_info'])
 
         # check if result already exists
         self.existing_result_df = get_existing_result(
-            self.df, self.plugin_result_specifications)
+            self.no_meta_df, self.plugin_result_specifications)
 
-        self.groups = self.df.groupby(['grid'])
+        self.groups = self.no_meta_df.groupby(['grid'])
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:
@@ -87,34 +81,30 @@ class CoriolisParameter(Plugin):
         logging.info('CoriolisParameter - compute')
         df_list = []
         for _, current_group in self.groups:
+ 
+            latlon_df = fstpy.get_2d_lat_lon_df(pd.concat([ current_group,
+                                                            self.meta_df ],
+                                                            ignore_index=True))
+            lat_df    = latlon_df.loc[latlon_df.nomvar =='LA'].reset_index(drop=True)
 
-            latlon_df = fstpy.get_2d_lat_lon_df(current_group)
-            lat_df = latlon_df.loc[latlon_df.nomvar ==
-                                   'LA'].reset_index(drop=True)
             if lat_df.empty:
                 logging.warning(
                     'Cannot find "LA" field in this group - skipping')
                 continue
-            # remove meta
-            current_group = current_group.loc[~current_group.nomvar.isin(
-                ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-            if current_group.empty:
-                logging.warning(
-                    'Cannot find "LON" field in this group - skipping')
-                continue
 
             corp_df = create_empty_result(
                 current_group, self.plugin_result_specifications['CORP'])
+            
             corp_df = adjust_column_values(current_group, corp_df)
 
             for i in corp_df.index:
-                corp_df.at[i, 'd'] = coriolis_parameter(
-                    lat_df.at[i, 'd']).astype('float32')
+                corp_df.at[i, 'd'] = coriolis_parameter(lat_df.at[i, 'd']).astype('float32')
 
             df_list.append(corp_df)
 
         return self.final_results(df_list, CoriolisParameterError,
-                                  copy_input = self.copy_input)
+                                  copy_input = self.copy_input,
+                                  reduce_df  = self.reduce_df)
 
 
 def adjust_column_values(current_group, corp_df):

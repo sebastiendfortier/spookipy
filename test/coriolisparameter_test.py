@@ -26,9 +26,9 @@ def test_1(plugin_test_dir):
 
     # compute CoriolisParameter
     df = spookipy.CoriolisParameter(src_df0).compute()
-    # [ReaderStd --input {sources[0]}] >> [CoriolisParameter] >> [WriterStd --output {destination_path} ]
-    df.loc[:, 'etiket'] = 'R1558V0_N'
-    df.loc[df.nomvar == 'CORP', 'etiket'] = '__CORIOPX'
+    # [ReaderStd --input {sources[0]}] >> 
+    # [CoriolisParameter] >> 
+    # [WriterStd --output {destination_path} ]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
@@ -54,9 +54,6 @@ def test_2(plugin_test_dir):
     # compute CoriolisParameter
     df = spookipy.CoriolisParameter(src_df0).compute()
     
-    df.loc[:, 'etiket'] = 'R1580V0_N'
-    df.loc[df.nomvar == 'CORP', 'etiket'] = '__CORIOPX'
-    
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
@@ -75,16 +72,16 @@ def test_3(plugin_test_dir):
     source0 = plugin_test_dir + "UUVVTT_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    src_df0 = fstpy.compute(src_df0)
+    src_df0                = fstpy.compute(src_df0)
     src_df0.loc[:, 'path'] = None
-    src_df0.loc[:, 'key'] = None
-    src_df0['d'] = src_df0.apply(lambda row: np.asarray(row['d']),axis=1)
+    src_df0.loc[:, 'key']  = None
+    src_df0['d']           = src_df0.apply(lambda row: np.asarray(row['d']),axis=1)
 
     # compute CoriolisParameter
     df = spookipy.CoriolisParameter(src_df0).compute()
-    # [ReaderStd --input {sources[0]}] >> [CoriolisParameter] >> [WriterStd --output {destination_path} ]
-    df.loc[:, 'etiket'] = 'R1558V0_N'
-    df.loc[df.nomvar == 'CORP', 'etiket'] = '__CORIOPX'
+    # [ReaderStd --input {sources[0]}] >> 
+    # [CoriolisParameter] >>
+    # [WriterStd --output {destination_path} ]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
@@ -107,20 +104,18 @@ def test_4(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
     src_df0 = fstpy.select_with_meta(src_df0, ["UU"])
 
-    src_df0 = fstpy.compute(src_df0)
+    src_df0                = fstpy.compute(src_df0)
     src_df0.loc[:, 'path'] = None
-    src_df0.loc[:, 'key'] = None
-    src_df0['d'] = src_df0.apply(lambda row: np.asarray(row['d']),axis=1)
+    src_df0.loc[:, 'key']  = None
+    src_df0['d']           = src_df0.apply(lambda row: np.asarray(row['d']),axis=1)
 
     # compute CoriolisParameter
     df = spookipy.CoriolisParameter(src_df0).compute()
-    
-    df.loc[:, 'etiket'] = 'R1580V0_N'
-    df.loc[df.nomvar == 'CORP', 'etiket'] = '__CORIOPX'
 
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
+    print(df)
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "coriop_file2cmp_test_2_20230124.std"

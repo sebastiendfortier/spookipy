@@ -23,9 +23,13 @@ def test_1(plugin_test_dir):
     source0 = plugin_test_dir + "GZ_12000_10346_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
     # compute Thickness
-    df = spookipy.Thickness(src_df0,base=1.0,top=0.8346,coordinate_type='UNKNOWN').compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Thickness --base 1.0 --top 0.8346 --coordinateType SIGMA_COORDINATE] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
-    df = spookipy.encode_ip2_and_ip3_height(df)
+    df      = spookipy.Thickness(src_df0,
+                                 base=1.0,
+                                 top=0.8346,
+                                 coordinate_type='UNKNOWN').compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [Thickness --base 1.0 --top 0.8346 --coordinateType SIGMA_COORDINATE] >> 
+    # [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
     
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
@@ -33,13 +37,12 @@ def test_1(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "Thick_test1-2_file2cmp.std"
+    file_to_compare = plugin_test_dir + "Thick_test1-2_file2cmp_20231026.std"
     
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
-
 
 def test_2(plugin_test_dir):
     """Test #2 : Test avec un fichier de coordonnées UNKNOWN avec valeur de base plus basse dans l'atmosphère que valeur de top."""
@@ -47,11 +50,14 @@ def test_2(plugin_test_dir):
     source0 = plugin_test_dir + "GZ_12000_10346_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-
     #compute Thickness
-    df = spookipy.Thickness(src_df0,base=0.8346,top=1.0,coordinate_type='UNKNOWN').compute()
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Thickness --base 0.8346 --top 1.0 --coordinateType SIGMA_COORDINATE] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
-    df = spookipy.encode_ip2_and_ip3_height(df)
+    df      = spookipy.Thickness(src_df0,
+                                 base=0.8346,
+                                 top=1.0,
+                                 coordinate_type='UNKNOWN').compute()
+    #[ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [Thickness --base 0.8346 --top 1.0 --coordinateType SIGMA_COORDINATE] >> 
+    # [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
 
     #write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
@@ -59,13 +65,12 @@ def test_2(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "Thick_test1-2_file2cmp.std"
+    file_to_compare = plugin_test_dir + "Thick_test1-2_file2cmp_20231026.std"
 
     #compare results
-    res = fstcomp(results_file,file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
-
 
 def test_3(plugin_test_dir):
     """Test #3 : Test avec un fichier en pression avec valeur de base plus haute dans l'atmosphère que valeur de top."""
@@ -75,9 +80,13 @@ def test_3(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     #compute Thickness
-    df = spookipy.Thickness(src_df0,base=1000,top=500,coordinate_type='PRESSURE_2001').compute()
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Thickness --base 1000 --top 500 --coordinateType PRESSURE_COORDINATE] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
-    df = spookipy.encode_ip2_and_ip3_height(df)
+    df      = spookipy.Thickness(src_df0,
+                                 base=1000,
+                                 top=500,
+                                 coordinate_type='PRESSURE_2001').compute()
+    #[ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [Thickness --base 1000 --top 500 --coordinateType PRESSURE_COORDINATE] >> 
+    # [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
 
     #write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
@@ -85,13 +94,12 @@ def test_3(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "Thick_test3-4_file2cmp.std"
+    file_to_compare = plugin_test_dir + "Thick_test3-4_file2cmp_20231026.std"
 
     #compare results
-    res = fstcomp(results_file,file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
-
 
 def test_4(plugin_test_dir):
     """Test #4 : Test avec un fichier en pression avec valeur de base plus basse dans l'atmosphère que valeur de top."""
@@ -101,9 +109,13 @@ def test_4(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     #compute Thickness
-    df = spookipy.Thickness(src_df0,base=500,top=1000,coordinate_type='PRESSURE_2001').compute()
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Thickness --base 500 --top 1000 --coordinateType PRESSURE_COORDINATE] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
-    df = spookipy.encode_ip2_and_ip3_height(df)
+    df      = spookipy.Thickness(src_df0,
+                                 base=500,
+                                 top=1000,
+                                 coordinate_type='PRESSURE_2001').compute()
+    #[ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [Thickness --base 500 --top 1000 --coordinateType PRESSURE_COORDINATE] >> 
+    # [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
 
     #write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
@@ -111,14 +123,12 @@ def test_4(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "Thick_test3-4_file2cmp.std"
+    file_to_compare = plugin_test_dir + "Thick_test3-4_file2cmp_20231026.std"
 
     #compare results
-    res = fstcomp(results_file,file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
-
-
 
 def test_5(plugin_test_dir):
     """Test #5 : Test en utilisant le même niveau pour base et top; requête invalide."""
@@ -127,10 +137,12 @@ def test_5(plugin_test_dir):
         source0 = plugin_test_dir + "GZ_1000_500_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
         #compute Thickness
-        spookipy.Thickness(src_df0,base=1000,top=1000,coordinate_type='PRESSURE_2001').compute()
-        #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Thickness --base 1000 --top 1000 --coordinateType PRESSURE_COORDINATE]
-
-
+        spookipy.Thickness(src_df0,
+                           base=1000,
+                           top=1000,
+                           coordinate_type='PRESSURE_2001').compute()
+        # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+        # [Thickness --base 1000 --top 1000 --coordinateType PRESSURE_COORDINATE]
 
 def test_6(plugin_test_dir):
     """Test #6 : Test avec un fichier hybride."""
@@ -140,18 +152,20 @@ def test_6(plugin_test_dir):
 
     #compute Thickness
     df = spookipy.Thickness(src_df0,base=1.0,top=0.607,coordinate_type='HYBRID_5001').compute()
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Thickness --base 1 --top 0.607 --coordinateType HYBRID_COORDINATE] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
-    df = spookipy.encode_ip2_and_ip3_height(df)
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [Thickness --base 1 --top 0.607 --coordinateType HYBRID_COORDINATE] >> 
+    # [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
+
     #write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "Thick_test6_file2cmp.std"
+    file_to_compare = plugin_test_dir + "Thick_test6_file2cmp_20231026.std"
 
     #compare results
-    res = fstcomp(results_file,file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file,file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 

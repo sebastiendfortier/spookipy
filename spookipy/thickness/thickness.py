@@ -52,42 +52,46 @@ class Thickness(Plugin):
     :type top: float
     :param coordinate_type: Type of vertical coordinate. choices: SIGMA_1001, ETA_1002, PRESSURE_2001,HYBRID_5001,UNKNOWN
     :type coordinate_type: str
+    :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
+    :type dependency_check: bool, optional
+    :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
+    :type copy_input: bool, optional 
+    :param reduce_df: Indicates to reduce the dataframe to its minimum, defaults to True
+    :type reduce_df: bool, optional
     """
     computable_plugin = "DZ"
 
     @initializer
-    def __init__(self,df: pd.DataFrame,
+    def __init__(self,
+                df  : pd.DataFrame,
                 base: float,
-                top: float,
+                top : float,
                 coordinate_type: str,
                 dependency_check = False,
-                copy_input=False):
+                copy_input       = False,
+                reduce_df        = True):
 
         self.plugin_mandatory_dependencies = [
             {
-                # in this case we want gz in decameter from the dataframe
                 'GZ': {'nomvar': 'GZ','unit':'decameter'}
             }
         ]
 
         self.plugin_result_specifications = \
             {
-                'DZ': {'nomvar': 'DZ','unit':'decameter','label':'THCKNS'}
+                'DZ': {'nomvar': 'DZ', 'unit':'decameter', 'label':'THCKNS'}
             }
+        
         self.df = fstpy.metadata_cleanup(self.df)
         super().__init__(self.df)
-        self.df = fstpy.set_vertical_coordinate_type(self.df)
         self.prepare_groups()
-
 
     def prepare_groups(self):
 
         self.verify_parameters_values()
-        self.no_meta_df = fstpy.add_columns(self.no_meta_df, columns=['unit', 'forecast_hour', 'ip_info'])
-
+        self.no_meta_df         = fstpy.add_columns(self.no_meta_df, columns=['unit','ip_info'])
         self.existing_result_df = get_existing_result(self.no_meta_df, self.plugin_result_specifications)
-
-        self.groups = self.no_meta_df.groupby(['grid', 'vctype','ip1_kind'])
+        self.groups             = self.no_meta_df.groupby(['grid', 'vctype','ip1_kind'])
 
        
     def verify_parameters_values(self):
@@ -110,19 +114,15 @@ class Thickness(Plugin):
         """Verify that the top and base values are not negative or equal to the other value
         """
 
-        if (self.base > 0) and (self.top > 0):
-            if self.base == self.top:
-                raise ParametersValuesError("The base value is equal to the top value")
-            else:
-                return True
-
-        else:
+        if any(x <= 0 for x in [self.base, self.top]):
             raise ParametersValuesError("The base value or the top value is negative")
+        elif self.base == self.top:
+            raise ParametersValuesError("The base value is equal to the top value")
+        else:
+            return True
 
 
     def compute(self)-> pd.DataFrame:
-
-
         # If a row DZ already exists in the dataframe we return the result
         if not self.existing_result_df.empty:
             return existing_results(
@@ -134,7 +134,9 @@ class Thickness(Plugin):
         df_list = []
 
         try:
-            self.plugin_mandatory_dependencies[0]["GZ"]["vctype"]=self.coordinate
+            # self.plugin_mandatory_dependencies[0]["GZ"]["vctype"]=self.coordinate
+            gz_dict = self.plugin_mandatory_dependencies[0]["GZ"]
+            gz_dict["vctype"] = self.coordinate
 
             dependencies_list = get_dependencies(
                 self.groups,
@@ -174,7 +176,8 @@ class Thickness(Plugin):
         finally:
             return self.final_results(df_list, ThicknessError, 
                                       dependency_check = self.dependency_check, 
-                                      copy_input = self.copy_input)
+                                      copy_input       = self.copy_input,
+                                      reduce_df        = self.reduce_df)
 
 
     @staticmethod

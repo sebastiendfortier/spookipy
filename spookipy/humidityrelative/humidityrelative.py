@@ -69,8 +69,9 @@ class HumidityRelative(Plugin):
             },
             {
                 'TT': {'nomvar': 'TT', 'unit': 'kelvin'},
+                # Since ES is a difference of temperature, the unit doesn't matter. 
+                # We need to have it in celsius here to avoid an automatic conversion.
                 'ES': {'nomvar': 'ES', 'unit': 'celsius', 'select_only': True},
-                #'ES': {'nomvar': 'ES', 'unit': 'kelvin', 'select_only': True},
                 'PX': {'nomvar': 'PX', 'unit': 'pascal'},
             },
             {

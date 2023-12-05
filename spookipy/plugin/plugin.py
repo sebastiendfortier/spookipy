@@ -108,6 +108,9 @@ class Plugin(abc.ABC):
 
         if reduce_df:
             self.meta_df = fstpy.reduce_parsed_etiket_columns(self.meta_df)
+            # Suppression des colonnes des meta-data sans appliquer la reduction de colonnes
+            self.meta_df = fstpy.remove_all_expanded_columns(self.meta_df)
+
         new_list.append(self.meta_df)
 
         # Ajout des données recues en input
@@ -119,6 +122,7 @@ class Plugin(abc.ABC):
 
         # merge all results together
         res_df = pd.concat(new_list, ignore_index=True)
+
         res_df = fstpy.metadata_cleanup(res_df)
 
         return res_df

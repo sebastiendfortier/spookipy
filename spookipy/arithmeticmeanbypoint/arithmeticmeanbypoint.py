@@ -33,8 +33,9 @@ class ArithmeticMeanByPoint(Plugin):
             df: pd.DataFrame,
             group_by_forecast_hour=False,
             group_by_nomvar: bool=False,
-            nomvar_out=None,
-            copy_input=False):
+            nomvar_out = None,
+            copy_input = False,
+            reduce_df  = True):
 
         self.validate_params()
 
@@ -50,15 +51,16 @@ class ArithmeticMeanByPoint(Plugin):
         logging.info('ArithmeticMeanByPoint - compute')
         return OpElementsByColumn(
             self.df,
-            operator=np.mean,
-            operation_name='ArithmeticMeanByPoint',
-            exception_class=ArithmeticMeanByPointError,
-            group_by_forecast_hour=self.group_by_forecast_hour,
-            group_by_level=True,
-            group_by_nomvar=self.group_by_nomvar,
-            nomvar_out=self.nomvar_out,
-            etiket='MEANPT',
-            copy_input=self.copy_input).compute()
+            operator               = np.mean,
+            operation_name         = 'ArithmeticMeanByPoint',
+            exception_class        = ArithmeticMeanByPointError,
+            group_by_forecast_hour = self.group_by_forecast_hour,
+            group_by_level         = True,
+            group_by_nomvar        = self.group_by_nomvar,
+            nomvar_out             = self.nomvar_out,
+            label                  = 'MEANPT',
+            copy_input             = self.copy_input,
+            reduce_df              = self.reduce_df).compute()
 
     @staticmethod
     def parse_config(args: str) -> dict:

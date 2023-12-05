@@ -265,7 +265,8 @@ def get_existing_result(
 
 def get_intersecting_levels(
         df: pd.DataFrame,
-        plugin_mandatory_dependencies: dict) -> pd.DataFrame:
+        plugin_mandatory_dependencies: dict,
+        check_mask = False) -> pd.DataFrame:
     """Gets the records of all intersecting levels for nomvars in list.
     The input data must be grouped by grid and ip1_kind info.  
     If TT,UU and VV are in the list, the output dataframe will contain all 3
@@ -281,7 +282,19 @@ def get_intersecting_levels(
     """
 
     if len(plugin_mandatory_dependencies) <= 1:
-        raise LevelIntersectionError('Not enough nomvars to process')
+        if check_mask:
+            list_level = df.level.unique()
+            for x in list_level:
+                masks =  (df['masks']  == True) & (df['level'] == x)
+                masked = (df['masked'] == True) & (df['level'] == x)
+                no_match = (len(masks) != len(masked))
+
+            if no_match:
+                raise LevelIntersectionError('No records to intersect')
+            else:
+                return df
+        else:
+            raise LevelIntersectionError('Not enough nomvars to process')
 
     first_df = df.loc[df.nomvar == list(plugin_mandatory_dependencies.keys())[0]]
 
@@ -305,9 +318,12 @@ def get_intersecting_levels(
                     (df.level.isin(common_levels))].drop_duplicates(subset=[
                         'nomvar', 'typvar_char1','etiket', 'ni', 'nj', 'nk', 'dateo', 
                         'ip1', 'ip2', 'ip3', 'deet', 'npas', 'ig1', 'ig2', 'ig3', 'ig4'])
+    
     res_df = res_df.drop(columns=['typvar_char1'])
 
-    res_df = res_df.sort_values(by='level',ascending=res_df.ascending.unique()[0])
+    if not res_df.empty:
+        res_df = res_df.sort_values(by='level',ascending=res_df.ascending.unique()[0])
+
     return res_df
 
 

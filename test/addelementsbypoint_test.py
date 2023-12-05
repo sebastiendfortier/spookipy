@@ -24,9 +24,16 @@ def test_1(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute AddElementsByPoint
-    df = spookipy.AddElementsByPoint(src_df0, nomvar_out='ACCU').compute()
+    df      = spookipy.AddElementsByPoint(src_df0, 
+                                          nomvar_out='ACCU').compute()
+    # [ReaderStd --input {sources[0]}] >> 
+    # [AddElementsByPoint --outputFieldName ACCU] >> 
+    # [Zap --pdsLabel ADDFIELDS --doNotFlagAsZapped] >> 
+    # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --noUnitConversion]
+
     df['etiket'] = 'ADDFIELDS'
-    # [ReaderStd --input {sources[0]}] >> [AddElementsByPoint --outputFieldName ACCU] >> [Zap --pdsLabel ADDFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --noUnitConversion]
+    df['nbits']  = 16               # Pour correspondre a R16
+    df['datyp']  = 1
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
@@ -49,9 +56,17 @@ def test_2(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute AddElementsByPoint
-    df = spookipy.AddElementsByPoint(src_df0, nomvar_out='ACCU').compute()
+    df      = spookipy.AddElementsByPoint(src_df0, 
+                                          nomvar_out='ACCU').compute()
+    # [ReaderStd --input {sources[0]}] >>
+    # [AddElementsByPoint --outputFieldName ACCU] >>
+    # [Zap --pdsLabel ADDFIELDS --doNotFlagAsZapped] >>
+    # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --noUnitConversion]
+
     df['etiket'] = 'ADDFIELDS'
-    # [ReaderStd --input {sources[0]}] >> [AddElementsByPoint --outputFieldName ACCU] >> [Zap --pdsLabel ADDFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --noUnitConversion]
+    df['datyp']  = 1                # Pour correspondre a R16
+    df['nbits']  = 16               
+
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
@@ -111,20 +126,21 @@ def test_5(plugin_test_dir):
 
 def test_6(plugin_test_dir):
     """Test addition avec parametre group_by_nomvar."""
+    # Test uniquement du cote spookipy
+
     # open and read source
     source0 = plugin_test_dir + "TTUUVV_12h.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
     source1 = plugin_test_dir + "TTUUVV_24h.std"
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
-    src_df = pd.concat([src_df0 , src_df1])
+    src_df  = pd.concat([src_df0 , src_df1])
 
     # compute AddElementsByPoint
-    df = spookipy.AddElementsByPoint(src_df, group_by_nomvar=True).compute()
-    # df['etiket'] = '__ADDEPTX'
-    df.loc[~df.nomvar.isin(['!!', '^^', '>>', 'P0']), 'etiket'] = '__ADDEPTX'
-    # [ReaderStd --input {sources[0]}] >> [AddElementsByPoint --outputFieldName ACCU] >> [Zap --pdsLabel ADDFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --noUnitConversion]
+    df      = spookipy.AddElementsByPoint(src_df, 
+                                          group_by_nomvar=True).compute()
 
     df.sort_values(by=['nomvar', 'level'],ascending=[True, False],inplace=True)
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
     fstpy.delete_file(results_file)
@@ -138,87 +154,122 @@ def test_6(plugin_test_dir):
     fstpy.delete_file(results_file)
     assert(res)
 
+def test_6a(plugin_test_dir):
+    """Test avec 1 champ, differents forecastHours. Additionne les valeurs des TT des differents ForecastHours pour chaque niveau."""
+    # Test inexistant du cote Spooki 
 
-# def test_7(plugin_test_dir):
-#     """Test addition de MASK; teste que le masque est bien additionne et que les champs sortent avec le bon typeOfField @@ et @P."""
-#     # open and read source
-#     source0 = plugin_test_dir + "2021071400_024_masked_fields.std"
-#     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-#     meta_df = src_df0.loc[src_df0.nomvar.isin(
-#         ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-#     src_df0 = src_df0.loc[src_df0.nomvar.isin(['WHP0', 'WHP1'])]
-#     masked_df = src_df0.loc[src_df0.typvar.str.contains('@@')]
+    # open and read source
+    source0 = plugin_test_dir + "TTUUVV_12h.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    source1 = plugin_test_dir + "TTUUVV_24h.std"
+    src_df1 = fstpy.StandardFileReader(source1).to_pandas()
+    src_df  = pd.concat([src_df0 , src_df1])
 
+    tt_df   = src_df.loc[src_df['nomvar'] == "TT"]
 
-#     # compute AddElementsByPoint
-#     res_df = spookipy.AddElementsByPoint(masked_df, nomvar_out="HP01").compute()
-#     res_df = spookipy.SetUpperBoundary(res_df, value=1.).compute()
-#     res_df.loc[res_df.nomvar.isin(['HP01']), 'typvar'] = '@@'
-#     res_df.loc[res_df.nomvar.isin(['HP01']), 'etiket'] = '__ADDEPTX'
-#     res_df.loc[res_df.nomvar == 'HP01', 'datyp'] = 2
-#     res_df.loc[res_df.nomvar == 'HP01', 'nbits'] = 1
+    # compute AddElementsByPoint
+    df      = spookipy.AddElementsByPoint(tt_df).compute()
 
-#     df = pd.concat([res_df , src_df0, meta_df])
-#     df.loc[~df.nomvar.isin(
-#         ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"]), 'ip2'] = 24
+    # Test similaire au test 6, mais en selectionnant TT et en n'utilisant pas l'option group_by_nomvar nomvar
+    
+    # Valide de cette facon: 
+    # spooki_run.py "[ReaderStd --input $inputFile1 $inputFile2] >>  [Select --fieldName TT] >>  
+    # [AddElementsByPoint --plugin_language CPP]
 
-#     # [ReaderStd --input {sources[0]}] >> [AddElementsByPoint --outputFieldName ACCU] >> [Zap --pdsLabel ADDFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --noUnitConversion]
+    df.sort_values(by=['nomvar', 'level'],ascending=[True, False],inplace=True)
 
-#     df.sort_values(by=['nomvar', 'level'],ascending=[True, False],inplace=True)
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
 
-#     # write the result
-#     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
-#     fstpy.delete_file(results_file)
-#     fstpy.StandardFileWriter(results_file, df).to_fst()
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "test6a_file2cmp.std"
 
-#     # open and read comparison file
-#     file_to_compare = plugin_test_dir + "test7_file2cmp.std"
-
-#     # compare results
-#     res = fstcomp(results_file, file_to_compare)
-#     # fstpy.delete_file(results_file)
-#     assert(res)
-
-# def test_77(plugin_test_dir):
-#     """Test addition de MASK; teste que le masque est bien additionne et que les champs sortent avec le bon typeOfField @@ et @P."""
-#     # open and read source
-#     source0 = "/home/gha000/ss5/SpookiBuild/spooki_build/InputReduitMask.std"
-#     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-
-#     meta_df = src_df0.loc[src_df0.nomvar.isin(
-#         ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
-#     src_df0 = src_df0.loc[src_df0.nomvar.isin(['WHP0', 'WHP1'])]
-#     masked_df = src_df0.loc[src_df0.typvar.str.contains('@@')]
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
+#  spooki_run.py "[ReaderStd --input /fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/AddElementsByPoint/testsFiles/2021071400_024_masked_fields.std] >> [Select --fieldName WHP1,WHP0 --typeOfField MASK] >> [GridCut --startPoint 750,160 --endPoint 770,170] >> [WriterStd --output TestChampsMasked.std]"
 
 
-#     # compute AddElementsByPoint
-#     res_df = spookipy.AddElementsByPoint(masked_df, nomvar_out="HP01").compute()
-#     # res_df = spookipy.SetUpperBoundary(res_df, value=1.).compute()
-#     res_df.loc[res_df.nomvar.isin(['HP01']), 'typvar'] = '@@'
-#     res_df.loc[res_df.nomvar.isin(['HP01']), 'etiket'] = '__ADDEPTX'
-#     # res_df.loc[res_df.nomvar == 'HP01', 'datyp'] = 2
-#     # res_df.loc[res_df.nomvar == 'HP01', 'nbits'] = 1
+# Fichier de comparaison version Spooki CPP recree: 
+# spooki_run.py "[ReaderStd --input  2021071400_024_masked_fields.std] >>  
+#                (  ([Select --typeOfField MASK --fieldName WHP0,WHP1] >> 
+#                    [AddElementsByPoint --outputFieldName HP01 --plugin_language  CPP] >>  
+#                    [SetUpperBoundary --value 1 --plugin_language CPP] >> [Zap --nbitsForDataStorage I32]) 
+#                   +
+#                   [Select --fieldName WHP0,WHP1]  
+#                ) >> 
+#                [WriterStd --output test7_file2cmp_20231204.cpp --plugin_language CPP--encodeIP2andIP3 ]"
+def test_7(plugin_test_dir):
+    """Test addition de MASK; teste que le masque est bien additionne et que les champs sortent avec le bon typeOfField @@ et @P."""
+    # open and read source
+    source0   = plugin_test_dir + "2021071400_024_masked_fields.std"
 
-#     df = pd.concat([res_df , src_df0, meta_df])
-#     df.loc[~df.nomvar.isin(
-#         ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"]), 'ip2'] = 24
+    src_df0   = fstpy.StandardFileReader(source0).to_pandas()
 
-#     # [ReaderStd --input {sources[0]}] >> [AddElementsByPoint --outputFieldName ACCU] >> [Zap --pdsLabel ADDFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --noUnitConversion]
+    meta_df   = src_df0.loc[src_df0.nomvar.isin(["^^", ">>"])].reset_index(drop=True)
+    
+    src_df0   = src_df0.loc[src_df0.nomvar.isin(['WHP0', 'WHP1'])]
+    masked_df = src_df0.loc[src_df0.typvar.str.contains('@@')]
 
-#     df.sort_values(by=['nomvar', 'level'],ascending=[True, False],inplace=True)
+    # compute AddElementsByPoint - addition des champs "mask"
+    res_df    = spookipy.AddElementsByPoint(masked_df, 
+                                            nomvar_out="HP01", reduce_df = True).compute()
 
-#     # write the result
-#     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_77.std"])
-#     fstpy.delete_file(results_file)
-#     fstpy.StandardFileWriter(results_file, df).to_fst()
+    res_df    = spookipy.SetUpperBoundary(res_df, 
+                                          value=1).compute()
 
-#     # open and read comparison file
-#     file_to_compare = plugin_test_dir + "test7_file2cmp.std"
+    # Concatene les champs originaux "mask" avec le resultat "bounded" a 1
+    # Note: l'utilisation du copy_input n'est pas utilise a l'appel de AddElem... car on ne veut pas borne les champs 
+    #       d'input a 1 par la suite.  Pas de gain a le faire de cette facon.
+    df = pd.concat([res_df , src_df0, meta_df])
 
-#     # compare results
-#     res = fstcomp(results_file, file_to_compare)
-#     # fstpy.delete_file(results_file)
-#     assert(res)
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "test7_file2cmp_20231204.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
+
+# Test existant du cote python seulement
+def test_7a(plugin_test_dir):
+    """Addition de MASK, similaire au test7; fichier reduit et copy_input = True."""
+    # open and read source
+    source0   = plugin_test_dir + "2021071400_024_masked_fields_reduit.std"
+    src_df    = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0   = src_df.loc[(src_df.nomvar.isin(['WHP0', 'WHP1'])) & (src_df.typvar == '@@')]
+ 
+    # # compute AddElementsByPoint
+    res_df    = spookipy.AddElementsByPoint(src_df0, 
+                                            nomvar_out="HP01",
+                                            copy_input=True).compute()
+    # spooki_run.py "[ReaderStd --input 2021071400_024_masked_fields_reduit.std] >> 
+    #                ( [Select --typeOfField MASK --fieldName WHP0,WHP1] >> 
+    #                  ([Copy] + ([AddElementsByPoint --outputFieldName HP01] >> [Zap --nbitsForDataStorage I32]))
+    #                )  >> 
+    #                [WriterStd --output test7a_file2cmp.std  --noMetadata --plugin_language CPP]"
+
+
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7a.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, res_df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "test7a_file2cmp.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
 
 
 def test_8(plugin_test_dir):
@@ -241,9 +292,16 @@ def test_9(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute AddElementsByPoint
-    df = spookipy.AddElementsByPoint(src_df0, nomvar_out='ACCU',copy_input=True).compute()
-    df['etiket'] = 'ADDFIELDS'
-    # [ReaderStd --input {sources[0]}] >> [AddElementsByPoint --outputFieldName ACCU] >> [Zap --pdsLabel ADDFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --noUnitConversion]
+    df = spookipy.AddElementsByPoint(src_df0, 
+                                     nomvar_out='ACCU',
+                                     copy_input=True).compute()
+   
+    # [ReaderStd --input {sources[0]}] >>
+    # [AddElementsByPoint --outputFieldName ACCU] >> 
+    # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --noUnitConversion]
+
+    df['nbits']  = 16               # Pour correspondre a R16
+    df['datyp']  = 1
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
@@ -251,7 +309,8 @@ def test_9(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "test9_file2cmp.std"
+    # Nouveau fichier de comparaison, sans zap des champs
+    file_to_compare = plugin_test_dir + "test9_file2cmp_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -259,7 +318,7 @@ def test_9(plugin_test_dir):
     assert(res)
 
 def test_10(plugin_test_dir):
-    """Additionne des champs qui n'ont pas le meme nombre de niveaux """
+    """Additionne des champs qui n'ont pas le meme nombre de niveaux et de grilles differentes"""
     # open and read source
     source0 = plugin_test_dir + "glbpres_TT_UU_VV.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -274,12 +333,25 @@ def test_10(plugin_test_dir):
 
     # Selection de UU et VV sur une autre grille
     # source1 = plugin_test_dir + "test1.std"
-    source1 = plugin_test_dir + "UUVV5x5_enc_fileSrc.std"
-    src_df1 = fstpy.StandardFileReader(source1).to_pandas()
+    source1  = plugin_test_dir + "UUVV5x5_enc_fileSrc.std"
+    src_df1  = fstpy.StandardFileReader(source1).to_pandas()
     tt_uu_vv = pd.concat([tt_uu_df, vv_df, src_df1], ignore_index=True)
-
+    cols = ["nomvar", "grid", "ip1"]
+    print(f'Input:  tt_uu_vv = \n{tt_uu_vv[cols]} \n')
     # compute AddElementsByPoint
-    df = spookipy.AddElementsByPoint(tt_uu_vv, nomvar_out='ACCU',copy_input=False).compute()
+    df = spookipy.AddElementsByPoint(tt_uu_vv, 
+                                     nomvar_out='ACCU').compute()
+    
+    #  ( ( [ReaderStd --input glbpres_TT_UU_VV.std] >> 
+    #       ( [Select --fieldName TT,UU --verticalLevel 1000,925,850] + [Select --fieldName VV --verticalLevel 1000,925] ) 
+    #    ) + 
+    #    [ReaderStd --input UUVV5x5_enc_fileSrc.std]
+    #  ) >> 
+    #  [AddElementsByPoint --outputFieldName ACCU] >> 
+    #  [Zap --pdsLabel ADDFIELDS --doNotFlagAsZapped] >> 
+    #  [WriterStd --output {destination_path} --noMetadata --ignoreExtended]"
+    
+    # Pour respecter le zap du test original
     df['etiket'] = 'ADDFIELDS'
 
     # write the result
@@ -297,25 +369,25 @@ def test_10(plugin_test_dir):
 
 def test_11(plugin_test_dir):
     """Additionne des champs groupe selon le forecast hour """
+    # Test existant seulement du cote python
+
     # open and read source
-    # source0 = plugin_test_dir + "TTES2x2x4_manyForecastHours.std"
-    source0 ="/fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/ArithmeticMeanByPoint/testsFiles/TTES2x2x4_manyForecastHours.std"
-    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    source0  = plugin_test_dir + "TTES2x2x4_manyForecastHours.std"
+    src_df0  = fstpy.StandardFileReader(source0).to_pandas()
     tt_es_df = fstpy.select_with_meta(src_df0, ['TT', 'ES'])
 
     # compute AddElementsByPoint
-    df = spookipy.AddElementsByPoint(tt_es_df, group_by_forecast_hour=True, copy_input=False).compute()
-    df.loc[df.nomvar == 'ADEP','etiket'] = '__ADDFLDX'
-    # this test doesn't exist in cpp, the file to compare was created without taking into account the proper typvar
-    df.loc[df.nomvar == 'ADEP','typvar'] = 'PZ'
+    df = spookipy.AddElementsByPoint(tt_es_df, 
+                                     group_by_forecast_hour=True).compute()
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
+    # Nouveau fichier de tests, sans zap d'etiket et de typvar.
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "test11_file2cmp.std"
+    file_to_compare = plugin_test_dir + "test11_file2cmp_20231026.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)

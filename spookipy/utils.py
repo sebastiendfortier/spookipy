@@ -262,62 +262,83 @@ def get_existing_result(
     else:
         return pd.DataFrame(dtype='object')
 
+def find_intersecting_levels(df: pd.DataFrame) -> pd.DataFrame:
+    """Finds the records of all intersecting levels from a dataframe.
 
-def get_intersecting_levels(
-        df: pd.DataFrame,
-        plugin_mandatory_dependencies: dict,
-        check_mask = False) -> pd.DataFrame:
-    """Gets the records of all intersecting levels for nomvars in list.
+    The input data must be grouped by grid. 
+
+    :param df: input dataframe, must contain the ip_info
+    :type df: pd.DataFrame
+    :return: dataframe subset
+    :rtype: pd.DataFrame
+    """
+
+    list_nomvar = df.nomvar.unique()
+
+    # Un seul champ? Pas d'intersection a trouver
+    if len(list_nomvar) == 1:
+        return df
+
+    res_df = find_common_levels(df, list_nomvar)
+
+    return res_df
+
+def get_intersecting_levels(df: pd.DataFrame,
+                            list_nomvar: list) -> pd.DataFrame:
+    """Gets the records of all intersecting levels for nomvars in a list from plugin_mandatory_dependency dict.
     The input data must be grouped by grid and ip1_kind info.  
     If TT,UU and VV are in the list, the output dataframe will contain all 3
     variables at all the intersecting levels between the 3 variables
 
     :param df: input dataframe, must contain the ip_info
     :type df: pd.DataFrame
-    :param plugin_mandatory_dependencies: dict with nomvars as keys
-    :type nomvars: dict
+    :param list_nomvar: list of nomvars 
+    :type nomvars: list
     :raises LevelIntersectionError: if a problem occurs this exception will be raised
     :return: dataframe subset
     :rtype: pd.DataFrame
     """
-
-    if len(plugin_mandatory_dependencies) <= 1:
-        if check_mask:
-            list_level = df.level.unique()
-            for x in list_level:
-                masks =  (df['masks']  == True) & (df['level'] == x)
-                masked = (df['masked'] == True) & (df['level'] == x)
-                no_match = (len(masks) != len(masked))
-
-            if no_match:
-                raise LevelIntersectionError('No records to intersect')
-            else:
-                return df
-        else:
-            raise LevelIntersectionError('Not enough nomvars to process')
-
-    first_df = df.loc[df.nomvar == list(plugin_mandatory_dependencies.keys())[0]]
-
-    # if first_df.empty:
-    if df.empty:
+    
+    # On recoit la liste des dependances qui se doivent d'etre presentes.
+    if df.loc[df.nomvar == list_nomvar[0]].empty:
         raise LevelIntersectionError('No records to intersect')
 
-    common_levels = set(first_df.level.unique())
+    res_df = find_common_levels(df, list_nomvar)
 
-    for nomvar, _ in plugin_mandatory_dependencies.items():
-        curr_df       = df.loc[df.nomvar == nomvar]
-        levels        = set(curr_df.level.unique())
-        common_levels = common_levels.intersection(levels)
+    return res_df
+
+def find_common_levels(df: pd.DataFrame,
+                       list_nomvar: list) -> pd.DataFrame:
+    """Finds all common levels for fields in list_nomvar in the dataframe.
+
+    The input data must be grouped by grid. 
+
+    :param df: input dataframe, must contain the ip_info
+    :type df: pd.DataFrame
+    :return: dataframe subset
+    :rtype: pd.DataFrame
+    """
+
+    df.sort_values(by=['nomvar','level'])
+    first_df           = df.loc[df.nomvar == list_nomvar[0]]
+    common_levels      = set(first_df.level.unique())
+
+    for nomvar in list_nomvar:
+        curr_df        = df.loc[df.nomvar == nomvar]
+        levels         = set(curr_df.level.unique())
+        common_levels  = common_levels.intersection(levels)
 
     common_levels = list(common_levels)
-    nomvars       = list(plugin_mandatory_dependencies.keys())
 
     df.sort_values(by=['nomvar','typvar','level'])
     df['typvar_char1'] = df.apply(lambda row: row['typvar'] if len(row['typvar']) < 2 else row['typvar'][0], axis=1)
-    res_df = df.loc[(df.nomvar.isin(nomvars)) & 
-                    (df.level.isin(common_levels))].drop_duplicates(subset=[
-                        'nomvar', 'typvar_char1','etiket', 'ni', 'nj', 'nk', 'dateo', 
-                        'ip1', 'ip2', 'ip3', 'deet', 'npas', 'ig1', 'ig2', 'ig3', 'ig4'])
+
+    res_df             = df.loc[(df.nomvar.isin(list_nomvar)) & 
+                                (df.level.isin(common_levels))].drop_duplicates(
+                                subset=[
+                                        'nomvar', 'typvar_char1','etiket', 'ni', 'nj', 'nk', 'dateo', 
+                                        'ip1', 'ip2', 'ip3', 'deet', 'npas', 'ig1', 'ig2', 'ig3', 'ig4'
+                                       ])
     
     res_df = res_df.drop(columns=['typvar_char1'])
 
@@ -583,8 +604,9 @@ def find_matching_dependency_option(
             for k, v in plugin_mandatory_dependencies[i].items():
                 logging.info(f'\t {k}:{v}')
             if intersect_levels and len(plugin_mandatory_dependencies[i]) > 1:
+                list_nomvar = [value['nomvar'] for value in plugin_mandatory_dependencies[i].values()]
                 dependencies_df = get_intersecting_levels(
-                    dependencies_df, plugin_mandatory_dependencies[i])
+                    dependencies_df, list_nomvar)
                 if dependencies_df.empty:
                     logging.warning(
                         '\t Intersecting levels requested and not found for this dataframe')

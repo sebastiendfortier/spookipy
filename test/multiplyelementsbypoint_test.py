@@ -239,6 +239,36 @@ def test_8(plugin_test_dir):
     fstpy.delete_file(results_file)
     assert(res)
 
+def test_8a(plugin_test_dir):
+    """Test avec 2 champs masques; 1 champ masque avec son mask, et un champ masque sans son mask. """
+    # Test pour montrer que le plugin fonctionne meme s'il n'y a pas de correspondance entre champ masked et son mask
+
+    # open and read source
+    source0   = plugin_test_dir + "2021071400_024_masked_fields_reduit.std"
+    src_df0   = fstpy.StandardFileReader(source0).to_pandas()
+
+    src_df1   = src_df0.loc[(src_df0.nomvar.isin(['WHP0'] ))]
+    src_df2   = src_df0.loc[ src_df0.nomvar.isin(['WHP1']) & src_df0.typvar.str.contains('P@')]
+
+    src_df3 = pd.concat([src_df1 , src_df2])
+
+    # compute MultiplyElementsByPoint
+    df      = spookipy.MultiplyElementsByPoint(src_df3).compute()
+
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8a.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "test8a_file2cmp.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
+ 
+
 def test_10(plugin_test_dir):
     """Test multiplication avec parametre group_by_nomvar."""
     # open and read source

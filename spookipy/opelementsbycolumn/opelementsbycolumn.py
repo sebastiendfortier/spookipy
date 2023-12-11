@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin
-from ..utils import (create_empty_result, get_3d_array, get_intersecting_levels,
+from ..utils import (create_empty_result, get_3d_array, find_intersecting_levels,
                      initializer, validate_nomvar, LevelIntersectionError)
 
 
@@ -93,22 +93,12 @@ class OpElementsByColumn(Plugin):
 
         all_group_df = pd.DataFrame()
         for _, current_group in self.groups:
-
-            list_nomvar = current_group.nomvar.unique()
-
             # Un seul champ dans le groupe
             if len(current_group.index) == 1:
                 continue
 
-            # Construction d'un dictionnaire contenant les champs du dataframe
-            # pour trouver les niveaux communs et eliminer les autres
-            dict_champs = dict.fromkeys(set(list_nomvar),{'nomvar':''})
-            for x in list_nomvar:
-                new_d = {'nomvar':x}
-                dict_champs[x]= new_d
-
             try:
-                group_df = get_intersecting_levels(current_group, dict_champs, check_mask=True)
+                group_df = find_intersecting_levels(current_group)
             except LevelIntersectionError:
                 raise self.exception_class(
                             self.operation_name +
@@ -116,6 +106,8 @@ class OpElementsByColumn(Plugin):
             else:
                 if not(group_df.empty):
                     all_group_df = pd.concat([all_group_df, group_df], ignore_index=True)
+                else:
+                    logging.warning(f'\n\nNo common levels for this group: \n{current_group[["nomvar", "typvar", "ni", "nj", "nk", "ip1"]]} \n')
 
         # Formation des groupes selon les criteres demandes a l'appel
         if self.group_by_nomvar:
@@ -134,8 +126,6 @@ class OpElementsByColumn(Plugin):
             raise self.exception_class(           
                         self.operation_name + ' -  invalid input !')
         
-
-
     
     def compute(self) -> pd.DataFrame:
         logging.info('OpElementsByColumn - compute')

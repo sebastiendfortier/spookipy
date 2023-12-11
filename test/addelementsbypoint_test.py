@@ -271,7 +271,6 @@ def test_7a(plugin_test_dir):
     fstpy.delete_file(results_file)
     assert(res)
 
-
 def test_8(plugin_test_dir):
     """Utilisation de --outputFieldName et group_by_nomvar."""
     source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
@@ -394,6 +393,57 @@ def test_11(plugin_test_dir):
     fstpy.delete_file(results_file)
     assert(res)
 
+def test_12(plugin_test_dir):
+    """Test avec 2 groupes de donnees, 1er groupe sans niveaux communs, 2ieme groupe a les niveaux communs. """
+    # Test existant en python seulement
+
+    # open and read source
+    source0 = plugin_test_dir + "2021071400_024_masked_fields.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.select_with_meta(src_df0, ['UD','VD','WH'])
+
+    source1 = plugin_test_dir + "UUVV5x5_fileSrc.std"
+    src_df1 = fstpy.StandardFileReader(source1).to_pandas()
+    src_df1 = fstpy.select_with_meta(src_df1, ['UU','VV'])
+
+    df      = pd.concat([src_df0, src_df1], ignore_index=True)
+
+    # 2 groupements de donnees: UV,VD et WH n'ont pas de niveaux communs aux 3
+    #                           UU et VV ont les memes niveaux
+ 
+    res_df = spookipy.AddElementsByPoint(df).compute()
+    # Correspond a cette requete:
+    # spooki_run.py  "[ReaderStd --input 2021071400_024_masked_fields.std UUVV5x5_fileSrc.std] >> 
+    # [Select --fieldName UD,VD,WH,UU,VV] >> [AddElementsByPoint --plugin_language CPP]
+
+    # ATTENTION:  Comportement different en CPP; arrete sans succes car un des groupes n'a pas de niveaux communs.
+    #             En python, on a decide d'ameliorer le comportement.  Le plugin regarde les autres groupes et 
+    #             fait le traitement si un groupe remplit la condition ie. si les niveaux sont communs.
+
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, res_df).to_fst()
+
+    # Nouveau fichier de tests, sans zap d'etiket et de typvar.
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "test12_file2cmp.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
+
+def test_13(plugin_test_dir):
+    """Test avec 3 champs masques; 1 champ n'est pas sur les memes niveaux.  Pas de niveaux communs aux 3 champs. """
+    # open and read source
+    source0 = plugin_test_dir + "2021071400_024_masked_fields.std"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0 = fstpy.select_with_meta(src_df0, ['UD','VD','WH'])
+
+    with pytest.raises(spookipy.AddElementsByPointError):
+        # compute AddElementsByPoint
+        _ = spookipy.AddElementsByPoint(src_df0).compute()
 
 if __name__ == "__main__":
     test_1(TEST_PATH + '/AddElementsByPoint/testsFiles/')

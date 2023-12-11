@@ -26,6 +26,8 @@ class ArithmeticMeanByPoint(Plugin):
     :type nomvar_out: str, optional
     :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
     :type copy_input: bool, optional 
+    :param reduce_df: Indicates to reduce the dataframe to its minimum, defaults to True
+    :type reduce_df: bool, optional  
     """
     @initializer
     def __init__(

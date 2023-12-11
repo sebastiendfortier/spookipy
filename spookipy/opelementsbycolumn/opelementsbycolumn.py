@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 import logging
 
+import datetime
 import fstpy
 import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin
-from ..utils import (create_empty_result, get_3d_array, get_intersecting_levels,
+from ..utils import (create_empty_result, get_3d_array, find_intersecting_levels,
                      initializer, validate_nomvar, LevelIntersectionError)
 
 
@@ -33,37 +34,41 @@ class OpElementsByColumn(Plugin):
     :type nomvar_out: str, optional
     :param unit: unit to apply to results, defaults to 'scalar'
     :type unit: str, optional
-    :param etiket: etiket to apply to results, defaults to None
-    :type etiket: str, optional
+    :param label: label to apply to results, defaults to None
+    :type label: str, optional
     :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
-    :type copy_input: bool, optional 
+    :type copy_input: bool, optional
+    :param reduce_df: Indicates to reduce the dataframe to its minimum, defaults to True
+    :type reduce_df: bool, optional
     """
     @initializer
     def __init__(
             self,
             df: pd.DataFrame,
             operator,
-            operation_name='OpElementsByColumn',
-            exception_class=OpElementsByColumnError,
-            group_by_forecast_hour=False,
-            group_by_level=False,
-            group_by_nomvar=False,
-            nomvar_out=None,
-            unit='scalar',
-            etiket=None,
-            copy_input=False):
+            operation_name         = 'OpElementsByColumn',
+            exception_class        = OpElementsByColumnError,
+            group_by_forecast_hour = False,
+            group_by_level         = False,
+            group_by_nomvar        = False,
+            nomvar_out             = None,
+            unit                   = 'scalar',
+            label                  = None,
+            copy_input             = False,
+            reduce_df              = True):
 
         self.plugin_result_specifications = {
             'ALL': {
                 'nomvar': self.nomvar_out,
-                'label' : self.operation_name,
-                'unit'  : self.unit}}
+                'label' : self.label,
+                'unit'  : self.unit}
+            }
 
         self.df = fstpy.metadata_cleanup(self.df)
         super().__init__(self.df)
 
-        if self.etiket is None:
-            self.etiket = self.operation_name
+        if self.label is None:
+            self.label = self.operation_name
         
         self.prepare_groups()
 
@@ -76,45 +81,42 @@ class OpElementsByColumn(Plugin):
 
         if len(self.no_meta_df) == 1:
             raise self.exception_class(
-                self.operation_name +
-                ' - not enough records to process, need at least 2')
+                self.operation_name + ' - not enough records to process, need at least 2')
 
         self.no_meta_df = fstpy.add_columns(
-            self.no_meta_df, columns=['forecast_hour', 'ip_info', 'unit'])
+            self.no_meta_df, columns=['forecast_hour', 'ip_info', 'unit', 'flags'])
 
-        grouping = ['grid','ip1_kind']
+        # Groupement seulement sur la grille pour determiner les groupes avec niveaux communs
+        grouping = ['grid']
 
         self.groups = self.no_meta_df.groupby(by=grouping)
 
         all_group_df = pd.DataFrame()
         for _, current_group in self.groups:
-
-            list_nomvar = current_group.nomvar.unique()
-    
-            if len(current_group.index) == 1 or len(list_nomvar) == 1:
+            # Un seul champ dans le groupe
+            if len(current_group.index) == 1:
                 continue
 
-            # Construction d'un dictionnaire contenant les champs du dataframe
-            # pour trouver les niveaux communs et eliminer les autres
-            dict_champs = dict.fromkeys(set(list_nomvar),{'nomvar':''})
-            for x in list_nomvar:
-                new_d = {'nomvar':x}
-                dict_champs[x]= new_d
-
             try:
-                group_df = get_intersecting_levels(current_group, dict_champs)
+                group_df = find_intersecting_levels(current_group)
             except LevelIntersectionError:
-                 raise self.exception_class(
+                raise self.exception_class(
                             self.operation_name +
                             ' - not enough records to process, need at least 2')
             else:
                 if not(group_df.empty):
                     all_group_df = pd.concat([all_group_df, group_df], ignore_index=True)
+                else:
+                    logging.warning(f'\n\nNo common levels for this group: \n{current_group[["nomvar", "typvar", "ni", "nj", "nk", "ip1"]]} \n')
 
+        # Formation des groupes selon les criteres demandes a l'appel
         if self.group_by_nomvar:
             grouping.append('nomvar')  
-        if self.group_by_forecast_hour:
-            grouping.append('datev')
+
+        if self.group_by_forecast_hour:  
+            items_to_add = ['datev', 'dateo']
+            grouping.extend(items_to_add)
+
         if self.group_by_level:
             grouping.append('level')
 
@@ -122,18 +124,16 @@ class OpElementsByColumn(Plugin):
             self.groups = all_group_df.groupby(by=grouping)
         else:
             raise self.exception_class(           
-                        self.operation_name +
-                            ' -  invalid input !')
+                        self.operation_name + ' -  invalid input !')
         
-
+    
     def compute(self) -> pd.DataFrame:
         logging.info('OpElementsByColumn - compute')
         # holds data from all the groups
         df_list = []
         for _, current_group in self.groups:
 
-            # current_group.sort_values(by=['nomvar', 'dateo', 'forecast_hour'], inplace=True)
-            current_group.sort_values(by=['nomvar', 'datev'], inplace=True)
+            current_group.sort_values(by=['nomvar', 'dateo', 'datev'], inplace=True)
             if len(current_group.index) == 1:
                 logging.warning(
                     'need more than one field for this operation - skipping')
@@ -142,16 +142,31 @@ class OpElementsByColumn(Plugin):
             if self.group_by_nomvar:
                 self.plugin_result_specifications["ALL"]["nomvar"]         = current_group.iloc[0].nomvar
                 self.plugin_result_specifications["ALL"]["ip2"]            = [0]
-                self.plugin_result_specifications["ALL"]["forecast_hour"]  = [0]
+                self.plugin_result_specifications["ALL"]["forecast_hour"]  = datetime.timedelta(0)
                 self.plugin_result_specifications["ALL"]["npas"]           = [0]
 
-            res_df = create_empty_result(current_group, self.plugin_result_specifications['ALL'])
-            
-            array_3d = get_3d_array(current_group)
+            # Si champs avec mask, on ne veut pas conserver les flags pour le typvar lors de la multiplication
+            if self.operation_name == "MultiplyElementsByPoint":
+                self.plugin_result_specifications["ALL"]["masked"]         = False
+                self.plugin_result_specifications["ALL"]["masks"]          = False
 
-            res_df.at[0, 'd'] = self.operator(array_3d, axis=0).astype(np.float32)
+            res_df = create_empty_result(current_group, self.plugin_result_specifications['ALL'])
+
+            array_3d = get_3d_array(current_group)
+            
+            if np.issubdtype(self.operator(array_3d, axis=0).dtype, np.integer):
+                res_df['datyp'] = 2
+                res_df.at[0, 'd'] = self.operator(array_3d, axis=0).astype(np.int32)
+            elif np.issubdtype(self.operator(array_3d, axis=0).dtype, np.floating):
+                res_df['datyp'] = 5
+                res_df.at[0, 'd'] = self.operator(array_3d, axis=0).astype(np.float32)
+
+            # Met le nombre de bits a 32 pour eviter les erreurs de conversion
+            res_df['nbits'] = 32
 
             df_list.append(res_df)
 
         return self.final_results(df_list, self.exception_class, 
-                                  copy_input = self.copy_input)
+                                  copy_input = self.copy_input,
+                                  reduce_df  = self.reduce_df)
+

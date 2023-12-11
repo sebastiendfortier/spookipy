@@ -26,15 +26,18 @@ class MultiplyElementsByPoint(Plugin):
     :type nomvar_out: str, optional
     :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
     :type copy_input: bool, optional  
+    :param reduce_df: Indicates to reduce the dataframe to its minimum, defaults to True
+    :type reduce_df: bool, optional
     """
     @initializer
     def __init__(
             self,
             df: pd.DataFrame,
             group_by_forecast_hour: bool=False,
-            group_by_nomvar: bool=False,
-            nomvar_out=None,
-            copy_input=False):
+            group_by_nomvar       : bool=False,
+            nomvar_out = None,
+            copy_input = False,
+            reduce_df  = True):
 
         self.validate_params()
 
@@ -49,15 +52,15 @@ class MultiplyElementsByPoint(Plugin):
         logging.info('MultiplyElementsByPoint - compute')
         return OpElementsByColumn(
             self.df,
-            operator=np.prod,
-            operation_name='MultiplyElementsByPoint',
-            exception_class=MultiplyElementsByPointError,
-            group_by_forecast_hour=self.group_by_forecast_hour,
-            group_by_level=True,
-            group_by_nomvar=self.group_by_nomvar,
-            nomvar_out=self.nomvar_out,
-            etiket='MULEPT',
-            copy_input=self.copy_input).compute()
+            operator               = np.prod,
+            operation_name         = 'MultiplyElementsByPoint',
+            exception_class        = MultiplyElementsByPointError,
+            group_by_forecast_hour = self.group_by_forecast_hour,
+            group_by_level         = True,
+            group_by_nomvar        = self.group_by_nomvar,
+            nomvar_out             = self.nomvar_out,
+            label                  = 'MULEPT',
+            copy_input             = self.copy_input).compute()
 
     @staticmethod
     def parse_config(args: str) -> dict:

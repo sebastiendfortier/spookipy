@@ -51,10 +51,17 @@ def test_3(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute ArithmeticMeanByPoint
-    df = spookipy.ArithmeticMeanByPoint(src_df0, nomvar_out='ACCU').compute()
-    # [ReaderStd --input {sources[0]}] >> [ArithmeticMeanByPoint --outputFieldName ACCU] >> [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
+    df      = spookipy.ArithmeticMeanByPoint(src_df0, 
+                                             nomvar_out='ACCU').compute()
+    # [ReaderStd --input {sources[0]}] >> 
+    # [ArithmeticMeanByPoint --outputFieldName ACCU] >> 
+    # [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >> 
+    # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     df['etiket'] = 'MEANFIELDS'
+    df['nbits']  = 16               # Pour correspondre a R16
+    df['datyp']  = 1
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
     fstpy.delete_file(results_file)
@@ -76,10 +83,16 @@ def test_4(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute ArithmeticMeanByPoint
-    df = spookipy.ArithmeticMeanByPoint(src_df0, nomvar_out='ACCU').compute()
-    # [ReaderStd --input {sources[0]}] >> [ArithmeticMeanByPoint --outputFieldName ACCU] >> [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
+    df      = spookipy.ArithmeticMeanByPoint(src_df0, 
+                                             nomvar_out='ACCU').compute()
+    # [ReaderStd --input {sources[0]}] >>
+    #  [ArithmeticMeanByPoint --outputFieldName ACCU] >> 
+    # [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >> 
+    # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     df['etiket'] = 'MEANFIELDS'
+    df['nbits']  = 16               # Pour correspondre a R16
+    df['datyp']  = 1
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
@@ -103,12 +116,14 @@ def test_5(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute ArithmeticMeanByPoint
-    df = spookipy.ArithmeticMeanByPoint(src_df0).compute()
-    # [ReaderStd --input {sources[0]}] >> [ArithmeticMeanByPoint ] >> [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
-    df['etiket'] = '__MEANFIX'
+    df      = spookipy.ArithmeticMeanByPoint(src_df0).compute()
+    # [ReaderStd --input {sources[0]}] >> 
+    # [ArithmeticMeanByPoint ] >> 
+    # [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >>  
+    # [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
 
-    df.loc[df.nomvar.isin(['^^', '>>']), 'etiket'] = 'G125K80_N'
-    df.loc[df.nomvar == '!!', 'etiket'] = 'PRESSUREX'
+    # Pour respecter le zap du test original
+    df.loc[~df.nomvar.isin(['!!', '^^', '>>']), 'etiket'] = '__MEANFIX'
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
@@ -131,12 +146,15 @@ def test_6(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute ArithmeticMeanByPoint
-    df = spookipy.ArithmeticMeanByPoint(
-        src_df0, group_by_forecast_hour=True).compute()
-    # [ReaderStd --input {sources[0]}] >> [ArithmeticMeanByPoint --groupBy FORECAST_HOUR] >> [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} ]
-    df['etiket'] = '__MEANFIX'
+    df      = spookipy.ArithmeticMeanByPoint(src_df0, 
+                                             group_by_forecast_hour=True).compute()
+    # [ReaderStd --input {sources[0]}] >> 
+    # [ArithmeticMeanByPoint --groupBy FORECAST_HOUR] >> 
+    # [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >> 
+    # [WriterStd --output {destination_path} ]
 
-    df.loc[df.nomvar.isin(['!!', '^^', '>>', 'P0']), 'etiket'] = 'R1_V700_N'
+     # Pour respecter le zap du test original
+    df.loc[~df.nomvar.isin(['!!', '^^', '>>', 'P0']), 'etiket'] = '__MEANFIX'
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
@@ -159,8 +177,14 @@ def test_7(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute ArithmeticMeanByPoint
-    df = spookipy.ArithmeticMeanByPoint(src_df0).compute()
-    # [ReaderStd --input {sources[0]}] >> [ArithmeticMeanByPoint] >> [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} ]
+    df      = spookipy.ArithmeticMeanByPoint(src_df0).compute()
+
+    # [ReaderStd --input {sources[0]}] >> 
+    # [ArithmeticMeanByPoint] >> 
+    # [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >> 
+    # [WriterStd --output {destination_path} ]
+
+    # Pour respecter le zap du test original
     df.loc[~df.nomvar.isin(['!!', '^^', '>>', 'P0']), 'etiket'] = '__MEANFIX'
 
     # write the result
@@ -183,18 +207,51 @@ def test_8(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute ArithmeticMeanByPoint
-    df = spookipy.ArithmeticMeanByPoint(src_df0, group_by_nomvar=True).compute()
-    # [ReaderStd --input {sources[0]}] >> [ArithmeticMeanByPoint] >> [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} ]
-    df.loc[~df.nomvar.isin(['!!', '^^', '>>', 'P0']), 'etiket'] = '__MEANFIX'
-    # this test doesn't exist in cpp, the file to compare was created without taking into account the proper typvar
-    df.loc[df.nomvar.isin(['ES','TT']),'typvar'] = 'PZ'
+    df      = spookipy.ArithmeticMeanByPoint(src_df0, 
+                                             group_by_nomvar=True).compute()
+    # [ReaderStd --input {sources[0]}] >>
+    # [ArithmeticMeanByPoint] >>  
+    # [WriterStd --output {destination_path} ]
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "Mean_test8_file2cmp.std"
+    # Nouveau fichier de test, sans zap du l'etiket 
+    file_to_compare = plugin_test_dir + "Mean_test8_file2cmp_20231026.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
+
+# Test existant du cote python seulement
+def test_9(plugin_test_dir):
+    """Moyenne de champs MASK; le resultat est converti en E32 par le plugin lui-meme."""
+    # open and read source
+    source0   = plugin_test_dir + "2021071400_024_masked_fields_reduit.std"
+    src_df    = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0   = src_df.loc[(src_df.nomvar.isin(['WHP0', 'WHP1'])) & (src_df.typvar == '@@')]
+ 
+    # # compute AddElementsByPoint
+    res_df    = spookipy.ArithmeticMeanByPoint(src_df0, 
+                                               nomvar_out="HP01",
+                                               copy_input=True).compute()
+    # spooki_run.py "[ReaderStd --input 2021071400_024_masked_fields_reduit.std] >> 
+    #                ( [Select --typeOfField MASK --fieldName WHP0,WHP1] >> 
+    #                  ([Copy] + ([ArithmeticMeanByPoint --outputFieldName HP01] >> [Zap --nbitsForDataStorage E32]))
+    #                )  >> 
+    #                [WriterStd --output Mean_test9_file2cmp.std  --noMetadata --plugin_language CPP]"
+
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, res_df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "Mean_test9_file2cmp.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)

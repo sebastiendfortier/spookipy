@@ -145,10 +145,13 @@ class OpElementsByColumn(Plugin):
                 self.plugin_result_specifications["ALL"]["forecast_hour"]  = datetime.timedelta(0)
                 self.plugin_result_specifications["ALL"]["npas"]           = [0]
 
-            # Si champs avec mask, on ne veut pas conserver les flags pour le typvar lors de la multiplication
+            # Si champs masque avec son mask, on ne veut pas conserver les flags pour le typvar lors de la multiplication
+            # Reproduction du comportement en CPP
             if self.operation_name == "MultiplyElementsByPoint":
-                self.plugin_result_specifications["ALL"]["masked"]         = False
-                self.plugin_result_specifications["ALL"]["masks"]          = False
+
+                 if current_group['masked'].any() and current_group['masks'].any(): 
+                    self.plugin_result_specifications["ALL"]["masked"]   = False
+                    self.plugin_result_specifications["ALL"]["masks"]    = False
 
             res_df = create_empty_result(current_group, self.plugin_result_specifications['ALL'])
 

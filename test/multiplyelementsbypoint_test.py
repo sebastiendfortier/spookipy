@@ -261,7 +261,7 @@ def test_8a(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "test8a_file2cmp.std"
+    file_to_compare = plugin_test_dir + "test8a_file2cmp_20231212.std"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)

@@ -149,7 +149,9 @@ class OpElementsByColumn(Plugin):
             # Reproduction du comportement en CPP
             if self.operation_name == "MultiplyElementsByPoint":
 
-                 if current_group['masked'].any() and current_group['masks'].any(): 
+                 if current_group['masked'].any() and current_group['masks'].any():
+                    # On veut conserver le 1er caractere du typvar d'un des champs masques et non d'un mask 
+                    self.plugin_result_specifications["ALL"]["typvar"]   = current_group.loc[current_group['masked'] == True, 'typvar'].iloc[0]
                     self.plugin_result_specifications["ALL"]["masked"]   = False
                     self.plugin_result_specifications["ALL"]["masks"]    = False
 

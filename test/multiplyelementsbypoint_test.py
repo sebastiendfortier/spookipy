@@ -207,12 +207,12 @@ def test_7(plugin_test_dir):
 
 def test_8(plugin_test_dir):
     """Test avec champs masques. Le typeOfField du resultat NE doit PAS avoir @ comme deuxieme caractere du typvar. """
+    #  Dans ce cas, multiplication de champs masques et de mask.  On enleve le @ du 2ieme car du typvar, pour demasquer le champs resultat.
+    
     # open and read source
     source0 = plugin_test_dir + "2021071400_024_masked_fields.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
     src_df0 = fstpy.select_with_meta(src_df0, ['UD'])
-
-    print(f'src_df0 = \n {src_df0} \n')
 
     # compute MultiplyElementsByPoint
     df      = spookipy.MultiplyElementsByPoint(src_df0).compute()

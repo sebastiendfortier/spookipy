@@ -158,7 +158,7 @@ Spooki: HumidityRelative
 **Reference:**
 
 -  `RPN thermodynamic
-   library <https://wiki.cmc.ec.gc.ca/images/6/60/Tdpack2011.pdf>`__
+   library <https://wiki.cmc.ec.gc.ca/w/images/6/60/Tdpack2011.pdf>`__
 -  `Wikipedia : relative
    humidity <http://en.wikipedia.org/wiki/Relative_humidity>`__
 

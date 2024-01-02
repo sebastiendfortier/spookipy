@@ -65,7 +65,7 @@ References:
 -  `Analysis of saturation vapour
    pressure <https://wiki.cmc.ec.gc.ca/wiki/RPT/en/Analysis_of_saturation_vapour_pressure>`__
 -  `RPN thermodynamic
-   library <https://wiki.cmc.ec.gc.ca/images/6/60/Tdpack2011.pdf>`__
+   library <https://wiki.cmc.ec.gc.ca/w/images/6/60/Tdpack2011.pdf>`__
 
 Keywords:
 ~~~~~~~~~

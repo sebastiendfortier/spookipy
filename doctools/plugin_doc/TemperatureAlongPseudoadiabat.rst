@@ -118,7 +118,7 @@ Spooki: TemperatureAlongPseudoadiabat
 
 **Algorithm:**
 
--  https://wiki.cmc.ec.gc.ca/images/9/9d/Spooki_-_Algorithme_TemperatureAlongPseudoadiabat.doc
+-  https://wiki.cmc.ec.gc.ca/w/images/9/9d/Spooki_-_Algorithme_TemperatureAlongPseudoadiabat.doc
 
 **Reference:**
 

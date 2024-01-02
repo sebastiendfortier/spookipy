@@ -144,7 +144,7 @@ Spooki: LevelOfCondensationByLifting
 | **Algorithm:**
 
 -  `LevelOfCondensationByLifting
-   algorithm <https://wiki.cmc.ec.gc.ca/images/d/d8/SPOOKI_-_Algorithme_LevelOfCondensationByLifting.docx>`__
+   algorithm <https://wiki.cmc.ec.gc.ca/w/images/d/d8/SPOOKI_-_Algorithme_LevelOfCondensationByLifting.docx>`__
 
 **Reference:**
 
@@ -155,7 +155,7 @@ Spooki: LevelOfCondensationByLifting
    *Mon. Wea. Rev*., 108, 1046-1053. `Available
    online <http://journals.ametsoc.org/doi/pdf/10.1175/1520-0493%281980%29108%3C1046%3ATCOEPT%3E2.0.CO%3B2>`__
    or
-   `localy <https://wiki.cmc.ec.gc.ca/images/1/1a/Spooki_-_Bolton1980.pdf>`__
+   `localy <https://wiki.cmc.ec.gc.ca/w/images/1/1a/Spooki_-_Bolton1980.pdf>`__
 -  `Brunet, N., 2001: Les Fonctions Thermodynamiques et le Fichier de
    Constantes. <http://iweb.cmc.ec.gc.ca/%7Eafsypst/info_divers/doc_thermo.pdf>`__
 -  "Atmospheric Thermodynamics", Iribarne, J.V., and Godson, W.L.

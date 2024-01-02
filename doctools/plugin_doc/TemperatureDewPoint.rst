@@ -182,7 +182,7 @@ Spooki: TemperatureDewPoint
    applications. *Bull. Amer. Meteor.* Soc., **86**,
    225-233. <http://journals.ametsoc.org/doi/pdf/10.1175/BAMS-86-2-225>`__
 -  `RPN thermodynamic
-   library <https://wiki.cmc.ec.gc.ca/images/6/60/Tdpack2011.pdf>`__
+   library <https://wiki.cmc.ec.gc.ca/w/images/6/60/Tdpack2011.pdf>`__
 
 **Keywords:**
 

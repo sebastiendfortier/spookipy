@@ -98,7 +98,7 @@ Reference:
    form approximation of saturation vapor pressure. J. Appl. Meteor., 35, 601-609. <http://journals.ametsoc.org/doi/pdf/10.1175/1520-0450%281996%29035%3C0601%3AIMFAOS%3E2.0.CO%3B2>`__
 -  `Lawrence, M. G., 2005: The relationship between relative humidity and the dewpoint temperature in moist air: A simple
    conversion and applications. Bull. Amer. Meteor. Soc., 86, 225-233. <http://journals.ametsoc.org/doi/pdf/10.1175/BAMS-86-2-225>`__
--  `RPN thermodynamic library <https://wiki.cmc.ec.gc.ca/images/6/60/Tdpack2011.pdf>`__
+-  `RPN thermodynamic library <https://wiki.cmc.ec.gc.ca/w/images/6/60/Tdpack2011.pdf>`__
 
 Keywords:
 ~~~~~~~~~

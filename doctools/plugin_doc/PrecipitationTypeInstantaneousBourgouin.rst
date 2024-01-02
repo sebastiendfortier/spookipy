@@ -136,13 +136,13 @@ Spooki: PrecipitationTypeInstantaneousBourgouin
 
 **Algorithm:**
 
--  https://wiki.cmc.ec.gc.ca/images/f/f2/Spooki_-_Algorithme_PrecipitationTypeInstantaneousBourgouin.doc
--  https://wiki.cmc.ec.gc.ca/images/4/4b/Spooki_-_Algorithme_PrecipitationTypeInstantaneousBourgouin.pdf
+-  https://wiki.cmc.ec.gc.ca/w/images/f/f2/Spooki_-_Algorithme_PrecipitationTypeInstantaneousBourgouin.doc
+-  https://wiki.cmc.ec.gc.ca/w/images/4/4b/Spooki_-_Algorithme_PrecipitationTypeInstantaneousBourgouin.pdf
 
 **Reference:**
 
 -  Reference article on the Bourgouin method :
-   https://wiki.cmc.ec.gc.ca/images/5/59/Spooki_-_Article_ref_Bourgouin.pdf
+   https://wiki.cmc.ec.gc.ca/w/images/5/59/Spooki_-_Article_ref_Bourgouin.pdf
 -  Inspired from the operational program ''gembrgouin''
 
 **Keywords:**

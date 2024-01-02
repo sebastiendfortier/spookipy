@@ -219,7 +219,7 @@ NOTE: These dependencies can be first obtained by the
    (link in French only)
 -  Concerning the conversion of FDCN bulletins to FBCN format, consult
    `this
-   document <https://wiki.cmc.ec.gc.ca/images/2/23/Spooki_-_Conversion_FD-FB.doc>`__.
+   document <https://wiki.cmc.ec.gc.ca/w/images/2/23/Spooki_-_Conversion_FD-FB.doc>`__.
 
 **Keywords:**
 

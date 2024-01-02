@@ -172,7 +172,7 @@ Spooki: SweatIndex
 
 -  `Severe Weather Forecasting:Post-Processing NWP outputs and guidance
    at the CMC; R. Verret, G. Desautels, A.
-   Bergeron <https://wiki.cmc.ec.gc.ca/images/d/dd/Spooki_-_Severe_Weather_Forecasting.pdf>`__
+   Bergeron <https://wiki.cmc.ec.gc.ca/w/images/d/dd/Spooki_-_Severe_Weather_Forecasting.pdf>`__
 -  Djurik,D 1994:Weather Analysis, Prentice-Hall.
 -  `Wikipedia : SWEAT index (link only in
    French) <http://fr.wikipedia.org/wiki/Indice_de_menace_de_temps_violent>`__

@@ -146,7 +146,7 @@ Spooki: Humidex
 ECCC <http://ec.gc.ca/meteo-weather/default.asp?lang=En&amp;n=6C5D4990-1#humidex>`__
 
 `Scribe
-specifications <https://wiki.cmc.ec.gc.ca/images/0/0d/SITS14_specs.pdf>`__
+specifications <https://wiki.cmc.ec.gc.ca/w/images/0/0d/SITS14_specs.pdf>`__
 
 **Keywords:**
 

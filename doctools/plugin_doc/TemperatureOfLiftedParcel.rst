@@ -166,8 +166,8 @@ calculated will be set to -300.
 
 | **Algorithm:**
 
--  https://wiki.cmc.ec.gc.ca/images/e/eb/Spooki_-_Algorithme_TemperatureOfLiftedParcel.odt
--  https://wiki.cmc.ec.gc.ca/images/c/c4/Spooki_-_Algorithme_TemperatureOfLiftedParcel.pdf
+-  https://wiki.cmc.ec.gc.ca/w/images/e/eb/Spooki_-_Algorithme_TemperatureOfLiftedParcel.odt
+-  https://wiki.cmc.ec.gc.ca/w/images/c/c4/Spooki_-_Algorithme_TemperatureOfLiftedParcel.pdf
 
 **Reference:**
 

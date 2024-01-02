@@ -26,13 +26,13 @@ Result(s):
 Algorithm:
 ~~~~~~~~~~
 
-- `Helicity Algorithm <https://wiki.cmc.ec.gc.ca/images/8/82/Spooki_-_Algorithme_Helicity.pdf>`__
+- `Helicity Algorithm <https://wiki.cmc.ec.gc.ca/w/images/8/82/Spooki_-_Algorithme_Helicity.pdf>`__
 
 References:
 ~~~~~~~~~~~
 
-- `Reference article <https://wiki.cmc.ec.gc.ca/images/c/c3/Spooki_-_Helicity_Characteristics.pdf>`__
-- `Demonstration <https://wiki.cmc.ec.gc.ca/images/1/18/Spooki_-_Helicity.pdf>`__
+- `Reference article <https://wiki.cmc.ec.gc.ca/w/images/c/c3/Spooki_-_Helicity_Characteristics.pdf>`__
+- `Demonstration <https://wiki.cmc.ec.gc.ca/w/images/1/18/Spooki_-_Helicity.pdf>`__
 
 Keywords:
 ~~~~~~~~~

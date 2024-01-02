@@ -50,7 +50,7 @@ Algorithm:
 Reference:
 ~~~~~~~~~~
 
--  `Inspired from the FILTRE function (stenfilt.f) of the PGSM utility <https://wiki.cmc.ec.gc.ca/images/d/dc/Spooki_-_Filtre_html.pdf>`__
+-  `Inspired from the FILTRE function (stenfilt.f) of the PGSM utility <https://wiki.cmc.ec.gc.ca/w/images/d/dc/Spooki_-_Filtre_html.pdf>`__
 
 Keywords:
 ~~~~~~~~~

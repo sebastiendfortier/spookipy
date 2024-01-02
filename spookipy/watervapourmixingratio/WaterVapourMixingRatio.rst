@@ -89,7 +89,7 @@ Reference:
 -  Rogers, R. R. and M. K. Yau, 1989: A Short Course in Cloud
     Physics, 3rd Ed. Butterworth Heinemann, 290 pp.
 -  `Analysis of water vapour mixing ratio <https://wiki.cmc.ec.gc.ca/wiki/RPT/en/Analysis_of_water_vapour_mixing_ratio>`__
--  `RPN thermodynamic library <https://wiki.cmc.ec.gc.ca/images/6/60/Tdpack2011.pdf%20>`__
+-  `RPN thermodynamic library <https://wiki.cmc.ec.gc.ca/w/images/6/60/Tdpack2011.pdf%20>`__
 
 Keywords:
 ~~~~~~~~~

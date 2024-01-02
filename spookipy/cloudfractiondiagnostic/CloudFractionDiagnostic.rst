@@ -31,8 +31,8 @@ Algorithm:
 Reference:
 ~~~~~~~~~~~
 
--  `Slingo_1987 <https://wiki.cmc.ec.gc.ca/images/6/6f/Spooki_-_Slingo_1987.pdf>`__
--  `McFarlane_et_al_1992 <https://wiki.cmc.ec.gc.ca/images/e/e6/Spooki_-_McFarlane_et_al_1992.pdf>`__
+-  `Slingo_1987 <https://wiki.cmc.ec.gc.ca/w/images/6/6f/Spooki_-_Slingo_1987.pdf>`__
+-  `McFarlane_et_al_1992 <https://wiki.cmc.ec.gc.ca/w/images/e/e6/Spooki_-_McFarlane_et_al_1992.pdf>`__
 
 Keywords:
 ~~~~~~~~~~

@@ -125,8 +125,8 @@ Spooki: PrecipitationTypeSignificant
 
 **Algorithm:**
 
--  https://wiki.cmc.ec.gc.ca/images/c/ce/Spooki_-_Algorithm_PrecipitationTypeDominant.doc
--  https://wiki.cmc.ec.gc.ca/images/1/10/Spooki_-_Algorithm_PrecipitationTypeDominant.pdf
+-  https://wiki.cmc.ec.gc.ca/w/images/c/ce/Spooki_-_Algorithm_PrecipitationTypeDominant.doc
+-  https://wiki.cmc.ec.gc.ca/w/images/1/10/Spooki_-_Algorithm_PrecipitationTypeDominant.pdf
 
 **Reference:**
 

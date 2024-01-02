@@ -27,7 +27,7 @@ Result(s):
 Algorithm:
 ~~~~~~~~~~
 
--  `WindMax algorithm <https://wiki.cmc.ec.gc.ca/images/2/26/Spooki_-_Algorithme_WindMax.pdf>`__
+-  `WindMax algorithm <https://wiki.cmc.ec.gc.ca/w/images/2/26/Spooki_-_Algorithme_WindMax.pdf>`__
 
 Reference:
 ~~~~~~~~~~

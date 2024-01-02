@@ -171,7 +171,7 @@ page.
 -  `Analysis of water vapour mixing
    ratio <https://wiki.cmc.ec.gc.ca/wiki/RPT/en/Analysis_of_water_vapour_mixing_ratio>`__
 -  `RPN thermodynamic
-   library <https://wiki.cmc.ec.gc.ca/images/6/60/Tdpack2011.pdf%20>`__
+   library <https://wiki.cmc.ec.gc.ca/w/images/6/60/Tdpack2011.pdf%20>`__
 
 **Keywords:**
 

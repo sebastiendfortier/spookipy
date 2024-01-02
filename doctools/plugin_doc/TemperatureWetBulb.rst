@@ -128,7 +128,7 @@ Spooki: TemperatureWetBulb
 
 | **Algorithm:**
 | `TemperatureWetBulb
-  algorithm <https://wiki.cmc.ec.gc.ca/images/7/7e/Spooki_-_Algorithm_TemperatureWetBulb.doc>`__
+  algorithm <https://wiki.cmc.ec.gc.ca/w/images/7/7e/Spooki_-_Algorithm_TemperatureWetBulb.doc>`__
 
 **Reference:**
 
@@ -143,7 +143,7 @@ Spooki: TemperatureWetBulb
    temperature. Mon. Wea. Rev., 108,
    1046-1053. <http://journals.ametsoc.org/doi/pdf/10.1175/1520-0493%281980%29108%3C1046%3ATCOEPT%3E2.0.CO%3B2>`__
 -  `Brunet, N., 2001: Les Fonctions Thermodynamiques et le Fichier de
-   Constantes <https://wiki.cmc.ec.gc.ca/images/6/60/Tdpack2011.pdf>`__
+   Constantes <https://wiki.cmc.ec.gc.ca/w/images/6/60/Tdpack2011.pdf>`__
 -  Markowski, P. and Y. Richardson, 2010: Mesoscale Meteorology
    i//#define INPUTFIELDNAME\_HU "HU"n Midlatitudes. Wiley-Blackwell,
    407 pp.

@@ -4,7 +4,7 @@ Description:
 -  Calculation of the pressure field.  The plugin will detect the vertical coordinate, make sure 
    to provide the necessary metadata such as !!, PT, P0, etc. 
 -  The definition of the different coordinates are available in this
-   `document. <https://wiki.cmc.ec.gc.ca/images/0/01/Spooki_-_Definitions_coordvert.pdf>`__
+   `document. <https://wiki.cmc.ec.gc.ca/w/images/0/01/Spooki_-_Definitions_coordvert.pdf>`__
 -  Possibility to calculate the pressure in the case of a
    `standard atmosphere <https://en.wikipedia.org/wiki/International_Standard_Atmosphere>`__
    (constant pression ).
@@ -27,7 +27,7 @@ Result(s):
 Algorithm:
 ~~~~~~~~~~
 
--  `<https://wiki.cmc.ec.gc.ca/images/5/5c/Spooki_-_Algorithme_du_plugin_Pressure.pdf>`__
+-  `<https://wiki.cmc.ec.gc.ca/w/images/5/5c/Spooki_-_Algorithme_du_plugin_Pressure.pdf>`__
 
 Reference:
 ~~~~~~~~~~

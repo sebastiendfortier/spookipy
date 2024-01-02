@@ -173,7 +173,7 @@ Spooki: DewPointDepression
 **Reference:**
 
 -  `RPN thermodynamic
-   library <https://wiki.cmc.ec.gc.ca/images/6/60/Tdpack2011.pdf>`__
+   library <https://wiki.cmc.ec.gc.ca/w/images/6/60/Tdpack2011.pdf>`__
 -  `Wikipédia : dew point <http://en.wikipedia.org/wiki/Dew_point>`__
 -  `Alduchov, O. A., and R. E. Eskridge, 1996: Improved Magnus form
    approximation of saturation vapor pressure. ''J. Appl. Meteor.'',

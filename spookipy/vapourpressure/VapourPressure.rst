@@ -143,7 +143,7 @@ Reference:
 -  `Analyse de la pression de
    vapeur <https://wiki.cmc.ec.gc.ca/wiki/RPT/Analyse_de_la_pression_de_vapeur>`__
 -  `RPN thermodynamic
-   library <https://wiki.cmc.ec.gc.ca/images/6/60/Tdpack2011.pdf>`__
+   library <https://wiki.cmc.ec.gc.ca/w/images/6/60/Tdpack2011.pdf>`__
 
 Keywords:
 ~~~~~~~~~

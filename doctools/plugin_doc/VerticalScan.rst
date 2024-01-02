@@ -150,8 +150,8 @@ Spooki: VerticalScan
 
 **Algorithm:**
 
--  `https://wiki.cmc.ec.gc.ca/images/1/17/Spooki\_-\_VerticalScan\_Algorithm.odt <https://wiki.cmc.ec.gc.ca//images/1/17/Spooki_-_VerticalScan_Algorithm.odt>`__
--  `https://wiki.cmc.ec.gc.ca/images/6/6d/Spooki\_-\_VerticalScan\_Algorithm.pdf <https://wiki.cmc.ec.gc.ca//images/6/6d/Spooki_-_VerticalScan_Algorithm.pdf>`__
+-  `https://wiki.cmc.ec.gc.ca/w/images/1/17/Spooki\_-\_VerticalScan\_Algorithm.odt <https://wiki.cmc.ec.gc.ca//images/1/17/Spooki_-_VerticalScan_Algorithm.odt>`__
+-  `https://wiki.cmc.ec.gc.ca/w/images/6/6d/Spooki\_-\_VerticalScan\_Algorithm.pdf <https://wiki.cmc.ec.gc.ca//images/6/6d/Spooki_-_VerticalScan_Algorithm.pdf>`__
 
 **Reference:**
 

@@ -129,7 +129,7 @@ Spooki: ReaderStd
 **Reference:**
 
 -  `Documentation on standard
-   files <https://wiki.cmc.ec.gc.ca/images/8/8c/Spooki_-_An_Introduction_to_RPN_Standard_files.pdf>`__
+   files <https://wiki.cmc.ec.gc.ca/w/images/8/8c/Spooki_-_An_Introduction_to_RPN_Standard_files.pdf>`__
 -  `Correspondence between the standard file record descriptors and the
    attributes of the internal memory of
    SPOOKI <https://wiki.cmc.ec.gc.ca/wiki/Spooki/en/Correspondence_STD_Files_-_SPOOKI>`__

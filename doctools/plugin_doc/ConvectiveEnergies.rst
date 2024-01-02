@@ -202,8 +202,8 @@ levels associated with LFC and EL are set to -300.
 
 | **Algorithm:**
 
--  https://wiki.cmc.ec.gc.ca/images/a/a9/SPOOKI_-_Algorithme_ConvectiveEnergies.odt
--  https://wiki.cmc.ec.gc.ca/images/2/2d/SPOOKI_-_Algorithme_ConvectiveEnergies.pdf
+-  https://wiki.cmc.ec.gc.ca/w/images/a/a9/SPOOKI_-_Algorithme_ConvectiveEnergies.odt
+-  https://wiki.cmc.ec.gc.ca/w/images/2/2d/SPOOKI_-_Algorithme_ConvectiveEnergies.pdf
 
 **Reference:**
 

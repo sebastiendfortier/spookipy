@@ -196,8 +196,8 @@ Spooki: LevelOfFreeConvectionAndEquilibrium
 
 **Algorithm:**
 
--  https://wiki.cmc.ec.gc.ca/images/3/3b/SPOOKI_-_Algorithme_LevelOfFreeConvectionAndEquilibrium.odt
--  https://wiki.cmc.ec.gc.ca/images/3/37/SPOOKI_-_Algorithme_LevelOfFreeConvectionAndEquilibrium.pdf
+-  https://wiki.cmc.ec.gc.ca/w/images/3/3b/SPOOKI_-_Algorithme_LevelOfFreeConvectionAndEquilibrium.odt
+-  https://wiki.cmc.ec.gc.ca/w/images/3/37/SPOOKI_-_Algorithme_LevelOfFreeConvectionAndEquilibrium.pdf
 
 **Reference:**
 

@@ -140,8 +140,8 @@ Spooki: FreezingLevel
 
 **Algorithm:**
 
--  https://wiki.cmc.ec.gc.ca/images/8/85/Spooki_-_FreezingLevel_Algorithm.odt
--  https://wiki.cmc.ec.gc.ca/images/0/07/Spooki_-_FreezingLevel_Algorithm.pdf
+-  https://wiki.cmc.ec.gc.ca/w/images/8/85/Spooki_-_FreezingLevel_Algorithm.odt
+-  https://wiki.cmc.ec.gc.ca/w/images/0/07/Spooki_-_FreezingLevel_Algorithm.pdf
 
 **Reference:**
 

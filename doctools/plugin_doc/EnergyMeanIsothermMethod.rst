@@ -145,8 +145,8 @@ Spooki: EnergyMeanIsothermMethod
 
 **Algorithm:**
 
--  https://wiki.cmc.ec.gc.ca/images/0/08/Spooki_-_Algorithme_EnergyMeanIsothermMethod.odt
--  https://wiki.cmc.ec.gc.ca/images/a/af/Spooki_-_Algorithme_EnergyMeanIsothermMethod.pdf
+-  https://wiki.cmc.ec.gc.ca/w/images/0/08/Spooki_-_Algorithme_EnergyMeanIsothermMethod.odt
+-  https://wiki.cmc.ec.gc.ca/w/images/a/af/Spooki_-_Algorithme_EnergyMeanIsothermMethod.pdf
 
 **References:**
 

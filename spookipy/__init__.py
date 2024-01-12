@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 import os
+import pkg_resources
 from pathlib import Path
 
+def _get_version():
+   try:
+       version = pkg_resources.resource_string('spookipy', 'VERSION').decode('utf-8').strip()
+   except IOError:
+       version = 'unknown'
+   return version
 
-p = Path(os.path.abspath(__file__))
-v_file = open(p.parent / 'VERSION')
-__version__ = v_file.readline().strip()
-v_file.close() 
+__version__ = _get_version()
 
 from .addelementsbypoint import *
 from .addtoelement import *

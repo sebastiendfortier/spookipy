@@ -7,7 +7,8 @@ ext_module = Extension(
    sources=['fstpy/filterdigital/f_stenfilt.f90'],
    extra_compile_args=['-g','--backtrace'],
    extra_link_args=[],
-   f2py_options=['--debug-capi']
+   f2py_options=['--debug-capi'],
+   language='f90'
 )
 
 with open("README.md", "r", encoding="utf-8") as fh:

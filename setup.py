@@ -1,5 +1,14 @@
 # -*- coding: utf-8 -*-
 import setuptools
+from numpy.distutils.core import setup, Extension
+
+ext_module = Extension(
+   name='fstpy/filterdigital/f_stenfilt',
+   sources=['fstpy/filterdigital/f_stenfilt.f90'],
+   extra_compile_args=['-g','--backtrace'],
+   extra_link_args=[],
+   f2py_options=['--debug-capi']
+)
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
@@ -32,4 +41,5 @@ setuptools.setup(
     packages=setuptools.find_packages(exclude='test'),
     include_package_data=True,
     python_requires='>=3.6',
+    ext_modules=[ext_module]
 )

@@ -5,12 +5,12 @@ import shutil
 import sys
 
 def run_make():
-  subprocess.check_call(['make', '-C', 'spookipy/filterdigital', 'all'])
+ subprocess.check_call(['make', '-C', 'spookipy/filterdigital', 'all'])
 
 def check_dependency(executable):
-  if shutil.which(executable) is None:
-     print(f"ERROR: {executable} is not installed.")
-     sys.exit(1)
+ if shutil.which(executable) is None:
+    print(f"ERROR: {executable} is not installed.")
+    sys.exit(1)
 
 check_dependency('f2py')
 check_dependency('make')
@@ -42,12 +42,13 @@ setuptools.setup(
   "Operating System :: OS Linux",
  ],
  install_requires=[
-  'pandas>=1.2.4', 'xarray>=0.19.0','numpy>=1.19.5','dask>=2021.8.0'
+  'pandas>=1.2.4', 'fstpy>=2023.11.0','xarray>=0.19.0','numpy>=1.19.5','dask>=2021.8.0'
  ],
  packages=setuptools.find_packages(exclude='test'),
  include_package_data=True,
  python_requires='>=3.6',
  package_data={
-  'spookipy': ['filterdigital/*.so*', 'filterdigital/*.pyf' ],
+  'spookipy': ['filterdigital/*.so*', 'filterdigital/*.pyf'],
  }
 )
+

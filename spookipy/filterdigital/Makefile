@@ -1,6 +1,6 @@
 # Minimal makefile
 #
-all: lib interface
+all: clean lib interface
 
 lib:
 	f2py -c -m f_stenfilt f_stenfilt.f90

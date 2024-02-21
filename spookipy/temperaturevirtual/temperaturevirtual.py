@@ -56,7 +56,7 @@ class TemperatureVirtual(Plugin):
         self.no_meta_df = fstpy.add_columns(self.no_meta_df, 
                 columns=['unit', 'forecast_hour', 'ip_info'])
 
-        self.nomvar_groups = self.no_meta_df.groupby(by=['grid', 'datev','ip1_kind'])
+        self.nomvar_groups = self.no_meta_df.groupby(by=['grid', 'datev', 'dateo', 'vctype'])
 
         # check if result already exists
         self.existing_result_df = get_existing_result(self.no_meta_df, self.plugin_result_specifications)

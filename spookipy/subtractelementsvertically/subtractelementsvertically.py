@@ -8,7 +8,7 @@ from ..plugin import Plugin, PluginParser
 from ..utils import create_empty_result, initializer, validate_nomvar
 import rpnpy.librmn.all as rmn
 
-ETIKET: Final[str] =  'SUBEVY'
+LABEL: Final[str] =  'SUBEVY'
 
 class SubtractElementsVerticallyError(Exception):
     pass
@@ -23,23 +23,28 @@ class SubtractElementsVertically(Plugin):
     :type group_by_forecast_hour: bool, optional
     :param nomvar_out: nomvar for output result
     :type nomvar_out: str, optional
+    :param reduce_df: Indicates to reduce the dataframe to its minimum, defaults to True
+    :type reduce_df: bool, optional
     """
     @initializer
     def __init__(self, 
                  df: pd.DataFrame, 
-                 direction: str='ascending', 
-                 nomvar_out: str = None):
+                 direction: str  ='ascending', 
+                 nomvar_out: str = None,
+                 reduce_df       = True):
         
-        self.plugin_result_specifications = {'label': ETIKET}
-
         self.df = fstpy.metadata_cleanup(self.df)
         super().__init__(self.df)
-        self.no_meta_df = fstpy.add_columns(self.no_meta_df,'ip_info')
-        self.validate_params()
 
-    def validate_params(self):
+        self.plugin_result_specifications = {'label': LABEL}
+        
+        self.validate_params_and_input()
+
+    def validate_params_and_input(self):
+
         if self.direction not in ['ascending', 'descending']:
             raise SubtractElementsVerticallyError("Invalid value '{self.direction}' for direction, valid values are {['ascending', 'descending']}")
+        
         if (self.no_meta_df.nomvar.unique().size > 1) and (not (self.nomvar_out is None)):
             raise SubtractElementsVerticallyError('nomvar_out can only be used when only 1 field is present')
 
@@ -48,50 +53,49 @@ class SubtractElementsVertically(Plugin):
 
         if len(self.no_meta_df.loc[~self.no_meta_df.interval.isna()].index) > 0:
             raise SubtractElementsVerticallyError('Dataframe cannot contain rows with intervals!')
+        
+        self.no_meta_df = fstpy.add_columns(self.no_meta_df,'ip_info')
 
     def compute(self) -> pd.DataFrame:    
         logging.info('SubtractElementsVertically - compute')
+
         df_list=[]
-        groups = self.no_meta_df.groupby(['grid','datev','nomvar'])
-        for (grid,datev,nomvar), nomvar_df in groups:
-            res_df = create_empty_result(nomvar_df, self.plugin_result_specifications)
-            
+        groups = self.no_meta_df.groupby(['grid','datev','dateo','nomvar','vctype'])
+        for _, nomvar_df in groups:
+
             if self.direction == 'descending':
                 nomvar_df = nomvar_df.sort_values(by='level',ascending=nomvar_df.ascending.unique()[0])
             else:
                 nomvar_df = nomvar_df.sort_values(by='level',ascending=(not nomvar_df.ascending.unique()[0]))
 
-            # print(nomvar_df[fstpy.BASE_COLUMNS].to_string())
-            # first_level = list(nomvar_df.level)[0]
-            # last_level = list(nomvar_df.level)[-1]
-            first_level = nomvar_df.level.min()
-            last_level = nomvar_df.level.max()
+            first_level   = nomvar_df.level.min()
+            last_level    = nomvar_df.level.max()
 
-            if res_df.iloc[0].ip1 >= 32768: 
-                first_level = rmn.convertIp(rmn.CONVIP_ENCODE, first_level, int(res_df.iloc[0].ip1_kind))
-                last_level = rmn.convertIp(rmn.CONVIP_ENCODE, last_level, int(res_df.iloc[0].ip1_kind))
-            res_df['ip1'] = int(last_level)
-            res_df['ip3'] = int(first_level)
-
+            res_df        = create_result_container(nomvar_df, 
+                                                    last_level, 
+                                                    first_level,  
+                                                    self.plugin_result_specifications)
             
             if  (self.no_meta_df.nomvar.unique().size == 1) and (not (self.nomvar_out is None)):
                 res_df['nomvar'] = self.nomvar_out
 
-            data = np.stack(nomvar_df.d)
+            data  = np.stack(nomvar_df.d)
             data0 = data[-1]
-            data = -1*data
-            data = np.vstack([data0[np.newaxis],data[:-1]])
+            data  = -1*data
+            data  = np.vstack([data0[np.newaxis],data[:-1]])
             # print(nomvar,data, data.shape)
             if data.shape[0]>1:
                 res_df['d'] = [np.sum(data, axis=0)]
-
 
             df_list.append(res_df)
 
         return self.final_results(df_list, 
                                   SubtractElementsVerticallyError, 
-                                  copy_input=False)
+                                  copy_input=False,
+                                  reduce_df = self.reduce_df)
+    
 
+    
     @staticmethod
     def parse_config(args: str) -> dict:
         """method to translate spooki plugin parameters to python plugin parameters
@@ -113,3 +117,15 @@ class SubtractElementsVertically(Plugin):
 
         return parsed_arg
 
+def create_result_container(df, b_inf, b_sup, result_specifications):
+    ip1 = b_inf
+    ip3 = b_sup
+    kind = int(df.iloc[0].ip1_kind)
+    
+    inter = fstpy.Interval('ip1', ip1, ip3, kind)
+
+    result_specifications["interval"] = inter
+
+    res_df = create_empty_result(df, result_specifications)
+
+    return res_df

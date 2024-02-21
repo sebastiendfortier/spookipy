@@ -91,7 +91,7 @@ class Thickness(Plugin):
         self.verify_parameters_values()
         self.no_meta_df         = fstpy.add_columns(self.no_meta_df, columns=['unit','ip_info'])
         self.existing_result_df = get_existing_result(self.no_meta_df, self.plugin_result_specifications)
-        self.groups             = self.no_meta_df.groupby(['grid', 'vctype','ip1_kind'])
+        self.groups             = self.no_meta_df.groupby(['grid', 'datev', 'dateo','vctype'])
 
        
     def verify_parameters_values(self):

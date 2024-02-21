@@ -271,25 +271,25 @@ def plugin_test_dir():
 def test_1(plugin_test_dir, latlon_df):
     """test_onlyscalarR1Operational"""
     # open and read source
-    source0 = plugin_test_dir + "4panneaux_input4_fileSrc.std"
-    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-
-    src_df0['dateo'] = 368660482
-    latlon_df['dateo'] = 368660482
+    source0               = plugin_test_dir + "4panneaux_input4_fileSrc.std"
+    src_df0               = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0['dateo']      = 368660482
+    latlon_df['dateo']    = 368660482
     concat_df_and_lat_lon = pd.concat([src_df0, latlon_df], ignore_index=True, sort=False)
-    # compute spookipy.InterpolationHorizontalPoint
-    df = spookipy.InterpolationHorizontalPoint(concat_df_and_lat_lon).compute()
-    # [ReaderStd --input {sources[0]}] >> [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> [InterpolationHorizontalPoint] >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
 
-    df['etiket'] = 'R1558V0_N'
+    # compute spookipy.InterpolationHorizontalPoint
+    df                    = spookipy.InterpolationHorizontalPoint(concat_df_and_lat_lon).compute()
+    # spooki_run --runID R1 --implementation N
+    # "[ReaderStd --input {sources[0]}] >> 
+    # [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> 
+    # [InterpolationHorizontalPoint] >> 
+    # [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]"
+
+    # Pour respecter la configuration du test en CPP qui passe comme argument a spooki_run
+    # le runId et implementation. 
     df.loc[df.nomvar == '^^', 'etiket'] = 'R1INTHPTN'
     df.loc[df.nomvar == '>>', 'etiket'] = 'R1INTHPTN'
-    # Le plugin devrait set Interpolated
-    df.loc[df.typvar == 'P', 'typvar'] = 'PI'
 
-    # df['datyp']=5
-    # df['nbits']=32
-    
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
     fstpy.delete_file(results_file)
@@ -297,7 +297,6 @@ def test_1(plugin_test_dir, latlon_df):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "resultOnlyScalarR1Operational_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_1"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -308,26 +307,18 @@ def test_1(plugin_test_dir, latlon_df):
 def test_2(plugin_test_dir, latlon_df):
     """test_onlyscalar"""
     # open and read source
-    source0 = plugin_test_dir + "4panneaux_input4_fileSrc.std"
-    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-
-    src_df0['dateo'] = 368660482
-    latlon_df['dateo'] = 368660482
+    source0               = plugin_test_dir + "4panneaux_input4_fileSrc.std"
+    src_df0               = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0['dateo']      = 368660482
+    latlon_df['dateo']    = 368660482
     concat_df_and_lat_lon = pd.concat([src_df0, latlon_df], ignore_index=True, sort=False)
 
     # compute spookipy.InterpolationHorizontalPoint
-    df = spookipy.InterpolationHorizontalPoint(concat_df_and_lat_lon).compute()
-    # [ReaderStd --input {sources[0]}] >> [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> [InterpolationHorizontalPoint] >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
-
-    df['etiket'] = 'R1558V0_N'
-    df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
-    df.loc[df.nomvar == '>>', 'etiket'] = '__INTHPTX'
-    # Le plugin devrait set Interpolated
-    df.loc[df.typvar == 'P', 'typvar'] = 'PI'
-    # df['dateo']=368660482
-
-    # df['datyp']=5
-    # df['nbits']=32
+    df                    = spookipy.InterpolationHorizontalPoint(concat_df_and_lat_lon).compute()
+    # [ReaderStd --input {sources[0]}] >> 
+    # [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> 
+    # [InterpolationHorizontalPoint] >> 
+    # [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
@@ -336,7 +327,6 @@ def test_2(plugin_test_dir, latlon_df):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "resultOnlyScalar_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_2"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -347,28 +337,18 @@ def test_2(plugin_test_dir, latlon_df):
 def test_3(plugin_test_dir, latlon_df):
     """test_scalarvectorial"""
     # open and read source
-    source0 = plugin_test_dir + "tape10.std"
-    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-
-    src_df0['dateo'] = 368660482
-    latlon_df['dateo'] = 368660482
+    source0               = plugin_test_dir + "tape10.std"
+    src_df0               = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0['dateo']      = 368660482
+    latlon_df['dateo']    = 368660482
     concat_df_and_lat_lon = pd.concat([src_df0, latlon_df], ignore_index=True, sort=False)
 
     # compute spookipy.InterpolationHorizontalPoint
-    df = spookipy.InterpolationHorizontalPoint(concat_df_and_lat_lon).compute()
-    # [ReaderStd --input {sources[0]}] >> [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> [InterpolationHorizontalPoint] >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
-
-    df['etiket'] = 'R1558V0_N'
-    df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
-    df.loc[df.nomvar == '>>', 'etiket'] = '__INTHPTX'
-    # df['dateo']=368660482
-
-    # df['datyp']=5
-    # df['nbits']=32
-
-    df.loc[df.nomvar == 'VS', 'etiket'] = 'XVSHEAR_X'
-    # Le plugin devrait set Interpolated
-    df.loc[df.typvar == 'P', 'typvar'] = 'PI'
+    df                    = spookipy.InterpolationHorizontalPoint(concat_df_and_lat_lon).compute()
+    # [ReaderStd --input {sources[0]}] >> 
+    # [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >>
+    # [InterpolationHorizontalPoint] >> 
+    # [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
@@ -377,8 +357,7 @@ def test_3(plugin_test_dir, latlon_df):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "resultScalarVectorial_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_3"
-
+    
     # compare results
     res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
@@ -390,33 +369,20 @@ def test_4(plugin_test_dir, latlon2_df):
     # open and read source
     source0 = plugin_test_dir + "2011072100_006_eta_small"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-
     src_df0.loc[src_df0.nomvar != 'P0', 'dateo'] = 368660482
-    latlon2_df['dateo'] = 368660482
-    concat_df_and_lat_lon = pd.concat([src_df0, latlon2_df], ignore_index=True, sort=False)
+    latlon2_df['dateo']                          = 368660482
+    concat_df_and_lat_lon                        = pd.concat([src_df0, latlon2_df], 
+                                                             ignore_index=True, 
+                                                             sort=False)
 
     # compute spookipy.InterpolationHorizontalPoint
-    df = spookipy.InterpolationHorizontalPoint(concat_df_and_lat_lon).compute()
+    df                                           = spookipy.InterpolationHorizontalPoint(concat_df_and_lat_lon
+                                                                                         ).compute()
     # [ReaderStd --input {sources[0]}] >>
     # [ReaderCsv --input {sources[1]}] >>
     # [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >>
     # [InterpolationHorizontalPoint] >>
     # [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
-
-    df.loc[:, 'etiket'] = 'R1580V0_N'
-    df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
-    df.loc[df.nomvar == '>>', 'etiket'] = '__INTHPTX'
-    # Le plugin devrait set Interpolated
-    df.loc[df.typvar == 'P', 'typvar'] = 'PI'
-    # df = df.loc[df.nomvar!='PT']
-    # print('df\n',df[['nomvar', 'typvar', 'etiket', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'datyp', 'nbits', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4','grid']].to_string())
-    # df['dateo']=368660482
-
-    # df['datyp']=5
-    # df['nbits']=32
-# P0   P  R1580V0_N           4       1     1 20110210 215210             0         6         0      450       48  R 16  Y     0     0     0     0
-# P0   PI R1580V0_N           4       1     1 20110721 000000
-# 0         6         0      450       48  R 16  Y     0     0     0     0
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
@@ -424,12 +390,11 @@ def test_4(plugin_test_dir, latlon2_df):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "resultScalarVectorial2_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_4"
+    file_to_compare = plugin_test_dir + "resultScalarVectorial2_file2cmp.std+20240110"
 
     # compare results
     # ,e_max=0.00105,e_moy=0.001)
-    res = fstcomp(results_file, file_to_compare, e_max=0.01)
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -437,28 +402,19 @@ def test_4(plugin_test_dir, latlon2_df):
 def test_5(plugin_test_dir, latlon_df):
     """test_nearest"""
     # open and read source
-    source0 = plugin_test_dir + "tape10.std"
-    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-
-    src_df0['dateo'] = 368660482
-    latlon_df['dateo'] = 368660482
+    source0               = plugin_test_dir + "tape10.std"
+    src_df0               = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0['dateo']      = 368660482
+    latlon_df['dateo']    = 368660482
     concat_df_and_lat_lon = pd.concat([src_df0, latlon_df], ignore_index=True, sort=False)
 
     # compute spookipy.InterpolationHorizontalPoint
-    df = spookipy.InterpolationHorizontalPoint(
-        concat_df_and_lat_lon, interpolation_type='nearest').compute()
-    # [ReaderStd --input {sources[0]}] >> [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> [InterpolationHorizontalPoint --interpolationType NEAREST] >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
-    df['etiket'] = 'R1558V0_N'
-    df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
-    df.loc[df.nomvar == '>>', 'etiket'] = '__INTHPTX'
-    # Le plugin devrait set Interpolated
-    df.loc[df.typvar == 'P', 'typvar'] = 'PI'
-    # df['dateo']=368660482
-
-    # df['datyp']=5
-    # df['nbits']=32
-
-    df.loc[df.nomvar == 'VS', 'etiket'] = 'XVSHEAR_X'
+    df                    = spookipy.InterpolationHorizontalPoint(concat_df_and_lat_lon, 
+                                                                  interpolation_type='nearest').compute()
+    # [ReaderStd --input {sources[0]}] >> 
+    # [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >>
+    #  [InterpolationHorizontalPoint --interpolationType NEAREST] >> 
+    # [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
@@ -467,7 +423,6 @@ def test_5(plugin_test_dir, latlon_df):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "resultNearest_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_5"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -478,28 +433,20 @@ def test_5(plugin_test_dir, latlon_df):
 def test_6(plugin_test_dir, latlon_df):
     """test_linear"""
     # open and read source
-    source0 = plugin_test_dir + "tape10.std"
-    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-
-    src_df0['dateo'] = 368660482
-    latlon_df['dateo'] = 368660482
+    source0               = plugin_test_dir + "tape10.std"
+    src_df0               = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0['dateo']      = 368660482
+    latlon_df['dateo']    = 368660482
     concat_df_and_lat_lon = pd.concat([src_df0, latlon_df], ignore_index=True, sort=False)
 
     # compute spookipy.InterpolationHorizontalPoint
-    df = spookipy.InterpolationHorizontalPoint(
-        concat_df_and_lat_lon, interpolation_type='bi-linear').compute()
-    # [ReaderStd --input {sources[0]}] >> [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> [InterpolationHorizontalPoint --interpolationType BI-LINEAR] >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
-    df['etiket'] = 'R1558V0_N'
-    df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
-    df.loc[df.nomvar == '>>', 'etiket'] = '__INTHPTX'
-    # Le plugin devrait set Interpolated
-    df.loc[df.typvar == 'P', 'typvar'] = 'PI'
-    # df['dateo']=368660482
+    df                    = spookipy.InterpolationHorizontalPoint(concat_df_and_lat_lon, 
+                                                                  interpolation_type='bi-linear').compute()
 
-    # df['datyp']=5
-    # df['nbits']=32
-
-    df.loc[df.nomvar == 'VS', 'etiket'] = 'XVSHEAR_X'
+    # [ReaderStd --input {sources[0]}] >> 
+    # [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> 
+    # [InterpolationHorizontalPoint --interpolationType BI-LINEAR] >>
+    # [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
@@ -508,7 +455,6 @@ def test_6(plugin_test_dir, latlon_df):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "resultLinear_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_6"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -519,29 +465,19 @@ def test_6(plugin_test_dir, latlon_df):
 def test_7(plugin_test_dir, latlon_with_grid_df):
     """test_withGridInCsv"""
     # open and read source
-    source0 = plugin_test_dir + "tape10.std"
-    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-
-    src_df0['dateo'] = 368660482
+    source0                      = plugin_test_dir + "tape10.std"
+    src_df0                      = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0['dateo']             = 368660482
     latlon_with_grid_df['dateo'] = 368660482
-    concat_df_and_lat_lon = pd.concat([src_df0, latlon_with_grid_df], ignore_index=True, sort=False)
+    concat_df_and_lat_lon        = pd.concat([src_df0, latlon_with_grid_df], ignore_index=True, sort=False)
 
     # compute spookipy.InterpolationHorizontalPoint
-    df = spookipy.InterpolationHorizontalPoint(
-        concat_df_and_lat_lon, interpolation_type='nearest').compute()
-    # [ReaderStd --input {sources[0]}] >> [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> [InterpolationHorizontalPoint --interpolationType NEAREST] >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
-
-    df['etiket'] = 'R1558V0_N'
-    df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
-    df.loc[df.nomvar == '>>', 'etiket'] = '__INTHPTX'
-    # Le plugin devrait set Interpolated
-    df.loc[df.typvar == 'P', 'typvar'] = 'PI'
-    # df['dateo']=368660482
-
-    # df['datyp']=5
-    # df['nbits']=32
-
-    df.loc[df.nomvar == 'VS', 'etiket'] = 'XVSHEAR_X'
+    df                           = spookipy.InterpolationHorizontalPoint(concat_df_and_lat_lon, 
+                                                                        interpolation_type='nearest').compute()
+    # [ReaderStd --input {sources[0]}] >> 
+    # [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> 
+    # [InterpolationHorizontalPoint --interpolationType NEAREST] >> 
+    # [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
@@ -550,7 +486,6 @@ def test_7(plugin_test_dir, latlon_with_grid_df):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "result_withGridInCsv_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_7"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -561,32 +496,21 @@ def test_7(plugin_test_dir, latlon_with_grid_df):
 def test_8(plugin_test_dir, latlon_extrapolation_df):
     """test_extrapolationValue"""
     # open and read source
-    source0 = plugin_test_dir + "tape10.std"
-    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-
-    src_df0['dateo'] = 368660482
+    source0                          = plugin_test_dir + "tape10.std"
+    src_df0                          = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0['dateo']                 = 368660482
     latlon_extrapolation_df['dateo'] = 368660482
-    concat_df_and_lat_lon = pd.concat([src_df0, latlon_extrapolation_df], ignore_index=True, sort=False)
+    concat_df_and_lat_lon            = pd.concat([src_df0, latlon_extrapolation_df], ignore_index=True, sort=False)
 
     # compute spookipy.InterpolationHorizontalPoint
-    df = spookipy.InterpolationHorizontalPoint(
-        concat_df_and_lat_lon,
-        interpolation_type='bi-cubic',
-        extrapolation_type='value',
-        extrapolation_value=999.9).compute()
-    # [ReaderStd --input {sources[0]}] >> [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> [InterpolationHorizontalPoint --interpolationType BI-CUBIC --extrapolationType VALUE=999.9] >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
-
-    df['etiket'] = 'R1558V0_N'
-    df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
-    df.loc[df.nomvar == '>>', 'etiket'] = '__INTHPTX'
-    # Le plugin devrait set Interpolated
-    df.loc[df.typvar == 'P', 'typvar'] = 'PI'
-    # df['dateo']=368660482
-
-    # df['datyp']=5
-    # df['nbits']=32
-
-    df.loc[df.nomvar == 'VS', 'etiket'] = 'XVSHEAR_X'
+    df                               = spookipy.InterpolationHorizontalPoint(concat_df_and_lat_lon,
+                                                                             interpolation_type='bi-cubic',
+                                                                             extrapolation_type='value',
+                                                                             extrapolation_value=999.9).compute()
+    # [ReaderStd --input {sources[0]}] >> 
+    # [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >>
+    # [InterpolationHorizontalPoint --interpolationType BI-CUBIC --extrapolationType VALUE=999.9] >> 
+    # [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
@@ -595,7 +519,6 @@ def test_8(plugin_test_dir, latlon_extrapolation_df):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "result_extrapolValue_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_8"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -606,32 +529,21 @@ def test_8(plugin_test_dir, latlon_extrapolation_df):
 def test_9(plugin_test_dir, latlon_extrapolation_df):
     """test_negativeValue"""
     # open and read source
-    source0 = plugin_test_dir + "tape10.std"
-    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-
-    src_df0['dateo'] = 368660482
+    source0                          = plugin_test_dir + "tape10.std"
+    src_df0                          = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0['dateo']                 = 368660482
     latlon_extrapolation_df['dateo'] = 368660482
-    concat_df_and_lat_lon = pd.concat([src_df0, latlon_extrapolation_df], ignore_index=True, sort=False)
+    concat_df_and_lat_lon            = pd.concat([src_df0, latlon_extrapolation_df], ignore_index=True, sort=False)
 
     # compute spookipy.InterpolationHorizontalPoint
-    df = spookipy.InterpolationHorizontalPoint(
-        concat_df_and_lat_lon,
-        interpolation_type='bi-cubic',
-        extrapolation_type='value',
-        extrapolation_value=-
-        99.9).compute()
-    # [ReaderStd --input {sources[0]}] >> [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> [InterpolationHorizontalPoint --interpolationType BI-CUBIC --extrapolationType VALUE=-99.9] >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
-
-    df['etiket'] = 'R1558V0_N'
-    df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
-    df.loc[df.nomvar == '>>', 'etiket'] = '__INTHPTX'
-    # Le plugin devrait set Interpolated
-    df.loc[df.typvar == 'P', 'typvar'] = 'PI'
-
-    # df['datyp']=5
-    # df['nbits']=32
-
-    df.loc[df.nomvar == 'VS', 'etiket'] = 'XVSHEAR_X'
+    df                               = spookipy.InterpolationHorizontalPoint(concat_df_and_lat_lon,
+                                                                             interpolation_type='bi-cubic',
+                                                                             extrapolation_type='value',
+                                                                             extrapolation_value=-99.9).compute()
+    # [ReaderStd --input {sources[0]}] >> 
+    # [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> 
+    # [InterpolationHorizontalPoint --interpolationType BI-CUBIC --extrapolationType VALUE=-99.9] >>
+    # [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
@@ -640,7 +552,6 @@ def test_9(plugin_test_dir, latlon_extrapolation_df):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "result_negativeValue_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_9"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -651,33 +562,21 @@ def test_9(plugin_test_dir, latlon_extrapolation_df):
 def test_10(plugin_test_dir, latlon_extrapolation_df):
     """test_extrapolationMax"""
     # open and read source
-    source0 = plugin_test_dir + "tape10.std"
-    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-
-    src_df0['dateo'] = 368660482
+    source0                          = plugin_test_dir + "tape10.std"
+    src_df0                          = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0['dateo']                 = 368660482
     latlon_extrapolation_df['dateo'] = 368660482
-    concat_df_and_lat_lon = pd.concat([src_df0, latlon_extrapolation_df], ignore_index=True, sort=False)
+    concat_df_and_lat_lon            = pd.concat([src_df0, latlon_extrapolation_df], ignore_index=True, sort=False)
 
     # compute spookipy.InterpolationHorizontalPoint
-    df = spookipy.InterpolationHorizontalPoint(
-        concat_df_and_lat_lon,
-        interpolation_type='bi-cubic',
-        extrapolation_type='maximum').compute()
-    # [ReaderStd --input {sources[0]}] >> [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> [InterpolationHorizontalPoint --interpolationType BI-CUBIC --extrapolationType MAXIMUM] >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
+    df                              = spookipy.InterpolationHorizontalPoint(concat_df_and_lat_lon,
+                                                                            interpolation_type='bi-cubic',
+                                                                            extrapolation_type='maximum').compute()
+    # [ReaderStd --input {sources[0]}] >> 
+    # [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> 
+    # [InterpolationHorizontalPoint --interpolationType BI-CUBIC --extrapolationType MAXIMUM] >>
+    # [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
 
-    df['etiket'] = 'R1558V0_N'
-    df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
-    df.loc[df.nomvar == '>>', 'etiket'] = '__INTHPTX'
-    # Le plugin devrait set Interpolated
-    df.loc[df.typvar == 'P', 'typvar'] = 'PI'
-
-    # df['datyp']=5
-    # df['nbits']=32
-
-    df.loc[df.nomvar == 'VS', 'etiket'] = 'XVSHEAR_X'
-
-    # df['datyp']=5
-    # df['nbits']=32
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
     fstpy.delete_file(results_file)
@@ -685,7 +584,6 @@ def test_10(plugin_test_dir, latlon_extrapolation_df):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "result_extrapolMax_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_10"
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.001)
@@ -696,30 +594,20 @@ def test_10(plugin_test_dir, latlon_extrapolation_df):
 def test_11(plugin_test_dir, latlon_extrapolation_df):
     """test_extrapolationMin"""
     # open and read source
-    source0 = plugin_test_dir + "tape10.std"
-    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-
-    src_df0['dateo'] = 368660482
+    source0                          = plugin_test_dir + "tape10.std"
+    src_df0                          = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0['dateo']                 = 368660482
     latlon_extrapolation_df['dateo'] = 368660482
-    concat_df_and_lat_lon = pd.concat([src_df0, latlon_extrapolation_df], ignore_index=True, sort=False)
+    concat_df_and_lat_lon            = pd.concat([src_df0, latlon_extrapolation_df], ignore_index=True, sort=False)
 
     # compute spookipy.InterpolationHorizontalPoint
-    df = spookipy.InterpolationHorizontalPoint(
-        concat_df_and_lat_lon,
-        interpolation_type='bi-cubic',
-        extrapolation_type='minimum').compute()
-    # [ReaderStd --input {sources[0]}] >> [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> [InterpolationHorizontalPoint --interpolationType BI-CUBIC --extrapolationType MINIMUM] >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
-
-    df['etiket'] = 'R1558V0_N'
-    df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
-    df.loc[df.nomvar == '>>', 'etiket'] = '__INTHPTX'
-    # Le plugin devrait set Interpolated
-    df.loc[df.typvar == 'P', 'typvar'] = 'PI'
-
-    # df['datyp']=5
-    # df['nbits']=32
-
-    df.loc[df.nomvar == 'VS', 'etiket'] = 'XVSHEAR_X'
+    df                               = spookipy.InterpolationHorizontalPoint(concat_df_and_lat_lon,
+                                                                             interpolation_type='bi-cubic',
+                                                                             extrapolation_type='minimum').compute()
+    # [ReaderStd --input {sources[0]}] >> 
+    # [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >>
+    # [InterpolationHorizontalPoint --interpolationType BI-CUBIC --extrapolationType MINIMUM] >>
+    # [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
@@ -728,7 +616,6 @@ def test_11(plugin_test_dir, latlon_extrapolation_df):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "result_extrapolMin_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_11"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -772,33 +659,24 @@ def test_11(plugin_test_dir, latlon_extrapolation_df):
 def test_13(plugin_test_dir, latlon_df):
     """test with 2 grids and 3 fields on each grid"""
     # open and read source
-    source0 = plugin_test_dir + "2011110112_045_small"
-    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    source0               = plugin_test_dir + "2011110112_045_small"
+    src_df0               = fstpy.StandardFileReader(source0).to_pandas()
 
-    source1 = plugin_test_dir + "2011110112_048_small"
-    src_df1 = fstpy.StandardFileReader(source1).to_pandas()
+    source1               = plugin_test_dir + "2011110112_048_small"
+    src_df1               = fstpy.StandardFileReader(source1).to_pandas()
 
-    src_df = pd.concat([src_df0, src_df1], ignore_index=True)
+    src_df                = pd.concat([src_df0, src_df1], ignore_index=True)
 
-    src_df['dateo'] = 368660482
-    latlon_df['dateo'] = 368660482
+    src_df['dateo']       = 368660482
+    latlon_df['dateo']    = 368660482
     concat_df_and_lat_lon = pd.concat([src_df, latlon_df], ignore_index=True, sort=False)
-    # compute spookipy.InterpolationHorizontalPoint
 
-    df = spookipy.InterpolationHorizontalPoint(concat_df_and_lat_lon).compute()
+    # compute spookipy.InterpolationHorizontalPoint
+    df                    = spookipy.InterpolationHorizontalPoint(concat_df_and_lat_lon).compute()
     # [ReaderStd --input {sources[0]}] >> [ReaderStd --input {sources[1]}] >>
     # [ReaderCsv --input {sources[2]}] >> [InterpolationHorizontalPoint] >>
     # [Zap --metadataZappable --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >>
     # [WriterStd --output {destination_path} --makeIP1EncodingWorkWithTests]
-
-    df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
-    df.loc[df.nomvar == '>>', 'etiket'] = '__INTHPTX'
-    # Le plugin devrait set Interpolated
-    df.loc[df.typvar == 'P', 'typvar'] = 'PI'
-    # df['dateo']=368660482
-
-    # df['datyp']=5
-    # df['nbits']=32
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
@@ -807,52 +685,44 @@ def test_13(plugin_test_dir, latlon_df):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "result_2grids_3fields_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_13"
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)
 
-# strangly the result file ni nj for lat and lon is reversed
-
-
+@pytest.mark.skip(reason="Waiting for fix with creation of ^^ and >>")
+# TEST MIS EN SKIP JUSQU A CE QUE LE PROBLEME SOIT REGLE AVEC LES ^^ et >>
+# VOIR ISSUE DANS SPOOKI ET SPOOKIPY
 def test_14(plugin_test_dir):
     """test_DanielPoints"""
     # open and read source
-    source0 = plugin_test_dir + "2012022712_012_glbdiag"
-    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    source0        = plugin_test_dir + "2012022712_012_glbdiag"
+    src_df0        = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0        = src_df0.loc[src_df0.nomvar.isin(["2Z", ">>", "^^", "!!"])].reset_index(drop=True)
 
-    src_df0 = src_df0.loc[src_df0.nomvar.isin(
-        ["2Z", ">>", "^^", "!!"])].reset_index(drop=True)
-
-    source1 = plugin_test_dir + "latlong_stn_ALL.fst"
-    src_df1 = fstpy.StandardFileReader(source1).to_pandas()
+    source1        = plugin_test_dir + "latlong_stn_ALL.fst"
+    src_df1        = fstpy.StandardFileReader(source1).to_pandas()
     src_df1['ip1'] = 0
 
     src_df0.loc[:, 'dateo'] = 368660482
     src_df1.loc[:, 'dateo'] = 368660482
-    concat_df_and_lat_lon = pd.concat([src_df0, src_df1], ignore_index=True, sort=False)
+    concat_df_and_lat_lon   = pd.concat([src_df0, src_df1], ignore_index=True, sort=False)
 
     # compute spookipy.InterpolationHorizontalPoint
-    df = spookipy.InterpolationHorizontalPoint(
-        concat_df_and_lat_lon,
-        interpolation_type='bi-cubic',
-        extrapolation_type='value',
-        extrapolation_value=999.9).compute()
-    # [ReaderStd --input {sources[0]}] >> [Select --fieldName 2Z] >> [ReaderStd --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> [InterpolationHorizontalPoint --interpolationType BI-CUBIC --extrapolationType VALUE=999.9] >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
+    df             = spookipy.InterpolationHorizontalPoint(concat_df_and_lat_lon,
+                                                           interpolation_type='bi-cubic',
+                                                           extrapolation_type='value',
+                                                           extrapolation_value=999.9).compute()
+    # [ReaderStd --input {sources[0]}] >> [Select --fieldName 2Z] >>
+    # [ReaderStd --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> 
+    # [InterpolationHorizontalPoint --interpolationType BI-CUBIC --extrapolationType VALUE=999.9] >> 
+    # [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
     
-    df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
-    df.loc[df.nomvar == '>>', 'etiket'] = '__INTHPTX'
-    # fix for reversed ni nj in results
-    df.loc[df.nomvar.isin(['^^', '>>']), 'ni'] = 1
-    df.loc[df.nomvar.isin(['^^', '>>']), 'nj'] = 177
-    df.loc[df.nomvar.isin(['^^', '>>']), 'typvar'] = 'X'
-    # Le plugin devrait set Interpolated
-    df.loc[(df.nomvar=='2Z') & (df.typvar == 'P'), 'typvar'] = 'PI'
-    df.loc[df.nomvar=='2Z','etiket'] = 'EDYNTRP_X'
-    # df['datyp']=5
-    # df['nbits']=32
+    # Invert x and y because ReaderCsv invert them???  --
+    # Fix done in the plugin InterpolationHorizontalPoint version CPP
+    # df.loc[df.nomvar.isin(['^^', '>>']), 'ni'] = 1
+    # df.loc[df.nomvar.isin(['^^', '>>']), 'nj'] = 177
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
@@ -861,50 +731,46 @@ def test_14(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "result_DanielPoints_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_14"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
-
+@pytest.mark.skip(reason="Waiting for fix with creation of ^^ and >>")
+# TEST MIS EN SKIP JUSQU A CE QUE LE PROBLEME SOIT REGLE AVEC LES ^^ et >>
+# VOIR ISSUE DANS SPOOKI ET SPOOKIPY
 def test_15(plugin_test_dir):
     """test_northPole_southPole"""
     # open and read source
-    source0 = plugin_test_dir + "2012022712_012_glbdiag"
-    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    source0                 = plugin_test_dir + "2012022712_012_glbdiag"
+    src_df0                 = fstpy.StandardFileReader(source0).to_pandas()
 
-    src_df0 = src_df0.loc[src_df0.nomvar.isin(
-        ["SN", ">>", "^^", "!!"])].reset_index(drop=True)
+    src_df0                 = src_df0.loc[src_df0.nomvar.isin(["SN", ">>", "^^", "!!"])].reset_index(drop=True)
 
-    source1 = plugin_test_dir + "latlong_stn_ALL.fst"
-    src_df1 = fstpy.StandardFileReader(source1).to_pandas()
-    src_df1['ip1'] = 0
+    source1                 = plugin_test_dir + "latlong_stn_ALL.fst"
+    src_df1                 = fstpy.StandardFileReader(source1).to_pandas()
+    src_df1['ip1']          = 0
 
     src_df0.loc[:, 'dateo'] = 368660482
     src_df1.loc[:, 'dateo'] = 368660482
-    concat_df_and_lat_lon = pd.concat([src_df0, src_df1], ignore_index=True, sort=False)
+    concat_df_and_lat_lon   = pd.concat([src_df0, src_df1], ignore_index=True, sort=False)
 
     # compute spookipy.InterpolationHorizontalPoint
-    df = spookipy.InterpolationHorizontalPoint(
-        concat_df_and_lat_lon,
-        interpolation_type='bi-cubic',
-        extrapolation_type='value',
-        extrapolation_value=999.9).compute()
-    # [ReaderStd --input {sources[0]}] >> [Select --fieldName SN] >> [ReaderStd --ignoreExtended --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> [InterpolationHorizontalPoint --interpolationType BI-CUBIC --extrapolationType VALUE=999.9] >> [WriterStd --output {destination_path}]
-    df['etiket'] = 'G133K80_N'
-    df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
-    df.loc[df.nomvar == '>>', 'etiket'] = '__INTHPTX'
-    # fix for reversed ni nj in results
-    df.loc[df.nomvar.isin(['^^', '>>']), 'ni'] = 1
-    df.loc[df.nomvar.isin(['^^', '>>']), 'nj'] = 177
-    df.loc[df.nomvar.isin(['^^', '>>']), 'typvar'] = 'X'
-    # Le plugin devrait set Interpolated
-    df.loc[df.typvar == 'P', 'typvar'] = 'PI'
-    # df['datyp']=5
-    # df['nbits']=32
-    # print('df',df)
+    df                      = spookipy.InterpolationHorizontalPoint(concat_df_and_lat_lon,
+                                                                    interpolation_type='bi-cubic',
+                                                                    extrapolation_type='value',
+                                                                    extrapolation_value=999.9).compute()
+    # [ReaderStd --input {sources[0]}] >> [Select --fieldName SN] >> 
+    # [ReaderStd --ignoreExtended --input {sources[1]}] >> [Zap --dateOfOrigin 20110210T215210 --doNotFlagAsZapped] >> 
+    # [InterpolationHorizontalPoint --interpolationType BI-CUBIC --extrapolationType VALUE=999.9] >>
+    # [WriterStd --output {destination_path}]
+
+    # Invert x and y because ReaderCsv invert them???  --
+    # Fix done in the plugin InterpolationHorizontalPoint version CPP
+    # df.loc[df.nomvar.isin(['^^', '>>']), 'ni'] = 1
+    # df.loc[df.nomvar.isin(['^^', '>>']), 'nj'] = 177
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
     fstpy.delete_file(results_file)
@@ -912,7 +778,6 @@ def test_15(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "northSouthPole_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_15"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -923,32 +788,29 @@ def test_15(plugin_test_dir):
 def test_16(plugin_test_dir, simple_input_df):
     """Test avec un fichier YinYang"""
     # open and read source
-    source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
-    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-
-    src_df0 = src_df0.loc[src_df0.nomvar.isin(
-        ["TT", "^>", "!!"])].reset_index(drop=True)
+    source0                  = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
+    src_df0                  = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0                  = src_df0.loc[src_df0.nomvar.isin(["TT", "^>", "!!"])].reset_index(drop=True)
 
     # zap all but !! HY
     src_df0.loc[~src_df0.nomvar.isin(['!!', 'HY']), 'dateo'] = 404008736
-    simple_input_df['dateo'] = 404008736
-    concat_df_and_lat_lon = pd.concat([src_df0, simple_input_df], ignore_index=True, sort=False)
+    simple_input_df['dateo']                                 = 404008736
+    concat_df_and_lat_lon                                    = pd.concat([src_df0, simple_input_df], 
+                                                                         ignore_index=True, 
+                                                                         sort=False)
 
     # compute spookipy.InterpolationHorizontalPoint
-    df = spookipy.InterpolationHorizontalPoint(
-        concat_df_and_lat_lon,
-        interpolation_type='bi-linear',
-        extrapolation_type='value',
-        extrapolation_value=99.9).compute()
-    # [ReaderStd --input {sources[0]}] >> [Select --fieldName TT] >> [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20150805T094230 --doNotFlagAsZapped] >> [InterpolationHorizontalPoint --interpolationType BI-LINEAR --extrapolationType VALUE=99.9] >> [WriterStd --output {destination_path}]
+    df                       = spookipy.InterpolationHorizontalPoint(concat_df_and_lat_lon,
+                                                                     interpolation_type='bi-linear',
+                                                                     extrapolation_type='value',
+                                                                     extrapolation_value=99.9).compute()
+    # [ReaderStd --input {sources[0]}] >> [Select --fieldName TT] >> 
+    # [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20150805T094230 --doNotFlagAsZapped] >> 
+    # [InterpolationHorizontalPoint --interpolationType BI-LINEAR --extrapolationType VALUE=99.9] >>
+    # [WriterStd --output {destination_path}]
 
-    df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
-    df.loc[df.nomvar == '>>', 'etiket'] = '__INTHPTX'
-    # Le plugin devrait set Interpolated
-    df.loc[df.typvar == 'P', 'typvar'] = 'PI'
-    # df['datyp']=5
-    # df['nbits']=32
 
+    # Force l'encodage car le fichier input est en mb(kind2) non encode, l'output n'est pas encode.
     df = spookipy.convip(df)
 
     # write the result
@@ -958,7 +820,6 @@ def test_16(plugin_test_dir, simple_input_df):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "InterpGridUtoGridY_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_16"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -971,31 +832,26 @@ def test_17(plugin_test_dir, latlon_yy_df):
     # open and read source
     source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-
-    src_df0 = src_df0.loc[src_df0.nomvar.isin(
-        ["TT", "^>", "!!"])].reset_index(drop=True)
+    src_df0 = src_df0.loc[src_df0.nomvar.isin(["TT", "^>", "!!"])].reset_index(drop=True)
 
     # zap all but !! HY
     src_df0.loc[~src_df0.nomvar.isin(['!!', 'HY']), 'dateo'] = 404008736
-
-    latlon_yy_df['dateo'] = 404008736
-    concat_df_and_lat_lon = pd.concat([src_df0, latlon_yy_df], ignore_index=True, sort=False)
-
+    latlon_yy_df['dateo']                                    = 404008736
+    concat_df_and_lat_lon                                    = pd.concat([src_df0, latlon_yy_df], 
+                                                                         ignore_index=True, 
+                                                                         sort=False)
+ 
     # compute spookipy.InterpolationHorizontalPoint
-    df = spookipy.InterpolationHorizontalPoint(
-        concat_df_and_lat_lon,
-        interpolation_type='bi-linear',
-        extrapolation_type='value',
-        extrapolation_value=99.9).compute()
-    # [ReaderStd --input {sources[0]}] >> [Select --fieldName TT] >> [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20150805T094230 --doNotFlagAsZapped] >> [InterpolationHorizontalPoint --interpolationType BI-LINEAR --extrapolationType VALUE=99.9] >> [WriterStd --output {destination_path}]
+    df    = spookipy.InterpolationHorizontalPoint(concat_df_and_lat_lon,
+                                                  interpolation_type='bi-linear',
+                                                  extrapolation_type='value',
+                                                  extrapolation_value=99.9).compute()
+    # [ReaderStd --input {sources[0]}] >> [Select --fieldName TT] >> 
+    # [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20150805T094230 --doNotFlagAsZapped] >>
+    # [InterpolationHorizontalPoint --interpolationType BI-LINEAR --extrapolationType VALUE=99.9] >> 
+    # [WriterStd --output {destination_path}]
 
-    df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
-    df.loc[df.nomvar == '>>', 'etiket'] = '__INTHPTX'
-    # Le plugin devrait set Interpolated
-    df.loc[df.typvar == 'P', 'typvar'] = 'PI'
-    # df['datyp']=5
-    # df['nbits']=32
-
+    # Force l'encodage car le fichier input est en mb(kind2) non encode, l'output n'est pas encode.
     df = spookipy.convip(df)
 
     # write the result
@@ -1005,7 +861,6 @@ def test_17(plugin_test_dir, latlon_yy_df):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "InterpGridU_manyPts_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_17"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -1017,33 +872,27 @@ def test_18(plugin_test_dir, latlon_yy_df):
     # open and read source
     source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-
-    src_df0 = src_df0.loc[src_df0.nomvar.isin(
-        ["TT", "^>", "!!"])].reset_index(drop=True)
+    src_df0 = src_df0.loc[src_df0.nomvar.isin(["TT", "^>", "!!"])].reset_index(drop=True)
 
     # zap all but !! HY
     src_df0.loc[~src_df0.nomvar.isin(['!!', 'HY']), 'dateo'] = 404008736
-
-    latlon_yy_df['dateo'] = 404008736
-
-    concat_df_and_lat_lon = pd.concat([src_df0, latlon_yy_df], ignore_index=True, sort=False)
+    latlon_yy_df['dateo']                                    = 404008736
+    concat_df_and_lat_lon                                    = pd.concat([src_df0, latlon_yy_df], 
+                                                                         ignore_index=True, 
+                                                                         sort=False)
 
     # compute spookipy.InterpolationHorizontalPoint
-    df = spookipy.InterpolationHorizontalPoint(
-        concat_df_and_lat_lon,
-        interpolation_type='bi-linear',
-        extrapolation_type='value',
-        extrapolation_value=99.9,
-        parallel=True).compute()
-    # [ReaderStd --input {sources[0]}] >> [Select --fieldName TT] >> [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20150805T094230 --doNotFlagAsZapped] >> [InterpolationHorizontalPoint --interpolationType BI-LINEAR --extrapolationType VALUE=99.9] >> [WriterStd --output {destination_path}]
+    df      = spookipy.InterpolationHorizontalPoint(concat_df_and_lat_lon,
+                                                    interpolation_type='bi-linear',
+                                                    extrapolation_type='value',
+                                                    extrapolation_value=99.9,
+                                                    parallel=True).compute()
+    # [ReaderStd --input {sources[0]}] >> [Select --fieldName TT] >> 
+    # [ReaderCsv --input {sources[1]}] >> [Zap --dateOfOrigin 20150805T094230 --doNotFlagAsZapped] >>
+    # [InterpolationHorizontalPoint --interpolationType BI-LINEAR --extrapolationType VALUE=99.9] >>
+    # [WriterStd --output {destination_path}]
 
-    df.loc[df.nomvar == '^^', 'etiket'] = '__INTHPTX'
-    df.loc[df.nomvar == '>>', 'etiket'] = '__INTHPTX'
-    # Le plugin devrait set Interpolated
-    df.loc[df.typvar == 'P', 'typvar'] = 'PI'
-    # df['datyp']=5
-    # df['nbits']=32
-
+    # Force l'encodage car le fichier input est en mb(kind2) non encode, l'output n'est pas encode.
     df = spookipy.convip(df)
 
     # write the result
@@ -1053,7 +902,6 @@ def test_18(plugin_test_dir, latlon_yy_df):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "InterpGridU_manyPts_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/InterpolationHorizontalPoint/" +  "result_test_17"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)

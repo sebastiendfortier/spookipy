@@ -81,7 +81,8 @@ class HumidityRelativeWeightedMean(Plugin):
 
         keep = self.no_meta_df.loc[self.no_meta_df.nomvar.isin(["TT","HU"])].reset_index(drop=True) 
 
-        self.nomvar_groups = keep.groupby(by=['grid', 'datev','ip1_kind'])
+        # Necessaire d'avoir les 2 dates dans le groupby
+        self.nomvar_groups = keep.groupby(by=['grid', 'datev', 'dateo', 'vctype'])
 
 
     def compute(self) -> pd.DataFrame:

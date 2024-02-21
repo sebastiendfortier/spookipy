@@ -48,7 +48,9 @@ class InterpolationHorizontalGrid(Plugin):
     :param extrapolation_value: value for extrapolation when type is value, defaults to None  
     :type extrapolation_value: float, optional  
     :param nomvar: Name of the field on the grid to which interpolate, defaults to None  
-    :type nomvar: str, optional  
+    :type nomvar: str, optional   
+    :param reduce_df: Indicates to reduce the dataframe to its minimum, defaults to True
+    :type reduce_df: bool, optional
     """
 
 # –outputField arg Choice of output: include interpolated fields only or include reference field with
@@ -65,48 +67,47 @@ class InterpolationHorizontalGrid(Plugin):
             method: str,
             interpolation_type: str,
             extrapolation_type: str,
-            grtyp: str = None,
-            ni: int = None,
-            nj: int = None,
-            param1: float = None,
-            param2: float = None,
-            param3: float = None,
-            param4: float = None,
+            grtyp: str                 = None,
+            ni: int                    = None,
+            nj: int                    = None,
+            param1: float              = None,
+            param2: float              = None,
+            param3: float              = None,
+            param4: float              = None,
             extrapolation_value: float = None,
-            nomvar: str = None,
-            output_fields : str ='all',
-            parallel: bool =False):
-        self.methods = ['field', 'user']
-        self.grid_types = ['A', 'B', 'G', 'L', 'N', 'S']
-        self.extrapolation_types = [
-            'nearest',
-            'linear',
-            'maximum',
-            'minimum',
-            'value',
-            'abort']
-        self.interpolation_types = ['nearest', 'bi-linear', 'bi-cubic']
-        self.output_fields_selection = ['interpolated', 'reference', 'all']
-        self.validate_input()
+            nomvar: str                = None,
+            output_fields : str        = 'all',
+            parallel: bool             = False,
+            reduce_df                  = True):
+        
 
-    def validate_input(self):
-        if self.df.empty:
-            raise InterpolationHorizontalGridError('No data to process')
+        self.methods                 = ['field', 'user']
+        self.grid_types              = ['A', 'B', 'G', 'L', 'N', 'S']
+        self.extrapolation_types     = [
+                                        'nearest',
+                                        'linear',
+                                        'maximum',
+                                        'minimum',
+                                        'value',
+                                        'abort']
+        self.interpolation_types     = ['nearest', 'bi-linear', 'bi-cubic']
+        self.output_fields_selection = ['interpolated', 'reference', 'all']
 
         self.df = fstpy.metadata_cleanup(self.df)
+        super().__init__(self.df)
+        self.prepare_groups()
 
-        self.toctoc_df = self.df.loc[self.df.nomvar ==
-                                     "!!"].reset_index(drop=True)
+    def prepare_groups(self):
 
-        self.hy_df = self.df.loc[self.df.nomvar == "HY"].reset_index(drop=True)
+        self.toctoc_df = self.df.loc[self.df.nomvar == "!!"].reset_index(drop=True)
+        self.hy_df     = self.df.loc[self.df.nomvar == "HY"].reset_index(drop=True)
 
         self.validate_params()
 
         set_interpolation_type_options(self.interpolation_type)
 
-        set_extrapolation_type_options(
-            self.extrapolation_type,
-            self.extrapolation_value)
+        set_extrapolation_type_options(self.extrapolation_type,
+                                       self.extrapolation_value)
 
         self.define_output_grid()
 
@@ -138,12 +139,14 @@ class InterpolationHorizontalGrid(Plugin):
                 self.ig3 = int(self.param3)
                 self.ig4 = int(self.param4)
 
-                self.output_grid = define_grid(
-                    self.grtyp, '', self.ni, self.nj,
-                    self.ig1,
-                    self.ig2,
-                    self.ig3,
-                    self.ig4, None, None, None)
+                self.output_grid = define_grid( self.grtyp, 
+                                                '', 
+                                                self.ni, 
+                                                self.nj,
+                                                self.ig1,
+                                                self.ig2,
+                                                self.ig3,
+                                                self.ig4, None, None, None )
 
         else:  # method field defined
             if self.nomvar is None:
@@ -161,8 +164,7 @@ class InterpolationHorizontalGrid(Plugin):
             # get grtyp from the field
             self.grtyp = field_df.iloc[0]['grtyp']
 
-            self.ni, self.nj, self.ig1, self.ig2, self.ig3, self.ig4 = set_grid_parameters(
-                field_df)
+            self.ni, self.nj, self.ig1, self.ig2, self.ig3, self.ig4 = set_grid_parameters(field_df)
 
             # get meta for this fields grid
             grid = field_df.iloc[0]['grid']
@@ -205,7 +207,10 @@ class InterpolationHorizontalGrid(Plugin):
                 to_remove = to_remove.loc[(to_remove.nomvar != self.nomvar) & (to_remove.grid == grid)].reset_index(drop=True)
                 self.df = pd.concat([self.df, to_remove], ignore_index=True).drop_duplicates(keep=False)
 
+            # res_df = fstpy.add_flag_values(res_df)
+
     def validate_params(self):
+
         if self.output_fields not in self. output_fields_selection:
             raise InterpolationHorizontalGridError(
                 f'Output_fields {self.output_fields} not in {self.output_fields_selection}')
@@ -232,11 +237,11 @@ class InterpolationHorizontalGrid(Plugin):
 
             keep_toctoc(current_group, results)
 
-            vect_df = current_group.loc[current_group.nomvar.isin(['UU', 'VV'])].reset_index(drop=True)
+            vect_df   = current_group.loc[current_group.nomvar.isin(['UU', 'VV'])].reset_index(drop=True)
 
             others_df = current_group.loc[~current_group.nomvar.isin(['UU', 'VV', 'PT', '>>', '^^', '^>', '!!', 'HY', '!!SF'])].reset_index(drop=True)
 
-            pt_df = current_group.loc[current_group.nomvar == 'PT'].reset_index(drop=True)
+            pt_df     = current_group.loc[current_group.nomvar == 'PT'].reset_index(drop=True)
 
             source_df, grtyp = select_input_grid_source_data(vect_df, others_df, pt_df)
 
@@ -278,6 +283,9 @@ class InterpolationHorizontalGrid(Plugin):
                 self.ig2,
                 self.ig3,
                 self.ig4)
+            
+            res_df = fstpy.add_flag_values(res_df)
+            res_df.interpolated = True
 
         no_mod_df = pd.DataFrame(dtype=object)
 
@@ -303,7 +311,21 @@ class InterpolationHorizontalGrid(Plugin):
 
         res_df = fstpy.metadata_cleanup(res_df)
 
-        return res_df
+        # Ajout des colonnes reliees a l'etiket
+        res_df       = fstpy.add_columns(res_df, columns=['etiket'])
+
+        # Necessaire car on doit remettre a jour self.meta_df avant final_results
+        self.meta_df = res_df.loc[res_df.nomvar.isin(
+            ["^^", ">>", "^>", "!!", "!!SF", "HY", "PT"])].reset_index(drop=True) 
+        
+        # Dans ce cas-ci, on inclut P0 dans les donnees
+        res_no_meta_df = res_df.loc[~res_df.nomvar.isin(
+            ["^^", ">>", "^>", "!!", "!!SF", "HY", "PT"])].reset_index(drop=True)
+
+        return self.final_results([res_no_meta_df], 
+                                  InterpolationHorizontalGridError, 
+                                  copy_input = False,
+                                  reduce_df = self.reduce_df)
 
     @staticmethod
     def parse_config(args: str) -> dict:
@@ -347,23 +369,24 @@ class InterpolationHorizontalGrid(Plugin):
                 raise InterpolationHorizontalGridError("The grid projection parameters need to be higher than 0.")
 
         if parsed_arg['xyDimensions'] is not None:
-            parsed_arg['xyDimensions'] = parsed_arg['xyDimensions'].split(",")
-            parsed_arg['ni'] = int(parsed_arg['xyDimensions'][0])
-            parsed_arg['nj'] = int(parsed_arg['xyDimensions'][1])
+            parsed_arg['xyDimensions']        = parsed_arg['xyDimensions'].split(",")
+            parsed_arg['ni']                  = int(parsed_arg['xyDimensions'][0])
+            parsed_arg['nj']                  = int(parsed_arg['xyDimensions'][1])
 
         output_fields = {"INTERPOLATED_FIELD_ONLY":"interpolated", "INCLUDE_REFERENCE_FIELD":"reference", "INCLUDE_ALL_FIELDS":"all"}
         parsed_arg['output_fields'] = output_fields[parsed_arg['output_fields']]
 
         if parsed_arg['grtyp'] is not None:
-            parsed_arg['grtyp'] = parsed_arg['grtyp'].replace("TYPE_","")
+            parsed_arg['grtyp']               = parsed_arg['grtyp'].replace("TYPE_","")
 
-        parsed_arg['interpolation_type'] = parsed_arg['interpolation_type'].lower()
+        parsed_arg['interpolation_type']      = parsed_arg['interpolation_type'].lower()
 
         if parsed_arg['extrapolation_type'] in ["MAXIMUM","MINIMUM","ABORT","NEAREST","LINEAR"]:
-            parsed_arg['extrapolation_type'] = parsed_arg['extrapolation_type'].lower()
+            parsed_arg['extrapolation_type']  = parsed_arg['extrapolation_type'].lower()
+
         elif parsed_arg['extrapolation_type'].startswith("VALUE="):
             parsed_arg['extrapolation_value'] = float(parsed_arg['extrapolation_type'].replace("VALUE=",""))
-            parsed_arg['extrapolation_type'] = "value"
+            parsed_arg['extrapolation_type']  = "value"
 
         return parsed_arg
 
@@ -396,11 +419,11 @@ def scalar_interpolation(df, results, input_grid, output_grid):
     if df.empty:
         return
     # scalar except PT
-    int_df = copy.deepcopy(df)
+    int_df      = copy.deepcopy(df)
 
     split_value = get_split_value(df)
 
-    df_list = np.array_split(df, split_value)
+    df_list     = np.array_split(df, split_value)
 
     int_df_list = np.array_split(int_df, split_value)
 
@@ -420,22 +443,22 @@ def scalar_interpolation_parallel(df, results, input_grid, output_grid):
     if df.empty:
         return
     # scalar except PT
-    int_df = copy.deepcopy(df)
+    int_df      = copy.deepcopy(df)
     
     split_value = get_split_value(df)
 
-    df_list = np.array_split(df, split_value)
+    df_list     = np.array_split(df, split_value)
 
     int_df_list = np.array_split(int_df, split_value)
 
     for df,int_df in zip(df_list,int_df_list):
         df = fstpy.compute(df)
         output_grid_arr = [output_grid for _ in range(len(df.index))]
-        input_grid_arr = [input_grid for _ in range(len(df.index))]
+        input_grid_arr  = [input_grid  for _ in range(len(df.index))]
         with multiprocessing.Pool() as pool:
             interp_res = pool.starmap(scalar_interp, zip(output_grid_arr, input_grid_arr, df.d.to_list()))
 
-        int_df['d'] = [to_dask(r) for r in interp_res]
+        int_df['d']     = [to_dask(r) for r in interp_res]
 
         results.append(int_df)    
 
@@ -467,8 +490,8 @@ def vectorial_interpolation(vect_df, results, input_grid, output_grid):
 
     split_value = get_split_value(uu_df)
 
-    uu_df_list = np.array_split(uu_df, split_value)
-    vv_df_list = np.array_split(vv_df, split_value)
+    uu_df_list     = np.array_split(uu_df, split_value)
+    vv_df_list     = np.array_split(vv_df, split_value)
     uu_int_df_list = np.array_split(uu_int_df, split_value)
     vv_int_df_list = np.array_split(vv_int_df, split_value)
 
@@ -505,21 +528,21 @@ def vectorial_interpolation_parallel(vect_df, results, input_grid, output_grid):
 
     split_value = get_split_value(uu_df)
 
-    uu_df_list = np.array_split(uu_df, split_value)
-    vv_df_list = np.array_split(vv_df, split_value)
+    uu_df_list     = np.array_split(uu_df, split_value)
+    vv_df_list     = np.array_split(vv_df, split_value)
     uu_int_df_list = np.array_split(uu_int_df, split_value)
     vv_int_df_list = np.array_split(vv_int_df, split_value)
 
     for uu_df,vv_df,uu_int_df,vv_int_df in zip(uu_df_list,vv_df_list,uu_int_df_list,vv_int_df_list):
-        uu_df = fstpy.compute(uu_df)
-        vv_df = fstpy.compute(vv_df)
+        uu_df           = fstpy.compute(uu_df)
+        vv_df           = fstpy.compute(vv_df)
         output_grid_arr = [output_grid for _ in range(len(uu_df.index))]
-        input_grid_arr = [input_grid for _ in range(len(uu_df.index))]
+        input_grid_arr  = [input_grid for _ in range(len(uu_df.index))]
         with multiprocessing.Pool() as pool:
             interp_res = pool.starmap(vect_interp, zip(output_grid_arr, input_grid_arr, uu_df.d.to_list(), vv_df.d.to_list()))
 
-        uu_int_df['d'] = [to_dask(r[0]) for r in interp_res]
-        vv_int_df['d'] = [to_dask(r[1]) for r in interp_res]
+        uu_int_df['d']  = [to_dask(r[0]) for r in interp_res]
+        vv_int_df['d']  = [to_dask(r[1]) for r in interp_res]
 
         results.append(uu_int_df)
         results.append(vv_int_df)
@@ -530,26 +553,28 @@ def create_grid_set(input_grid, output_grid):
 
 
 def check_in_out_grid_equality(input_grid, output_grid):
-    in_params = rmn.ezgxprm(input_grid)
+    in_params  = rmn.ezgxprm(input_grid)
     in_params.pop('id')
     out_params = rmn.ezgxprm(output_grid)
     out_params.pop('id')
+
     return in_params == out_params
 
 
 def select_input_grid_source_data(vect_df, others_df, pt_df):
     grtyp = ''
     if not vect_df.empty:
-        grtyp = vect_df.iloc[0]['grtyp']
+        grtyp     = vect_df.iloc[0]['grtyp']
         source_df = vect_df
     elif not others_df.empty:
-        grtyp = others_df.iloc[0]['grtyp']
+        grtyp     = others_df.iloc[0]['grtyp']
         source_df = others_df
     elif not pt_df.empty:
-        grtyp = pt_df.iloc[0]['grtyp']
+        grtyp     = pt_df.iloc[0]['grtyp']
         source_df = pt_df
     else:
         source_df = pd.DataFrame(dtype=object)
+
     return source_df, grtyp
 
 
@@ -581,42 +606,47 @@ def define_input_grid(grtyp, source_df, meta_df):
     return input_grid
 
 def define_u_grid(meta_df, grtyp):
-    tictac_df = meta_df.loc[meta_df.nomvar == "^>"].reset_index(drop=True)
+
+    tictac_df            = meta_df.loc[meta_df.nomvar == "^>"].reset_index(drop=True)
     tictac_df.at[0, 'd'] = to_numpy(tictac_df.at[0, 'd'])
+
     return define_grid(grtyp, '', 0, 0, 0, 0, 0, 0, None, None, tictac_df.at[0, 'd'])
 
 
 def keep_intact_hy_field(current_group, no_mod):
-    hy_df = current_group.loc[current_group.nomvar ==
-                              'HY'].reset_index(drop=True)
+
+    hy_df = current_group.loc[current_group.nomvar == 'HY'].reset_index(drop=True)
     if not hy_df.empty:
         no_mod.append(hy_df)
 
 
 def keep_toctoc(current_group, results):
-    toctoc_df = current_group.loc[current_group.nomvar == '!!'].reset_index(
-        drop=True)
+
+    toctoc_df = current_group.loc[current_group.nomvar == '!!'].reset_index(drop=True)
     # we can add toctoc from input grid
     if not toctoc_df.empty:
         results.append(toctoc_df)
 
 
 def get_grid_paramters_from_latlon_fields(meta_df):
+
     lon_df = meta_df.loc[meta_df.nomvar == ">>"].reset_index(drop=True)
     lat_df = meta_df.loc[meta_df.nomvar == "^^"].reset_index(drop=True)
     if lat_df.empty or lon_df.empty:
         raise InterpolationHorizontalGridError('No data in lat_df or lon_df')
+    
     return get_grid_parameters(lat_df, lon_df)
 
 
 def get_grid_parameters(lat_df, lon_df):
+
     if lat_df.empty or lon_df.empty:
         raise InterpolationHorizontalGridError('No data in lat_df or lon_df')
-    lat_df = lat_df.reset_index(drop=True)
-    lon_df = lon_df.reset_index(drop=True)
-    nj = lat_df.iloc[0]['nj']
-    ni = lon_df.iloc[0]['ni']
-    grref = lat_df.iloc[0]['grtyp']
+    lat_df           = lat_df.reset_index(drop=True)
+    lon_df           = lon_df.reset_index(drop=True)
+    nj               = lat_df.iloc[0]['nj']
+    ni               = lon_df.iloc[0]['ni']
+    grref            = lat_df.iloc[0]['grtyp']
     lat_df.at[0,'d'] = to_numpy(lat_df.at[0,'d'])
     lon_df.at[0,'d'] = to_numpy(lon_df.at[0,'d'])
    
@@ -626,22 +656,26 @@ def get_grid_parameters(lat_df, lon_df):
     ig2 = lat_df.iloc[0]['ig2']
     ig3 = lat_df.iloc[0]['ig3']
     ig4 = lat_df.iloc[0]['ig4']
+
     return ni, nj, grref, ax, ay, ig1, ig2, ig3, ig4
 
 
 def set_grid_parameters(df):
+
     if df.empty:
         raise InterpolationHorizontalGridError('No data in df')
-    ni = df.iloc[0]['ni']
-    nj = df.iloc[0]['nj']
+    ni   = df.iloc[0]['ni']
+    nj  = df.iloc[0]['nj']
     ig1 = df.iloc[0]['ig1']
     ig2 = df.iloc[0]['ig2']
     ig3 = df.iloc[0]['ig3']
     ig4 = df.iloc[0]['ig4']
+
     return ni, nj, ig1, ig2, ig3, ig4
 
 
 def set_output_column_values(meta_df, field_df):
+
     if meta_df.empty or field_df.empty:
         raise InterpolationHorizontalGridError(
             'Missing data in meta_df or field_df')
@@ -649,52 +683,57 @@ def set_output_column_values(meta_df, field_df):
     ig2 = meta_df.iloc[0]['ip2']
     ig3 = field_df.iloc[0]['ig3']
     ig4 = field_df.iloc[0]['ig4']
+    
     return ig1, ig2, ig3, ig4
 
 
 def set_new_grid_identifiers_for_toctoc(res_df, ig1, ig2):
+
     toctoc_res_df = res_df.loc[res_df.nomvar == "!!"].reset_index(drop=True)
     if toctoc_res_df.empty:
         return pd.DataFrame(dtype=object)
-    toctoc_res_df['ip1'] = ig1
-    toctoc_res_df['ip2'] = ig2
+    toctoc_res_df['ip1']  = ig1
+    toctoc_res_df['ip2']  = ig2
     toctoc_res_df['grid'] = ''.join([str(ig1), str(ig2)])
+
     return toctoc_res_df
 
 
 def set_new_grid_identifiers(res_df, grtyp, ni, nj, ig1, ig2, ig3, ig4):
+
     other_res_df = res_df.loc[res_df.nomvar != "!!"].reset_index(drop=True)
     if other_res_df.empty:
         return pd.DataFrame(dtype=object)
-    shape_list = [(ni, nj) for _ in range(len(other_res_df.index))]
-    other_res_df["shape"] = shape_list
-    other_res_df['ni'] = ni
-    other_res_df['nj'] = nj
-    other_res_df['grtyp'] = grtyp
+    shape_list                   = [(ni, nj) for _ in range(len(other_res_df.index))]
+    other_res_df["shape"]        = shape_list
+    other_res_df['ni']           = ni
+    other_res_df['nj']           = nj
+    other_res_df['grtyp']        = grtyp
     other_res_df['interpolated'] = True
-    other_res_df['ig1'] = ig1
-    other_res_df['ig2'] = ig2
-    other_res_df['ig3'] = ig3
-    other_res_df['ig4'] = ig4
-    other_res_df['grid'] = ''.join([str(ig1), str(ig2)])
+    other_res_df['ig1']          = ig1
+    other_res_df['ig2']          = ig2
+    other_res_df['ig3']          = ig3
+    other_res_df['ig4']          = ig4
+    other_res_df['grid']         = ''.join([str(ig1), str(ig2)])
+
     return other_res_df
 
 
 def define_grid(
-        grtyp: str,
-        grref: str,
-        ni: int,
-        nj: int,
-        ig1: int,
-        ig2: int,
-        ig3: int,
-        ig4: int,
-        ax: np.ndarray,
-        ay: np.ndarray,
+        grtyp : str,
+        grref : str,
+        ni    : int,
+        nj    : int,
+        ig1   : int,
+        ig2   : int,
+        ig3   : int,
+        ig4   : int,
+        ax    : np.ndarray,
+        ay    : np.ndarray,
         tictac: np.ndarray) -> int:
     #longitude = X
     grid_types = ['A', 'B', 'E', 'G', 'L', 'N', 'S', 'U', 'X', 'Y', 'Z', '#']
-    grid_id = -1
+    grid_id    = -1
 
     if grtyp not in grid_types:
         raise InterpolationHorizontalGridError(
@@ -705,45 +744,47 @@ def define_grid(
         grid_params = {
             'grtyp': grtyp,
             'grref': grref,
-            'ni': int(ni),
-            'nj': int(nj),
-            'ay': ay,
-            'ax': ax,
-            'ig1': int(ig1),
-            'ig2': int(ig2),
-            'ig3': int(ig3),
-            'ig4': int(ig4)}
+            'ni'   : int(ni),
+            'nj'   : int(nj),
+            'ay'   : ay,
+            'ax'   : ax,
+            'ig1'  : int(ig1),
+            'ig2'  : int(ig2),
+            'ig3'  : int(ig3),
+            'ig4'  : int(ig4)}
         grid_id = rmn.ezgdef_fmem(grid_params)
 
     elif grtyp == 'U':
-        ni, nj, sub_grid_id_1, sub_grid_id_2 = create_type_u_sub_grids(
-            tictac, ni, nj, ig1, ig2, ig3, ig4, ax, ay)
+        ni, nj, sub_grid_id_1, sub_grid_id_2 = create_type_u_sub_grids(tictac, 
+                                                                       ni, nj, 
+                                                                       ig1, ig2, 
+                                                                       ig3, ig4, 
+                                                                       ax, ay)
 
-        vercode = 1
-        grtyp = 'U'
-        grref = ''
+        vercode     = 1
+        grtyp       = 'U'
+        grref       = ''
         grid_params = {
-            'grtyp': grtyp,
-            'grref': grref,
-            'ni': int(ni),
-            'nj': int(
-                2 * nj),
-            'vercode': vercode,
+            'grtyp'    : grtyp,
+            'grref'    : grref,
+            'ni'       : int(ni),
+            'nj'       : int(2 * nj),
+            'vercode'  : vercode,
             'subgridid': (
                 sub_grid_id_1,
                 sub_grid_id_2)}
         # grid_id = rmn.ezgdef_supergrid(ni, 2*nj, grtyp, grref, vercode, (sub_grid_id_1,sub_grid_id_2))
-        grid_id = rmn.ezgdef_supergrid(**grid_params)
+        grid_id    = rmn.ezgdef_supergrid(**grid_params)
 
     else:
         grid_params = {
             'grtyp': grtyp,
-            'ni': int(ni),
-            'nj': int(nj),
-            'ig1': int(ig1),
-            'ig2': int(ig2),
-            'ig3': int(ig3),
-            'ig4': int(ig4),
+            'ni'   : int(ni),
+            'nj'   : int(nj),
+            'ig1'  : int(ig1),
+            'ig2'  : int(ig2),
+            'ig3'  : int(ig3),
+            'ig4'  : int(ig4),
             'iunit': 0}
         grid_id = rmn.ezqkdef(grid_params)
 
@@ -755,38 +796,38 @@ def create_type_u_sub_grids(tictac, ni, nj, ig1, ig2, ig3, ig4, ax, ay):
     tictac = tictac.ravel(order='F')
 
     ni, nj, ig1, ig2, ig3, ig4, ay, ax, next_pos = get_grid_parameters_from_tictac_offset(
-        tictac, start_pos, ni, nj, ig1, ig2, ig3, ig4, ax, ay)
+                                                        tictac, start_pos, ni, nj, ig1, ig2, ig3, ig4, ax, ay)
 
     grid_params = {
         'grtyp': 'Z',
         'grref': 'E',
-        'ni': ni,
-        'nj': nj,
-        'ig1': ig1,
-        'ig2': ig2,
-        'ig3': ig3,
-        'ig4': ig4,
-        'ay': ay,
-        'ax': ax}
+        'ni'   : ni,
+        'nj'   : nj,
+        'ig1'  : ig1,
+        'ig2'  : ig2,
+        'ig3'  : ig3,
+        'ig4'  : ig4,
+        'ay'   : ay,
+        'ax'   : ax}
 
     # Definition de la 1ere sous-grille
     sub_grid_id_1 = rmn.ezgdef_fmem(grid_params)
 
     start_pos = next_pos
     ni, nj, ig1, ig2, ig3, ig4, ay, ax, _ = get_grid_parameters_from_tictac_offset(
-        tictac, start_pos, ni, nj, ig1, ig2, ig3, ig4, ax, ay)
+                                                        tictac, start_pos, ni, nj, ig1, ig2, ig3, ig4, ax, ay)
 
     grid_params = {
         'grtyp': 'Z',
         'grref': 'E',
-        'ni': ni,
-        'nj': nj,
-        'ig1': ig1,
-        'ig2': ig2,
-        'ig3': ig3,
-        'ig4': ig4,
-        'ay': ay,
-        'ax': ax}
+        'ni'   : ni,
+        'nj'   : nj,
+        'ig1'  : ig1,
+        'ig2'  : ig2,
+        'ig3'  : ig3,
+        'ig4'  : ig4,
+        'ay'   : ay,
+        'ax'   : ax}
 
     # Definition de la 1ere sous-grille
     sub_grid_id_2 = rmn.ezgdef_fmem(grid_params)
@@ -794,20 +835,20 @@ def create_type_u_sub_grids(tictac, ni, nj, ig1, ig2, ig3, ig4, ax, ay):
     return ni, nj, sub_grid_id_1, sub_grid_id_2
 
 
-def get_grid_parameters_from_tictac_offset(
-        tictac, start_pos, ni, nj, ig1, ig2, ig3, ig4, ax, ay):
-    ni = int(tictac[start_pos])
-    nj = int(tictac[start_pos + 1])
-    encoded_ig1 = tictac[start_pos + 6]
-    encoded_ig2 = tictac[start_pos + 7]
-    encoded_ig3 = tictac[start_pos + 8]
-    encoded_ig4 = tictac[start_pos + 9]
-    position_ax = start_pos + 10
-    position_ay = position_ax + ni
+def get_grid_parameters_from_tictac_offset(tictac, start_pos, ni, nj, ig1, ig2, ig3, ig4, ax, ay):
+
+    ni           = int(tictac[start_pos])
+    nj           = int(tictac[start_pos + 1])
+    encoded_ig1  = tictac[start_pos + 6]
+    encoded_ig2  = tictac[start_pos + 7]
+    encoded_ig3  = tictac[start_pos + 8]
+    encoded_ig4  = tictac[start_pos + 9]
+    position_ax  = start_pos + 10
+    position_ay  = position_ax + ni
     sub_grid_ref = 'E'
-    ig1, ig2, ig3, ig4 = rmn.cxgaig(
-        sub_grid_ref, encoded_ig1, encoded_ig2, encoded_ig3, encoded_ig4)
-    next_pos = position_ay + nj
-    ax = tictac[position_ax:position_ay]
-    ay = tictac[position_ay:next_pos]
+    ig1, ig2, ig3, ig4 = rmn.cxgaig(sub_grid_ref, encoded_ig1, encoded_ig2, encoded_ig3, encoded_ig4)
+    next_pos     = position_ay + nj
+    ax           = tictac[position_ax:position_ay]
+    ay           = tictac[position_ay:next_pos]
+
     return ni, nj, ig1, ig2, ig3, ig4, ay, ax, next_pos

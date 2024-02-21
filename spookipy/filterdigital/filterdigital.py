@@ -27,20 +27,18 @@ class FilterDigital(Plugin):
     :type nomvar_out: str, optional
     :param parallel: execute in parallel, defaults to False
     :type parallel: bool, optional
+    :param reduce_df: Indicates to reduce the dataframe to its minimum, defaults to True
+    :type reduce_df: bool, optional
     """
     @initializer
     def __init__(
             self,
-            df: pd.DataFrame,
-            filter: list,
+            df         : pd.DataFrame,
+            filter     : list,
             repetitions: int = 1,
-            nomvar_out=None,
-            parallel: bool = False):
-
-        self.plugin_result_specifications = {
-            'ALL': {'filtered': True}
-            # 'etiket':'FLTRDG',
-        }
+            nomvar_out = None,
+            parallel   : bool = False,
+            reduce_df  = True):
 
         self.df = fstpy.metadata_cleanup(self.df)
         super().__init__(self.df)
@@ -49,7 +47,9 @@ class FilterDigital(Plugin):
     def prepare_groups(self):
       
         if not (self.nomvar_out is None):
-            validate_nomvar(self.nomvar_out, 'FilterDigital', FilterDigitalError)
+            validate_nomvar(self.nomvar_out, 
+                            'FilterDigital', 
+                            FilterDigitalError)
 
         if not len(self.filter):
             raise FilterDigitalError('Filter must contain at least 1 value')
@@ -63,16 +63,12 @@ class FilterDigital(Plugin):
     def compute(self) -> pd.DataFrame:
         logging.info('FilterDigital - compute')
 
-        # if not (self.nomvar_out is None):
-        #     self.plugin_result_specifications['ALL']['nomvar'] = self.nomvar_out
-
-        # self.df = fstpy.compute(self.df)
-
         if not (self.nomvar_out is None):
             self.no_meta_df['nomvar'] = self.nomvar_out
-        self.no_meta_df['filtered'] = True
 
-        # new_df = create_empty_result(self.df,self.plugin_result_specifications['ALL'],all_rows=True)
+        # Ajout des colonnes reliees a l'etiket et aux flags
+        self.no_meta_df = fstpy.add_columns(self.no_meta_df, columns=['etiket', 'flags'])
+        self.no_meta_df.filtered = True
 
         filter_len = len(self.filter)
 
@@ -84,7 +80,10 @@ class FilterDigital(Plugin):
             df_list = apply_filter(self.no_meta_df, self.repetitions, filter_arr, filter_len)
 
 
-        return self.final_results(df_list, FilterDigitalError, copy_input=False)
+        return self.final_results(df_list, 
+                                  FilterDigitalError, 
+                                  copy_input = False,
+                                  reduce_df  = self.reduce_df)
 
     @staticmethod
     def parse_config(args: str) -> dict:

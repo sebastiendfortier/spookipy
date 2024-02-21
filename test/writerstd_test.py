@@ -130,7 +130,6 @@ def test_6(plugin_test_dir):
             ).compute()
 
     # compare results 
-    # if "file_to_compare": "" -> compare with the source file
     res = fstcomp(results_file, source0, e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)
@@ -157,7 +156,6 @@ def test_7(plugin_test_dir):
             ).compute()
 
     # compare results 
-    # if "file_to_compare": "" -> compare with the source file
     res = fstcomp(results_file, source0, e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)
@@ -188,7 +186,6 @@ def test_8(plugin_test_dir):
                 ).compute()
 
         # compare results 
-        # if "file_to_compare": "" -> compare with the source file
         res = fstcomp(file, source0, e_max=0.01)
         fstpy.delete_file(file)
         assert(res)
@@ -322,7 +319,6 @@ def test_13(plugin_test_dir):
 
 
     # compare results 
-    # if "file_to_compare": "" -> compare with the source file
     res = fstcomp(results_file, source0, e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)
@@ -348,7 +344,6 @@ def test_14(plugin_test_dir):
 
 
     # compare results 
-    # if "file_to_compare": "" -> compare with the source file
     res = fstcomp(results_file, source0, e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)
@@ -374,7 +369,6 @@ def test_15(plugin_test_dir):
             ).compute()
 
     # compare results 
-    # if "file_to_compare": "" -> compare with the source file
     file_to_compare = plugin_test_dir + "sigma12000_pressure_file2cmp.std"
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
     fstpy.delete_file(results_file)
@@ -400,7 +394,6 @@ def test_16(plugin_test_dir):
             ).compute()
 
     # compare results 
-    # if "file_to_compare": "" -> compare with the source file
     file_to_compare = plugin_test_dir + "input_big_noMeta_file2cmp.std"
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
     fstpy.delete_file(results_file)
@@ -426,7 +419,6 @@ def test_17(plugin_test_dir):
             ).compute()
 
     # compare results 
-    # if "file_to_compare": "" -> compare with the source file
     file_to_compare = plugin_test_dir + "input_big_metaOnly_file2cmp.std"
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
     fstpy.delete_file(results_file)
@@ -451,13 +443,11 @@ def test_18(plugin_test_dir):
             ).compute()
 
     # compare results 
-    # if "file_to_compare": "" -> compare with the source file
     file_to_compare = plugin_test_dir + "readDuplicatedGrid_file2cmp.std"
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)
 
-# check for metadata_cleanup !! et !!SF missing
 def test_19(plugin_test_dir):
     """Test la lecture et la réécriture d'un champ(!!) 64 bits"""
     # open and read source
@@ -477,7 +467,6 @@ def test_19(plugin_test_dir):
             ).compute()
 
     # compare results 
-    # if "file_to_compare": "" -> compare with the source file
     file_to_compare = plugin_test_dir + "tt_stg_fileSrc.std"
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
     fstpy.delete_file(results_file)
@@ -526,7 +515,6 @@ def test_21(plugin_test_dir):
             ).compute()
 
     # compare results 
-    # if "file_to_compare": "" -> compare with the source file
     file_to_compare = plugin_test_dir + "fieldName4characters_file2cmp.std"
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
     fstpy.delete_file(results_file)
@@ -626,7 +614,6 @@ def test_24(plugin_test_dir):
             ).compute()
 
     # compare results 
-    # if "file_to_compare": "" -> compare with the source file
     file_to_compare = plugin_test_dir + "UUVVTT5x5_pdsLabel_egale_a_7_file2cmp.std"
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
     fstpy.delete_file(results_file)
@@ -677,7 +664,6 @@ def test_26(plugin_test_dir):
             ).compute()
 
     # compare results 
-    # if "file_to_compare": "" -> compare with the source file
     file_to_compare = plugin_test_dir + "UUVVTT5x5_pdsLabel_egale_a_7_N_file2cmp.std"
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
     fstpy.delete_file(results_file)
@@ -685,7 +671,7 @@ def test_26(plugin_test_dir):
 
 
 def test_27(plugin_test_dir):
-    """Test lecture ecriture d'une grille #Ce test doit fonctionné."""
+    """Test lecture ecriture d'une grille #Ce test doit fonctionner."""
     # open and read source
     source0 = plugin_test_dir + "dm2011042100-00-00_000_dieses_no_toctoc"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -701,8 +687,7 @@ def test_27(plugin_test_dir):
             ).compute()
 
     # compare results 
-    # if "file_to_compare": "" -> compare with the source file
-    file_to_compare = plugin_test_dir + "dieses_file2cmp.std"
+    file_to_compare = plugin_test_dir + "dieses_file2cmp.std+20231227"
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)
@@ -780,7 +765,6 @@ def test_32(plugin_test_dir):
             ).compute()
 
     # compare results 
-    # if "file_to_compare": "" -> compare with the source file
     file_to_compare = plugin_test_dir + 'result_test_32_file2cmp.std'
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
 
@@ -854,7 +838,7 @@ def test_32(plugin_test_dir):
 #     fstpy.delete_file(results_file)
 #     assert(res)
 
-@pytest.mark.skip(reason="This test is currently not working - waiting for fixes with hybrid 5005")
+
 def test_35(plugin_test_dir):
     """Test #35 : Teste l'écriture niveaux5005: surface"""
     # open and read source
@@ -873,21 +857,20 @@ def test_35(plugin_test_dir):
     src_df0 = src_df0.loc[src_df0['nomvar']=='TT']
     src_df0 = src_df0.loc[src_df0['level']==1.0]
     src_df0 = pd.concat([src_df0,meta_df])
-    print(src_df0)
+    # print(src_df0)
     spookipy.WriterStd(
             src_df0,
             output=results_file,
             ).compute()
 
     # compare results 
-    # if "file_to_compare": "" -> compare with the source file
     file_to_compare = plugin_test_dir + "5005_surfaceonly_file2cmp.std"
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
 
     fstpy.delete_file(results_file)
     assert(res)
 
-@pytest.mark.skip(reason="This test is currently not working - waiting for fixes with hybrid 5005")
+
 def test_36(plugin_test_dir):
     """Test #36 : Teste l'écriture niveaux5005: no surface"""
 # open and read source
@@ -910,13 +893,12 @@ def test_36(plugin_test_dir):
             ).compute()
 
     # compare results 
-    # if "file_to_compare": "" -> compare with the source file
     file_to_compare = plugin_test_dir + "5005_nosurface_file2cmp.std"
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)
 
-@pytest.mark.skip(reason="This test is currently not working - waiting for fixes with hybrid 5005")
+
 def test_37(plugin_test_dir):
     """Test #37 : Teste l'écriture niveaux5005: surface + 0.851188 level"""
     source0 = plugin_test_dir + "coord_5005_big.std"
@@ -938,13 +920,11 @@ def test_37(plugin_test_dir):
             ).compute()
 
     # compare results 
-    # if "file_to_compare": "" -> compare with the source file
     file_to_compare = plugin_test_dir + "5005_surface+1level_file2cmp.std"
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
     fstpy.delete_file(results_file)
     assert(res)
 
-@pytest.mark.skip(reason="This test is currently not working - waiting for fixes with hybrid 5005")
 def test_38(plugin_test_dir):
     """Test #38 : Teste l'écriture niveaux5005: surface + 0.851188 and 0.829785 levels"""
     source0 = plugin_test_dir + "coord_5005_big.std"
@@ -966,7 +946,6 @@ def test_38(plugin_test_dir):
             ).compute()
 
     # compare results 
-    # if "file_to_compare": "" -> compare with the source file
     file_to_compare = plugin_test_dir + "5005_surface+2level_file2cmp.std"
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
     fstpy.delete_file(results_file)

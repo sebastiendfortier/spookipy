@@ -33,7 +33,7 @@ class Pressure(Plugin):
                 standard_atmosphere: bool = False, 
                 dependency_check          = False,
                 copy_input                = False,
-                reduce_df                 = False):
+                reduce_df                 = True):
 
         self.df = fstpy.metadata_cleanup(self.df)
         super().__init__(self.df)
@@ -74,12 +74,30 @@ class Pressure(Plugin):
             self.df = self.df.drop(columns=['path', 'key'], errors='ignore')
         else:
             self.df["path"] = np.where(self.df["path"] == "/TMP_PATH_TO_MAKE_PRESSURE_WORK", None, self.df.path)
+        
+        # Initialisation des colonnes reliees aux etiket
+        res_df = fstpy.add_columns(res_df, columns=['etiket'])
 
+        res_df.loc[res_df.nomvar.isin(["PX", "PXSA"]),'label']           = 'PRESSR'
+        res_df.loc[res_df.nomvar.isin(["PX", "PXSA"]),'etiket']          = '  '
+        res_df.loc[res_df.nomvar.isin(["PX", "PXSA"]),'run']             = '__'
+        res_df.loc[res_df.nomvar.isin(["PX", "PXSA"]),'ensemble_member'] = None
+        res_df.loc[res_df.nomvar.isin(["PX", "PXSA"]),'implementation']  = 'X'
+        res_df.loc[res_df.nomvar.isin(["PX", "PXSA"]),'etiket_format']   = ''
+
+        # Necessaire car on doit mettre a jour self.meta_df
+        self.meta_df = res_df.loc[res_df.nomvar.isin(
+            ["^^", ">>", "^>", "!!", "!!SF", "HY", "PT"])].reset_index(drop=True) 
+        
+        # Separation des donnees des metadonnees avant l'appel a final_results
+        res_df = res_df.loc[~res_df.nomvar.isin(
+            ["^^", ">>", "^>", "!!", "!!SF", "HY"])].reset_index(drop=True)
+        
         return self.final_results([res_df], 
                                   PressureError, 
                                   dependency_check = self.dependency_check, 
                                   copy_input       = self.copy_input,
-                                  reduce_df        = False)
+                                  reduce_df        = self.reduce_df)
 
     @staticmethod
     def parse_config(args: str) -> dict:

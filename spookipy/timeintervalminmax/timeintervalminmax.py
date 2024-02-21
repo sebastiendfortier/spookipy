@@ -115,8 +115,8 @@ class TimeIntervalMinMax(Plugin):
 
         self.df_with_intervals    = self.no_meta_df.loc[(~self.no_meta_df.interval.isna()) & (self.no_meta_df.nomvar.isin(self.nomvar))].reset_index(drop=True)
 
-        self.groups_without_interval = self.df_without_intervals.groupby(['grid', 'nomvar','level','ip1_kind'])
-        self.groups_with_interval    = self.df_with_intervals.groupby(['grid', 'nomvar','level', 'ip1_kind'])
+        self.groups_without_interval = self.df_without_intervals.groupby(['grid', 'nomvar','level','vctype'])
+        self.groups_with_interval    = self.df_with_intervals.groupby(['grid', 'nomvar','level', 'vctype'])
 
 
     def compute(self) -> pd.DataFrame:

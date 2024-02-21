@@ -50,22 +50,23 @@ def test_3(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute SubtractElementsVertically
-    df = spookipy.SubtractElementsVertically(src_df0, direction='ascending').compute()
+    df      = spookipy.SubtractElementsVertically(src_df0, 
+                                                  direction='ascending', 
+                                                  reduce_df = True).compute()
     # [ReaderStd --input {sources[0]}] >> 
     # [SubtractElementsVertically --direction ASCENDING] >> 
     # [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
 
-    df = spookipy.encode_ip2_and_ip3_height(df)
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
-    # open and read comparison file
-    file_to_compare = plugin_test_dir + "SubVert_test3_file2cmp.std"
+    # Nouveau fichier de comparaison avec nouvelle etiquette
+    file_to_compare = plugin_test_dir + "SubVert_test3_file2cmp.std+PY20240208"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -76,21 +77,23 @@ def test_4(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute SubtractElementsVertically
-    df = spookipy.SubtractElementsVertically(src_df0, direction='descending').compute()
+    df      = spookipy.SubtractElementsVertically(src_df0, 
+                                                  direction='descending',
+                                                  reduce_df = True).compute()
     # [ReaderStd --input {sources[0]}] >> 
     # [SubtractElementsVertically --direction DESCENDING] >> 
     # [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
-    df = spookipy.encode_ip2_and_ip3_height(df)
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
-    # open and read comparison file
-    file_to_compare = plugin_test_dir + "SubVert_test4_file2cmp.std"
+    # Nouveau fichier de comparaison sans --ignoreExtended ----encodeIP2andIP3 du test en CPP
+    file_to_compare = plugin_test_dir + "SubVert_test4_file2cmp.std+PY20240208"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -103,25 +106,27 @@ def test_5(plugin_test_dir):
     meta_df = src_df0.loc[src_df0.nomvar.isin(["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
 
     src_df0 = src_df0.loc[src_df0.level==500.]
-    src_df = pd.concat([meta_df,src_df0], ignore_index=True)
+    src_df  = pd.concat([meta_df,src_df0], ignore_index=True)
 
     # compute SubtractElementsVertically
-    df = spookipy.SubtractElementsVertically(src_df, direction='ascending').compute()
+    df      = spookipy.SubtractElementsVertically(src_df, 
+                                                  direction='ascending', 
+                                                  reduce_df=True).compute()
     # [ReaderStd --input {sources[0]}] >> 
     # [Select --verticalLevel 500] >> 
     # [SubtractElementsVertically --direction ASCENDING] >> 
     # [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
-    df = spookipy.encode_ip2_and_ip3_height(df)
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
-    # open and read comparison file
-    file_to_compare = plugin_test_dir + "SubVert_test5_file2cmp.std"
+    # Nouveau fichier de comparaison sans --ignoreExtended ----encodeIP2andIP3 du test en CPP
+    file_to_compare = plugin_test_dir + "SubVert_test5_file2cmp.std+PY20240208"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])#, exclude_meta=True)
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -145,22 +150,26 @@ def test_7(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute SubtractElementsVertically
-    df = spookipy.SubtractElementsVertically(src_df0, direction='ascending').compute()
+    df      = spookipy.SubtractElementsVertically(src_df0, 
+                                                  direction='ascending',
+                                                  reduce_df=True).compute()
     # [ReaderStd --input {sources[0]}] >> 
     # [SubtractElementsVertically --direction ASCENDING] >> 
     # [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
-    df = spookipy.encode_ip2_and_ip3_height(df)
-    df.loc[~df.nomvar.isin(['ES','TT']), 'etiket'] = '_V700_'
+
+    # Necessaire pour encodage des metadonnes
+    df      = spookipy.encode_ip2_and_ip3_height(df)
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
-    # open and read comparison file
-    file_to_compare = plugin_test_dir + "SubVert_test7_file2cmp.std"
+    # Nouveau fichier sans --ignoreExtended ----encodeIP2andIP3 du test en CPP
+    file_to_compare = plugin_test_dir + "SubVert_test7_file2cmp.std+PY20240208"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])#, exclude_meta=True)
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -171,21 +180,22 @@ def test_8(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute SubtractElementsVertically
-    df = spookipy.SubtractElementsVertically(src_df0, direction='descending').compute()
+    df      = spookipy.SubtractElementsVertically(src_df0, 
+                                                  direction='descending',
+                                                  reduce_df=True).compute()
     # [ReaderStd --input {sources[0]}] >> 
     # [SubtractElementsVertically --direction DESCENDING] >> 
     # [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
-    df = spookipy.encode_ip2_and_ip3_height(df)
-    df.loc[~df.nomvar.isin(['ES','TT']), 'etiket'] = '_V700_'
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
     fstpy.delete_file(results_file)
-    fstpy.StandardFileWriter(results_file, df).to_fst()
+    fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
 
-    # open and read comparison file
-    file_to_compare = plugin_test_dir + "SubVert_test8_file2cmp.std"
+    # Nouveau fichier sans metadata et avec nouvelle etiquette
+    file_to_compare = plugin_test_dir + "SubVert_test8_file2cmp.std+PY20240208"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])#, exclude_meta=True)
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)

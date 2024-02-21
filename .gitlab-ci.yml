@@ -7,6 +7,7 @@ variables:
   latest_doc_install_dir: "/home/spst900/public_html/spookipy/latest"
   temp_dir: "/home/sgci800/cache/${CI_PROJECT_PATH}/${CI_BUILD_REF_NAME}/${CI_PIPELINE_ID}"
   deploy_dir_prefix: /fs/site5/eccc/cmd/w/spst900/spooki/CI_spookipy/${CI_BUILD_REF_NAME}
+  ssm_dir_prefix: /space/hall5/sitestore/eccc/cmd/s/sgci800/ci_ssm_dir/spookipy
 
 stages:
   - run_regtests
@@ -14,6 +15,7 @@ stages:
   - install_doc
   - ssm_package
   - deploy
+  - keep_ssm_package
 
 
 before_script:
@@ -27,7 +29,7 @@ before_script:
   - . r.load.dot /fs/ssm/main/opt/intelcomp/inteloneapi-2022.1.2/intelcomp+mpi+mkl
   - . r.load.dot /fs/ssm/eccc/mrd/rpn/MIG/ENV/migdep/5.1.1 /fs/ssm/eccc/mrd/rpn/MIG/ENV/rpnpy/2.1-u2.4
   - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/apps/ci_fstcomp/1.0.8
-  - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/202311/00
+  - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/202402/01
   
 
 
@@ -81,7 +83,11 @@ ssm_package_with_everything:
     - ./make_ssm_package.py --install --temp ${DEPLOY_DIR}
     - . ssmuse-sh -x ${DEPLOY_DIR}/spookipy/$( cat ../VERSION )/all
     - ./test_ssm_package.py
-    - mv spookipy_*.ssm ${temp_dir}
+    - cp spookipy_*.ssm ${temp_dir}
+  artifacts:
+    expire_in: 1 hrs
+    paths:
+      - livraison/
 
 ssm_package_with_operation_yaml_list:
   stage: ssm_package
@@ -93,8 +99,12 @@ ssm_package_with_operation_yaml_list:
     - ./make_ssm_package.py --yaml plugin_list_operation.yaml --suffix operation --install --temp ${UNIQUE_TEMP_DIR}
     - . ssmuse-sh -x ${UNIQUE_TEMP_DIR}/spookipy/$( cat ../VERSION )/all
     - ./test_ssm_package.py --yaml plugin_list_operation.yaml
-    - mv spookipy_*.ssm ${temp_dir}
+    - cp spookipy_*.ssm ${temp_dir}
     - rm -r ${UNIQUE_TEMP_DIR}
+  artifacts:
+    expire_in: 1 hrs
+    paths:
+      - livraison/
 
 deploy:
   stage: deploy
@@ -112,3 +122,12 @@ remove_ssm:
     - rm -r ${DEPLOY_DIR}
   except:
     - master
+
+keep_ssm_package:
+  stage: keep_ssm_package
+  script:
+    - cd livraison
+    - cp *.ssm ${ssm_dir_prefix}/
+    - echo "Your packages are here ${ssm_dir_prefix}"
+  only:
+    - /^r-\d+\.\d+\.\d+/

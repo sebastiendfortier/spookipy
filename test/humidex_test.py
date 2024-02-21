@@ -24,11 +24,8 @@ def test_1(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute Humidex
-    df = spookipy.Humidex(src_df0).compute()
+    df      = spookipy.Humidex(src_df0).compute()
     # [ReaderStd --input {sources[0]}] >> [Humidex] >> [WriterStd --output {destination_path} --noMetadata]
-
-    # df.loc[df.nomvar!='!!','nbits']=32
-    # df.loc[:,'datyp']=5
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
@@ -51,11 +48,8 @@ def test_2(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute Humidex
-    df = spookipy.Humidex(src_df0).compute()
+    df      = spookipy.Humidex(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]} ] >> [Humidex] >> [WriterStd --output {destination_path} ]
-
-    # df.loc[df.nomvar!='!!','nbits']=32
-    # df.loc[:,'datyp']=5
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
@@ -66,6 +60,28 @@ def test_2(plugin_test_dir):
     file_to_compare = plugin_test_dir + "inputFile6x6_file2cmp.std"
 
     # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
+
+def test_3(plugin_test_dir):
+    """2 groupes de TT avec dates d'origine differentes mais dates de validity identiques """
+
+    source  = plugin_test_dir + "Regeta_TTHUES_differentDateoSameDatev.std"
+    src_df  = fstpy.StandardFileReader(source).to_pandas()
+
+    # compute Humidex
+    df      = spookipy.Humidex(src_df).compute()
+    
+     # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # # open and read comparison file
+    file_to_compare = plugin_test_dir + "Regeta_test3_file2cmp.std"
+
+    # compare results 
     res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)

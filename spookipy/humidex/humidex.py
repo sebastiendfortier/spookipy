@@ -72,9 +72,8 @@ class Humidex(Plugin):
 
         # select surface only
         self.no_meta_df_sfc = self.no_meta_df.loc[self.no_meta_df.surface]
-
-        self.groups = self.no_meta_df_sfc.groupby(
-            ['grid', 'datev', 'ip1_kind'])
+    
+        self.groups = self.no_meta_df_sfc.groupby(['grid', 'datev', 'dateo', 'vctype'])
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:
@@ -119,7 +118,7 @@ class Humidex(Plugin):
             SaturationVapourPressure
         logging.info(f'Humidex - option {option+1}')
 
-        tt_df = get_from_dataframe(dependencies_df, 'TT')
+        tt_df  = get_from_dataframe(dependencies_df, 'TT')
         hmx_df = create_empty_result(
             tt_df,
             self.plugin_result_specifications['HMX'],
@@ -139,9 +138,9 @@ class Humidex(Plugin):
         
         if svp_df.empty:
             raise HumidexError('No results produced by SaturationVapourPressure, unable to calculate Humidex!')
-
+        
         svp_df = get_from_dataframe(svp_df, 'SVP')
-
+        
         for i in hmx_df.index:
             tt = tt_df.at[i, 'd']
             svp = svp_df.at[i, 'd']

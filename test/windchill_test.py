@@ -78,3 +78,25 @@ def test_3(plugin_test_dir):
     with pytest.raises(spookipy.WindChillError):
         _ = spookipy.WindChill(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>[WindChill]
+
+def test_4(plugin_test_dir):
+    """2 groupes de UU,VV,TT avec dates d'origine differentes mais dates de validity identiques """
+
+    source  = plugin_test_dir + "Regpres_UUVVTT_differentDateoSameDatev.std"
+    src_df  = fstpy.StandardFileReader(source).to_pandas()
+
+    # compute WindChill
+    df = spookipy.WindChill(src_df).compute()
+    
+     # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # # open and read comparison file
+    file_to_compare = plugin_test_dir + "Regpres_diffDateoSameDatev_file2cmp.std"
+
+    # compare results 
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)

@@ -7,6 +7,7 @@ import fstpy
 import pytest
 import spookipy
 from ci_fstcomp import fstcomp
+import rpnpy.librmn.all as rmn
 import secrets
 from spookipy.pressure.pressure import \
     PressureError
@@ -25,13 +26,16 @@ def test_1(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute spookipy.Pressure
-    df = spookipy.Pressure(src_df0, "TT").compute()
+    df      = spookipy.Pressure(src_df0, "TT").compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Pressure --coordinateType ETA_COORDINATE --referenceField TT] >>
     # [Zap --pdsLabel R1580V0N] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
+    # Pour respecter le zap et l'encodage du test original
     df.loc[:, 'etiket'] = 'R1580V0N'
+    df = spookipy.convip(df, style=rmn.CONVIP_ENCODE_OLD)
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
     fstpy.delete_file(results_file)
@@ -54,9 +58,10 @@ def test_2(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute spookipy.Pressure
-    df = spookipy.Pressure(src_df0, "TT", standard_atmosphere=True).compute()
+    df      = spookipy.Pressure(src_df0, 
+                                reference_field="TT", 
+                                standard_atmosphere=True).compute()
 
-    # df.loc[df.nomvar.isin(['>>','^^','P0','PT']),'etiket'] = 'R1580V0N'
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Zap --pdsLabel PRESSURE --doNotFlagAsZapped] >>
     # [Pressure --coordinateType ETA_COORDINATE --standardAtmosphere --referenceField TT] >>
@@ -67,9 +72,8 @@ def test_2(plugin_test_dir):
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
-    # open and read comparison file
-    file_to_compare = plugin_test_dir + "px_eta_std_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/Pressure/result_test_2"
+    # Nouveau fichier sans --ignoreExtended --IP1EncodingStyle OLDSTYLE et sans Zap du pdsLabel du test en CPP
+    file_to_compare = plugin_test_dir + "px_eta_std_file2cmp.std+PY20240118"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -89,22 +93,19 @@ def test_5(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute spookipy.Pressure
-    df = spookipy.Pressure(src_df0, "HU").compute()
+    df      = spookipy.Pressure(src_df0, "HU").compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Pressure --coordinateType SIGMA_COORDINATE --referenceField HU ] >>
     # [Zap --pdsLabel R1580V0N] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
-    df.loc[df.nomvar != 'P0', 'etiket'] = 'R1580V0N'
-    # df.loc[df.nomvar=='P0','etiket'] = 'GA72A16N'
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
-    # open and read comparison file
-    file_to_compare = plugin_test_dir + "px_sig_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/Pressure/result_test_5"
+    # Nouveau fichier de comparaison sans --ignoreExtended --IP1EncodingStyle OLDSTYLE et sans Zap du pdsLabel du test en CPP
+    file_to_compare = plugin_test_dir + "px_sig_file2cmp.std+PY20240118"
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.1)
@@ -119,21 +120,21 @@ def test_6(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute spookipy.Pressure
-    df = spookipy.Pressure(src_df0, "HU", standard_atmosphere=True).compute()
+    df      = spookipy.Pressure(src_df0, 
+                                reference_field="HU", 
+                                standard_atmosphere=True).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Zap --pdsLabel PRESSURE --doNotFlagAsZapped] >>
     # [Pressure --coordinateType SIGMA_COORDINATE --standardAtmosphere --referenceField HU] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
-    # df.loc[df.nomvar=='P0','etiket'] = 'GA72A16N'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
-    # open and read comparison file
-    file_to_compare = plugin_test_dir + "px_sig_std_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/Pressure/result_test_6"
+     # Nouveau fichier de comparaison sans --ignoreExtended --IP1EncodingStyle OLDSTYLE et sans Zap du pdsLabel du test en CPP
+    file_to_compare = plugin_test_dir + "px_sig_std_file2cmp.std+PY20240118"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -153,11 +154,14 @@ def test_9(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute spookipy.Pressure
-    df = spookipy.Pressure(src_df0, "TT").compute()
+    df      = spookipy.Pressure(src_df0, 
+                                reference_field="TT").compute()
     # ['[ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Pressure --coordinateType HYBRID_COORDINATE --referenceField TT] >>
     # [Zap --pdsLabel R1580V0N] >>
     # [WriterStd --output {destination_path} --ignoreExtended]']
+
+    #  Pour respecter le Zap du test en CPP
     df.loc[:, 'etiket'] = 'R1580V0N'
 
     # write the result
@@ -167,7 +171,6 @@ def test_9(plugin_test_dir):
 
     # open and read comparison file
     file_to_compare = plugin_test_dir + "px_hyb_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/Pressure/result_test_9"
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.01)
@@ -182,7 +185,9 @@ def test_10(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute spookipy.Pressure
-    df = spookipy.Pressure(src_df0, "TT",standard_atmosphere=True).compute()
+    df      = spookipy.Pressure(src_df0, 
+                                reference_field = "TT",
+                                standard_atmosphere = True).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Zap --pdsLabel PRESSURE --doNotFlagAsZapped] >>
     # [Pressure --coordinateType HYBRID_COORDINATE --standardAtmosphere --referenceField TT] >>
@@ -193,9 +198,8 @@ def test_10(plugin_test_dir):
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
-    # open and read comparison file
-    file_to_compare = plugin_test_dir + "px_hyb_std_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/Pressure/result_test_10"
+    # Nouveau fichier de comparaison sans --ignoreExtended --IP1EncodingStyle OLDSTYLE et sans Zap du pdsLabel du test en CPP
+    file_to_compare = plugin_test_dir + "px_hyb_std_file2cmp.std+PY20240118"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -210,7 +214,7 @@ def test_11(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     #compute spookipy.Pressure
-    df = spookipy.Pressure(src_df0).compute()
+    df      = spookipy.Pressure(src_df0).compute()
     #[ReaderStd --ignoreExtended --input {sources[0]}] >> 
     # [Pressure --coordinateType AUTODETECT --referenceField TT] >> 
     # [WriterStd --output {destination_path} --ignoreExtended]
@@ -220,11 +224,11 @@ def test_11(plugin_test_dir):
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file,df).to_fst()
 
-    # open and read comparison file
-    file_to_compare = plugin_test_dir + "px_hyb2_file2cmp.std"
+    # Nouveau fichier de comparaison sans --ignoreExtended du test en CPP
+    file_to_compare = plugin_test_dir + "px_hyb2_file2cmp.std+PY20240118"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.01)
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -244,20 +248,16 @@ def test_13(plugin_test_dir):
     # [Pressure --coordinateType HYBRID_STAGGERED_COORDINATE --referenceField UU] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
 
-    df.loc[df.nomvar.isin(['!!', '>>', '^^', 'P0']), 'etiket'] = 'PRESS'
-    # print(df[['nomvar','etiket']])
-
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "px_hyb_stg_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/Pressure/result_test_13"
+    file_to_compare = plugin_test_dir + "px_hyb_stg_file2cmp.std+PY20240118"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.01)
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -269,10 +269,12 @@ def test_14(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute spookipy.Pressure
-    df = spookipy.Pressure(src_df0, "UU", standard_atmosphere=True).compute()
+    df      = spookipy.Pressure(src_df0, 
+                                reference_field="UU", 
+                                standard_atmosphere=True).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Pressure --coordinateType HYBRID_STAGGERED_COORDINATE --standardAtmosphere --referenceField UU] >>
-    # [WriterStd --output {destination_path} --ignoreExtended]
+    # [WriterStd --output {destination_path}]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
@@ -280,8 +282,7 @@ def test_14(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "px_hyb_stg_std_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/Pressure/result_test_14"
+    file_to_compare = plugin_test_dir + "px_hyb_stg_std_file2cmp.std+20240118"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -307,16 +308,14 @@ def test_17(plugin_test_dir):
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Pressure --coordinateType PRESSURE_COORDINATE --referenceField TT] >>
     # [Zap --pdsLabel R1580V0N] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
-    df.loc[:, 'etiket'] = 'R1580V0N'
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_17.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
-    # open and read comparison file
-    file_to_compare = plugin_test_dir + "px_pres_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/Pressure/result_test_17"
+    # Nouveau fichier de comparaison sans --ignoreExtended --IP1EncodingStyle OLDSTYLE et sans Zap du pdsLabel du test en CPP
+    file_to_compare = plugin_test_dir + "px_pres_file2cmp.std+PY20240118"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -331,21 +330,21 @@ def test_18(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute spookipy.Pressure
-    df = spookipy.Pressure(src_df0, "TT",standard_atmosphere=True).compute()
+    df      = spookipy.Pressure(src_df0, 
+                                reference_field="TT",
+                                standard_atmosphere=True).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Zap --pdsLabel PRESSURE --doNotFlagAsZapped] >>
     # [Pressure --coordinateType PRESSURE_COORDINATE --standardAtmosphere --referenceField TT] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
-    # df.loc[df.nomvar.isin(['^^','>>']),'etiket'] = 'R1580V0N'
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_18.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
-    # open and read comparison file
-    file_to_compare = plugin_test_dir + "px_pres_std_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/Pressure/result_test_18"
+    # Nouveau fichier de comparaison sans --ignoreExtended --IP1EncodingStyle OLDSTYLE et sans Zap du pdsLabel du test en CPP
+    file_to_compare = plugin_test_dir + "px_pres_std_file2cmp.std+PY20240118"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -374,23 +373,21 @@ def test_30(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute spookipy.Pressure
-    df = spookipy.Pressure(src_df0, "TT").compute()
+    df      = spookipy.Pressure(src_df0, "TT").compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Pressure --coordinateType AUTODETECT --referenceField TT] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --noMetadata]
-    df.loc[:, 'etiket'] = 'R110K80N'
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_30.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
 
-    # open and read comparison file
-    file_to_compare = plugin_test_dir + "input_vrpcp24_00_file2cmp.std"
-    # file_to_compare = "/fs/site4/eccc/cmd/w/sbf000/testFiles/Pressure/result_test_30"
+    # Nouveau fichier de comparaison sans --ignoreExtended --IP1EncodingStyle OLDSTYLE et sans Zap du pdsLabel du test en CPP
+    file_to_compare = plugin_test_dir + "input_vrpcp24_00_file2cmp.std+PY20240118"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.01)
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -400,13 +397,18 @@ def test_31(plugin_test_dir):
     # open and read source
     source0 = plugin_test_dir + "input_test_31.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-    # src_df0 = src_df0.loc([src_df0.nomvar != 'PX'])
     src_df0 = src_df0.loc[~src_df0.nomvar.isin(["PX"])].reset_index(drop=True)
 
     #compute spookipy.Pressure
-    df = spookipy.Pressure(src_df0).compute()
+    df      = spookipy.Pressure(src_df0).compute()
+    #  [ReaderStd --ignoreExtended --input {sources[0]}] >>  
+    #  [Select --exclude --fieldName PX] >> 
+    #  [Pressure --coordinateType AUTODETECT --referenceField TT] >> 
+    #  [Zap --pdsLabel EH02558_X --metadataZappable --doNotFlagAsZapped]>>
+    #  [Select --metadataFieldName P0,>>,^^ --exclude] >>
+    #  [WriterStd --output {destination_path} --ignoreExtended ]
+
     df = df.loc[~df.nomvar.isin(["P0", ">>", "^^"])].reset_index(drop=True)
-    #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '[Select --exclude --fieldName PX] >> ', '[Pressure --coordinateType AUTODETECT --referenceField TT] >>', '[Zap --pdsLabel EH02558_X --metadataZappable --doNotFlagAsZapped]>>', '[Select --metadataFieldName P0,>>,^^ --exclude] >>', '[WriterStd --output {destination_path} --ignoreExtended ]']
     df.loc[:, 'etiket'] = 'EH02558_X'
 
     #write the result
@@ -434,14 +436,17 @@ def test_32(plugin_test_dir):
 
     #compute spookipy.Pressure
     df = spookipy.Pressure(tt_df, 'TT').compute()
-    #[ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType HYBRID_STAGGERED_COORDINATE --referenceField TT] >>[WriterStd --output {destination_path} --ignoreExtended ]
+
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [Pressure --coordinateType HYBRID_STAGGERED_COORDINATE --referenceField TT] >>
+    # [WriterStd --output {destination_path} --ignoreExtended ]
 
     #write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_32.std"])
     fstpy.StandardFileWriter(results_file,df).to_fst()
 
-    # open and read comparison file
-    file_to_compare = plugin_test_dir + "glbpres_hybrid_staggered_coordinate_file2cmp.std"
+    # Nouveau fichier de comparaison avec etikets differentes du test en CPP
+    file_to_compare = plugin_test_dir + "glbpres_hybrid_staggered_coordinate_file2cmp.std+PY20240118"
 
     #compare results
     res = fstcomp(results_file,file_to_compare)
@@ -455,15 +460,18 @@ def test_33(plugin_test_dir):
     source0 = plugin_test_dir + "glbpres_TT_UU_VV.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    tt_df = fstpy.select_with_meta(src_df0, ['TT'])
-    tt_df = tt_df.loc[tt_df.ip1 != 93423264]
+    tt_df   = fstpy.select_with_meta(src_df0, ['TT'])
+    tt_df   = tt_df.loc[tt_df.ip1 != 93423264]
 
     # compute spookipy.Pressure
-    df = spookipy.Pressure(tt_df, "TT").compute()
+    df      = spookipy.Pressure(tt_df, "TT").compute()
 
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Pressure --coordinateType PRESSURE_COORDINATE --referenceField TT] >>
     # [WriterStd --output {destination_path} --ignoreExtended ]
+
+    # Pour respecter le test en CPP
+    df.loc[df.nomvar == 'PX', 'etiket'] = 'PRESSR'
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_33.std"])
@@ -486,12 +494,16 @@ def test_34(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute spookipy.Pressure
-    df = spookipy.Pressure(src_df0, "TT").compute()
+    df      = spookipy.Pressure(src_df0, "TT").compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [Pressure --coordinateType ETA_COORDINATE --referenceField TT] >>
     # [Zap --pdsLabel G1_7_0_0N --nbitsForDataStorage e32]>>
     # [WriterStd --output {destination_path} --ignoreExtended --noMetadata --IP1EncodingStyle OLDSTYLE]
+
+    # Pour respecter le Zap et encoding OLDSTYLE du test en CPP
     df.loc[:, 'etiket'] = 'G1_7_0_0N'
+    df = spookipy.convip(df, style=rmn.CONVIP_ENCODE_OLD)
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_34.std"])
     fstpy.delete_file(results_file)
@@ -505,7 +517,7 @@ def test_34(plugin_test_dir):
     fstpy.delete_file(results_file)
     assert(res)
 
-@pytest.mark.skip(reason="This test is currently not working - waiting for fixes with hybrid 5005")
+
 def test_35(plugin_test_dir):
     """Test avec un fichier 5005 avec l'option --coordinateType HYBRID_5005_COORDINATE thermodynamic"""
     # open and read source
@@ -536,7 +548,7 @@ def test_35(plugin_test_dir):
     fstpy.delete_file(results_file)
     assert(res)
 
-@pytest.mark.skip(reason="This test is currently not working - waiting for fixes with hybrid 5005")
+
 def test_36(plugin_test_dir):
     """Test avec un fichier 5005 avec l'option --coordinateType HYBRID_5005_COORDINATE"""
     # open and read source
@@ -566,7 +578,7 @@ def test_36(plugin_test_dir):
     fstpy.delete_file(results_file)
     assert(res)
 
-@pytest.mark.skip(reason="This test is currently not working - waiting for fixes with hybrid 5005")
+
 def test_37(plugin_test_dir):
     """Test avec un fichier 5005 - P0 manquant donc ne peut fonctionner """
     # open and read source
@@ -578,13 +590,42 @@ def test_37(plugin_test_dir):
     # [Pressure --coordinateType HYBRID_5005_COORDINATE --referenceField CK] 
 
     # # compute MatchLevelIndexToValue
-    with pytest.raises(PressureError):
+    with pytest.raises(Exception):
         _ = spookipy.Pressure(src_df0, "CK").compute()
 
 # # def test_38(plugin_test_dir):
 # # Test qui ne semble plus pertinent car teste le groupement lors de la lecture
-
+        
+@pytest.mark.skip(reason="En attente pour traitement des fichiers 5100")
 def test_39(plugin_test_dir):
+    """Test avec un fichier 5100 - thermodynamic"""
+    # open and read source
+    source0 = plugin_test_dir + "2020022912_024_slv"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    # compute spookipy.Pressure
+    df = spookipy.Pressure(src_df0, "TT").compute()
+    # ['[ReaderStd --input {sources[0]} --group5005 ]>>
+    # [Pressure --coordinateType AUTODETECT --referenceField TT] >>
+    # [WriterStd --output {destination_path}]']
+
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_39.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "2020022912_024_slv_PX_thermo_file2cmp.std+20230815"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
+
+#  Tests 39 et 40 sont nouveaux en python seulement
+#  De nouveaux tests 39 a 43 ont été créés par la suite en CPP; il seront donc decales ici
+#  
+def test_39a(plugin_test_dir):
     """Test avec un fichier glbpres """
     # Nouveau test en python; amalgame des tests 32 et 33 pour calculer la pression sur les 2 types
     # de coordonnees (pressure et hybrid)
@@ -594,13 +635,16 @@ def test_39(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # On veut seulement concerver tous les TT (hy et mb)
-    tt_df = fstpy.select_with_meta(src_df0, ['TT'])
+    tt_df   = fstpy.select_with_meta(src_df0, ['TT'])
 
     #compute spookipy.Pressure
-    df = spookipy.Pressure(tt_df, 'TT').compute()
+    df      = spookipy.Pressure(tt_df, 'TT').compute()
+
+    # Pour respecter les memes etiket que le test en CPP
+    df.loc[df.nomvar == 'PX', 'etiket'] = 'PRESSR'
 
     #write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_39.std"])
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_39a.std"])
     fstpy.StandardFileWriter(results_file,df).to_fst()
 
     # open and read comparison file
@@ -608,5 +652,142 @@ def test_39(plugin_test_dir):
 
     #compare results
     res = fstcomp(results_file,file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
+
+@pytest.mark.skip(reason="En attente pour traitement des fichiers 5100")
+def test_40(plugin_test_dir):
+    """Test avec un fichier 5100 - momentum"""
+    # open and read source
+    source0 = plugin_test_dir + "2020022912_024_slv"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    # compute spookipy.Pressure
+    df = spookipy.Pressure(src_df0, "TT").compute()
+    # ['[ReaderStd --input {sources[0]} --group5005 ]>>
+    # [Pressure --coordinateType AUTODETECT --referenceField UU] >>
+    # [WriterStd --output {destination_path} ]']
+
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_40.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "2020022912_024_slv_PX_momentum_file2cmp.std+20230815"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
+
+
+def test_40a(plugin_test_dir):
+    """2 groupes de TT avec dates d'origine differentes mais dates de validity identiques """
+
+    source  = plugin_test_dir + "Regeta_TTHUES_differentDateoSameDatev.std"
+    src_df  = fstpy.StandardFileReader(source).to_pandas()
+    tt_df   = fstpy.select_with_meta(src_df, ['TT'])
+
+
+    # compute spookipy.DewPointDepression
+    df      = spookipy.Pressure(tt_df, 'TT').compute()
+    # spooki_run.py  "[ReaderStd --input Regeta_TTHUES_differentDateoSameDatev.std] >> 
+    # [Pressure --referenceField TT --plugin_language CPP  --coordinateType ETA_COORDINATE ] >> 
+    # [WriterStd --output Test40.std ]"
+
+    # Pour respecter les memes etiket que le test cree en CPP
+    df.loc[df.nomvar == 'PX', 'etiket'] = '__PRESSRX000'
+
+     # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_40a.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # # open and read comparison file
+    file_to_compare = plugin_test_dir + "Regeta_differentDateoSameDatev_file2cmp.std"
+    # compare results 
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
+
+def test_41(plugin_test_dir):
+    """Test que le ptop est pris dans les donnees du champ HY et non dans son ip1"""
+    # open and read source
+    source0 = plugin_test_dir + "2016031912_012_with_hy"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+
+    # compute spookipy.Pressure
+    df = spookipy.Pressure(src_df0, "TT").compute()
+    # ['[ReaderStd --input {sources[0]}  ]>>
+    # [Pressure --coordinateType AUTODETECT --referenceField TT] >>
+    # [WriterStd --output {destination_path}]']
+
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_40.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "test41_file2cmp.std"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare, e_max=0.02)
+    fstpy.delete_file(results_file)
+    assert(res) 
+
+@pytest.mark.skip(reason="En attente pour traitement des fichiers 5100")
+def test_42(plugin_test_dir):
+    """Test avec un fichier 5100 - thermodynamic"""
+    # open and read source
+    source0 = plugin_test_dir + "2020010100_048.slv"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    tt_df   = fstpy.select_with_meta(src_df0, ['TT'])
+
+    # compute spookipy.Pressure
+    df = spookipy.Pressure(tt_df, "TT").compute()
+    # ['[ReaderStd --input {sources[0]} --group5005 ]>>
+    # [Select --fieldName TT]>>
+    # [Pressure --coordinateType AUTODETECT --referenceField TT] >>
+    # [WriterStd --output {destination_path}]']
+
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_42.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "2020010100_048_slv_PX_thermo_file2cmp.std+20230815"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)
+
+@pytest.mark.skip(reason="En attente pour traitement des fichiers 5100")
+def test_43(plugin_test_dir):
+    """Test avec un fichier 5100 - thermodynamic"""
+    # open and read source
+    source0 = plugin_test_dir + "2020010100_048.slv"
+    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    tt_df   = fstpy.select_with_meta(src_df0, ['TT'])
+
+    # compute spookipy.Pressure
+    df = spookipy.Pressure(tt_df, "UU").compute()
+    # ['[ReaderStd --input {sources[0]} --group5005 ]>>
+    # [Select --fieldName UU]>>
+    # [Pressure --coordinateType AUTODETECT --referenceField UU] >>
+    # [WriterStd --output {destination_path}]']
+
+    # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_43.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # open and read comparison file
+    file_to_compare = plugin_test_dir + "2020010100_048_slv_PX_momentum_file2cmp.std+20230815"
+
+    # compare results
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)

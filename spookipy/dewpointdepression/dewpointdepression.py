@@ -144,8 +144,8 @@ class DewPointDepression(Plugin):
         # check if result already exists
         self.existing_result_df = get_existing_result(self.no_meta_df, self.plugin_result_specifications)
 
-        self.groups = self.no_meta_df.groupby(
-            ['grid', 'datev', 'ip1_kind'])
+        # Necessaire d'avoir les 2 dates dans le groupby
+        self.groups = self.no_meta_df.groupby(['grid', 'datev', 'dateo', 'vctype'])
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:

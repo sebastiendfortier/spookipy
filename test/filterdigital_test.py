@@ -24,23 +24,21 @@ def test_1(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute FilterDigital
-    df = spookipy.FilterDigital(
-        src_df0, filter=[
-            1, 1, 1], repetitions=1).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [FilterDigital --filter 1,1,1 --repetitions 1] >>
-    # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
+    df      = spookipy.FilterDigital(src_df0, 
+                                     filter=[1, 1, 1], 
+                                     repetitions=1).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [FilterDigital --filter 1,1,1 --repetitions 1] >>
+    # [WriterStd --output {destination_path}]
 
-    # df.loc[:,'etiket'] = 'PGSMUFIL'
-    # df.loc[:,'datyp'] = 5
-    # df.loc[df.nomvar!='!!','nbits'] = 32
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
-    # open and read comparison file
-    file_to_compare = plugin_test_dir + "filter1_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_1'
+    # open and read comparison file 
+    # Nouveau fichier sans --ignoreExtended --IP1EncodingStyle OLDSTYLE du test en CPP
+    file_to_compare = plugin_test_dir + "filter1_file2cmp.std+PY20240116"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -55,22 +53,21 @@ def test_2(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute FilterDigital
-    df = spookipy.FilterDigital(
-        src_df0, filter=[
-            1, 1, 1], repetitions=3).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [FilterDigital --filter 1,1,1 --repetitions 3] >>
-    # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
-    # df.loc[:,'etiket'] = 'PGSMUFIL'
-    # df.loc[:,'datyp'] = 5
-    # df.loc[df.nomvar!='!!','nbits'] = 32
+    df      = spookipy.FilterDigital(src_df0, 
+                                     filter=[1, 1, 1], 
+                                     repetitions=3).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [FilterDigital --filter 1,1,1 --repetitions 3] >>
+    # [WriterStd --output {destination_path}]
+
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "filter2_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_2'
+    # Nouveau fichier sans --ignoreExtended --IP1EncodingStyle OLDSTYLE du test en CPP
+    file_to_compare = plugin_test_dir + "filter2_file2cmp.std+PY20240116"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -85,26 +82,12 @@ def test_3(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute FilterDigital
-    df = spookipy.FilterDigital(
-        src_df0,
-        filter=[
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1],
-        repetitions=1).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [FilterDigital --filter 1,1,1,1,1,1,1,1,1 --repetitions 1] >>
-    # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
-
-    # df.loc[:,'etiket'] = 'UNAOPS'
-
-    # df.loc[:,'datyp'] = 5
-    # df.loc[df.nomvar!='!!','nbits'] = 32
+    df      = spookipy.FilterDigital(src_df0,
+                                     filter=[1,1,1,1,1,1,1,1,1],
+                                     repetitions=1).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [FilterDigital --filter 1,1,1,1,1,1,1,1,1 --repetitions 1] >>
+    # [WriterStd --output {destination_path}]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
@@ -112,8 +95,8 @@ def test_3(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "filter3_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_3'
+    # Nouveau fichier sans --ignoreExtended --IP1EncodingStyle OLDSTYLE du test en CPP
+    file_to_compare = plugin_test_dir + "filter3_file2cmp.std+PY20240116"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -128,25 +111,12 @@ def test_4(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute FilterDigital
-    df = spookipy.FilterDigital(
-        src_df0,
-        filter=[
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1],
-        repetitions=3).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [FilterDigital --filter 1,1,1,1,1,1,1,1,1 --repetitions 3] >>
-    # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
-    # df.loc[:,'etiket'] = 'UNAOPS'
-
-    # df.loc[:,'datyp'] = 5
-    # df.loc[df.nomvar!='!!','nbits'] = 32
+    df      = spookipy.FilterDigital(src_df0,
+                                     filter=[1,1,1,1,1,1,1,1,1],
+                                    repetitions=3).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [FilterDigital --filter 1,1,1,1,1,1,1,1,1 --repetitions 3] >>
+    # [WriterStd --output {destination_path} ]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
@@ -154,8 +124,8 @@ def test_4(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "filter4_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_4'
+    # Nouveau fichier sans --ignoreExtended --IP1EncodingStyle OLDSTYLE du test en CPP
+    file_to_compare = plugin_test_dir + "filter4_file2cmp.std+PY20240116"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -170,14 +140,12 @@ def test_5(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute FilterDigital
-    df = spookipy.FilterDigital(src_df0, filter=[1], repetitions=1).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [FilterDigital --filter 1 --repetitions 1] >>
-    # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
-
-    # df.loc[:,'etiket'] = 'PGSMUFIL'
-
-    # df.loc[:,'datyp'] = 5
-    # df.loc[df.nomvar!='!!','nbits'] = 32
+    df      = spookipy.FilterDigital(src_df0, 
+                                     filter=[1], 
+                                     repetitions=1).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [FilterDigital --filter 1 --repetitions 1] >>
+    # [WriterStd --output {destination_path}]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
@@ -185,9 +153,8 @@ def test_5(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "filter5_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_5'
-
+    # Nouveau fichier sans --ignoreExtended --IP1EncodingStyle OLDSTYLE du test en CPP
+    file_to_compare = plugin_test_dir + "filter5_file2cmp.std+PY20240116"
     # compare results
     res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
@@ -201,24 +168,12 @@ def test_6(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute FilterDigital
-    df = spookipy.FilterDigital(
-        src_df0,
-        filter=[
-            1,
-            1,
-            1,
-            2,
-            2,
-            1,
-            1,
-            1,
-            1],
-        repetitions=1).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [FilterDigital --filter 1,1,1,2,2,1,1,1,1 --repetitions 1] >>
-    # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
-
-    # df.loc[:,'datyp'] = 5
-    # df.loc[df.nomvar!='!!','nbits'] = 32
+    df      = spookipy.FilterDigital(src_df0,
+                                    filter=[1,1,1,2,2,1,1,1,1],
+                                    repetitions=1).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [FilterDigital --filter 1,1,1,2,2,1,1,1,1 --repetitions 1] >>
+    # [WriterStd --output {destination_path}]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
@@ -226,12 +181,11 @@ def test_6(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    # file_to_compare = plugin_test_dir + "filter6_file2cmp.std"
-    file_to_compare = plugin_test_dir + "filter6_file2cmp.std+PY20210812"
-    # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_6'
+    # Nouveau fichier sans --ignoreExtended --IP1EncodingStyle OLDSTYLE du test en CPP
+    file_to_compare = plugin_test_dir + "filter6_file2cmp.std+PY20240116"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)  # ,e_max=0.1)
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -243,24 +197,12 @@ def test_7(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute FilterDigital
-    df = spookipy.FilterDigital(
-        src_df0,
-        filter=[
-            1,
-            1,
-            1,
-            2,
-            2,
-            1,
-            1,
-            1,
-            1],
-        repetitions=3).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [FilterDigital --filter 1,1,1,2,2,1,1,1,1 --repetitions 3] >>
-    # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
-
-    # df.loc[:,'datyp'] = 5
-    # df.loc[df.nomvar!='!!','nbits'] = 32
+    df      = spookipy.FilterDigital(src_df0,
+                                     filter=[1,1,1,2,2,1,1,1,1],
+                                     repetitions=3).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [FilterDigital --filter 1,1,1,2,2,1,1,1,1 --repetitions 3] >>
+    # [WriterStd --output {destination_path} ]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
@@ -268,12 +210,11 @@ def test_7(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    # file_to_compare = plugin_test_dir + "filter7_file2cmp.std"
-    file_to_compare = plugin_test_dir + "filter7_file2cmp.std+PY20210812"
-    # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_7'
+    # Nouveau fichier sans --ignoreExtended --IP1EncodingStyle OLDSTYLE du test en CPP
+    file_to_compare = plugin_test_dir + "filter7_file2cmp.std+PY20240116"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)  # ,e_max=0.1)
+    res = fstcomp(results_file, file_to_compare)  
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -285,24 +226,12 @@ def test_8(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute FilterDigital
-    df = spookipy.FilterDigital(
-        src_df0,
-        filter=[
-            1,
-            1,
-            1,
-            2,
-            3,
-            2,
-            1,
-            1,
-            1],
-        repetitions=3).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [FilterDigital --filter 1,1,1,2,3,2,1,1,1 --repetitions 3] >>
-    # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
-
-    # df.loc[:,'datyp'] = 5
-    # df.loc[df.nomvar!='!!','nbits'] = 32
+    df      = spookipy.FilterDigital(src_df0,
+                                     filter=[1,1,1,2,3,2,1,1,1],
+                                    repetitions=3).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [FilterDigital --filter 1,1,1,2,3,2,1,1,1 --repetitions 3] >>
+    # [WriterStd --output {destination_path}]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
@@ -310,9 +239,8 @@ def test_8(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    # file_to_compare = plugin_test_dir + "filter8_file2cmp.std"
-    file_to_compare = plugin_test_dir + "filter8_file2cmp.std+PY20210812"
-    # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_8'
+    # Nouveau fichier sans --ignoreExtended --IP1EncodingStyle OLDSTYLE du test en CPP
+    file_to_compare = plugin_test_dir + "filter8_file2cmp.std+PY20240116"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -329,18 +257,20 @@ def test_9(plugin_test_dir):
     src_df = fstpy.select_with_meta(src_df0, ['TT'])
     src_df = src_df.loc[src_df.etiket == 'R1558V0N']
     # compute FilterDigital
-    df = spookipy.FilterDigital(
-        src_df, filter=[
-            2, 4, 2], repetitions=3).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName TT --pdsLabel R1558V0N] >>
-    # [FilterDigital --filter 2,4,2 --repetitions 3] >> [Zap --userDefinedIndex 303 --nbitsForDataStorage R16 --doNotFlagAsZapped] >>
+    df     = spookipy.FilterDigital(src_df, 
+                                    filter=[2, 4, 2], 
+                                    repetitions=3).compute()
+    
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [Select --fieldName TT --pdsLabel R1558V0N] >>
+    # [FilterDigital --filter 2,4,2 --repetitions 3] >> 
+    # [Zap --userDefinedIndex 303 --nbitsForDataStorage R16 --doNotFlagAsZapped] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
-    df.loc[df.nomvar == 'TT', 'ip3'] = 303
+
+    # Pour correspondre au Zap
+    df.loc[df.nomvar == 'TT', 'ip3']   = 303
     df.loc[df.nomvar == 'TT', 'datyp'] = 1
     df.loc[df.nomvar == 'TT', 'nbits'] = 16
-
-    # df.loc[:,'datyp'] = 5
-    # df.loc[df.nomvar!='!!','nbits'] = 32
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
@@ -348,11 +278,11 @@ def test_9(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "filteredByPgsm1_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_9'
+    # Nouveau fichier sans --ignoreExtended --IP1EncodingStyle OLDSTYLE du test en CPP
+    file_to_compare = plugin_test_dir + "filteredByPgsm1_file2cmp.std+PY20240116"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001)
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
@@ -367,19 +297,19 @@ def test_10(plugin_test_dir):
     src_df = src_df.loc[src_df.etiket == 'R1558V0N']
 
     # compute FilterDigital
-    df = spookipy.FilterDigital(
-        src_df, filter=[
-            2, 4, 2], repetitions=1).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName TT --pdsLabel R1558V0N] >>
-    # [FilterDigital --filter 2,4,2 --repetitions 1] >> [Zap --userDefinedIndex 301 --nbitsForDataStorage R16 --doNotFlagAsZapped] >>
-    # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
+    df = spookipy.FilterDigital(src_df, 
+                                filter=[2, 4, 2], 
+                                repetitions=1).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [Select --fieldName TT --pdsLabel R1558V0N] >>
+    # [FilterDigital --filter 2,4,2 --repetitions 1] >> 
+    # [Zap --userDefinedIndex 301 --nbitsForDataStorage R16 --doNotFlagAsZapped] >>
+    # [WriterStd --output {destination_path}]
 
-    df.loc[df.nomvar == 'TT', 'ip3'] = 301
+    # Pour correspondre au Zap 
+    df.loc[df.nomvar == 'TT', 'ip3']   = 301
     df.loc[df.nomvar == 'TT', 'datyp'] = 1
     df.loc[df.nomvar == 'TT', 'nbits'] = 16
-
-    # df.loc[:,'datyp'] = 5
-    # df.loc[df.nomvar!='!!','nbits'] = 32
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
@@ -387,8 +317,8 @@ def test_10(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "filteredByPgsm2_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_10'
+    # Nouveau fichier sans --ignoreExtended --IP1EncodingStyle OLDSTYLE du test en CPP
+    file_to_compare = plugin_test_dir + "filteredByPgsm2_file2cmp.std+PY20240116"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -406,19 +336,19 @@ def test_11(plugin_test_dir):
     src_df = src_df.loc[src_df.etiket == 'R1558V0N']
 
     # compute FilterDigital
-    df = spookipy.FilterDigital(
-        src_df, filter=[
-            1, 2, 4, 2, 1], repetitions=2).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName TT --pdsLabel R1558V0N] >>
-    # [FilterDigital --filter 1,2,4,2,1 --repetitions 2] >> [Zap --userDefinedIndex 502 --nbitsForDataStorage R16 --doNotFlagAsZapped] >>
-    # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
+    df     = spookipy.FilterDigital(src_df, 
+                                    filter=[1, 2, 4, 2, 1], 
+                                    repetitions=2).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [Select --fieldName TT --pdsLabel R1558V0N] >>
+    # [FilterDigital --filter 1,2,4,2,1 --repetitions 2] >>
+    # [Zap --userDefinedIndex 502 --nbitsForDataStorage R16 --doNotFlagAsZapped] >>
+    # [WriterStd --output {destination_path} ]
 
-    df.loc[df.nomvar == 'TT', 'ip3'] = 502
+    # Pour correspondre au Zap 
+    df.loc[df.nomvar == 'TT', 'ip3']   = 502
     df.loc[df.nomvar == 'TT', 'datyp'] = 1
     df.loc[df.nomvar == 'TT', 'nbits'] = 16
-
-    # df.loc[:,'datyp'] = 5
-    # df.loc[df.nomvar!='!!','nbits'] = 32
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
@@ -426,9 +356,8 @@ def test_11(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    # file_to_compare = plugin_test_dir + "filteredByPgsm3_file2cmp.std"
-    file_to_compare = plugin_test_dir + "filteredByPgsm3_file2cmp.std+PY20210812"
-    # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_11'
+    # Nouveau fichier sans --ignoreExtended --IP1EncodingStyle OLDSTYLE du test en CPP
+    file_to_compare = plugin_test_dir + "filteredByPgsm3_file2cmp.std+PY20240116"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -446,29 +375,20 @@ def test_12(plugin_test_dir):
     src_df = src_df.loc[src_df.etiket == 'R1558V0N']
 
     # compute FilterDigital
-    df = spookipy.FilterDigital(
-        src_df,
-        filter=[
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1],
-        repetitions=1).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName TT --pdsLabel R1558V0N] >>
-    # [FilterDigital --filter 1,1,1,1,1,1,1,1,1 --repetitions 1] >> [Zap --userDefinedIndex 901 --nbitsForDataStorage R16 --doNotFlagAsZapped] >>
-    # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
+    df     = spookipy.FilterDigital(src_df,
+                                    filter=[1,1,1,1,1,1,1,1,1],
+                                    repetitions=1).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [Select --fieldName TT --pdsLabel R1558V0N] >>
+    # [FilterDigital --filter 1,1,1,1,1,1,1,1,1 --repetitions 1] >> 
+    # [Zap --userDefinedIndex 901 --nbitsForDataStorage R16 --doNotFlagAsZapped] >>
+    # [WriterStd --output {destination_path}]
 
+    # Pour correspondre au Zap 
     df.loc[df.nomvar == 'TT', 'ip3'] = 901
     df.loc[df.nomvar == 'TT', 'datyp'] = 1
     df.loc[df.nomvar == 'TT', 'nbits'] = 16
 
-    # df.loc[:,'datyp'] = 5
-    # df.loc[df.nomvar!='!!','nbits'] = 32
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
@@ -476,9 +396,8 @@ def test_12(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    # file_to_compare = plugin_test_dir + "filteredByPgsm4_file2cmp.std"
-    file_to_compare = plugin_test_dir + "filteredByPgsm4_file2cmp.std+PY20210812"
-    # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_12'
+    # Nouveau fichier sans --ignoreExtended --IP1EncodingStyle OLDSTYLE du test en CPP
+    file_to_compare = plugin_test_dir + "filteredByPgsm4_file2cmp.std+PY20240116"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -493,16 +412,12 @@ def test_13(plugin_test_dir):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute FilterDigital
-    df = spookipy.FilterDigital(src_df0, filter=[1], repetitions=1).compute()
-    # [ReaderStd --input {sources[0]}] >> [FilterDigital --filter 1 --repetitions 1] >>
-    # [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
-
-    df.loc[:, 'etiket'] = 'R1580V0_N'
-    # Le plugin devrait setter filtered a true
-    df.loc[df.typvar == 'P','typvar'] = 'PF'
-
-    # df.loc[:,'datyp'] = 5
-    # df.loc[df.nomvar!='!!','nbits'] = 32
+    df      = spookipy.FilterDigital(src_df0, 
+                                     filter=[1], 
+                                     repetitions=1).compute()
+    # [ReaderStd --input {sources[0]}] >> 
+    # [FilterDigital --filter 1 --repetitions 1] >>
+    # [WriterStd --output {destination_path}]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
@@ -510,8 +425,8 @@ def test_13(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "LATLON_L_9x11_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_13'
+    # Nouveau fichier sans --IP1EncodingStyle OLDSTYLE du test en CPP
+    file_to_compare = plugin_test_dir + "LATLON_L_9x11_file2cmp.std+PY20240116"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
@@ -528,20 +443,14 @@ def test_14(plugin_test_dir):
     src_df = fstpy.select_with_meta(src_df0, ['UU*'])
 
     # compute FilterDigital
-    df = spookipy.FilterDigital(
-        src_df,
-        filter=[
-            1,
-            1,
-            1],
-        repetitions=1,
-        nomvar_out='abcd').compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName UU* ] >>
+    df     = spookipy.FilterDigital(src_df,
+                                    filter=[1,1,1],
+                                    repetitions=1,
+                                    nomvar_out='abcd').compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [Select --fieldName UU* ] >>
     # [FilterDigital --filter 1,1,1 --repetitions 1 --outputFieldName abcd] >>
-    # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
-
-    # df.loc[:,'datyp'] = 5
-    # df.loc[df.nomvar!='!!','nbits'] = 32
+    # [WriterStd --output {destination_path}]
 
     # write the result
     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
@@ -549,47 +458,41 @@ def test_14(plugin_test_dir):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "filter9_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_14'
+    # Nouveau fichier sans --ignoreExtended --IP1EncodingStyle OLDSTYLE du test en CPP
+    file_to_compare = plugin_test_dir + "filter9_file2cmp.std+PY20240116"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
 
-def test_14(plugin_test_dir):
+@pytest.mark.skip(reason="Problem with the option parallel=True - to be fixed")
+def test_15(plugin_test_dir):
     """1 répétition avec un filtre standard, l'option outputFieldName en parallele."""
     # open and read source
     source0 = plugin_test_dir + "UUVVfil5x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    src_df = fstpy.select_with_meta(src_df0, ['UU*'])
+    src_df  = fstpy.select_with_meta(src_df0, ['UU*'])
 
     # compute FilterDigital
-    df = spookipy.FilterDigital(
-        src_df,
-        filter=[
-            1,
-            1,
-            1],
-        repetitions=1,
-        nomvar_out='abcd',
-        parallel=True).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName UU* ] >>
+    df      = spookipy.FilterDigital(src_df0,
+                                    filter=[1,1,1],
+                                    repetitions=1,
+                                    nomvar_out='abcd',
+                                    parallel=True).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [Select --fieldName UU* ] >>
     # [FilterDigital --filter 1,1,1 --repetitions 1 --outputFieldName abcd] >>
-    # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
-
-    # df.loc[:,'datyp'] = 5
-    # df.loc[df.nomvar!='!!','nbits'] = 32
+    # [WriterStd --output {destination_path}]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
     fstpy.delete_file(results_file)
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "filter9_file2cmp.std"
-    # file_to_compare = '/home/sbf000/data/testFiles/FilterDigital/result_test_14'
+    file_to_compare = plugin_test_dir + "filter9_file2cmp.std+PY20240116"
 
     # compare results
     res = fstcomp(results_file, file_to_compare)

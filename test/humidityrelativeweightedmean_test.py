@@ -91,3 +91,24 @@ def test_3(plugin_test_dir):
     res = fstcomp(results_file, file_to_compare, e_max=0.001)
     fstpy.delete_file(results_file)
     assert(res)
+
+def test_4(plugin_test_dir):
+    """2 groupes de TT avec dates d'origine differentes mais dates de validity identiques """
+
+    source  = plugin_test_dir + "Regpres_TTHUES_differentDateoSameDatev.std"
+    src_df  = fstpy.StandardFileReader(source).to_pandas()
+
+    df = spookipy.HumidityRelativeWeightedMean(src_df).compute()
+    
+     # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # # open and read comparison file
+    file_to_compare = plugin_test_dir + "Regpres_diffDateoSameDatev_file2cmp.std"
+
+    # compare results 
+    res = fstcomp(results_file, file_to_compare) 
+    fstpy.delete_file(results_file)
+    assert(res)

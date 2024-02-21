@@ -123,7 +123,7 @@ class GridPointDifference(Plugin):
         if 'level' not in self.df.columns:
             self.no_meta_df = fstpy.add_columns(self.no_meta_df, 'ip_info')
           
-        self.groups = self.no_meta_df.groupby(['grid','datev','nomvar','etiket', 'ip1_kind', 'grtyp'])
+        self.groups = self.no_meta_df.groupby(['grid', 'datev', 'dateo', 'nomvar', 'etiket', 'vctype', 'grtyp'])
 
 
     def validate_params(self):
@@ -142,7 +142,7 @@ class GridPointDifference(Plugin):
     def compute(self):
         logging.info('GridPointDifference - compute')
         df_list = []
-        for (grid, datev, nomvar, etiket, ip1_kind, grtyp), nomvar_df in self.groups:
+        for (grid, datev, dateo, nomvar, etiket, ip1_kind, grtyp), nomvar_df in self.groups:
             if ('x' in self.axis) and (len(np.squeeze(nomvar_df.iloc[0].d).shape) < 2):
                 raise GridPointDifferenceError('For X axis, need at least 2 dimensions')
             if ('y' in self.axis) and (len(np.squeeze(nomvar_df.iloc[0].d).shape) < 2):
@@ -169,7 +169,8 @@ class GridPointDifference(Plugin):
             if 'x' in self.axis or 'y' in self.axis:
                 for row in nomvar_df.itertuples():
                     data = row.d
-                    model_df['ip1'] = row.ip1
+                    model_df['ip1']   = row.ip1
+                    model_df['level'] = row.level
                     if self.change_nomvar:
                         model_df['nomvar'] = NOMVAR_X
                     fdx_df = copy.deepcopy(model_df)

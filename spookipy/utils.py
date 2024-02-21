@@ -11,6 +11,7 @@ from typing import Tuple, Final
 import dask.array as da
 import fstpy
 from   fstpy.utils import vectorize
+from   fstpy.std_vgrid import vctype_dict
 import numpy as np
 import pandas as pd
 import rpnpy.librmn.all as rmn
@@ -454,7 +455,7 @@ def create_empty_result(df: pd.DataFrame, plugin_result_specifications: dict, al
 
     res_df = res_df.sort_values(
         by=['level'],
-        ascending=res_df.ascending.unique()[0]).reset_index(drop=True)
+        ascending=res_df.ascending.mode()[0]).reset_index(drop=True)
 
     return res_df
 
@@ -565,10 +566,13 @@ def get_from_dataframe(df: pd.DataFrame, nomvar: str) -> pd.DataFrame:
     :rtype: pd.DataFrame
     """
     res_df = df.loc[df.nomvar == nomvar]
+    
     if not(res_df.empty):
+        if len(res_df.ascending.mode()) > 1 and res_df.vctype.mode()[0] != vctype_dict['HYBRID_5005']:
+            raise Exception(f"There's a problem with the ascending column of {nomvar}, there should only be one unique value.")
         return res_df.sort_values(
             by=['level'],
-            ascending=res_df.ascending.unique()[0]).reset_index(
+            ascending=res_df.ascending.mode()[0]).reset_index(
             drop=True)
 
     return pd.DataFrame(dtype=object)

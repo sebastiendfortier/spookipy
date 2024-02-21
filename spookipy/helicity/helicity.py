@@ -54,7 +54,7 @@ class Helicity(Plugin):
 
         # print(self.df[['nomvar','typvar','etiket','dateo','forecast_hour','ip1_kind','grid']].to_string())
         self.groups = self.df.groupby(
-            ['grid', 'datev', 'ip1_kind'])
+            ['grid', 'datev', 'vctype'])
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:

@@ -498,3 +498,32 @@ def test_22(plugin_test_dir):
     res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
+
+# Creation du fichier d'input pour le test
+# Repertoires de donnees:  /space/hall5/sitestore/eccc/prod/ops/gridpt/dbase/prog/regpres
+# spooki_run.py 
+# "([ReaderStd --input .../2024012000_024]  >> [Select --fieldName TT,HU,ES --verticalLevel 900@1000 --verticalLevelType MILLIBARS]) +
+#  ([ReaderStd --input .../2024012100_000] >>  [Select --fieldName TT,HU,ES --verticalLevel 900@1000 --verticalLevelType MILLIBARS]) >>
+#  [GridCut --startPoint 0,0 --endPoint 20,20]  >>
+#  [WriterStd --output Regpres_TTHUES_differentDateoSameDatev.std]"
+def test_23(plugin_test_dir):
+    """2 groupes de TT avec dates d'origine differentes mais dates de validity identiques """
+
+    source  = plugin_test_dir + "Regpres_TTHUES_differentDateoSameDatev.std"
+    src_df  = fstpy.StandardFileReader(source).to_pandas()
+
+    df      = spookipy.MinMaxLevelIndex(src_df, 
+                                        nomvar="TT").compute()
+    
+     # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_23.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # # open and read comparison file
+    file_to_compare = plugin_test_dir + "MinMax_file2cmp_test23.std"
+
+    # compare results 
+    res = fstcomp(results_file, file_to_compare) 
+    fstpy.delete_file(results_file)
+    assert(res)

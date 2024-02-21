@@ -134,7 +134,8 @@ class MinMaxLevelIndex(Plugin):
         if (keep.loc[keep.nomvar == self.nomvar]).empty:
                 raise MinMaxLevelIndexError(f'INVALID INPUT - MISSING {self.nomvar} !')    
 
-        self.nomvar_groups = keep.groupby(by=['grid', 'datev'])
+        # Necessaire d'avoir les 2 dates dans le groupby
+        self.nomvar_groups = keep.groupby(by=['grid', 'datev', 'dateo'])
 
         self.dependencies_list = get_dependencies(
             self.nomvar_groups,

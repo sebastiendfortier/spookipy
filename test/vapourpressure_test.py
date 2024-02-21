@@ -299,7 +299,7 @@ def test_12(plugin_test_dir):
     fstpy.delete_file(results_file)
     assert(res)
 
-@pytest.mark.skip(reason="This test is currently not working - waiting for fixes with hybrid 5005")
+
 def test_13(plugin_test_dir):
     """Calcul de la pression de vapeur avec un fichier hybrid 5005 (ES), ice_water_phase = both."""
     # open and read source
@@ -571,5 +571,29 @@ def test_22(plugin_test_dir):
 
     # compare results
     res = fstcomp(results_file, file_to_compare, e_max=0.001)
+    fstpy.delete_file(results_file)
+    assert(res)
+
+
+def test_23(plugin_test_dir):
+    """2 groupes de TT avec dates d'origine differentes mais dates de validity identiques """
+
+    source  = plugin_test_dir + "Regeta_TTHUES_differentDateoSameDatev.std"   
+    src_df  = fstpy.StandardFileReader(source).to_pandas()
+
+    # compute VapourPressure
+    df      = spookipy.VapourPressure(src_df, 
+                                      ice_water_phase='water').compute()
+    
+     # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_23.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # # open and read comparison file
+    file_to_compare = plugin_test_dir + "Regeta_test23_file2cmp.std"
+
+    # compare results 
+    res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)

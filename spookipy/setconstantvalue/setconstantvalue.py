@@ -51,7 +51,8 @@ class SetConstantValue(Plugin):
             min_index=False,
             max_index=False,
             nb_levels=False,
-            bi_dimensionnal=False):
+            bi_dimensionnal=False,
+            reduce_df = False):
 
         self.plugin_result_specifications = {
             'ALL': {'label': 'SETVAL', 'unit': 'scalar'}
@@ -66,8 +67,7 @@ class SetConstantValue(Plugin):
             self.no_meta_df, columns=[
                 'unit', 'forecast_hour', 'ip_info'])
 
-        self.groups = self.no_meta_df.groupby(
-            by=['grid', 'nomvar', 'datev'])
+        self.groups = self.no_meta_df.groupby(by=['grid', 'nomvar', 'datev', 'dateo'])
 
         l = [self.min_index, self.max_index, self.nb_levels]
 
@@ -103,12 +103,15 @@ class SetConstantValue(Plugin):
 
             if self.bi_dimensionnal:
                 res_df.drop(res_df.index[1:], inplace=True)
-                res_df.loc[:, 'ip1'] = 0
+                res_df.loc[:, 'ip1']      = 0
+                res_df.loc[:, 'level']    = 0
+                res_df.loc[:, 'ip1_kind'] = 3   # Arbitrary code
             df_list.append(res_df)
 
         return self.final_results(df_list, 
                                   SetConstantValueError,                                  
-                                  copy_input = False)
+                                  copy_input = False,
+                                  reduce_df = self.reduce_df)
 
     @staticmethod
     def parse_config(args: str) -> dict:

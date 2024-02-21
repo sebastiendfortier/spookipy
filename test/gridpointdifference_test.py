@@ -820,3 +820,31 @@ def test_27(plugin_test_dir):
     res = fstcomp(results_file, file_to_compare)
     fstpy.delete_file(results_file)
     assert(res)
+
+def test_28(plugin_test_dir):
+    """2 groupes de TT avec dates d'origine differentes mais dates de validity identiques """
+
+    source  = plugin_test_dir + "Regpres_TTHUES_differentDateoSameDatev.std"
+    src_df  = fstpy.StandardFileReader(source).to_pandas()
+
+    df      = spookipy.GridPointDifference(src_df, 
+                                          axis=['x'], 
+                                          difference_type='centered').compute()
+    
+     # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_28.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # # open and read comparison file
+    # [ReaderStd --input /fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/testsFiles/Regpres_TTHUES_differentDateoSameDatev.std] >> 
+    # [GridPointDifference  --axis X --differenceType CENTERED --plugin_language CPP] >> 
+    # [WriterStd --output glbhyb_test28_file2cmp.std]"
+
+    file_to_compare = plugin_test_dir + "regpres_test28_file2cmp.std"
+    # file_to_compare =  "/home/gha000/data/SpookiPython/spookipy/test/GDIFF.std"
+
+    # compare results 
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)

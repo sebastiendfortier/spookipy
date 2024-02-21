@@ -231,3 +231,34 @@ def test_6(plugin_test_dir):
     res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     fstpy.delete_file(results_file)
     assert(res)
+
+def test_7(plugin_test_dir):
+    """2 groupes de TT avec dates d'origine differentes mais dates de validity identiques, option reduce_df = True"""
+
+    source  = source0 = plugin_test_dir + "Regpres_TTHUES_differentDateoSameDatev.std"
+    src_df  = fstpy.StandardFileReader(source).to_pandas()
+    tt_df   = fstpy.select_with_meta(src_df, ['TT'])
+
+    df      = spookipy.SetConstantValue(tt_df,
+                                        nb_levels=True,
+                                        bi_dimensionnal=True,
+                                        nomvar_out='RES',
+                                        reduce_df = True).compute()
+    
+    # spooki_run.py "[ReaderStd --input Regpres_TTHUES_differentDateoSameDatev.std] >> 
+    # [Select --fieldName TT] >> 
+    # [SetConstantValue --value NBLEVELS --bidimensional --outputFieldName RES --plugin_language CPP] >> 
+    # [WriterStd --output SetCst.std]"
+
+     # write the result
+    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_20.std"])
+    fstpy.delete_file(results_file)
+    fstpy.StandardFileWriter(results_file, df).to_fst()
+
+    # # open and read comparison file
+    file_to_compare = plugin_test_dir + "Regpres_diffDateoSameDatev_test7_file2cmp.std"
+
+    # compare results 
+    res = fstcomp(results_file, file_to_compare)
+    fstpy.delete_file(results_file)
+    assert(res)

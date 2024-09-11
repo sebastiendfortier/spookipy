@@ -1,4 +1,3 @@
-
 package:
   name: spookipy
   version: 2024.08.00
@@ -6,7 +5,7 @@ package:
 
 build:
   number: 0
-  noarch: python
+
 
 requirements:
   build:

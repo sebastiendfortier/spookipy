@@ -26,8 +26,8 @@ class ApplyUnary(Plugin):
     :type nomvar_in: str, optional
     :param nomvar_out: nomvar of the results field, defaults to None
     :type nomvar_out: str, optional
-    :param etiket: etiket to apply to results, defaults to None
-    :type etiket: str, optional
+    :param label: label to apply to results, defaults to None (keep the same label)
+    :type label: str, optional
     """
     @initializer
     def __init__(
@@ -36,14 +36,17 @@ class ApplyUnary(Plugin):
             function=None,
             nomvar_in=None,
             nomvar_out=None,
-            etiket=None):
+            label=None):
 
         self.plugin_result_specifications = \
         {
-            'ALL': {'label': self.etiket,
-                    'datyp': 5,
+            'ALL': {'datyp': 5,
                     'nbits': 32}
         }
+
+        if self.label:
+            self.plugin_result_specifications["ALL"]["label"] = self.label
+
         self.df = fstpy.metadata_cleanup(self.df)
         super().__init__(self.df)
         self.validate_params_and_input()

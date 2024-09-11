@@ -216,7 +216,7 @@ class HumidityRelative(Plugin):
             #     df = fstpy.remove_list_of_columns(df, ip_columns)
             #     new_list.append(df)
 
-            return self.final_results(df_list, HumidityRelative, 
+            return self.final_results(df_list, HumidityRelativeError, 
                                       dependency_check = self.dependency_check, 
                                       copy_input       = self.copy_input,
                                       reduce_df        = self.reduce_df)

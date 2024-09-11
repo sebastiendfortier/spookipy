@@ -3,6 +3,7 @@ addtoelement
 applyunary
 arithmeticmeanbypoint
 cloudfractiondiagnostic
+comparisonutils
 configparsingutils
 coriolisparameter
 dewpointdepression
@@ -18,6 +19,7 @@ humidityspecific
 humidityutils
 interpolationhorizontalgrid
 interpolationhorizontalpoint
+interpolationutils
 mask
 matchlevelindextovalue
 minmaxlevelindex
@@ -46,6 +48,6 @@ totaltotalsindex
 vapourpressure
 watervapourmixingratio
 windchill
-# winddirection
+winddirection
 windmax
 windmodulus

@@ -4,7 +4,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 ROOT_DIR=${DIR:0:${#DIR}-3}
 echo $ROOT_DIR
 cd ${DIR}
-VERSION=$(head -n 1 ${ROOT_DIR}VERSION)
+VERSION=$(grep "__version__" ${ROOT_DIR}/spookipy/__init__.py | awk '{print $3}' | tr -d "'")
+
 PLAT=all
 #echo ${VERSION}
 
@@ -55,7 +56,7 @@ mv ${PROJECT_ROOT}/all.old ${PROJECT_ROOT}/all.py
 
 cp -f ${PROJECT_ROOT}/__init__.py ${PKGNAME}/lib/python/${name}/.
 cp -f ${PROJECT_ROOT}/utils.py ${PKGNAME}/lib/python/${name}/.
-cp -f ${PROJECT_ROOT}/VERSION ${PKGNAME}/lib/python/${name}/.
+# cp -f ${PROJECT_ROOT}/VERSION ${PKGNAME}/lib/python/${name}/.
 while read p; do
     if ! [[ $p == '#'* ]]
     then 

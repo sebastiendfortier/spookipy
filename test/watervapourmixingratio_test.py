@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from test import TEST_PATH, TMP_PATH, check_test_ssm_package
+from test import check_test_ssm_package
 
 check_test_ssm_package()
 
@@ -7,25 +7,25 @@ import fstpy
 import pandas as pd
 import pytest
 import spookipy
-from ci_fstcomp import fstcomp
 import rpnpy.librmn.all as rmn
-import secrets
+import warnings
 
 pytestmark = [pytest.mark.regressions, pytest.mark.humidity]
 
+@pytest.fixture(scope="module")
+def plugin_name():
+    """plugin_name in the path /fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/{plugin_name}"""
+    return "WaterVapourMixingRatio"
 
-@pytest.fixture
-def plugin_test_dir():
-    return TEST_PATH + '/WaterVapourMixingRatio/testsFiles/'
-
-
-def test_1(plugin_test_dir):
+def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul du ratio de mélange de de la vapeur d'eau à partir d'un fichier hybride. (HU), option rpn,  ice_water_phase = both"""
     # open and read source
-    source0 = plugin_test_dir + "hyb_prog_2012071312_009_1HY"
+    source0 = plugin_test_path / "hyb_prog_2012071312_009_1HY"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     hu_df   = fstpy.select_with_meta(src_df0, ['HU'])
+
+    warnings.filterwarnings("ignore", category=UserWarning, module="spookipy")
     # compute WaterVapourMixingRatio
     df      = spookipy.WaterVapourMixingRatio(hu_df,
                                               ice_water_phase='both',
@@ -37,26 +37,25 @@ def test_1(plugin_test_dir):
     # [WriterStd --output {destination_path} --noMetadata]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_1.std"
     fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "rpnWaterVapourMixingRatio_HU_file2cmp_20230426.std"
+    file_to_compare = plugin_test_path / "rpnWaterVapourMixingRatio_HU_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare, e_max=0.001)
     assert(res)
 
-def test_2(plugin_test_dir):  
+def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul du ratio de mélange de de la vapeur d'eau à partir d'un fichier hybride. (TT et HR), option rpn,  ice_water_phase = both"""
     # open and read source
-    source0 = plugin_test_dir + "hyb_prog_2012071312_009_1HY"
+    source0 = plugin_test_path / "hyb_prog_2012071312_009_1HY"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     tt_df   = fstpy.select_with_meta(src_df0, ['TT', 'HR'])
 
+    warnings.filterwarnings("ignore", category=UserWarning, module="spookipy")
     # compute WaterVapourMixingRatio
     df      = spookipy.WaterVapourMixingRatio(tt_df,
                                               rpn=True).compute()
@@ -66,26 +65,25 @@ def test_2(plugin_test_dir):
     # [WriterStd --output {destination_path} --noMetadata ]
     
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_2.std"
     fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "rpnWaterVapourMixingRatio_HR_file2cmp_20230426.std"
+    file_to_compare = plugin_test_path / "rpnWaterVapourMixingRatio_HR_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare, e_max=0.001)
     assert(res)
 
-def test_3(plugin_test_dir):  # option 1 rpn
+def test_3(plugin_test_path, test_tmp_path, call_fstcomp):  # option 1 rpn
     """Calcul du ratio de mélange de de la vapeur d'eau à partir d'un fichier hybride. (TT et ES), option rpn,  ice_water_phase = both ."""
     # open and read source
-    source0 = plugin_test_dir + "hyb_prog_2012071312_009_1HY"
+    source0 = plugin_test_path / "hyb_prog_2012071312_009_1HY"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     src_df0 = src_df0.loc[src_df0.nomvar != 'ES']
 
+    warnings.filterwarnings("ignore", category=UserWarning, module="spookipy")
     es_df   = spookipy.DewPointDepression(src_df0,
                                           ice_water_phase='water',
                                           rpn=True).compute()
@@ -105,24 +103,23 @@ def test_3(plugin_test_dir):  # option 1 rpn
     # [WriterStd --output {destination_path} --noMetadata]
     
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_3.std"
     fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "rpnWaterVapourMixingRatio_ES_file2cmp_20230426.std"
+    file_to_compare = plugin_test_path / "rpnWaterVapourMixingRatio_ES_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare, e_max=0.001)
     assert(res)
 
-def test_4(plugin_test_dir):  # option 1 rpn
+def test_4(plugin_test_path, test_tmp_path, call_fstcomp):  # option 1 rpn
     """Calcul du ratio de mélange de de la vapeur d'eau à partir d'un fichier hybride. (TT et TD), option rpn,  ice_water_phase = both ."""
     # open and read source
-    source0 = plugin_test_dir + "hyb_prog_2012071312_009_1HY"
+    source0 = plugin_test_path / "hyb_prog_2012071312_009_1HY"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
+    warnings.filterwarnings("ignore", category=UserWarning, module="spookipy")
     tt_df   = fstpy.select_with_meta(src_df0, ['TT'])
     td_df   = spookipy.TemperatureDewPoint(src_df0,
                                            ice_water_phase='water',
@@ -139,22 +136,20 @@ def test_4(plugin_test_dir):  # option 1 rpn
     # [WriterStd --output {destination_path} --noMetadata]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_4.std"
     fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "rpnWaterVapourMixingRatio_TD_file2cmp_20230426.std"
+    file_to_compare = plugin_test_path / "rpnWaterVapourMixingRatio_TD_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.003)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare, e_max=0.003)
     assert(res)
 
-def test_5(plugin_test_dir):
+def test_5(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul du ratio de mélange de de la vapeur d'eau à partir d'un fichier hybride. (HU), ice_water_phase = both ."""
     # open and read source
-    source0 = plugin_test_dir + "hyb_prog_2012071312_009_1HY"
+    source0 = plugin_test_path / "hyb_prog_2012071312_009_1HY"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute WaterVapourMixingRatio
@@ -167,22 +162,20 @@ def test_5(plugin_test_dir):
     # [WriterStd --output {destination_path} --noMetadata]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_5.std"
     fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "WaterVapourMixingRatioHU_file2cmp_20230426.std"
+    file_to_compare = plugin_test_path / "WaterVapourMixingRatioHU_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare, e_max=0.001)
     assert(res)
 
-def test_6(plugin_test_dir):
+def test_6(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul du ratio de mélange de de la vapeur d'eau à partir d'un fichier hybride. (PX,VPPR from TT,HR), ice_water_phase = both ."""
     # open and read source
-    source0 = plugin_test_dir + "hyb_prog_2012071312_009_1HY"
+    source0 = plugin_test_path / "hyb_prog_2012071312_009_1HY"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     tthr_df = fstpy.select_with_meta(src_df0, ['TT', 'HR'])
@@ -197,22 +190,20 @@ def test_6(plugin_test_dir):
     # [WriterStd --output {destination_path} --noMetadata]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_6.std"
     fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "WaterVapourMixingRatioPXVPPR_HR_file2cmp_20230426.std"
+    file_to_compare = plugin_test_path / "WaterVapourMixingRatioPXVPPR_HR_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare, e_max=0.001)
     assert(res)
 
-def test_7(plugin_test_dir):
+def test_7(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul du ratio de mélange de de la vapeur d'eau à partir d'un fichier hybride. (PX,VPPR from TT,ES), ice_water_phase = both"""
     # open and read source
-    source0 = plugin_test_dir + "hyb_prog_2012071312_009_1HY"
+    source0 = plugin_test_path / "hyb_prog_2012071312_009_1HY"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     src_df0 = src_df0.loc[src_df0.nomvar != 'ES']
@@ -232,24 +223,22 @@ def test_7(plugin_test_dir):
     # [WaterVapourMixingRatio] 
   
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_7.std"
     fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "WaterVapourMixingRatioPXVPPR_ES_file2cmp_20230426.std"
+    file_to_compare = plugin_test_path / "WaterVapourMixingRatioPXVPPR_ES_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.02)
-    # fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare, e_max=0.02)
     assert(res)
 
-def test_8(plugin_test_dir):
+def test_8(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul du ratio de mélange de de la vapeur d'eau à partir d'un fichier hybride. (PX,VPPR from TT,TD), ice_water_phase = both ."""
     # Appel a WaterVapourMixingRatio sans parametres, utilisation des valeurs par defaut
     
     # open and read source
-    source0 = plugin_test_dir + "hyb_prog_2012071312_009_1HY"
+    source0 = plugin_test_path / "hyb_prog_2012071312_009_1HY"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     tt_df   = fstpy.select_with_meta(src_df0, ['TT'])
@@ -264,22 +253,20 @@ def test_8(plugin_test_dir):
     # [WaterVapourMixingRatio] >>[WriterStd --output {destination_path} --noMetadata]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_8.std"
     fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "WaterVapourMixingRatioPXVPPR_TD_file2cmp_20230426.std"
+    file_to_compare = plugin_test_path / "WaterVapourMixingRatioPXVPPR_TD_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.02)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare, e_max=0.02)
     assert(res)
 
-def test_9(plugin_test_dir):
+def test_9(plugin_test_path):
     """Calcul du ratio de mélange de la vapeur d'eau; utilisation d'une unité invalide pour --temperaturePhaseSwitch."""
     # open and read source
-    source0 = plugin_test_dir + "inputFile.std"
+    source0 = plugin_test_path / "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute WaterVapourMixingRatio
@@ -291,10 +278,10 @@ def test_9(plugin_test_dir):
             temp_phase_switch_unit='G').compute()
     # [ReaderStd --input {sources[0]}] >> [WaterVapourMixingRatio --iceWaterPhase BOTH --temperaturePhaseSwitch -30G]
 
-def test_10(plugin_test_dir):
+def test_10(plugin_test_path):
     """Calcul du ratio de mélange de la vapeur d'eau; utilisation de valeur invalide ( < borne minimale en kelvin) pour --temperaturePhaseSwitch."""
     # open and read source
-    source0 = plugin_test_dir + "inputFile.std"
+    source0 = plugin_test_path / "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute WaterVapourMixingRatio
@@ -305,10 +292,10 @@ def test_10(plugin_test_dir):
             temp_phase_switch=-5,
             temp_phase_switch_unit='kelvin').compute()
 
-def test_11(plugin_test_dir):
+def test_11(plugin_test_path):
     """Calcul du ratio de mélange de la vapeur d'eau; utilisation d'une valeur invalide ( < borne minimale en celsius) pour --temperaturePhaseSwitch."""
     # open and read source
-    source0 = plugin_test_dir + "inputFile.std"
+    source0 = plugin_test_path / "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute WaterVapourMixingRatio
@@ -319,10 +306,10 @@ def test_11(plugin_test_dir):
             temp_phase_switch=-275,
             temp_phase_switch_unit='celsius').compute()
 
-def test_12(plugin_test_dir):
+def test_12(plugin_test_path):
     """Calcul du ratio de mélange de la vapeur d'eau; utilisation d'une valeur invalide pour --iceWaterPhase."""
     # open and read source
-    source0 = plugin_test_dir + "inputFile.std"
+    source0 = plugin_test_path / "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute WaterVapourMixingRatio
@@ -335,12 +322,13 @@ def test_12(plugin_test_dir):
     # [ReaderStd --input {sources[0]}] >>
     # [WaterVapourMixingRatio --iceWaterPhase INVALIDE --temperaturePhaseSwitch -40C]
 
-def test_13(plugin_test_dir):
+def test_13(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul du ratio de mélange de de la vapeur d'eau à partir d'un fichier hybride 5005. (HU), option rpn, ice_water_phase = both ."""
     # open and read source
-    source0 = plugin_test_dir + "minimal_HU_5005.std"
+    source0 = plugin_test_path / "minimal_HU_5005.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
+    warnings.filterwarnings("ignore", category=UserWarning, module="spookipy")
     hu_df = fstpy.select_with_meta(src_df0, ['HU'])
     # compute WaterVapourMixingRatio
     df = spookipy.WaterVapourMixingRatio(
@@ -353,24 +341,22 @@ def test_13(plugin_test_dir):
     # [WaterVapourMixingRatio --RPN] >>', '[WriterStd --output {destination_path} --noMetadata]']
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_13.std"
     fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "WaterVapourMixingRatio_HU_test13_file2cmp_20230426.std"
+    file_to_compare = plugin_test_path / "WaterVapourMixingRatio_HU_test13_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare, e_max=0.001)
     assert(res)
 
-def test_14(plugin_test_dir):
+def test_14(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul du ratio de mélange de la vapeur d'eau à partir d'un fichier hybride, option copy_input. (PX,VPPR from TT,HR)"""
     # Identique au test 6, avec un sous-ensemble du fichier d'input, pour tester option copy_input
     
     # open and read source
-    source0 = plugin_test_dir + "hyb_prog_2012071312_009_1HY"
+    source0 = plugin_test_path / "hyb_prog_2012071312_009_1HY"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # Creation d'un fichier reduit a quelques niveaux 
@@ -387,22 +373,20 @@ def test_14(plugin_test_dir):
                                          copy_input=True).compute()
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_14.std"
     fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "WaterVapourMixingRatioPXVPPR_test14_file2cmp_20231026.std"
+    file_to_compare = plugin_test_path / "WaterVapourMixingRatioPXVPPR_test14_file2cmp_20231026.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_15(plugin_test_dir):
+def test_15(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul du ratio de mélange de de la vapeur d'eau à partir d'un fichier hybride. (HR), ice_water_phase = water ."""
     # open and read source
-    source0 = plugin_test_dir + "2011100712_012_regeta"
+    source0 = plugin_test_path / "2011100712_012_regeta"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     tthr_df = fstpy.select_with_meta(src_df0, ['TT', 'HR'])
@@ -415,24 +399,23 @@ def test_15(plugin_test_dir):
     df = spookipy.convip(df, style=rmn.CONVIP_ENCODE_OLD)
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_15.std"
     fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "WaterVapourMixingRatio_HR_test15_file2cmp.std"
+    file_to_compare = plugin_test_path / "WaterVapourMixingRatio_HR_test15_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare, e_max=0.001)
     assert(res)
 
-def test_16(plugin_test_dir):
+def test_16(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul du ratio de mélange de de la vapeur d'eau à partir d'un fichier hybride. (HU), option rpn,  ice_water_phase = water"""
     # open and read source
-    source0 = plugin_test_dir + "hyb_prog_2012071312_009_1HY"
+    source0 = plugin_test_path / "hyb_prog_2012071312_009_1HY"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-
+    
+    warnings.filterwarnings("ignore", category=UserWarning, module="spookipy")
     hu_df   = fstpy.select_with_meta(src_df0, ['HU'])
     # compute WaterVapourMixingRatio
     df      = spookipy.WaterVapourMixingRatio(hu_df,
@@ -440,22 +423,20 @@ def test_16(plugin_test_dir):
                                               rpn=True).compute()
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_16.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_16.std"
     fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "rpnWaterVapourMixingRatio_HU_file2cmp_20230426.std"
+    file_to_compare = plugin_test_path / "rpnWaterVapourMixingRatio_HU_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare, e_max=0.001)
     assert(res)
 
-def test_17(plugin_test_dir):
+def test_17(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul du ratio de mélange de de la vapeur d'eau à partir d'un fichier hybride. (HU), ice_water_phase = water ."""
     # open and read source
-    source0 = plugin_test_dir + "hyb_prog_2012071312_009_1HY"
+    source0 = plugin_test_path / "hyb_prog_2012071312_009_1HY"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute WaterVapourMixingRatio
@@ -463,14 +444,12 @@ def test_17(plugin_test_dir):
                                               ice_water_phase='water').compute()
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_17.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_17.std"
     fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "WaterVapourMixingRatioHU_file2cmp_20230426.std"
+    file_to_compare = plugin_test_path / "WaterVapourMixingRatioHU_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare, e_max=0.001)
     assert(res)

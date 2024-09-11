@@ -127,7 +127,7 @@ class MinMaxLevelIndex(Plugin):
                (self.no_meta_df.loc[self.no_meta_df.nomvar == "KTOP"]).empty:
                 raise MinMaxLevelIndexError('Missing fields KBAS and/or KTOP with BOUNDED option!')
 
-        self.no_meta_df = fstpy.add_columns(self.no_meta_df, columns=['forecast_hour', 'ip_info', 'unit'])
+        self.no_meta_df = fstpy.add_columns(self.no_meta_df, columns=['forecast_hour', 'ip_info'])
 
         keep = self.no_meta_df.loc[self.no_meta_df.nomvar.isin([self.nomvar, "KBAS","KTOP"])].reset_index(drop=True)
 

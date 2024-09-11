@@ -5,7 +5,7 @@ import dask.array as da
 import fstpy
 import numpy as np
 import pandas as pd
-
+import warnings
 from ..plugin import Plugin, PluginParser
 from ..utils import create_empty_result, initializer, validate_nomvar
 from ..configparsingutils import preprocess_negative_args
@@ -103,9 +103,13 @@ class SetConstantValue(Plugin):
 
             if self.bi_dimensionnal:
                 res_df.drop(res_df.index[1:], inplace=True)
-                res_df.loc[:, 'ip1']      = 0
-                res_df.loc[:, 'level']    = 0
-                res_df.loc[:, 'ip1_kind'] = 3   # Arbitrary code
+                # Suppression d'un future warning de pandas; dans notre cas, on veut conserver le meme comportement
+                # meme avec le nouveau comportement a venir. On encapsule la suppression du warning pour ce cas seulement.
+                with warnings.catch_warnings():
+                    warnings.filterwarnings('ignore', category=FutureWarning)
+                    res_df.loc[:, 'ip1']      = 0
+                    res_df.loc[:, 'level']    = 0
+                    res_df.loc[:, 'ip1_kind'] = 3   # Arbitrary code
             df_list.append(res_df)
 
         return self.final_results(df_list, 

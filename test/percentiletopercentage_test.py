@@ -1,130 +1,102 @@
 # -*- coding: utf-8 -*-
-from test import TEST_PATH, TMP_PATH, check_test_ssm_package
+from test import check_test_ssm_package
 
 check_test_ssm_package()
 
 import fstpy
 import pytest
 import spookipy
-from ci_fstcomp import fstcomp
-import secrets
 
 pytestmark = [pytest.mark.regressions]
 
+@pytest.fixture(scope="module")
+def plugin_name():
+    """plugin_name in the path /fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/{plugin_name}"""
+    return "PercentileToPercentage"
 
-@pytest.fixture
-def plugin_test_dir():
-    return TEST_PATH + "/PercentileToPercentage/testsFiles/"
-
-
-def test_1(plugin_test_dir):
+def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
     """Test with default options """
     # open and read source
-    source0 = plugin_test_dir + "2022021100_out.std"
-    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-
-    df = spookipy.PercentileToPercentage(src_df0).compute()
-    # [ReaderStd --input {sources[0]}] >> [PercentileToPercentage] >> [WriterStd --output {destination_path} ]
+    source0    = plugin_test_path / "2022021100_out_etiketStandard.std"
+    src_df0    = fstpy.StandardFileReader(source0).to_pandas()
+    ssh_df     = fstpy.select_with_meta(src_df0, ['SSH'])
+ 
+    df         = spookipy.PercentileToPercentage(ssh_df).compute()
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_1.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "PercentileToPercentage_file1cmp.std"
+    file_to_compare = plugin_test_path / "PercentileToPercentage_file1cmp_20240312.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
 
-def test_2(plugin_test_dir):
-    """Test with an incorrect eteiket name"""
+def test_2(plugin_test_path):
+    """Test with an incorrect label length"""
     # open and read source
-    source0 = plugin_test_dir + "2022021100_out.std"
+    source0 = plugin_test_path / "2022021100_out_etiketStandard.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     with pytest.raises(spookipy.PercentileToPercentageError):
-        _ = spookipy.PercentileToPercentage(src_df0, etiket='wrong_etiket_name').compute()
-    # [ReaderStd --input {sources[0]}] >> [Etiket --etiket wrong_etiket_name] >> [PercentileToPercentage] >> [Raise Exception]
+        _ = spookipy.PercentileToPercentage(src_df0, label='wrong_label_name').compute()
 
-
-def test_3(plugin_test_dir):
+def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
     """Test with changes to nomvar and operator"""
     # open and read source
-    source0 = plugin_test_dir + "2022021100_out.std"
-    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    source0    = plugin_test_path / "2022021100_out_etiketStandard.std"
+    src_df0    = fstpy.StandardFileReader(source0).to_pandas()
+    ssh8_df    = fstpy.select_with_meta(src_df0, ['SSH8'])
 
-    df = spookipy.PercentileToPercentage(src_df0, threshold=0.3, operator='le',
-                                       nomvar='SSH8').compute()
-    # [ReaderStd --input {sources[0]}] >> [Threshold --threshold 0.3, Operator --operator le, Nomvar --nomvar SSH8, >> [PercentileToPercentage] >> [WriterStd --output {destination_path} ]
+    df         = spookipy.PercentileToPercentage(ssh8_df,
+                                                 threshold=0.3,
+                                                 operator='le').compute()
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_3.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir+ "PercentileToPercentage_file3cmp.std"
+    file_to_compare = plugin_test_path / "PercentileToPercentage_file3cmp_20240312.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
 
-def test_4(plugin_test_dir):
-    """Test with non valid percentile_step"""
+def test_4(plugin_test_path):
+    """Test with label containing no digits - no data to process"""
+
     # open and read source
-    source0 = plugin_test_dir + "2022021100_out.std"
+    source0 = plugin_test_path / "2022021100_out_etiketStandard.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    src_df  = src_df0.loc[src_df0['etiket'].str.contains('MEAN')]
 
     with pytest.raises(spookipy.PercentileToPercentageError):
-        _ = spookipy.PercentileToPercentage(src_df0, nomvar="empty_nomvar").compute()
-    # [ReaderStd --input {sources[0]}] >> [Nomvar --nomvar empty_nomvar] >> [PercentileToPercentage] >> [Raise Exception]
+        _ = spookipy.PercentileToPercentage(src_df).compute()
 
-
-def test_5(plugin_test_dir):
+def test_5(plugin_test_path, test_tmp_path, call_fstcomp):
     """Test with negative threshold value and SSH8 nomvar"""
     
     # open and read source
-    source0 = plugin_test_dir + "2022021100_out.std"
-    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
+    source0    = plugin_test_path / "2022021100_out_etiketStandard.std"
+    src_df0    = fstpy.StandardFileReader(source0).to_pandas()
+    ssh8_df    = fstpy.select_with_meta(src_df0, ['SSH8'])
 
-    df = spookipy.PercentileToPercentage(src_df0, threshold=-0.3, nomvar='SSH8').compute()
-    # [ReaderStd --input {sources[0]}] >> [Threshold --threshold -0.3, Nomvar --nomvar SSH8] >> [PercentileToPercentage] >> [WriterStd --output {destination_path} ]
+
+    df         = spookipy.PercentileToPercentage(ssh8_df, 
+                                                 threshold=-0.3).compute()
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_5.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "PercentileToPercentage_file5cmp.std"
+    file_to_compare = plugin_test_path / "PercentileToPercentage_file5cmp_20240312.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
-
-def test_6(plugin_test_dir):
-    """Test with non valid etiket length of 11"""
-    # open and read source
-    source0 = plugin_test_dir + "2022021100_out.std"
-    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-
-    with pytest.raises(spookipy.PercentileToPercentageError):
-        _ = spookipy.PercentileToPercentage(src_df0, etiket="GEST1__PALL").compute()
-    # [ReaderStd --input {sources[0]}] >> [Etiket --etiket GEST1__PALL] >> [PercentileToPercentage] >> [Raise Exception]
-
-def test_7(plugin_test_dir):
-    """Test with non valid etiket ending"""
-    # open and read source
-    source0 = plugin_test_dir + "2022021100_out.std"
-    src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-
-    with pytest.raises(spookipy.PercentileToPercentageError):
-        _ = spookipy.PercentileToPercentage(src_df0, etiket="GEST1___PBLL").compute()
-    # [ReaderStd --input {sources[0]}] >> [Etiket --etiket GEST1___PBLL] >> [PercentileToPercentage] >> [Raise Exception]

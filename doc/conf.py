@@ -15,18 +15,15 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
 
-
+import spookipy
 # -- Project information -----------------------------------------------------
 
 project = 'spookipy'
 copyright = '2021, ECCC'
 author = 'Sébastien Fortier'
 
-# The full version, including alpha/beta/rc tags
-with open('../VERSION', encoding='utf-8') as f:
-    version = f.read()
+version = spookipy.__version__
 release = version
-
 
 # -- General configuration ---------------------------------------------------
 
@@ -79,7 +76,7 @@ html_static_path = ['_static']
 html_logo = "spookipy_logo.jpg"
 html_theme_options = {
     'logo_only': True,
-    'display_version': False,
+    'display_version': True,
     'vcs_pageview_mode': 'blob'
 }
 

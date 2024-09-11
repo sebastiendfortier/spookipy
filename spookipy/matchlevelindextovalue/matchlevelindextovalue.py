@@ -139,7 +139,10 @@ class MatchLevelIndexToValue(Plugin):
                 error_row      = copy.deepcopy(var_df.iloc[0])
                 error_row['d'] = np.full_like(to_numpy(error_row['d']), self.error_value)
 
-                var_df = var_df.append(error_row).reset_index(drop=True)
+                # Convert error_row to a DataFrame with a single row
+                error_row_df   = pd.DataFrame([error_row])
+                var_df         = pd.concat([var_df, error_row_df], ignore_index=True)
+
                 var_df = fstpy.compute(var_df)
                 arr_3d = get_3d_array(var_df, flatten=True)
                 

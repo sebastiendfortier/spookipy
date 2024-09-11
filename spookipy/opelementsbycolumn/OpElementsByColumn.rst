@@ -61,7 +61,7 @@ Usage:
                                         group_by_forecast_hour=True,
                                         group_by_level=True,
                                         nomvar_out='MUEP',
-                                        etiket='MULEPT').compute()
+                                        label='MULEPT').compute()
 
     fstpy.StandardFileWriter(output_file, res_df).to_fst()
 

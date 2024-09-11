@@ -34,7 +34,7 @@ class OpElementsByColumn(Plugin):
     :type nomvar_out: str, optional
     :param unit: unit to apply to results, defaults to 'scalar'
     :type unit: str, optional
-    :param label: label to apply to results, defaults to None
+    :param label: label to apply to results, defaults to None (keep the same label)
     :type label: str, optional
     :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
     :type copy_input: bool, optional
@@ -46,23 +46,27 @@ class OpElementsByColumn(Plugin):
             self,
             df: pd.DataFrame,
             operator,
-            operation_name         = 'OpElementsByColumn',
-            exception_class        = OpElementsByColumnError,
-            group_by_forecast_hour = False,
-            group_by_level         = False,
-            group_by_nomvar        = False,
-            nomvar_out             = None,
-            unit                   = 'scalar',
-            label                  = None,
-            copy_input             = False,
-            reduce_df              = True):
+            operation_name              = 'OpElementsByColumn',
+            exception_class             = OpElementsByColumnError,
+            group_by_forecast_hour      = False,
+            group_by_level              = False,
+            group_by_nomvar             = False,
+            group_by_ensemble_member    = False,
+            nomvar_out                  = None,
+            unit                        = 'scalar',
+            label                       = None,
+            copy_input                  = False,
+            reduce_df                   = True):
 
         self.plugin_result_specifications = {
             'ALL': {
                 'nomvar': self.nomvar_out,
-                'label' : self.label,
-                'unit'  : self.unit}
+                'unit'  : self.unit
+                }
             }
+        
+        if self.label:
+            self.plugin_result_specifications["ALL"]["label"] = self.label
 
         self.df = fstpy.metadata_cleanup(self.df)
         super().__init__(self.df)
@@ -84,12 +88,11 @@ class OpElementsByColumn(Plugin):
                 self.operation_name + ' - not enough records to process, need at least 2')
 
         self.no_meta_df = fstpy.add_columns(
-            self.no_meta_df, columns=['forecast_hour', 'ip_info', 'unit', 'flags'])
+            self.no_meta_df, columns=['forecast_hour', 'ip_info', 'unit', 'flags', 'etiket'])
 
         # Groupement seulement sur la grille pour determiner les groupes avec niveaux communs
-        grouping = ['grid']
-
-        self.groups = self.no_meta_df.groupby(by=grouping)
+        grouping    = ['grid']
+        self.groups = self.no_meta_df.groupby(by=grouping[0])
 
         all_group_df = pd.DataFrame()
         for _, current_group in self.groups:
@@ -120,6 +123,9 @@ class OpElementsByColumn(Plugin):
         if self.group_by_level:
             grouping.append('level')
 
+        if self.group_by_ensemble_member:
+            grouping.append('ensemble_member')
+
         if not(all_group_df.empty):
             self.groups = all_group_df.groupby(by=grouping)
         else:
@@ -141,9 +147,10 @@ class OpElementsByColumn(Plugin):
 
             if self.group_by_nomvar:
                 self.plugin_result_specifications["ALL"]["nomvar"]         = current_group.iloc[0].nomvar
-                self.plugin_result_specifications["ALL"]["ip2"]            = [0]
-                self.plugin_result_specifications["ALL"]["forecast_hour"]  = datetime.timedelta(0)
-                self.plugin_result_specifications["ALL"]["npas"]           = [0]
+                if not self.group_by_forecast_hour:
+                    self.plugin_result_specifications["ALL"]["ip2"]            = [0]
+                    self.plugin_result_specifications["ALL"]["forecast_hour"]  = datetime.timedelta(0)
+                    self.plugin_result_specifications["ALL"]["npas"]           = [0]
 
             # Si champs masque avec son mask, on ne veut pas conserver les flags pour le typvar lors de la multiplication
             # Reproduction du comportement en CPP

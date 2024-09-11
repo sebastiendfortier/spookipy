@@ -15,26 +15,26 @@ algorithms.
 
 ## run time packages
 
--   fstpy>=2.1.10
--   pandas>=1.2.4
--   numpy>=1.19.5
--   xarray>=0.19.0
--   dask>=2021.8.0
+-   fstpy\>=2.1.10
+-   pandas\>=1.2.4
+-   numpy\>=1.19.5
+-   xarray\>=0.19.0
+-   dask\>=2021.8.0
 
 ## developpement packages
 
--   fstpy>=2.1.10
--   ci_fstcomp>=1.0.2
--   pandas>=1.2.4
--   numpy>=1.19.5
--   xarray>=0.19.0
--   dask>=2021.8.0
--   pytest>=5.3.5
--   Sphinx>=3.4.3
--   sphinx-autodoc-typehints>=1.12.0
--   sphinx-gallery>=0.9.0
--   sphinx-rtd-theme>=1.0.0
--   nbsphinx>=0.8.7
+-   fstpy\>=2.1.10
+-   ci_fstcomp\>=1.0.2
+-   pandas\>=1.2.4
+-   numpy\>=1.19.5
+-   xarray\>=0.19.0
+-   dask\>=2021.8.0
+-   pytest\>=5.3.5
+-   Sphinx\>=3.4.3
+-   sphinx-autodoc-typehints\>=1.12.0
+-   sphinx-gallery\>=0.9.0
+-   sphinx-rtd-theme\>=1.0.0
+-   nbsphinx\>=0.8.7
 
 ## Surgepy
 
@@ -49,7 +49,7 @@ that contains a wide variety of packages
 
 Use the ssm package
 
-    . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/spookipy/1.0.1
+    .  r.load.dot /fs/ssm/eccc/cmd/cmdw/PRIVATE/spookipy/bundle/2024.08.00
 
 ## Using spookipy in scripts or Jupyter Lab/Notebook
 
@@ -57,7 +57,7 @@ Use the ssm package
 # load surgepy
 . ssmuse-sh -d /fs/ssm/eccc/cmd/cmde/surge/surgepy/1.0.8/
 # get spookipy ssm package
-. ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/spookipy/1.0.1/
+. ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/python/spookipy/2024.08.00/
 ```
 
 ### use spookipy

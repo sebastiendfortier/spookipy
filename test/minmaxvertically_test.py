@@ -1,24 +1,25 @@
+# -*- coding: utf-8 -*-
+from test import check_test_ssm_package
 
-from test import TMP_PATH, TEST_PATH
-from ci_fstcomp import fstcomp
+check_test_ssm_package()
+
 from spookipy.utils import VDECODE_IP2_INFO
-import secrets
 import pandas as pd
 import fstpy
 import spookipy
 import pytest
-import numpy as np
 
 pytestmark = [pytest.mark.regressions]
 
-@pytest.fixture
-def plugin_test_dir():
-    return TEST_PATH +"MinMaxVertically/testsFiles/"
+@pytest.fixture(scope="module")
+def plugin_name():
+    """plugin_name in the path /fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/{plugin_name}"""
+    return "MinMaxVertically"
 
-def test_1(plugin_test_dir):
+def test_1(plugin_test_path):
     """Invalid request -- missing mandatory fields KBAS and KTOP with bounded option """
     # open and read source
-    source0 = plugin_test_dir + "TTGZUUVV_3x2x7_regpres.std"
+    source0 = plugin_test_path / "TTGZUUVV_3x2x7_regpres.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute spookipy.MinMaxLevelIndex
@@ -29,12 +30,12 @@ def test_1(plugin_test_dir):
             min = True,
             bounded=True).compute()
 
-def test_2(plugin_test_dir):
+def test_2(plugin_test_path):
     """Invalid request -- missing mandatory fields KBAS and KTOP with bounded option, on the same grid as field UU  """
     # open and read source
-    source0 = plugin_test_dir + "TTGZUUVV_3x2x7_regpres.std"
+    source0 = plugin_test_path / "TTGZUUVV_3x2x7_regpres.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-    source1 = plugin_test_dir + "KbasKtop_v2.std"
+    source1 = plugin_test_path / "KbasKtop_v2.std"
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
     src_df  = pd.concat([src_df0 , src_df1])
 
@@ -45,9 +46,9 @@ def test_2(plugin_test_dir):
             nomvar="UU",
             bounded=True).compute()
 
-def test_3(plugin_test_dir):
+def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
     """7 niveaux de UU, recherche min et max"""
-    source0 = plugin_test_dir + "TTGZUUVV_3x2x7_regpres.std"
+    source0 = plugin_test_path / "TTGZUUVV_3x2x7_regpres.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute MinMaxVertically
@@ -69,23 +70,21 @@ def test_3(plugin_test_dir):
     res_df   = pd.concat([meta_df, simple_df], ignore_index=True)
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_3.std"
     fstpy.StandardFileWriter(results_file, res_df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "MinMaxVert_file2cmp_test3_20231016.std"
+    file_to_compare = plugin_test_path / "MinMaxVert_file2cmp_test3_20231016.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_4(plugin_test_dir):
+def test_4(plugin_test_path, test_tmp_path, call_fstcomp):
     """3 niveaux de ICGA (sortie du plugin IcingRimeAppleman); BOUNDED, recherche MAX """
     # open and read source
-    source = plugin_test_dir + "test_ICGA.std"
-    # source90 = plugin_test_dir + "minmax_DOWNWARD_bounded_input"
+    source = plugin_test_path / "test_ICGA.std"
+    # source90 = plugin_test_path / "minmax_DOWNWARD_bounded_input"
     src_df = fstpy.StandardFileReader(source).to_pandas()
 
     # compute spookipy.MinMaxLevelIndex
@@ -97,27 +96,24 @@ def test_4(plugin_test_dir):
         nomvar_max='UMAX').compute()
     
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_4.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "MinMaxVert_file2cmp_test4_20231016.std"
+    file_to_compare = plugin_test_path / "MinMaxVert_file2cmp_test4_20231016.std"
 
     # # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
-
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_5(plugin_test_dir):
+def test_5(plugin_test_path, test_tmp_path, call_fstcomp):
     """Test avec des fichiers ayant des grilles differentes mais les meme champs; recheche min et max . """
     # Test relie au test 20 de MinMaxLevelIndex
 
     # open and read source
-    source0 = plugin_test_dir + "200906290606_TT_grid1.std"
+    source0 = plugin_test_path / "200906290606_TT_grid1.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-    source1 = plugin_test_dir + "200906290606_TT_grid2.std"
+    source1 = plugin_test_path / "200906290606_TT_grid2.std"
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
 
     src_df = pd.concat([src_df0, src_df1])
@@ -138,15 +134,12 @@ def test_5(plugin_test_dir):
     res_df   = pd.concat([meta_df, simple_df], ignore_index=True)
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_5.std"
     fstpy.StandardFileWriter(results_file, res_df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "MinMaxVert_file2cmp_test5_20231016.std"
+    file_to_compare = plugin_test_path / "MinMaxVert_file2cmp_test5_20231016.std"
 
     # # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
-
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)

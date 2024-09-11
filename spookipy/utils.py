@@ -7,16 +7,20 @@ import math
 from functools import wraps
 from inspect import signature
 from typing import Tuple, Final
+import operator
+import re
 
 import dask.array as da
 import fstpy
 from   fstpy.utils import vectorize
 from   fstpy.std_vgrid import vctype_dict
+from   fstpy.dataframe_utils import convert_cols_to_boolean_dtype, safe_concatenate
 import numpy as np
 import pandas as pd
 import rpnpy.librmn.all as rmn
-from pandas.core import groupby
-
+from   pandas.core import groupby
+import warnings
+    
 class DataframeColumnError(Exception):
     pass
 class DependencyError(Exception):
@@ -156,10 +160,11 @@ def get_plugin_dependencies(
             # do the unit conversion
             if not (destination_unit is None):
                 tmp_df = fstpy.unit_convert(tmp_df, destination_unit)
+
         # keep found results
         df_list.append(tmp_df)
 
-    res_df = pd.concat(df_list, ignore_index=True)
+    res_df = safe_concatenate(df_list)
 
     return res_df
 
@@ -225,13 +230,17 @@ def compute_dependency(
                 
         logging.debug(f'\t Resultats calcules pour {nomvar} ! \n')
         if not tmp_df.empty:
+            # Conversion des colonnes a boolean pour eviter warning "object-dtype columns with all-bool values ..."
+            tmp_df = convert_cols_to_boolean_dtype(tmp_df)
             if logger.isEnabledFor(logging.DEBUG):
                 message = (f' Resultats calcules pour {nomvar}: ')
                 logging.debug(f'{print_style_voir(tmp_df, message)}')
         else:
             logging.debug(f'\t Pas de resultats calcules pour {nomvar}  !!! \n')
 
-        df = pd.concat([df, tmp_df], ignore_index=True)
+        # Conversion des colonnes a boolean pour eviter warning "object-dtype columns with all-bool values ..."
+        df = convert_cols_to_boolean_dtype(df)
+        df = safe_concatenate([df, tmp_df])
     else:
         logging.debug(f'\t Compute_dependency - {nomvar} ne peut etre calcule!  \n\n')
 
@@ -259,7 +268,7 @@ def get_existing_result(
         else:
             break
     if len(df_list) == len(plugin_result_specifications):
-        return pd.concat(df_list, ignore_index=True)
+        return safe_concatenate(df_list)
     else:
         return pd.DataFrame(dtype='object')
 
@@ -309,7 +318,8 @@ def get_intersecting_levels(df: pd.DataFrame,
     return res_df
 
 def find_common_levels(df: pd.DataFrame,
-                       list_nomvar: list) -> pd.DataFrame:
+                       list_nomvar: list,
+                       column_to_match: str = 'nomvar') -> pd.DataFrame:
     """Finds all common levels for fields in list_nomvar in the dataframe.
 
     The input data must be grouped by grid. 
@@ -320,24 +330,25 @@ def find_common_levels(df: pd.DataFrame,
     :rtype: pd.DataFrame
     """
 
-    df.sort_values(by=['nomvar','level'])
-    first_df           = df.loc[df.nomvar == list_nomvar[0]]
+    df.sort_values(by=[column_to_match,'level'])
+    first_df           = df.loc[df[column_to_match] == list_nomvar[0]]
     common_levels      = set(first_df.level.unique())
 
     for nomvar in list_nomvar:
-        curr_df        = df.loc[df.nomvar == nomvar]
+        curr_df        = df.loc[df[column_to_match] == nomvar]
         levels         = set(curr_df.level.unique())
         common_levels  = common_levels.intersection(levels)
 
     common_levels = list(common_levels)
 
-    df.sort_values(by=['nomvar','typvar','level'])
+    df.sort_values(by=[column_to_match,'typvar','level'])
     df['typvar_char1'] = df.apply(lambda row: row['typvar'] if len(row['typvar']) < 2 else row['typvar'][0], axis=1)
 
-    res_df             = df.loc[(df.nomvar.isin(list_nomvar)) & 
-                                (df.level.isin(common_levels))].drop_duplicates(
+    res_df             = df.loc[(df[column_to_match].isin(list_nomvar)) & 
+                                (df.level.isin(common_levels))]
+    res_df = res_df.drop_duplicates(
                                 subset=[
-                                        'nomvar', 'typvar_char1','etiket', 'ni', 'nj', 'nk', 'dateo', 
+                                        column_to_match, 'typvar_char1','etiket', 'ni', 'nj', 'nk', 'dateo', 
                                         'ip1', 'ip2', 'ip3', 'deet', 'npas', 'ig1', 'ig2', 'ig3', 'ig4'
                                        ])
     
@@ -423,17 +434,21 @@ def create_empty_result(df: pd.DataFrame, plugin_result_specifications: dict, al
 
     res_df = fstpy.add_columns(res_df, columns=['etiket'])
     
-
-    for k, v in plugin_result_specifications.items():
-        if (k in res_df.columns):
-            res_df.loc[:, k] = v
-        else:
-            raise DataframeColumnError(f'In create_empty_result - Column "{k}" not found in dataframe!')
-
     # set to default parameters
     res_df['run'] = '__'
     res_df['implementation'] = 'X'
     res_df['etiket_format'] = ''
+
+
+    for k, v in plugin_result_specifications.items():
+        if (k in res_df.columns):
+            # Suppression d'un future warning de pandas; dans notre cas, on veut conserver le meme comportement
+            # meme avec le nouveau comportement a venir. On encapsule la suppression du warning pour ce cas seulement.
+            with warnings.catch_warnings():
+                warnings.filterwarnings('ignore', category=FutureWarning)
+                res_df.loc[:, k] = v
+        else:
+            raise DataframeColumnError(f'In create_empty_result - Column "{k}" not found in dataframe!')
 
     # au lieu de faire un drop des colonnes de flag, il faudrait faire une réduction de colonne
     flag_col = [x for x in ['multiple_modifications','zapped','filtered','interpolated','bounded','unit_converted'] if x in res_df.columns]
@@ -526,7 +541,7 @@ def existing_results(
     """
     logging.info(''.join([plugin_name, ' - found results']))
 
-    res_df = pd.concat([meta_df, df], ignore_index=True)
+    res_df = safe_concatenate([meta_df, df])
 
     return res_df
 
@@ -669,11 +684,11 @@ def get_dependencies(
 
         if dependency_check:
             logging.debug(f'\t Pas besoin de cleaner metadata - sous-plugin ! \n\n')
-            dependencies_df, option = find_matching_dependency_option(pd.concat(
-                                        [current_group, meta_df], ignore_index=True), plugin_params, 
+            new_df = safe_concatenate([current_group, meta_df])
+            dependencies_df, option = find_matching_dependency_option(new_df, plugin_params, 
                                         plugin_mandatory_dependencies, intersect_levels)
         else:
-            new_df = pd.concat([current_group, meta_df],ignore_index=True)
+            new_df= safe_concatenate([current_group, meta_df])
             new_df = fstpy.metadata_cleanup(new_df)
             dependencies_df, option = find_matching_dependency_option(
                                         new_df, plugin_params, 
@@ -1112,3 +1127,56 @@ def print_style_voir(df: pd.DataFrame, message: str) -> str:
 
     message_log = "".join([message, ligne1, info, ligne2])
     return message_log
+
+
+
+def parse_condition(condition, error: 'type' = Exception, only_operator = False):
+    if condition == 'isnan':
+        return None, None
+    
+    match_operator = r"(>=|<=|==|\>|\<)"
+
+    if only_operator:
+        if not re.match(match_operator, condition):
+            raise error(f"invalid condition - {condition}")
+
+        parsed_condition = re.search(match_operator,condition)
+        # print(parsed_condition)
+        return parsed_condition[1]
+
+
+    match_optional_underscore = "_*"
+    match_float = r"(\d+(\.\d*)?)$"
+    match_all = match_operator+match_optional_underscore+match_float
+
+    if not re.match(match_all, condition):
+        raise error(f"invalid condition - {condition}")
+    
+    parsed_condition = re.search(match_all,condition)
+    
+    return (parsed_condition[1],parsed_condition[2])
+
+def parse_and_validate_condition(condition, error: 'type' = Exception):
+    condition_operator, condition_value = parse_condition(condition, error)
+    if condition_operator is not None:
+        condition_operator = OPERATOR_LOOKUP_TABLE[condition_operator]
+        condition_value = float(condition_value)
+    return condition_operator, condition_value
+
+OPERATOR_LOOKUP_TABLE = {
+    "<" : operator.lt,
+    "<=" : operator.le,
+    ">" : operator.gt,
+    ">=" : operator.ge,
+    "==" : operator.eq,
+    "!=" : operator.ne,
+}
+
+LABEL_OPERATOR_LOOKUP_TABLE = {
+    operator.lt : "LT",
+    operator.le : "LE",
+    operator.gt : "GT",
+    operator.ge : "GE",
+    operator.eq : "EQ",
+    operator.ne : "NE",
+}

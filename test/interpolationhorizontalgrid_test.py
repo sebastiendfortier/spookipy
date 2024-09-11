@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from test import TEST_PATH, TMP_PATH, check_test_ssm_package
+from test import check_test_ssm_package
 
 check_test_ssm_package()
 
@@ -8,22 +8,19 @@ import pandas as pd
 import pytest
 import rpnpy.librmn.all as rmn
 import spookipy
-from ci_fstcomp import fstcomp
-import secrets
 
 pytestmark = [pytest.mark.regressions]
 
+@pytest.fixture(scope="module")
+def plugin_name():
+    """plugin_name in the path /fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/{plugin_name}"""
+    return "InterpolationHorizontalGrid"
 
-@pytest.fixture
-def plugin_test_dir():
-    return TEST_PATH + "InterpolationHorizontalGrid/testsFiles/"
-
-
-def test_1(plugin_test_dir):
+def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
     """Interpolation with multiple different input grid"""
     # open and read source
 
-    source0 = plugin_test_dir + "input_big_fileSrc.std"
+    source0 = plugin_test_path / "input_big_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
     # compute Pressure
     df = spookipy.InterpolationHorizontalGrid(
@@ -46,22 +43,20 @@ def test_1(plugin_test_dir):
     df = spookipy.convip(df, style=rmn.CONVIP_ENCODE_OLD)
     
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_1.std"
     fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "interpolationHoriz_file2cmp.std"
+    file_to_compare = plugin_test_path / "interpolationHoriz_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.126)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare, e_max=0.126)
     assert(res)
 
-def test_2(plugin_test_dir):
+def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
     """Interpolation with scalar fields only"""
     # open and read source
-    source0 = plugin_test_dir + "4panneaux_input4_fileSrc.std"
+    source0 = plugin_test_path / "4panneaux_input4_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute Pressure
@@ -82,23 +77,21 @@ def test_2(plugin_test_dir):
     # [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]",
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_2.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "interpolationHorizScalar_file2cmp.std"
+    file_to_compare = plugin_test_path / "interpolationHorizScalar_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare, e_max=0.001)
     assert(res)
 
 
-def test_3(plugin_test_dir):
+def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
     """Interpolation with vectorial fields only"""
     # open and read source
-    source0 = plugin_test_dir + "inputUUVV.std"
+    source0 = plugin_test_path / "inputUUVV.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute Pressure
@@ -121,23 +114,21 @@ def test_3(plugin_test_dir):
     df = spookipy.convip(df, style=rmn.CONVIP_ENCODE_OLD)
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_3.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "interpolationHorizVectorial_file2cmp.std"
+    file_to_compare = plugin_test_path / "interpolationHorizVectorial_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.1)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare, e_max=0.1)
     assert(res)
 
 
-def test_5(plugin_test_dir):
+def test_5(plugin_test_path, test_tmp_path, call_fstcomp):
     """Interpolation with FIELD_DEFINED"""
     # open and read source
-    source0 = plugin_test_dir + "TTUUVVKTRT.std"
+    source0 = plugin_test_path / "TTUUVVKTRT.std"
 
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
@@ -154,23 +145,21 @@ def test_5(plugin_test_dir):
     df = spookipy.convip(df, style=rmn.CONVIP_ENCODE_OLD)
     
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_5.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "fieldDefined_file2cmp.std"
+    file_to_compare = plugin_test_path / "fieldDefined_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.01)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare, e_max=0.01)
     assert(res)
 
 
-def test_6(plugin_test_dir):
+def test_6(plugin_test_path, test_tmp_path, call_fstcomp):
     """Interpolation with FIELD_DEFINED, make sure HY follow"""
     # open and read source
-    source0 = plugin_test_dir + "TT_RT_reghyb"
+    source0 = plugin_test_path / "TT_RT_reghyb"
 
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
@@ -186,28 +175,26 @@ def test_6(plugin_test_dir):
     # [WriterStd --output {destination_path} ]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_6.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "fieldDefinedWithHY_file2cmp.std"
+    file_to_compare = plugin_test_path / "fieldDefinedWithHY_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
 
-def test_7(plugin_test_dir):
+def test_7(plugin_test_path, test_tmp_path, call_fstcomp):
     """Interpolation d'un champ scalaire (TT) d'une grille U vers une grille Z"""
     # open and read source
-    source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
+    source0 = plugin_test_path / "2015072100_240_TTESUUVV_YinYang.std"
 
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
     src_df0 = fstpy.select_with_meta(src_df0, ["TT"])
 
-    source1 = plugin_test_dir + "2015072100_240_TTESUUVV_GridZ.std"
+    source1 = plugin_test_path / "2015072100_240_TTESUUVV_GridZ.std"
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
     src_df1 = fstpy.select_with_meta(src_df1, ["ES"])
 
@@ -229,28 +216,26 @@ def test_7(plugin_test_dir):
     df = spookipy.convip(df)
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_7.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "InterpHorizGridUtoZ_rmn19_file2cmp.std+20210517"
+    file_to_compare = plugin_test_path / "InterpHorizGridUtoZ_rmn19_file2cmp.std+20210517"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
 
-def test_8(plugin_test_dir):
+def test_8(plugin_test_path, test_tmp_path, call_fstcomp):
     """Interpolation d'un champ scalaire (TT) d'une grille Z vers une grille U"""
     # open and read source
-    source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
+    source0 = plugin_test_path / "2015072100_240_TTESUUVV_YinYang.std"
 
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
     src_df0 = fstpy.select_with_meta(src_df0, ["ES"])
 
-    source1 = plugin_test_dir + "2015072100_240_TTESUUVV_GridZ.std"
+    source1 = plugin_test_path / "2015072100_240_TTESUUVV_GridZ.std"
 
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
     src_df1 = fstpy.select_with_meta(src_df1, ["TT"])
@@ -272,27 +257,25 @@ def test_8(plugin_test_dir):
     df = spookipy.convip(df)
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_8.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "InterpHorizGridZtoU_file2cmp.std+20231227"
+    file_to_compare = plugin_test_path / "InterpHorizGridZtoU_file2cmp.std+20231227"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.01)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare, e_max=0.01)
     assert(res)
 
 
-def test_9(plugin_test_dir):
+def test_9(plugin_test_path, test_tmp_path, call_fstcomp):
     """Interpolation de champs vectoriels (UU,VV) d'une grille U vers une grille Z"""
     # open and read source
-    source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
+    source0 = plugin_test_path / "2015072100_240_TTESUUVV_YinYang.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
     src_df0 = fstpy.select_with_meta(src_df0, ["UU", "VV"])
 
-    source1 = plugin_test_dir + "2015072100_240_TTESUUVV_GridZ.std"
+    source1 = plugin_test_path / "2015072100_240_TTESUUVV_GridZ.std"
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
     src_df1 = fstpy.select_with_meta(src_df1, ["TT"])
 
@@ -317,27 +300,25 @@ def test_9(plugin_test_dir):
     df = spookipy.convip(df)
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_9.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir +  "InterpHorizGridUtoZ_UUVV_file2cmp.std+20210517"
+    file_to_compare = plugin_test_path /  "InterpHorizGridUtoZ_UUVV_file2cmp.std+20210517"
     
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
 
-def test_10(plugin_test_dir):
+def test_10(plugin_test_path, test_tmp_path, call_fstcomp):
     """Interpolation de champs vectoriels (UU,VV) d'une grille Z vers une grille U"""
     # open and read source
-    source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
+    source0 = plugin_test_path / "2015072100_240_TTESUUVV_YinYang.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
     src_df0 = fstpy.select_with_meta(src_df0, ["TT"])
 
-    source1 = plugin_test_dir + "2015072100_240_TTESUUVV_GridZ.std"
+    source1 = plugin_test_path / "2015072100_240_TTESUUVV_GridZ.std"
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
     src_df1 = fstpy.select_with_meta(src_df1, ["UU", "VV"])
 
@@ -359,27 +340,25 @@ def test_10(plugin_test_dir):
     df = fstpy.select_with_meta(df, ['UU', 'VV'])
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_10.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "InterpHorizGridZtoU_UUVV_file2cmp.std"
+    file_to_compare = plugin_test_path / "InterpHorizGridZtoU_UUVV_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.1)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare, e_max=0.1)
     assert(res)
 
 
-def test_11(plugin_test_dir):
+def test_11(plugin_test_path, test_tmp_path, call_fstcomp):
     """Interpolation de champs vectoriels et scalaires d'une grille Z vers une grille U avec un fichier a interpoler contenant 2 toctocs."""
     # open and read source
-    source0 = plugin_test_dir + "glbpres_TT_UU_VV.std"
+    source0 = plugin_test_path / "glbpres_TT_UU_VV.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
     src_df0 = fstpy.select_with_meta(src_df0, ["TT", "UU", "VV"])
 
-    source1 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
+    source1 = plugin_test_path / "2015072100_240_TTESUUVV_YinYang.std"
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
     src_df1 = fstpy.select_with_meta(src_df1, ["ES"])
 
@@ -403,23 +382,21 @@ def test_11(plugin_test_dir):
     df = spookipy.convip(df)
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_11.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "InterpHorizGridUtoZ_manyToctocs_file2cmp.std"
+    file_to_compare = plugin_test_path / "InterpHorizGridUtoZ_manyToctocs_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.6)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare, e_max=0.6)
     assert(res)
 
 
-def test_13(plugin_test_dir):
+def test_13(plugin_test_path, test_tmp_path, call_fstcomp):
     """test extrapolation with negative value"""
     # open and read source
-    source0 = plugin_test_dir + "TT_RT_reghyb"
+    source0 = plugin_test_path / "TT_RT_reghyb"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
     src_df0 = fstpy.select_with_meta(src_df0, ["TT"])
 
@@ -443,27 +420,25 @@ def test_13(plugin_test_dir):
     # [WriterStd --output {destination_path} ]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_13.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "extrapolationNegativeValue_file2cmp.std+20231222"
+    file_to_compare = plugin_test_path / "extrapolationNegativeValue_file2cmp.std+20231222"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
 
-def test_14(plugin_test_dir):
+def test_14(plugin_test_path, test_tmp_path, call_fstcomp):
     """Interpolation de champs vectoriels (UU,VV) d'une grille U vers une grille Z en parallele"""
     # open and read source
-    source0 = plugin_test_dir + "2015072100_240_TTESUUVV_YinYang.std"
+    source0 = plugin_test_path / "2015072100_240_TTESUUVV_YinYang.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
     src_df0 = fstpy.select_with_meta(src_df0, ["UU", "VV"])
 
-    source1 = plugin_test_dir + "2015072100_240_TTESUUVV_GridZ.std"
+    source1 = plugin_test_path / "2015072100_240_TTESUUVV_GridZ.std"
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
     src_df1 = fstpy.select_with_meta(src_df1, ["TT"])
 
@@ -489,15 +464,13 @@ def test_14(plugin_test_dir):
     df = spookipy.convip(df)
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_14.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + \
+    file_to_compare = plugin_test_path / \
         "InterpHorizGridUtoZ_UUVV_file2cmp.std+20210517"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)

@@ -38,7 +38,7 @@ class MultiplyElementBy(Plugin):
                                  nomvar_out=self.nomvar_out,
                                  operator=mult_value,
                                  exception_class=MultiplyElementByError,
-                                 etiket='MULEBY').compute()
+                                 label='MULEBY').compute()
 
     @staticmethod
     def parse_config(args: str) -> dict:

@@ -1,26 +1,23 @@
 # -*- coding: utf-8 -*-
-from test import TEST_PATH, TMP_PATH, check_test_ssm_package
+from test import check_test_ssm_package
 
 check_test_ssm_package()
 
 import fstpy
 import pytest
 import spookipy
-from ci_fstcomp import fstcomp
-import secrets
 
 pytestmark = [pytest.mark.regressions]
 
+@pytest.fixture(scope="module")
+def plugin_name():
+    """plugin_name in the path /fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/{plugin_name}"""
+    return "SetUpperBoundary"
 
-@pytest.fixture
-def plugin_test_dir():
-    return TEST_PATH + '/SetUpperBoundary/testsFiles/'
-
-
-def test_1(plugin_test_dir):
+def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
     """PLUSIEURS champs en entree SANS l'option --outputFieldName."""
     # open and read source
-    source0 = plugin_test_dir + "UUVV5x5_8_fileSrc.std"
+    source0 = plugin_test_path / "UUVV5x5_8_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute SetUpperBoundary
@@ -29,22 +26,20 @@ def test_1(plugin_test_dir):
     #  [WriterStd --output {destination_path} ]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_1.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "test1_maximum_file2cmp_20210413.std"
+    file_to_compare = plugin_test_path / "test1_maximum_file2cmp_20210413.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_2(plugin_test_dir):
+def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
     """UN seul champ en entree SANS l'option --outputFieldName."""
     # open and read source
-    source0 = plugin_test_dir + "UUVV5x5_8_fileSrc.std"
+    source0 = plugin_test_path / "UUVV5x5_8_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     src_df = fstpy.select_with_meta(src_df0,['UU'])
@@ -55,22 +50,20 @@ def test_2(plugin_test_dir):
     # [SetUpperBoundary --value 0] >> [WriterStd --output {destination_path}]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_2.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "test2_maximum_file2cmp_20210413.std"
+    file_to_compare = plugin_test_path / "test2_maximum_file2cmp_20210413.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_3(plugin_test_dir):
+def test_3(plugin_test_path):
     """PLUSIEURS champs en entree AVEC l'option --outputFieldName. """
     # open and read source
-    source0 = plugin_test_dir + "UUVV5x5_8_fileSrc.std"
+    source0 = plugin_test_path / "UUVV5x5_8_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute SetUpperBoundary
@@ -79,10 +72,10 @@ def test_3(plugin_test_dir):
     # [ReaderStd --input {sources[0]}] >> [SetUpperBoundary --value 0 --outputFieldName TEST]
 
 
-def test_4(plugin_test_dir):
+def test_4(plugin_test_path, test_tmp_path, call_fstcomp):
     """UN seul champ en entree AVEC l'option --outputFieldName. """
     # open and read source
-    source0 = plugin_test_dir + "UUVV5x5_8_fileSrc.std"
+    source0 = plugin_test_path / "UUVV5x5_8_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     src_df = fstpy.select_with_meta(src_df0,['UU'])
@@ -94,14 +87,12 @@ def test_4(plugin_test_dir):
     # [WriterStd --output {destination_path} --noUnitConversion]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_4.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "test4_maximum_file2cmp_20210413.std"
+    file_to_compare = plugin_test_path / "test4_maximum_file2cmp_20210413.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)

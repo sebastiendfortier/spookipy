@@ -6,7 +6,7 @@ DOC_DIR=${DIR:0:${#DIR}-8}doc
 echo ${DOCDIR}
 
 cd ../
-VERSION=$(head -n 1 VERSION)
+VERSION=$(grep __version__ spookipy/__init__.py | awk '{print $3}' | tr -d "'")
 cd doc
 OUTPUT=usage.rst
 rm -f $OUTPUT

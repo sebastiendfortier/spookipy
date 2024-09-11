@@ -62,7 +62,7 @@ Usage:
                                  nomvar_out='MV',
                                  operator=mult_value,
                                  exception_class=MultiplyElementsByError,
-                                 etiket='MULEBY').compute()
+                                 label='MULEBY').compute()
 
    fstpy.StandardFileWriter(output_file, res_df).to_fst()
 

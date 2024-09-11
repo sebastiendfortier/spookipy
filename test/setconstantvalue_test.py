@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from test import TEST_PATH, TMP_PATH, check_test_ssm_package
+from test import check_test_ssm_package
 
 check_test_ssm_package()
 
@@ -7,21 +7,18 @@ import fstpy
 import pandas as pd
 import pytest
 import spookipy
-from ci_fstcomp import fstcomp
-import secrets
 
 pytestmark = [pytest.mark.regressions]
 
+@pytest.fixture(scope="module")
+def plugin_name():
+    """plugin_name in the path /fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/{plugin_name}"""
+    return "SetConstantValue"
 
-@pytest.fixture
-def plugin_test_dir():
-    return TEST_PATH + '/SetConstantValue/testsFiles/'
-
-
-def test_1(plugin_test_dir):
+def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
     """Création d'un champ 3D nommé RES identique au champ UU du fichier d'entrée avec 0.33323 comme valeurs."""
     # open and read source
-    source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
+    source0 = plugin_test_path / "UUVV5x5x2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     uu_df = fstpy.select_with_meta(src_df0, ['UU'])
@@ -43,23 +40,21 @@ def test_1(plugin_test_dir):
     df = pd.concat([resuu_df, resvv_df], ignore_index=True)
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_1.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "assign_file2cmp.std"
+    file_to_compare = plugin_test_path / "assign_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     assert(res)
 
 
-def test_2(plugin_test_dir):
+def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
     """Création d'un champ 2D identique au champ UU du fichier d'entrée avec 0 comme valeur (MININDEX)."""
     # open and read source
-    source0 = plugin_test_dir + "generate2D_fileSrc.std"
+    source0 = plugin_test_path / "generate2D_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     uu_df = fstpy.select_with_meta(src_df0, ['UU'])
@@ -76,23 +71,21 @@ def test_2(plugin_test_dir):
     df.loc[:, 'etiket'] = 'GENERATE2D'
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_2.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "g2d1_file2cmp.std"
+    file_to_compare = plugin_test_path / "g2d1_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
 
-def test_3(plugin_test_dir):
+def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
     """Création d'un champ 2D identique au champ UU du fichier d'entrée avec MAXINDEX comme valeurs"""
     # open and read source
-    source0 = plugin_test_dir + "2011072100_006_eta_small"
+    source0 = plugin_test_path / "2011072100_006_eta_small"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     uu_df = fstpy.select_with_meta(src_df0, ['UU'])
@@ -111,23 +104,21 @@ def test_3(plugin_test_dir):
     df.loc[df.nomvar.isin(['^^', '>>']), 'etiket'] = '580V0N'
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_3.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "g2d2_file2cmp.std+20210517"
+    file_to_compare = plugin_test_path / "g2d2_file2cmp.std+20210517"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
 
-def test_4(plugin_test_dir):
+def test_4(plugin_test_path, test_tmp_path, call_fstcomp):
     """Création d'un champ 2D identique au champ UU du fichier d'entrée avec 1.0 comme valeurs"""
     # open and read source
-    source0 = plugin_test_dir + "generate2D_fileSrc.std"
+    source0 = plugin_test_path / "generate2D_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     uu_df = fstpy.select_with_meta(src_df0, ['UU'])
@@ -144,23 +135,21 @@ def test_4(plugin_test_dir):
     df.loc[df.nomvar.isin(['^^', '>>']), 'etiket'] = '580V0N'
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_4.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "g2d3_file2cmp.std"
+    file_to_compare = plugin_test_path / "g2d3_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
 
-def test_5(plugin_test_dir):
+def test_5(plugin_test_path, test_tmp_path, call_fstcomp):
     """Création de 2 champs 2D identiques au champ UU, le premier avec MININDEX comme valeurs et le deuxième avec MAXINDEX."""
     # open and read source
-    source0 = plugin_test_dir + "generate2D_fileSrc.std"
+    source0 = plugin_test_path / "generate2D_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     uu_df = fstpy.select_with_meta(src_df0, ['UU'])
@@ -187,23 +176,21 @@ def test_5(plugin_test_dir):
     # df.loc[df.nomvar.isin(['^^','>>']),'etiket'] = '580V0N'
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_5.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "g2d4_file2cmp.std"
+    file_to_compare = plugin_test_path / "g2d4_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
 
-def test_6(plugin_test_dir):
+def test_6(plugin_test_path, test_tmp_path, call_fstcomp):
     """Création d'un champ 2D identique au champ UU du fichier d'entrée avec NBLEVELS comme valeurs"""
     # open and read source
-    source0 = plugin_test_dir + "2011072100_006_eta_small"
+    source0 = plugin_test_path / "2011072100_006_eta_small"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     uu_df = fstpy.select_with_meta(src_df0, ['UU'])
@@ -220,22 +207,20 @@ def test_6(plugin_test_dir):
     df.loc[df.nomvar.isin(['^^', '>>']), 'etiket'] = '580V0N'
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_6.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "nbLevels_file2cmp.std+20210517"
+    file_to_compare = plugin_test_path / "nbLevels_file2cmp.std+20210517"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     assert(res)
 
-def test_7(plugin_test_dir):
+def test_7(plugin_test_path, test_tmp_path, call_fstcomp):
     """2 groupes de TT avec dates d'origine differentes mais dates de validity identiques, option reduce_df = True"""
 
-    source  = source0 = plugin_test_dir + "Regpres_TTHUES_differentDateoSameDatev.std"
+    source  = source0 = plugin_test_path / "Regpres_TTHUES_differentDateoSameDatev.std"
     src_df  = fstpy.StandardFileReader(source).to_pandas()
     tt_df   = fstpy.select_with_meta(src_df, ['TT'])
 
@@ -251,14 +236,12 @@ def test_7(plugin_test_dir):
     # [WriterStd --output SetCst.std]"
 
      # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_20.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_20.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # # open and read comparison file
-    file_to_compare = plugin_test_dir + "Regpres_diffDateoSameDatev_test7_file2cmp.std"
+    file_to_compare = plugin_test_path / "Regpres_diffDateoSameDatev_test7_file2cmp.std"
 
     # compare results 
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)

@@ -1,28 +1,25 @@
 # -*- coding: utf-8 -*-
-from test import TEST_PATH, TMP_PATH, check_test_ssm_package
+from test import check_test_ssm_package
 
 check_test_ssm_package()
 
 import fstpy
-import pandas as pd
 import pytest
 import rpnpy.librmn.all as rmn
 import spookipy
-from ci_fstcomp import fstcomp
-import secrets
 
 pytestmark = [pytest.mark.regressions]
 
+@pytest.fixture(scope="module")
+def plugin_name():
+    """plugin_name in the path /fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/{plugin_name}"""
+    return "Mask"
 
-@pytest.fixture
-def plugin_test_dir():
-    return TEST_PATH + '/Mask/testsFiles/'
 
-
-def test_1(plugin_test_dir):
+def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
     """seuils: 0,10,15,20 valeurs: 0,10,15,20 ops: ge,ge,ge,ge"""
     # open and read source
-    source0 = plugin_test_dir + "new_input.std"
+    source0 = plugin_test_path / "new_input.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute Mask
@@ -38,23 +35,21 @@ def test_1(plugin_test_dir):
     df = spookipy.convip(df, rmn.CONVIP_ENCODE_OLD)
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_1.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "resulttest1_20231026.std"
+    file_to_compare = plugin_test_path / "resulttest1_20231026.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
 
-def test_2(plugin_test_dir):
+def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
     """seuils: -15,-15,-5,10,20 valeurs: -20,-15,-5,10,20 ops: le,ge,ge,ge,ge"""
     # open and read source
-    source0 = plugin_test_dir + "inputFile.std"
+    source0 = plugin_test_path / "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute Mask
@@ -65,22 +60,20 @@ def test_2(plugin_test_dir):
     # [WriterStd --output {destination_path} --noUnitConversion]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_2.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "resulttest2_20231026.std"
+    file_to_compare = plugin_test_path / "resulttest2_20231026.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_3(plugin_test_dir):
+def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
     """seuils: -10,0,10 valeurs: 1,2,3 ops: le,eq,gt"""
     # open and read source
-    source0 = plugin_test_dir + "inputFile.std"
+    source0 = plugin_test_path / "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute Mask
@@ -99,22 +92,20 @@ def test_3(plugin_test_dir):
     # [WriterStd --output {destination_path} --noUnitConversion]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_3.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "resulttest3_20231026.std"
+    file_to_compare = plugin_test_path / "resulttest3_20231026.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_4(plugin_test_dir):
+def test_4(plugin_test_path):
     """ERREUR: pas le meme nombre de valeurs associe a seuils, valeurs, et ops"""
     # open and read source
-    source0 = plugin_test_dir + "inputFile.std"
+    source0 = plugin_test_path / "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     with pytest.raises(spookipy.MaskError):
@@ -124,10 +115,10 @@ def test_4(plugin_test_dir):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Mask --thresholds -10,0,10 --values 1,2 --operators le,eq] >>
         # [WriterStd --output {destination_path} --noUnitConversion]
 
-def test_5(plugin_test_dir):
+def test_5(plugin_test_path):
     """ERREUR: valeur invalide associee a operators (TT)"""
     # open and read source
-    source0 = plugin_test_dir + "inputFile.std"
+    source0 = plugin_test_path / "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     with pytest.raises(spookipy.MaskError):
@@ -138,10 +129,10 @@ def test_5(plugin_test_dir):
         # [WriterStd --output {destination_path} --noUnitConversion]
 
 
-def test_6(plugin_test_dir):
+def test_6(plugin_test_path, test_tmp_path, call_fstcomp):
     """seuils: -10,0,10 valeurs: 1,2,3 ops: le,eq,gt + outputFieldName=TOTO"""
     # open and read source
-    source0 = plugin_test_dir + "inputFile.std"
+    source0 = plugin_test_path / "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute Mask
@@ -155,14 +146,12 @@ def test_6(plugin_test_dir):
     # [WriterStd --output {destination_path} --noUnitConversion]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_6.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "resulttest6_20231026.std"
+    file_to_compare = plugin_test_path / "resulttest6_20231026.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)

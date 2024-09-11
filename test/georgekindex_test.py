@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from test import TEST_PATH, TMP_PATH, check_test_ssm_package
+from test import check_test_ssm_package
 
 check_test_ssm_package()
 
@@ -7,22 +7,19 @@ import fstpy
 import pandas as pd
 import pytest
 import spookipy
-from ci_fstcomp import fstcomp
-import secrets
 from fstpy.dataframe_utils import select_with_meta
 
 pytestmark = [pytest.mark.regressions]
 
+@pytest.fixture(scope="module")
+def plugin_name():
+    """plugin_name in the path /fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/{plugin_name}"""
+    return "GeorgeKIndex"
 
-@pytest.fixture
-def plugin_test_dir():
-    return TEST_PATH + '/GeorgeKIndex/testsFiles/'
-
-
-def test_1(plugin_test_dir):
+def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul de l'indice à partir d'une matrice de températures de 5x4x3 et d'écarts de point de rosée de 5x4x2"""
     # open and read source
-    source0 = plugin_test_dir + "inputFileSimple.std"
+    source0 = plugin_test_path / "inputFileSimple.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GeorgeKIndex
@@ -30,23 +27,21 @@ def test_1(plugin_test_dir):
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GeorgeKIndex] >> [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_1.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "TTES_GeorgeKIndex_file2cmp_20231026.std"
+    file_to_compare = plugin_test_path / "TTES_GeorgeKIndex_file2cmp_20231026.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
 
-def test_2(plugin_test_dir):
+def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul de l'indice avec un vrai fichier de données"""
     # open and read source
-    source0 = plugin_test_dir + "inputFile.std"
+    source0 = plugin_test_path / "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GeorgeKIndex
@@ -54,23 +49,21 @@ def test_2(plugin_test_dir):
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GeorgeKIndex] >> [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_2.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "GeorgeKIndex_file2cmp_20231026.std"
+    file_to_compare = plugin_test_path / "GeorgeKIndex_file2cmp_20231026.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
 
-def test_3(plugin_test_dir):
+def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul de l'indice avec un fichier de données contenant TT et TD mais pas ES"""
     # open and read source
-    source0 = plugin_test_dir + "inputFileSimpleTD_TT.std"
+    source0 = plugin_test_path / "inputFileSimpleTD_TT.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GeorgeKIndex
@@ -78,23 +71,21 @@ def test_3(plugin_test_dir):
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GeorgeKIndex] >> [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_3.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "TTTD_GeorgeKIndex_file2cmp_20231026.std"
+    file_to_compare = plugin_test_path / "TTTD_GeorgeKIndex_file2cmp_20231026.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
 
-def test_4(plugin_test_dir):
+def test_4(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul de l'indice avec un fichier contenant des TT et des ES d'unités différentes"""
     # open and read source
-    source0 = plugin_test_dir + "inputFileSimple.std"
+    source0 = plugin_test_path / "inputFileSimple.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     tt_df = select_with_meta(src_df0, ['TT'])
@@ -107,23 +98,21 @@ def test_4(plugin_test_dir):
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> ( ([Select --fieldName TT] >> [UnitConvert --unit kelvin]) + [Select --fieldName ES] ) >> [GeorgeKIndex] >> [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_4.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "TTES_GeorgeKIndex_file2cmp_20231026.std"
+    file_to_compare = plugin_test_path / "TTES_GeorgeKIndex_file2cmp_20231026.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
 # in python vertsion this works but produces only one result
-# def test_5(plugin_test_dir):
+# def test_5(plugin_test_path, test_tmp_path, call_fstcomp):
 #     """Calcul avec un fichier ayant plusieurs forecastHour - Ne doit pas fonctionner car des niveaux sont manquants pour un forecastHour"""
 #     # open and read source
-#     source0 = plugin_test_dir + "2016122000_006_NatPres.std"
+#     source0 = plugin_test_path / "2016122000_006_NatPres.std"
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     #compute GeorgeKIndex
@@ -134,10 +123,10 @@ def test_4(plugin_test_dir):
 #     #[ReaderStd --ignoreExtended --input {sources[0]}] >> [GeorgeKIndex]
 
 
-def test_6(plugin_test_dir):
+def test_6(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul avec un fichier ayant plusieurs forecastHour"""
     # open and read source
-    source0 = plugin_test_dir + "2016122000_006_NatPres.std"
+    source0 = plugin_test_path / "2016122000_006_NatPres.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     meta_df = src_df0.loc[src_df0.nomvar.isin(
@@ -153,14 +142,12 @@ def test_6(plugin_test_dir):
     # '[WriterStd --output {destination_path} --ignoreExtended]']
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_6.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "TTES_2016122000_file2cmp_20231026.std"
+    file_to_compare = plugin_test_path / "TTES_2016122000_file2cmp_20231026.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)

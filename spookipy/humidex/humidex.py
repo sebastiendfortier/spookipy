@@ -48,7 +48,7 @@ class Humidex(Plugin):
                 'HMX': {
                     'nomvar'  : 'HMX',
                     'label'   : 'HUMIDX',
-                    'unit'    : 'scalar',
+                    'unit'    : 'celsius',
                     'level'   : 0,
                     'ip1_kind': 2,
                     'surface' : True}

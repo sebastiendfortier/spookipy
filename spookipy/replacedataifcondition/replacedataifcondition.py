@@ -7,7 +7,7 @@ import fstpy
 import pandas as pd
 
 from ..plugin import Plugin, PluginParser
-from ..utils import (initializer, print_voir, validate_nomvar)
+from ..utils import (initializer, print_voir, validate_nomvar, parse_condition, parse_and_validate_condition, OPERATOR_LOOKUP_TABLE)
 
 class ReplaceDataIfConditionError(Exception):
     pass
@@ -53,10 +53,11 @@ class ReplaceDataIfCondition(Plugin):
             if len(self.no_meta_df.nomvar.unique()) > 1:
                 raise ReplaceDataIfConditionError("ReplaceDataIfConditionError -- MORE THAN ONE INPUT FIELD NAME - CANNOT USE OPTION nomvar_out (outputFieldName)")
 
-        self.condition_operator, self.condition_value = parse_condition(self.condition)
-        if self.condition_operator is not None:
-            self.condition_operator = operator_lookup_table[self.condition_operator]
-            self.condition_value = float(self.condition_value)
+        # self.condition_operator, self.condition_value = parse_condition(self.condition, ReplaceDataIfConditionError)
+        # if self.condition_operator is not None:
+        #     self.condition_operator = OPERATOR_LOOKUP_TABLE[self.condition_operator]
+        #     self.condition_value = float(self.condition_value)
+        self.condition_operator, self.condition_value = parse_and_validate_condition(self.condition, ReplaceDataIfConditionError)
 
 
     def compute(self) -> pd.DataFrame:
@@ -99,29 +100,7 @@ class ReplaceDataIfCondition(Plugin):
 
         return parsed_arg
     
-def parse_condition(condition):
-    if condition == 'isnan':
-        return None, None
-    
-    match_operator = r"(>=|<=|==|\>|\<)"
-    match_optional_underscore = "_*"
-    match_float = r"(\d+\.?\d?)"
-    match_all = match_operator+match_optional_underscore+match_float
 
-    if not re.match(match_all, condition):
-        raise ReplaceDataIfConditionError(f"invalid condition - {condition}")
-    
-    parsed_condition = re.search(match_all,condition)
-    
-    return (parsed_condition[1],parsed_condition[2])
-
-operator_lookup_table = {
-    "<" : operator.lt,
-    "<=" : operator.le,
-    ">" : operator.gt,
-    ">=" : operator.ge,
-    "==" : operator.eq,
-}
 
 def replace_data_if_condition(arr: np.ndarray, replace_value:float, condition_operator, condition_value:float) -> np.ndarray:
     """Calculates 

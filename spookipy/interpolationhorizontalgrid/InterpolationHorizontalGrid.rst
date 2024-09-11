@@ -37,7 +37,7 @@ Algorithm:
 References:
 ~~~~~~~~~~~
 
--  `Documentation on the differtent types of supported grids <http://web-mrb.cmc.ec.gc.ca/science/si/eng/si/misc/grilles.html>`__
+-  `Documentation on the different types of supported grids <http://web-mrb.cmc.ec.gc.ca/science/si/eng/si/misc/grilles.html>`__
 -  `EZSCINT Library RMNLIB <https://wiki.cmc.ec.gc.ca/wiki/Librmn/ezscint>`__
 
 Keywords:

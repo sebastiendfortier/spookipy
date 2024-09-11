@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from test import TEST_PATH, TMP_PATH, check_test_ssm_package
+from test import check_test_ssm_package
 
 check_test_ssm_package()
 
@@ -7,21 +7,19 @@ import fstpy
 import pandas as pd
 import pytest
 import spookipy
-from ci_fstcomp import fstcomp
-import secrets
+import warnings
 
 pytestmark = [pytest.mark.regressions, pytest.mark.humidity]
 
+@pytest.fixture(scope="module")
+def plugin_name():
+    """plugin_name in the path /fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/{plugin_name}"""
+    return "HumiditySpecific"
 
-@pytest.fixture
-def plugin_test_dir():
-    return TEST_PATH + '/HumiditySpecific/testsFiles/'
-
-
-def test_1(plugin_test_dir):
+def test_1(plugin_test_path):
     """Calcul de l'humidité spécifique; utilisation de --iceWaterPhase sans --temperaturePhaseSwitch."""
     # open and read source
-    source0 = plugin_test_dir + "inputFile.std"
+    source0 = plugin_test_path / "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute HumiditySpecific
@@ -30,10 +28,10 @@ def test_1(plugin_test_dir):
     # [ReaderStd --input {sources[0]}] >> [HumiditySpecific --iceWaterPhase BOTH]
 
 
-def test_2(plugin_test_dir):
+def test_2(plugin_test_path):
     """Calcul de l'humidité spécifique; utilisation de --temperaturePhaseSwitch sans --iceWaterPhase."""
     # open and read source
-    source0 = plugin_test_dir + "inputFile.std"
+    source0 = plugin_test_path / "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute HumiditySpecific
@@ -45,10 +43,10 @@ def test_2(plugin_test_dir):
     # [ReaderStd --input {sources[0]}] >> [HumiditySpecific --temperaturePhaseSwitch -30C]
 
 
-def test_3(plugin_test_dir):
+def test_3(plugin_test_path):
     """Calcul de l'humidité spécifique; utilisation de --iceWaterPhase WATER avec --temperaturePhaseSwitch."""
     # open and read source
-    source0 = plugin_test_dir + "inputFile.std"
+    source0 = plugin_test_path / "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute HumiditySpecific
@@ -61,10 +59,10 @@ def test_3(plugin_test_dir):
     # [ReaderStd --input {sources[0]}] >> [HumiditySpecific --iceWaterPhase WATER --temperaturePhaseSwitch -30C]
 
 
-def test_4(plugin_test_dir):
+def test_4(plugin_test_path):
     """Calcul de l'humidité spécifique; utilisation d'un unité invalide pour --temperaturePhaseSwitch."""
     # open and read source
-    source0 = plugin_test_dir + "inputFile.std"
+    source0 = plugin_test_path / "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute HumiditySpecific
@@ -77,10 +75,10 @@ def test_4(plugin_test_dir):
     # [ReaderStd --input {sources[0]}] >> [HumiditySpecific --iceWaterPhase BOTH --temperaturePhaseSwitch -30G]
 
 
-def test_5(plugin_test_dir):
+def test_5(plugin_test_path):
     """Calcul de l'humidité spécifique; utilisation de valeur invalide ( < borne minimale en Celsius) pour -temperaturePhaseSwitch."""
     # open and read source
-    source0 = plugin_test_dir + "inputFile.std"
+    source0 = plugin_test_path / "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute HumiditySpecific
@@ -93,10 +91,10 @@ def test_5(plugin_test_dir):
     # [ReaderStd --input {sources[0]}] >> [HumiditySpecific --iceWaterPhase BOTH --temperaturePhaseSwitch -273.16K]
 
 
-def test_6(plugin_test_dir):
+def test_6(plugin_test_path):
     """Calcul de l'humidité spécifique; utilisation d'une valeur invalide ( < borne minimale en kelvin) pour -temperaturePhaseSwitch."""
     # open and read source
-    source0 = plugin_test_dir + "inputFile.std"
+    source0 = plugin_test_path / "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute HumiditySpecific
@@ -108,10 +106,10 @@ def test_6(plugin_test_dir):
             temp_phase_switch_unit='kelvin').compute()
 
 
-def test_7(plugin_test_dir):
+def test_7(plugin_test_path):
     """Calcul de l'humidité spécifique; utilisation d'une valeur invalide pour -temperaturePhaseSwitch."""
     # open and read source
-    source0 = plugin_test_dir + "inputFile.std"
+    source0 = plugin_test_path / "inputFile.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute HumiditySpecific
@@ -123,10 +121,10 @@ def test_7(plugin_test_dir):
             temp_phase_switch_unit='kelvin').compute()
     # [ReaderStd --input {sources[0]}] >> [HumiditySpecific --iceWaterPhase INVALIDE --temperaturePhaseSwitch 273.17K]
 
-def test_8(plugin_test_dir):
+def test_8(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul de l'humidité spécifique (HU) à partir de l'humidité relative (HR), ice_water_phase = water ."""
     # open and read source
-    source0 = plugin_test_dir + "2011100712_012_regpres"
+    source0 = plugin_test_path / "2011100712_012_regpres"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     tthr_df = fstpy.select_with_meta(src_df0, ['TT', 'HR'])
@@ -140,26 +138,25 @@ def test_8(plugin_test_dir):
     # [WriterStd --output {destination_path}]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_8.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "regpres_testWithHR_file2cmp_20230426.std"
+    file_to_compare = plugin_test_path / "regpres_testWithHR_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_9(plugin_test_dir):
+def test_9(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul de l'humidité spécifique (HU) à partir de l'humidité relative (HR), option rpn, ice_water_phase = water ."""
     # open and read source
-    source0 = plugin_test_dir + "2011100712_012_regpres"
+    source0 = plugin_test_path / "2011100712_012_regpres"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     tthr_df = fstpy.select_with_meta(src_df0, ['TT', 'HR'])
 
+    warnings.filterwarnings("ignore", category=UserWarning, module="spookipy")
     # compute HumiditySpecific
     df      = spookipy.HumiditySpecific(tthr_df, 
                                         ice_water_phase='water',
@@ -170,22 +167,20 @@ def test_9(plugin_test_dir):
     # [WriterStd --output {destination_path}]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_9.std"
     fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "regpres_testWithHR_RPN_file2cmp_20230426.std"
+    file_to_compare = plugin_test_path / "regpres_testWithHR_RPN_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file) 
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_10(plugin_test_dir):
+def test_10(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul de l'humidité spécifique (HU) à partir de ES et TT, ice_water_phase = water ."""
     # open and read source
-    source0 = plugin_test_dir + "2011100712_012_regpres"
+    source0 = plugin_test_path / "2011100712_012_regpres"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     tthu_df = fstpy.select_with_meta(src_df0, ['TT', 'HU'])
@@ -205,27 +200,26 @@ def test_10(plugin_test_dir):
     # [WriterStd --output {destination_path}]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_10.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "regpres_testWithES_file2cmp_20230426.std"
+    file_to_compare = plugin_test_path / "regpres_testWithES_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
 
-def test_11(plugin_test_dir):
+def test_11(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul de l'humidité spécifique (HU) à partir de ES et TT, option rpn, ice_water_phase = water ."""
     # open and read source
-    source0 = plugin_test_dir + "2011100712_012_regpres"
+    source0 = plugin_test_path / "2011100712_012_regpres"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     tthu_df = fstpy.select_with_meta(src_df0, ['TT', 'HU'])
 
+    warnings.filterwarnings("ignore", category=UserWarning, module="spookipy")
     # compute HumiditySpecific
     es_df   = spookipy.DewPointDepression(tthu_df, 
                                           ice_water_phase='water',
@@ -245,22 +239,20 @@ def test_11(plugin_test_dir):
     # [Zap --pdsLabel R1580V0N --doNotFlagAsZapped] >> [WriterStd --output {destination_path}]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_11.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "regpres_testWithES_file2cmp_20230426.std"
+    file_to_compare = plugin_test_path / "regpres_testWithES_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_12(plugin_test_dir):
+def test_12(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul de l'humidité spécifique (HU) à partir de la température du point de rosée (TD), ice_water_phase = water ."""
     # open and read source
-    source0 = plugin_test_dir + "2011100712_012_glbhyb"
+    source0 = plugin_test_path / "2011100712_012_glbhyb"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     tthu_df = fstpy.select_with_meta(src_df0, ['TT', 'HU'])
@@ -284,27 +276,26 @@ def test_12(plugin_test_dir):
     # [WriterStd --output {destination_path}]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_12.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_4_file2cmp_20230426.std"
+    file_to_compare = plugin_test_path / "2011100712_012_glbhyb_4_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_13(plugin_test_dir):
+def test_13(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul de l'humidité spécifique (HU) à partir de la température du point de rosée (TD), option rpn, ice_water_phase = water ."""
     # open and read source
-    source0 = plugin_test_dir + "2011100712_012_glbhyb"
+    source0 = plugin_test_path / "2011100712_012_glbhyb"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     tthu_df = fstpy.select_with_meta(src_df0, ['TT', 'HU'])
     tt_df   = fstpy.select_with_meta(src_df0, ['TT'])
 
+    warnings.filterwarnings("ignore", category=UserWarning, module="spookipy")
     es_df   = spookipy.DewPointDepression(tthu_df, 
                                           ice_water_phase='water', 
                                           rpn=True).compute()
@@ -326,23 +317,21 @@ def test_13(plugin_test_dir):
     # [WriterStd --output {destination_path} ]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_13.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "2011100712_012_glbhyb_4_file2cmp_20230426.std"
+    file_to_compare = plugin_test_path / "2011100712_012_glbhyb_4_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
 
-def test_14(plugin_test_dir):
+def test_14(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul de l'humidité spécifique (HU) à partir du rapport de mélange de la vapeur d'eau (QV), ice_water_phase = water ."""
     # open and read source
-    source0 = plugin_test_dir + "2011100712_012_regpres"
+    source0 = plugin_test_path / "2011100712_012_regpres"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     ttes_df = fstpy.select_with_meta(src_df0, ['TT', 'ES'])
@@ -365,23 +354,21 @@ def test_14(plugin_test_dir):
     # [WriterStd --output {destination_path} ]
     df      = spookipy.convip(df)
 
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
-    fstpy.delete_file(results_file)                          
+    results_file = test_tmp_path / "test_14.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "regpres_testWithQV_20230426.std"
+    file_to_compare = plugin_test_path / "regpres_testWithQV_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_15(plugin_test_dir):
+def test_15(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul de l'humidité spécifique (HU) à partir de la température du point de rosée (TD), ice_water_phase = both."""
 
     # open and read source
-    source0 = plugin_test_dir + "2011100712_012_glbhyb_reduit"
+    source0 = plugin_test_path / "2011100712_012_glbhyb_reduit"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     tthu_df = fstpy.select_with_meta(src_df0, ['TT', 'HU'])
@@ -410,25 +397,23 @@ def test_15(plugin_test_dir):
     # [WriterStd --output {destination_path}]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_15.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "glbhyb_reduit_test15_file2cmp_20230426.std"
+    file_to_compare = plugin_test_path / "glbhyb_reduit_test15_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_c_cor=0.0001)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare, e_c_cor=0.0001)
     assert(res)
 
-def test_16(plugin_test_dir):
+def test_16(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul de l'humidité spécifique (HU) à partir de TD, avec option copy_input."""
     # Existe en python seulement 
     # Idem au test_15, pour tester l'option copy_input
 
     # open and read source
-    source0 = plugin_test_dir + "2011100712_012_glbhyb_reduit"
+    source0 = plugin_test_path / "2011100712_012_glbhyb_reduit"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     tthu_df = fstpy.select_with_meta(src_df0, ['TT', 'HU'])
@@ -450,23 +435,21 @@ def test_16(plugin_test_dir):
                                         copy_input=True).compute()
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_16.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_16.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "glbhyb_reduit_test16_file2cmp_20230426.std"
+    file_to_compare = plugin_test_path / "glbhyb_reduit_test16_file2cmp_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_c_cor=0.0001)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare, e_c_cor=0.0001)
     assert(res)
 
 # Nouveau test - identique au test 8 mais avec option BOTH
-def test_17(plugin_test_dir):
+def test_17(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul de l'humidité spécifique (HU) à partir de l'humidité relative (HR), ice_water_phase = BOTH."""
     # open and read source
-    source0 = plugin_test_dir + "2011100712_012_regpres"
+    source0 = plugin_test_path / "2011100712_012_regpres"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     meta_df = src_df0.loc[src_df0.nomvar.isin(
@@ -484,27 +467,26 @@ def test_17(plugin_test_dir):
                                         ).compute()
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_17.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_17.std"
     fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "regpres_testWithHR_test17_file2cmp.std"
+    file_to_compare = plugin_test_path / "regpres_testWithHR_test17_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file) 
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_18(plugin_test_dir):
+def test_18(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul de l'humidité spécifique (HU) à partir du rapport de mélange de la vapeur d'eau (QV), option rpn, ice_water_phase = water."""
     # open and read source
-    source0 = plugin_test_dir + "2011100712_012_regpres"
+    source0 = plugin_test_path / "2011100712_012_regpres"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     ttes_df = fstpy.select_with_meta(src_df0, ['TT', 'ES'])
     tt_df   = fstpy.select_with_meta(src_df0, ['TT'])
 
+    warnings.filterwarnings("ignore", category=UserWarning, module="spookipy")
     es_df   = spookipy.DewPointDepression(ttes_df, 
                                           ice_water_phase='water',
                                           rpn=True
@@ -521,22 +503,20 @@ def test_18(plugin_test_dir):
                                         rpn=True
                                         ).compute()
 
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_18.std"])
-    fstpy.delete_file(results_file)                          
+    results_file = test_tmp_path / "test_18.std"
     fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "regpres_testWithQV_RPN_20230426.std"
+    file_to_compare = plugin_test_path / "regpres_testWithQV_RPN_20230426.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_19(plugin_test_dir):
+def test_19(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul de l'humidite specifique (HU) avec un fichier regpres (HR), option rpn, ice_water_phase = both."""
     # open and read source
-    source0 = plugin_test_dir + "2011100712_012_regpres"
+    source0 = plugin_test_path / "2011100712_012_regpres"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     hr_df   = fstpy.select_with_meta(src_df0, ['HR'])
@@ -546,19 +526,18 @@ def test_19(plugin_test_dir):
 
     tthr_df = pd.concat([tt_df, hr_df],ignore_index=True)
 
+    warnings.filterwarnings("ignore", category=UserWarning, module="spookipy")
     # compute 
     df      = spookipy.HumiditySpecific(tthr_df, 
                                         ice_water_phase='both',
                                         rpn=True).compute()
 
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_19.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_19.std"
     fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "regpres_testWithHR_RPN_test19_file2cmp.std"
+    file_to_compare = plugin_test_path / "regpres_testWithHR_RPN_test19_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)

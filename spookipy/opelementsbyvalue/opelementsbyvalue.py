@@ -30,8 +30,8 @@ class OpElementsByValue(Plugin):
     :type nomvar_out: str, optional
     :param unit: unit to apply to results, defaults to 'scalar'
     :type unit: str, optional
-    :param etiket: etiket to apply to results, defaults to None
-    :type etiket: str, optional
+    :param label: label to apply to results, defaults to None (keep the same label)
+    :type label: str, optional
     """
     @initializer
     def __init__(
@@ -43,10 +43,10 @@ class OpElementsByValue(Plugin):
             exception_class=OpElementsByValueError,
             nomvar_out=None,
             unit='scalar',
-            etiket=None):
+            label=None):
 
-        if self.etiket is None:
-            self.etiket = self.operation_name
+        if self.label is None:
+            self.label = self.operation_name
 
         self.df = fstpy.metadata_cleanup(self.df)
         super().__init__(self.df)
@@ -61,17 +61,19 @@ class OpElementsByValue(Plugin):
                 self.operation_name,
                 self.exception_class)
 
-        self.no_meta_df = fstpy.add_columns(self.no_meta_df, columns=['unit'])
-
         if not (self.nomvar_out is None):
             self.plugin_result_specifications = {
                 'ALL': {
                     'nomvar': self.nomvar_out,
-                    'label': self.etiket,
-                    'unit'  : self.unit}}
+                    'unit'  : self.unit
+                    }
+                }
         else:
             self.plugin_result_specifications = {
-                'ALL': {'label': self.etiket, 'unit': self.unit}}
+                'ALL': {'unit': self.unit}}
+            
+        if self.label:
+            self.plugin_result_specifications["ALL"]["label"] = self.label
 
     def compute(self) -> pd.DataFrame:
         logging.info('OpElementsByValue - compute')

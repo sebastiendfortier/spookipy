@@ -21,9 +21,11 @@ class GridCut(Plugin):
     :type start_point: tuple, optional
     :param end_point: The lower right point of the matrix, defaults to (1, 1)
     :type end_point: tuple, optional
+    :param grid_tag: The ip[1-3]/ig[1-3] values to identify the resulting grid. ex (110,240,3). Default will be to increase ip3/ig3 by one.
+    :type grid_tag: tuple, optional
     """
     @initializer
-    def __init__(self, df: pd.DataFrame, start_point=(0, 0), end_point=(1, 1)):
+    def __init__(self, df: pd.DataFrame, start_point=(0, 0), end_point=(1, 1), grid_tag=None):
 
         self.validate_input()
 
@@ -34,6 +36,8 @@ class GridCut(Plugin):
         self.df = fstpy.metadata_cleanup(self.df)
 
         self.validate_coords()
+
+        self.validate_grid_tag()
 
         self.tictictactac_df = self.df.loc[self.df.nomvar.isin(
             ["^^", ">>"])].reset_index(drop=True)
@@ -65,6 +69,21 @@ class GridCut(Plugin):
                 self.start_point[1] > self.end_point[1]):
             raise GridCutError(
                 'Start point must be inferior on all axes to end point')
+
+    def validate_grid_tag(self):
+
+        if self.grid_tag == None:
+            return # no grid tag specified, default behavior will be used
+
+        # Check if the tuple has exactly three elements
+        if len(self.grid_tag) != 3:
+            raise GridCutError('grid_tag must be a tuple of 3 positive integers')
+        else:
+            # Validate each element
+            for elem in self.grid_tag:
+                if not isinstance(elem, int) or elem <= 0:
+                    raise GridCutError(f"grid_tag must have 3 positives integers. '{str(elem)}' is not a positive integer.")
+
 
     def compute(self) -> pd.DataFrame:
         logging.info('GridCut - compute')
@@ -105,8 +124,21 @@ class GridCut(Plugin):
 
             cptac_df.at[i, 'ni'] = cptac_df.at[i, 'd'].shape[0]
 
+        # adjust grid_tag, by default only increment ip3,ig3
+        if self.grid_tag:
+            cptic_df[['ip1', 'ip2', 'ip3']] = self.grid_tag
+            cptac_df[['ip1', 'ip2', 'ip3']] = self.grid_tag
+            cp_df.loc[cp_df['grtyp'].isin(['Z', 'Y']), ['ig1','ig2','ig3']] = self.grid_tag
+        else:
+            cptic_df['ip3'] += 1
+            cptac_df['ip3'] += 1
+            cp_df.loc[cp_df['grtyp'].isin(['Z', 'Y']), ['ig3']] += 1
+
         res_df = pd.concat([cp_df, self.meta_df, cptic_df,
                            cptac_df], ignore_index=True)
+
+        # because gridcut manipulate directly the ips/igs, drop all expended columns to keep the changes done to ips/igs
+        fstpy.remove_all_expanded_columns(res_df)
 
         res_df = fstpy.metadata_cleanup(res_df)
 
@@ -131,6 +163,7 @@ class GridCut(Plugin):
         parser = PluginParser(prog=GridCut.__name__, parents=[Plugin.base_parser],add_help=False)
         parser.add_argument('--startPoint',type=str,required=True,dest="start_point", help="Starting point of the selected matrix.")
         parser.add_argument('--endPoint',type=str,required=True,dest="end_point", help="Ending point of the selected matrix.")
+        parser.add_argument('--gridTag',type=str,required=False,dest="grid_tag", help="The ip[1-3]/ig[1-3] values to identify the resulting grid. ex: --gridTag 110,240,3. Default will be to only increase ip3/ig3 by one")
 
         parsed_arg = vars(parser.parse_args(args.split()))
 
@@ -140,4 +173,11 @@ class GridCut(Plugin):
         if parsed_arg["start_point"][0] < 0 or parsed_arg["start_point"][1] < 0 or parsed_arg["end_point"][0] < 0 or parsed_arg["end_point"][1] < 0:
             raise Exception("Start point and end point needs to be positive.")
         # TODO should we check it's >0?
+
+        if parsed_arg["grid_tag"] != None:
+            try:
+                parsed_arg["grid_tag"] = tuple(map(int, parsed_arg["grid_tag"].split(',')))
+            except ValueError:
+                raise GridCutError("gridTag parameter must have 3 positives integers separated by comma. ex: --gridTag 4,1000,1002")
+
         return parsed_arg

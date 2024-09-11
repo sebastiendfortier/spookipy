@@ -5,29 +5,31 @@ import argparse
 import pandas as pd
 from ..utils import (dataframe_arrays_to_dask, reshape_arrays)
 import fstpy
+from   fstpy.dataframe_utils import convert_cols_to_boolean_dtype
 
 class PluginParser(argparse.ArgumentParser):
     def parse_args(self, args=None, namespace=None):
         parsed_arg = super().parse_args(args,namespace)
 
         parsed_arg_dict = vars(parsed_arg)
-        if "help" in parsed_arg_dict and parsed_arg_dict['help'] or "help-module" in parsed_arg_dict:
+        if "help-module" in parsed_arg_dict:
             self.print_help()
 
         return parsed_arg
 
 def defines_base_argparser() -> PluginParser:
-    parser = PluginParser(prog="Plugin", description=__doc__, add_help=False)
-    parser.add_argument('--help','-h',action='store_true', help="Produces this help message.")
-    parser.add_argument('--help-module',type=str,choices=["generic","specific"], help="Produces a help for a given module.")
-    parser.add_argument('--optimizationLevel',type=int,choices=[0,1,2], help="Sets level of optimization")
-    parser.add_argument('--threads','-T',type=int, help="Sets the maximum amount of threads to be used.")
-    parser.add_argument('--print_extended','-E',action='store_true', help="Prints the request this plugin generates when called - can only be used with full configuration because dependencies need to be created. This does not stop the request, thus error may arise if used with a fake request to get this information")
-    parser.add_argument('--copy_input','-C',action='store_true', help="Copies the input fields to the output.")
-    parser.add_argument('--uses',action='store_true', help="Prints out the plugins that this module uses - can only be used with full configuration because the dependencies need to be created.")
-    parser.add_argument('--verbose',"-v",action='store_true', help="Increases verbosity level.")
-    parser.add_argument('--version',action='store_true', help="Gets version number.")
-    parser.add_argument('--plugin_language',type=str,choices=["PYTHON","CPP"], help="Force spooki_run to use the plugin in this language despite the --plugin_language_option.")
+    parser = PluginParser(prog="Plugin", description=__doc__, add_help=True)
+
+    generic_group = parser.add_argument_group('Generic Options')
+    generic_group.add_argument('--help-module',type=str,choices=["generic","specific"], help="Produces a help for a given module.")
+    generic_group.add_argument('--optimizationLevel',type=int,choices=[0,1,2], help="Sets level of optimization")
+    generic_group.add_argument('--threads','-T',type=int, help="Sets the maximum amount of threads to be used.")
+    generic_group.add_argument('--print_extended','-E',action='store_true', help="Prints the request this plugin generates when called - can only be used with full configuration because dependencies need to be created. This does not stop the request, thus error may arise if used with a fake request to get this information")
+    generic_group.add_argument('--copy_input','-C',action='store_true', help="Copies the input fields to the output.")
+    generic_group.add_argument('--uses',action='store_true', help="Prints out the plugins that this module uses - can only be used with full configuration because the dependencies need to be created.")
+    generic_group.add_argument('--verbose',"-v",action='store_true', help="Increases verbosity level.")
+    generic_group.add_argument('--version',action='store_true', help="Gets version number.")
+    generic_group.add_argument('--plugin_language',type=str,choices=["PYTHON","CPP"], help="Force spooki_run to use the plugin in this language despite the --plugin_language_option.")
 
     return parser
 
@@ -47,7 +49,7 @@ class Plugin(abc.ABC):
 
     computable_plugin = None
     def __init__(self, df: pd.DataFrame, copy_input=False) -> None:
-        self.df = df
+        self.df = fstpy.add_columns(df,'unit')
         self.validate_input()
         self.get_dataframes()
 
@@ -121,6 +123,14 @@ class Plugin(abc.ABC):
             new_list.append(self.no_meta_df)
 
         # merge all results together
+        boolean_cols = ['surface', 'ascending', 'follow_topography', 'multiple_modifications', 'zapped', 
+                        'filtered', 'interpolated', 'unit_converted', 'bounded', 'missing_data', 
+                        'ensemble_extra_info', 'masks', 'masked']
+
+        # Conversion des colonnes a boolean pour eviter warning "object-dtype columns with all-bool values ..."
+        for tmp_df in new_list:
+            tmp_df = convert_cols_to_boolean_dtype(tmp_df, boolean_cols)
+
         res_df = pd.concat(new_list, ignore_index=True)
 
         res_df = fstpy.metadata_cleanup(res_df)

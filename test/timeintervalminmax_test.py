@@ -1,30 +1,29 @@
 # -*- coding: utf-8 -*-
-import datetime
-from spookipy.timeintervalminmax.timeintervalminmax import TimeIntervalMinMaxError
-from test import TMP_PATH, TEST_PATH
+from test import check_test_ssm_package
+
+check_test_ssm_package()
+
 import pytest
 import fstpy
 import spookipy
-import pandas as pd
-from ci_fstcomp import fstcomp
-import secrets
-import rpnpy.librmn.all as rmn
+import datetime
 
 pytestmark = [pytest.mark.regressions]
 
-@pytest.fixture
-def plugin_test_dir():
-    return TEST_PATH + '/TimeIntervalMinMax/testsFiles/'
+@pytest.fixture(scope="module")
+def plugin_name():
+    """plugin_name in the path /fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/{plugin_name}"""
+    return "TimeIntervalMinMax"
 
 
-def test_1(plugin_test_dir):
+def test_1(plugin_test_path):
     """Tester sans la cle obligatoire FIELDNAME."""
     # open and read source
-    source0 = plugin_test_dir + "global20121217_fileSrc.std"
+    source0 = plugin_test_path / "global20121217_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    with pytest.raises(TimeIntervalMinMaxError):
+    with pytest.raises(spookipy.TimeIntervalMinMaxError):
         df = spookipy.TimeIntervalMinMax(src_df0, max=True,
             forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)), 
             interval=datetime.timedelta(hours=12), 
@@ -35,10 +34,10 @@ def test_1(plugin_test_dir):
 
 
 # not tested, has defaults for min and max
-# def test_2(plugin_test_dir):
+# def test_2(plugin_test_path):
 #     """Tester sans la cle obligatoire type."""
 #     # open and read source
-#     source0 = plugin_test_dir + "global20121217_fileSrc.std"
+#     source0 = plugin_test_path / "global20121217_fileSrc.std"
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     # compute TimeIntervalMinMax
@@ -51,26 +50,26 @@ def test_1(plugin_test_dir):
 #     # [TimeIntervalMinMax --fieldName PR --rangeForecastHour 0@177 --interval 12 --step 24 --outputFieldNameMin PRX]
 
 #     # write the result
-#     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
+#     results_file = test_tmp_path / "test_2.std"
 #     fstpy.delete_file(results_file)
 #     fstpy.StandardFileWriter(results_file, df).to_fst()
 
 #     # open and read comparison file
-#     file_to_compare = plugin_test_dir + "nan"
+#     file_to_compare = plugin_test_path / "nan"
 
 #     # compare results
 #     res = fstcomp(results_file, file_to_compare)
 #     fstpy.delete_file(results_file)
 #     assert(res)
 
-def test_3(plugin_test_dir):
+def test_3(plugin_test_path):
     """Tester sans la cle obligatoire rangeForecastHour."""
     # open and read source
-    source0 = plugin_test_dir + "global20121217_fileSrc.std"
+    source0 = plugin_test_path / "global20121217_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    with pytest.raises(TimeIntervalMinMaxError):
+    with pytest.raises(spookipy.TimeIntervalMinMaxError):
         df = spookipy.TimeIntervalMinMax(src_df0,
             interval=datetime.timedelta(hours=12), 
             step=datetime.timedelta(hours=24),
@@ -81,10 +80,10 @@ def test_3(plugin_test_dir):
 
 
 # not tested, has defaults for seting min and max to True
-# def test_4(plugin_test_dir):
+# def test_4(plugin_test_path):
 #     """Tester avec le type TYPE en majuscule."""
 #     # open and read source
-#     source0 = plugin_test_dir + "global20121217_fileSrc.std"
+#     source0 = plugin_test_path / "global20121217_fileSrc.std"
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     # compute TimeIntervalMinMax
@@ -98,26 +97,26 @@ def test_3(plugin_test_dir):
 #     # [WriterStd --output {destination_path} --ignoreExtended]
 
 #     # write the result
-#     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
+#     results_file = test_tmp_path / "test_4.std"
 #     fstpy.delete_file(results_file)
 #     fstpy.StandardFileWriter(results_file, df).to_fst()
 
 #     # open and read comparison file
-#     file_to_compare = plugin_test_dir + "nan"
+#     file_to_compare = plugin_test_path / "nan"
 
 #     # compare results
 #     res = fstcomp(results_file, file_to_compare)
 #     fstpy.delete_file(results_file)
 #     assert(res)
 
-def test_5(plugin_test_dir):
+def test_5(plugin_test_path):
     """Tester avec un interval à zero"""
     # open and read source
-    source0 = plugin_test_dir + "global20121217_fileSrc.std"
+    source0 = plugin_test_path / "global20121217_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    with pytest.raises(TimeIntervalMinMaxError):
+    with pytest.raises(spookipy.TimeIntervalMinMaxError):
         df = spookipy.TimeIntervalMinMax(src_df0, 
             nomvar='PR', 
             min=True,
@@ -129,14 +128,14 @@ def test_5(plugin_test_dir):
     # [TimeIntervalMinMax --fieldName PR --type MIN --interval 0 --rangeForecastHour 0@177 --step 24 --outputFieldNameMin PRX]
 
 
-def test_6(plugin_test_dir):
+def test_6(plugin_test_path):
     """Tester avec un step a zero."""
     # open and read source
-    source0 = plugin_test_dir + "global20121217_fileSrc.std"
+    source0 = plugin_test_path / "global20121217_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    with pytest.raises(TimeIntervalMinMaxError):
+    with pytest.raises(spookipy.TimeIntervalMinMaxError):
         df = spookipy.TimeIntervalMinMax(src_df0,
             nomvar='PR',
             min=True,
@@ -149,10 +148,10 @@ def test_6(plugin_test_dir):
 
 
 # not tested , has a default for out nomvars
-# def test_7(plugin_test_dir):
+# def test_7(plugin_test_path):
 #     """Tester avec type max avec une sortie min."""
 #     # open and read source
-#     source0 = plugin_test_dir + "global20121217_fileSrc.std"
+#     source0 = plugin_test_path / "global20121217_fileSrc.std"
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     # compute TimeIntervalMinMax
@@ -167,12 +166,12 @@ def test_6(plugin_test_dir):
 #     # [TimeIntervalMinMax --fieldName PR --type MAX --interval 12 --rangeForecastHour 0@177 --step 24 --outputFieldNameMin PRX]
 
 #     # write the result
-#     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
+#     results_file = test_tmp_path / "test_7.std"
 #     fstpy.delete_file(results_file)
 #     fstpy.StandardFileWriter(results_file, df).to_fst()
 
 #     # open and read comparison file
-#     file_to_compare = plugin_test_dir + "nan"
+#     file_to_compare = plugin_test_path / "nan"
 
 #     # compare results
 #     res = fstcomp(results_file, file_to_compare)
@@ -180,10 +179,10 @@ def test_6(plugin_test_dir):
 #     assert(res)
 
 # not tested, has defaults
-# def test_8(plugin_test_dir):
+# def test_8(plugin_test_path):
 #     """Tester avec step max et une sortie min."""
 #     # open and read source
-#     source0 = plugin_test_dir + "global20121217_fileSrc.std"
+#     source0 = plugin_test_path / "global20121217_fileSrc.std"
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     # compute TimeIntervalMinMax
@@ -195,12 +194,12 @@ def test_6(plugin_test_dir):
 #     # [TimeIntervalMinMax --fieldName PR --type MAX --interval 12 --rangeForecastHour 0@177 --step 24 --outputFieldNameMin PRX]
 
 #     # write the result
-#     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
+#     results_file = test_tmp_path / "test_8.std"
 #     fstpy.delete_file(results_file)
 #     fstpy.StandardFileWriter(results_file, df).to_fst()
 
 #     # open and read comparison file
-#     file_to_compare = plugin_test_dir + "nan"
+#     file_to_compare = plugin_test_path / "nan"
 
 #     # compare results
 #     res = fstcomp(results_file, file_to_compare)
@@ -208,10 +207,10 @@ def test_6(plugin_test_dir):
 #     assert(res)
 
 # should not test writer here
-# def test_9(plugin_test_dir):
+# def test_9(plugin_test_path):
 #     """Tester l'option --output avec un path qui n'existe pas!"""
 #     # open and read source
-#     source0 = plugin_test_dir + "inputFile.std"
+#     source0 = plugin_test_path / "inputFile.std"
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     # compute TimeIntervalMinMax
@@ -221,12 +220,12 @@ def test_6(plugin_test_dir):
 #     # [WriterStd --output /tmp//totonSZBK2/toto.std]
 
 #     # write the result
-#     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
+#     results_file = test_tmp_path / "test_9.std"
 #     fstpy.delete_file(results_file)
 #     fstpy.StandardFileWriter(results_file, df).to_fst()
 
 #     # open and read comparison file
-#     file_to_compare = plugin_test_dir + "nan"
+#     file_to_compare = plugin_test_path / "nan"
 
 #     # compare results
 #     res = fstcomp(results_file, file_to_compare)
@@ -234,10 +233,10 @@ def test_6(plugin_test_dir):
 #     assert(res)
 
 # not tested , has defaults
-# def test_10(plugin_test_dir):
+# def test_10(plugin_test_path):
 #     """Tester avec type MAX et outputfieldNameMIN, c'est pas bon."""
 #     # open and read source
-#     source0 = plugin_test_dir + "global20121217_fileSrc.std"
+#     source0 = plugin_test_path / "global20121217_fileSrc.std"
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     # compute TimeIntervalMinMax
@@ -246,12 +245,12 @@ def test_6(plugin_test_dir):
 #     # [TimeIntervalMinMax --fieldName PR --type MAX --interval 12 --rangeForecastHour 0@177 --step 24 --outputFieldNameMin PRX]
 
 #     # write the result
-#     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
+#     results_file = test_tmp_path / "test_10.std"
 #     fstpy.delete_file(results_file)
 #     fstpy.StandardFileWriter(results_file, df).to_fst()
 
 #     # open and read comparison file
-#     file_to_compare = plugin_test_dir + "nan"
+#     file_to_compare = plugin_test_path / "nan"
 
 #     # compare results
 #     res = fstcomp(results_file, file_to_compare)
@@ -259,10 +258,10 @@ def test_6(plugin_test_dir):
 #     assert(res)
 
 # not tested, has defaults
-# def test_11(plugin_test_dir):
+# def test_11(plugin_test_path):
 #     """Tester avec type MIN et outputfieldNameMAX c'est pas bon."""
 #     # open and read source
-#     source0 = plugin_test_dir + "global20121217_fileSrc.std"
+#     source0 = plugin_test_path / "global20121217_fileSrc.std"
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     # compute TimeIntervalMinMax
@@ -271,12 +270,12 @@ def test_6(plugin_test_dir):
 #     # [TimeIntervalMinMax --fieldName PR --type MIN --interval 12 --rangeForecastHour 0@177 --step 24 --outputFieldNameMax PRX]
 
 #     # write the result
-#     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
+#     results_file = test_tmp_path / "test_11.std"
 #     fstpy.delete_file(results_file)
 #     fstpy.StandardFileWriter(results_file, df).to_fst()
 
 #     # open and read comparison file
-#     file_to_compare = plugin_test_dir + "nan"
+#     file_to_compare = plugin_test_path / "nan"
 
 #     # compare results
 #     res = fstcomp(results_file, file_to_compare)
@@ -284,10 +283,10 @@ def test_6(plugin_test_dir):
 #     assert(res)
 
 # not tested, invalid param automatically rejected
-# def test_12(plugin_test_dir):
+# def test_12(plugin_test_path):
 #     """Tester avec type MINI, le type mini existe pas."""
 #     # open and read source
-#     source0 = plugin_test_dir + "global20121217_fileSrc.std"
+#     source0 = plugin_test_path / "global20121217_fileSrc.std"
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     # compute TimeIntervalMinMax
@@ -296,26 +295,26 @@ def test_6(plugin_test_dir):
 #     # [TimeIntervalMinMax --fieldName PR --type MINI --interval 12 --rangeForecastHour 0@177 --step 24 --outputFieldNameMax PRX]
 
 #     # write the result
-#     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
+#     results_file = test_tmp_path / "test_12.std"
 #     fstpy.delete_file(results_file)
 #     fstpy.StandardFileWriter(results_file, df).to_fst()
 
 #     # open and read comparison file
-#     file_to_compare = plugin_test_dir + "nan"
+#     file_to_compare = plugin_test_path / "nan"
 
 #     # compare results
 #     res = fstcomp(results_file, file_to_compare)
 #     fstpy.delete_file(results_file)
 #     assert(res)
 
-def test_13(plugin_test_dir):
+def test_13(plugin_test_path):
     """Tester avec un rangeForecastHour invalide"""
     # open and read source
-    source0 = plugin_test_dir + "global20121217_fileSrc.std"
+    source0 = plugin_test_path / "global20121217_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    with pytest.raises(TimeIntervalMinMaxError):
+    with pytest.raises(spookipy.TimeIntervalMinMaxError):
         df = spookipy.TimeIntervalMinMax(src_df0,
             nomvar='PR',
             max=True,
@@ -327,14 +326,14 @@ def test_13(plugin_test_dir):
     # [TimeIntervalMinMax --fieldName PR --type MAX --interval 12 --rangeForecastHour -1 --step 24 --outputFieldNameMax PRX]
 
 
-def test_14(plugin_test_dir):
+def test_14(plugin_test_path):
     """Tester avec deux intervales à la place d'un seul."""
     # open and read source
-    source0 = plugin_test_dir + "global20121217_fileSrc.std"
+    source0 = plugin_test_path / "global20121217_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    with pytest.raises(TimeIntervalMinMaxError):
+    with pytest.raises(spookipy.TimeIntervalMinMaxError):
         df = spookipy.TimeIntervalMinMax(src_df0,
             nomvar='PR',
             min=True,
@@ -346,14 +345,14 @@ def test_14(plugin_test_dir):
     # [TimeIntervalMinMax --fieldName PR --type MIN --interval 12,10 --rangeForecastHour 0@177 --step 24 --outputFieldNameMin PRX]
 
 
-def test_15(plugin_test_dir):
+def test_15(plugin_test_path):
     """Tester avec un interval qui depasse le rangeForecastHour."""
     # open and read source
-    source0 = plugin_test_dir + "global20121217_fileSrc.std"
+    source0 = plugin_test_path / "global20121217_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    with pytest.raises(TimeIntervalMinMaxError):
+    with pytest.raises(spookipy.TimeIntervalMinMaxError):
         df = spookipy.TimeIntervalMinMax(src_df0,
             nomvar='PR',
             min=True,
@@ -365,14 +364,14 @@ def test_15(plugin_test_dir):
     # [TimeIntervalMinMax --fieldName PR --type MIN --interval 12 --rangeForecastHour 0@177,50@58 --step 24 --outputFieldNameMin PRX]
 
 
-def test_16(plugin_test_dir):
+def test_16(plugin_test_path):
     """Tester avec deux steps à la place d'un seul."""
     # open and read source
-    source0 = plugin_test_dir + "global20121217_fileSrc.std"
+    source0 = plugin_test_path / "global20121217_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    with pytest.raises(TimeIntervalMinMaxError):
+    with pytest.raises(spookipy.TimeIntervalMinMaxError):
         df = spookipy.TimeIntervalMinMax(src_df0,
             nomvar='PR',
             min=True,
@@ -385,14 +384,14 @@ def test_16(plugin_test_dir):
 
 
 
-def test_17(plugin_test_dir):
+def test_17(plugin_test_path):
     """Tester avec 2 outputfieldNameMin mais un seul fieldName."""
     # open and read source
-    source0 = plugin_test_dir + "global20121217_fileSrc.std"
+    source0 = plugin_test_path / "global20121217_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    with pytest.raises(TimeIntervalMinMaxError):
+    with pytest.raises(spookipy.TimeIntervalMinMaxError):
         df = spookipy.TimeIntervalMinMax(src_df0,
             nomvar='PR',
             min=True,
@@ -404,14 +403,14 @@ def test_17(plugin_test_dir):
     # [TimeIntervalMinMax --fieldName PR --type MIN --interval 12 --rangeForecastHour 0@177 --step 24 --outputFieldNameMin PRX,PRZ]
 
 
-def test_18(plugin_test_dir):
+def test_18(plugin_test_path):
     """Tester avec 2 steps  mais un seul fieldName."""
     # open and read source
-    source0 = plugin_test_dir + "global20121217_fileSrc.std"
+    source0 = plugin_test_path / "global20121217_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    with pytest.raises(TimeIntervalMinMaxError):
+    with pytest.raises(spookipy.TimeIntervalMinMaxError):
         df = spookipy.TimeIntervalMinMax(src_df0,
             nomvar='PR',
             min=True,
@@ -423,14 +422,14 @@ def test_18(plugin_test_dir):
     # [TimeIntervalMinMax --fieldName PR --type BOTH --interval 12 --rangeForecastHour 0@177 --step 24,15 --outputFieldNameMin PRX]
 
 
-def test_19(plugin_test_dir):
+def test_19(plugin_test_path):
     """Tester avec 2 outputFieldNameMax mais 1 seul fieldName."""
     # open and read source
-    source0 = plugin_test_dir + "global20121217_fileSrc.std"
+    source0 = plugin_test_path / "global20121217_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    with pytest.raises(TimeIntervalMinMaxError):
+    with pytest.raises(spookipy.TimeIntervalMinMaxError):
         df = spookipy.TimeIntervalMinMax(src_df0,
             nomvar='PR',
             min=True,
@@ -444,10 +443,10 @@ def test_19(plugin_test_dir):
     # [TimeIntervalMinMax --fieldName PR --type BOTH --interval 12 --rangeForecastHour 0@177 --step 24 --outputFieldNameMin PRX --outputFieldNameMax PRX,PRZ]
 
 # same as test_19
-# def test_20(plugin_test_dir):
+# def test_20(plugin_test_path):
 #     """Tester avec 1 fieldName PR et 2 outputFieldNameMin PRX,PRZ mais un seul outputFieldNameMax."""
 #     # open and read source
-#     source0 = plugin_test_dir + "global20121217_fileSrc.std"
+#     source0 = plugin_test_path / "global20121217_fileSrc.std"
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     # compute TimeIntervalMinMax
@@ -456,22 +455,22 @@ def test_19(plugin_test_dir):
 #     # [TimeIntervalMinMax --fieldName PR --type BOTH --interval 12 --rangeForecastHour 0@177 --step 24 --outputFieldNameMin PRX,PRZ --outputFieldNameMax PRX]
 
 #     # write the result
-#     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_20.std"])
+#     results_file = test_tmp_path / "test_20.std"
 #     fstpy.delete_file(results_file)
 #     fstpy.StandardFileWriter(results_file, df).to_fst()
 
 #     # open and read comparison file
-#     file_to_compare = plugin_test_dir + "nan"
+#     file_to_compare = plugin_test_path / "nan"
 
 #     # compare results
 #     res = fstcomp(results_file, file_to_compare)
 #     fstpy.delete_file(results_file)
 #     assert(res)
 
-def test_21(plugin_test_dir):
+def test_21(plugin_test_path, test_tmp_path, call_fstcomp):
     """ Calcul d'un test min avec un fieldName TT et 2 rangeForecastHours."""
     # open and read source
-    source0 = plugin_test_dir + "TT_Interval_3_168_160_150_fileSrc.std"
+    source0 = plugin_test_path / "TT_Interval_3_168_160_150_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
@@ -489,32 +488,25 @@ def test_21(plugin_test_dir):
     df['ig1'] = 0
     df['ig2'] = 0
     df['grtyp'] = 'X'
-    # print(df)
-    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
-                                                                    df['ip1'],df['ip2'],df['ip3'],
-                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
-                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
-                                                                    df['interval'],True,True)
-    # print(df)
+   
+    df = spookipy.encode_ip_when_interval(df)
     
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_21.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_21.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + \
+    file_to_compare = plugin_test_path / \
         "TT_Interval_3_168_160_150_diff_file2cmp_encodeIP2andIP3.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_22(plugin_test_dir):
+def test_22(plugin_test_path, test_tmp_path, call_fstcomp):
     """ Calcul d'un test MIN avec 2 fieldNames TT,HU et 2 rangeForecastHours."""
     # open and read source
-    source0 = plugin_test_dir + "TT_HU_Interval_3_168_160_24_0_fileSrc.std"
+    source0 = plugin_test_path / "TT_HU_Interval_3_168_160_24_0_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
@@ -532,31 +524,25 @@ def test_22(plugin_test_dir):
     df['ig1'] = 0
     df['ig2'] = 0
     df['grtyp'] = 'X'
-    # print(df)
-    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
-                                                                    df['ip1'],df['ip2'],df['ip3'],
-                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
-                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
-                                                                    df['interval'],True,True)
+  
+    df = spookipy.encode_ip_when_interval(df)
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_22.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_22.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + \
+    file_to_compare = plugin_test_path / \
         "TT_HU_Interval_3_168_160_24_0_diff_file2cmp_encodeIP2andIP3.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_23(plugin_test_dir):
+def test_23(plugin_test_path, test_tmp_path, call_fstcomp):
     """ Calcul d'un test MAX avec 2 fieldNames TT,GZ et 2 rangeForecastHours."""
     # open and read source
-    source0 = plugin_test_dir + "TT_GZ_Interval_3_80_56_20_0_diff_fileSrc.std"
+    source0 = plugin_test_path / "TT_GZ_Interval_3_80_56_20_0_diff_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
@@ -575,30 +561,25 @@ def test_23(plugin_test_dir):
     df['ig2'] = 0
     df['grtyp'] = 'X'
     # print(df)
-    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
-                                                                    df['ip1'],df['ip2'],df['ip3'],
-                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
-                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
-                                                                    df['interval'],True,True)
+  
+    df = spookipy.encode_ip_when_interval(df)
     
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_23.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_23.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + \
+    file_to_compare = plugin_test_path / \
         "TT_GZ_Interval_3_80_56_20_0_diff_file2cmp_encodeIP2andIP3.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_24(plugin_test_dir):
+def test_24(plugin_test_path, test_tmp_path, call_fstcomp):
     """ Calcul d'un test MAX  avec 2 fieldNames HU,GZ et 2 rangeForecastHours."""
     # open and read source
-    source0 = plugin_test_dir + "HU_GZ_Interval_4_144_168_20_0_fileSrc.std"
+    source0 = plugin_test_path / "HU_GZ_Interval_4_144_168_20_0_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
@@ -616,32 +597,26 @@ def test_24(plugin_test_dir):
     df['ig1'] = 0
     df['ig2'] = 0
     df['grtyp'] = 'X'
-    # print(df)
-    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
-                                                                    df['ip1'],df['ip2'],df['ip3'],
-                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
-                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
-                                                                    df['interval'],True,True)
+  
+    df = spookipy.encode_ip_when_interval(df)
 
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_24.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_24.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + \
+    file_to_compare = plugin_test_path / \
         "HU_GZ_Interval_4_144_168_20_0_diff_file2cmp_encodeIP2andIP3.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_25(plugin_test_dir):
+def test_25(plugin_test_path, test_tmp_path, call_fstcomp):
     """ Calcul d'un test MAX avec 1 fieldName TT et 3 rangeForecastHours."""
     # open and read source
-    source0 = plugin_test_dir + "TT_Interval_2_3_4_160_150_140_20_0_fileSrc.std"
+    source0 = plugin_test_path / "TT_Interval_2_3_4_160_150_140_20_0_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
@@ -659,31 +634,25 @@ def test_25(plugin_test_dir):
     df['ig1'] = 0
     df['ig2'] = 0
     df['grtyp'] = 'X'
-    # print(df)
-    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
-                                                                    df['ip1'],df['ip2'],df['ip3'],
-                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
-                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
-                                                                    df['interval'],True,True)
+   
+    df = spookipy.encode_ip_when_interval(df)
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_25.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_25.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + \
+    file_to_compare = plugin_test_path / \
         "TT_Interval_2_3_4_160_150_140_20_0_diff_file2cmp_encodeIP2andIP3.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_26(plugin_test_dir):
+def test_26(plugin_test_path, test_tmp_path, call_fstcomp):
     """ Calcul d'un test MAX avec 3 fieldNames et 1 rangeForecastHour."""
     # open and read source
-    source0 = plugin_test_dir + "TT_HU_GZ_Interval_2_30_0_diff_fileSrc.std"
+    source0 = plugin_test_path / "TT_HU_GZ_Interval_2_30_0_diff_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
@@ -700,31 +669,25 @@ def test_26(plugin_test_dir):
     df['ig1'] = 0
     df['ig2'] = 0
     df['grtyp'] = 'X'
-    # print(df)
-    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
-                                                                    df['ip1'],df['ip2'],df['ip3'],
-                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
-                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
-                                                                    df['interval'],True,True)
+  
+    df = spookipy.encode_ip_when_interval(df)
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_26.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_26.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + \
+    file_to_compare = plugin_test_path / \
         "TT_HU_GZ_Interval_2_30_0_diff_file2cmp_encodeIP2andIP3.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_27(plugin_test_dir):
+def test_27(plugin_test_path, test_tmp_path, call_fstcomp):
     """ Calcul d'un test BOTH avec 2 fieldNames , 2 rangeForecastHours."""
     # open and read source
-    source0 = plugin_test_dir + "TT_HU_Interval_3_168_160_20_0_fileSrc.std"
+    source0 = plugin_test_path / "TT_HU_Interval_3_168_160_20_0_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
@@ -743,32 +706,24 @@ def test_27(plugin_test_dir):
     df['ig1'] = 0
     df['ig2'] = 0
     df['grtyp'] = 'X'
-    # print(df)
-    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
-                                                                    df['ip1'],df['ip2'],df['ip3'],
-                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
-                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
-                                                                    df['interval'],True,True)
-    
-
+  
+    df = spookipy.encode_ip_when_interval(df)
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_27.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_27.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + \
+    file_to_compare = plugin_test_path / \
         "TT_HU_Interval_3_168_160_20_0_diff_file2cmp_encodeIP2andIP3.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_28(plugin_test_dir):
+def test_28(plugin_test_path, test_tmp_path, call_fstcomp):
     """ Calcul d'un test BOTH avec 1 fieldNames , 3 rangeForecastHours"""
     # open and read source
-    source0 = plugin_test_dir + "TT_168_160_140_20_0_fileSrc.std"
+    source0 = plugin_test_path / "TT_168_160_140_20_0_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
@@ -784,34 +739,27 @@ def test_28(plugin_test_dir):
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
     df.loc[df.nomvar.str.match('V[0-9]+M.'),'etiket'] = '__TIMNMXX'
-    df['ig1'] = 0
-    df['ig2'] = 0
+    df['ig1']   = 0
+    df['ig2']   = 0
     df['grtyp'] = 'X'
-    # print(df)
-    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
-                                                                    df['ip1'],df['ip2'],df['ip3'],
-                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
-                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
-                                                                    df['interval'],True,True)
+    df          = spookipy.encode_ip_when_interval(df)
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_28.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_28.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + \
+    file_to_compare = plugin_test_path / \
         "TT_Interval_2_3_4_168_160_140_20_0_diff_file2cmp_encodeIP2andIP3.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_29(plugin_test_dir):
+def test_29(plugin_test_path, test_tmp_path, call_fstcomp):
     """ Calcul d'un test BOTH avec 3 fieldNames , 3 rangeForecastHours."""
     # open and read source
-    source0 = plugin_test_dir + "TT_HU_GZ_168_160_140_20_0_fileSrc.std"
+    source0 = plugin_test_path / "TT_HU_GZ_168_160_140_20_0_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
@@ -822,39 +770,33 @@ def test_29(plugin_test_dir):
         forecast_hour_range=[(datetime.timedelta(hours=160), datetime.timedelta(hours=168)),(datetime.timedelta(hours=140), datetime.timedelta(hours=160)),(datetime.timedelta(hours=0), datetime.timedelta(hours=20))], 
         interval=[datetime.timedelta(hours=2),datetime.timedelta(hours=3),datetime.timedelta(hours=4)], 
         step=[datetime.timedelta(hours=1),datetime.timedelta(hours=2),datetime.timedelta(hours=3)]).compute()
+    
     # [ReaderStd --ignoreExtended --input {sources[0]} ] >> 
     # [TimeIntervalMinMax --type BOTH --rangeForecastHour 160@168,140@160,0@20 --fieldName TT,HU,GZ --interval 2,3,4 --step 1,2,3] >> 
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
     df.loc[df.nomvar.str.match('V[0-9]+M.'),'etiket'] = '__TIMNMXX'
-    df['ig1'] = 0
-    df['ig2'] = 0
+    df['ig1']   = 0
+    df['ig2']   = 0
     df['grtyp'] = 'X'
-    # print(df)
-    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
-                                                                    df['ip1'],df['ip2'],df['ip3'],
-                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
-                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
-                                                                    df['interval'],True,True)
+    df          = spookipy.encode_ip_when_interval(df)
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_29.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_29.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + \
+    file_to_compare = plugin_test_path / \
         "TT_HU_GZ_Interval_2_3_4_168_160_140_20_0_diff_file2cmp_encodeIP2andIP3.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_30(plugin_test_dir):
+def test_30(plugin_test_path, test_tmp_path, call_fstcomp):
     """ Calcul d'un test MIN avec 1 fieldName sans interval."""
     # open and read source
-    source0 = plugin_test_dir + "TT_168_160_140_20_0_fileSrc.std"
+    source0 = plugin_test_path / "TT_168_160_140_20_0_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
@@ -871,35 +813,28 @@ def test_30(plugin_test_dir):
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
     df.loc[df.nomvar.str.match('V[0-9]+M.'),'etiket'] = '__TIMNMXX'
-    df['ig1'] = 0
-    df['ig2'] = 0
+    df['ig1']   = 0
+    df['ig2']   = 0
     df['grtyp'] = 'X'
-    # print(df)
-    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
-                                                                    df['ip1'],df['ip2'],df['ip3'],
-                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
-                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
-                                                                    df['interval'],True,True)
+    df          = spookipy.encode_ip_when_interval(df)
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_30.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_30.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + \
+    file_to_compare = plugin_test_path / \
         "min_TT_Interval_not_set_160_140_20_0_diff_file2cmp_encodeIP2andIP3.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
 # same as test_30
-# def test_31(plugin_test_dir):
+# def test_31(plugin_test_path):
 #     """ Calcul d'un test MAX avec 1 fieldName sans interval."""
 #     # open and read source
-#     source0 = plugin_test_dir + "TT_168_160_140_20_0_fileSrc.std"
+#     source0 = plugin_test_path / "TT_168_160_140_20_0_fileSrc.std"
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     # compute TimeIntervalMinMax
@@ -909,12 +844,12 @@ def test_30(plugin_test_dir):
 #     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
 #     # write the result
-#     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_31.std"])
+#     results_file = test_tmp_path / "test_31.std"
 #     fstpy.delete_file(results_file)
 #     fstpy.StandardFileWriter(results_file, df).to_fst()
 
 #     # open and read comparison file
-#     file_to_compare = plugin_test_dir + \
+#     file_to_compare = plugin_test_path / \
 #         "max_TT_Interval_not_set_160_140_20_0_diff_file2cmp_encodeIP2andIP3.std"
 
 #     # compare results
@@ -923,10 +858,10 @@ def test_30(plugin_test_dir):
 #     assert(res)
 
 # same as test_30
-# def test_32(plugin_test_dir):
+# def test_32(plugin_test_path):
 #     """ Calcul d'un test BOTH avec 1 fieldName sans interval."""
 #     # open and read source
-#     source0 = plugin_test_dir + "TT_168_160_140_20_0_fileSrc.std"
+#     source0 = plugin_test_path / "TT_168_160_140_20_0_fileSrc.std"
 #     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
 #     # compute TimeIntervalMinMax
@@ -936,12 +871,12 @@ def test_30(plugin_test_dir):
 #     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
 #     # write the result
-#     results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_32.std"])
+#     results_file = test_tmp_path / "test_32.std"
 #     fstpy.delete_file(results_file)
 #     fstpy.StandardFileWriter(results_file, df).to_fst()
 
 #     # open and read comparison file
-#     file_to_compare = plugin_test_dir + \
+#     file_to_compare = plugin_test_path / \
 #         "both_TT_Interval_not_set_160_140_20_0_diff_file2cmp_encodeIP2andIP3.std"
 
 #     # compare results
@@ -949,10 +884,10 @@ def test_30(plugin_test_dir):
 #     fstpy.delete_file(results_file)
 #     assert(res)
 
-def test_33(plugin_test_dir):
+def test_33(plugin_test_path, test_tmp_path, call_fstcomp):
     """ Calcul d'un test MIN avec 3 fieldName avec interval sans step."""
     # open and read source
-    source0 = plugin_test_dir + "TT_125_100_75_50_25_fileSrc.std"
+    source0 = plugin_test_path / "TT_125_100_75_50_25_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
@@ -967,33 +902,27 @@ def test_33(plugin_test_dir):
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
     df.loc[df.nomvar.str.match('TTM.'),'etiket'] = '__TIMNMXX'
-    df['ig1'] = 0
-    df['ig2'] = 0
+    df['ig1']   = 0
+    df['ig2']   = 0
     df['grtyp'] = 'X'
-    # print(df)
-    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
-                                                                    df['ip1'],df['ip2'],df['ip3'],
-                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
-                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
-                                                                    df['interval'],True,True)
+    df          = spookipy.encode_ip_when_interval(df)
+
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_33.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_33.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + \
-        "min_TT_Interval_3_4_5_125_100_75_50_25_diff_file2cmp_encodeIP2andIP3.std"
+    file_to_compare = plugin_test_path / \
+        "min_TT_Interval_3_4_5_125_100_75_50_25_diff_file2cmp_encodeIP2andIP3.std+PY20240404"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_34(plugin_test_dir):
+def test_34(plugin_test_path, test_tmp_path, call_fstcomp):
     """ Calcul d'un test MAX avec 3 fieldName avec interval sans step."""
     # open and read source
-    source0 = plugin_test_dir + "TT_125_100_75_50_25_fileSrc.std"
+    source0 = plugin_test_path / "TT_125_100_75_50_25_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
@@ -1008,34 +937,31 @@ def test_34(plugin_test_dir):
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
     df.loc[df.nomvar.str.match('TTM.'),'etiket'] = '__TIMNMXX'
-    df['ig1'] = 0
-    df['ig2'] = 0
+    df['ig1']   = 0
+    df['ig2']   = 0
     df['grtyp'] = 'X'
-    # print(df)
-    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
-                                                                    df['ip1'],df['ip2'],df['ip3'],
-                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
-                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
-                                                                    df['interval'],True,True)
+  
+    # Necessaire car pour un des niveaux, le datyp est 'f' au lieu de 'F'
+    df.at[48,'datyp'] = 134               # Correspond a f
+
+    df = spookipy.encode_ip_when_interval(df)
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_34.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_34.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + \
-        "max_TT_Interval_3_4_5_125_100_75_50_25_diff_file2cmp_encodeIP2andIP3.std"
+    file_to_compare = plugin_test_path / \
+        "max_TT_Interval_3_4_5_125_100_75_50_25_diff_file2cmp_encodeIP2andIP3.std+PY20240404"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_35(plugin_test_dir):
+def test_35(plugin_test_path, test_tmp_path, call_fstcomp):
     """ Calcul d'un test BOTH avec 3 fieldName avec interval sans step."""
     # open and read source
-    source0 = plugin_test_dir + "TT_125_100_75_50_25_fileSrc.std"
+    source0 = plugin_test_path / "TT_125_100_75_50_25_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
@@ -1048,39 +974,34 @@ def test_35(plugin_test_dir):
         nomvar_min='TTMN',
         nomvar_max='TTMX').compute()
     # [ReaderStd --ignoreExtended --input {sources[0]} ] >> 
-    # [TimeIntervalMinMax --type BOTH --rangeForecastHour 0@25,50@75,100@125 --fieldName TT --interval 3,4,5 --outputFieldNameMax TTMX --outputFieldNameMin TTMN ] >> 
+    # [TimeIntervalMinMax --type BOTH --rangeForecastHour 0@25,50@75,100@125 --fieldName TT --interval 3,4,5 
+    # --outputFieldNameMax TTMX --outputFieldNameMin TTMN ] >> 
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
     df.loc[df.nomvar.str.match('TTM.'),'etiket'] = '__TIMNMXX'
-    df['ig1'] = 0
-    df['ig2'] = 0
+    df['ig1']   = 0
+    df['ig2']   = 0
     df['grtyp'] = 'X'
-    # print(df)
-    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
-                                                                    df['ip1'],df['ip2'],df['ip3'],
-                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
-                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
-                                                                    df['interval'],True,True)
-
+  
+    df = spookipy.encode_ip_when_interval(df)
+    
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_35.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_35.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + \
-        "both_TT_Interval_3_4_5_125_100_75_50_25_diff_file2cmp_encodeIP2andIP3.std"
-
+    file_to_compare = plugin_test_path / \
+        "both_TT_Interval_3_4_5_125_100_75_50_25_diff_file2cmp_encodeIP2andIP3.std+PY20240404"
+    
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
 
-def test_36(plugin_test_dir):
-    """ Calcul d'un test BOTH avec 1 fieldName avec interval sans step."""
-    # open and read source
-    source0 = plugin_test_dir + "TT_125_100_75_50_25_fileSrc.std"
+def test_36(plugin_test_path, test_tmp_path, call_fstcomp):
+    """ Identique au test 35 avec rangeForecastHour en hh:min:sec"""
+    # open and read sourcep
+    source0 = plugin_test_path / "TT_125_100_75_50_25_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
@@ -1092,38 +1013,35 @@ def test_36(plugin_test_dir):
         interval=[datetime.timedelta(hours=3),datetime.timedelta(hours=4),datetime.timedelta(hours=5)],
         nomvar_min='TTMN',
         nomvar_max='TTMX').compute()
-    #['[ReaderStd --ignoreExtended --input {sources[0]} ] >> ', '
-    # [TimeIntervalMinMax --type BOTH --rangeForecastHour 0:00:00@25:00:00,50:00:00@75:00:00,100:00:00@125:00:00 --fieldName TT --interval 3,4,5 --outputFieldNameMax TTMX --outputFieldNameMin TTMN ] >> ', '
-    # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]']
+    # [ReaderStd --ignoreExtended --input {sources[0]} ] >> 
+    # [TimeIntervalMinMax --type BOTH --rangeForecastHour 0:00:00@25:00:00,50:00:00@75:00:00,100:00:00@125:00:00 
+    # --fieldName TT --interval 3,4,5 --outputFieldNameMax TTMX --outputFieldNameMin TTMN ] >>
+    # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
+
     df.loc[df.nomvar.str.match('TTM.'),'etiket'] = '__TIMNMXX'
-    df['ig1'] = 0
-    df['ig2'] = 0
+    df['ig1']   = 0
+    df['ig2']   = 0
     df['grtyp'] = 'X'
-    # print(df)
-    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
-                                                                    df['ip1'],df['ip2'],df['ip3'],
-                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
-                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
-                                                                    df['interval'],True,True)
+
+    df = spookipy.encode_ip_when_interval(df)
+
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_36.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_36.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + \
-        "both_TT_Interval_3_4_5_125_100_75_50_25_diff_file2cmp_encodeIP2andIP3.std"
+    file_to_compare = plugin_test_path / \
+        "both_TT_Interval_3_4_5_125_100_75_50_25_diff_file2cmp_encodeIP2andIP3.std+PY20240404"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
 
-def test_37(plugin_test_dir):
-    """ Calcul d'un test MAX avec 1 fieldName avec interval sans step."""
+def test_37(plugin_test_path, test_tmp_path, call_fstcomp):
+    """ Identique au test 34 mais avec interval en hh:min:sec"""
     # open and read source
-    source0 = plugin_test_dir + "TT_125_100_75_50_25_fileSrc.std"
+    source0 = plugin_test_path / "TT_125_100_75_50_25_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
@@ -1133,38 +1051,37 @@ def test_37(plugin_test_dir):
         forecast_hour_range=[(datetime.timedelta(hours=0), datetime.timedelta(hours=25)),(datetime.timedelta(hours=50), datetime.timedelta(hours=75)),(datetime.timedelta(hours=100), datetime.timedelta(hours=125))], 
         interval=[datetime.timedelta(hours=3,minutes=0,seconds=0),datetime.timedelta(hours=4,minutes=0,seconds=0),datetime.timedelta(hours=5,minutes=0,seconds=0)],
         nomvar_max='TTMX').compute()
-    #['[ReaderStd --ignoreExtended --input {sources[0]} ] >> ', '
-    # [TimeIntervalMinMax --type MAX --rangeForecastHour 0@25,50@75,100@125 --fieldName TT --interval 3:00:00,4:00:00,5:00:00 --outputFieldNameMax TTMX] >> ', '
-    # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]']
+    # [ReaderStd --ignoreExtended --input {sources[0]} ] >> 
+    # [TimeIntervalMinMax --type MAX --rangeForecastHour 0@25,50@75,100@125 --fieldName TT 
+    # --interval 3:00:00,4:00:00,5:00:00 --outputFieldNameMax TTMX] >> 
+    # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
     df.loc[df.nomvar.str.match('TTM.'),'etiket'] = '__TIMNMXX'
-    df['ig1'] = 0
-    df['ig2'] = 0
+    df['ig1']   = 0
+    df['ig2']   = 0
     df['grtyp'] = 'X'
-    # print(df)
-    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
-                                                                    df['ip1'],df['ip2'],df['ip3'],
-                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
-                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
-                                                                    df['interval'],True,True)
+  
+    # Necessaire car pour un des niveaux, le datyp est 'f' au lieu de 'F'
+    df.at[48,'datyp'] = 134               # Correspond a f
+
+    df = spookipy.encode_ip_when_interval(df)
+    
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_35.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_37.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + \
-        "max_TT_Interval_3_4_5_125_100_75_50_25_diff_file2cmp_encodeIP2andIP3.std"
+    file_to_compare = plugin_test_path / \
+        "max_TT_Interval_3_4_5_125_100_75_50_25_diff_file2cmp_encodeIP2andIP3.std+PY20240404"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_38(plugin_test_dir):
-    """ Calcul d'un test min avec un fieldName TT et 2 rangeForecastHours."""
+def test_38(plugin_test_path, test_tmp_path, call_fstcomp):
+    """ Identique au test 21 mais avec step en hh:min:sec."""
     # open and read source
-    source0 = plugin_test_dir + "TT_Interval_3_168_160_150_fileSrc.std"
+    source0 = plugin_test_path / "TT_Interval_3_168_160_150_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
@@ -1179,34 +1096,27 @@ def test_38(plugin_test_dir):
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]']
 
     df.loc[df.nomvar.str.match('V[0-9]+M.'),'etiket'] = '__TIMNMXX'
-    df['ig1'] = 0
-    df['ig2'] = 0
+    df['ig1']   = 0
+    df['ig2']   = 0
     df['grtyp'] = 'X'
-    # print(df)
-    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
-                                                                    df['ip1'],df['ip2'],df['ip3'],
-                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
-                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
-                                                                    df['interval'],True,True)
+    df          = spookipy.encode_ip_when_interval(df)
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_36.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_38.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + \
+    file_to_compare = plugin_test_path / \
         "TT_Interval_3_168_160_150_diff_file2cmp_encodeIP2andIP3.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_39(plugin_test_dir):
+def test_39(plugin_test_path, test_tmp_path, call_fstcomp):
     """Teste HourMinuteSecond - objet interval - avec encodage des IPs"""
     # open and read source
-    source0 = plugin_test_dir + "2020102212_023_lamwest_minimal.pres"
+    source0 = plugin_test_path / "2020102212_023_lamwest_minimal.pres"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute PrecipitationAmount
@@ -1216,24 +1126,16 @@ def test_39(plugin_test_dir):
                                         step=datetime.timedelta(minutes=30)).compute()
     
     df.loc[df.nomvar!='PR', 'etiket'] = 'WE_1_2_0N'
-
-    # IPs non encodes, on convertit la valeur du ip3 en delta (ip2-ip3)
-    # Temporaire, en attendant que ce soit fait dans le writer
-    _, df['ip2'], df['ip3'] = spookipy.writerstd.vectorized_encode_ip123(df['nomvar'],
-                                                                    df['ip1'],df['ip2'],df['ip3'],
-                                                                    df['ip1_kind'],df['ip2_kind'],df['ip3_kind'],
-                                                                    df['level'],df['ip2_dec'],df['ip3_dec'],
-                                                                    df['interval'],True,True)
+    df = spookipy.encode_ip_when_interval(df)
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_39.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_39.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
+
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "Test39_file2cmp.std"
+    file_to_compare = plugin_test_path / "Test39_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 

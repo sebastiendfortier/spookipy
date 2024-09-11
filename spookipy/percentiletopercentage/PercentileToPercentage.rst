@@ -1,7 +1,7 @@
 Description:
 ~~~~~~~~~~~~
 
--  Calculate probability of exceedance of a threshold using ensemble percentiles.
+-  Calculates the probability of exceedance of a threshold using ensemble percentiles.
 
 Iteration method:
 ~~~~~~~~~~~~~~~~~
@@ -11,12 +11,12 @@ Iteration method:
 Dependencies:
 ~~~~~~~~~~~~~
 
--  One standard file that contains percentile fields
+-  Percentile fields
 
 Result(s):
 ~~~~~~~~~~
 
--  A field with the result of the operation
+-  The probability of exceedance from input
 
 Algorithm:
 ~~~~~~~~~~
@@ -47,8 +47,8 @@ Usage:
 
 .. note::
 
-   With x being the percentile, the data frame should have
-   an etiekt format of Cx followed by the rest of the conventional 
+   With x being the percentile, the data frame records should have
+   an etiket format containing 'x' followed by the rest of the conventional 
    etiket name. 
 
 .. code:: python
@@ -65,14 +65,15 @@ Usage:
 
    df = fstpy.StandardFileReader(input_file).to_pandas()
 
-   df_percentage = spookipy.PercentileToPercentage(df,   
-                                                   threshold=0.3, 
-                                                   operator='ge', 
-                                                   etiket='GESTG1PALL',
-                                                   nomvar='SSH', 
-                                                   typvar='P@').compute()
+   source_df = src_df0.loc[(src_df0['etiket'].str.contains('C') ) &
+                           (src_df0['nomvar'] == 'SSH')]
 
-   fstpy.StandardFileWriter(output_file, df_percentage).to_fst()
+   res_df = spookipy.PercentileToPercentage(source_df, 
+                                            threshold=0.7, 
+                                            operator='le',
+                                            label='STG1LE').compute()
+
+   fstpy.StandardFileWriter(output_file, res_df).to_fst()
                                      
 
 Contacts:

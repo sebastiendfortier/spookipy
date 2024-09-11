@@ -22,10 +22,8 @@ Result(s):
 Algorithm:
 ~~~~~~~~~~
 
-    For WD, the direction : If the direction is calculated with the
-    meteorological convention (--orientationType WIND), then : the
-    gduvfwd function of the EZSCINT library is used to calculate the
-    direction of where the vector is coming from with respect to north
+    The gduvfwd function of the EZSCINT library is used to calculate the
+    direction of where the vector is coming from with respect to north.
 
 Reference:
 ~~~~~~~~~~
@@ -35,7 +33,7 @@ Reference:
 Keywords:
 ~~~~~~~~~
 
-- MÉTÉO/WEATHER, direction/direction, vent/wind, vitesse/speed
+- MÉTÉO/WEATHER, direction/direction, vent/wind
 
 Usage:
 ~~~~~~
@@ -64,3 +62,8 @@ Contacts:
 - Author   : `Maryse Beauchemin <https://wiki.cmc.ec.gc.ca/wiki/User:Beaucheminm>`__
 - Coded by : `François Fortin <https://wiki.cmc.ec.gc.ca/wiki/User:Fortinf>`__
 - Support  : `CMDW <https://wiki.cmc.ec.gc.ca/wiki/CMDW>`__,  `CMDS <https://wiki.cmc.ec.gc.ca/wiki/CMDS>`__
+
+Spooki original documentation:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+-  Does not apply

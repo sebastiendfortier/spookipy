@@ -1,22 +1,17 @@
 # -*- coding: utf-8 -*-
-import os
-import pkg_resources
-from pathlib import Path
 
-def _get_version():
-   try:
-       version = pkg_resources.resource_string('spookipy', 'VERSION').decode('utf-8').strip()
-   except IOError:
-       version = 'unknown'
-   return version
-
-__version__ = _get_version()
+__version__ = '2024.08.00'
 
 from .addelementsbypoint import *
 from .addtoelement import *
 from .applyunary import *
 from .arithmeticmeanbypoint import *
+from .arithmeticpercentageexceedingthresholdsbypoint import *
+from .arithmeticpercentageexceedingvariablethresholdsbypoint import *
+from .arithmeticpercentilebypoint import *
+from .arithmeticstandarddeviationbypoint import *
 from .cloudfractiondiagnostic import *
+from .comparisonutils import *
 from .coriolisparameter import *
 from .dewpointdepression import *
 from .filterdigital import *
@@ -30,6 +25,7 @@ from .humidityrelative import *
 from .humidityrelativeweightedmean import *
 from .humidityspecific import *
 from .humidityutils import *
+from .interpolationutils import *
 from .interpolationhorizontalgrid import *
 from .interpolationhorizontalpoint import *
 from .mask import *

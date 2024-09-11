@@ -37,7 +37,7 @@ class AddToElement(Plugin):
             operation_name='AddToElement',
             exception_class=AddToElementError,
             nomvar_out=self.nomvar_out,
-            etiket='ADDTOE').compute()
+            label='ADDTOE').compute()
 
     @staticmethod
     def parse_config(args: str) -> dict:

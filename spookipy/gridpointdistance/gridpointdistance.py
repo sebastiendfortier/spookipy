@@ -157,7 +157,7 @@ class GridPointDistance(Plugin):
         df_list = []
         for _, path_df in self.path_groups:
             
-            grid_groups = path_df.groupby(['grid'])
+            grid_groups = path_df.groupby('grid')
             for _, grid_df in grid_groups:
                 no_meta_df = grid_df.loc[~grid_df.nomvar.isin(["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
 

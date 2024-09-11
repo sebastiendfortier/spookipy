@@ -197,11 +197,15 @@ class WriterStd(Plugin):
         if ignore_extended:
             self.df['typvar'] = self.df.apply(lambda row: row['typvar'][0], axis=1)
 
-        if run_id:
-            self.df.loc[self.df['run']=='__','run'] = run_id
 
+        # On considere que le fait de verifier si la run = '__' est suffisant pour le moment
+        # afin de remplacer la valeur de l'implementation pour les champs des resultats. 
         if implementation:
             self.df.loc[self.df['run']=='__','implementation'] = implementation
+
+        if run_id:
+            self.df.loc[self.df['run']=='__','run'] = run_id
+            
 
         self.df['etiket'] = self.df.apply(lambda row: fstpy.create_encoded_standard_etiket(
                                                                 row['label'], 

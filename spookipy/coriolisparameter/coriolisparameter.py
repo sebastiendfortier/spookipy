@@ -5,7 +5,7 @@ import math
 import fstpy
 import numpy as np
 import pandas as pd
-
+import warnings
 
 from ..plugin import Plugin
 from ..utils import (create_empty_result, existing_results, 
@@ -63,13 +63,13 @@ class CoriolisParameter(Plugin):
 
     def prepare_groups(self):
 
-        self.no_meta_df = fstpy.add_columns(self.no_meta_df, columns=['unit', 'ip_info'])
+        self.no_meta_df = fstpy.add_columns(self.no_meta_df, columns=['ip_info'])
 
         # check if result already exists
         self.existing_result_df = get_existing_result(
             self.no_meta_df, self.plugin_result_specifications)
 
-        self.groups = self.no_meta_df.groupby(['grid'])
+        self.groups = self.no_meta_df.groupby('grid')
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:
@@ -108,11 +108,15 @@ class CoriolisParameter(Plugin):
 
 
 def adjust_column_values(current_group, corp_df):
-    corp_df.loc[:, 'typvar'] = current_group.typvar.unique()[0]
-    corp_df.loc[:, 'grtyp']  = current_group.grtyp.unique()[0]
-    corp_df.loc[:, 'ig1']    = current_group.ig1.unique()[0]
-    corp_df.loc[:, 'ig2']    = current_group.ig2.unique()[0]
-    corp_df.loc[:, 'ig3']    = current_group.ig3.unique()[0]
-    corp_df.loc[:, 'ig4']    = current_group.ig4.unique()[0]
+    # Suppression d'un future warning de pandas; dans notre cas, on veut conserver le meme comportement
+    # meme avec le nouveau comportement a venir. On encapsule la suppression du warning pour ce cas seulement.
+    with warnings.catch_warnings():
+        warnings.filterwarnings('ignore', category=FutureWarning)
+        corp_df.loc[:, 'typvar'] = current_group.typvar.unique()[0]
+        corp_df.loc[:, 'grtyp']  = current_group.grtyp.unique()[0]
+        corp_df.loc[:, 'ig1']    = current_group.ig1.unique()[0]
+        corp_df.loc[:, 'ig2']    = current_group.ig2.unique()[0]
+        corp_df.loc[:, 'ig3']    = current_group.ig3.unique()[0]
+        corp_df.loc[:, 'ig4']    = current_group.ig4.unique()[0]
 
     return corp_df

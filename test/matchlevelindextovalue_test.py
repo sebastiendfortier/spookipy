@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from test import TEST_PATH, TMP_PATH, check_test_ssm_package
+from test import check_test_ssm_package
 
 check_test_ssm_package()
 
@@ -7,23 +7,21 @@ import fstpy
 import pandas as pd
 import pytest
 import spookipy
-from ci_fstcomp import fstcomp
-import secrets
 from fstpy.dataframe_utils import select_with_meta
 from spookipy.matchlevelindextovalue.matchlevelindextovalue import \
     MatchLevelIndexToValueError
 
 pytestmark = [pytest.mark.regressions]
 
+@pytest.fixture(scope="module")
+def plugin_name():
+    """plugin_name in the path /fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/{plugin_name}"""
+    return "MatchLevelIndexToValue"
 
-@pytest.fixture
-def plugin_test_dir():
-    return TEST_PATH + '/MatchLevelIndexToValue/testsFiles/'
-
-def test_1(plugin_test_dir):
+def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
     """Test match one field - full computation."""
     # open and read source
-    source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
+    source0 = plugin_test_path / "UUVV5x5x2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     uv_df = spookipy.WindModulus(src_df0).compute()
@@ -44,22 +42,21 @@ def test_1(plugin_test_dir):
     # [MatchLevelIndexToValue --outputFieldName TEST] >>[WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --makeIP1EncodingWorkWithTests]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_1.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "lou_matchOneField_file2cmp.std"
+    file_to_compare = plugin_test_path / "lou_matchOneField_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
-    fstpy.delete_file(results_file)
+    columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4']
+    res = call_fstcomp(results_file, file_to_compare, columns=columns)
     assert(res)
 
-def test_2(plugin_test_dir):
+def test_2(plugin_test_path):
     """Tester l'option --outputFieldName avec plus d'un type de champ en entree."""
     # open and read source
-    source0 = plugin_test_dir + "UUVVTT5x5x2_fileSrc.std"
+    source0 = plugin_test_path / "UUVVTT5x5x2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     tt_df = select_with_meta(src_df0, ['TT'])
@@ -84,10 +81,10 @@ def test_2(plugin_test_dir):
     # [MatchLevelIndexToValue --outputFieldName TEST] >>
     # [WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --makeIP1EncodingWorkWithTests]
 
-def test_4(plugin_test_dir):
+def test_4(plugin_test_path, test_tmp_path, call_fstcomp):
     """Test match one field - full computation except uv."""
     # open and read source
-    source0 = plugin_test_dir + "UUVV5x5x2_UV_fileSrc.std"
+    source0 = plugin_test_path / "UUVV5x5x2_UV_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     uv_df = spookipy.WindModulus(src_df0).compute()
@@ -108,23 +105,21 @@ def test_4(plugin_test_dir):
     # [MatchLevelIndexToValue --outputFieldName TEST] >> [WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --makeIP1EncodingWorkWithTests]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_2.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "lou_matchOneField_file2cmp.std"
+    file_to_compare = plugin_test_path / "lou_matchOneField_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.001,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare, e_max=0.001,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
     assert(res)
 
 
-def test_5(plugin_test_dir):
+def test_5(plugin_test_path, test_tmp_path, call_fstcomp):
     """Test match one field - full computation."""
     # open and read source
-    source0 = plugin_test_dir + "UUVVTT5x5x2_fileSrc.std"
+    source0 = plugin_test_path / "UUVVTT5x5x2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     uv_df = spookipy.WindModulus(src_df0).compute()
@@ -146,22 +141,21 @@ def test_5(plugin_test_dir):
     # [WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --makeIP1EncodingWorkWithTests]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_5.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "lou_matchOneField2_file2cmp.std"
+    file_to_compare = plugin_test_path / "lou_matchOneField2_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
-    fstpy.delete_file(results_file)
+    columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4']
+    res = call_fstcomp(results_file, file_to_compare, columns=columns)
     assert(res)
 
-def test_7(plugin_test_dir):
+def test_7(plugin_test_path, test_tmp_path, call_fstcomp):
     """Test match no fields."""
     # open and read source
-    source0 = plugin_test_dir + "UUVVTT5x5x2_fileSrc.std"
+    source0 = plugin_test_path / "UUVVTT5x5x2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     uv_df = spookipy.WindModulus(src_df0).compute()
@@ -187,25 +181,24 @@ def test_7(plugin_test_dir):
     # [WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --makeIP1EncodingWorkWithTests]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_7.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "lou_matchNoFields_file2cmp.std"
+    file_to_compare = plugin_test_path / "lou_matchNoFields_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
-    fstpy.delete_file(results_file)
+    columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4']
+    res = call_fstcomp(results_file, file_to_compare, columns=columns)
     assert(res)
 
-def test_8(plugin_test_dir):
+def test_8(plugin_test_path, test_tmp_path, call_fstcomp):
     """Test match negative index - partial match."""
     # open and read source
-    source0 = plugin_test_dir + "sortie_cpp_cld_200906290606"
+    source0 = plugin_test_path / "sortie_cpp_cld_200906290606"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    source1 = plugin_test_dir + "indneg.std"
+    source1 = plugin_test_path / "indneg.std"
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
 
     src_df = pd.concat([src_df0, src_df1], ignore_index=True)
@@ -220,23 +213,22 @@ def test_8(plugin_test_dir):
     # [WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --makeIP1EncodingWorkWithTests]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_8.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "lou_matchNegativeIndex_file2cmp.std"
+    file_to_compare = plugin_test_path / "lou_matchNegativeIndex_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
-    fstpy.delete_file(results_file)
+    columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4']
+    res = call_fstcomp(results_file, file_to_compare, columns=columns)
     assert(res)
 
 # nouveaux tests   
-def test_9(plugin_test_dir):
+def test_9(plugin_test_path, test_tmp_path, call_fstcomp):
     """Identique au test 1 mais avec utilisation de l'objet interval."""
     # open and read source
-    source0 = plugin_test_dir + "UUVV5x5x2_fileSrc.std"
+    source0 = plugin_test_path / "UUVV5x5x2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     uv_df = spookipy.WindModulus(src_df0).compute()
@@ -263,25 +255,24 @@ def test_9(plugin_test_dir):
     df = spookipy.encode_ip2_and_ip3_height(df)
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_9.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "MatchLevel_file2cmp_test9.std"
+    file_to_compare = plugin_test_path / "MatchLevel_file2cmp_test9.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
-    fstpy.delete_file(results_file)
+    columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4']
+    res = call_fstcomp(results_file, file_to_compare, columns=columns)
     assert(res)
 
-def test_10(plugin_test_dir):
+def test_10(plugin_test_path, test_tmp_path, call_fstcomp):
     """Identique au test 8 - avec objet interval."""
     # open and read source
-    source0 = plugin_test_dir + "sortie_cpp_cld_200906290606"
+    source0 = plugin_test_path / "sortie_cpp_cld_200906290606"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    source1 = plugin_test_dir + "indneg.std"
+    source1 = plugin_test_path / "indneg.std"
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
 
     src_df = pd.concat([src_df0, src_df1], ignore_index=True)
@@ -298,27 +289,26 @@ def test_10(plugin_test_dir):
     df = spookipy.encode_ip2_and_ip3_height(df)
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_10.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "MatchLevel_file2cmp_test10.std"
+    file_to_compare = plugin_test_path / "MatchLevel_file2cmp_test10.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
-    fstpy.delete_file(results_file)
+    columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4']
+    res = call_fstcomp(results_file, file_to_compare, columns=columns)
     assert(res)
 
-def test_11(plugin_test_dir):
+def test_11(plugin_test_path, test_tmp_path, call_fstcomp):
     """Test avec des fichiers ayant des grilles differentes mais les meme champs."""
     # open and read source
-    source0 = plugin_test_dir + "200906290606_CLD_grid1.std"
-    source1 = plugin_test_dir + "200906290606_TT_grid1.std"
-    source2 = plugin_test_dir + "200906290606_IND_grid1.std"
-    source3 = plugin_test_dir + "200906290606_CLD_grid2.std"
-    source4 = plugin_test_dir + "200906290606_TT_grid2.std"
-    source5 = plugin_test_dir + "200906290606_IND_grid2.std"
+    source0 = plugin_test_path / "200906290606_CLD_grid1.std"
+    source1 = plugin_test_path / "200906290606_TT_grid1.std"
+    source2 = plugin_test_path / "200906290606_IND_grid1.std"
+    source3 = plugin_test_path / "200906290606_CLD_grid2.std"
+    source4 = plugin_test_path / "200906290606_TT_grid2.std"
+    source5 = plugin_test_path / "200906290606_IND_grid2.std"
 
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
@@ -341,27 +331,26 @@ def test_11(plugin_test_dir):
     df = spookipy.encode_ip2_and_ip3_height(df)
     
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_11.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "MatchLevel_file2cmp_test11.std"
+    file_to_compare = plugin_test_path / "MatchLevel_file2cmp_test11.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
-    fstpy.delete_file(results_file)
+    columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4']
+    res = call_fstcomp(results_file, file_to_compare, columns=columns)
     assert(res)
 
-def test_12(plugin_test_dir):
+def test_12(plugin_test_path, test_tmp_path, call_fstcomp):
     """Test avec des fichiers ayant des grilles differentes et un nombre de niveaux differents pour les meme champs."""
     # open and read source
-    source0 = plugin_test_dir + "200906290606_CLD_grid1.std"
-    source1 = plugin_test_dir + "200906290606_TT_grid1_lessLevels.std"
-    source2 = plugin_test_dir + "200906290606_IND_grid1.std"
-    source3 = plugin_test_dir + "200906290606_CLD_grid2.std"
-    source4 = plugin_test_dir + "200906290606_TT_grid2.std"
-    source5 = plugin_test_dir + "200906290606_IND_grid2.std"
+    source0 = plugin_test_path / "200906290606_CLD_grid1.std"
+    source1 = plugin_test_path / "200906290606_TT_grid1_lessLevels.std"
+    source2 = plugin_test_path / "200906290606_IND_grid1.std"
+    source3 = plugin_test_path / "200906290606_CLD_grid2.std"
+    source4 = plugin_test_path / "200906290606_TT_grid2.std"
+    source5 = plugin_test_path / "200906290606_IND_grid2.std"
 
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
@@ -383,23 +372,22 @@ def test_12(plugin_test_dir):
     # Encodage des ip2
     df = spookipy.encode_ip2_and_ip3_height(df)
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_12.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "MatchLevel_file2cmp_test12.std"
+    file_to_compare = plugin_test_path / "MatchLevel_file2cmp_test12.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
-    fstpy.delete_file(results_file)
+    columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4']
+    res = call_fstcomp(results_file, file_to_compare, columns=columns)
     assert(res)
 
-def test_13(plugin_test_dir):
+def test_13(plugin_test_path):
     """ Requete invalide - fichiers dont les champs d'entree et les indices ne sont pas sur les memes grilles."""
     # open and read source
-    source0 = plugin_test_dir + "200906290606_CLD_grid1.std"
-    source1 = plugin_test_dir + "200906290606_IND_grid2.std"
+    source0 = plugin_test_path / "200906290606_CLD_grid1.std"
+    source1 = plugin_test_path / "200906290606_IND_grid2.std"
 
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
@@ -409,14 +397,14 @@ def test_13(plugin_test_dir):
     with pytest.raises(MatchLevelIndexToValueError):
         _ = spookipy.MatchLevelIndexToValue(src_df).compute()
 
-def test_14(plugin_test_dir):
+def test_14(plugin_test_path, test_tmp_path, call_fstcomp):
     """ Test ou un groupe de donnees est ignore car il n'y a pas d'indices associes."""
     # Similaire au test11 avec resultats partiels
 
     # open and read source
-    source0 = plugin_test_dir + "200906290606_CLD_grid1.std"
-    source1 = plugin_test_dir + "200906290606_IND_grid1.std"
-    source2 = plugin_test_dir + "200906290606_IND_grid2.std"
+    source0 = plugin_test_path / "200906290606_CLD_grid1.std"
+    source1 = plugin_test_path / "200906290606_IND_grid1.std"
+    source2 = plugin_test_path / "200906290606_IND_grid2.std"
 
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
@@ -432,23 +420,22 @@ def test_14(plugin_test_dir):
     df = spookipy.encode_ip2_and_ip3_height(df)
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_14.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "MatchLevel_file2cmp_test14.std"
+    file_to_compare = plugin_test_path / "MatchLevel_file2cmp_test14.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
-    fstpy.delete_file(results_file)
+    columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4']
+    res = call_fstcomp(results_file, file_to_compare, columns=columns)
     assert(res)
 
-def test_15(plugin_test_dir):
+def test_15(plugin_test_path, test_tmp_path, call_fstcomp):
     """Test avec un fichier contenant des TT a des heures de previsions differentes, utilisation du parametre nomvar_out."""
     # open and read source
 
-    source1 = plugin_test_dir + "TTES2x2x4_manyForecastHours.std"
+    source1 = plugin_test_path / "TTES2x2x4_manyForecastHours.std"
 
     src_df = fstpy.StandardFileReader(source1).to_pandas()
     
@@ -468,23 +455,22 @@ def test_15(plugin_test_dir):
     df = spookipy.encode_ip2_and_ip3_height(df)
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_15.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "MatchLevel_file2cmp_test15.std"
+    file_to_compare = plugin_test_path / "MatchLevel_file2cmp_test15.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
-    fstpy.delete_file(results_file)
+    columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4']
+    res = call_fstcomp(results_file, file_to_compare, columns=columns)
     assert(res)
 
-def test_16(plugin_test_dir):
+def test_16(plugin_test_path):
     """Requete invalide; fichier contenant des TT et ES aux memes heures de previsions ET utilisation du parametre outputFieldName."""
     # open and read source
 
-    source1 = plugin_test_dir + "TTES2x2x4_manyForecastHours.std"
+    source1 = plugin_test_path / "TTES2x2x4_manyForecastHours.std"
 
     src_df = fstpy.StandardFileReader(source1).to_pandas()
     es_df = src_df[(src_df["nomvar"] == "ES") & (src_df["ip2"]==30)]

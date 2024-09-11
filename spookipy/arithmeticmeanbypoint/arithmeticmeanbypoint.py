@@ -35,6 +35,7 @@ class ArithmeticMeanByPoint(Plugin):
             df: pd.DataFrame,
             group_by_forecast_hour=False,
             group_by_nomvar: bool=False,
+            group_by_ensemble_member: bool=False,
             nomvar_out = None,
             copy_input = False,
             reduce_df  = True):
@@ -53,16 +54,17 @@ class ArithmeticMeanByPoint(Plugin):
         logging.info('ArithmeticMeanByPoint - compute')
         return OpElementsByColumn(
             self.df,
-            operator               = np.mean,
-            operation_name         = 'ArithmeticMeanByPoint',
-            exception_class        = ArithmeticMeanByPointError,
-            group_by_forecast_hour = self.group_by_forecast_hour,
-            group_by_level         = True,
-            group_by_nomvar        = self.group_by_nomvar,
-            nomvar_out             = self.nomvar_out,
-            label                  = 'MEANPT',
-            copy_input             = self.copy_input,
-            reduce_df              = self.reduce_df).compute()
+            operator                 = np.mean,
+            operation_name           = 'ArithmeticMeanByPoint',
+            exception_class          = ArithmeticMeanByPointError,
+            group_by_forecast_hour   = self.group_by_forecast_hour,
+            group_by_level           = True,
+            group_by_nomvar          = self.group_by_nomvar,
+            group_by_ensemble_member = self.group_by_ensemble_member,
+            nomvar_out               = self.nomvar_out,
+            label                    = 'MEANPT',
+            copy_input               = self.copy_input,
+            reduce_df                = self.reduce_df).compute()
 
     @staticmethod
     def parse_config(args: str) -> dict:
@@ -74,12 +76,23 @@ class ArithmeticMeanByPoint(Plugin):
         """
         parser = PluginParser(prog=ArithmeticMeanByPoint.__name__, parents=[Plugin.base_parser],add_help=False)
         parser.add_argument('--outputFieldName',type=str, dest='nomvar_out', help="Option to change the name of output field 'MEAN'.")
-        parser.add_argument('--groupBy',type=str,choices=['FORECAST_HOUR','FIELD_NAME'],dest='group_by', help="Option to group fields by attribute when performing calculation.")
+        # allows a list of multiple group by
+        valid_group_by = ['FORECAST_HOUR','FIELD_NAME','ENSEMBLE_MEMBER']
+        parser.add_argument('--groupBy',type=str,dest='group_by', help=f"Options to group fields by attribute when performing calculation. Can have more than one separated by ',' no space allowed, possible values = {valid_group_by}. Ex --groupBy FORECAST_HOUR or --groupBy FORECAST_HOUR,FIELD_NAME,ENSEMBLE_MEMBER")
 
         parsed_arg = vars(parser.parse_args(args.split()))
 
-        parsed_arg['group_by_forecast_hour'] = (parsed_arg['group_by'] == 'FORECAST_HOUR')
-        parsed_arg['group_by_nomvar']        = (parsed_arg['group_by'] == 'FIELD_NAME')
+        if parsed_arg['group_by']:
+            group_by_list = parsed_arg['group_by'].split(",")
+            # fixed the problem with plugin_parsing_test.py but still causes issues with the parsing in cpp
+            for gb in group_by_list:
+                if gb not in valid_group_by:
+                    raise ArithmeticMeanByPointError(f"{gb} is not a valid option for --group_by, the valid choices are: {valid_group_by}")
+
+            parsed_arg['group_by_forecast_hour']   = 'FORECAST_HOUR' in group_by_list
+            parsed_arg['group_by_nomvar']          = 'FIELD_NAME' in group_by_list
+            parsed_arg['group_by_ensemble_member'] = 'ENSEMBLE_MEMBER' in group_by_list
+
         if parsed_arg['nomvar_out']:
             validate_nomvar(parsed_arg['nomvar_out'], "ArithmeticMeanByPoint", ArithmeticMeanByPointError)
 

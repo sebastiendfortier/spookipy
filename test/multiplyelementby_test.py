@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from test import TEST_PATH, TMP_PATH, check_test_ssm_package
+from test import check_test_ssm_package
 
 check_test_ssm_package()
 
@@ -7,21 +7,18 @@ import fstpy
 import pytest
 import rpnpy.librmn.all as rmn
 import spookipy
-from ci_fstcomp import fstcomp
-import secrets
 
 pytestmark = [pytest.mark.regressions]
 
+@pytest.fixture(scope="module")
+def plugin_name():
+    """plugin_name in the path /fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/{plugin_name}"""
+    return "MultiplyElementBy"
 
-@pytest.fixture
-def plugin_test_dir():
-    return TEST_PATH + '/MultiplyElementBy/testsFiles/'
-
-
-def test_1(plugin_test_dir):
+def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
     """test_factor1"""
     # open and read source
-    source0 = plugin_test_dir + "UUVV5x5_1_fileSrc.std"
+    source0 = plugin_test_path / "UUVV5x5_1_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute MultiplyElementBy
@@ -30,23 +27,23 @@ def test_1(plugin_test_dir):
 
     df = spookipy.convip(df, style=rmn.CONVIP_ENCODE_OLD)
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_1.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "factor_file2cmp.std"
+    file_to_compare = plugin_test_path / "factor_file2cmp.std"
 
-    # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
-    fstpy.delete_file(results_file)
+    # compare results - on exclut l'etiket
+    cols=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 
+          'datyp', 'nbits', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4']
+    res = call_fstcomp(results_file, file_to_compare,columns=cols)
     assert(res)
 
 
-def test_2(plugin_test_dir):
+def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
     """test_factor2"""
     # open and read source
-    source0 = plugin_test_dir + "UUVV5x5_1_fileSrc.std"
+    source0 = plugin_test_path / "UUVV5x5_1_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute MultiplyElementBy
@@ -55,14 +52,14 @@ def test_2(plugin_test_dir):
 
     df = spookipy.convip(df, style=rmn.CONVIP_ENCODE_OLD)
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_2.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "factor2_file2cmp.std"
+    file_to_compare = plugin_test_path / "factor2_file2cmp.std"
 
-    # compare results
-    res = fstcomp(results_file, file_to_compare,columns=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4'])
-    fstpy.delete_file(results_file)
+    # compare results - on exclut l'etiket
+    cols=['nomvar', 'typvar', 'ni', 'nj', 'nk', 'dateo', 'ip1', 'ip2', 'ip3', 'deet', 'npas', 
+          'datyp', 'nbits', 'grtyp', 'ig1', 'ig2', 'ig3', 'ig4']
+    res = call_fstcomp(results_file, file_to_compare,columns=cols)
     assert(res)

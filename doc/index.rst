@@ -149,7 +149,7 @@ Documentation
    vapourpressure
    watervapourmixingratio
    windchill
-   .. winddirection           Tests skipped !
+   winddirection           
    windmax
    windmodulus
 

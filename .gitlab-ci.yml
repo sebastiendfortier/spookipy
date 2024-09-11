@@ -19,19 +19,18 @@ stages:
 
 
 before_script:
-  - export ORDENV_SITE_PROFILE=20220214
-  - export ORDENV_COMM_PROFILE=eccc/20220217
-  - export ORDENV_GROUP_PROFILE=eccc/cmc/1.9.7
-  - . /fs/ssm/main/env/ordenv-boot-20201118.sh
-  - export EC_ATOMIC_PROFILE_VERSION=1.15.0
+  - export ORDENV_SITE_PROFILE=20230929
+  - export ORDENV_COMM_PROFILE=eccc/20231121
+  - export ORDENV_GROUP_PROFILE=eccc/cmc/1.16.0
+  - . /fs/ssm/main/env/ordenv-boot-20231110.sh
+  - export EC_ATOMIC_PROFILE_VERSION=1.34.0
   - . $ARMNLIB_SHARE/check_profile_1.1.0
-  - . ssmuse-sh -p /fs/ssm/eccc/cmd/cmds/env/python/py39_2022.05.24_rhel-8-icelake-64
-  - . r.load.dot /fs/ssm/main/opt/intelcomp/inteloneapi-2022.1.2/intelcomp+mpi+mkl
-  - . r.load.dot /fs/ssm/eccc/mrd/rpn/MIG/ENV/migdep/5.1.1 /fs/ssm/eccc/mrd/rpn/MIG/ENV/rpnpy/2.1-u2.4
-  - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/apps/ci_fstcomp/1.0.8
-  - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/202402/01
-  
-
+  - . r.load.dot eccc/mrd/rpn/MIG/ENV/rpnpy/2.2.0 eccc/mrd/rpn/code-tools/ENV/cdt-1.6.6/SCIENCE/inteloneapi-2022.1.2
+  - . r.load.dot eccc/mrd/rpn/libs/20230906 eccc/cmd/cmda/libs/20230906/inteloneapi-2022.1.2
+  - . ssmuse-sh -p /fs/ssm/eccc/cmd/cmds/env/python/py310_2023.07.28_all
+  - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/apps/ci_fstcomp/1.0.9
+  - . ssmuse-sh -x /fs/site5/eccc/cmd/w/spst900/spooki/CI_fstpy/master/latest/fstpy/*/all
+  - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/cmcdict/202407/00
 
 run_regtests:
   stage: run_regtests
@@ -81,7 +80,8 @@ ssm_package_with_everything:
     - DEPLOY_DIR=${deploy_dir_prefix}/${CI_PIPELINE_ID}
     - echo ${DEPLOY_DIR}
     - ./make_ssm_package.py --install --temp ${DEPLOY_DIR}
-    - . ssmuse-sh -x ${DEPLOY_DIR}/spookipy/$( cat ../VERSION )/all
+    - echo $(pwd -P)
+    - . ssmuse-sh -x ${DEPLOY_DIR}/spookipy/$( grep __version__ ../spookipy/__init__.py | awk '{print $3}' | tr -d "'" )/all
     - ./test_ssm_package.py
     - cp spookipy_*.ssm ${temp_dir}
   artifacts:
@@ -97,7 +97,8 @@ ssm_package_with_operation_yaml_list:
     - UNIQUE_TEMP_DIR=${temp_dir}/${CI_JOB_ID}
     - echo ${UNIQUE_TEMP_DIR}
     - ./make_ssm_package.py --yaml plugin_list_operation.yaml --suffix operation --install --temp ${UNIQUE_TEMP_DIR}
-    - . ssmuse-sh -x ${UNIQUE_TEMP_DIR}/spookipy/$( cat ../VERSION )/all
+    - echo $(pwd -P)
+    - . ssmuse-sh -x ${UNIQUE_TEMP_DIR}/spookipy/$( grep __version__ ../spookipy/__init__.py | awk '{print $3}' | tr -d "'" )/all
     - ./test_ssm_package.py --yaml plugin_list_operation.yaml
     - cp spookipy_*.ssm ${temp_dir}
     - rm -r ${UNIQUE_TEMP_DIR}
@@ -105,6 +106,38 @@ ssm_package_with_operation_yaml_list:
     expire_in: 1 hrs
     paths:
       - livraison/
+
+ssm_package_with_official_fstpy:
+  stage: ssm_package
+  before_script:
+    - export ORDENV_SITE_PROFILE=20230929
+    - export ORDENV_COMM_PROFILE=eccc/20231121
+    - export ORDENV_GROUP_PROFILE=eccc/cmc/1.16.0
+    - . /fs/ssm/main/env/ordenv-boot-20231110.sh
+    - export EC_ATOMIC_PROFILE_VERSION=1.34.0
+    - . $ARMNLIB_SHARE/check_profile_1.1.0
+    - . r.load.dot eccc/mrd/rpn/MIG/ENV/rpnpy/2.2.0 eccc/mrd/rpn/code-tools/ENV/cdt-1.6.6/SCIENCE/inteloneapi-2022.1.2
+    - . r.load.dot eccc/mrd/rpn/libs/20230906 eccc/cmd/cmda/libs/20230906/inteloneapi-2022.1.2
+    - . ssmuse-sh -p /fs/ssm/eccc/cmd/cmds/env/python/py310_2023.07.28_all
+    - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/apps/ci_fstcomp/1.0.9
+    - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/cmcdict/202407/00
+    - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/202408/00
+  script:
+    - cd livraison
+    - export SSM_TEST_SPOOKIPY=1
+    - DEPLOY_DIR=${deploy_dir_prefix}/${CI_PIPELINE_ID}
+    - echo ${DEPLOY_DIR}
+    - ./make_ssm_package.py --install --temp ${DEPLOY_DIR}
+    - echo $(pwd -P)
+    - . ssmuse-sh -x ${DEPLOY_DIR}/spookipy/$( grep __version__ ../spookipy/__init__.py | awk '{print $3}' | tr -d "'" )/all
+    - ./test_ssm_package.py
+    - cp spookipy_*.ssm ${temp_dir}
+  artifacts:
+    expire_in: 1 hrs
+    paths:
+      - livraison/
+  only:
+    - /^r-\d+\.\d+\.\d+/
 
 deploy:
   stage: deploy

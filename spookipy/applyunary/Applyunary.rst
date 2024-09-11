@@ -62,7 +62,7 @@ Usage:
                                 function=np.sqrt,
                                 nomvar_in='UU*',
                                 nomvar_out='UUSQ',
-                                etiket='SQRT'
+                                label='SQRT'
                                 ).compute()
 
     fstpy.StandardFileWriter(output_file, res_df).to_fst()

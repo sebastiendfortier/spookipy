@@ -1,30 +1,20 @@
 # -*- coding: utf-8 -*-
-from test import TEST_PATH, TMP_PATH, check_test_ssm_package
+from test import check_test_ssm_package
 
 check_test_ssm_package()
 
 import pandas as pd
-import fstpy
 import pytest
-import spookipy
-from ci_fstcomp import fstcomp
-import secrets
+import spookipy 
 import rpnpy.librmn.all as rmn
 import numpy as np
-import glob
 
 pytestmark = [pytest.mark.regressions]
 
-
-# @pytest.fixture
-# def plugin_test_dir():
-#     return TEST_PATH + '/StatisticsVertically/testsFiles/'
-
-@pytest.fixture
-def plugin_test_dir():
-    return TEST_PATH + '/WindMax/testsFiles/'
-
-
+@pytest.fixture(scope="module")
+def plugin_name():
+    """plugin_name in the path /fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/{plugin_name}"""
+    return "StatisticsVertically"
 
 def test_1():
     """Check for a valid nomvar - invalid nomvar"""
@@ -110,7 +100,7 @@ def test_12():
     with pytest.raises(spookipy.StatisticsVerticallyError):
         _ = spookipy.StatisticsVertically(df,nomvar = 'TO', stats='MEAN')
 
-# def test_13(plugin_test_dir):
+# def test_13(plugin_test_path, test_tmp_path, call_fstcomp):
 #     """Check for a valid nomvar - invalid nomvar"""
 #     source0  = glob.glob('/fs/site4/eccc/oth/nlab_central/ron000/wxelements/archives/sample/2021090512_024_*')
 

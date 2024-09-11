@@ -1,30 +1,28 @@
 # -*- coding: utf-8 -*-
 import pandas as pd
-from test import TEST_PATH, TMP_PATH, check_test_ssm_package
+from test import check_test_ssm_package
 
 check_test_ssm_package()
 
 import fstpy
 import pytest
 import spookipy
-from ci_fstcomp import fstcomp
-import secrets
+
 pytestmark = [pytest.mark.regressions]
 
+@pytest.fixture(scope="module")
+def plugin_name():
+    """plugin_name in the path /fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/{plugin_name}"""
+    return "AddElementsByPoint"
 
-@pytest.fixture
-def plugin_test_dir():
-    return TEST_PATH + '/AddElementsByPoint/testsFiles/'
-
-
-def test_1(plugin_test_dir):
+def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
     """Additionne des champs 2D."""
     # open and read source
-    source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
+    source0 = plugin_test_path / "UUVV5x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute AddElementsByPoint
-    df      = spookipy.AddElementsByPoint(src_df0, 
+    df      = spookipy.AddElementsByPoint(src_df0,
                                           nomvar_out='ACCU').compute()
     # [ReaderStd --input {sources[0]}] >> 
     # [AddElementsByPoint --outputFieldName ACCU] >> 
@@ -36,23 +34,21 @@ def test_1(plugin_test_dir):
     df['datyp']  = 1
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_1.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "add2d_file2cmp.std"
+    file_to_compare = plugin_test_path / "add2d_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
 
-def test_2(plugin_test_dir):
+def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
     """Additionne des champs 3D."""
     # open and read source
-    source0 = plugin_test_dir + "UUVVTT5x5x2_fileSrc.std"
+    source0 = plugin_test_path / "UUVVTT5x5x2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute AddElementsByPoint
@@ -65,27 +61,24 @@ def test_2(plugin_test_dir):
 
     df['etiket'] = 'ADDFIELDS'
     df['datyp']  = 1                # Pour correspondre a R16
-    df['nbits']  = 16               
-
-
+    df['nbits']  = 16    
+            
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_2.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "add3d_file2cmp.std"
+    file_to_compare = plugin_test_path / "add3d_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
 
-def test_3(plugin_test_dir):
+def test_3(plugin_test_path):
     """Utilisation de --outputFieldName avec une valeur > 4 caractères."""
     # open and read source
-    source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
+    source0 = plugin_test_path / "UUVV5x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     with pytest.raises(spookipy.AddElementsByPointError):
@@ -95,10 +88,10 @@ def test_3(plugin_test_dir):
         # [ReaderStd --input {sources[0]}] >> [AddElementsByPoint --outputFieldName TROPLONG]
 
 
-def test_4(plugin_test_dir):
+def test_4(plugin_test_path):
     """Essaie d'additionner lorsqu'il y a seulement 1 champ en entrée."""
     # open and read source
-    source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
+    source0 = plugin_test_path / "UUVV5x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     src_df0 = src_df0.loc[src_df0.nomvar == "UU"].reset_index(drop=True)
@@ -109,10 +102,10 @@ def test_4(plugin_test_dir):
         # [ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> [AddElementsByPoint]
 
 
-def test_5(plugin_test_dir):
+def test_5(plugin_test_path):
     """Essaie d'additionner lorsqu'il y a plusieurs champs mais pas sur la même grille."""
     # open and read source
-    source0 = plugin_test_dir + "tt_gz_px_2grilles.std"
+    source0 = plugin_test_path / "tt_gz_px_2grilles.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     src_df0 = src_df0.loc[src_df0.nomvar.isin(
@@ -124,14 +117,14 @@ def test_5(plugin_test_dir):
         # [ReaderStd --input {sources[0]}] >> [Select --fieldName TT,GZ ] >> [AddElementsByPoint]
 
 
-def test_6(plugin_test_dir):
+def test_6(plugin_test_path, test_tmp_path, call_fstcomp):
     """Test addition avec parametre group_by_nomvar."""
     # Test uniquement du cote spookipy
 
     # open and read source
-    source0 = plugin_test_dir + "TTUUVV_12h.std"
+    source0 = plugin_test_path / "TTUUVV_12h.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-    source1 = plugin_test_dir + "TTUUVV_24h.std"
+    source1 = plugin_test_path / "TTUUVV_24h.std"
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
     src_df  = pd.concat([src_df0 , src_df1])
 
@@ -142,26 +135,24 @@ def test_6(plugin_test_dir):
     df.sort_values(by=['nomvar', 'level'],ascending=[True, False],inplace=True)
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_6.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "test6_file2cmp.std"
+    file_to_compare = plugin_test_path / "test6_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_6a(plugin_test_dir):
+def test_6a(plugin_test_path, test_tmp_path, call_fstcomp):
     """Test avec 1 champ, differents forecastHours. Additionne les valeurs des TT des differents ForecastHours pour chaque niveau."""
     # Test inexistant du cote Spooki 
 
     # open and read source
-    source0 = plugin_test_dir + "TTUUVV_12h.std"
+    source0 = plugin_test_path / "TTUUVV_12h.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-    source1 = plugin_test_dir + "TTUUVV_24h.std"
+    source1 = plugin_test_path / "TTUUVV_24h.std"
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
     src_df  = pd.concat([src_df0 , src_df1])
 
@@ -179,16 +170,14 @@ def test_6a(plugin_test_dir):
     df.sort_values(by=['nomvar', 'level'],ascending=[True, False],inplace=True)
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path /  "test_6a.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "test6a_file2cmp.std"
+    file_to_compare = plugin_test_path / "test6a_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 #  spooki_run.py "[ReaderStd --input /fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/AddElementsByPoint/testsFiles/2021071400_024_masked_fields.std] >> [Select --fieldName WHP1,WHP0 --typeOfField MASK] >> [GridCut --startPoint 750,160 --endPoint 770,170] >> [WriterStd --output TestChampsMasked.std]"
 
@@ -202,10 +191,10 @@ def test_6a(plugin_test_dir):
 #                   [Select --fieldName WHP0,WHP1]  
 #                ) >> 
 #                [WriterStd --output test7_file2cmp_20231204.cpp --plugin_language CPP--encodeIP2andIP3 ]"
-def test_7(plugin_test_dir):
+def test_7(plugin_test_path, test_tmp_path, call_fstcomp):
     """Test addition de MASK; teste que le masque est bien additionne et que les champs sortent avec le bon typeOfField @@ et @P."""
     # open and read source
-    source0   = plugin_test_dir + "2021071400_024_masked_fields.std"
+    source0   = plugin_test_path / "2021071400_024_masked_fields.std"
 
     src_df0   = fstpy.StandardFileReader(source0).to_pandas()
 
@@ -227,23 +216,21 @@ def test_7(plugin_test_dir):
     df = pd.concat([res_df , src_df0, meta_df])
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path /  "test_7.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "test7_file2cmp_20231204.std"
+    file_to_compare = plugin_test_path / "test7_file2cmp_20231204.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
 # Test existant du cote python seulement
-def test_7a(plugin_test_dir):
+def test_7a(plugin_test_path, test_tmp_path, call_fstcomp):
     """Addition de MASK, similaire au test7; fichier reduit et copy_input = True."""
     # open and read source
-    source0   = plugin_test_dir + "2021071400_024_masked_fields_reduit.std"
+    source0   = plugin_test_path / "2021071400_024_masked_fields_reduit.std"
     src_df    = fstpy.StandardFileReader(source0).to_pandas()
     src_df0   = src_df.loc[(src_df.nomvar.isin(['WHP0', 'WHP1'])) & (src_df.typvar == '@@')]
  
@@ -259,21 +246,19 @@ def test_7a(plugin_test_dir):
 
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7a.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path /  "test_7a.std"
     fstpy.StandardFileWriter(results_file, res_df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "test7a_file2cmp.std"
+    file_to_compare = plugin_test_path / "test7a_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_8(plugin_test_dir):
+def test_8(plugin_test_path, test_tmp_path, call_fstcomp):
     """Utilisation de --outputFieldName et group_by_nomvar."""
-    source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
+    source0 = plugin_test_path / "UUVV5x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
     src_df0 = src_df0.loc[src_df0.nomvar == 'UU'].reset_index(drop=True)
 
@@ -284,10 +269,10 @@ def test_8(plugin_test_dir):
         # [ReaderStd --input {sources[0]}] >> [AddElementsByPoint --outputFieldName TROPLONG]
 
 
-def test_9(plugin_test_dir):
+def test_9(plugin_test_path, test_tmp_path, call_fstcomp):
     """Additionne des champs 2D. Identique au test1 mais avec l'option copy_input """
     # open and read source
-    source0 = plugin_test_dir + "UUVV5x5_fileSrc.std"
+    source0 = plugin_test_path / "UUVV5x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute AddElementsByPoint
@@ -303,23 +288,21 @@ def test_9(plugin_test_dir):
     df['datyp']  = 1
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path /  "test_9.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
     # Nouveau fichier de comparaison, sans zap des champs
-    file_to_compare = plugin_test_dir + "test9_file2cmp_20231026.std"
+    file_to_compare = plugin_test_path / "test9_file2cmp_20231026.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_10(plugin_test_dir):
+def test_10(plugin_test_path, test_tmp_path, call_fstcomp):
     """Additionne des champs qui n'ont pas le meme nombre de niveaux et de grilles differentes"""
     # open and read source
-    source0 = plugin_test_dir + "glbpres_TT_UU_VV.std"
+    source0 = plugin_test_path / "glbpres_TT_UU_VV.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # Selection de 3 niveaux pour TT et UU (100, 925 et 850 mb)
@@ -331,8 +314,8 @@ def test_10(plugin_test_dir):
     vv_df = vv_df.loc[vv_df.ip1.isin([39945888, 41819464])]
 
     # Selection de UU et VV sur une autre grille
-    # source1 = plugin_test_dir + "test1.std"
-    source1  = plugin_test_dir + "UUVV5x5_enc_fileSrc.std"
+    # source1 = plugin_test_path / "test1.std"
+    source1  = plugin_test_path / "UUVV5x5_enc_fileSrc.std"
     src_df1  = fstpy.StandardFileReader(source1).to_pandas()
     tt_uu_vv = pd.concat([tt_uu_df, vv_df, src_df1], ignore_index=True)
     cols = ["nomvar", "grid", "ip1"]
@@ -353,25 +336,28 @@ def test_10(plugin_test_dir):
     # Pour respecter le zap du test original
     df['etiket'] = 'ADDFIELDS'
 
+    # Pour respecter la precision des champs
+    df['nbits']  = 16                       # Pour correspondre a f16
+    df['datyp']  = 134
+    df.loc[df['ni'] == 5, 'datyp'] = 1      # Pour correspondre a R 
+
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path /  "test_10.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "test10_file2cmp.std"
+    file_to_compare = plugin_test_path / "test10_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare, e_max=0.01)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare, e_max=0.01)
     assert(res)
 
-def test_11(plugin_test_dir):
+def test_11(plugin_test_path, test_tmp_path, call_fstcomp):
     """Additionne des champs groupe selon le forecast hour """
     # Test existant seulement du cote python
 
     # open and read source
-    source0  = plugin_test_dir + "TTES2x2x4_manyForecastHours.std"
+    source0  = plugin_test_path / "TTES2x2x4_manyForecastHours.std"
     src_df0  = fstpy.StandardFileReader(source0).to_pandas()
     tt_es_df = fstpy.select_with_meta(src_df0, ['TT', 'ES'])
 
@@ -380,29 +366,27 @@ def test_11(plugin_test_dir):
                                      group_by_forecast_hour=True).compute()
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path /  "test_11.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # Nouveau fichier de tests, sans zap d'etiket et de typvar.
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "test11_file2cmp_20231026.std"
+    file_to_compare = plugin_test_path / "test11_file2cmp_20231026.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_12(plugin_test_dir):
+def test_12(plugin_test_path, test_tmp_path, call_fstcomp):
     """Test avec 2 groupes de donnees, 1er groupe sans niveaux communs, 2ieme groupe a les niveaux communs. """
     # Test existant en python seulement
 
     # open and read source
-    source0 = plugin_test_dir + "2021071400_024_masked_fields.std"
+    source0 = plugin_test_path / "2021071400_024_masked_fields.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
     src_df0 = fstpy.select_with_meta(src_df0, ['UD','VD','WH'])
 
-    source1 = plugin_test_dir + "UUVV5x5_fileSrc.std"
+    source1 = plugin_test_path / "UUVV5x5_fileSrc.std"
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
     src_df1 = fstpy.select_with_meta(src_df1, ['UU','VV'])
 
@@ -421,23 +405,21 @@ def test_12(plugin_test_dir):
     #             fait le traitement si un groupe remplit la condition ie. si les niveaux sont communs.
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
-    fstpy.delete_file(results_file)
+    results_file = test_tmp_path / "test_12.std"
     fstpy.StandardFileWriter(results_file, res_df).to_fst()
 
     # Nouveau fichier de tests, sans zap d'etiket et de typvar.
     # open and read comparison file
-    file_to_compare = plugin_test_dir + "test12_file2cmp.std"
+    file_to_compare = plugin_test_path / "test12_file2cmp.std"
 
     # compare results
-    res = fstcomp(results_file, file_to_compare)
-    fstpy.delete_file(results_file)
+    res = call_fstcomp(results_file, file_to_compare)
     assert(res)
 
-def test_13(plugin_test_dir):
+def test_13(plugin_test_path):
     """Test avec 3 champs masques; 1 champ n'est pas sur les memes niveaux.  Pas de niveaux communs aux 3 champs. """
     # open and read source
-    source0 = plugin_test_dir + "2021071400_024_masked_fields.std"
+    source0 = plugin_test_path / "2021071400_024_masked_fields.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
     src_df0 = fstpy.select_with_meta(src_df0, ['UD','VD','WH'])
 

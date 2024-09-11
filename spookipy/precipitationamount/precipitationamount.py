@@ -5,7 +5,7 @@ import fstpy
 import pandas as pd
 from ..timeintervaldifference.timeintervaldifference import TimeIntervalDifference
 from ..plugin import Plugin, PluginParser
-from ..utils import initializer, validate_nomvar
+from ..utils import initializer, validate_list_of_nomvar, validate_nomvar
 from ..configparsingutils import apply_lambda_to_list, convert_time_range, convert_time
 
 LABEL: Final[str] = 'PCPAMT'
@@ -39,7 +39,7 @@ class PrecipitationAmount(Plugin):
                  reduce_df           = True):
         
         super().__init__(self.df)
-        # self.validate_nomvar()
+        self.nomvar   = validate_list_of_nomvar(self.nomvar, 'PrecipitationAmount', PrecipitationAmountError)
 
     def compute(self) -> pd.DataFrame:
         logging.info('PrecipitationAmount - compute\n')
@@ -51,7 +51,7 @@ class PrecipitationAmount(Plugin):
                                     strictly_positive   = True,
                                     reduce_df           = False).compute()
         
-        df.loc[df['nomvar'] == self.nomvar, 'label'] = LABEL
+        df.loc[df['nomvar'].isin(self.nomvar), 'label'] = LABEL
 
         return self.final_results([df], 
                                   PrecipitationAmountError, 

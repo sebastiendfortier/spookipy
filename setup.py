@@ -63,7 +63,7 @@ setuptools.setup(
     ],
     install_requires=[
         "pandas>=1.2.4",
-        "fstpy>=2023.11.0",
+        "fstpy>=2024.08.00",
         "xarray>=0.19.0",
         "numpy>=1.19.5",
         "dask>=2021.8.0",

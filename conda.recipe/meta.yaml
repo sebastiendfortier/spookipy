@@ -14,7 +14,7 @@ requirements:
     - numpy >=1.19.5
     - dask >=2021.8.0
     - xarray
-    - fstpy >=2023.11.00
+    - fortiers::fstpy >=2024.08.00
 
   run:
     - python
@@ -22,7 +22,7 @@ requirements:
     - numpy >=1.19.5
     - dask >=2021.8.0
     - xarray
-    - fstpy >=2023.11.00
+    - fortiers::fstpy >=2024.08.00
 
 
 test:

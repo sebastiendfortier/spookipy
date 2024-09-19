@@ -11,7 +11,7 @@ requirements:
   build:
     - python
     - pandas >=1.2.4
-    - numpy >=1.19.5
+    - numpy >=1.23.0
     - dask >=2021.8.0
     - xarray
     - fortiers::fstpy >=2024.08.00
@@ -19,7 +19,7 @@ requirements:
   run:
     - python
     - pandas >=1.2.4
-    - numpy >=1.19.5
+    - numpy >=1.23.0
     - dask >=2021.8.0
     - xarray
     - fortiers::fstpy >=2024.08.00

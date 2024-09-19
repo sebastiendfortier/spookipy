@@ -65,7 +65,7 @@ setuptools.setup(
         "pandas>=1.2.4",
         "fstpy>=2024.08.00",
         "xarray>=0.19.0",
-        "numpy>=1.19.5",
+        "numpy>=1.23.0",
         "dask>=2021.8.0",
     ],
     packages=setuptools.find_packages(exclude="test"),

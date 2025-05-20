@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,7 +20,6 @@ plugin_test_dir = TEST_PATH + "HyperbolicTangent/testsFiles/"
 
 
 class TestHyperbolicTangent(unittest.TestCase):
-
     def test_function_TANH(self):
         """Calcul de la fonction tangente hyperbolique sur chaque element."""
         # open and read source
@@ -34,7 +31,7 @@ class TestHyperbolicTangent(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [HyperbolicTangent] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_function_TANH.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_function_TANH.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,4 +39,4 @@ class TestHyperbolicTangent(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

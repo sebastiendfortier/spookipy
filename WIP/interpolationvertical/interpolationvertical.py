@@ -8,12 +8,11 @@ from ..plugin import Plugin
 class InterpolationVerticalError(Exception):
     pass
 
-class InterpolationVertical(Plugin):
 
+class InterpolationVertical(Plugin):
     def __init__(self, df: pd.DataFrame):
         self.df = fstpy.metadata_cleanup(self.df)
         super().__init__(self.df)
-
 
     def compute(self) -> pd.DataFrame:
         pass

@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,9 +20,8 @@ plugin_test_dir = TEST_PATH + "InverseHyperbolicSine/testsFiles/"
 
 
 class TestInverseHyperbolicSine(unittest.TestCase):
-
     def test_1(self):
-        """ Test InverseHyperbolicSine"""
+        """Test InverseHyperbolicSine"""
         # open and read source
         source0 = plugin_test_dir + "UUVV5x5_1_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -34,7 +31,7 @@ class TestInverseHyperbolicSine(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [InverseHyperbolicSine] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,4 +39,4 @@ class TestInverseHyperbolicSine(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

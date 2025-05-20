@@ -7,7 +7,8 @@ import fstpy
 import pytest
 import spookipy
 
-pytestmark = [pytest.mark.regressions]
+pytestmark = [pytest.mark.regressions, pytest.mark.regressions2]
+
 
 @pytest.fixture(scope="module")
 def plugin_name():
@@ -22,9 +23,9 @@ def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute SetLowerBoundary
-    df = spookipy.SetLowerBoundary(src_df0, value=0.).compute()
-    # [ReaderStd --input {sources[0]}] >> 
-    # [SetLowerBoundary --value 0] 
+    df = spookipy.SetLowerBoundary(src_df0, value=0.0).compute()
+    # [ReaderStd --input {sources[0]}] >>
+    # [SetLowerBoundary --value 0]
 
     # write the result
     results_file = test_tmp_path / "test_1.std"
@@ -35,7 +36,8 @@ def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
     """UN seul champ en entree SANS l'option --outputFieldName."""
@@ -43,13 +45,13 @@ def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
     source0 = plugin_test_path / "UUVV5x5_minus2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    src_df = fstpy.select_with_meta(src_df0,['UU'])
+    src_df = fstpy.select_with_meta(src_df0, ["UU"])
 
     # compute SetLowerBoundary
-    df = spookipy.SetLowerBoundary(src_df, value= 0.).compute()
-    # [ReaderStd --input {sources[0]}] >> 
-    # [Select --fieldName UU] >> 
-    # [SetLowerBoundary --value 0] 
+    df = spookipy.SetLowerBoundary(src_df, value=0.0).compute()
+    # [ReaderStd --input {sources[0]}] >>
+    # [Select --fieldName UU] >>
+    # [SetLowerBoundary --value 0]
 
     # write the result
     results_file = test_tmp_path / "test_2.std"
@@ -60,34 +62,36 @@ def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_3(plugin_test_path):
-    """PLUSIEURS champs en entree AVEC l'option --outputFieldName. """
+    """PLUSIEURS champs en entree AVEC l'option --outputFieldName."""
     # open and read source
     source0 = plugin_test_path / "UUVV5x5_minus2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute SetLowerBoundary
     with pytest.raises(spookipy.SetLowerBoundaryError):
-        _ = spookipy.SetLowerBoundary(src_df0, value=0., nomvar_out='TEST').compute()
-    # [ReaderStd --input {sources[0]}] >> 
+        _ = spookipy.SetLowerBoundary(src_df0, value=0.0, nomvar_out="TEST").compute()
+    # [ReaderStd --input {sources[0]}] >>
     # [SetLowerBoundary --value 0 --outputFieldName TEST]
 
+
 def test_4(plugin_test_path, test_tmp_path, call_fstcomp):
-    """UN seul champ en entree AVEC l'option --outputFieldName. """
+    """UN seul champ en entree AVEC l'option --outputFieldName."""
     # open and read source
     source0 = plugin_test_path / "UUVV5x5_minus2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    src_df = fstpy.select_with_meta(src_df0,['UU'])
+    src_df = fstpy.select_with_meta(src_df0, ["UU"])
 
     # compute SetLowerBoundary
-    df = spookipy.SetLowerBoundary(src_df, value=0., nomvar_out='TEST').compute()
-    # [ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> 
-    # [SetLowerBoundary --value 0 --outputFieldName TEST] >> 
+    df = spookipy.SetLowerBoundary(src_df, value=0.0, nomvar_out="TEST").compute()
+    # [ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >>
+    # [SetLowerBoundary --value 0 --outputFieldName TEST] >>
     # [WriterStd --output {destination_path} --noUnitConversion ]
-    # [SetLowerBoundary --value 0 --outputFieldName TEST] 
+    # [SetLowerBoundary --value 0 --outputFieldName TEST]
 
     # write the result
     results_file = test_tmp_path / "test_4.std"
@@ -98,30 +102,32 @@ def test_4(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_5(plugin_test_path):
-    """Valeur trop longue pour --outputFieldName. """
+    """Valeur trop longue pour --outputFieldName."""
     # open and read source
     source0 = plugin_test_path / "UUVV5x5_minus2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    src_df = fstpy.select_with_meta(src_df0,['UU'])
+    src_df = fstpy.select_with_meta(src_df0, ["UU"])
     # compute SetLowerBoundary
     with pytest.raises(spookipy.SetLowerBoundaryError):
-        _ = spookipy.SetLowerBoundary(src_df, value=0., nomvar_out='TROPLONG').compute()
-    # [ReaderStd --input {sources[0]}] >> 
-    # [Select --fieldName UU] >> 
+        _ = spookipy.SetLowerBoundary(src_df, value=0.0, nomvar_out="TROPLONG").compute()
+    # [ReaderStd --input {sources[0]}] >>
+    # [Select --fieldName UU] >>
     # [SetLowerBoundary --value 0 --outputFieldName TROPLONG]
 
+
 def test_6(plugin_test_path):
-    """Valeur trop courte pour --outputFieldName. """
+    """Valeur trop courte pour --outputFieldName."""
     # open and read source
     source0 = plugin_test_path / "UUVV5x5_minus2_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    src_df = fstpy.select_with_meta(src_df0,['UU'])
+    src_df = fstpy.select_with_meta(src_df0, ["UU"])
     # compute SetLowerBoundary
     with pytest.raises(spookipy.SetLowerBoundaryError):
-        _ = spookipy.SetLowerBoundary(src_df, value=0., nomvar_out='T').compute() 
+        _ = spookipy.SetLowerBoundary(src_df, value=0.0, nomvar_out="T").compute()
     # [SetLowerBoundary --value 0 --outputFieldName T]

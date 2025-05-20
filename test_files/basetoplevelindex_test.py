@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,7 +20,6 @@ plugin_test_dir = TEST_PATH + "BaseTopLevelIndex/testsFiles/"
 
 
 class TestBaseTopLevelIndex(unittest.TestCase):
-
     def test_bt1(self):
         """Lit le champ IFLD et recherche 0.6 dans les colonnes a l'aide de l'opérateur >= et retourne les indices trouvées dans BASE et TOP"""
         # open and read source
@@ -34,7 +31,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
         # [ReaderCsv --input {sources[0]}] >> [Zap --dateOfOrigin 20080529T133415 --typeOfField FORECAST --nbitsForDataStorage R16 --verticalLevelType MILLIBARS --doNotFlagAsZapped] >> [BaseTopLevelIndex --comparisonOperator >= --threshold 0.6] >> [ZapSmart --fieldNameFrom KBAS --fieldNameTo BASE] >> [ZapSmart --fieldNameFrom KTOP --fieldNameTo TOP] >> [Zap --pdsLabel BASETOPLVLID --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_bt1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_bt1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,7 +39,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_operatorEqual(self):
         """Lit le champ IFLD et recherche 0.5 dans les colonnes a l'aide de l'opérateur == et retourne les indices trouvées dans BASE et TOP"""
@@ -55,7 +52,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
         # [ReaderCsv --input {sources[0]}] >> [Zap --dateOfOrigin 20090529T133415 --typeOfField FORECAST --nbitsForDataStorage R16 --verticalLevelType MILLIBARS --doNotFlagAsZapped] >> [BaseTopLevelIndex --comparisonOperator == --threshold 0.5] >> [ZapSmart --fieldNameFrom KBAS --fieldNameTo BASE] >> [ZapSmart --fieldNameFrom KTOP --fieldNameTo TOP] >> [Zap --pdsLabel BASETOPLVLID --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_operatorEqual.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_operatorEqual.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -63,7 +60,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_operatorLessEqual(self):
         """Lit le champ IFLD et recherche 0.5 dans les colonnes a l'aide de l'opérateur <= et retourne les indices trouvées dans BASE et TOP"""
@@ -76,7 +73,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
         # [ReaderCsv --input {sources[0]}] >> [Zap --dateOfOrigin 20090529T133415 --typeOfField FORECAST --nbitsForDataStorage R16 --verticalLevelType MILLIBARS --doNotFlagAsZapped] >> [BaseTopLevelIndex --comparisonOperator <= --threshold 0.5] >> [ZapSmart --fieldNameFrom KBAS --fieldNameTo BASE] >> [ZapSmart --fieldNameFrom KTOP --fieldNameTo TOP] >> [Zap --pdsLabel BASETOPLVLID --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_operatorLessEqual.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_operatorLessEqual.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -84,7 +81,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_operatorLessThan(self):
         """Lit le champ IFLD et recherche 0.5 dans les colonnes a l'aide de l'opérateur < et retourne les indices trouvées dans BASE et TOP"""
@@ -97,7 +94,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
         # [ReaderCsv --input {sources[0]}] >> [Zap --dateOfOrigin 20090529T133415 --typeOfField FORECAST --nbitsForDataStorage R16 --verticalLevelType MILLIBARS --doNotFlagAsZapped] >> [BaseTopLevelIndex --comparisonOperator < --threshold 0.5] >> [ZapSmart --fieldNameFrom KBAS --fieldNameTo BASE] >> [ZapSmart --fieldNameFrom KTOP --fieldNameTo TOP] >> [Zap --pdsLabel BASETOPLVLID --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_operatorLessThan.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_operatorLessThan.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -105,7 +102,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_operatorGreaterEqual(self):
         """Lit le champ IFLD et recherche 0.5 dans les colonnes a l'aide de l'opérateur >= et retourne les indices trouvées dans BASE et TOP"""
@@ -118,7 +115,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
         # [ReaderCsv --input {sources[0]}] >> [Zap --dateOfOrigin 20090529T133415 --typeOfField FORECAST --nbitsForDataStorage R16 --verticalLevelType MILLIBARS --doNotFlagAsZapped] >> [BaseTopLevelIndex --comparisonOperator >= --threshold 0.5] >> [ZapSmart --fieldNameFrom KBAS --fieldNameTo BASE] >> [ZapSmart --fieldNameFrom KTOP --fieldNameTo TOP] >> [Zap --pdsLabel BASETOPLVLID --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_operatorGreaterEqual.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_operatorGreaterEqual.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -126,7 +123,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_operatorGreaterThan(self):
         """Lit le champ IFLD et recherche 0.5 dans les colonnes a l'aide de l'opérateur > et retourne les indices trouvées dans BASE et TOP"""
@@ -139,7 +136,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
         # [ReaderCsv --input {sources[0]}] >> [Zap --dateOfOrigin 20090529T133415 --typeOfField FORECAST --nbitsForDataStorage R16 --verticalLevelType MILLIBARS --doNotFlagAsZapped] >> [BaseTopLevelIndex --comparisonOperator > --threshold 0.5] >> [ZapSmart --fieldNameFrom KBAS --fieldNameTo BASE] >> [ZapSmart --fieldNameFrom KTOP --fieldNameTo TOP] >> [Zap --pdsLabel BASETOPLVLID --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_operatorGreaterThan.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_operatorGreaterThan.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -147,7 +144,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_operatorNotEqual(self):
         """Lit le champ IFLD et recherche 0.5 dans les colonnes a l'aide de l'opérateur != et retourne les indices trouvées dans BASE et TOP"""
@@ -160,7 +157,7 @@ class TestBaseTopLevelIndex(unittest.TestCase):
         # [ReaderCsv --input {sources[0]}] >> [Zap --dateOfOrigin 20090529T133415 --typeOfField FORECAST --nbitsForDataStorage R16 --verticalLevelType MILLIBARS --doNotFlagAsZapped] >> [BaseTopLevelIndex --comparisonOperator != --threshold 0.5] >> [ZapSmart --fieldNameFrom KBAS --fieldNameTo BASE] >> [ZapSmart --fieldNameFrom KTOP --fieldNameTo TOP] >> [Zap --pdsLabel BASETOPLVLID --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_operatorNotEqual.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_operatorNotEqual.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -168,4 +165,4 @@ class TestBaseTopLevelIndex(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

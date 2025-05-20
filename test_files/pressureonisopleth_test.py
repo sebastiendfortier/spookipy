@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,9 +20,8 @@ plugin_test_dir = TEST_PATH + "PressureOnIsopleth/testsFiles/"
 
 
 class TestPressureOnIsopleth(unittest.TestCase):
-
     def test_1(self):
-        """Calculate with a simple test data """
+        """Calculate with a simple test data"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -34,7 +31,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PressureOnIsopleth --fieldName TT --scanDirection DESCENDING --fieldConstant 20 --outputFieldName PXXX] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,7 +39,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_2(self):
         """Utilisation de --outputFieldName avec une valeur > 4 caractères."""
@@ -55,7 +52,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PressureOnIsopleth --fieldName TT --scanDirection DESCENDING --fieldConstant 20 --outputFieldName ABCDEF]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -63,7 +60,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_3(self):
         """Utilisation de --fieldName avec une valeur > 4 caractères."""
@@ -76,7 +73,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PressureOnIsopleth --fieldName ABCDE --scanDirection DESCENDING --fieldConstant 20 --outputFieldName PXXX]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -84,7 +81,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_4(self):
         """Calculate more test data with multiple fieldConstant, DESCENDING scandDirection and cases with larger and smaller values"""
@@ -97,7 +94,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PressureOnIsopleth --fieldName TT --scanDirection DESCENDING --fieldConstant 15,20,30 --outputFieldName PXXX] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -105,10 +102,10 @@ class TestPressureOnIsopleth(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_5(self):
-        """ Calculate more test data with multiple fieldConstant, ASCENDING scandDirection and cases with larger and smaller values"""
+        """Calculate more test data with multiple fieldConstant, ASCENDING scandDirection and cases with larger and smaller values"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -118,7 +115,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PressureOnIsopleth --fieldName TT --scanDirection ASCENDING --fieldConstant 15,20,30 --outputFieldName PXXX] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -126,7 +123,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_6(self):
         """Same as test 1 but in singlethread"""
@@ -139,7 +136,7 @@ class TestPressureOnIsopleth(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PressureOnIsopleth --fieldName TT --scanDirection DESCENDING --fieldConstant 20 --outputFieldName PXXX] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -147,4 +144,4 @@ class TestPressureOnIsopleth(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

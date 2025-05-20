@@ -8,23 +8,25 @@ import fstpy
 import pytest
 import spookipy
 
-pytestmark = [pytest.mark.regressions]
+pytestmark = [pytest.mark.regressions, pytest.mark.regressions1]
+
 
 @pytest.fixture(scope="module")
 def plugin_name():
     """plugin_name in the path /fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/{plugin_name}"""
     return "CoriolisParameter"
 
+
 def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
-    """Calculate with a simple test data """
+    """Calculate with a simple test data"""
     # open and read source
     source0 = plugin_test_path / "UUVVTT_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute CoriolisParameter
     df = spookipy.CoriolisParameter(src_df0).compute()
-    # [ReaderStd --input {sources[0]}] >> 
-    # [CoriolisParameter] >> 
+    # [ReaderStd --input {sources[0]}] >>
+    # [CoriolisParameter] >>
     # [WriterStd --output {destination_path} ]
 
     # write the result
@@ -36,7 +38,7 @@ def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)  # ,e_max=0.13)
-    assert(res)
+    assert res
 
 
 def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -57,8 +59,9 @@ def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
     file_to_compare = plugin_test_path / "coriop_file2cmp_test_2_20230124.std"
 
     # compare results
-    res = call_fstcomp(results_file, file_to_compare) 
-    assert(res)
+    res = call_fstcomp(results_file, file_to_compare)
+    assert res
+
 
 def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calculate with a simple test data with d as a ndarray"""
@@ -66,14 +69,14 @@ def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
     source0 = plugin_test_path / "UUVVTT_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    src_df0                = fstpy.compute(src_df0)
-    src_df0.loc[:, 'path'] = None
-    src_df0.loc[:, 'key']  = None
-    src_df0['d']           = src_df0.apply(lambda row: np.asarray(row['d']),axis=1)
+    src_df0 = fstpy.compute(src_df0)
+    src_df0.loc[:, "path"] = None
+    src_df0.loc[:, "key"] = None
+    src_df0["d"] = src_df0.apply(lambda row: np.asarray(row["d"]), axis=1)
 
     # compute CoriolisParameter
     df = spookipy.CoriolisParameter(src_df0).compute()
-    # [ReaderStd --input {sources[0]}] >> 
+    # [ReaderStd --input {sources[0]}] >>
     # [CoriolisParameter] >>
     # [WriterStd --output {destination_path} ]
 
@@ -86,7 +89,7 @@ def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)  # ,e_max=0.13)
-    assert(res)
+    assert res
 
 
 def test_4(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -96,10 +99,10 @@ def test_4(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
     src_df0 = fstpy.select_with_meta(src_df0, ["UU"])
 
-    src_df0                = fstpy.compute(src_df0)
-    src_df0.loc[:, 'path'] = None
-    src_df0.loc[:, 'key']  = None
-    src_df0['d']           = src_df0.apply(lambda row: np.asarray(row['d']),axis=1)
+    src_df0 = fstpy.compute(src_df0)
+    src_df0.loc[:, "path"] = None
+    src_df0.loc[:, "key"] = None
+    src_df0["d"] = src_df0.apply(lambda row: np.asarray(row["d"]), axis=1)
 
     # compute CoriolisParameter
     df = spookipy.CoriolisParameter(src_df0).compute()
@@ -112,5 +115,5 @@ def test_4(plugin_test_path, test_tmp_path, call_fstcomp):
     file_to_compare = plugin_test_path / "coriop_file2cmp_test_2_20230124.std"
 
     # compare results
-    res = call_fstcomp(results_file, file_to_compare) 
-    assert(res)
+    res = call_fstcomp(results_file, file_to_compare)
+    assert res

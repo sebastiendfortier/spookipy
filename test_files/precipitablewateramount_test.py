@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,7 +20,6 @@ plugin_test_dir = TEST_PATH + "PrecipitableWaterAmount/testsFiles/"
 
 
 class TestPrecipitableWaterAmount(unittest.TestCase):
-
     def test_1(self):
         """Test avec un fichier en pression, utilisation de --base SURFACE. Requete invalide."""
         # open and read source
@@ -34,7 +31,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PrecipitableWaterAmount --base SURFACE --top HIGHEST]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,7 +39,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_2(self):
         """Test avec un fichier simple de 3x3x3, mélange d'unités longueur et pression. Requete invalide."""
@@ -55,7 +52,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >>[PrecipitableWaterAmount --base 2ft --top 100mb]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -63,7 +60,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_3(self):
         """Test avec un fichier reduit de données, avec --base SURFACE et --top HIGHEST, cas 2-7-9"""
@@ -76,7 +73,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >>[PrecipitableWaterAmount --base SURFACE --top HIGHEST] >>[WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -84,7 +81,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_4(self):
         """Test avec un fichier reduit de données, calcul de HU, avec --base SURFACE et --top HIGHEST, cas 2-7-9"""
@@ -97,7 +94,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --fieldName TT,TD,PX] >>[PrecipitableWaterAmount --base SURFACE --top HIGHEST] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -105,7 +102,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_5(self):
         """Test avec un fichier reduit de données, valeurs en hPa pour base et top, cas 1-5-7-9"""
@@ -118,7 +115,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PrecipitableWaterAmount --base 964.381hPa --top 10hPa] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -126,7 +123,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_5a(self):
         """Test avec un fichier reduit de données, valeurs en metres pour base et top, cas 6"""
@@ -139,7 +136,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PrecipitableWaterAmount --base 2m --top 10m] >> [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5a.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_5a.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -147,7 +144,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_6(self):
         """Test avec un fichier reduit de données, valeurs en hPa pour base et top, cas 5-8"""
@@ -160,7 +157,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PrecipitableWaterAmount --base 965.381hPa --top 954.779hPa] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -168,7 +165,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_7(self):
         """Test avec un fichier reduit de données en pression, base et top en hPa, cas 4"""
@@ -181,7 +178,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PrecipitableWaterAmount --base 900hPa --top 875hPa] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -189,7 +186,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_8(self):
         """Test avec un fichier reduit de données en pression, base et top en mb, cas 1 et 3"""
@@ -202,7 +199,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PrecipitableWaterAmount --base 900mb --top 880hPa] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -210,7 +207,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_9(self):
         """Test avec un fichier reduit de données en pression, base et top cas 2 et 8"""
@@ -223,7 +220,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PrecipitableWaterAmount --base 900hPa --top 860hPa] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -231,7 +228,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_10(self):
         """Test avec un fichier reduit de données en pression, cas 5, 7 et 9"""
@@ -244,7 +241,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PrecipitableWaterAmount --base 880hPa --top 800hPa] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -252,7 +249,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_11(self):
         """Test avec un fichier reduit de données en pression, cas 1 et 10"""
@@ -265,7 +262,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PrecipitableWaterAmount --base 885hPa --top 875hPa] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -273,7 +270,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_13(self):
         """Test avec un fichier reduit de données, valeurs en hPa pour base et top, cas 5 et 8"""
@@ -286,7 +283,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PrecipitableWaterAmount --base 872.571hPa --top 853.04hPa] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -294,7 +291,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_13a(self):
         """Test avec un vrai fichier de données, base et top conversion mb a hPa, cas 5 et 8"""
@@ -307,7 +304,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PrecipitableWaterAmount --base 872.571mb --top 853.04mb] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13a.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_13a.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -315,7 +312,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_14(self):
         """Test avec un vrai fichier de données, base et top conversion Pa a hPa"""
@@ -328,7 +325,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PrecipitableWaterAmount --base 87257.1Pa --top 85304Pa] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -336,7 +333,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_14a(self):
         """Test avec un vrai fichier de données, base et top conversion kPa a hPa"""
@@ -349,7 +346,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PrecipitableWaterAmount --base 87.2571kPa --top 85.304kPa] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_14a.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_14a.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -357,7 +354,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_15(self):
         """Test avec un vrai fichier de données, toute la colonne, parametres explicites"""
@@ -370,7 +367,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PrecipitableWaterAmount --base SURFACE --top HIGHEST] >>[WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -378,7 +375,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_16(self):
         """Test avec un vrai fichier de données, definition du sommet en pascal"""
@@ -391,7 +388,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PrecipitableWaterAmount --base SURFACE --top 96906Pa] >>[WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_16.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_16.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -399,7 +396,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_16a(self):
         """Test avec un vrai fichier de données, definition du sommet en metres"""
@@ -412,7 +409,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PrecipitableWaterAmount --base SURFACE --top 10m] >>[WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_16a.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_16a.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -420,7 +417,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_17(self):
         """Test avec un vrai fichier de données, parametres mixtes, definition de la base"""
@@ -433,7 +430,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PrecipitableWaterAmount --base 969hPa --top HIGHEST] >>[WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_17.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_17.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -441,7 +438,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_17a(self):
         """Test avec un vrai fichier de données, definition de la base en metres"""
@@ -454,7 +451,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PrecipitableWaterAmount --base 2m --top HIGHEST] >>[WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_17a.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_17a.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -462,7 +459,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_18(self):
         """Test avec un vrai fichier de données, definition du sommet en km"""
@@ -475,7 +472,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PrecipitableWaterAmount --base SURFACE --top 4km] >>[WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_18.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_18.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -483,7 +480,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_19(self):
         """Test avec un vrai fichier de données, parametres mixtes, definition de la base en pieds"""
@@ -496,7 +493,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PrecipitableWaterAmount --base 6.56ft --top HIGHEST] >>[WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_19.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_19.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -504,7 +501,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_20(self):
         """Test avec un vrai fichier de données,  definition du sommet en pieds."""
@@ -517,7 +514,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PrecipitableWaterAmount --base SURFACE --top 13123.3ft] >>[WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_20.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_20.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -525,7 +522,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_21(self):
         """Test avec un vrai fichier de données hybrid."""
@@ -538,7 +535,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PrecipitableWaterAmount --base SURFACE --top HIGHEST] >>[WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_21.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_21.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -546,7 +543,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_22(self):
         """Test avec un vrai fichier de données hybrid."""
@@ -559,7 +556,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PrecipitableWaterAmount --base 900mb --top HIGHEST] >>[WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_22.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_22.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -567,7 +564,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_23(self):
         """Test avec un vrai fichier de données hybrid."""
@@ -580,7 +577,7 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PrecipitableWaterAmount --base SURFACE --top 4km] >>[WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_23.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_23.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -588,4 +585,4 @@ class TestPrecipitableWaterAmount(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

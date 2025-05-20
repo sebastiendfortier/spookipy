@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,9 +20,8 @@ plugin_test_dir = TEST_PATH + "InterpolatedHeight/testsFiles/"
 
 
 class TestInterpolatedHeight(unittest.TestCase):
-
     def test_1(self):
-        """ Test  --inputFieldName CLD --threshold 0.6"""
+        """Test  --inputFieldName CLD --threshold 0.6"""
         # open and read source
         source0 = plugin_test_dir + "interHeight_fileSrc.csv"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -37,7 +34,7 @@ class TestInterpolatedHeight(unittest.TestCase):
         # (([ReaderCsv --input {sources[1]}] >> [Zap --verticalLevelType MILLIBARS]) + ([ReaderCsv --input {sources[0]}] >> [Zap --verticalLevelType MILLIBARS] >> ([BaseTopLevelIndex --comparisonOperator >= --threshold 0.6] + [Zap --fieldName CLD --doNotFlagAsZapped]))) >> [Zap --dateOfOrigin 20080529T133415 --typeOfField FORECAST --nbitsForDataStorage R16 --verticalLevelType MILLIBARS --doNotFlagAsZapped] >> [InterpolatedHeight --inputFieldName CLD --threshold 0.6] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -45,4 +42,4 @@ class TestInterpolatedHeight(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

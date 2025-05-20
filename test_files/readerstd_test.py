@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,7 +20,6 @@ plugin_test_dir = TEST_PATH + "ReaderStd/testsFiles/"
 
 
 class TestReaderStd(unittest.TestCase):
-
     def test_1(self):
         """Test l'option --input avec un fichier qui n'existe pas!"""
         # open and read source
@@ -34,7 +31,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}/toto.fst] >> [TrueOperation]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,7 +39,7 @@ class TestReaderStd(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_2(self):
         """Test avec un fichier qui possède un champ de type entier."""
@@ -55,7 +52,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName UU,VV,T6] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -63,7 +60,7 @@ class TestReaderStd(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_3(self):
         """test_read_write_small"""
@@ -76,7 +73,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -84,7 +81,7 @@ class TestReaderStd(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_5(self):
         """test_read_write_big"""
@@ -97,7 +94,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -105,7 +102,7 @@ class TestReaderStd(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_6(self):
         """test_read_write_sigma12000_pressure"""
@@ -118,7 +115,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName UU,VV,TT] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -126,7 +123,7 @@ class TestReaderStd(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_7(self):
         """test_read_write_big_noMetadata"""
@@ -139,7 +136,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WriterStd --output {destination_path} --noMetadata --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -147,7 +144,7 @@ class TestReaderStd(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_8(self):
         """test_read_file_with_duplicated_grid"""
@@ -160,7 +157,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -168,7 +165,7 @@ class TestReaderStd(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_9(self):
         """test_read_write_64bit"""
@@ -181,7 +178,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -189,7 +186,7 @@ class TestReaderStd(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_10(self):
         """test_read_2_file"""
@@ -208,7 +205,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]} {sources[1]} {sources[2]}] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -216,7 +213,7 @@ class TestReaderStd(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_11(self):
         """test_read_write_ip3"""
@@ -229,7 +226,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -237,7 +234,7 @@ class TestReaderStd(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_12(self):
         """test_read_write_ip1_mb_newstyle"""
@@ -250,7 +247,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -258,7 +255,7 @@ class TestReaderStd(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_13(self):
         """test for file containing 2 HY"""
@@ -271,7 +268,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -279,7 +276,7 @@ class TestReaderStd(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_14(self):
         """test reading fields with typvar == PZ"""
@@ -289,10 +286,10 @@ class TestReaderStd(unittest.TestCase):
 
         # compute ReaderStd
         df = ReaderStd(src_df0).compute()
-        #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '[WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '[WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -300,7 +297,7 @@ class TestReaderStd(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_15(self):
         """test reading fields with typvar == PU"""
@@ -313,7 +310,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -321,7 +318,7 @@ class TestReaderStd(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_16(self):
         """test reading fields with typvar == PI"""
@@ -334,7 +331,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_16.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_16.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -342,7 +339,7 @@ class TestReaderStd(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_17(self):
         """test reading fields with typvar == PF"""
@@ -355,7 +352,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_17.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_17.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -363,7 +360,7 @@ class TestReaderStd(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_18(self):
         """test reading fields with typvar == PM"""
@@ -376,7 +373,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_18.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_18.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -384,7 +381,7 @@ class TestReaderStd(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_19(self):
         """test if HY is put in memory and written back when we have a grid with two kind of level, one of them being hybrid"""
@@ -397,7 +394,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [WriterStd --output {destination_path}]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_19.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_19.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -405,7 +402,7 @@ class TestReaderStd(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_20(self):
         """test if HY is put in memory and written back when we have a grid with hybrid level"""
@@ -418,7 +415,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --fieldName FN] >> [WriterStd --output {destination_path}]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_20.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_20.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -426,7 +423,7 @@ class TestReaderStd(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_21(self):
         """test that the HY is NOT written back when the final grid don't have a hybrid level"""
@@ -439,7 +436,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --fieldName PR] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_21.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_21.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -447,7 +444,7 @@ class TestReaderStd(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_22(self):
         """test that PT is NOT read by the reader when the level type of the fields on the grid is not sigma"""
@@ -460,7 +457,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [WriterStd --output {destination_path}]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_22.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_22.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -468,7 +465,7 @@ class TestReaderStd(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_23(self):
         """test that PT is NOT written back when there is a PT field created in memory and the level type of the fields on the grid is not sigma"""
@@ -481,7 +478,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ZapSmart --fieldNameFrom AI --fieldNameTo PT] >> [WriterStd --output {destination_path}]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_23.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_23.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -489,7 +486,7 @@ class TestReaderStd(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_25(self):
         """Test la lecture avec ip2 != deet * npas"""
@@ -502,7 +499,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [WriterStd --output {destination_path} --writingMode APPEND]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_25.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_25.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -510,10 +507,10 @@ class TestReaderStd(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_26(self):
-        """Test la lecture d'un fichier pilot """
+        """Test la lecture d'un fichier pilot"""
         # open and read source
         source0 = plugin_test_dir + "2015040800_030_piloteta"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -523,7 +520,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_26.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_26.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -531,7 +528,7 @@ class TestReaderStd(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_28(self):
         """test lecture fichiers contenant caracteres speciaux ET parametre --input n'est pas le dernier"""
@@ -550,7 +547,7 @@ class TestReaderStd(unittest.TestCase):
         # [ReaderStd --input {sources[0]} {sources[1]} {sources[2]} --ignoreExtended] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_28.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_28.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -558,7 +555,7 @@ class TestReaderStd(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_29(self):
         """test lecture fichiers contenant des champs de donnees manquantes"""
@@ -568,10 +565,10 @@ class TestReaderStd(unittest.TestCase):
 
         # compute ReaderStd
         df = ReaderStd(src_df0).compute()
-        #['[ReaderStd --input {sources[0]} --ignoreExtended] >> ', '[WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --flagMissingData]']
+        # ['[ReaderStd --input {sources[0]} --ignoreExtended] >> ', '[WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --flagMissingData]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_29.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_29.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -579,7 +576,7 @@ class TestReaderStd(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_30(self):
         """test lecture fichiers contenant des membres d'ensemble differents"""
@@ -589,10 +586,10 @@ class TestReaderStd(unittest.TestCase):
 
         # compute ReaderStd
         df = ReaderStd(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >> ', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --input {sources[0]}] >> ', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_30.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_30.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -600,7 +597,7 @@ class TestReaderStd(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_31(self):
         """test lecture fichiers contenant des masques"""
@@ -610,10 +607,10 @@ class TestReaderStd(unittest.TestCase):
 
         # compute ReaderStd
         df = ReaderStd(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >> ', '[Select --forecastHour 24] >>', '[WriterStd --output {destination_path}]']
+        # ['[ReaderStd --input {sources[0]}] >> ', '[Select --forecastHour 24] >>', '[WriterStd --output {destination_path}]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_31.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_31.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -621,7 +618,7 @@ class TestReaderStd(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_32(self):
         """test lecture fichiers contenant des membres d'ensemble differents"""
@@ -631,10 +628,10 @@ class TestReaderStd(unittest.TestCase):
 
         # compute ReaderStd
         df = ReaderStd(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[Select --fieldName WGEX] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[Select --fieldName WGEX] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_32.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_32.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -642,7 +639,7 @@ class TestReaderStd(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_33(self):
         """test lecture fichiers contenant la coordonnee 5005"""
@@ -652,10 +649,10 @@ class TestReaderStd(unittest.TestCase):
 
         # compute ReaderStd
         df = ReaderStd(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}]>>', '[WriterStd --output {destination_path}]']
+        # ['[ReaderStd --input {sources[0]}]>>', '[WriterStd --output {destination_path}]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_33.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_33.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -663,4 +660,4 @@ class TestReaderStd(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

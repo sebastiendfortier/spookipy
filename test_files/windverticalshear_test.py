@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,7 +20,6 @@ plugin_test_dir = TEST_PATH + "WindVerticalShear/testsFiles/"
 
 
 class TestWindVerticalShear(unittest.TestCase):
-
     def test_1(self):
         """Calculate with a simple test data like 3x3x3 matrix for GZ, UU and VV."""
         # open and read source
@@ -34,7 +31,7 @@ class TestWindVerticalShear(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [WindVerticalShear] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,7 +39,7 @@ class TestWindVerticalShear(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_2(self):
         """Calculate with pressure file."""
@@ -55,7 +52,7 @@ class TestWindVerticalShear(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WindVerticalShear] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -63,7 +60,7 @@ class TestWindVerticalShear(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_3(self):
         """Test the WindVerticalShear calcul with model file."""
@@ -76,7 +73,7 @@ class TestWindVerticalShear(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [WindVerticalShear] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -84,7 +81,7 @@ class TestWindVerticalShear(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_4(self):
         """Test the WindVerticalShear plugin extended attributes with a model output file."""
@@ -97,7 +94,7 @@ class TestWindVerticalShear(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Zap --doNotFlagAsZapped --metadataZappable --pdsLabel 580V0N] >> [WindVerticalShear] >> [Zap --doNotFlagAsZapped --metadataZappable --implementation EXPERIMENTAL] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -105,4 +102,4 @@ class TestWindVerticalShear(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

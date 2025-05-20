@@ -47,9 +47,8 @@ Usage:
 
 .. note::
 
-   With x being the percentile, the data frame records should have
-   an etiket format containing 'x' followed by the rest of the conventional 
-   etiket name. 
+   The input dataframe should have an etiket with a label containing a number where this number represents the percentile.
+   PercentileToPercentage require the definition of operator and threshold.
 
 .. code:: python
 

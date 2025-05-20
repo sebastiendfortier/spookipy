@@ -1,0 +1,57 @@
+[build-system]
+requires = ["hatchling", "meson-python"]
+build-backend = "hatchling.build"
+
+[project]
+name = "spookipy"
+version = "2025.03.00"
+description = "spooki's weather algorithms"
+readme = "README.md"
+requires-python = ">=3.8"
+license = "GPL-3.0"
+authors = [
+    { name = "Sebastien Fortier", email = "sebastien.fortier@canada.ca" }
+]
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development",
+    "Intended Audience :: Developers"
+]
+dependencies = [
+    "fstpy>=2025.03.00",
+    "numexpr>=2.7.3",
+    "numpy>=1.24.4,<2.0.0",
+]
+
+[project.urls]
+Homepage = "https://gitlab.science.gc.ca/cmdw-spooki/spookipy"
+Repository = "https://gitlab.science.gc.ca/cmdw-spooki/spookipy"
+Issues = "https://gitlab.science.gc.ca/cmdw-spooki/spookipy/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["spookipy"]
+include = [
+    "spookipy/filterdigital/__init__.py",
+    "spookipy/filterdigital/filterdigital.py",
+    "spookipy/filterdigital/libstenfilt.so",
+    "spookipy/filterdigital/f_stenfilt.py",
+]
+
+
+[tool.meson-python]
+build-dir = "build"
+
+
+[tool.pytest.ini_options]
+testpaths = ["test"]
+markers = [
+    "regressions: mark for all regression tests.",
+    "regressions1: mark for first half of regression tests.",
+    "regressions2: mark for second half of regression tests.",
+    "unit_tests: mark for all unit tests.",
+    "humidity: mark for humidity plugins",
+    "to_skip: mark for tests that are not ready",
+    "eps: mark for all eps stat plugins."
+]
+addopts = "-vrf"

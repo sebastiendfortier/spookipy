@@ -7,12 +7,14 @@ import fstpy
 import pytest
 import spookipy
 
-pytestmark = [pytest.mark.regressions]
+pytestmark = [pytest.mark.regressions, pytest.mark.regressions1]
+
 
 @pytest.fixture(scope="module")
 def plugin_name():
     """plugin_name in the path /fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/{plugin_name}"""
     return "GridPointDistance"
+
 
 def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
     """test_gridPointDistance_X_centered"""
@@ -21,11 +23,9 @@ def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spookipy.GridPointDistance(src_df0, 
-                                    axis=['x'], 
-                                    difference_type='centered').compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
-    # [GridPointDistance --axis X --differenceType CENTERED] >> 
+    df = spookipy.GridPointDistance(src_df0, axis=["x"], difference_type="centered").compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [GridPointDistance --axis X --differenceType CENTERED] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
@@ -37,7 +37,8 @@ def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
     """test_gridPointDistance_Y_centered"""
@@ -46,9 +47,7 @@ def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spookipy.GridPointDistance(src_df0, 
-                                    axis=['y'], 
-                                    difference_type='centered').compute()
+    df = spookipy.GridPointDistance(src_df0, axis=["y"], difference_type="centered").compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GridPointDistance --axis Y --differenceType CENTERED] >> [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
@@ -60,7 +59,8 @@ def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
     """test_gridPointDistance_X_forward"""
@@ -69,11 +69,9 @@ def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spookipy.GridPointDistance(src_df0, 
-                                    axis=['x'], 
-                                    difference_type='forward').compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
-    # [GridPointDistance --axis X --differenceType FORWARD] >> 
+    df = spookipy.GridPointDistance(src_df0, axis=["x"], difference_type="forward").compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [GridPointDistance --axis X --differenceType FORWARD] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
@@ -85,7 +83,8 @@ def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_4(plugin_test_path, test_tmp_path, call_fstcomp):
     """test_gridPointDistance_Y_forward"""
@@ -94,11 +93,9 @@ def test_4(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spookipy.GridPointDistance(src_df0, 
-                                    axis=['y'], 
-                                    difference_type='forward').compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
-    # [GridPointDistance --axis Y --differenceType FORWARD] >> 
+    df = spookipy.GridPointDistance(src_df0, axis=["y"], difference_type="forward").compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [GridPointDistance --axis Y --differenceType FORWARD] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
@@ -110,7 +107,8 @@ def test_4(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_5(plugin_test_path, test_tmp_path, call_fstcomp):
     """test_gridPointDistance_X_backward"""
@@ -119,11 +117,9 @@ def test_5(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spookipy.GridPointDistance(src_df0, 
-                                    axis=['x'], 
-                                    difference_type='backward').compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
-    # [GridPointDistance --axis X --differenceType BACKWARD] >> 
+    df = spookipy.GridPointDistance(src_df0, axis=["x"], difference_type="backward").compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [GridPointDistance --axis X --differenceType BACKWARD] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
@@ -135,7 +131,8 @@ def test_5(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_6(plugin_test_path, test_tmp_path, call_fstcomp):
     """test_gridPointDistance_Y_backward"""
@@ -144,11 +141,9 @@ def test_6(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spookipy.GridPointDistance(src_df0, 
-                                    axis=['y'], 
-                                    difference_type='backward').compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
-    # [GridPointDistance --axis Y --differenceType BACKWARD] >> 
+    df = spookipy.GridPointDistance(src_df0, axis=["y"], difference_type="backward").compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [GridPointDistance --axis Y --differenceType BACKWARD] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
@@ -160,7 +155,8 @@ def test_6(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_7(plugin_test_path, test_tmp_path, call_fstcomp):
     """test_gridPointDistance_XY_centered"""
@@ -169,11 +165,9 @@ def test_7(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spookipy.GridPointDistance(src_df0, 
-                                    axis=['x','y'], 
-                                    difference_type='centered').compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
-    # [GridPointDistance --axis X,Y --differenceType CENTERED] >> 
+    df = spookipy.GridPointDistance(src_df0, axis=["x", "y"], difference_type="centered").compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [GridPointDistance --axis X,Y --differenceType CENTERED] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
@@ -185,21 +179,20 @@ def test_7(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_8(plugin_test_path, test_tmp_path, call_fstcomp):
-    """Grille globale reduite; repetition de la 1ere longitude.  Test pour l'axe des X, difference centree. """
-    # open and read source    
+    """Grille globale reduite; repetition de la 1ere longitude.  Test pour l'axe des X, difference centree."""
+    # open and read source
     source0 = plugin_test_path / "GlbPresReduit.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spookipy.GridPointDistance(src_df0, 
-                                    axis=['x'], 
-                                    difference_type='centered').compute()
-#                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
-#                 "[GridPointDistance --axis X --differenceType CENTERED] >> ",
-#                 "[WriterStd --output {destination_path} --ignoreExtended]"
+    df = spookipy.GridPointDistance(src_df0, axis=["x"], difference_type="centered").compute()
+    #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
+    #                 "[GridPointDistance --axis X --differenceType CENTERED] >> ",
+    #                 "[WriterStd --output {destination_path} --ignoreExtended]"
 
     # write the result
     results_file = test_tmp_path / "test_8.std"
@@ -210,21 +203,20 @@ def test_8(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_9(plugin_test_path, test_tmp_path, call_fstcomp):
-    """Grille globale reduite; repetition de la 1ere longitude.  Test pour l'axe des X, difference AVANT. """
-    # open and read source    
+    """Grille globale reduite; repetition de la 1ere longitude.  Test pour l'axe des X, difference AVANT."""
+    # open and read source
     source0 = plugin_test_path / "GlbPresReduit.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spookipy.GridPointDistance(src_df0, 
-                                    axis=['x'], 
-                                    difference_type='forward').compute()
-#                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
-#                 "[GridPointDistance --axis X --differenceType FORWARD] >> ",
-#                 "[WriterStd --output {destination_path} --ignoreExtended]"
+    df = spookipy.GridPointDistance(src_df0, axis=["x"], difference_type="forward").compute()
+    #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
+    #                 "[GridPointDistance --axis X --differenceType FORWARD] >> ",
+    #                 "[WriterStd --output {destination_path} --ignoreExtended]"
 
     # write the result
     results_file = test_tmp_path / "test_9.std"
@@ -235,22 +227,20 @@ def test_9(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
 
 
 def test_10(plugin_test_path, test_tmp_path, call_fstcomp):
-    """Grille globale reduite; repetition de la 1ere longitude.  Test pour l'axe des X, difference ARRIERE. """
-    # open and read source    
+    """Grille globale reduite; repetition de la 1ere longitude.  Test pour l'axe des X, difference ARRIERE."""
+    # open and read source
     source0 = plugin_test_path / "GlbPresReduit.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spookipy.GridPointDistance(src_df0, 
-                                    axis=['x'], 
-                                    difference_type='backward').compute()
-#                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
-#                 "[GridPointDistance --axis X --differenceType BACKWARD] >> ",
-#                 "[WriterStd --output {destination_path} --ignoreExtended]"
+    df = spookipy.GridPointDistance(src_df0, axis=["x"], difference_type="backward").compute()
+    #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
+    #                 "[GridPointDistance --axis X --differenceType BACKWARD] >> ",
+    #                 "[WriterStd --output {destination_path} --ignoreExtended]"
 
     # write the result
     results_file = test_tmp_path / "test_10.std"
@@ -260,7 +250,8 @@ def test_10(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_11(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul de distance centree avec un fichier global reduit (grille type L avec longitude qui ne se repete pas)."""
@@ -269,12 +260,10 @@ def test_11(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spookipy.GridPointDistance(src_df0, 
-                                    axis=['x'], 
-                                    difference_type='centered').compute()
-#                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
-#                 "[GridPointDistance --axis X --differenceType CENTERED] >> ",
-#                 "[WriterStd --output {destination_path} --noUnitConversion]"
+    df = spookipy.GridPointDistance(src_df0, axis=["x"], difference_type="centered").compute()
+    #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
+    #                 "[GridPointDistance --axis X --differenceType CENTERED] >> ",
+    #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
     # write the result
     results_file = test_tmp_path / "test_11.std"
@@ -285,7 +274,8 @@ def test_11(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_12(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul de distance arriere avec un fichier global reduit (grille type L avec longitude qui ne se repete pas)."""
@@ -294,12 +284,10 @@ def test_12(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spookipy.GridPointDistance(src_df0, 
-                                    axis=['x'], 
-                                    difference_type='backward').compute()
-#                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
-#                 "[GridPointDistance --axis X --differenceType BACKWARD] >> ",
-#                 "[WriterStd --output {destination_path} --noUnitConversion]"
+    df = spookipy.GridPointDistance(src_df0, axis=["x"], difference_type="backward").compute()
+    #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
+    #                 "[GridPointDistance --axis X --differenceType BACKWARD] >> ",
+    #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
     # write the result
     results_file = test_tmp_path / "test_12.std"
@@ -309,7 +297,8 @@ def test_12(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_13(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul de distance avant avec un fichier global reduit (grille type L avec longitude qui ne se repete pas)."""
@@ -318,12 +307,10 @@ def test_13(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spookipy.GridPointDistance(src_df0, 
-                                    axis=['x'], 
-                                    difference_type='forward').compute()
-#                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
-#                 "[GridPointDistance --axis X --differenceType FORWARD] >> ",
-#                 "[WriterStd --output {destination_path} --noUnitConversion]"
+    df = spookipy.GridPointDistance(src_df0, axis=["x"], difference_type="forward").compute()
+    #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
+    #                 "[GridPointDistance --axis X --differenceType FORWARD] >> ",
+    #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
     # write the result
     results_file = test_tmp_path / "test_13.std"
@@ -334,7 +321,8 @@ def test_13(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_14(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul de distance centree avec un fichier global reduit (grille type L avec 1ere longitude qui se repete a la fin)."""
@@ -343,12 +331,10 @@ def test_14(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spookipy.GridPointDistance(src_df0, 
-                                    axis=['x'], 
-                                    difference_type='centered').compute()
-#                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
-#                 "[GridPointDistance --axis X --differenceType CENTERED] >> ",
-#                 "[WriterStd --output {destination_path} --noUnitConversion]"
+    df = spookipy.GridPointDistance(src_df0, axis=["x"], difference_type="centered").compute()
+    #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
+    #                 "[GridPointDistance --axis X --differenceType CENTERED] >> ",
+    #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
     # write the result
     results_file = test_tmp_path / "test_14.std"
@@ -359,7 +345,8 @@ def test_14(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_15(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul de distance arriere avec un fichier global reduit (grille type L avec longitude qui ne se repete pas)."""
@@ -368,12 +355,10 @@ def test_15(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spookipy.GridPointDistance(src_df0, 
-                                    axis=['x'], 
-                                    difference_type='backward').compute()
-#                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
-#                 "[GridPointDistance --axis X --differenceType BACKWARD] >> ",
-#                 "[WriterStd --output {destination_path} --noUnitConversion]"
+    df = spookipy.GridPointDistance(src_df0, axis=["x"], difference_type="backward").compute()
+    #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
+    #                 "[GridPointDistance --axis X --differenceType BACKWARD] >> ",
+    #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
     # write the result
     results_file = test_tmp_path / "test_15.std"
@@ -384,7 +369,8 @@ def test_15(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_16(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul de distance centree avec un fichier global reduit (grille type G avec longitude qui ne se repete pas)."""
@@ -393,12 +379,10 @@ def test_16(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spookipy.GridPointDistance(src_df0, 
-                                    axis=['x'], 
-                                    difference_type='centered').compute()
-#                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
-#                 "[GridPointDistance --axis X --differenceType CENTERED] >> ",
-#                 "[WriterStd --output {destination_path} --noUnitConversion]"
+    df = spookipy.GridPointDistance(src_df0, axis=["x"], difference_type="centered").compute()
+    #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
+    #                 "[GridPointDistance --axis X --differenceType CENTERED] >> ",
+    #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
     # write the result
     results_file = test_tmp_path / "test_16.std"
@@ -409,7 +393,8 @@ def test_16(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_17(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul de distance centree avec un fichier global reduit (grille type A, longitude qui ne se repete pas)."""
@@ -418,12 +403,10 @@ def test_17(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spookipy.GridPointDistance(src_df0, 
-                                    axis=['x'], 
-                                    difference_type='centered').compute()
-#                 "[ReaderStd --ignoreExtended --input {sources[0]}] >>",
-#                 "[GridPointDistance --axis X --differenceType CENTERED] >> ",
-#                 "[WriterStd --output {destination_path} --noUnitConversion]"
+    df = spookipy.GridPointDistance(src_df0, axis=["x"], difference_type="centered").compute()
+    #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >>",
+    #                 "[GridPointDistance --axis X --differenceType CENTERED] >> ",
+    #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
     # write the result
     results_file = test_tmp_path / "test_17.std"
@@ -434,7 +417,8 @@ def test_17(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_18(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul de distance centree avec un fichier global reduit (grille type B, 1ere longitude qui se repete a la fin)."""
@@ -443,12 +427,10 @@ def test_18(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spookipy.GridPointDistance(src_df0, 
-                                    axis=['x'], 
-                                    difference_type='centered').compute()
-#                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
-#                 "[GridPointDistance --axis X --differenceType CENTERED] >> ",
-#                 "[WriterStd --output {destination_path} --noUnitConversion]"
+    df = spookipy.GridPointDistance(src_df0, axis=["x"], difference_type="centered").compute()
+    #                 "[ReaderStd --ignoreExtended --input {sources[0]}] >> ",
+    #                 "[GridPointDistance --axis X --differenceType CENTERED] >> ",
+    #                 "[WriterStd --output {destination_path} --noUnitConversion]"
 
     # write the result
     results_file = test_tmp_path / "test_18.std"
@@ -459,7 +441,8 @@ def test_18(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_19(plugin_test_path, test_tmp_path, call_fstcomp):
     """Distance centree avec fichier YinYang en entree."""
@@ -468,11 +451,9 @@ def test_19(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spookipy.GridPointDistance(src_df0, 
-                                    axis=['x','y'], 
-                                    difference_type='centered').compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
-    # [GridPointDifference --axis X,Y --differenceType CENTERED] >> 
+    df = spookipy.GridPointDistance(src_df0, axis=["x", "y"], difference_type="centered").compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [GridPointDifference --axis X,Y --differenceType CENTERED] >>
     # [WriterStd --output {destination_path} --noUnitConversion]
 
     # write the result
@@ -485,7 +466,8 @@ def test_19(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_20(plugin_test_path, test_tmp_path, call_fstcomp):
     """Distance vers l'avant (forward) avec fichier YinYang en entree."""
@@ -494,11 +476,9 @@ def test_20(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spookipy.GridPointDistance(src_df0, 
-                                    axis=['x','y'], 
-                                    difference_type='forward').compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
-    # [GridPointDistance --axis X,Y --differenceType FORWARD] >> 
+    df = spookipy.GridPointDistance(src_df0, axis=["x", "y"], difference_type="forward").compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [GridPointDistance --axis X,Y --differenceType FORWARD] >>
     # [WriterStd --output {destination_path} --noUnitConversion]
 
     # write the result
@@ -510,7 +490,8 @@ def test_20(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_21(plugin_test_path, test_tmp_path, call_fstcomp):
     """Distance vers l'arriere  avec fichier YinYang en entree."""
@@ -519,11 +500,9 @@ def test_21(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridPointDistance
-    df = spookipy.GridPointDistance(src_df0, 
-                                    axis=['x','y'], 
-                                    difference_type='backward').compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
-    # [GridPointDistance --axis X,Y --differenceType BACKWARD] >> 
+    df = spookipy.GridPointDistance(src_df0, axis=["x", "y"], difference_type="backward").compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [GridPointDistance --axis X,Y --differenceType BACKWARD] >>
     # [WriterStd --output {destination_path} --noUnitConversion]
 
     # write the result
@@ -535,4 +514,4 @@ def test_21(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)    
+    assert res

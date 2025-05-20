@@ -4,10 +4,11 @@ import spookipy
 import datetime
 import numpy as np
 import pandas as pd
-spooki_dir = os.environ['SPOOKI_DIR']
-print('SPOOKI_DIR should be set to /home/spst900/spooki/spooki_dir_ppp3/')
-user = os.environ['USER']
-fstpy.delete_file(f'/tmp/{user}/outputFile.std')
+
+spooki_dir = os.environ["SPOOKI_DIR"]
+print("SPOOKI_DIR should be set to /home/spst900/spooki/spooki_dir_ppp3/")
+user = os.environ["USER"]
+fstpy.delete_file(f"/tmp/{user}/outputFile.std")
 # #######################################################
 # class MultiplyElementsByPointError(Exception):
 #     pass
@@ -86,10 +87,12 @@ fstpy.delete_file(f'/tmp/{user}/outputFile.std')
 # fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
 # fstpy.delete_file(f'/tmp/{user}/outputFile.std')
 # #######################################################
-df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/TemperaturePotential/testsFiles/inputFile.std').to_pandas()
+df = fstpy.StandardFileReader(
+    f"{spooki_dir}/pluginsRelatedStuff/TemperaturePotential/testsFiles/inputFile.std"
+).to_pandas()
 res_df = spookipy.TemperaturePotential(df).compute()
-fstpy.StandardFileWriter(f'/tmp/{user}/outputFile.std', res_df).to_fst()
-fstpy.delete_file(f'/tmp/{user}/outputFile.std')
+fstpy.StandardFileWriter(f"/tmp/{user}/outputFile.std", res_df).to_fst()
+fstpy.delete_file(f"/tmp/{user}/outputFile.std")
 # #######################################################
 # df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/SubtractElementsVertically/testsFiles/inputFile.std').to_pandas()
 # res_df = spookipy.SubtractElementsVertically(df, direction='ascending').compute()
@@ -223,7 +226,7 @@ fstpy.delete_file(f'/tmp/{user}/outputFile.std')
 #     pass
 # df = fstpy.StandardFileReader(f'{spooki_dir}/pluginsRelatedStuff/MultiplyElementBy/testsFiles/inputFile.std').to_pandas()
 # def mult_value(a, v):
-#     return a * v 
+#     return a * v
 # res_df = spookipy.OpElementsByValue(df,
 #                                  value=(1/3),
 #                                  operation_name='MultiplyElementBy',

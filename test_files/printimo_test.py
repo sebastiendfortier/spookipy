@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,7 +20,6 @@ plugin_test_dir = TEST_PATH + "PrintIMO/testsFiles/"
 
 
 class TestPrintIMO(unittest.TestCase):
-
     def test_1(self):
         """Imprime un IMO vers un fichier, forme courte."""
         # open and read source
@@ -34,7 +31,7 @@ class TestPrintIMO(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PrintIMO --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_1mUG1lz/shortOutput.txt]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,7 +39,7 @@ class TestPrintIMO(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_2(self):
         """Imprime un IMO vers un fichier, forme longue."""
@@ -55,7 +52,7 @@ class TestPrintIMO(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PrintIMO --output /home/spst900/spooki/spooki_tmpdir_ppp4/phc001/test_24jpOyc/longOutput.txt --extended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -63,7 +60,7 @@ class TestPrintIMO(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_3(self):
         """Imprime un IMO vers un fichier, forme courte json."""
@@ -73,10 +70,10 @@ class TestPrintIMO(unittest.TestCase):
 
         # compute PrintIMO
         df = PrintIMO(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >> ', '[PrintIMO --output {destination_path} --json]']
+        # ['[ReaderStd --input {sources[0]}] >> ', '[PrintIMO --output {destination_path} --json]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -84,4 +81,4 @@ class TestPrintIMO(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

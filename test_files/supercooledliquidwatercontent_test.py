@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,9 +20,8 @@ plugin_test_dir = TEST_PATH + "SupercooledLiquidWaterContent/testsFiles/"
 
 
 class TestSupercooledLiquidWaterContent(unittest.TestCase):
-
     def test_1(self):
-        """ Test sans la cle optionnel origin."""
+        """Test sans la cle optionnel origin."""
         # open and read source
         source0 = plugin_test_dir + "inputFile_TT_M3_MPQC_MPQR_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -34,7 +31,7 @@ class TestSupercooledLiquidWaterContent(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [SupercooledLiquidWaterContent] >> [WriterStd --output {destination_path} --noMetadata]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,10 +39,10 @@ class TestSupercooledLiquidWaterContent(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_2(self):
-        """ Test d'une mauvais valeur de la cle origin"""
+        """Test d'une mauvais valeur de la cle origin"""
         # open and read source
         source0 = plugin_test_dir + "inputFile_TT_M3_MPQC_MPQR_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -55,7 +52,7 @@ class TestSupercooledLiquidWaterContent(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]} ] >> [SupercooledLiquidWaterContent --origin UNDEFINED] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -63,10 +60,10 @@ class TestSupercooledLiquidWaterContent(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_3(self):
-        """ Test avec mauvaises donnees pour la cle origin"""
+        """Test avec mauvaises donnees pour la cle origin"""
         # open and read source
         source0 = plugin_test_dir + "inputFile_TT_M3_MPQC_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -76,7 +73,7 @@ class TestSupercooledLiquidWaterContent(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]} ] >> [SupercooledLiquidWaterContent --origin RAIN] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -84,10 +81,10 @@ class TestSupercooledLiquidWaterContent(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_4(self):
-        """ Test des resultats pour chaque champs."""
+        """Test des resultats pour chaque champs."""
         # open and read source
         source0 = plugin_test_dir + "inputFile_TT_M3_MPQC_MPQR_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -97,7 +94,7 @@ class TestSupercooledLiquidWaterContent(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [SupercooledLiquidWaterContent --origin ALL] >> [WriterStd --output {destination_path} --noMetadata]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -105,10 +102,10 @@ class TestSupercooledLiquidWaterContent(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_5(self):
-        """ Test TT > 0."""
+        """Test TT > 0."""
         # open and read source
         source0 = plugin_test_dir + "inputFile_TT_over_0_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -118,7 +115,7 @@ class TestSupercooledLiquidWaterContent(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [SupercooledLiquidWaterContent --origin CLOUD] >> [WriterStd --output {destination_path} --noMetadata]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -126,4 +123,4 @@ class TestSupercooledLiquidWaterContent(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

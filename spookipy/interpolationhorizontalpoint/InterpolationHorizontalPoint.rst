@@ -76,7 +76,7 @@ Usage:
     latlon    = [lat, lon]
     latlon_df =  pd.DataFrame(latlon)
 
-    df_and_lat_lon = pd.concat([df, latlon_df], ignore_index=True, sort=False)
+    df_and_lat_lon = pd.safe_concat([df, latlon_df])
 
     res_df = spookipy.InterpolationHorizontalPoint(
         df_and_lat_lon,

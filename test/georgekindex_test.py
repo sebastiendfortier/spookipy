@@ -9,12 +9,14 @@ import pytest
 import spookipy
 from fstpy.dataframe_utils import select_with_meta
 
-pytestmark = [pytest.mark.regressions]
+pytestmark = [pytest.mark.regressions, pytest.mark.regressions1]
+
 
 @pytest.fixture(scope="module")
 def plugin_name():
     """plugin_name in the path /fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/{plugin_name}"""
     return "GeorgeKIndex"
+
 
 def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul de l'indice à partir d'une matrice de températures de 5x4x3 et d'écarts de point de rosée de 5x4x2"""
@@ -35,7 +37,7 @@ def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
 
 
 def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -57,7 +59,7 @@ def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
 
 
 def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -79,7 +81,7 @@ def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
 
 
 def test_4(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -88,11 +90,11 @@ def test_4(plugin_test_path, test_tmp_path, call_fstcomp):
     source0 = plugin_test_path / "inputFileSimple.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    tt_df = select_with_meta(src_df0, ['TT'])
+    tt_df = select_with_meta(src_df0, ["TT"])
 
-    es_df = select_with_meta(src_df0, ['ES'])
+    es_df = select_with_meta(src_df0, ["ES"])
 
-    src_df = pd.concat([tt_df, es_df], ignore_index=True)
+    src_df = pd.safe_concat([tt_df, es_df])
     # compute GeorgeKIndex
     df = spookipy.GeorgeKIndex(src_df).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> ( ([Select --fieldName TT] >> [UnitConvert --unit kelvin]) + [Select --fieldName ES] ) >> [GeorgeKIndex] >> [WriterStd --output {destination_path} --ignoreExtended]
@@ -106,7 +108,8 @@ def test_4(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 # in python vertsion this works but produces only one result
 # def test_5(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -129,16 +132,17 @@ def test_6(plugin_test_path, test_tmp_path, call_fstcomp):
     source0 = plugin_test_path / "2016122000_006_NatPres.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    meta_df = src_df0.loc[src_df0.nomvar.isin(
-        ["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(drop=True)
+    meta_df = src_df0.loc[src_df0.nomvar.isin(["^^", ">>", "^>", "!!", "!!SF", "HY", "P0", "PT"])].reset_index(
+        drop=True
+    )
     fh6_df = src_df0.loc[src_df0.ip2 == 6].reset_index(drop=True)
 
-    src_df = pd.concat([meta_df, fh6_df], ignore_index=True)
+    src_df = pd.safe_concat([meta_df, fh6_df])
 
     # compute GeorgeKIndex
     df = spookipy.GeorgeKIndex(src_df).compute()
-    #['[ReaderStd --ignoreExtended --input {sources[0]}] >>', 
-    # '[Select --forecastHour 6] >> [GeorgeKIndex] >> ', 
+    # ['[ReaderStd --ignoreExtended --input {sources[0]}] >>',
+    # '[Select --forecastHour 6] >> [GeorgeKIndex] >> ',
     # '[WriterStd --output {destination_path} --ignoreExtended]']
 
     # write the result
@@ -150,4 +154,4 @@ def test_6(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res

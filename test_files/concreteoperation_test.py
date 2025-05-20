@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,9 +20,8 @@ plugin_test_dir = TEST_PATH + "ConcreteOperation/testsFiles/"
 
 
 class TestConcreteOperation(unittest.TestCase):
-
     def test_1(self):
-        """ Test - manque 1 niveau pour UU et 2 niveaux pour VV"""
+        """Test - manque 1 niveau pour UU et 2 niveaux pour VV"""
         # open and read source
         source0 = plugin_test_dir + "GZUUVV_144_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -34,19 +31,18 @@ class TestConcreteOperation(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> ([Select --fieldName UU --verticalLevel 1,2] + [Select --fieldName VV --verticalLevel 1] + [Select --fieldName GZ]) >> [AddElementsByPoint --outputFieldName ACCU] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
-        file_to_compare = plugin_test_dir + \
-            "miss_one_level_for_UU_and_two_for_VV_file2cmp.std"
+        file_to_compare = plugin_test_dir + "miss_one_level_for_UU_and_two_for_VV_file2cmp.std"
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_2(self):
-        """ Test - seulement niveau 2 pour GZ"""
+        """Test - seulement niveau 2 pour GZ"""
         # open and read source
         source0 = plugin_test_dir + "GZUUVV_144_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -56,7 +52,7 @@ class TestConcreteOperation(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> ([Select --fieldName UU ] + [Select --fieldName VV] + [Select --fieldName GZ --verticalLevel 2]) >> [AddElementsByPoint --outputFieldName ACCU] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -64,10 +60,10 @@ class TestConcreteOperation(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_3(self):
-        """ Test - seulement niveau 0 pour UU"""
+        """Test - seulement niveau 0 pour UU"""
         # open and read source
         source0 = plugin_test_dir + "GZUUVV_144_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -77,7 +73,7 @@ class TestConcreteOperation(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> ([Select --fieldName UU --verticalLevel 0] + [Select --fieldName VV] + [Select --fieldName GZ ]) >> [AddElementsByPoint --outputFieldName ACCU] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -85,7 +81,7 @@ class TestConcreteOperation(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_4(self):
         """Verifier si ca fonctionne meme s'il manque un niveau dans le milieu."""
@@ -98,7 +94,7 @@ class TestConcreteOperation(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> ([Select --fieldName UU] + [Select --fieldName VV --verticalLevel 0,2] + [Select --fieldName GZ ]) >> [AddElementsByPoint --outputFieldName ACCU] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -106,7 +102,7 @@ class TestConcreteOperation(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_5(self):
         """Verifier si ca fonctionne lorsque 2 calculs ont besoin des mêmes données."""
@@ -119,7 +115,7 @@ class TestConcreteOperation(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> ([Select --fieldName UU] + [Select --fieldName VV --verticalLevel 0,2] + [Select --fieldName GZ ]) >> [SetConstantValue --value 5] >> [AddElementsByPoint --outputFieldName ACCU] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -127,7 +123,7 @@ class TestConcreteOperation(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_6(self):
         """Test avec pressure."""
@@ -140,7 +136,7 @@ class TestConcreteOperation(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Pressure --coordinateType AUTODETECT --referenceField TT] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -148,7 +144,7 @@ class TestConcreteOperation(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_7(self):
         """Test avec des données manquantes."""
@@ -161,7 +157,7 @@ class TestConcreteOperation(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [AddElementsByPoint --outputFieldName ACCU]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -169,4 +165,4 @@ class TestConcreteOperation(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

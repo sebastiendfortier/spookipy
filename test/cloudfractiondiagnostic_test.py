@@ -7,12 +7,14 @@ import fstpy
 import pytest
 import spookipy
 
-pytestmark = [pytest.mark.regressions]
+pytestmark = [pytest.mark.regressions, pytest.mark.regressions1]
+
 
 @pytest.fixture(scope="module")
 def plugin_name():
     """plugin_name in the path /fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/{plugin_name}"""
     return "CloudFractionDiagnostic"
+
 
 def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
     """Test regulier des donnees venant avec la demande de plugin"""
@@ -26,7 +28,7 @@ def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
     # [Zap --pdsLabel CLDFRACTION --doNotFlagAsZapped] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
-    df.loc[:, 'etiket'] = 'CLDFRACTION'
+    df.loc[:, "etiket"] = "CLDFRACTION"
 
     # write the result
     results_file = test_tmp_path / "test_cfd_1.std"
@@ -37,4 +39,4 @@ def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)  # ,e_max=0.6)
-    assert(res)
+    assert res

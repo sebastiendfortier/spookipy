@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,7 +20,6 @@ plugin_test_dir = TEST_PATH + "Power/testsFiles/"
 
 
 class TestPower(unittest.TestCase):
-
     def test_1(self):
         """Utilisation de --outputFieldName avec une valeur > 4 caractères."""
         # open and read source
@@ -34,7 +31,7 @@ class TestPower(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Power --value 2 --outputFieldName ABCDEF]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,7 +39,7 @@ class TestPower(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_2(self):
         """Utilisation de --outputFieldName alors qu'on a plusieurs champs dans le fichier d'entrée."""
@@ -55,7 +52,7 @@ class TestPower(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Power --value 2 --outputFieldName ABCD]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -63,7 +60,7 @@ class TestPower(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_3(self):
         """Calcule la valeur exponentielle d'un champ."""
@@ -76,7 +73,7 @@ class TestPower(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Power --value 2 ] >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE --ignoreExtended ]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -84,7 +81,7 @@ class TestPower(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_4(self):
         """Calcule la valeur exponentielle d'un champ et utilise --outputFieldName pour renommer le résultat."""
@@ -97,7 +94,7 @@ class TestPower(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName UU*] >> [Power --value 2 --outputFieldName SQRT] >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE --ignoreExtended --noUnitConversion]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -105,4 +102,4 @@ class TestPower(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

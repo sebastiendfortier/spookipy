@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,7 +20,6 @@ plugin_test_dir = TEST_PATH + "Zap/testsFiles/"
 
 
 class TestZap(unittest.TestCase):
-
     def test_1(self):
         """Tester l'option --typeOfField avec une valeur invalide!"""
         # open and read source
@@ -34,7 +31,7 @@ class TestZap(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Zap --typeOfField BLABLABLA]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,7 +39,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_2(self):
         """Tester l'option --run avec une valeur invalide!"""
@@ -55,7 +52,7 @@ class TestZap(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Zap --run BLABLABLA]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -63,7 +60,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_3(self):
         """Tester l'option --ensembleMember avec une valeur invalide!"""
@@ -76,7 +73,7 @@ class TestZap(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Zap --ensembleMember BLABLABLA]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -84,7 +81,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_5(self):
         """Tester l'option --verticalLevel avec une valeur invalide!"""
@@ -97,7 +94,7 @@ class TestZap(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Zap --verticalLevel -1]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -105,7 +102,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_6(self):
         """Tester l'option --verticalLevelType avec une valeur invalide!"""
@@ -118,7 +115,7 @@ class TestZap(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Zap --verticalLevelType BLABLABLA]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -126,7 +123,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_7(self):
         """Tester l'option --forecastHour avec une valeur invalide!"""
@@ -139,7 +136,7 @@ class TestZap(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Zap --forecastHour -10]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -147,7 +144,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_8(self):
         """Tester l'option --forecastHourOnly avec une valeur invalide!"""
@@ -160,7 +157,7 @@ class TestZap(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Zap --forecastHourOnly -10]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -168,7 +165,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_9(self):
         """Tester l'option --userDefinedIndex avec une valeur invalide!"""
@@ -181,7 +178,7 @@ class TestZap(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Zap --userDefinedIndex -10]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -189,7 +186,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_10(self):
         """Tester l'option --nbitsForDataStorage avec une valeur invalide!"""
@@ -202,7 +199,7 @@ class TestZap(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Zap --nbitsForDataStorage i65]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -210,7 +207,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_11(self):
         """Tester l'option --unit avec une valeur invalide!"""
@@ -223,7 +220,7 @@ class TestZap(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Zap --unit i65]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -231,7 +228,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_12(self):
         """Tester l'option --forecastHourOnly avec une valeur invalide!"""
@@ -244,7 +241,7 @@ class TestZap(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Zap --forecastHourOnly -10:00:00]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -252,7 +249,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_13(self):
         """Tester l'option --forecastHourOnly avec une valeur valide!"""
@@ -262,10 +259,10 @@ class TestZap(unittest.TestCase):
 
         # compute Zap
         df = Zap(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHourOnly 11:00:01] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHourOnly 11:00:01] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -273,7 +270,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_14(self):
         """Tester l'option --forecastHour avec une valeur invalide!"""
@@ -286,7 +283,7 @@ class TestZap(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Zap --forecastHour -10:00:00]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_14.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -294,7 +291,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_15(self):
         """Tester l'option --forecastHour avec une valeur invalide!"""
@@ -304,10 +301,10 @@ class TestZap(unittest.TestCase):
 
         # compute Zap
         df = Zap(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHour 11:38:00] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHour 11:38:00] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -315,7 +312,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_16(self):
         """Tester l'option --forecastHour avec une valeur invalide!"""
@@ -325,10 +322,10 @@ class TestZap(unittest.TestCase):
 
         # compute Zap
         df = Zap(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHour 11.633333333] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHour 11.633333333] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_16.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_16.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -336,7 +333,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_17(self):
         """Tester l'option --forecastHourOnly, --timeStepNumber et --lenghtOfTimeStep avec une valeur valide!"""
@@ -346,10 +343,10 @@ class TestZap(unittest.TestCase):
 
         # compute Zap
         df = Zap(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHourOnly 11.633333333 --lenghtOfTimeStep 1 --timeStepNumber 41880] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHourOnly 11.633333333 --lenghtOfTimeStep 1 --timeStepNumber 41880] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_17.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_17.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -357,7 +354,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_18(self):
         """Tester l'option --forecastHour, --timeStepNumber et --lenghtOfTimeStep avec une valeur invalide!"""
@@ -367,10 +364,10 @@ class TestZap(unittest.TestCase):
 
         # compute Zap
         df = Zap(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHourOnly 11.6 --lenghtOfTimeStep 1 --timeStepNumber 41880] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHourOnly 11.6 --lenghtOfTimeStep 1 --timeStepNumber 41880] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_18.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_18.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -378,7 +375,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_19(self):
         """Tester l'option --forecastHour, --timeStepNumber et --lenghtOfTimeStep avec une valeur invalide!"""
@@ -388,10 +385,10 @@ class TestZap(unittest.TestCase):
 
         # compute Zap
         df = Zap(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHourOnly 11.633333333 --lenghtOfTimeStep 2 --timeStepNumber 41880] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHourOnly 11.633333333 --lenghtOfTimeStep 2 --timeStepNumber 41880] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_19.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_19.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -399,7 +396,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_20(self):
         """Tester l'option --forecastHour, --timeStepNumber et --lenghtOfTimeStep avec une valeur invalide!"""
@@ -409,10 +406,10 @@ class TestZap(unittest.TestCase):
 
         # compute Zap
         df = Zap(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHourOnly 11.633333333 --lenghtOfTimeStep 1 --timeStepNumber 41888] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHourOnly 11.633333333 --lenghtOfTimeStep 1 --timeStepNumber 41888] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_20.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_20.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -420,7 +417,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_21(self):
         """Tester l'option --forecastHour et --lenghtOfTimeStep avec une valeur invalide!"""
@@ -430,10 +427,10 @@ class TestZap(unittest.TestCase):
 
         # compute Zap
         df = Zap(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHourOnly 11.633333333 --lenghtOfTimeStep 1] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHourOnly 11.633333333 --lenghtOfTimeStep 1] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_21.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_21.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -441,7 +438,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_22(self):
         """Tester l'option --forecastHour et --timeStepNumber avec une valeur invalide!"""
@@ -451,10 +448,10 @@ class TestZap(unittest.TestCase):
 
         # compute Zap
         df = Zap(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHourOnly 11.633333333 --timeStepNumber 41880] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHourOnly 11.633333333 --timeStepNumber 41880] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_22.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_22.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -462,7 +459,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_23(self):
         """Tester l'option --forecastHourOnly, --timeStepNumber et --lenghtOfTimeStep avec une valeur valide!"""
@@ -472,10 +469,10 @@ class TestZap(unittest.TestCase):
 
         # compute Zap
         df = Zap(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHourOnly 11:31:00 --lenghtOfTimeStep 1 --timeStepNumber 41460] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHourOnly 11:31:00 --lenghtOfTimeStep 1 --timeStepNumber 41460] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_23.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_23.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -483,7 +480,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_24(self):
         """Tester l'option --forecastHourOnly, --timeStepNumber et --lenghtOfTimeStep avec une valeur valide!"""
@@ -493,10 +490,10 @@ class TestZap(unittest.TestCase):
 
         # compute Zap
         df = Zap(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHourOnly 11:31:00 --lenghtOfTimeStep 60 --timeStepNumber 691] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHourOnly 11:31:00 --lenghtOfTimeStep 60 --timeStepNumber 691] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_24.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_24.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -504,7 +501,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_25(self):
         """Tester l'option --forecastHourOnly, --timeStepNumber et --lenghtOfTimeStep avec une valeur valide!"""
@@ -514,10 +511,10 @@ class TestZap(unittest.TestCase):
 
         # compute Zap
         df = Zap(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHourOnly 11:31:01 --lenghtOfTimeStep 1 --timeStepNumber 41461] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[Zap --forecastHourOnly 11:31:01 --lenghtOfTimeStep 1 --timeStepNumber 41461] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_25.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_25.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -525,7 +522,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_26(self):
         """Tester l'option --modificationFlag, avec 2 valeurs valide!"""
@@ -535,10 +532,10 @@ class TestZap(unittest.TestCase):
 
         # compute Zap
         df = Zap(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag ZAPPED=TRUE,BOUNDED=FALSE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag ZAPPED=TRUE,BOUNDED=FALSE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_26.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_26.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -546,7 +543,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_27(self):
         """Tester l'option --modificationFlag, avec 1 valeur valide!"""
@@ -556,10 +553,10 @@ class TestZap(unittest.TestCase):
 
         # compute Zap
         df = Zap(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag ZAPPED=TRUE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag ZAPPED=TRUE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_27.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_27.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -567,7 +564,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_28(self):
         """Tester l'option --modificationFlag, avec 1 valeur invalide!"""
@@ -577,10 +574,10 @@ class TestZap(unittest.TestCase):
 
         # compute Zap
         df = Zap(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag ZAPPEDS=TRUE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag ZAPPEDS=TRUE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_28.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_28.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -588,7 +585,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_29(self):
         """Tester l'option --modificationFlag, avec 1 valeur invalide!"""
@@ -598,10 +595,10 @@ class TestZap(unittest.TestCase):
 
         # compute Zap
         df = Zap(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag ZAPPED=TRU] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag ZAPPED=TRU] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_29.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_29.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -609,7 +606,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_30(self):
         """Tester l'option --modificationFlag, avec FILTERED=TRUE!"""
@@ -619,10 +616,10 @@ class TestZap(unittest.TestCase):
 
         # compute Zap
         df = Zap(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag FILTERED=TRUE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag FILTERED=TRUE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_30.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_30.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -630,7 +627,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_31(self):
         """Tester l'option --modificationFlag, avec INTERPOLATED=TRUE!"""
@@ -640,10 +637,10 @@ class TestZap(unittest.TestCase):
 
         # compute Zap
         df = Zap(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag INTERPOLATED=TRUE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag INTERPOLATED=TRUE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_31.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_31.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -651,7 +648,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_32(self):
         """Tester l'option --modificationFlag, avec UNITCONVERTED=TRUE!"""
@@ -661,10 +658,10 @@ class TestZap(unittest.TestCase):
 
         # compute Zap
         df = Zap(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag UNITCONVERTED=TRUE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag UNITCONVERTED=TRUE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_32.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_32.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -672,7 +669,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_33(self):
         """Tester l'option --modificationFlag, avec ALL_FLAGS=TRUE!"""
@@ -682,10 +679,10 @@ class TestZap(unittest.TestCase):
 
         # compute Zap
         df = Zap(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag ALL_FLAGS=TRUE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag ALL_FLAGS=TRUE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_33.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_33.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -693,7 +690,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_34(self):
         """Tester l'option --modificationFlag, avec ZAPPED!"""
@@ -703,10 +700,10 @@ class TestZap(unittest.TestCase):
 
         # compute Zap
         df = Zap(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag ZAPPED=FALSE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag ZAPPED=FALSE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_34.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_34.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -714,7 +711,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_35(self):
         """Tester l'option --modificationFlag, avec ZAPPED and FILTERED!"""
@@ -724,10 +721,10 @@ class TestZap(unittest.TestCase):
 
         # compute Zap
         df = Zap(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag ZAPPED=FALSE,FILTERED=FALSE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag ZAPPED=FALSE,FILTERED=FALSE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_35.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_35.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -735,7 +732,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_36(self):
         """Tester l'option --modificationFlag, avec FILTERED!"""
@@ -745,10 +742,10 @@ class TestZap(unittest.TestCase):
 
         # compute Zap
         df = Zap(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag FILTERED=FALSE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag FILTERED=FALSE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_36.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_36.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -756,7 +753,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_37(self):
         """Tester l'option --modificationFlag, avec INTERPOLATED!"""
@@ -766,10 +763,10 @@ class TestZap(unittest.TestCase):
 
         # compute Zap
         df = Zap(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag INTERPOLATED=FALSE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag INTERPOLATED=FALSE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_37.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_37.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -777,7 +774,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_38(self):
         """Tester l'option --modificationFlag, avec UNITCONVERTED!"""
@@ -787,10 +784,10 @@ class TestZap(unittest.TestCase):
 
         # compute Zap
         df = Zap(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag UNITCONVERTED=FALSE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag UNITCONVERTED=FALSE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_38.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_38.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -798,7 +795,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_39(self):
         """Tester l'option --modificationFlag, avec ZAP et FILTERED!"""
@@ -808,10 +805,10 @@ class TestZap(unittest.TestCase):
 
         # compute Zap
         df = Zap(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag ZAPPED=TRUE,FILTERED=TRUE] >>', '[Zap --modificationFlag ZAPPED=FALSE,FILTERED=FALSE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag ZAPPED=TRUE,FILTERED=TRUE] >>', '[Zap --modificationFlag ZAPPED=FALSE,FILTERED=FALSE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_39.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_39.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -819,7 +816,7 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_40(self):
         """Tester l'option --modificationFlag, avec ENSEMBLEEXTRAINFO!"""
@@ -829,10 +826,10 @@ class TestZap(unittest.TestCase):
 
         # compute Zap
         df = Zap(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag ALL_FLAGS=FALSE] >>', '[Zap --modificationFlag ENSEMBLEEXTRAINFO=TRUE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[Zap --modificationFlag ALL_FLAGS=FALSE] >>', '[Zap --modificationFlag ENSEMBLEEXTRAINFO=TRUE] >>', '[WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_40.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_40.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -840,4 +837,4 @@ class TestZap(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

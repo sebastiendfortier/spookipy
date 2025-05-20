@@ -5,100 +5,201 @@ check_test_ssm_package()
 
 import pandas as pd
 import pytest
-import spookipy 
-import rpnpy.librmn.all as rmn
+import spookipy
 import numpy as np
 
-pytestmark = [pytest.mark.regressions]
+pytestmark = [pytest.mark.regressions, pytest.mark.regressions2]
+
 
 @pytest.fixture(scope="module")
 def plugin_name():
     """plugin_name in the path /fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/{plugin_name}"""
     return "StatisticsVertically"
 
+
 def test_1():
     """Check for a valid nomvar - invalid nomvar"""
-    df = pd.DataFrame({'nomvar': np.array(['TT','UU','VV']),'ip1':np.array([1,2,3]),'ip2':np.array([1,2,3]),'ip3':np.array([1,2,3])})
+    df = pd.DataFrame(
+        {
+            "nomvar": np.array(["TT", "UU", "VV"]),
+            "ip1": np.array([1, 2, 3]),
+            "ip2": np.array([1, 2, 3]),
+            "ip3": np.array([1, 2, 3]),
+        }
+    )
     # compute StatisticsVerticallyy
     with pytest.raises(spookipy.StatisticsVerticallyError):
-        _ = spookipy.StatisticsVertically(df,nomvar='')
+        _ = spookipy.StatisticsVertically(df, nomvar="")
+
 
 def test_2():
     """Check for a valid stat - invalid stat None"""
-    df = pd.DataFrame({'nomvar': np.array(['TT','UU','VV']),'ip1':np.array([1,2,3]),'ip2':np.array([1,2,3]),'ip3':np.array([1,2,3])})
+    df = pd.DataFrame(
+        {
+            "nomvar": np.array(["TT", "UU", "VV"]),
+            "ip1": np.array([1, 2, 3]),
+            "ip2": np.array([1, 2, 3]),
+            "ip3": np.array([1, 2, 3]),
+        }
+    )
     # compute StatisticsVerticallyy
-    with pytest.raises(spookipy.StatisticsVerticallyError): 
-        _ = spookipy.StatisticsVertically(df,stats=None)
+    with pytest.raises(spookipy.StatisticsVerticallyError):
+        _ = spookipy.StatisticsVertically(df, stats=None)
+
 
 def test_3():
     """Check for a valid stat - invalid stat TOTO"""
-    df = pd.DataFrame({'nomvar': np.array(['TT','UU','VV']),'ip1':np.array([1,2,3]),'ip2':np.array([1,2,3]),'ip3':np.array([1,2,3])})
+    df = pd.DataFrame(
+        {
+            "nomvar": np.array(["TT", "UU", "VV"]),
+            "ip1": np.array([1, 2, 3]),
+            "ip2": np.array([1, 2, 3]),
+            "ip3": np.array([1, 2, 3]),
+        }
+    )
     # compute StatisticsVerticallyy
     with pytest.raises(spookipy.StatisticsVerticallyError):
-        _ = spookipy.StatisticsVertically(df,stats=['TOTO'])
+        _ = spookipy.StatisticsVertically(df, stats=["TOTO"])
+
 
 def test_4():
     """Check for a valid percentiles - invalid percentiles None"""
-    df = pd.DataFrame({'nomvar': np.array(['TT','UU','VV']),'ip1':np.array([1,2,3]),'ip2':np.array([1,2,3]),'ip3':np.array([1,2,3])})
+    df = pd.DataFrame(
+        {
+            "nomvar": np.array(["TT", "UU", "VV"]),
+            "ip1": np.array([1, 2, 3]),
+            "ip2": np.array([1, 2, 3]),
+            "ip3": np.array([1, 2, 3]),
+        }
+    )
     # compute StatisticsVerticallyy
     with pytest.raises(spookipy.StatisticsVerticallyError):
-        _ = spookipy.StatisticsVertically(df,stats='PERCENTILES', percentiles=None)
+        _ = spookipy.StatisticsVertically(df, stats="PERCENTILES", percentiles=None)
+
 
 def test_5():
     """Check for a valid percentiles - invalid percentiles empty list"""
-    df = pd.DataFrame({'nomvar': np.array(['TT','UU','VV']),'ip1':np.array([1,2,3]),'ip2':np.array([1,2,3]),'ip3':np.array([1,2,3])})
+    df = pd.DataFrame(
+        {
+            "nomvar": np.array(["TT", "UU", "VV"]),
+            "ip1": np.array([1, 2, 3]),
+            "ip2": np.array([1, 2, 3]),
+            "ip3": np.array([1, 2, 3]),
+        }
+    )
     # compute StatisticsVerticallyy
     with pytest.raises(spookipy.StatisticsVerticallyError):
-        _ = spookipy.StatisticsVertically(df,stats='PERCENTILES', percentiles=[])
+        _ = spookipy.StatisticsVertically(df, stats="PERCENTILES", percentiles=[])
+
 
 def test_6():
     """Check for a valid percentiles - invalid percentiles list of str"""
-    df = pd.DataFrame({'nomvar': np.array(['TT','UU','VV']),'ip1':np.array([1,2,3]),'ip2':np.array([1,2,3]),'ip3':np.array([1,2,3])})
+    df = pd.DataFrame(
+        {
+            "nomvar": np.array(["TT", "UU", "VV"]),
+            "ip1": np.array([1, 2, 3]),
+            "ip2": np.array([1, 2, 3]),
+            "ip3": np.array([1, 2, 3]),
+        }
+    )
     # compute StatisticsVerticallyy
     with pytest.raises(spookipy.StatisticsVerticallyError):
-        _ = spookipy.StatisticsVertically(df,stats='PERCENTILES', percentiles=['12'])
+        _ = spookipy.StatisticsVertically(df, stats="PERCENTILES", percentiles=["12"])
+
 
 def test_7():
     """Check for a valid threshold - invalid threshold_operators None"""
-    df = pd.DataFrame({'nomvar': np.array(['TT','UU','VV']),'ip1':np.array([1,2,3]),'ip2':np.array([1,2,3]),'ip3':np.array([1,2,3])})
+    df = pd.DataFrame(
+        {
+            "nomvar": np.array(["TT", "UU", "VV"]),
+            "ip1": np.array([1, 2, 3]),
+            "ip2": np.array([1, 2, 3]),
+            "ip3": np.array([1, 2, 3]),
+        }
+    )
     # compute StatisticsVerticallyy
     with pytest.raises(spookipy.StatisticsVerticallyError):
-        _ = spookipy.StatisticsVertically(df,stats='THRESHOLDS')
+        _ = spookipy.StatisticsVertically(df, stats="THRESHOLDS")
+
 
 def test_8():
     """Check for a valid threshold - invalid threshold_operators invalid value"""
-    df = pd.DataFrame({'nomvar': np.array(['TT','UU','VV']),'ip1':np.array([1,2,3]),'ip2':np.array([1,2,3]),'ip3':np.array([1,2,3])})
+    df = pd.DataFrame(
+        {
+            "nomvar": np.array(["TT", "UU", "VV"]),
+            "ip1": np.array([1, 2, 3]),
+            "ip2": np.array([1, 2, 3]),
+            "ip3": np.array([1, 2, 3]),
+        }
+    )
     # compute StatisticsVerticallyy
     with pytest.raises(spookipy.StatisticsVerticallyError):
-        _ = spookipy.StatisticsVertically(df,stats='THRESHOLDS', threshold_operators=[], threshold_values=[])
+        _ = spookipy.StatisticsVertically(df, stats="THRESHOLDS", threshold_operators=[], threshold_values=[])
+
 
 def test_9():
     """Check for a valid threshold - invalid threshold_operators invalid operator"""
-    df = pd.DataFrame({'nomvar': np.array(['TT','UU','VV']),'ip1':np.array([1,2,3]),'ip2':np.array([1,2,3]),'ip3':np.array([1,2,3])})
+    df = pd.DataFrame(
+        {
+            "nomvar": np.array(["TT", "UU", "VV"]),
+            "ip1": np.array([1, 2, 3]),
+            "ip2": np.array([1, 2, 3]),
+            "ip3": np.array([1, 2, 3]),
+        }
+    )
     # compute StatisticsVerticallyy
     with pytest.raises(spookipy.StatisticsVerticallyError):
-        _ = spookipy.StatisticsVertically(df,stats='THRESHOLDS', threshold_operators=['TO'], threshold_values=[1])
+        _ = spookipy.StatisticsVertically(df, stats="THRESHOLDS", threshold_operators=["TO"], threshold_values=[1])
+
 
 def test_10():
     """Check for a valid threshold - invalid threshold_values invalid value"""
-    df = pd.DataFrame({'nomvar': np.array(['TT','UU','VV']),'ip1':np.array([1,2,3]),'ip2':np.array([1,2,3]),'ip3':np.array([1,2,3])})
+    df = pd.DataFrame(
+        {
+            "nomvar": np.array(["TT", "UU", "VV"]),
+            "ip1": np.array([1, 2, 3]),
+            "ip2": np.array([1, 2, 3]),
+            "ip3": np.array([1, 2, 3]),
+        }
+    )
     # compute StatisticsVerticallyy
     with pytest.raises(spookipy.StatisticsVerticallyError):
-        _ = spookipy.StatisticsVertically(df,stats='THRESHOLDS', threshold_operators=['GE'], threshold_values=[])
+        _ = spookipy.StatisticsVertically(df, stats="THRESHOLDS", threshold_operators=["GE"], threshold_values=[])
+
 
 def test_11():
     """Check for a valid threshold - invalid threshold_operators and threshold_values of different lenghts"""
-    df = pd.DataFrame({'nomvar': np.array(['TT','UU','VV']),'ip1':np.array([1,2,3]),'ip2':np.array([1,2,3]),'ip3':np.array([1,2,3])})
+    df = pd.DataFrame(
+        {
+            "nomvar": np.array(["TT", "UU", "VV"]),
+            "ip1": np.array([1, 2, 3]),
+            "ip2": np.array([1, 2, 3]),
+            "ip3": np.array([1, 2, 3]),
+        }
+    )
     # compute StatisticsVerticallyy
     with pytest.raises(spookipy.StatisticsVerticallyError):
-        _ = spookipy.StatisticsVertically(df,stats='THRESHOLDS', threshold_operators=['GE','LE'], threshold_values=[1])
+        _ = spookipy.StatisticsVertically(
+            df, stats="THRESHOLDS", threshold_operators=["GE", "LE"], threshold_values=[1]
+        )
+
 
 def test_12():
     """Check for a valid nomvar - invalid nomvar"""
-    df = pd.DataFrame({'nomvar': np.array(['TT','UU','VV']),'ip1':np.array([1,2,3]),'ip2':np.array([1,2,3]),'ip3':np.array([1,2,3]), 'grid':'123', 'forecast_hour':12})
+    df = pd.DataFrame(
+        {
+            "nomvar": np.array(["TT", "UU", "VV"]),
+            "ip1": np.array([1, 2, 3]),
+            "ip2": np.array([1, 2, 3]),
+            "ip3": np.array([1, 2, 3]),
+            "grid": "123",
+            "forecast_hour": 12,
+        }
+    )
     # compute StatisticsVerticallyy
     with pytest.raises(spookipy.StatisticsVerticallyError):
-        _ = spookipy.StatisticsVertically(df,nomvar = 'TO', stats='MEAN')
+        _ = spookipy.StatisticsVertically(df, nomvar="TO", stats="MEAN")
+
 
 # def test_13(plugin_test_path, test_tmp_path, call_fstcomp):
 #     """Check for a valid nomvar - invalid nomvar"""
@@ -108,12 +209,12 @@ def test_12():
 #     # compute StatisticsVerticallyy
 #     # with pytest.raises(spookipy.StatisticsVerticallyError):
 #     df = spookipy.StatisticsVertically(
-#         src_df0, 
-#         nomvar = 'PR', 
+#         src_df0,
+#         nomvar = 'PR',
 #         stats = ['MEAN','STD','PERCENTILES','INTERPERCENTILES','THRESHOLDS'],
 #         percentiles = list(range(0,105,5)),
-#         interpercentiles_lower = [10,25], 
-#         interpercentiles_upper = [90,75], 
+#         interpercentiles_lower = [10,25],
+#         interpercentiles_upper = [90,75],
 #         threshold_operators = ['LT','LT','EQ','GE','GE'],
 #         threshold_values = [-10,-5,0,5,10],
 #         ).compute()

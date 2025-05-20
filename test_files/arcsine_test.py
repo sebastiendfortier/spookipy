@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,7 +20,6 @@ plugin_test_dir = TEST_PATH + "ArcSine/testsFiles/"
 
 
 class TestArcSine(unittest.TestCase):
-
     def test_1(self):
         """Calcule la valeur arc sinus de chaque champ."""
         # open and read source
@@ -34,7 +31,7 @@ class TestArcSine(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ArcSine] >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,4 +39,4 @@ class TestArcSine(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

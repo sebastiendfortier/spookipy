@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,7 +20,6 @@ plugin_test_dir = TEST_PATH + "ReaderCsv/testsFiles/"
 
 
 class TestReaderCsv(unittest.TestCase):
-
     def test_1(self):
         """test_read_csv_pds1_level2"""
         # open and read source
@@ -34,7 +31,7 @@ class TestReaderCsv(unittest.TestCase):
         # [ReaderCsv --input {sources[0]}] >> [Zap --dateOfOrigin 20100126T211215 --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,7 +39,7 @@ class TestReaderCsv(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_2(self):
         """test_read_csv_gds1_pds1_level2"""
@@ -55,7 +52,7 @@ class TestReaderCsv(unittest.TestCase):
         # [ReaderCsv --input {sources[0]}] >> [PrintIMO] >> [Zap --dateOfOrigin 20100126T211215 --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -63,7 +60,7 @@ class TestReaderCsv(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_3(self):
         """test_read_csv_missing_eol_at_last_line_of_data"""
@@ -76,7 +73,7 @@ class TestReaderCsv(unittest.TestCase):
         # [ReaderCsv --input {sources[0]}] >> [Zap --dateOfOrigin 20100126T211215 --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -84,7 +81,7 @@ class TestReaderCsv(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_4(self):
         """test_read_csv_pds1_level2_inversed_level_order"""
@@ -97,7 +94,7 @@ class TestReaderCsv(unittest.TestCase):
         # [ReaderCsv --input {sources[0]}] >> [Zap --dateOfOrigin 20100126T211215 --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -105,7 +102,7 @@ class TestReaderCsv(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_5(self):
         """test_read_csv_withSpace"""
@@ -118,7 +115,7 @@ class TestReaderCsv(unittest.TestCase):
         # [ReaderCsv --input {sources[0]}] >> [Zap --dateOfOrigin 20100126T211215 --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -126,7 +123,7 @@ class TestReaderCsv(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_6(self):
         """test_read_csv_withComments"""
@@ -139,7 +136,7 @@ class TestReaderCsv(unittest.TestCase):
         # [ReaderCsv --input {sources[0]}] >> [Zap --dateOfOrigin 20100126T211215 --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -147,7 +144,7 @@ class TestReaderCsv(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_7(self):
         """test_read_csv_pds2"""
@@ -160,7 +157,7 @@ class TestReaderCsv(unittest.TestCase):
         # [ReaderCsv --input {sources[0]}] >> [Zap --dateOfOrigin 20100126T211215 --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -168,7 +165,7 @@ class TestReaderCsv(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_8(self):
         """test_read_csv_not_all_same_number_of_lines_in_a_pds"""
@@ -181,7 +178,7 @@ class TestReaderCsv(unittest.TestCase):
         # [ReaderCsv --input {sources[0]}]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -189,7 +186,7 @@ class TestReaderCsv(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_9(self):
         """test_read_csv_not_all_same_number_of_items_in_lines_of_a_pds"""
@@ -202,7 +199,7 @@ class TestReaderCsv(unittest.TestCase):
         # [ReaderCsv --input {sources[0]}]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -210,7 +207,7 @@ class TestReaderCsv(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_10(self):
         """test_read_csv_only_1_line_per_level"""
@@ -223,7 +220,7 @@ class TestReaderCsv(unittest.TestCase):
         # [ReaderCsv --input {sources[0]}] >> [Zap --dateOfOrigin 20100126T211215 --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -231,7 +228,7 @@ class TestReaderCsv(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_11(self):
         """test_read_csv_only_1_item_per_line"""
@@ -244,7 +241,7 @@ class TestReaderCsv(unittest.TestCase):
         # [ReaderCsv --input {sources[0]}] >> [Zap --dateOfOrigin 20100126T211215 --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_11.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -252,7 +249,7 @@ class TestReaderCsv(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_12(self):
         """test missing value when one data by line"""
@@ -265,7 +262,7 @@ class TestReaderCsv(unittest.TestCase):
         # [ReaderCsv --input {sources[0]}]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_12.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -273,7 +270,7 @@ class TestReaderCsv(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_13(self):
         """test missing value when multiple data on a line separated by comma"""
@@ -286,7 +283,7 @@ class TestReaderCsv(unittest.TestCase):
         # [ReaderCsv --input {sources[0]}]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_13.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -294,4 +291,4 @@ class TestReaderCsv(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

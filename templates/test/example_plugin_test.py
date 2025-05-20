@@ -6,6 +6,7 @@ from test import TEST_PATH, TMP_PATH
 import fstpy
 import pytest  # pytest is used to manage tests
 import spookipy  # refers to this library
+
 # tool used to compare fst files, just like fstcomp but in python
 from ci_fstcomp import fstcomp
 import secrets
@@ -22,7 +23,7 @@ pytestmark = [pytest.mark.regressions]
 
 @pytest.fixture
 def plugin_test_dir():
-    return TEST_PATH + '/ExamplePlugin/testsFiles/'
+    return TEST_PATH + "/ExamplePlugin/testsFiles/"
 
 
 def test_1(plugin_test_dir):
@@ -39,11 +40,10 @@ def test_1(plugin_test_dir):
 
     # write our results
     # set the path of the temporary file we are writing to
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+    results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
     # make sure it does not exist
     fstpy.delete_file(results_file)
-    fstpy.StandardFileWriter(results_file, df).to_fst(
-    )                              # write our dataframe
+    fstpy.StandardFileWriter(results_file, df).to_fst()  # write our dataframe
 
     # open and read comparison file
     # set the path of the comparison file we are comparing to
@@ -55,4 +55,4 @@ def test_1(plugin_test_dir):
     # cleanup our temporary file
     fstpy.delete_file(results_file)
     # assert the results matched
-    assert(res)
+    assert res

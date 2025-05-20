@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = '2024.08.00'
+__version__ = "2025.03.00"
 
 from .addelementsbypoint import *
 from .addtoelement import *
@@ -10,6 +10,7 @@ from .arithmeticpercentageexceedingthresholdsbypoint import *
 from .arithmeticpercentageexceedingvariablethresholdsbypoint import *
 from .arithmeticpercentilebypoint import *
 from .arithmeticstandarddeviationbypoint import *
+from .calculator import *
 from .cloudfractiondiagnostic import *
 from .comparisonutils import *
 from .coriolisparameter import *
@@ -38,12 +39,16 @@ from .opelementsbycolumn import *
 from .opelementsbyvalue import *
 from .percentiletopercentage import *
 from .plugin import *
+from .power import *
+from .powervaluebyelement import *
 from .precipitationamount import *
 from .pressure import *
 from .printdf import *
+from .readerstd import *
 from .replacedataifcondition import *
 from .saturationvapourpressure import *
 from .science import *
+from .select import *
 from .setconstantvalue import *
 from .setlowerboundary import *
 from .setupperboundary import *
@@ -63,7 +68,8 @@ from .winddirection import *
 from .windmax import *
 from .windmodulus import *
 from .writerstd import *
+from .zap import *
 
 from .configparsingutils import *
 from .utils import *
-
+from .rmn_interface import *

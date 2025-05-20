@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,7 +20,6 @@ plugin_test_dir = TEST_PATH + "ZapSmart/testsFiles/"
 
 
 class TestZapSmart(unittest.TestCase):
-
     def test_1(self):
         """test_zapsmart"""
         # open and read source
@@ -34,7 +31,7 @@ class TestZapSmart(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [ZapSmart --fieldNameFrom UV --fieldNameTo TT --pdsLabelFrom WINDMODULUS --pdsLabelTo R1558V0N] >> [WriterStd --output {destination_path} --noUnitConversion --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,7 +39,7 @@ class TestZapSmart(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_2(self):
         """test_zapsmart_vertical_level1"""
@@ -55,7 +52,7 @@ class TestZapSmart(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [ZapSmart --verticalLevelFrom 500 --verticalLevelTo 333] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -63,7 +60,7 @@ class TestZapSmart(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_3(self):
         """test_zapsmart_vertical_level2"""
@@ -76,7 +73,7 @@ class TestZapSmart(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [ZapSmart --verticalLevelFrom 500 --verticalLevelTo 750] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -84,7 +81,7 @@ class TestZapSmart(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_4(self):
         """test_zapsmart_vertical_level3"""
@@ -97,7 +94,7 @@ class TestZapSmart(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [ZapSmart --fieldNameFrom TT --fieldNameTo TT --verticalLevelFrom 500 --verticalLevelTo 1000] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -105,7 +102,7 @@ class TestZapSmart(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_5(self):
         """test_zapsmart_typeOfField"""
@@ -118,7 +115,7 @@ class TestZapSmart(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [ZapSmart --typeOfFieldFrom FORECAST --typeOfFieldTo CLIMATOLOGY] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -126,7 +123,7 @@ class TestZapSmart(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_6(self):
         """test_zapsmart_dateOfOrigin"""
@@ -139,7 +136,7 @@ class TestZapSmart(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [ZapSmart --dateOfOriginFrom 20061116000000 --dateOfOriginTo 20120120120000] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -147,7 +144,7 @@ class TestZapSmart(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_7(self):
         """test_zapsmart_forecastHour"""
@@ -160,7 +157,7 @@ class TestZapSmart(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [ZapSmart --forecastHourFrom 0 --forecastHourTo 23] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -168,7 +165,7 @@ class TestZapSmart(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_8(self):
         """test_zapsmart_userDefinedIndex"""
@@ -178,10 +175,10 @@ class TestZapSmart(unittest.TestCase):
 
         # compute ZapSmart
         df = ZapSmart(src_df0).compute()
-        #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '[ZapSmart --userDefinedIndexFrom 0 --userDefinedIndexTo 99] >> ', '[WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '[ZapSmart --userDefinedIndexFrom 0 --userDefinedIndexTo 99] >> ', '[WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -189,7 +186,7 @@ class TestZapSmart(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_9(self):
         """test_zapsmart_forecastHour"""
@@ -199,10 +196,10 @@ class TestZapSmart(unittest.TestCase):
 
         # compute ZapSmart
         df = ZapSmart(src_df0).compute()
-        #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '[ZapSmart --forecastHourFrom 0:00:00 --forecastHourTo 23:00:00] >> ', '[WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]']
+        # ['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '[ZapSmart --forecastHourFrom 0:00:00 --forecastHourTo 23:00:00] >> ', '[WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -210,4 +207,4 @@ class TestZapSmart(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

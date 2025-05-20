@@ -4,12 +4,12 @@ Anatomy of a simple plugin
 .. note::
     See $project_root/templates for a physical example of the files
 
-Creating the neccesary files and folders
+Creating the necessary files and folders
 ----------------------------------------
 
 .. code:: bash
 
-    # in the $project_root/spookipy create folder with the name of your plugin
+    # In the $project_root/spookipy create folder with the name of your plugin
     cd spookipy
     mkdir example_plugin
     cd example_plugin

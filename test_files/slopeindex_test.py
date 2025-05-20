@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,7 +20,6 @@ plugin_test_dir = TEST_PATH + "SlopeIndex/testsFiles/"
 
 
 class TestSlopeIndex(unittest.TestCase):
-
     def test_1(self):
         """Appel a SlopeIndex,valeur invalide pour verticalLevel."""
         # open and read source
@@ -34,7 +31,7 @@ class TestSlopeIndex(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [SlopeIndex --verticalLevel 400 --excludeEdges]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,10 +39,10 @@ class TestSlopeIndex(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_2(self):
-        """ Test avec UU, VV fetch 5"""
+        """Test avec UU, VV fetch 5"""
         # open and read source
         source0 = plugin_test_dir + "minimal_pres.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -55,10 +52,10 @@ class TestSlopeIndex(unittest.TestCase):
 
         # compute SlopeIndex
         df = SlopeIndex(src_df0).compute()
-        #['( ([ReaderStd --input {sources[0]}] >> [Select --fieldName ME ]) + ', '([ReaderStd --input {sources[1]}] >> ', '[Select --fieldName UU,VV --verticalLevel 700 --verticalLevelType MILLIBARS]) ) >>', '[SlopeIndex --verticalLevel 700 --fetch 5 --excludeEdges] >> ', '[ReplaceDataIfCondition --condition isnan --value -999.0 --clearMissingDataFlag] >> ', '[Zap --pdsLabel SlopeIndex --doNotFlagAsZapped] >>', '[WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]']
+        # ['( ([ReaderStd --input {sources[0]}] >> [Select --fieldName ME ]) + ', '([ReaderStd --input {sources[1]}] >> ', '[Select --fieldName UU,VV --verticalLevel 700 --verticalLevelType MILLIBARS]) ) >>', '[SlopeIndex --verticalLevel 700 --fetch 5 --excludeEdges] >> ', '[ReplaceDataIfCondition --condition isnan --value -999.0 --clearMissingDataFlag] >> ', '[Zap --pdsLabel SlopeIndex --doNotFlagAsZapped] >>', '[WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -66,7 +63,7 @@ class TestSlopeIndex(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_3(self):
         """without edges default fetch"""
@@ -79,10 +76,10 @@ class TestSlopeIndex(unittest.TestCase):
 
         # compute SlopeIndex
         df = SlopeIndex(src_df0).compute()
-        #['( [ReaderStd --input {sources[0]}] >> [Select --fieldName ME ] ) + ', '( [ReaderStd --input {sources[1]}] >> ', '[Select --fieldName UU,VV --verticalLevel 700 --verticalLevelType MILLIBARS] ) >> ', '[SlopeIndex --verticalLevel 700 --excludeEdges] >> ', '[ReplaceDataIfCondition --condition isnan --value -999.0 --clearMissingDataFlag] >> ', '[Zap --pdsLabel SlopeIndex --doNotFlagAsZapped] >>', '[WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]']
+        # ['( [ReaderStd --input {sources[0]}] >> [Select --fieldName ME ] ) + ', '( [ReaderStd --input {sources[1]}] >> ', '[Select --fieldName UU,VV --verticalLevel 700 --verticalLevelType MILLIBARS] ) >> ', '[SlopeIndex --verticalLevel 700 --excludeEdges] >> ', '[ReplaceDataIfCondition --condition isnan --value -999.0 --clearMissingDataFlag] >> ', '[Zap --pdsLabel SlopeIndex --doNotFlagAsZapped] >>', '[WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -90,7 +87,7 @@ class TestSlopeIndex(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_4(self):
         """with edges default fetch"""
@@ -103,10 +100,10 @@ class TestSlopeIndex(unittest.TestCase):
 
         # compute SlopeIndex
         df = SlopeIndex(src_df0).compute()
-        #[' ( [ReaderStd --input {sources[0]}] >> [Select --fieldName ME ] ) + ', '( [ReaderStd --input {sources[1]}] >> ', '[Select --fieldName UU,VV --verticalLevel 700 --verticalLevelType MILLIBARS] ) >> ', '[SlopeIndex --verticalLevel 700] >> ', '[WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]']
+        # [' ( [ReaderStd --input {sources[0]}] >> [Select --fieldName ME ] ) + ', '( [ReaderStd --input {sources[1]}] >> ', '[Select --fieldName UU,VV --verticalLevel 700 --verticalLevelType MILLIBARS] ) >> ', '[SlopeIndex --verticalLevel 700] >> ', '[WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -114,10 +111,10 @@ class TestSlopeIndex(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_5(self):
-        """ Test avec UU, VV fetch 5, verify writer with missing data"""
+        """Test avec UU, VV fetch 5, verify writer with missing data"""
         # open and read source
         source0 = plugin_test_dir + "minimal_pres.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -127,10 +124,10 @@ class TestSlopeIndex(unittest.TestCase):
 
         # compute SlopeIndex
         df = SlopeIndex(src_df0).compute()
-        #['( [ReaderStd --input {sources[0]}] >> [Select --fieldName ME ] ) + ', '( [ReaderStd --input {sources[1]}] >> ', '[Select --fieldName UU,VV --verticalLevel 700 --verticalLevelType MILLIBARS] ) >> ', '[SlopeIndex --verticalLevel 700 --excludeEdges] >> ', '[WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --replaceMissingData]']
+        # ['( [ReaderStd --input {sources[0]}] >> [Select --fieldName ME ] ) + ', '( [ReaderStd --input {sources[1]}] >> ', '[Select --fieldName UU,VV --verticalLevel 700 --verticalLevelType MILLIBARS] ) >> ', '[SlopeIndex --verticalLevel 700 --excludeEdges] >> ', '[WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --replaceMissingData]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -138,20 +135,20 @@ class TestSlopeIndex(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_6(self):
-        """ Test avec UU, VV fetch 1 - comparer avec exe marc verville"""
+        """Test avec UU, VV fetch 1 - comparer avec exe marc verville"""
         # open and read source
         source0 = plugin_test_dir + "slopeIndex.work"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
         # compute SlopeIndex
         df = SlopeIndex(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[SlopeIndex --fetch 1] >> ', '[WriterStd --output {destination_path} --noUnitConversion]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[SlopeIndex --fetch 1] >> ', '[WriterStd --output {destination_path} --noUnitConversion]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -159,20 +156,20 @@ class TestSlopeIndex(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_7(self):
-        """ segfault test lamarctic - marc verville"""
+        """segfault test lamarctic - marc verville"""
         # open and read source
         source0 = plugin_test_dir + "lamarctic.eta.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
         # compute SlopeIndex
         df = SlopeIndex(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[SlopeIndex] >> ', '[WriterStd --output {destination_path} --noUnitConversion]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[SlopeIndex] >> ', '[WriterStd --output {destination_path} --noUnitConversion]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -180,20 +177,20 @@ class TestSlopeIndex(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_8(self):
-        """ segfault test ens.regmodel - marc verville"""
+        """segfault test ens.regmodel - marc verville"""
         # open and read source
         source0 = plugin_test_dir + "ens.regmodel.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
         # compute SlopeIndex
         df = SlopeIndex(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[SlopeIndex] >> ', '[WriterStd --output {destination_path} --noUnitConversion]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[SlopeIndex] >> ', '[WriterStd --output {destination_path} --noUnitConversion]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -201,20 +198,20 @@ class TestSlopeIndex(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_9(self):
-        """ segfault test ens.glbmodel - marc verville"""
+        """segfault test ens.glbmodel - marc verville"""
         # open and read source
         source0 = plugin_test_dir + "ens.glbmodel.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
         # compute SlopeIndex
         df = SlopeIndex(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >>', '[SlopeIndex] >> ', '[WriterStd --output {destination_path}]']
+        # ['[ReaderStd --input {sources[0]}] >>', '[SlopeIndex] >> ', '[WriterStd --output {destination_path}]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -222,4 +219,4 @@ class TestSlopeIndex(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

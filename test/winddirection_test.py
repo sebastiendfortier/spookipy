@@ -9,13 +9,14 @@ import spookipy
 from fstpy.dataframe_utils import select_with_meta
 
 # pytestmark = [pytest.mark.skip]
-pytestmark = [pytest.mark.regressions]
+pytestmark = [pytest.mark.regressions, pytest.mark.regressions2]
 
 
 @pytest.fixture(scope="module")
 def plugin_name():
     """plugin_name in the path /fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/{plugin_name}"""
     return "WindDirection"
+
 
 # Equivalent au test 3 de WindModulusAndDirection
 def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -25,7 +26,7 @@ def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df = fstpy.StandardFileReader(source).to_pandas()
 
     # compute spookipy.WindDirection
-    df     = spookipy.WindDirection(src_df).compute()
+    df = spookipy.WindDirection(src_df).compute()
 
     # Fichier de comparaison cree de cette facon:
     # [ReaderStd --input--input {sources[0]}] >>
@@ -43,10 +44,10 @@ def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
 
 
-# Equivalent au test 1 de WindModulusAndDirection mais pour calculer WD et non UV 
+# Equivalent au test 1 de WindModulusAndDirection mais pour calculer WD et non UV
 # Nouveau test du cote python
 def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
     """Test le calcul de la direction du vent, GRILLE de type N."""
@@ -55,12 +56,12 @@ def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute spookipy.WindDirection
-    df      = spookipy.WindDirection(src_df0).compute()
+    df = spookipy.WindDirection(src_df0).compute()
 
     # Fichier de comparaison cree de cette facon:
     # [ReaderStd --input--input {sources[0]}] >>
-    # [WindModulusAndDirection] >> [Select --fieldName WD] >> 
-    # [Zap --pdsLabel WNDDIR --doNotFlagAsZapped]  >> 
+    # [WindModulusAndDirection] >> [Select --fieldName WD] >>
+    # [Zap --pdsLabel WNDDIR --doNotFlagAsZapped]  >>
     # [WriterStd --output TestWd.std --noModificationFlag  --IP1EncodingStyle OLDSTYLE --plugin_language CPP] "
 
     # write the result
@@ -72,7 +73,8 @@ def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 # Equivalent au test 7 de VectorModulusAndDirection mais pour calculer WD seulement
 # Nouveau test du cote python
@@ -83,14 +85,14 @@ def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute spookipy.WindDirection
-    df      = spookipy.WindDirection(src_df0).compute()
-    df      = spookipy.convip(df)
-    df.loc[df['nomvar'].isin([">>", "^^"]), 'etiket'] = "INTERPX"
-    
+    df = spookipy.WindDirection(src_df0).compute()
+    df = spookipy.convip(df)
+    df.loc[df["nomvar"].isin([">>", "^^"]), "etiket"] = "INTERPX"
+
     # Fichier de comparaison cree de cette facon:
     # [ReaderStd --input {sources[0]}] >>
-    # [WindModulusAndDirection --plugin_language CPP ] >> [Select --fieldName WD] >> 
-    # [Zap --pdsLabel WNDDIR --doNotFlagAsZapped]  >> 
+    # [WindModulusAndDirection --plugin_language CPP ] >> [Select --fieldName WD] >>
+    # [Zap --pdsLabel WNDDIR --doNotFlagAsZapped]  >>
     # [WriterStd --output TestWd.std --noModificationFlag --plugin_language CPP] "
 
     # write the result
@@ -102,7 +104,7 @@ def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
 
 
 def test_4(plugin_test_path):
@@ -116,6 +118,7 @@ def test_4(plugin_test_path):
         _ = spookipy.WindDirection(src_df0).compute()
     # [ReaderStd --input {sources[0]}] >> [WindDirection --orientationType WIND] >> [WriterStd --output {destination_path}]
 
+
 # Equivalent au test 4 de VectorModulusAndDirection
 def test_5(plugin_test_path):
     """Test un fichier standard avec des champs sur une grille Y avec les tictic tactac définis sur une grille N."""
@@ -127,28 +130,29 @@ def test_5(plugin_test_path):
     with pytest.raises(spookipy.WindDirectionError):
         _ = spookipy.WindDirection(src_df0).compute()
 
-# Similaire au test 1 de VectorModulusAndDirection mais avec UU et VV    
+
+# Similaire au test 1 de VectorModulusAndDirection mais avec UU et VV
 def test_6(plugin_test_path, test_tmp_path, call_fstcomp):
     """Test avec une grille Y."""
     # open and read source
     source0 = plugin_test_path / "inputInterpolatedToStation.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    src_df = select_with_meta(src_df0, ['VV', 'UU'])
+    src_df = select_with_meta(src_df0, ["VV", "UU"])
 
     # compute spookipy.WindDirection
     df = spookipy.WindDirection(src_df).compute()
 
     # Creation du fichier de comparaison:
     # "[ReaderStd --ignoreExtended --input {sources[0]}] >>
-    #  [Select --fieldName UU,VV]  >> 
-    #  [VectorModulusAndDirection --orientationType WIND] >> 
-    #  [Select --fieldName DIR] >> 
-    #  [Zap --fieldName WD --pdsLabel WNDDIR --run __  --doNotFlagAsZapped] >> 
+    #  [Select --fieldName UU,VV]  >>
+    #  [VectorModulusAndDirection --orientationType WIND] >>
+    #  [Select --fieldName DIR] >>
+    #  [Zap --fieldName WD --pdsLabel WNDDIR --run __  --doNotFlagAsZapped] >>
     #  [WriterStd --output {destination_path} --noModificationFlag]"
 
-    df      = spookipy.convip(df)
-    df.loc[df['nomvar'].isin([">>", "^^"]), 'etiket'] = "INTERPX"
+    df = spookipy.convip(df)
+    df.loc[df["nomvar"].isin([">>", "^^"]), "etiket"] = "INTERPX"
 
     # write the result
     results_file = test_tmp_path / "test_6.std"
@@ -159,4 +163,4 @@ def test_6(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare, e_max=0.008)
-    assert(res)
+    assert res

@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,9 +20,8 @@ plugin_test_dir = TEST_PATH + "VorticityPotential/testsFiles/"
 
 
 class TestVorticityPotential(unittest.TestCase):
-
     def test_1(self):
-        """Calculate with a simple test data """
+        """Calculate with a simple test data"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -34,7 +31,7 @@ class TestVorticityPotential(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [VorticityPotential --maxPVU 2.0] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,7 +39,7 @@ class TestVorticityPotential(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_2(self):
         """Invalid value for --maxPVU"""
@@ -55,7 +52,7 @@ class TestVorticityPotential(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [VorticityPotential --maxPVU 4.0]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -63,7 +60,7 @@ class TestVorticityPotential(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_3(self):
         """SingleThread. Same as test 1 but in singlethread"""
@@ -76,7 +73,7 @@ class TestVorticityPotential(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [VorticityPotential --maxPVU 2.0 -T1] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -84,4 +81,4 @@ class TestVorticityPotential(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

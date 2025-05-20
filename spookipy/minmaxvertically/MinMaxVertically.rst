@@ -112,7 +112,7 @@ Usage:
                                          nomvar_out='KTOP', 
                                          bi_dimensionnal=True).compute()
 
-   all_df    = pd.concat([df,minidx_df,maxidx_df], ignore_index=True)
+   all_df    = pd.safe_concat([df,minidx_df,maxidx_df])
 
    res_df    = spookipy.MinMaxVertically(all_df, 
                                          nomvar="TT", 

@@ -7,12 +7,14 @@ import fstpy
 import pytest
 import spookipy
 
-pytestmark = [pytest.mark.regressions]
+pytestmark = [pytest.mark.regressions, pytest.mark.regressions1]
+
 
 @pytest.fixture(scope="module")
 def plugin_name():
     """plugin_name in the path /fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/{plugin_name}"""
     return "ArithmeticMeanByPoint"
+
 
 def test_1(plugin_test_path):
     """Test avec un seul champs en entrée; requête invalide."""
@@ -20,7 +22,7 @@ def test_1(plugin_test_path):
     source0 = plugin_test_path / "UUVV5x5_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    src_df0 = src_df0.loc[src_df0.nomvar == 'UU'].reset_index(drop=True)
+    src_df0 = src_df0.loc[src_df0.nomvar == "UU"].reset_index(drop=True)
 
     with pytest.raises(spookipy.ArithmeticMeanByPointError):
         # compute ArithmeticMeanByPoint
@@ -36,8 +38,7 @@ def test_2(plugin_test_path):
 
     with pytest.raises(spookipy.ArithmeticMeanByPointError):
         # compute ArithmeticMeanByPoint
-        df = spookipy.ArithmeticMeanByPoint(
-            src_df0, nomvar_out='TROPLONG').compute()
+        df = spookipy.ArithmeticMeanByPoint(src_df0, nomvar_out="TROPLONG").compute()
         # [ReaderStd --input {sources[0]}] >> [ArithmeticMeanByPoint --outputFieldName TROPLONG]
 
 
@@ -48,16 +49,15 @@ def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute ArithmeticMeanByPoint
-    df      = spookipy.ArithmeticMeanByPoint(src_df0, 
-                                             nomvar_out='ACCU').compute()
-    # [ReaderStd --input {sources[0]}] >> 
-    # [ArithmeticMeanByPoint --outputFieldName ACCU] >> 
-    # [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >> 
+    df = spookipy.ArithmeticMeanByPoint(src_df0, nomvar_out="ACCU").compute()
+    # [ReaderStd --input {sources[0]}] >>
+    # [ArithmeticMeanByPoint --outputFieldName ACCU] >>
+    # [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
-    df['etiket'] = 'MEANFIELDS'
-    df['nbits']  = 16               # Pour correspondre a R16
-    df['datyp']  = 1
+    df["etiket"] = "MEANFIELDS"
+    df["nbits"] = 16  # Pour correspondre a R16
+    df["datyp"] = 1
 
     # write the result
     results_file = test_tmp_path / "test_3.std"
@@ -68,7 +68,7 @@ def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
 
 
 def test_4(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -78,16 +78,15 @@ def test_4(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute ArithmeticMeanByPoint
-    df      = spookipy.ArithmeticMeanByPoint(src_df0, 
-                                             nomvar_out='ACCU').compute()
+    df = spookipy.ArithmeticMeanByPoint(src_df0, nomvar_out="ACCU").compute()
     # [ReaderStd --input {sources[0]}] >>
-    #  [ArithmeticMeanByPoint --outputFieldName ACCU] >> 
-    # [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >> 
+    #  [ArithmeticMeanByPoint --outputFieldName ACCU] >>
+    # [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
-    df['etiket'] = 'MEANFIELDS'
-    df['nbits']  = 16               # Pour correspondre a R16
-    df['datyp']  = 1
+    df["etiket"] = "MEANFIELDS"
+    df["nbits"] = 16  # Pour correspondre a R16
+    df["datyp"] = 1
 
     # write the result
     results_file = test_tmp_path / "test_4.std"
@@ -98,7 +97,7 @@ def test_4(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
 
 
 def test_5(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -109,17 +108,16 @@ def test_5(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute ArithmeticMeanByPoint
-    df      = spookipy.ArithmeticMeanByPoint(src_df0).compute()
-    # [ReaderStd --input {sources[0]}] >> 
-    # [ArithmeticMeanByPoint ] >> 
-    # [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >>  
+    df = spookipy.ArithmeticMeanByPoint(src_df0).compute()
+    # [ReaderStd --input {sources[0]}] >>
+    # [ArithmeticMeanByPoint ] >>
+    # [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >>
     # [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]
 
     # Pour respecter le zap du test original et encodage du test original
-    df.loc[~df.nomvar.isin(['!!', '^^', '>>']), 'etiket'] = '__MEANFIX'
-    df.loc[~df.nomvar.isin(['!!', '^^', '>>']), 'datyp'] = 134
-    df.loc[~df.nomvar.isin(['!!', '^^', '>>']), 'nbits'] = 16
-
+    df.loc[~df.nomvar.isin(["!!", "^^", ">>"]), "etiket"] = "__MEANFIX"
+    df.loc[~df.nomvar.isin(["!!", "^^", ">>"]), "datyp"] = 134
+    df.loc[~df.nomvar.isin(["!!", "^^", ">>"]), "nbits"] = 16
 
     # write the result
     results_file = test_tmp_path / "test_5.std"
@@ -130,7 +128,7 @@ def test_5(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
 
 
 def test_6(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -140,15 +138,14 @@ def test_6(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute ArithmeticMeanByPoint
-    df      = spookipy.ArithmeticMeanByPoint(src_df0, 
-                                             group_by_forecast_hour=True).compute()
-    # [ReaderStd --input {sources[0]}] >> 
-    # [ArithmeticMeanByPoint --groupBy FORECAST_HOUR] >> 
-    # [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >> 
+    df = spookipy.ArithmeticMeanByPoint(src_df0, group_by_forecast_hour=True).compute()
+    # [ReaderStd --input {sources[0]}] >>
+    # [ArithmeticMeanByPoint --groupBy FORECAST_HOUR] >>
+    # [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >>
     # [WriterStd --output {destination_path} ]
 
-     # Pour respecter le zap du test original
-    df.loc[~df.nomvar.isin(['!!', '^^', '>>', 'P0']), 'etiket'] = '__MEANFIX'
+    # Pour respecter le zap du test original
+    df.loc[~df.nomvar.isin(["!!", "^^", ">>", "P0"]), "etiket"] = "__MEANFIX"
 
     # write the result
     results_file = test_tmp_path / "test_6.std"
@@ -159,7 +156,7 @@ def test_6(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
 
 
 def test_7(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -169,15 +166,15 @@ def test_7(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute ArithmeticMeanByPoint
-    df      = spookipy.ArithmeticMeanByPoint(src_df0).compute()
+    df = spookipy.ArithmeticMeanByPoint(src_df0).compute()
 
-    # [ReaderStd --input {sources[0]}] >> 
-    # [ArithmeticMeanByPoint] >> 
-    # [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >> 
+    # [ReaderStd --input {sources[0]}] >>
+    # [ArithmeticMeanByPoint] >>
+    # [Zap --pdsLabel MEANFIELDS --doNotFlagAsZapped] >>
     # [WriterStd --output {destination_path} ]
 
     # Pour respecter le zap du test original
-    df.loc[~df.nomvar.isin(['!!', '^^', '>>', 'P0']), 'etiket'] = '__MEANFIX'
+    df.loc[~df.nomvar.isin(["!!", "^^", ">>", "P0"]), "etiket"] = "__MEANFIX"
 
     # write the result
     results_file = test_tmp_path / "test_7.std"
@@ -188,7 +185,8 @@ def test_7(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_8(plugin_test_path, test_tmp_path, call_fstcomp):
     """Test avec champs pour differents forecastHours; fait la moyenne groupe par champs."""
@@ -197,10 +195,9 @@ def test_8(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute ArithmeticMeanByPoint
-    df      = spookipy.ArithmeticMeanByPoint(src_df0, 
-                                             group_by_nomvar=True).compute()
+    df = spookipy.ArithmeticMeanByPoint(src_df0, group_by_nomvar=True).compute()
     # [ReaderStd --input {sources[0]}] >>
-    # [ArithmeticMeanByPoint] >>  
+    # [ArithmeticMeanByPoint] >>
     # [WriterStd --output {destination_path} ]
 
     # write the result
@@ -208,29 +205,28 @@ def test_8(plugin_test_path, test_tmp_path, call_fstcomp):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    # Nouveau fichier de test, sans zap du l'etiket 
+    # Nouveau fichier de test, sans zap du l'etiket
     file_to_compare = plugin_test_path / "Mean_test8_file2cmp_20231026.std"
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 # Test existant du cote python seulement
 def test_9(plugin_test_path, test_tmp_path, call_fstcomp):
     """Moyenne de champs MASK; le resultat est converti en E32 par le plugin lui-meme."""
     # open and read source
-    source0   = plugin_test_path / "2021071400_024_masked_fields_reduit.std"
-    src_df    = fstpy.StandardFileReader(source0).to_pandas()
-    src_df0   = src_df.loc[(src_df.nomvar.isin(['WHP0', 'WHP1'])) & (src_df.typvar == '@@')]
- 
+    source0 = plugin_test_path / "2021071400_024_masked_fields_reduit.std"
+    src_df = fstpy.StandardFileReader(source0).to_pandas()
+    src_df0 = src_df.loc[(src_df.nomvar.isin(["WHP0", "WHP1"])) & (src_df.typvar == "@@")]
+
     # # compute AddElementsByPoint
-    res_df    = spookipy.ArithmeticMeanByPoint(src_df0, 
-                                               nomvar_out="HP01",
-                                               copy_input=True).compute()
-    # spooki_run.py "[ReaderStd --input 2021071400_024_masked_fields_reduit.std] >> 
-    #                ( [Select --typeOfField MASK --fieldName WHP0,WHP1] >> 
+    res_df = spookipy.ArithmeticMeanByPoint(src_df0, nomvar_out="HP01", copy_input=True).compute()
+    # spooki_run.py "[ReaderStd --input 2021071400_024_masked_fields_reduit.std] >>
+    #                ( [Select --typeOfField MASK --fieldName WHP0,WHP1] >>
     #                  ([Copy] + ([ArithmeticMeanByPoint --outputFieldName HP01] >> [Zap --nbitsForDataStorage E32]))
-    #                )  >> 
+    #                )  >>
     #                [WriterStd --output Mean_test9_file2cmp.std  --noMetadata --plugin_language CPP]"
 
     # write the result
@@ -242,7 +238,7 @@ def test_9(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
 
 
 def test_10(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -256,17 +252,19 @@ def test_10(plugin_test_path, test_tmp_path, call_fstcomp):
     ]
     sources = [plugin_test_path / s for s in sources]
     src_df0 = fstpy.StandardFileReader(sources).to_pandas()
-    res_df    = spookipy.ArithmeticMeanByPoint(src_df0, 
-                                               group_by_forecast_hour=True,
-                                               group_by_nomvar=True,
-                                            #    group_by_ensemble_member=True,
-                                               copy_input=False).compute()
+    res_df = spookipy.ArithmeticMeanByPoint(
+        src_df0,
+        group_by_forecast_hour=True,
+        group_by_nomvar=True,
+        #    group_by_ensemble_member=True,
+        copy_input=False,
+    ).compute()
 
-    res_df = res_df.loc[res_df.nomvar == 'TT']
-    res_df['etiket'] = "ERMEAN__PALL"
-    res_df['ip3'] = 2
-    res_df['datyp'] = 6
-    res_df['nbits'] = 16
+    res_df = res_df.loc[res_df.nomvar == "TT"]
+    res_df["etiket"] = "ERMEAN__PALL"
+    res_df["ip3"] = 2
+    res_df["datyp"] = 6
+    res_df["nbits"] = 16
     res_df = fstpy.compute(res_df)
 
     # write the result
@@ -278,4 +276,4 @@ def test_10(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res

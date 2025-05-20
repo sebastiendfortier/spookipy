@@ -1,6 +1,6 @@
 variables:
   ORD_SOUMET_CPUS: "20"
-  ORD_SOUMET_CM: "20G"
+  ORD_SOUMET_CM: "30G"
   ORD_SOUMET_TMPFS: "10G"
   ORD_SOUMET_T: "3600"
   doc_install_dir: "/home/spst900/public_html/spookipy/${CI_BUILD_REF_NAME}"
@@ -16,27 +16,45 @@ stages:
   - ssm_package
   - deploy
   - keep_ssm_package
+  - cascade
 
+workflow:
+  rules:
+    # This rule will allow all push events (including all branches and tags), trigger events (token), web events (manual pipeline), API and pipeline (multi-project pipelines).
+    - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "trigger" || $CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "api" || $CI_PIPELINE_SOURCE == "pipeline"'
 
 before_script:
-  - export ORDENV_SITE_PROFILE=20230929
-  - export ORDENV_COMM_PROFILE=eccc/20231121
-  - export ORDENV_GROUP_PROFILE=eccc/cmc/1.16.0
-  - . /fs/ssm/main/env/ordenv-boot-20231110.sh
-  - export EC_ATOMIC_PROFILE_VERSION=1.34.0
-  - . $ARMNLIB_SHARE/check_profile_1.1.0
+  - if [ -n "${FSTPY_TRIGGER}" ] ; then echo "Pipeline triggered by ${FSTPY_TRIGGER}"; fi
+  - . /fs/ssm/eccc/mrd/ordenv/20240916/profile/ord
   - . r.load.dot eccc/mrd/rpn/MIG/ENV/rpnpy/2.2.0 eccc/mrd/rpn/code-tools/ENV/cdt-1.6.6/SCIENCE/inteloneapi-2022.1.2
   - . r.load.dot eccc/mrd/rpn/libs/20230906 eccc/cmd/cmda/libs/20230906/inteloneapi-2022.1.2
+  - . r.load.dot cmo/cmoi/base/20240405
   - . ssmuse-sh -p /fs/ssm/eccc/cmd/cmds/env/python/py310_2023.07.28_all
-  - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/apps/ci_fstcomp/1.0.9
+  - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/apps/ci_fstcomp/202501/00
   - . ssmuse-sh -x /fs/site5/eccc/cmd/w/spst900/spooki/CI_fstpy/master/latest/fstpy/*/all
-  - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/cmcdict/202407/00
+  - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/cmcdict/202503/00
 
-run_regtests:
+run_regtests1:
   stage: run_regtests
+  rules:
+    # skip when its a release tag
+    - if: '$CI_COMMIT_TAG =~ /^r-\d+\.\d+\.\d+/'
+      when: never
+    - when : on_success
   script:
     - cd test
-    - python3 -m pytest -v -m regressions
+    - python3 -m pytest -v -m regressions1
+
+run_regtests2:
+  stage: run_regtests
+  rules:
+    # skip when its a release tag
+    - if: '$CI_COMMIT_TAG =~ /^r-\d+\.\d+\.\d+/'
+      when: never
+    - when : on_success
+  script:
+    - cd test
+    - python3 -m pytest -v -m regressions2
 
 make_doc:
   stage: make_doc
@@ -50,6 +68,12 @@ make_doc:
 
 install_doc:
   stage: install_doc
+  rules:
+    # if the pipeline was triggered by fstpy (on master), skip the install
+    - if: $FSTPY_TRIGGER
+      when: never
+    # else run if previous job succeeds
+    - when : on_success
   script:
     - cd doc/_build/html
     - cdir=`pwd`
@@ -61,8 +85,14 @@ install_doc:
 
 install_latest_doc:
   stage: install_doc
-  only:
-      - master
+  rules:
+    # if the pipeline was triggered by fstpy (on master), skip the install
+    - if: $FSTPY_TRIGGER
+      when: never
+    # only on master
+    - if: '$CI_COMMIT_BRANCH != "master"'
+      when: never
+    - when : on_success
   script:
     - cd doc/_build/html
     - cdir=`pwd`
@@ -74,6 +104,14 @@ install_latest_doc:
 
 ssm_package_with_everything:
   stage: ssm_package
+  rules:
+    # if the pipeline was triggered by fstpy (on master), skip the package
+    - if: $FSTPY_TRIGGER
+      when: never
+    # only on master
+    - if: '$CI_COMMIT_BRANCH != "master"'
+      when: never
+    - when : on_success
   script:
     - cd livraison
     - export SSM_TEST_SPOOKIPY=1
@@ -81,7 +119,7 @@ ssm_package_with_everything:
     - echo ${DEPLOY_DIR}
     - ./make_ssm_package.py --install --temp ${DEPLOY_DIR}
     - echo $(pwd -P)
-    - . ssmuse-sh -x ${DEPLOY_DIR}/spookipy/$( grep __version__ ../spookipy/__init__.py | awk '{print $3}' | tr -d "'" )/all
+    - . ssmuse-sh -x ${DEPLOY_DIR}/spookipy/$( grep __version__ ../spookipy/__init__.py | awk '{print $3}' | tr -d '"' )/all
     - ./test_ssm_package.py
     - cp spookipy_*.ssm ${temp_dir}
   artifacts:
@@ -91,6 +129,14 @@ ssm_package_with_everything:
 
 ssm_package_with_operation_yaml_list:
   stage: ssm_package
+  rules:
+    # if the pipeline was triggered by fstpy (on master), skip the package
+    - if: $FSTPY_TRIGGER
+      when: never
+    # only on master
+    - if: '$CI_COMMIT_BRANCH != "master"'
+      when: never
+    - when : on_success
   script:
     - cd livraison
     - export SSM_TEST_SPOOKIPY=1
@@ -98,7 +144,7 @@ ssm_package_with_operation_yaml_list:
     - echo ${UNIQUE_TEMP_DIR}
     - ./make_ssm_package.py --yaml plugin_list_operation.yaml --suffix operation --install --temp ${UNIQUE_TEMP_DIR}
     - echo $(pwd -P)
-    - . ssmuse-sh -x ${UNIQUE_TEMP_DIR}/spookipy/$( grep __version__ ../spookipy/__init__.py | awk '{print $3}' | tr -d "'" )/all
+    - . ssmuse-sh -x ${UNIQUE_TEMP_DIR}/spookipy/$( grep __version__ ../spookipy/__init__.py | awk '{print $3}' | tr -d '"' )/all
     - ./test_ssm_package.py --yaml plugin_list_operation.yaml
     - cp spookipy_*.ssm ${temp_dir}
     - rm -r ${UNIQUE_TEMP_DIR}
@@ -109,19 +155,21 @@ ssm_package_with_operation_yaml_list:
 
 ssm_package_with_official_fstpy:
   stage: ssm_package
+  rules:
+    - if: $FSTPY_TRIGGER
+      when: never
+    # only with tags
+    - if: '$CI_COMMIT_TAG !~ /^r-\d+\.\d+\.\d+/'
+      when: never
+    - when : on_success
   before_script:
-    - export ORDENV_SITE_PROFILE=20230929
-    - export ORDENV_COMM_PROFILE=eccc/20231121
-    - export ORDENV_GROUP_PROFILE=eccc/cmc/1.16.0
-    - . /fs/ssm/main/env/ordenv-boot-20231110.sh
-    - export EC_ATOMIC_PROFILE_VERSION=1.34.0
-    - . $ARMNLIB_SHARE/check_profile_1.1.0
+    - . /fs/ssm/eccc/mrd/ordenv/20240916/profile/ord
     - . r.load.dot eccc/mrd/rpn/MIG/ENV/rpnpy/2.2.0 eccc/mrd/rpn/code-tools/ENV/cdt-1.6.6/SCIENCE/inteloneapi-2022.1.2
     - . r.load.dot eccc/mrd/rpn/libs/20230906 eccc/cmd/cmda/libs/20230906/inteloneapi-2022.1.2
     - . ssmuse-sh -p /fs/ssm/eccc/cmd/cmds/env/python/py310_2023.07.28_all
-    - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/apps/ci_fstcomp/1.0.9
-    - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/cmcdict/202407/00
-    - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/202408/00
+    - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/apps/ci_fstcomp/202501/00
+    - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/cmcdict/202503/00
+    - . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/202503/00
   script:
     - cd livraison
     - export SSM_TEST_SPOOKIPY=1
@@ -129,38 +177,50 @@ ssm_package_with_official_fstpy:
     - echo ${DEPLOY_DIR}
     - ./make_ssm_package.py --install --temp ${DEPLOY_DIR}
     - echo $(pwd -P)
-    - . ssmuse-sh -x ${DEPLOY_DIR}/spookipy/$( grep __version__ ../spookipy/__init__.py | awk '{print $3}' | tr -d "'" )/all
+    - . ssmuse-sh -x ${DEPLOY_DIR}/spookipy/$( grep __version__ ../spookipy/__init__.py | awk '{print $3}' | tr -d '"' )/all
     - ./test_ssm_package.py
-    - cp spookipy_*.ssm ${temp_dir}
   artifacts:
     expire_in: 1 hrs
     paths:
       - livraison/
-  only:
-    - /^r-\d+\.\d+\.\d+/
 
 deploy:
   stage: deploy
+  rules:
+    # doesn't deploy when pipeline is triggered
+    - if: $FSTPY_TRIGGER
+      when: never
+    # only on master
+    - if: '$CI_COMMIT_BRANCH != "master"'
+      when: never
+    - when : on_success
   script:
     - cd ${deploy_dir_prefix}
     - rm -f latest
     - ln -s ${CI_PIPELINE_ID} latest
-  only:
-    - master
-
-remove_ssm:
-  stage: deploy
-  script:
-    - DEPLOY_DIR=${deploy_dir_prefix}/${CI_PIPELINE_ID}
-    - rm -r ${DEPLOY_DIR}
-  except:
-    - master
 
 keep_ssm_package:
   stage: keep_ssm_package
+  rules:
+    - if: $FSTPY_TRIGGER
+      when: never
+    - if: '$CI_COMMIT_TAG !~ /^r-\d+\.\d+\.\d+/'
+      when: never
+    - when : on_success
   script:
     - cd livraison
     - cp *.ssm ${ssm_dir_prefix}/
     - echo "Your packages are here ${ssm_dir_prefix}"
-  only:
-    - /^r-\d+\.\d+\.\d+/
+
+cascade:
+  stage: cascade
+  rules:
+    # only on master
+    - if: '$CI_COMMIT_BRANCH == "master"'
+  variables:
+    SPOOKIPY_TRIGGER: ${CI_PROJECT_PATH}:${CI_BUILD_REF_NAME}:${CI_BUILD_REF}:${FSTPY_TRIGGER}
+  inherit:
+    variables: false # do not send all the global variables to the triggered pipeline
+  trigger:
+    project: cmdw-spooki/spooki
+    branch: master

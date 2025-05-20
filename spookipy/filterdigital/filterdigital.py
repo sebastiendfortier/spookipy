@@ -7,8 +7,9 @@ import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin, PluginParser
-from ..utils import (get_split_value, initializer, to_dask, validate_nomvar)
+from ..utils import get_split_value, initializer, to_dask, validate_nomvar
 from .f_stenfilt import f_stenfilt
+
 
 class FilterDigitalError(Exception):
     pass
@@ -30,60 +31,59 @@ class FilterDigital(Plugin):
     :param reduce_df: Indicates to reduce the dataframe to its minimum, defaults to True
     :type reduce_df: bool, optional
     """
+
     @initializer
     def __init__(
-            self,
-            df         : pd.DataFrame,
-            filter     : list,
-            repetitions: int = 1,
-            nomvar_out = None,
-            parallel   : bool = False,
-            reduce_df  = True):
+        self,
+        df: pd.DataFrame,
+        filter: list,
+        repetitions: int = 1,
+        nomvar_out=None,
+        parallel: bool = False,
+        reduce_df=True,
+    ):
+        if self.nomvar_out is not None:
+            validate_nomvar(self.nomvar_out, "FilterDigital", FilterDigitalError)
 
         self.df = fstpy.metadata_cleanup(self.df)
         super().__init__(self.df)
         self.prepare_groups()
 
     def prepare_groups(self):
-      
-        if not (self.nomvar_out is None):
-            validate_nomvar(self.nomvar_out, 
-                            'FilterDigital', 
-                            FilterDigitalError)
-
         if not len(self.filter):
-            raise FilterDigitalError('Filter must contain at least 1 value')
+            raise FilterDigitalError("Filter must contain at least 1 value")
 
         if len(self.filter) % 2 == 0:
-            raise FilterDigitalError('Filter lenght must be odd, not even')
+            raise FilterDigitalError("Filter lenght must be odd, not even")
 
         if not (self.repetitions > 0):
-            raise FilterDigitalError('Repetitions must be a positive integer')
+            raise FilterDigitalError("Repetitions must be a positive integer")
+
+        if self.nomvar_out is not None:
+            self.groups = self.no_meta_df.groupby(["grid", "datev", "dateo", "level"])
+            for _, current_group in self.groups:
+                if len(current_group.index) > 1:
+                    raise FilterDigitalError(' More than one input field, cannot use "nomvar_out" ')
+
+            self.no_meta_df["nomvar"] = self.nomvar_out
 
     def compute(self) -> pd.DataFrame:
-        logging.info('FilterDigital - compute')
-
-        if not (self.nomvar_out is None):
-            self.no_meta_df['nomvar'] = self.nomvar_out
+        logging.info("FilterDigital - compute")
 
         # Ajout des colonnes reliees a l'etiket et aux flags
-        self.no_meta_df = fstpy.add_columns(self.no_meta_df, columns=['etiket', 'flags'])
+        self.no_meta_df = fstpy.add_columns(self.no_meta_df, columns=["etiket", "flags"])
         self.no_meta_df.filtered = True
 
         filter_len = len(self.filter)
 
-        filter_arr = np.array(self.filter, dtype=np.int32, order='F')
+        filter_arr = np.array(self.filter, dtype=np.int32, order="F")
 
         if self.parallel:
             df_list = apply_filter_parallel(self.no_meta_df, self.repetitions, filter_arr, filter_len)
-        else:    
+        else:
             df_list = apply_filter(self.no_meta_df, self.repetitions, filter_arr, filter_len)
 
-
-        return self.final_results(df_list, 
-                                  FilterDigitalError, 
-                                  copy_input = False,
-                                  reduce_df  = self.reduce_df)
+        return self.final_results(df_list, FilterDigitalError, copy_input=False, reduce_df=self.reduce_df)
 
     @staticmethod
     def parse_config(args: str) -> dict:
@@ -93,17 +93,24 @@ class FilterDigital(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = PluginParser(prog=FilterDigital.__name__, parents=[Plugin.base_parser],add_help=False)
-        parser.add_argument('--filter',type=str,required=True, help="List of weights that define the filter.")
-        parser.add_argument('--repetitions',type=int,required=True, help="The number of times the filter will be applied.")
-        parser.add_argument('--outputFieldName',type=str,dest="nomvar_out", help="Option to give the output field a different name from the input field name.")
+        parser = PluginParser(prog=FilterDigital.__name__, parents=[Plugin.base_parser], add_help=False)
+        parser.add_argument("--filter", type=str, required=True, help="List of weights that define the filter.")
+        parser.add_argument(
+            "--repetitions", type=int, required=True, help="The number of times the filter will be applied."
+        )
+        parser.add_argument(
+            "--outputFieldName",
+            type=str,
+            dest="nomvar_out",
+            help="Option to give the output field a different name from the input field name.",
+        )
 
         parsed_arg = vars(parser.parse_args(args.split()))
 
-        parsed_arg['filter'] = parsed_arg['filter'].split(",")
+        parsed_arg["filter"] = parsed_arg["filter"].split(",")
 
-        if parsed_arg['nomvar_out'] is not None:
-            validate_nomvar(parsed_arg['nomvar_out'],"FilterDigital",FilterDigitalError)
+        if parsed_arg["nomvar_out"] is not None:
+            validate_nomvar(parsed_arg["nomvar_out"], "FilterDigital", FilterDigitalError)
 
         return parsed_arg
 
@@ -119,9 +126,6 @@ class FilterDigital(Plugin):
 # 1 - 9.09090936E-02, 0.111111112, 0.142857149, 0.00000000,  0.00000000
 # 1 - 9.09090936E-02, 0.111111112, 0.00000000,  0.00000000,  0.00000000
 # 1 - 9.09090936E-02, 0.00000000,  0.00000000,  0.00000000,  0.00000000
-
-
-
 
 
 # def get_factors(stencil_filter):
@@ -179,6 +183,7 @@ class FilterDigital(Plugin):
 #                 res[(((j)-1)*ni)+((i)-1)] = result2[j]
 #     return res
 
+
 def apply_filter(df, repetitions, filter_arr, filter_len):
     # import sys
     # print(filter_arr)
@@ -198,48 +203,54 @@ def apply_filter(df, repetitions, filter_arr, filter_len):
     for df in df_list:
         df = fstpy.compute(df)
         for i in df.index:
-            ni = df.at[i, 'd'].shape[0]
-            nj = df.at[i, 'd'].shape[1]
-            arr = f_stenfilt(slab=df.at[i,'d'],ni=ni,nj=nj,npass=repetitions,list=filter_arr,l=filter_len)
+            ni = df.at[i, "d"].shape[0]
+            nj = df.at[i, "d"].shape[1]
+            arr = f_stenfilt(slab=df.at[i, "d"], ni=ni, nj=nj, npass=repetitions, list=filter_arr, list_len=filter_len)
             # arr = stenfilt (df.at[i,'d'], ni, nj, repetitions, factors, filter_arr.size)
             # arr1 = filter_data(df.at[i,'d'].flatten(),ni,nj,factors,repetitions,filter_len)
-            df.at[i, 'd'] = to_dask(arr)
+            df.at[i, "d"] = to_dask(arr)
 
         results.append(df)
     return results
 
+
 class ListWrapper:
     def __init__(self, arr):
         self.arr = arr
+
     def get(self):
         return self.arr
 
-def filter_wrapper(data,repetitions,filter_arr,filter_len):
+
+def filter_wrapper(data, repetitions, filter_arr, filter_len):
     ni = data.shape[0]
     nj = data.shape[1]
-    return f_stenfilt(slab=data,ni=ni,nj=nj,npass=repetitions,list=filter_arr.get(),l=filter_len)
+    return f_stenfilt(slab=data, ni=ni, nj=nj, npass=repetitions, list=filter_arr.get(), list_len=filter_len)
+
 
 def apply_filter_parallel(df, repetitions, filter, filter_len):
-
     split_value = get_split_value(df)
 
     df_list = np.array_split(df, split_value)
     results = []
     for df in df_list:
         df = fstpy.compute(df)
-        
+
         repetitions_arr = [repetitions for _ in range(len(df.index))]
         filter_arr = [ListWrapper(filter) for _ in range(len(df.index))]
         filter_len_arr = [filter_len for _ in range(len(df.index))]
 
         with ThreadPool() as tp:
-            filter_results = tp.starmap(filter_wrapper,zip(df.d.to_list(),repetitions_arr,filter_arr,filter_len_arr))
+            filter_results = tp.starmap(
+                filter_wrapper, zip(df.d.to_list(), repetitions_arr, filter_arr, filter_len_arr)
+            )
 
-        df['d'] = [to_dask(r) for r in filter_results]
+        df["d"] = [to_dask(r) for r in filter_results]
 
         results.append(df)
 
     return results
+
 
 # def get_factors(filter):
 #     # print(filter)
@@ -264,13 +275,13 @@ def apply_filter_parallel(df, repetitions, filter, filter_len):
 #             sum = sum + filter[i+nb_elem-1]
 #         if j == 0:
 #             sum += 1.
-#         # print('')     
+#         # print('')
 #         # print(f'sum = {sum}')
 #         for i in range(-j,j+1):
 #             # print(f'{i} - {nb_elem-j-1}')
 #             facteur[i][nb_elem-j-1] = 1.*filter[i+nb_elem-1] / sum
 
-#     return facteur        
+#     return facteur
 
 # def stenfilt (slab, ni, nj, npass, facteur, l):
 #     import copy
@@ -302,7 +313,7 @@ def apply_filter_parallel(df, repetitions, filter, filter_len):
 #     #     sum = 0.0
 #     #     for i in range(-j,j):
 #     #         sum = sum + list(i+nb_elem)
-         
+
 
 #     #     for i in range(-j,j):
 #     #         facteur(i,nb_elem-j) = list(i+nb_elem) / sum
@@ -317,10 +328,10 @@ def apply_filter_parallel(df, repetitions, filter, filter_len):
 #                     temp = temp + res[i+k][j] * facteur[k][(int((l+1)/2)-nb_elm)-2]
 
 #                 result1[i] = temp
-            
+
 #             for i in range(1, ni-1+1):
 #                 res[i][j] = result1[i]
-            
+
 #         for i in range(0, ni+1):
 #             for j in range(1, nj):
 #                temp=0.0
@@ -329,7 +340,7 @@ def apply_filter_parallel(df, repetitions, filter, filter_len):
 #                    temp = temp + res[i][j+k] * facteur[k][(l/2+1)-nb_elm]
 
 #                result2[j] = temp
-            
+
 #             for j in range(1, nj):
 #                 res[i][j] = result2[j]
-#     return res           
+#     return res

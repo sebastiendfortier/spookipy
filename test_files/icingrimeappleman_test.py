@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,7 +20,6 @@ plugin_test_dir = TEST_PATH + "IcingRimeAppleman/testsFiles/"
 
 
 class TestIcingRimeAppleman(unittest.TestCase):
-
     def test_1(self):
         """Test the IcingRimeAppleman function using 3 matrixes (5X4X3)"""
         # open and read source
@@ -34,7 +31,7 @@ class TestIcingRimeAppleman(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Zap --nbitsForDataStorage E32 --doNotFlagAsZapped] >> [IcingRimeAppleman] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,7 +39,7 @@ class TestIcingRimeAppleman(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_3(self):
         """Test the IcingRimeAppleman function using 3 matrixes (5X4X3)"""
@@ -55,7 +52,7 @@ class TestIcingRimeAppleman(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [IcingRimeAppleman] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -63,4 +60,4 @@ class TestIcingRimeAppleman(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

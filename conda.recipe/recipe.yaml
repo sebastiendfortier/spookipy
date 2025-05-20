@@ -1,0 +1,52 @@
+schema_version: 1
+
+package:
+  name: spookipy
+  version: "2025.3.0"
+
+source:
+  path: ../.
+
+build:
+  # Increment build number when you need to rebuild the package without changing its version.
+  # For example, when:
+  # - Updating dependencies without changing package functionality
+  # - Fixing packaging issues (missing files, etc.)
+  # - Making build process changes
+  # Reset to 0 when you update the version number.
+  number: 1
+  script:
+    # Install the Python package
+    - python -m pip install . -vv
+
+requirements:
+  host:
+    - python
+    - pip
+    - wheel
+    - hatchling
+    - pyyaml
+  run:
+    - python
+    - fstpy >=2025.3.0
+    - numexpr >=2.7.3
+    - numpy  # Allow any version
+    - pyyaml
+
+# tests:
+#   - python:
+#       imports:
+#         - spookipy
+#       pip_check: false    
+
+about:
+  license: GPL-3.0
+  summary: Python api for spooki's weather algorithms
+  homepage: "https://gitlab.science.gc.ca/cmdw-spooki/spookipy"
+
+extra:
+  channels:
+    - fortiers
+    - conda-forge
+    - nodefaults
+  channel_priority: flexible  

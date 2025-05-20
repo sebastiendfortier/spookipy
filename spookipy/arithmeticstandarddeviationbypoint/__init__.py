@@ -1,1 +1,4 @@
-from .arithmeticstandarddeviationbypoint import ArithmeticStandardDeviationByPoint, ArithmeticStandardDeviationByPointError
+from .arithmeticstandarddeviationbypoint import (
+    ArithmeticStandardDeviationByPoint,
+    ArithmeticStandardDeviationByPointError,
+)

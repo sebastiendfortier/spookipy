@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,7 +20,6 @@ plugin_test_dir = TEST_PATH + "Calculator/testsFiles/"
 
 
 class TestCalculator(unittest.TestCase):
-
     def test_1(self):
         """Multiplication de deux valeurs d'un fichier volumineux."""
         # open and read source
@@ -31,10 +28,10 @@ class TestCalculator(unittest.TestCase):
 
         # compute Calculator
         df = Calculator(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}]  >> (([Select --fieldName ZZ ] >> [Zap --tag zz]) + ([Select --fieldName TT ] >> [Zap --tag tt])) >> [Calculator --expression @zz*@tt --unit hundredsOfFeet --outputFieldName RSLT] >> [WriterStd --output {destination_path} --noUnitConversion]']
+        # ['[ReaderStd --input {sources[0]}]  >> (([Select --fieldName ZZ ] >> [Zap --tag zz]) + ([Select --fieldName TT ] >> [Zap --tag tt])) >> [Calculator --expression @zz*@tt --unit hundredsOfFeet --outputFieldName RSLT] >> [WriterStd --output {destination_path} --noUnitConversion]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,7 +39,7 @@ class TestCalculator(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_2(self):
         """6 variables impliquant plusieurs opérateurs simples (HU+HR+ES)/(VV-(TT*UU))."""
@@ -52,10 +49,10 @@ class TestCalculator(unittest.TestCase):
 
         # compute Calculator
         df = Calculator(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >> (([Select --fieldName TT ] >> [Zap --tag tt]) + ([Select --fieldName UU ] >> [Zap --tag uu ]) + ([Select --fieldName VV ] >> [Zap --tag vv ]) + ([Select --fieldName HU ] >> [Zap --tag hu ])+ ([Select --fieldName HR ] >> [Zap --tag hr ]) + ([Select --fieldName ES ] >> [Zap --tag es ])) >> [Calculator --expression (@hu+@hr+@es)/(@vv-(@tt*@uu)) --unit hundredsOfFeet --outputFieldName RSLT] >> [WriterStd --output {destination_path} --noUnitConversion]']
+        # ['[ReaderStd --input {sources[0]}] >> (([Select --fieldName TT ] >> [Zap --tag tt]) + ([Select --fieldName UU ] >> [Zap --tag uu ]) + ([Select --fieldName VV ] >> [Zap --tag vv ]) + ([Select --fieldName HU ] >> [Zap --tag hu ])+ ([Select --fieldName HR ] >> [Zap --tag hr ]) + ([Select --fieldName ES ] >> [Zap --tag es ])) >> [Calculator --expression (@hu+@hr+@es)/(@vv-(@tt*@uu)) --unit hundredsOfFeet --outputFieldName RSLT] >> [WriterStd --output {destination_path} --noUnitConversion]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -63,7 +60,7 @@ class TestCalculator(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_3(self):
         """Test de certaines fonctions typiques: abs(tt) + cos(uu) + ceil(vv) + sqrt(hu) + pow(hr,2) + log10(es)"""
@@ -73,10 +70,10 @@ class TestCalculator(unittest.TestCase):
 
         # compute Calculator
         df = Calculator(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >> (([Select --fieldName TT ] >> [Zap --tag tt]) + ([Select --fieldName UU ] >> [Zap --tag uu ]) + ([Select --fieldName VV ] >> [Zap --tag vv ]) + ([Select --fieldName HU ] >> [Zap --tag hu ])+ ([Select --fieldName HR ] >> [Zap --tag hr ]) + ([Select --fieldName ES ] >> [Zap --tag es ])) >> [Calculator --expression abs(@tt)+cos(@uu)+ceil(@vv)+sqrt(@hu)+pow(@hr,2.0)+log10(@es) --unit hundredsOfFeet --outputFieldName RSLT] >> [WriterStd --output {destination_path} --noUnitConversion]']
+        # ['[ReaderStd --input {sources[0]}] >> (([Select --fieldName TT ] >> [Zap --tag tt]) + ([Select --fieldName UU ] >> [Zap --tag uu ]) + ([Select --fieldName VV ] >> [Zap --tag vv ]) + ([Select --fieldName HU ] >> [Zap --tag hu ])+ ([Select --fieldName HR ] >> [Zap --tag hr ]) + ([Select --fieldName ES ] >> [Zap --tag es ])) >> [Calculator --expression abs(@tt)+cos(@uu)+ceil(@vv)+sqrt(@hu)+pow(@hr,2.0)+log10(@es) --unit hundredsOfFeet --outputFieldName RSLT] >> [WriterStd --output {destination_path} --noUnitConversion]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -84,7 +81,7 @@ class TestCalculator(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_4(self):
         """Test avec un nombre élevé de variables. (Sommation des variables)"""
@@ -94,10 +91,10 @@ class TestCalculator(unittest.TestCase):
 
         # compute Calculator
         df = Calculator(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >> ( ([Select --fieldName TT ] >> [Zap --tag tt]) + ([Select --fieldName UU ] >> [Zap --tag uu ]) + ([Select --fieldName VV ] >> [Zap --tag vv ]) + ([Select --fieldName HU ] >> [Zap --tag hu ])+ ([Select --fieldName HR ] >> [Zap --tag hr ]) + ([Select --fieldName ES ] >> [Zap --tag es ])+ ([Select --fieldName TX ] >> [Zap --tag tx ]) + ([Select --fieldName UX ] >> [Zap --tag ux]) + ([Select --fieldName VX] >> [Zap --tag vx ]) + ([Select --fieldName XR ] >> [Zap --tag xr ]) + ([Select --fieldName XU ] >> [Zap --tag xu ]) + ([Select --fieldName EX ] >> [Zap --tag ex ])) >> [Calculator --expression @tt+@uu+@vv+@hu+@hr+@es+@tx+@ux+@vx+@xr+@xu+@ex --unit hundredsOfFeet --outputFieldName RSLT] >> [WriterStd --output {destination_path} --noUnitConversion]']
+        # ['[ReaderStd --input {sources[0]}] >> ( ([Select --fieldName TT ] >> [Zap --tag tt]) + ([Select --fieldName UU ] >> [Zap --tag uu ]) + ([Select --fieldName VV ] >> [Zap --tag vv ]) + ([Select --fieldName HU ] >> [Zap --tag hu ])+ ([Select --fieldName HR ] >> [Zap --tag hr ]) + ([Select --fieldName ES ] >> [Zap --tag es ])+ ([Select --fieldName TX ] >> [Zap --tag tx ]) + ([Select --fieldName UX ] >> [Zap --tag ux]) + ([Select --fieldName VX] >> [Zap --tag vx ]) + ([Select --fieldName XR ] >> [Zap --tag xr ]) + ([Select --fieldName XU ] >> [Zap --tag xu ]) + ([Select --fieldName EX ] >> [Zap --tag ex ])) >> [Calculator --expression @tt+@uu+@vv+@hu+@hr+@es+@tx+@ux+@vx+@xr+@xu+@ex --unit hundredsOfFeet --outputFieldName RSLT] >> [WriterStd --output {destination_path} --noUnitConversion]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -105,7 +102,7 @@ class TestCalculator(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_5(self):
         """Test avec un outputFieldname différent et une utilisation répétée d'une même variable. ( (TT+UU+VV)/TT )"""
@@ -115,10 +112,10 @@ class TestCalculator(unittest.TestCase):
 
         # compute Calculator
         df = Calculator(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >> (([Select --fieldName TT ] >> [Zap --tag tt]) + ([Select --fieldName UU] >> [Zap --tag uu ]) + ([Select --fieldName VV ] >> [Zap --tag vv ])) >> [Calculator --outputFieldName TEST --expression (@tt+@uu+@vv)/@tt]>> [WriterStd --output {destination_path} --noUnitConversion]']
+        # ['[ReaderStd --input {sources[0]}] >> (([Select --fieldName TT ] >> [Zap --tag tt]) + ([Select --fieldName UU] >> [Zap --tag uu ]) + ([Select --fieldName VV ] >> [Zap --tag vv ])) >> [Calculator --outputFieldName TEST --expression (@tt+@uu+@vv)/@tt]>> [WriterStd --output {destination_path} --noUnitConversion]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -126,7 +123,7 @@ class TestCalculator(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_6(self):
         """Test avec une seule variable. (TT*7)"""
@@ -136,10 +133,10 @@ class TestCalculator(unittest.TestCase):
 
         # compute Calculator
         df = Calculator(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >> ([Select --fieldName TT ] >> [Zap --tag TT]) >> [Calculator --outputFieldName TT7 --expression @TT*7]>> [WriterStd --output {destination_path} --noUnitConversion]']
+        # ['[ReaderStd --input {sources[0]}] >> ([Select --fieldName TT ] >> [Zap --tag TT]) >> [Calculator --outputFieldName TT7 --expression @TT*7]>> [WriterStd --output {destination_path} --noUnitConversion]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -147,7 +144,7 @@ class TestCalculator(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_7(self):
         """Même test que test_5, mais échoue parce qu'il y n'y a pas le même nombre de variables que de PDS avec tag."""
@@ -157,10 +154,10 @@ class TestCalculator(unittest.TestCase):
 
         # compute Calculator
         df = Calculator(src_df0).compute()
-        #['[ReaderStd --input {sources[0]}] >> (([Select --fieldName TT ] >> [Zap --tag tt]) + ([Select --fieldName UU]) + ([Select --fieldName VV ] >> [Zap --tag vv ])) >> [Calculator --outputFieldName TEST --expression (@tt+@uu+@vv)/@tt]>> [WriterStd --output {destination_path} --noUnitConversion]']
+        # ['[ReaderStd --input {sources[0]}] >> (([Select --fieldName TT ] >> [Zap --tag tt]) + ([Select --fieldName UU]) + ([Select --fieldName VV ] >> [Zap --tag vv ])) >> [Calculator --outputFieldName TEST --expression (@tt+@uu+@vv)/@tt]>> [WriterStd --output {destination_path} --noUnitConversion]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -168,4 +165,4 @@ class TestCalculator(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

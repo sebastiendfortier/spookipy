@@ -1,12 +1,16 @@
-# Minimal makefile
-#
-all: lib interface
+# Makefile to compile the Fortran code into a shared library
 
-lib:
-	f2py -c -m f_stenfilt f_stenfilt.f90
+FC = gfortran
+FFLAGS = -fPIC -O2 -shared
 
-interface:
-	f2py --overwrite-signature -h f_stenfilt.pyf f_stenfilt.f90 -m f_stenfilt
+# Target shared library
+LIBRARY = libstenfilt.so
+
+all: $(LIBRARY)
+
+$(LIBRARY): f_stenfilt_mod.f90
+	$(FC) $(FFLAGS) -o $@ $<
 
 clean:
-	rm -f *.pyf *.so
+	rm -f *.so *.o *.mod
+

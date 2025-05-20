@@ -1,0 +1,36 @@
+# -*- coding: utf-8 -*-
+import setuptools
+import livraison
+
+with open("README.md", "r", encoding="utf-8") as fh:
+    long_description = fh.read()
+
+setuptools.setup(
+    name="spookipy",  # Replace with your own username
+    version=livraison.make_ssm_package.get_version(),
+    author="Sebastien Fortier",
+    author_email="sebastien.fortier@canada.ca",
+    description="spooki's weather algorithms",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    url="https://gitlab.science.gc.ca/cmdw-spooki/spookipy",
+    project_urls={
+        "Bug Tracker": "https://gitlab.science.gc.ca/cmdw-spooki/spookipy/issues",
+    },
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: GNU License",
+        "Operating System :: OS Linux",
+    ],
+    install_requires=[
+        "fstpy>=2025.03.00",
+        "numexpr>=2.7.3",
+        "numpy>=1.24.4",
+    ],
+    packages=setuptools.find_packages(exclude=["test"]),
+    include_package_data=True,
+    package_data={
+        "spookipy.filterdigital": ["*.so"],  # Include all .so files in filterdigital
+    },
+    python_requires=">=3.8",
+)

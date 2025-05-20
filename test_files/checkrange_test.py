@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,7 +20,6 @@ plugin_test_dir = TEST_PATH + "CheckRange/testsFiles/"
 
 
 class TestCheckRange(unittest.TestCase):
-
     def test_cr_1(self):
         """Tester avec tous les valeurs à l'intérieur du range."""
         # open and read source
@@ -34,7 +31,7 @@ class TestCheckRange(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [CheckRange --range -30@30] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_cr_1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_cr_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,7 +39,7 @@ class TestCheckRange(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_cr_2(self):
         """Tester avec certaines valeurs à l'extérieur du range"""
@@ -55,7 +52,7 @@ class TestCheckRange(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [CheckRange --range -25@28] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_cr_2.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_cr_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -63,7 +60,7 @@ class TestCheckRange(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_cr_3(self):
         """Tester avec certaines valeurs sur les limites du range et l'option --strictComparisonOperator"""
@@ -76,7 +73,7 @@ class TestCheckRange(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [CheckRange --range -13@28 --strictComparisonOperator] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_cr_3.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_cr_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -84,7 +81,7 @@ class TestCheckRange(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_cr_4(self):
         """Tester avec certaines valeurs sur les limites du range et sans l'option --strictComparisonOperator"""
@@ -97,7 +94,7 @@ class TestCheckRange(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [CheckRange --range -13@28] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_cr_4.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_cr_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -105,4 +102,4 @@ class TestCheckRange(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

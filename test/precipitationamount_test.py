@@ -10,12 +10,14 @@ import pandas as pd
 import spookipy
 import datetime
 
-pytestmark = [pytest.mark.regressions]
+pytestmark = [pytest.mark.regressions, pytest.mark.regressions1]
+
 
 @pytest.fixture(scope="module")
 def plugin_name():
     """plugin_name in the path /fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/{plugin_name}"""
     return "PrecipitationAmount"
+
 
 def test_1(plugin_test_path):
     """Tester avec une liste de fieldName invalide."""
@@ -26,17 +28,21 @@ def test_1(plugin_test_path):
     source1 = plugin_test_path / "12_fileSrc.std"
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
 
-    src_df  = pd.concat([src_df0, src_df1], ignore_index=True)
+    src_df = pd.safe_concat([src_df0, src_df1])
     # compute PrecipitationAmount
     with pytest.raises(spookipy.TimeIntervalDifferenceError):
-        _ = spookipy.PrecipitationAmount(src_df, nomvar=['PR','TT'], 
-                                        forecast_hour_range=(datetime.timedelta(hours=12), datetime.timedelta(hours=18)), 
-                                        interval=datetime.timedelta(hours=6), 
-                                        step=datetime.timedelta(hours=1)).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
-    # [ReaderStd --ignoreExtended --input {sources[1]}] >> 
-    # [PrecipitationAmount --fieldName PR,TT --rangeForecastHour 12@18 --interval 6 --step 1] >> 
+        _ = spookipy.PrecipitationAmount(
+            src_df,
+            nomvar=["PR", "TT"],
+            forecast_hour_range=(datetime.timedelta(hours=12), datetime.timedelta(hours=18)),
+            interval=datetime.timedelta(hours=6),
+            step=datetime.timedelta(hours=1),
+        ).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [ReaderStd --ignoreExtended --input {sources[1]}] >>
+    # [PrecipitationAmount --fieldName PR,TT --rangeForecastHour 12@18 --interval 6 --step 1] >>
     # [Zap --pdsLabel R1558V0N] >> [WriterStd --output {destination_path} --ignoreExtended]
+
 
 def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
     """Tester avec un interval 6 sur un range de 12 a 18 et a tous les sauts de 1."""
@@ -47,27 +53,31 @@ def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
     source1 = plugin_test_path / "12_fileSrc.std"
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
 
-    src_df = pd.concat([src_df0, src_df1], ignore_index=True)
+    src_df = pd.safe_concat([src_df0, src_df1])
     # compute PrecipitationAmount
-    df     = spookipy.PrecipitationAmount(src_df, nomvar='PR', 
-                                          forecast_hour_range=(datetime.timedelta(hours=12), datetime.timedelta(hours=18)), 
-                                          interval=datetime.timedelta(hours=6), 
-                                          step=datetime.timedelta(hours=1)).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
-    # [ReaderStd --ignoreExtended --input {sources[1]}] >> 
-    # [PrecipitationAmount --fieldName PR --rangeForecastHour 12@18 --interval 6 --step 1] >> 
-    # [Zap --pdsLabel R1558V0N] >> 
+    df = spookipy.PrecipitationAmount(
+        src_df,
+        nomvar="PR",
+        forecast_hour_range=(datetime.timedelta(hours=12), datetime.timedelta(hours=18)),
+        interval=datetime.timedelta(hours=6),
+        step=datetime.timedelta(hours=1),
+    ).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [ReaderStd --ignoreExtended --input {sources[1]}] >>
+    # [PrecipitationAmount --fieldName PR --rangeForecastHour 12@18 --interval 6 --step 1] >>
+    # [Zap --pdsLabel R1558V0N] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
 
     # Par defaut, les intervalles sont encodes.  On ajoute du code pour les decoder
     # pour fins de comparaison
-    meta_df   = df.loc[df.nomvar.isin (["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    meta_df = df.loc[df.nomvar.isin(["^>", ">>", "^^", "!!", "!!SF"])].copy()
     simple_df = df.loc[~df.nomvar.isin(["^>", ">>", "^^", "!!", "!!SF"])].copy()
-    _, simple_df['ip2'],simple_df['ip3'] = \
-                VDECODE_IP_INFO(simple_df['nomvar'], simple_df['ip1'], simple_df['ip2'], simple_df['ip3']) 
+    _, simple_df["ip2"], simple_df["ip3"] = VDECODE_IP_INFO(
+        simple_df["nomvar"], simple_df["ip1"], simple_df["ip2"], simple_df["ip3"]
+    )
 
-    res_df   = pd.concat([meta_df, simple_df], ignore_index=True)
-   
+    res_df = pd.safe_concat([meta_df, simple_df])
+
     # write the result
     results_file = test_tmp_path / "test_2.std"
     fstpy.StandardFileWriter(results_file, res_df).to_fst()
@@ -77,7 +87,8 @@ def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
     """Tester avec une liste de valeurs pour rangeForecastHour, interval et step."""
@@ -86,13 +97,18 @@ def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute PrecipitationAmount
-    df      = spookipy.PrecipitationAmount( src_df0, nomvar='PR',
-                                            forecast_hour_range=[(datetime.timedelta(hours=0), datetime.timedelta(hours=18)),
-                                                                 (datetime.timedelta(hours=0), datetime.timedelta(hours=93))],
-                                            interval=[datetime.timedelta(hours=3), datetime.timedelta(hours=39)],
-                                            step=[datetime.timedelta(hours=3), datetime.timedelta(hours=18)]).compute()
-    #['[ReaderStd --ignoreExtended --input {sources[0]}] >> 
-    # [PrecipitationAmount --fieldName PR --rangeForecastHour 0@18,0@93 --interval 3,39 --step 3,18] >> 
+    df = spookipy.PrecipitationAmount(
+        src_df0,
+        nomvar="PR",
+        forecast_hour_range=[
+            (datetime.timedelta(hours=0), datetime.timedelta(hours=18)),
+            (datetime.timedelta(hours=0), datetime.timedelta(hours=93)),
+        ],
+        interval=[datetime.timedelta(hours=3), datetime.timedelta(hours=39)],
+        step=[datetime.timedelta(hours=3), datetime.timedelta(hours=18)],
+    ).compute()
+    # ['[ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [PrecipitationAmount --fieldName PR --rangeForecastHour 0@18,0@93 --interval 3,39 --step 3,18] >>
 
     # write the result
     results_file = test_tmp_path / "test_3.std"
@@ -103,7 +119,8 @@ def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 # Nouveau test - identique a test 3 avec encodage des IP selon les standards et moins d'intervalles demandes
 def test_4(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -113,11 +130,14 @@ def test_4(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute PrecipitationAmount
-    df      = spookipy.PrecipitationAmount( src_df0, nomvar='PR',
-                                            forecast_hour_range=[(datetime.timedelta(hours=0), datetime.timedelta(hours=93))],
-                                            interval=[datetime.timedelta(hours=39)],
-                                            step=[datetime.timedelta(hours=18)]).compute()
-    #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '
+    df = spookipy.PrecipitationAmount(
+        src_df0,
+        nomvar="PR",
+        forecast_hour_range=[(datetime.timedelta(hours=0), datetime.timedelta(hours=93))],
+        interval=[datetime.timedelta(hours=39)],
+        step=[datetime.timedelta(hours=18)],
+    ).compute()
+    # ['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '
     # [PrecipitationAmount --fieldName PR --rangeForecastHour 0@18,0@93 --interval 3,39 --step 3,18] >> ', '
 
     # write the result
@@ -129,7 +149,8 @@ def test_4(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 # identical to 3
 # def test_4(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -235,6 +256,7 @@ def test_4(plugin_test_path, test_tmp_path, call_fstcomp):
 #     fstpy.delete_file(results_file)
 #     assert(res)
 
+
 def test_8(plugin_test_path, test_tmp_path, call_fstcomp):
     """Test HourMinuteSecond parameters step test"""
     # open and read source
@@ -242,23 +264,26 @@ def test_8(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute PrecipitationAmount
-    df      = spookipy.PrecipitationAmount( src_df0, nomvar='PR',
-                                            forecast_hour_range=(datetime.timedelta(hours=22, minutes=30), datetime.timedelta(hours=23)),
-                                            interval=datetime.timedelta(minutes=30),
-                                            step=datetime.timedelta(minutes=30)).compute()
-    #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '
+    df = spookipy.PrecipitationAmount(
+        src_df0,
+        nomvar="PR",
+        forecast_hour_range=(datetime.timedelta(hours=22, minutes=30), datetime.timedelta(hours=23)),
+        interval=datetime.timedelta(minutes=30),
+        step=datetime.timedelta(minutes=30),
+    ).compute()
+    # ['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '
     # [PrecipitationAmount --fieldName PR --rangeForecastHour 22:30:00@23:00:00 --interval 0:30:00 --step 0:30:00] >> ', '
     # [WriterStd --output {destination_path} --ignoreExtended]']
 
-
     # Par defaut, les intervalles sont encodes.  On ajoute du code pour les decoder
     # pour fins de comparaison
-    meta_df   = df.loc[df.nomvar.isin (["^>", ">>", "^^", "!!", "!!SF"])].copy()
+    meta_df = df.loc[df.nomvar.isin(["^>", ">>", "^^", "!!", "!!SF"])].copy()
     simple_df = df.loc[~df.nomvar.isin(["^>", ">>", "^^", "!!", "!!SF"])].copy()
-    _, simple_df['ip2'],simple_df['ip3'] = \
-                VDECODE_IP_INFO(simple_df['nomvar'], simple_df['ip1'], simple_df['ip2'], simple_df['ip3']) 
+    _, simple_df["ip2"], simple_df["ip3"] = VDECODE_IP_INFO(
+        simple_df["nomvar"], simple_df["ip1"], simple_df["ip2"], simple_df["ip3"]
+    )
 
-    res_df  = pd.concat([meta_df, simple_df], ignore_index=True)
+    res_df = pd.safe_concat([meta_df, simple_df])
 
     # write the result
     results_file = test_tmp_path / "test_8.std"
@@ -269,7 +294,8 @@ def test_8(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_9(plugin_test_path, test_tmp_path, call_fstcomp):
     """Test HourMinuteSecond  - avec encodage des ip"""
@@ -278,14 +304,17 @@ def test_9(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute PrecipitationAmount
-    df      = spookipy.PrecipitationAmount( src_df0, nomvar='PR',
-                                            forecast_hour_range=(datetime.timedelta(hours=22, minutes=30), datetime.timedelta(hours=23)),
-                                            interval=datetime.timedelta(minutes=30),
-                                            step=datetime.timedelta(minutes=30)).compute()
-    #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '
+    df = spookipy.PrecipitationAmount(
+        src_df0,
+        nomvar="PR",
+        forecast_hour_range=(datetime.timedelta(hours=22, minutes=30), datetime.timedelta(hours=23)),
+        interval=datetime.timedelta(minutes=30),
+        step=datetime.timedelta(minutes=30),
+    ).compute()
+    # ['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '
     # [PrecipitationAmount --fieldName PR --rangeForecastHour 22:30:00@23:00:00 --interval 0:30:00 --step 0:30:00] >> ', '
     # [WriterStd --output {destination_path} --ignoreExtended]']
-    
+
     # write the result
     results_file = test_tmp_path / "test_9.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
@@ -295,4 +324,4 @@ def test_9(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res

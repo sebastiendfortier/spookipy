@@ -9,7 +9,7 @@ pytestmark = [pytest.mark.regressions]
 
 @pytest.fixture
 def plugin_test_dir():
-    return TEST_PATH + '/AbsoluteValue/testsFiles/'
+    return TEST_PATH + "/AbsoluteValue/testsFiles/"
 
 
 def test_1(plugin_test_dir):
@@ -20,10 +20,10 @@ def test_1(plugin_test_dir):
 
     # compute AbsoluteValue
     df = AbsoluteValue(src_df0).compute()
-    #['[ReaderStd --input {sources[0]}]', ' >> [AbsoluteValue]', ' >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE --ignoreExtended]']
+    # ['[ReaderStd --input {sources[0]}]', ' >> [AbsoluteValue]', ' >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE --ignoreExtended]']
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+    results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
     StandardFileWriter(results_file, df)()
 
     # open and read comparison file
@@ -31,7 +31,7 @@ def test_1(plugin_test_dir):
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
 
 
 def test_2(plugin_test_dir):
@@ -45,7 +45,7 @@ def test_2(plugin_test_dir):
     # [ReaderStd --input {sources[0]}] >> [AbsoluteValue --outputFieldName ABCD]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
+    results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
     StandardFileWriter(results_file, df)()
 
     # open and read comparison file
@@ -53,7 +53,7 @@ def test_2(plugin_test_dir):
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
 
 
 def test_3(plugin_test_dir):
@@ -67,7 +67,7 @@ def test_3(plugin_test_dir):
     # [ReaderStd --input {sources[0]}] >> [AbsoluteValue --outputFieldName ABCDEF]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
+    results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
     StandardFileWriter(results_file, df)()
 
     # open and read comparison file
@@ -75,7 +75,7 @@ def test_3(plugin_test_dir):
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
 
 
 def test_4(plugin_test_dir):
@@ -89,7 +89,7 @@ def test_4(plugin_test_dir):
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName UU ] >> [AbsoluteValue --outputFieldName ABCD ] >> [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE --ignoreExtended --noUnitConversion]
 
     # write the result
-    results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
+    results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
     StandardFileWriter(results_file, df)()
 
     # open and read comparison file
@@ -97,4 +97,4 @@ def test_4(plugin_test_dir):
 
     # compare results
     res = fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res

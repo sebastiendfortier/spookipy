@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,7 +20,6 @@ plugin_test_dir = TEST_PATH + "HyperbolicCosine/testsFiles/"
 
 
 class TestHyperbolicCosine(unittest.TestCase):
-
     def test_function_COSH(self):
         """Calcul de la fonction cosinus hyperbolique sur chaque element"""
         # open and read source
@@ -34,7 +31,7 @@ class TestHyperbolicCosine(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [HyperbolicCosine] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_function_COSH.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_function_COSH.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,4 +39,4 @@ class TestHyperbolicCosine(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

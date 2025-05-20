@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,9 +20,8 @@ plugin_test_dir = TEST_PATH + "FreezingLevel/testsFiles/"
 
 
 class TestFreezingLevel(unittest.TestCase):
-
     def test_1(self):
-        """ Test avec un fichier maison de 10 cas différents où la courbe de température croise le 0 deg C (matrice 10x1), avec l'option --outputVerticalRepresentation BOTH."""
+        """Test avec un fichier maison de 10 cas différents où la courbe de température croise le 0 deg C (matrice 10x1), avec l'option --outputVerticalRepresentation BOTH."""
         # open and read source
         source0 = plugin_test_dir + "inputFileMillibar.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -34,7 +31,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [FreezingLevel --outputVerticalRepresentation BOTH --forcedForTestsOnly] >> [Select --fieldName FRH,BOVS,NBFL] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,10 +39,10 @@ class TestFreezingLevel(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_2(self):
-        """ Test avec un fichier maison de 10 cas différents où la courbe de température croise le 0 deg C (matrice 10x1), avec l'option -maxNbFzLvl 1 et --outputVerticalRepresentation BOTH."""
+        """Test avec un fichier maison de 10 cas différents où la courbe de température croise le 0 deg C (matrice 10x1), avec l'option -maxNbFzLvl 1 et --outputVerticalRepresentation BOTH."""
         # open and read source
         source0 = plugin_test_dir + "inputFileMillibar.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -55,7 +52,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [FreezingLevel --outputVerticalRepresentation BOTH --maxNbFzLvl 1 --forcedForTestsOnly] >> [Select --fieldName FRH,BOVS,NBFL] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -63,10 +60,10 @@ class TestFreezingLevel(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_3(self):
-        """ Test avec un fichier maison de 10 cas différents où la courbe de température croise le 0 deg C (matrice 10x1), avec l'option -maxNbFzLvl 1 et --outputVerticalRepresentation GEOPOTENTIAL."""
+        """Test avec un fichier maison de 10 cas différents où la courbe de température croise le 0 deg C (matrice 10x1), avec l'option -maxNbFzLvl 1 et --outputVerticalRepresentation GEOPOTENTIAL."""
         # open and read source
         source0 = plugin_test_dir + "inputFileMillibar.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -76,7 +73,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [FreezingLevel --outputVerticalRepresentation GEOPOTENTIAL --forcedForTestsOnly] >> [Select --fieldName FRH,BOVS,NBFL] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -84,10 +81,10 @@ class TestFreezingLevel(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_4(self):
-        """ Test avec un fichier maison de 10 cas différents où la courbe de température croise le 0 deg C (matrice 10x1), avec l'option -maxNbFzLvl 3 et --outputVerticalRepresentation BOTH."""
+        """Test avec un fichier maison de 10 cas différents où la courbe de température croise le 0 deg C (matrice 10x1), avec l'option -maxNbFzLvl 3 et --outputVerticalRepresentation BOTH."""
         # open and read source
         source0 = plugin_test_dir + "inputFileMillibar.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -97,7 +94,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [FreezingLevel --outputVerticalRepresentation BOTH --maxNbFzLvl 3 --forcedForTestsOnly] >> [Select --fieldName FRH,BOVS,NBFL] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -105,10 +102,10 @@ class TestFreezingLevel(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_5(self):
-        """ Test avec un fichier maison de 10 cas différents où la courbe de température croise le 0 deg C (matrice 10x1), avec l'option -maxNbFzLvl 3 et --outputVerticalRepresentation GEOPOTENTIAL."""
+        """Test avec un fichier maison de 10 cas différents où la courbe de température croise le 0 deg C (matrice 10x1), avec l'option -maxNbFzLvl 3 et --outputVerticalRepresentation GEOPOTENTIAL."""
         # open and read source
         source0 = plugin_test_dir + "inputFileMillibar.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -118,7 +115,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [FreezingLevel --outputVerticalRepresentation GEOPOTENTIAL --maxNbFzLvl 3 --forcedForTestsOnly] >> [Select --fieldName FRH,BOVS,NBFL] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -126,10 +123,10 @@ class TestFreezingLevel(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_6(self):
-        """ Test avec un fichier sortie de modele eta, avec l'option --outputVerticalRepresentation PRESSURE."""
+        """Test avec un fichier sortie de modele eta, avec l'option --outputVerticalRepresentation PRESSURE."""
         # open and read source
         source0 = plugin_test_dir + "inputFile2.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -139,7 +136,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [FreezingLevel --outputVerticalRepresentation PRESSURE --maxNbFzLvl 5] >> [Select --fieldName FRP,BOVS,NBFL] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -147,10 +144,10 @@ class TestFreezingLevel(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_7(self):
-        """ Test avec un fichier sortie de modele sigma, avec l'option --outputVerticalRepresentation GEOPOTENTIAL."""
+        """Test avec un fichier sortie de modele sigma, avec l'option --outputVerticalRepresentation GEOPOTENTIAL."""
         # open and read source
         source0 = plugin_test_dir + "inputFile2.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -160,7 +157,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [FreezingLevel --outputVerticalRepresentation GEOPOTENTIAL --maxNbFzLvl 5 ] >> [Select --fieldName FRH,BOVS,NBFL] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -168,10 +165,10 @@ class TestFreezingLevel(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_8(self):
-        """ Test avec un fichier sortie de modele sigma, avec l'option --outputVerticalRepresentation BOTH."""
+        """Test avec un fichier sortie de modele sigma, avec l'option --outputVerticalRepresentation BOTH."""
         # open and read source
         source0 = plugin_test_dir + "inputFile2.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -181,7 +178,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [FreezingLevel  --outputVerticalRepresentation BOTH --maxNbFzLvl 5] >> [Select --fieldName FRH,BOVS,NBFL] >> [WriterStd --output {destination_path} --ignoreExtended --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -189,10 +186,10 @@ class TestFreezingLevel(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_9(self):
-        """ Test avec un fichier contenant a la fois des niveaux pressions et des niveaux sigma"""
+        """Test avec un fichier contenant a la fois des niveaux pressions et des niveaux sigma"""
         # open and read source
         source0 = plugin_test_dir + "input_big_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -202,7 +199,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [FreezingLevel --outputVerticalRepresentation GEOPOTENTIAL --maxNbFzLvl 5] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -210,10 +207,10 @@ class TestFreezingLevel(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_10(self):
-        """ Test de l'option --highestFreezingLevel (outputVerticalRepresentation == BOTH et highestFreezingLevel == BOTH)"""
+        """Test de l'option --highestFreezingLevel (outputVerticalRepresentation == BOTH et highestFreezingLevel == BOTH)"""
         # open and read source
         source0 = plugin_test_dir + "inputFile2.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -223,7 +220,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [FreezingLevel --outputVerticalRepresentation BOTH --maxNbFzLvl 5 --highestFreezingLevel BOTH] >> [WriterStd --output {destination_path} --noUnitConversion]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -231,10 +228,10 @@ class TestFreezingLevel(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_15(self):
-        """ Test de l'option --highestFreezingLevel (outputVerticalRepresentation == BOTH et highestFreezingLevel == YES)"""
+        """Test de l'option --highestFreezingLevel (outputVerticalRepresentation == BOTH et highestFreezingLevel == YES)"""
         # open and read source
         source0 = plugin_test_dir + "inputFile2.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -244,7 +241,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [FreezingLevel --outputVerticalRepresentation BOTH --maxNbFzLvl 5 --highestFreezingLevel YES] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_15.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -252,10 +249,10 @@ class TestFreezingLevel(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_16(self):
-        """ Test de l'option --highestFreezingLevel (outputVerticalRepresentation == PRESSURE et highestFreezingLevel == YES)"""
+        """Test de l'option --highestFreezingLevel (outputVerticalRepresentation == PRESSURE et highestFreezingLevel == YES)"""
         # open and read source
         source0 = plugin_test_dir + "testcases2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -265,7 +262,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [FreezingLevel --outputVerticalRepresentation PRESSURE --maxNbFzLvl 5 --highestFreezingLevel YES --forcedForTestsOnly ]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_16.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_16.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -273,10 +270,10 @@ class TestFreezingLevel(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_18(self):
-        """ Test de l'option --highestFreezingLevel (outputVerticalRepresentation == PRESSURE et highestFreezingLevel == YES)"""
+        """Test de l'option --highestFreezingLevel (outputVerticalRepresentation == PRESSURE et highestFreezingLevel == YES)"""
         # open and read source
         source0 = plugin_test_dir + "testcases2-2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -286,7 +283,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [FreezingLevel --outputVerticalRepresentation PRESSURE --maxNbFzLvl 5 --highestFreezingLevel YES --forcedForTestsOnly ] >> [WriterStd --output {destination_path}]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_18.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_18.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -294,10 +291,10 @@ class TestFreezingLevel(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_19(self):
-        """ Test de l'option --highestFreezingLevel (outputVerticalRepresentation == GEOPOTENTIAL et highestFreezingLevel == YES)"""
+        """Test de l'option --highestFreezingLevel (outputVerticalRepresentation == GEOPOTENTIAL et highestFreezingLevel == YES)"""
         # open and read source
         source0 = plugin_test_dir + "testcases3-2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -307,7 +304,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [FreezingLevel --outputVerticalRepresentation GEOPOTENTIAL --maxNbFzLvl 5 --highestFreezingLevel YES --forcedForTestsOnly] >> [WriterStd --output {destination_path}]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_19.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_19.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -315,10 +312,10 @@ class TestFreezingLevel(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_20(self):
-        """ Test de l'option --highestFreezingLevel (outputVerticalRepresentation == GEOPOTENTIAL et highestFreezingLevel == YES)"""
+        """Test de l'option --highestFreezingLevel (outputVerticalRepresentation == GEOPOTENTIAL et highestFreezingLevel == YES)"""
         # open and read source
         source0 = plugin_test_dir + "testcases4-2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -328,7 +325,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [FreezingLevel --outputVerticalRepresentation GEOPOTENTIAL --maxNbFzLvl 5 --highestFreezingLevel YES --forcedForTestsOnly] >> [WriterStd --output {destination_path}]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_20.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_20.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -336,10 +333,10 @@ class TestFreezingLevel(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_21(self):
-        """ Test de l'option --highestFreezingLevel (outputVerticalRepresentation == BOTH et highestFreezingLevel == YES)"""
+        """Test de l'option --highestFreezingLevel (outputVerticalRepresentation == BOTH et highestFreezingLevel == YES)"""
         # open and read source
         source0 = plugin_test_dir + "testcases3-2_fileSrc.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -349,7 +346,7 @@ class TestFreezingLevel(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [FreezingLevel --outputVerticalRepresentation BOTH --maxNbFzLvl 5 --highestFreezingLevel YES --forcedForTestsOnly] >> [WriterStd --output {destination_path}]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_21.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_21.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -357,20 +354,20 @@ class TestFreezingLevel(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_22(self):
-        """ Test avec un fichier 5005, avec les options --outputVerticalRepresentation BOTH --highestFreezingLevel BOTH et --maxNbFzLvl 2."""
+        """Test avec un fichier 5005, avec les options --outputVerticalRepresentation BOTH --highestFreezingLevel BOTH et --maxNbFzLvl 2."""
         # open and read source
         source0 = plugin_test_dir + "minimal_TTHUGZ_5005.std"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
         # compute FreezingLevel
         df = FreezingLevel(src_df0).compute()
-        #['[ReaderStd --input {sources[0]} ] >> ', '[FreezingLevel --outputVerticalRepresentation BOTH --highestFreezingLevel BOTH --maxNbFzLvl 2 --forcedForTestsOnly] >> ', '[WriterStd --output {destination_path} ]']
+        # ['[ReaderStd --input {sources[0]} ] >> ', '[FreezingLevel --outputVerticalRepresentation BOTH --highestFreezingLevel BOTH --maxNbFzLvl 2 --forcedForTestsOnly] >> ', '[WriterStd --output {destination_path} ]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_22.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_22.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -378,4 +375,4 @@ class TestFreezingLevel(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

@@ -1,0 +1,2 @@
+    # FSTPY version and dependencies
+    . r.load.dot /fs/ssm/eccc/cmd/cmds/fstpy/bundle/20250300

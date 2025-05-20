@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,7 +20,6 @@ plugin_test_dir = TEST_PATH + "Message/testsFiles/"
 
 
 class TestMessage(unittest.TestCase):
-
     def test_1(self):
         """Tester lorsqu'aucune option n'est spécifiée."""
         # open and read source
@@ -34,7 +31,7 @@ class TestMessage(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Message]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,7 +39,7 @@ class TestMessage(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_2(self):
         """Test avec l'option 'verificationMessage' seulement"""
@@ -55,7 +52,7 @@ class TestMessage(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> ([Copy] + [Message --verificationMessage -------------------------verif_test_message]) >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -63,7 +60,7 @@ class TestMessage(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_3(self):
         """Test avec l'option 'executionMessage' seulement"""
@@ -76,7 +73,7 @@ class TestMessage(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> ([Copy] + [Message --executionMessage -------------------------exec_test_message]) >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -84,7 +81,7 @@ class TestMessage(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_4(self):
         """Test avec l'option 'verificationMessage' et 'severity' a WARNING"""
@@ -97,7 +94,7 @@ class TestMessage(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> ([Copy] + [Message --severity WARNING --verificationMessage -------------------------verif_severity_test_message]) >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -105,7 +102,7 @@ class TestMessage(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_5(self):
         """Test avec l'option 'verificationMessage' et 'severity' a INFO"""
@@ -118,7 +115,7 @@ class TestMessage(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> ([Copy] + [Message --severity INFO --verificationMessage -------------------------verif_severity_test_message]) >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -126,7 +123,7 @@ class TestMessage(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_6(self):
         """Test avec les options 'verificationMessage', 'executionMessage' et 'severity' a ERROR"""
@@ -139,7 +136,7 @@ class TestMessage(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> ([Copy] + [Message --severity ERROR --verificationMessage -------------------------verif_severity_test_message --executionMessage --------------------------exec_test_message]) >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -147,4 +144,4 @@ class TestMessage(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

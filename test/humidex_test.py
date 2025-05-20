@@ -7,12 +7,14 @@ import fstpy
 import pytest
 import spookipy
 
-pytestmark = [pytest.mark.regressions, pytest.mark.humidity]
+pytestmark = [pytest.mark.regressions, pytest.mark.regressions1, pytest.mark.humidity]
+
 
 @pytest.fixture(scope="module")
 def plugin_name():
     """plugin_name in the path /fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/{plugin_name}"""
     return "Humidex"
+
 
 def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul de l'humidex avec un fichier d'entree normal qui a des TT,TD et SVP."""
@@ -21,7 +23,7 @@ def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute Humidex
-    df      = spookipy.Humidex(src_df0).compute()
+    df = spookipy.Humidex(src_df0).compute()
     # [ReaderStd --input {sources[0]}] >> [Humidex] >> [WriterStd --output {destination_path} --noMetadata]
 
     # write the result
@@ -33,7 +35,7 @@ def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare, e_max=0.1)
-    assert(res)
+    assert res
 
 
 def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -43,7 +45,7 @@ def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute Humidex
-    df      = spookipy.Humidex(src_df0).compute()
+    df = spookipy.Humidex(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]} ] >> [Humidex] >> [WriterStd --output {destination_path} ]
 
     # write the result
@@ -55,24 +57,25 @@ def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
-    """2 groupes de TT avec dates d'origine differentes mais dates de validity identiques """
+    """2 groupes de TT avec dates d'origine differentes mais dates de validity identiques"""
 
-    source  = plugin_test_path / "Regeta_TTHUES_differentDateoSameDatev.std"
-    src_df  = fstpy.StandardFileReader(source).to_pandas()
+    source = plugin_test_path / "Regeta_TTHUES_differentDateoSameDatev.std"
+    src_df = fstpy.StandardFileReader(source).to_pandas()
 
     # compute Humidex
-    df      = spookipy.Humidex(src_df).compute()
-    
-     # write the result
+    df = spookipy.Humidex(src_df).compute()
+
+    # write the result
     results_file = test_tmp_path / "test_3.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # # open and read comparison file
     file_to_compare = plugin_test_path / "Regeta_test3_file2cmp.std"
 
-    # compare results 
+    # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res

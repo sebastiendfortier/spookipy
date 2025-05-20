@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,7 +20,6 @@ plugin_test_dir = TEST_PATH + "VectorComponents/testsFiles/"
 
 
 class TestVectorComponents(unittest.TestCase):
-
     def test_1(self):
         """Test l'option --orientationType avec une valeur invalide."""
         # open and read source
@@ -34,7 +31,7 @@ class TestVectorComponents(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [VectorComponents --orientationType BLABLABLA] >> [WriterStd --output {destination_path}]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,7 +39,7 @@ class TestVectorComponents(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_2(self):
         """Test avec un fichier de grille Z."""
@@ -55,7 +52,7 @@ class TestVectorComponents(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [WindModulusAndDirection] >> [VectorComponents --orientationType MATH] >> [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -63,7 +60,7 @@ class TestVectorComponents(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_3(self):
         """Test avec un fichier de grille U."""
@@ -76,7 +73,7 @@ class TestVectorComponents(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [WindModulusAndDirection] >> [VectorComponents --orientationType MATH] >> [WriterStd --output {destination_path} --ignoreExtended --noUnitConversion]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -84,4 +81,4 @@ class TestVectorComponents(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

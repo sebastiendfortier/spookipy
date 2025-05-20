@@ -9,8 +9,7 @@ import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin, PluginParser
-from ..utils import (create_empty_result, existing_results,
-                     get_dependencies, get_existing_result, initializer)
+from ..utils import create_empty_result, existing_results, get_dependencies, get_existing_result, initializer
 
 
 def diagnostic_cloud_fraction_threshold(level: float) -> float:
@@ -21,7 +20,13 @@ def diagnostic_cloud_fraction_threshold(level: float) -> float:
     :return: array of thresholds
     :rtype: np.ndarray
     """
-    return 1 - 2 * level + math.pow(level, 2) + math.pow(level, 3) + math.sqrt(3.0) * level * (1 - 3 * level + 2 * math.pow(level, 2))
+    return (
+        1
+        - 2 * level
+        + math.pow(level, 2)
+        + math.pow(level, 3)
+        + math.sqrt(3.0) * level * (1 - 3 * level + 2 * math.pow(level, 2))
+    )
 
 
 def diagnostic_cloud_fraction(hr: np.ndarray, threshold: float) -> np.ndarray:
@@ -37,8 +42,8 @@ def diagnostic_cloud_fraction(hr: np.ndarray, threshold: float) -> np.ndarray:
     cld = np.zeros_like(hr, dtype=np.float32)
     cld = np.where(hr <= threshold, 0, cld)
     cld = np.where(hr >= 1, 1, cld)
-    cld = np.where((threshold < hr) & (hr < 1) & ((1 - threshold) != 0),((hr - threshold) / (1 - threshold))**2, cld)
-    
+    cld = np.where((threshold < hr) & (hr < 1) & ((1 - threshold) != 0), ((hr - threshold) / (1 - threshold)) ** 2, cld)
+
     return cld.astype(np.float32)
 
 
@@ -47,32 +52,26 @@ class CloudFractionDiagnosticError(Exception):
 
 
 class CloudFractionDiagnostic(Plugin):
-    """At a given level, the program converts the values    
-        relative humidity (HR) as a diagnostic cloud fraction    
+    """At a given level, the program converts the values
+        relative humidity (HR) as a diagnostic cloud fraction
 
     :param df: input DataFrame
     :type df: pd.DataFrame
     :param use_constant: use a constant instead of algorithm, defaults to False
     :type use_constant: bool, optional
     """
+
     computable_plugin = "CLD"
+
     @initializer
-    def __init__(self, 
-                 df: pd.DataFrame, 
-                 use_constant=False,
-                 copy_input=False
-                ):
+    def __init__(self, df: pd.DataFrame, use_constant=False, copy_input=False):
         self.plugin_mandatory_dependencies = [
             {
-                'HR': {'nomvar': 'HR', 'unit': 'scalar', 'select_only': True},
+                "HR": {"nomvar": "HR", "unit": "1", "select_only": True},
             }
         ]
 
-        self.plugin_result_specifications = {
-            'CLD': {
-                'nomvar': 'CLD',
-                'label': 'CloudFractionDiagnostic',
-                'unit': 'scalar'}}
+        self.plugin_result_specifications = {"CLD": {"nomvar": "CLD", "label": "CloudFractionDiagnostic", "unit": "1"}}
 
         self.constant = 0.8
         self.df = fstpy.metadata_cleanup(self.df)
@@ -80,55 +79,39 @@ class CloudFractionDiagnostic(Plugin):
         self.validate_params_and_input()
 
     def validate_params_and_input(self):
-
-        self.df = fstpy.add_columns(
-            self.df, columns=[
-                'unit', 'forecast_hour', 'ip_info'])
+        self.df = fstpy.add_columns(self.df, columns=["unit", "forecast_hour", "ip_info"])
 
         # check if result already exists
-        self.existing_result_df = get_existing_result(
-            self.df, self.plugin_result_specifications)
+        self.existing_result_df = get_existing_result(self.df, self.plugin_result_specifications)
 
-        self.groups = self.df.groupby(
-                ['grid', 'datev', 'vctype'])
+        self.groups = self.df.groupby(["grid", "datev", "vctype"])
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:
-            return existing_results(
-                'CloudFractionDiagnostic',
-                self.existing_result_df,
-                self.meta_df)
+            return existing_results("CloudFractionDiagnostic", self.existing_result_df, self.meta_df)
 
-        logging.info('CloudFractionDiagnostic - compute')
+        logging.info("CloudFractionDiagnostic - compute")
         df_list = []
         dependencies_list = get_dependencies(
-            self.groups,
-            self.meta_df,
-            'CloudFractionDiagnostic',
-            self.plugin_mandatory_dependencies)
+            self.groups, self.meta_df, "CloudFractionDiagnostic", self.plugin_mandatory_dependencies
+        )
 
         for dependencies_df, _ in dependencies_list:
-
-            cld_df = create_empty_result(
-                dependencies_df,
-                self.plugin_result_specifications['CLD'],
-                all_rows=True)
+            cld_df = create_empty_result(dependencies_df, self.plugin_result_specifications["CLD"], all_rows=True)
 
             if self.use_constant:
                 for i in cld_df.index:
-                    cld_df.at[i, 'd'] = np.full_like(
-                        cld_df.at[i, 'd'], self.constant, dtype=np.float32)
+                    cld_df.at[i, "d"] = np.full_like(cld_df.at[i, "d"], self.constant, dtype=np.float32)
             else:
                 for i in cld_df.index:
-                    level = cld_df.at[i, 'level']
-                    hr = copy.deepcopy(cld_df.at[i, 'd'])
+                    level = cld_df.at[i, "level"]
+                    hr = copy.deepcopy(cld_df.at[i, "d"])
                     threshold = diagnostic_cloud_fraction_threshold(level)
-                    cld_df.at[i, 'd'] = diagnostic_cloud_fraction(hr, threshold)
+                    cld_df.at[i, "d"] = diagnostic_cloud_fraction(hr, threshold)
 
             df_list.append(cld_df)
 
-        return self.final_results(df_list, CloudFractionDiagnosticError,
-                                  copy_input = self.copy_input)
+        return self.final_results(df_list, CloudFractionDiagnosticError, copy_input=self.copy_input)
 
     @staticmethod
     def parse_config(args: str) -> dict:
@@ -138,8 +121,13 @@ class CloudFractionDiagnostic(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = PluginParser(prog=CloudFractionDiagnostic.__name__, parents=[Plugin.base_parser],add_help=False)
-        parser.add_argument('--useConstant',action='store_true',dest='use_constant', help="Use constant instead of algorithm (0.8 cte Slingo 1987)")
+        parser = PluginParser(prog=CloudFractionDiagnostic.__name__, parents=[Plugin.base_parser], add_help=False)
+        parser.add_argument(
+            "--useConstant",
+            action="store_true",
+            dest="use_constant",
+            help="Use constant instead of algorithm (0.8 cte Slingo 1987)",
+        )
 
         parsed_arg = vars(parser.parse_args(args.split()))
 

@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,7 +20,6 @@ plugin_test_dir = TEST_PATH + "TemperatureVirtual/testsFiles/"
 
 
 class TestTemperatureVirtual(unittest.TestCase):
-
     def test_1(self):
         """Calcul de la pression de vapeur saturante avec un fichier hybrid."""
         # open and read source
@@ -34,7 +31,7 @@ class TestTemperatureVirtual(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --fieldName TT,HR] >> [TemperatureVirtual] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,7 +39,7 @@ class TestTemperatureVirtual(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_2(self):
         """Calcul de la pression de vapeur saturante avec un fichier hybrid 5005."""
@@ -52,10 +49,10 @@ class TestTemperatureVirtual(unittest.TestCase):
 
         # compute TemperatureVirtual
         df = TemperatureVirtual(src_df0).compute()
-        #['[ReaderStd --input {sources[0]} ] >> ', '[MatchFieldsByCommonLevels --referenceField TT --matchFields HR]>>', '[WriterStd --output {destination_path} ]']
+        # ['[ReaderStd --input {sources[0]} ] >> ', '[MatchFieldsByCommonLevels --referenceField TT --matchFields HR]>>', '[WriterStd --output {destination_path} ]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -63,4 +60,4 @@ class TestTemperatureVirtual(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

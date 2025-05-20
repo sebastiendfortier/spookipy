@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,9 +20,8 @@ plugin_test_dir = TEST_PATH + "VorticityAbsolute/testsFiles/"
 
 
 class TestVorticityAbsolute(unittest.TestCase):
-
     def test_regvortab_test_1(self):
-        """Calculate with a simple test data """
+        """Calculate with a simple test data"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -34,7 +31,7 @@ class TestVorticityAbsolute(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --fieldName QQ --exclude] >> [VorticityAbsolute] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "vortab_test_1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "vortab_test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,7 +39,7 @@ class TestVorticityAbsolute(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_regvortab_test_2(self):
         """Spooki must success when input are in millibars"""
@@ -55,7 +52,7 @@ class TestVorticityAbsolute(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >>[VorticityAbsolute]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "vortab_test_2.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "vortab_test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -63,7 +60,7 @@ class TestVorticityAbsolute(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_regvortab_test_3(self):
         """SingleThread. Same as test 1 but in singlethread"""
@@ -76,7 +73,7 @@ class TestVorticityAbsolute(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --fieldName QQ --exclude] >> [VorticityAbsolute -T1] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "vortab_test_3.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "vortab_test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -84,10 +81,10 @@ class TestVorticityAbsolute(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_regvortab_test_4(self):
-        """ Test avec une grille globale"""
+        """Test avec une grille globale"""
         # open and read source
         source0 = plugin_test_dir + "2016031600_024_glbeta"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -97,7 +94,7 @@ class TestVorticityAbsolute(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [VorticityAbsolute] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "vortab_test_4.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "vortab_test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -105,10 +102,10 @@ class TestVorticityAbsolute(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_regvortab_test_5(self):
-        """Calculate with a simple test data - reconnaissance de son resultat """
+        """Calculate with a simple test data - reconnaissance de son resultat"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -118,7 +115,7 @@ class TestVorticityAbsolute(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [VorticityAbsolute] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "vortab_test_5.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "vortab_test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -126,4 +123,4 @@ class TestVorticityAbsolute(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

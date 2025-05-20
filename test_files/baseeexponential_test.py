@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,7 +20,6 @@ plugin_test_dir = TEST_PATH + "BaseEExponential/testsFiles/"
 
 
 class TestBaseEExponential(unittest.TestCase):
-
     def test_function_EXP(self):
         """Applique la fonction EXP pour chaque élément"""
         # open and read source
@@ -34,7 +31,7 @@ class TestBaseEExponential(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [BaseEExponential] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_function_EXP.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_function_EXP.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,4 +39,4 @@ class TestBaseEExponential(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

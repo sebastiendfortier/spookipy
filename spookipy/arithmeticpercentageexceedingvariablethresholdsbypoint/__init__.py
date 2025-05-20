@@ -1,1 +1,4 @@
-from .arithmeticpercentageexceedingvariablethresholdsbypoint import ArithmeticPercentageExceedingVariableThresholdsByPoint, ArithmeticPercentageExceedingVariableThresholdsByPointError
+from .arithmeticpercentageexceedingvariablethresholdsbypoint import (
+    ArithmeticPercentageExceedingVariableThresholdsByPoint,
+    ArithmeticPercentageExceedingVariableThresholdsByPointError,
+)

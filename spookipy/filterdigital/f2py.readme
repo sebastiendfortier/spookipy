@@ -1,6 +1,4 @@
 
-# create lib stenfilt.cpython-36m-x86_64-linux-gnu.so
-f2py3 -c -m stenfilt stenfilt.f
+# compile with Makefile
+make
 
-# create pyf file
-f2py3 -h stenfilt.pyf stenfilt.f -m stenfilt

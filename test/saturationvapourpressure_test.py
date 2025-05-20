@@ -7,9 +7,10 @@ check_test_ssm_package()
 import fstpy
 import pytest
 import spookipy
-import rpnpy.librmn.all as rmn
+from spookipy.rmn_interface import RmnInterface
 
-pytestmark = [pytest.mark.regressions, pytest.mark.humidity]
+pytestmark = [pytest.mark.regressions, pytest.mark.regressions2, pytest.mark.humidity]
+
 
 @pytest.fixture(scope="module")
 def plugin_name():
@@ -26,10 +27,8 @@ def test_1(plugin_test_path):
     # compute SaturationVapourPressure
     with pytest.raises(spookipy.SaturationVapourPressureError):
         _ = spookipy.SaturationVapourPressure(
-            src_df0,
-            ice_water_phase='both',
-            temp_phase_switch=-30,
-            temp_phase_switch_unit='G').compute()
+            src_df0, ice_water_phase="both", temp_phase_switch=-30, temp_phase_switch_unit="G"
+        ).compute()
     # [ReaderStd --input {sources[0]}] >> [SaturationVapourPressure --iceWaterPhase BOTH --temperaturePhaseSwitch -30G]
 
 
@@ -42,10 +41,8 @@ def test_2(plugin_test_path):
     # compute SaturationVapourPressure
     with pytest.raises(spookipy.SaturationVapourPressureError):
         _ = spookipy.SaturationVapourPressure(
-            src_df0,
-            ice_water_phase='both',
-            temp_phase_switch=-5,
-            temp_phase_switch_unit='kelvin').compute()
+            src_df0, ice_water_phase="both", temp_phase_switch=-5, temp_phase_switch_unit="kelvin"
+        ).compute()
 
 
 def test_3(plugin_test_path):
@@ -57,10 +54,8 @@ def test_3(plugin_test_path):
     # compute SaturationVapourPressure
     with pytest.raises(spookipy.SaturationVapourPressureError):
         _ = spookipy.SaturationVapourPressure(
-            src_df0,
-            ice_water_phase='both',
-            temp_phase_switch=-275,
-            temp_phase_switch_unit='celsius').compute()
+            src_df0, ice_water_phase="both", temp_phase_switch=-275, temp_phase_switch_unit="celsius"
+        ).compute()
 
 
 def test_4(plugin_test_path):
@@ -72,10 +67,8 @@ def test_4(plugin_test_path):
     # compute SaturationVapourPressure
     with pytest.raises(spookipy.SaturationVapourPressureError):
         _ = spookipy.SaturationVapourPressure(
-            src_df0,
-            ice_water_phase='invalid',
-            temp_phase_switch=273.17,
-            temp_phase_switch_unit='kelvin').compute()
+            src_df0, ice_water_phase="invalid", temp_phase_switch=273.17, temp_phase_switch_unit="kelvin"
+        ).compute()
     # [ReaderStd --input {sources[0]}] >> [SaturationVapourPressure --iceWaterPhase INVALIDE --temperaturePhaseSwitch 273.17K]
 
 
@@ -87,8 +80,7 @@ def test_5(plugin_test_path):
 
     # compute SaturationVapourPressure
     with pytest.raises(spookipy.SaturationVapourPressureError):
-        _ = spookipy.SaturationVapourPressure(
-            src_df0, ice_water_phase='both').compute()
+        _ = spookipy.SaturationVapourPressure(src_df0, ice_water_phase="both").compute()
     # [ReaderStd --input {sources[0]}] >> [SaturationVapourPressure --iceWaterPhase BOTH ]
 
 
@@ -99,8 +91,7 @@ def test_6(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute SaturationVapourPressure
-    df      = spookipy.SaturationVapourPressure(src_df0, 
-                                                ice_water_phase='water').compute()
+    df = spookipy.SaturationVapourPressure(src_df0, ice_water_phase="water").compute()
     # [ReaderStd --input {sources[0]}] >> [SaturationVapourPressure --iceWaterPhase WATER] >>
     #  [WriterStd --output {destination_path} --noMetadata]
 
@@ -113,7 +104,8 @@ def test_6(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare, e_max=0.002)
-    assert(res)
+    assert res
+
 
 def test_7(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul de la pression de vapeur saturante avec un fichier hybrid 5005,  ice_water_phase = both."""
@@ -122,13 +114,12 @@ def test_7(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute SaturationVapourPressure
-    df      = spookipy.SaturationVapourPressure(src_df0,
-                                                ice_water_phase='both',
-                                                temp_phase_switch=-40,
-                                                temp_phase_switch_unit='celsius').compute()
+    df = spookipy.SaturationVapourPressure(
+        src_df0, ice_water_phase="both", temp_phase_switch=-40, temp_phase_switch_unit="celsius"
+    ).compute()
 
     # ['[ReaderStd --input {sources[0]}] >> ', '[SaturationVapourPressure --iceWaterPhase BOTH --temperaturePhaseSwitch -40C] >>
-    # [WriterStd --output {destination_path} --noMetadata]'] 
+    # [WriterStd --output {destination_path} --noMetadata]']
 
     # write the result
     results_file = test_tmp_path / "test_7.std"
@@ -139,12 +130,13 @@ def test_7(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare, e_max=0.002)
-    assert(res)
+    assert res
 
-# Test qui etait en commentaire dans la version Spooki. 
+
+# Test qui etait en commentaire dans la version Spooki.
 #
 # Creation du fichier input de la facon suivante:
-# /apps/spooki_run  "[ReaderStd --input hyb_prog_2012071312_009_1HY ] >> 
+# /apps/spooki_run  "[ReaderStd --input hyb_prog_2012071312_009_1HY ] >>
 # [Select --fieldName WW,WD,UU,VV,UV --exclude] >>
 # [GridCut --startPoint 0,0 --endPoint 90,110]
 def test_8(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -155,9 +147,7 @@ def test_8(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute SaturationVapourPressure
-    df      = spookipy.SaturationVapourPressure(src_df0, 
-                                                ice_water_phase='water',
-                                                rpn=True).compute()
+    df = spookipy.SaturationVapourPressure(src_df0, ice_water_phase="water", rpn=True).compute()
 
     # write the result
     results_file = test_tmp_path / "test_8.std"
@@ -168,25 +158,24 @@ def test_8(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare, e_max=0.001)
-    assert(res)
-    
+    assert res
+
+
 def test_9(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul de la pression de vapeur saturante avec un fichier regeta, option rpn, ice_water_phase = both."""
 
     # open and read source
     source0 = plugin_test_path / "2011100712_012_regeta"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-    tt_df   = fstpy.select_with_meta(src_df0, ['TT'])
+    tt_df = fstpy.select_with_meta(src_df0, ["TT"])
 
     # compute SaturationVapourPressure
-    df      = spookipy.SaturationVapourPressure(tt_df, 
-                                                ice_water_phase='both',
-                                                temp_phase_switch=273,
-                                                temp_phase_switch_unit='celsius',
-                                                rpn=True).compute()
-                                                
+    df = spookipy.SaturationVapourPressure(
+        tt_df, ice_water_phase="both", temp_phase_switch=273, temp_phase_switch_unit="celsius", rpn=True
+    ).compute()
+
     # Equivalent a --IP1EncodingStyle OLDSTYLE
-    df = spookipy.convip(df, style=rmn.CONVIP_ENCODE_OLD)
+    df = spookipy.convip(df, style=RmnInterface.CONVIP_ENCODE_OLD)
 
     # write the result
     results_file = test_tmp_path / "test_9.std"
@@ -197,4 +186,4 @@ def test_9(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare, e_max=0.001)
-    assert(res)
+    assert res

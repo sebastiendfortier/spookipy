@@ -24,7 +24,7 @@ Documentation
 * :doc:`install`
 * :doc:`usage`
 * :doc:`contributing`
-* :doc:`ssm`
+* :doc:`livraison`
 * :doc:`plugin_anatomy`
 
 .. toctree::
@@ -36,7 +36,7 @@ Documentation
    install
    usage
    contributing
-   ssm
+   livraison
    plugin_anatomy
 
 **Modules**
@@ -45,7 +45,14 @@ Documentation
 * :doc:`addtoelement`
 * :doc:`applyunary`
 * :doc:`arithmeticmeanbypoint`
+* :doc:`arithmeticpercentageexceedingthresholdsbypoint`
+* :doc:`arithmeticpercentageexceedingvariablethresholdsbypoint`
+* :doc:`arithmeticpercentilebypoint`
+* :doc:`arithmeticstandarddeviationbypoint`
+* :doc:`calculator`
 * :doc:`cloudfractiondiagnostic`
+* :doc:`comparisonutils`
+* :doc:`configparsingutils`
 * :doc:`coriolisparameter`
 * :doc:`dewpointdepression`
 * :doc:`filterdigital`
@@ -61,7 +68,7 @@ Documentation
 * :doc:`humidityutils`
 * :doc:`interpolationhorizontalgrid`
 * :doc:`interpolationhorizontalpoint`
-* :doc:`interpolationvertical`
+* :doc:`interpolationutils`
 * :doc:`mask`
 * :doc:`matchlevelindextovalue`
 * :doc:`minmaxlevelindex`
@@ -72,13 +79,20 @@ Documentation
 * :doc:`opelementsbyvalue`
 * :doc:`percentiletopercentage`
 * :doc:`plugin`
+* :doc:`power`
+* :doc:`powervaluebyelement`
 * :doc:`precipitationamount`
 * :doc:`pressure`
+* :doc:`printdf`
+* :doc:`readerstd`
+* :doc:`replacedataifcondition`
 * :doc:`saturationvapourpressure`
 * :doc:`science`
+* :doc:`select`
 * :doc:`setconstantvalue`
 * :doc:`setlowerboundary`
 * :doc:`setupperboundary`
+* :doc:`statisticsvertically`
 * :doc:`subtractelementsvertically`
 * :doc:`temperaturedewpoint`
 * :doc:`temperaturepotential`
@@ -93,6 +107,8 @@ Documentation
 * :doc:`winddirection`
 * :doc:`windmax`
 * :doc:`windmodulus`
+* :doc:`writerstd`
+* :doc:`zap`
 
 
 .. toctree::
@@ -104,7 +120,14 @@ Documentation
    addtoelement
    applyunary
    arithmeticmeanbypoint
+   arithmeticpercentageexceedingthresholdsbypoint
+   arithmeticpercentageexceedingvariablethresholdsbypoint
+   arithmeticpercentilebypoint
+   arithmeticstandarddeviationbypoint
+   calculator
    cloudfractiondiagnostic
+   comparisonutils
+   configparsingutils
    coriolisparameter
    dewpointdepression
    filterdigital
@@ -120,7 +143,7 @@ Documentation
    humidityutils
    interpolationhorizontalgrid
    interpolationhorizontalpoint
-   .. interpolationvertical      Not coded !
+   interpolationutils
    mask
    matchlevelindextovalue
    minmaxlevelindex
@@ -131,13 +154,20 @@ Documentation
    opelementsbyvalue
    percentiletopercentage
    plugin
+   power
+   powervaluebyelement
    precipitationamount
    pressure
+   printdf
+   readerstd
+   replacedataifcondition
    saturationvapourpressure
    science
+   select
    setconstantvalue
    setlowerboundary
    setupperboundary
+   statisticsvertically
    subtractelementsvertically
    temperaturedewpoint
    temperaturepotential
@@ -149,9 +179,11 @@ Documentation
    vapourpressure
    watervapourmixingratio
    windchill
-   winddirection           
+   winddirection
    windmax
    windmodulus
+   writerstd
+   zap
 
 **Tutorial**
 

@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,7 +20,6 @@ plugin_test_dir = TEST_PATH + "HeightIndexAboveSurfaceLevel/testsFiles/"
 
 
 class TestHeightIndexAboveSurfaceLevel(unittest.TestCase):
-
     def test_basic(self):
         """test numero 1"""
         # open and read source
@@ -34,7 +31,7 @@ class TestHeightIndexAboveSurfaceLevel(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [HeightIndexAboveSurfaceLevel --unit decameter --height 300] >> [Zap --pdsLabel HEIGHTIDXABO --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_basic.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_basic.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,7 +39,7 @@ class TestHeightIndexAboveSurfaceLevel(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_basic_km(self):
         """test numero 2"""
@@ -55,7 +52,7 @@ class TestHeightIndexAboveSurfaceLevel(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [HeightIndexAboveSurfaceLevel --unit kilometer --height 3] >> [Zap --pdsLabel HEIGHTIDXABO --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_basic_km.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_basic_km.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -63,7 +60,7 @@ class TestHeightIndexAboveSurfaceLevel(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_base(self):
         """test numero 3"""
@@ -76,7 +73,7 @@ class TestHeightIndexAboveSurfaceLevel(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [HeightIndexAboveSurfaceLevel --unit decameter --height 0] >> [HeightIndexFromLevel --unit decameter --height 300] >> [Zap --pdsLabel HEIGHTIDXABO --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE --makeIP1EncodingWorkWithTests]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_base.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_base.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -84,4 +81,4 @@ class TestHeightIndexAboveSurfaceLevel(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

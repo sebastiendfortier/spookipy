@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,7 +20,6 @@ plugin_test_dir = TEST_PATH + "PressureOnConstantPotentialVorticity/testsFiles/"
 
 
 class TestPressureOnConstantPotentialVorticity(unittest.TestCase):
-
     def test_1(self):
         """Invalid value for --PVU"""
         # open and read source
@@ -34,7 +31,7 @@ class TestPressureOnConstantPotentialVorticity(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PressureOnConstantPotentialVorticity --PVU 4.0]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,7 +39,7 @@ class TestPressureOnConstantPotentialVorticity(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_2(self):
         """Calculate with a small regpres file"""
@@ -55,7 +52,7 @@ class TestPressureOnConstantPotentialVorticity(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PressureOnConstantPotentialVorticity --PVU 1.5,2.0] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -63,10 +60,10 @@ class TestPressureOnConstantPotentialVorticity(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_3(self):
-        """Calculate with a simple test data """
+        """Calculate with a simple test data"""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -76,7 +73,7 @@ class TestPressureOnConstantPotentialVorticity(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PressureOnConstantPotentialVorticity --PVU 2.0] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -84,7 +81,7 @@ class TestPressureOnConstantPotentialVorticity(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_4(self):
         """Same as test 1 but in singlethread"""
@@ -97,7 +94,7 @@ class TestPressureOnConstantPotentialVorticity(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PressureOnConstantPotentialVorticity --PVU 2.0 -T1] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -105,7 +102,7 @@ class TestPressureOnConstantPotentialVorticity(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_5(self):
         """Calculate with more test data with multiple PVU"""
@@ -118,7 +115,7 @@ class TestPressureOnConstantPotentialVorticity(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PressureOnConstantPotentialVorticity --PVU 1.5,2.0,3.0] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -126,7 +123,7 @@ class TestPressureOnConstantPotentialVorticity(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_6(self):
         """Calculate with more test data with multiple PVU but not in order"""
@@ -139,7 +136,7 @@ class TestPressureOnConstantPotentialVorticity(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [PressureOnConstantPotentialVorticity --PVU 3.0,2.0,1.5] >> [WriterStd --output {destination_path} ]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -147,4 +144,4 @@ class TestPressureOnConstantPotentialVorticity(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

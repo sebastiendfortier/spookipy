@@ -8,7 +8,8 @@ import fstpy
 import spookipy
 import datetime
 
-pytestmark = [pytest.mark.regressions]
+pytestmark = [pytest.mark.regressions, pytest.mark.regressions2]
+
 
 @pytest.fixture(scope="module")
 def plugin_name():
@@ -24,12 +25,15 @@ def test_1(plugin_test_path):
 
     # compute TimeIntervalMinMax
     with pytest.raises(spookipy.TimeIntervalMinMaxError):
-        df = spookipy.TimeIntervalMinMax(src_df0, max=True,
-            forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)), 
-            interval=datetime.timedelta(hours=12), 
+        df = spookipy.TimeIntervalMinMax(
+            src_df0,
+            max=True,
+            forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)),
+            interval=datetime.timedelta(hours=12),
             step=datetime.timedelta(hours=24),
-            nomvar_min='PRX').compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+            nomvar_min="PRX",
+        ).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [TimeIntervalMinMax --type MAX --rangeForecastHour 0@177 --interval 12 --step 24 --outputFieldNameMin PRX]
 
 
@@ -42,11 +46,11 @@ def test_1(plugin_test_path):
 
 #     # compute TimeIntervalMinMax
 #     df = spookipy.TimeIntervalMinMax(src_df0,
-#         forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)), 
-#         interval=datetime.timedelta(hours=12), 
+#         forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)),
+#         interval=datetime.timedelta(hours=12),
 #         step=datetime.timedelta(hours=24),
 #         nomvar_min='PRX').compute()
-#     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+#     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
 #     # [TimeIntervalMinMax --fieldName PR --rangeForecastHour 0@177 --interval 12 --step 24 --outputFieldNameMin PRX]
 
 #     # write the result
@@ -62,6 +66,7 @@ def test_1(plugin_test_path):
 #     fstpy.delete_file(results_file)
 #     assert(res)
 
+
 def test_3(plugin_test_path):
     """Tester sans la cle obligatoire rangeForecastHour."""
     # open and read source
@@ -70,13 +75,11 @@ def test_3(plugin_test_path):
 
     # compute TimeIntervalMinMax
     with pytest.raises(spookipy.TimeIntervalMinMaxError):
-        df = spookipy.TimeIntervalMinMax(src_df0,
-            interval=datetime.timedelta(hours=12), 
-            step=datetime.timedelta(hours=24),
-            nomvar_min='PRX').compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+        df = spookipy.TimeIntervalMinMax(
+            src_df0, interval=datetime.timedelta(hours=12), step=datetime.timedelta(hours=24), nomvar_min="PRX"
+        ).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [TimeIntervalMinMax --fieldName PR --type MIN --interval 12 --step 24 --outputFieldNameMin PRX]
-
 
 
 # not tested, has defaults for seting min and max to True
@@ -88,12 +91,12 @@ def test_3(plugin_test_path):
 
 #     # compute TimeIntervalMinMax
 #     df = spookipy.TimeIntervalMinMax(src_df0,
-#         forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)), 
-#         interval=datetime.timedelta(hours=12), 
+#         forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)),
+#         interval=datetime.timedelta(hours=12),
 #         step=datetime.timedelta(hours=24),
 #         nomvar_min='PRX').compute()
-#     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
-#     # [TimeIntervalMinMax --fieldName PR --TYPE MIN --interval 12 --step 24 --outputFieldNameMin PRX] >> 
+#     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
+#     # [TimeIntervalMinMax --fieldName PR --TYPE MIN --interval 12 --step 24 --outputFieldNameMin PRX] >>
 #     # [WriterStd --output {destination_path} --ignoreExtended]
 
 #     # write the result
@@ -109,6 +112,7 @@ def test_3(plugin_test_path):
 #     fstpy.delete_file(results_file)
 #     assert(res)
 
+
 def test_5(plugin_test_path):
     """Tester avec un interval à zero"""
     # open and read source
@@ -117,14 +121,16 @@ def test_5(plugin_test_path):
 
     # compute TimeIntervalMinMax
     with pytest.raises(spookipy.TimeIntervalMinMaxError):
-        df = spookipy.TimeIntervalMinMax(src_df0, 
-            nomvar='PR', 
+        df = spookipy.TimeIntervalMinMax(
+            src_df0,
+            nomvar="PR",
             min=True,
-            forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)), 
-            interval=datetime.timedelta(hours=0), 
+            forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)),
+            interval=datetime.timedelta(hours=0),
             step=datetime.timedelta(hours=24),
-            nomvar_min='PRX').compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+            nomvar_min="PRX",
+        ).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [TimeIntervalMinMax --fieldName PR --type MIN --interval 0 --rangeForecastHour 0@177 --step 24 --outputFieldNameMin PRX]
 
 
@@ -136,14 +142,16 @@ def test_6(plugin_test_path):
 
     # compute TimeIntervalMinMax
     with pytest.raises(spookipy.TimeIntervalMinMaxError):
-        df = spookipy.TimeIntervalMinMax(src_df0,
-            nomvar='PR',
+        df = spookipy.TimeIntervalMinMax(
+            src_df0,
+            nomvar="PR",
             min=True,
-            forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)), 
-            interval=datetime.timedelta(hours=12), 
+            forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)),
+            interval=datetime.timedelta(hours=12),
             step=datetime.timedelta(hours=0),
-            nomvar_min='PRX').compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+            nomvar_min="PRX",
+        ).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [TimeIntervalMinMax --fieldName PR --type MIN --interval 12 --rangeForecastHour 0@177 --step 0 --outputFieldNameMin PRX]
 
 
@@ -158,11 +166,11 @@ def test_6(plugin_test_path):
 #     df = spookipy.TimeIntervalMinMax(src_df0,
 #         nomvar='PR',
 #         max=True,
-#         forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)), 
-#         interval=datetime.timedelta(hours=12), 
+#         forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)),
+#         interval=datetime.timedelta(hours=12),
 #         step=datetime.timedelta(hours=24),
 #         nomvar_min='PRX').compute()
-#     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+#     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
 #     # [TimeIntervalMinMax --fieldName PR --type MAX --interval 12 --rangeForecastHour 0@177 --step 24 --outputFieldNameMin PRX]
 
 #     # write the result
@@ -190,7 +198,7 @@ def test_6(plugin_test_path):
 #         nomvar='PR',
 #         max=True,
 #         ).compute()
-#     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+#     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
 #     # [TimeIntervalMinMax --fieldName PR --type MAX --interval 12 --rangeForecastHour 0@177 --step 24 --outputFieldNameMin PRX]
 
 #     # write the result
@@ -215,7 +223,7 @@ def test_6(plugin_test_path):
 
 #     # compute TimeIntervalMinMax
 #     df = spookipy.TimeIntervalMinMax(src_df0).compute()
-#     # [ReaderStd --input {sources[0]}] >> 
+#     # [ReaderStd --input {sources[0]}] >>
 #     # [TimeIntervalMinMax --fieldName PR --type MAX --interval 12 --rangeForecastHour 0@177 --step 24 --outputFieldNameMax PRX] >>
 #     # [WriterStd --output /tmp//totonSZBK2/toto.std]
 
@@ -241,7 +249,7 @@ def test_6(plugin_test_path):
 
 #     # compute TimeIntervalMinMax
 #     df = spookipy.TimeIntervalMinMax(src_df0).compute()
-#     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+#     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
 #     # [TimeIntervalMinMax --fieldName PR --type MAX --interval 12 --rangeForecastHour 0@177 --step 24 --outputFieldNameMin PRX]
 
 #     # write the result
@@ -266,7 +274,7 @@ def test_6(plugin_test_path):
 
 #     # compute TimeIntervalMinMax
 #     df = spookipy.TimeIntervalMinMax(src_df0).compute()
-#     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+#     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
 #     # [TimeIntervalMinMax --fieldName PR --type MIN --interval 12 --rangeForecastHour 0@177 --step 24 --outputFieldNameMax PRX]
 
 #     # write the result
@@ -291,7 +299,7 @@ def test_6(plugin_test_path):
 
 #     # compute TimeIntervalMinMax
 #     df = spookipy.TimeIntervalMinMax(src_df0).compute()
-#     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+#     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
 #     # [TimeIntervalMinMax --fieldName PR --type MINI --interval 12 --rangeForecastHour 0@177 --step 24 --outputFieldNameMax PRX]
 
 #     # write the result
@@ -307,6 +315,7 @@ def test_6(plugin_test_path):
 #     fstpy.delete_file(results_file)
 #     assert(res)
 
+
 def test_13(plugin_test_path):
     """Tester avec un rangeForecastHour invalide"""
     # open and read source
@@ -315,14 +324,16 @@ def test_13(plugin_test_path):
 
     # compute TimeIntervalMinMax
     with pytest.raises(spookipy.TimeIntervalMinMaxError):
-        df = spookipy.TimeIntervalMinMax(src_df0,
-            nomvar='PR',
+        df = spookipy.TimeIntervalMinMax(
+            src_df0,
+            nomvar="PR",
             max=True,
-            forecast_hour_range=(datetime.timedelta(hours=-1)), 
-            interval=datetime.timedelta(hours=12), 
+            forecast_hour_range=(datetime.timedelta(hours=-1)),
+            interval=datetime.timedelta(hours=12),
             step=datetime.timedelta(hours=0),
-            nomvar_max='PRX').compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+            nomvar_max="PRX",
+        ).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [TimeIntervalMinMax --fieldName PR --type MAX --interval 12 --rangeForecastHour -1 --step 24 --outputFieldNameMax PRX]
 
 
@@ -334,14 +345,16 @@ def test_14(plugin_test_path):
 
     # compute TimeIntervalMinMax
     with pytest.raises(spookipy.TimeIntervalMinMaxError):
-        df = spookipy.TimeIntervalMinMax(src_df0,
-            nomvar='PR',
+        df = spookipy.TimeIntervalMinMax(
+            src_df0,
+            nomvar="PR",
             min=True,
-            forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)), 
-            interval=[datetime.timedelta(hours=12),datetime.timedelta(hours=10)], 
+            forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)),
+            interval=[datetime.timedelta(hours=12), datetime.timedelta(hours=10)],
             step=datetime.timedelta(hours=0),
-            nomvar_min='PRX').compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+            nomvar_min="PRX",
+        ).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [TimeIntervalMinMax --fieldName PR --type MIN --interval 12,10 --rangeForecastHour 0@177 --step 24 --outputFieldNameMin PRX]
 
 
@@ -353,14 +366,19 @@ def test_15(plugin_test_path):
 
     # compute TimeIntervalMinMax
     with pytest.raises(spookipy.TimeIntervalMinMaxError):
-        df = spookipy.TimeIntervalMinMax(src_df0,
-            nomvar='PR',
+        df = spookipy.TimeIntervalMinMax(
+            src_df0,
+            nomvar="PR",
             min=True,
-            forecast_hour_range=[(datetime.timedelta(hours=0), datetime.timedelta(hours=177)),(datetime.timedelta(hours=50), datetime.timedelta(hours=58))], 
-            interval=datetime.timedelta(hours=12), 
+            forecast_hour_range=[
+                (datetime.timedelta(hours=0), datetime.timedelta(hours=177)),
+                (datetime.timedelta(hours=50), datetime.timedelta(hours=58)),
+            ],
+            interval=datetime.timedelta(hours=12),
             step=datetime.timedelta(hours=24),
-            nomvar_min='PRX').compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+            nomvar_min="PRX",
+        ).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [TimeIntervalMinMax --fieldName PR --type MIN --interval 12 --rangeForecastHour 0@177,50@58 --step 24 --outputFieldNameMin PRX]
 
 
@@ -372,16 +390,17 @@ def test_16(plugin_test_path):
 
     # compute TimeIntervalMinMax
     with pytest.raises(spookipy.TimeIntervalMinMaxError):
-        df = spookipy.TimeIntervalMinMax(src_df0,
-            nomvar='PR',
+        df = spookipy.TimeIntervalMinMax(
+            src_df0,
+            nomvar="PR",
             min=True,
-            forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)), 
-            interval=datetime.timedelta(hours=12), 
-            step=[datetime.timedelta(hours=24),datetime.timedelta(hours=15)],
-            nomvar_min='PRX').compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+            forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)),
+            interval=datetime.timedelta(hours=12),
+            step=[datetime.timedelta(hours=24), datetime.timedelta(hours=15)],
+            nomvar_min="PRX",
+        ).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [TimeIntervalMinMax --fieldName PR --type MIN --interval 12 --rangeForecastHour 0@177 --step 24,15 --outputFieldNameMin PRX]
-
 
 
 def test_17(plugin_test_path):
@@ -392,14 +411,16 @@ def test_17(plugin_test_path):
 
     # compute TimeIntervalMinMax
     with pytest.raises(spookipy.TimeIntervalMinMaxError):
-        df = spookipy.TimeIntervalMinMax(src_df0,
-            nomvar='PR',
+        df = spookipy.TimeIntervalMinMax(
+            src_df0,
+            nomvar="PR",
             min=True,
-            forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)), 
-            interval=datetime.timedelta(hours=12), 
+            forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)),
+            interval=datetime.timedelta(hours=12),
             step=datetime.timedelta(hours=24),
-            nomvar_min=['PRX','PRZ']).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+            nomvar_min=["PRX", "PRZ"],
+        ).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [TimeIntervalMinMax --fieldName PR --type MIN --interval 12 --rangeForecastHour 0@177 --step 24 --outputFieldNameMin PRX,PRZ]
 
 
@@ -411,14 +432,16 @@ def test_18(plugin_test_path):
 
     # compute TimeIntervalMinMax
     with pytest.raises(spookipy.TimeIntervalMinMaxError):
-        df = spookipy.TimeIntervalMinMax(src_df0,
-            nomvar='PR',
+        df = spookipy.TimeIntervalMinMax(
+            src_df0,
+            nomvar="PR",
             min=True,
-            forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)), 
-            interval=datetime.timedelta(hours=12), 
-            step=[datetime.timedelta(hours=24),datetime.timedelta(hours=15)],
-            nomvar_min='PRX').compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+            forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)),
+            interval=datetime.timedelta(hours=12),
+            step=[datetime.timedelta(hours=24), datetime.timedelta(hours=15)],
+            nomvar_min="PRX",
+        ).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [TimeIntervalMinMax --fieldName PR --type BOTH --interval 12 --rangeForecastHour 0@177 --step 24,15 --outputFieldNameMin PRX]
 
 
@@ -430,17 +453,20 @@ def test_19(plugin_test_path):
 
     # compute TimeIntervalMinMax
     with pytest.raises(spookipy.TimeIntervalMinMaxError):
-        df = spookipy.TimeIntervalMinMax(src_df0,
-            nomvar='PR',
+        df = spookipy.TimeIntervalMinMax(
+            src_df0,
+            nomvar="PR",
             min=True,
             max=True,
-            forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)), 
-            interval=datetime.timedelta(hours=12), 
+            forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=177)),
+            interval=datetime.timedelta(hours=12),
             step=datetime.timedelta(hours=24),
-            nomvar_min='PRX',
-            nomvar_max=['PRX','PRZ']).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+            nomvar_min="PRX",
+            nomvar_max=["PRX", "PRZ"],
+        ).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [TimeIntervalMinMax --fieldName PR --type BOTH --interval 12 --rangeForecastHour 0@177 --step 24 --outputFieldNameMin PRX --outputFieldNameMax PRX,PRZ]
+
 
 # same as test_19
 # def test_20(plugin_test_path):
@@ -451,7 +477,7 @@ def test_19(plugin_test_path):
 
 #     # compute TimeIntervalMinMax
 #     df = spookipy.TimeIntervalMinMax(src_df0).compute()
-#     # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+#     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
 #     # [TimeIntervalMinMax --fieldName PR --type BOTH --interval 12 --rangeForecastHour 0@177 --step 24 --outputFieldNameMin PRX,PRZ --outputFieldNameMax PRX]
 
 #     # write the result
@@ -467,64 +493,75 @@ def test_19(plugin_test_path):
 #     fstpy.delete_file(results_file)
 #     assert(res)
 
+
 def test_21(plugin_test_path, test_tmp_path, call_fstcomp):
-    """ Calcul d'un test min avec un fieldName TT et 2 rangeForecastHours."""
+    """Calcul d'un test min avec un fieldName TT et 2 rangeForecastHours."""
     # open and read source
     source0 = plugin_test_path / "TT_Interval_3_168_160_150_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spookipy.TimeIntervalMinMax(src_df0,
-        nomvar='TT',
+    df = spookipy.TimeIntervalMinMax(
+        src_df0,
+        nomvar="TT",
         min=True,
-        forecast_hour_range=[(datetime.timedelta(hours=160), datetime.timedelta(hours=168)),(datetime.timedelta(hours=150), datetime.timedelta(hours=160))], 
-        interval=[datetime.timedelta(hours=3),datetime.timedelta(hours=3)], 
-        step=[datetime.timedelta(hours=2),datetime.timedelta(hours=2)]).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]} ] >> 
-    # [TimeIntervalMinMax --type MIN --rangeForecastHour 160@168,150@160 --fieldName TT --interval 3,3 --step 2,2] >> 
+        forecast_hour_range=[
+            (datetime.timedelta(hours=160), datetime.timedelta(hours=168)),
+            (datetime.timedelta(hours=150), datetime.timedelta(hours=160)),
+        ],
+        interval=[datetime.timedelta(hours=3), datetime.timedelta(hours=3)],
+        step=[datetime.timedelta(hours=2), datetime.timedelta(hours=2)],
+    ).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]} ] >>
+    # [TimeIntervalMinMax --type MIN --rangeForecastHour 160@168,150@160 --fieldName TT --interval 3,3 --step 2,2] >>
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
-    df.loc[df.nomvar.str.match('V[0-9]+M.'),'etiket'] = '__TIMNMXX'
-    df['ig1'] = 0
-    df['ig2'] = 0
-    df['grtyp'] = 'X'
-   
+    df.loc[df.nomvar.str.match("V[0-9]+M."), "etiket"] = "__TIMNMXX"
+    df["ig1"] = 0
+    df["ig2"] = 0
+    df["grtyp"] = "X"
+
     df = spookipy.encode_ip_when_interval(df)
-    
+
     # write the result
     results_file = test_tmp_path / "test_21.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_path / \
-        "TT_Interval_3_168_160_150_diff_file2cmp_encodeIP2andIP3.std"
+    file_to_compare = plugin_test_path / "TT_Interval_3_168_160_150_diff_file2cmp_encodeIP2andIP3.std"
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_22(plugin_test_path, test_tmp_path, call_fstcomp):
-    """ Calcul d'un test MIN avec 2 fieldNames TT,HU et 2 rangeForecastHours."""
+    """Calcul d'un test MIN avec 2 fieldNames TT,HU et 2 rangeForecastHours."""
     # open and read source
     source0 = plugin_test_path / "TT_HU_Interval_3_168_160_24_0_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spookipy.TimeIntervalMinMax(src_df0,
-        nomvar=['TT','HU'],
+    df = spookipy.TimeIntervalMinMax(
+        src_df0,
+        nomvar=["TT", "HU"],
         min=True,
-        forecast_hour_range=[(datetime.timedelta(hours=0), datetime.timedelta(hours=24)),(datetime.timedelta(hours=160), datetime.timedelta(hours=168))], 
-        interval=[datetime.timedelta(hours=3),datetime.timedelta(hours=3)], 
-        step=[datetime.timedelta(hours=2),datetime.timedelta(hours=2)]).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]} ] >> 
-    # [TimeIntervalMinMax --type MIN --rangeForecastHour 0@24,160@168 --fieldName TT,HU --interval 3,3 --step 2,2] >> 
+        forecast_hour_range=[
+            (datetime.timedelta(hours=0), datetime.timedelta(hours=24)),
+            (datetime.timedelta(hours=160), datetime.timedelta(hours=168)),
+        ],
+        interval=[datetime.timedelta(hours=3), datetime.timedelta(hours=3)],
+        step=[datetime.timedelta(hours=2), datetime.timedelta(hours=2)],
+    ).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]} ] >>
+    # [TimeIntervalMinMax --type MIN --rangeForecastHour 0@24,160@168 --fieldName TT,HU --interval 3,3 --step 2,2] >>
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
-    df.loc[df.nomvar.str.match('V[0-9]+M.'),'etiket'] = '__TIMNMXX'
-    df['ig1'] = 0
-    df['ig2'] = 0
-    df['grtyp'] = 'X'
-  
+    df.loc[df.nomvar.str.match("V[0-9]+M."), "etiket"] = "__TIMNMXX"
+    df["ig1"] = 0
+    df["ig2"] = 0
+    df["grtyp"] = "X"
+
     df = spookipy.encode_ip_when_interval(df)
 
     # write the result
@@ -532,109 +569,124 @@ def test_22(plugin_test_path, test_tmp_path, call_fstcomp):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_path / \
-        "TT_HU_Interval_3_168_160_24_0_diff_file2cmp_encodeIP2andIP3.std"
+    file_to_compare = plugin_test_path / "TT_HU_Interval_3_168_160_24_0_diff_file2cmp_encodeIP2andIP3.std"
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_23(plugin_test_path, test_tmp_path, call_fstcomp):
-    """ Calcul d'un test MAX avec 2 fieldNames TT,GZ et 2 rangeForecastHours."""
+    """Calcul d'un test MAX avec 2 fieldNames TT,GZ et 2 rangeForecastHours."""
     # open and read source
     source0 = plugin_test_path / "TT_GZ_Interval_3_80_56_20_0_diff_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spookipy.TimeIntervalMinMax(src_df0,
-        nomvar=['TT','GZ'],
+    df = spookipy.TimeIntervalMinMax(
+        src_df0,
+        nomvar=["TT", "GZ"],
         min=True,
-        forecast_hour_range=[(datetime.timedelta(hours=56), datetime.timedelta(hours=80)),(datetime.timedelta(hours=0), datetime.timedelta(hours=20))], 
-        interval=[datetime.timedelta(hours=3),datetime.timedelta(hours=3)], 
-        step=[datetime.timedelta(hours=2),datetime.timedelta(hours=2)]).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]} ] >> 
-    # [TimeIntervalMinMax --type MIN --rangeForecastHour 56@80,0@20 --fieldName TT,GZ --interval 3,3 --step 2,2] >> 
+        forecast_hour_range=[
+            (datetime.timedelta(hours=56), datetime.timedelta(hours=80)),
+            (datetime.timedelta(hours=0), datetime.timedelta(hours=20)),
+        ],
+        interval=[datetime.timedelta(hours=3), datetime.timedelta(hours=3)],
+        step=[datetime.timedelta(hours=2), datetime.timedelta(hours=2)],
+    ).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]} ] >>
+    # [TimeIntervalMinMax --type MIN --rangeForecastHour 56@80,0@20 --fieldName TT,GZ --interval 3,3 --step 2,2] >>
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
-    df.loc[df.nomvar.str.match('V[0-9]+M.'),'etiket'] = '__TIMNMXX'
-    df['ig1'] = 0
-    df['ig2'] = 0
-    df['grtyp'] = 'X'
+    df.loc[df.nomvar.str.match("V[0-9]+M."), "etiket"] = "__TIMNMXX"
+    df["ig1"] = 0
+    df["ig2"] = 0
+    df["grtyp"] = "X"
     # print(df)
-  
+
     df = spookipy.encode_ip_when_interval(df)
-    
+
     # write the result
     results_file = test_tmp_path / "test_23.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_path / \
-        "TT_GZ_Interval_3_80_56_20_0_diff_file2cmp_encodeIP2andIP3.std"
+    file_to_compare = plugin_test_path / "TT_GZ_Interval_3_80_56_20_0_diff_file2cmp_encodeIP2andIP3.std"
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_24(plugin_test_path, test_tmp_path, call_fstcomp):
-    """ Calcul d'un test MAX  avec 2 fieldNames HU,GZ et 2 rangeForecastHours."""
+    """Calcul d'un test MAX  avec 2 fieldNames HU,GZ et 2 rangeForecastHours."""
     # open and read source
     source0 = plugin_test_path / "HU_GZ_Interval_4_144_168_20_0_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spookipy.TimeIntervalMinMax(src_df0,
-        nomvar=['HU','GZ'],
+    df = spookipy.TimeIntervalMinMax(
+        src_df0,
+        nomvar=["HU", "GZ"],
         max=True,
-        forecast_hour_range=[(datetime.timedelta(hours=144), datetime.timedelta(hours=168)),(datetime.timedelta(hours=0), datetime.timedelta(hours=20))], 
-        interval=[datetime.timedelta(hours=4),datetime.timedelta(hours=4)], 
-        step=[datetime.timedelta(hours=5),datetime.timedelta(hours=5)]).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]} ] >> 
-    # [TimeIntervalMinMax --type MAX --rangeForecastHour 144@168,0@20 --fieldName HU,GZ --interval 4,4 --step 5,5] >> 
+        forecast_hour_range=[
+            (datetime.timedelta(hours=144), datetime.timedelta(hours=168)),
+            (datetime.timedelta(hours=0), datetime.timedelta(hours=20)),
+        ],
+        interval=[datetime.timedelta(hours=4), datetime.timedelta(hours=4)],
+        step=[datetime.timedelta(hours=5), datetime.timedelta(hours=5)],
+    ).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]} ] >>
+    # [TimeIntervalMinMax --type MAX --rangeForecastHour 144@168,0@20 --fieldName HU,GZ --interval 4,4 --step 5,5] >>
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
-    df.loc[df.nomvar.str.match('V[0-9]+M.'),'etiket'] = '__TIMNMXX'
-    df['ig1'] = 0
-    df['ig2'] = 0
-    df['grtyp'] = 'X'
-  
-    df = spookipy.encode_ip_when_interval(df)
+    df.loc[df.nomvar.str.match("V[0-9]+M."), "etiket"] = "__TIMNMXX"
+    df["ig1"] = 0
+    df["ig2"] = 0
+    df["grtyp"] = "X"
 
+    df = spookipy.encode_ip_when_interval(df)
 
     # write the result
     results_file = test_tmp_path / "test_24.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_path / \
-        "HU_GZ_Interval_4_144_168_20_0_diff_file2cmp_encodeIP2andIP3.std"
+    file_to_compare = plugin_test_path / "HU_GZ_Interval_4_144_168_20_0_diff_file2cmp_encodeIP2andIP3.std"
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_25(plugin_test_path, test_tmp_path, call_fstcomp):
-    """ Calcul d'un test MAX avec 1 fieldName TT et 3 rangeForecastHours."""
+    """Calcul d'un test MAX avec 1 fieldName TT et 3 rangeForecastHours."""
     # open and read source
     source0 = plugin_test_path / "TT_Interval_2_3_4_160_150_140_20_0_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spookipy.TimeIntervalMinMax(src_df0,
-        nomvar='TT',
+    df = spookipy.TimeIntervalMinMax(
+        src_df0,
+        nomvar="TT",
         max=True,
-        forecast_hour_range=[(datetime.timedelta(hours=0), datetime.timedelta(hours=20)),(datetime.timedelta(hours=140), datetime.timedelta(hours=150)),(datetime.timedelta(hours=150), datetime.timedelta(hours=160))], 
-        interval=[datetime.timedelta(hours=2),datetime.timedelta(hours=3),datetime.timedelta(hours=4)], 
-        step=[datetime.timedelta(hours=2),datetime.timedelta(hours=2),datetime.timedelta(hours=2)]).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]} ] >> 
-    # [TimeIntervalMinMax --type MAX --rangeForecastHour 0@20,140@150,150@160 --fieldName TT --interval 2,3,4 --step 2,2,2] >> 
+        forecast_hour_range=[
+            (datetime.timedelta(hours=0), datetime.timedelta(hours=20)),
+            (datetime.timedelta(hours=140), datetime.timedelta(hours=150)),
+            (datetime.timedelta(hours=150), datetime.timedelta(hours=160)),
+        ],
+        interval=[datetime.timedelta(hours=2), datetime.timedelta(hours=3), datetime.timedelta(hours=4)],
+        step=[datetime.timedelta(hours=2), datetime.timedelta(hours=2), datetime.timedelta(hours=2)],
+    ).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]} ] >>
+    # [TimeIntervalMinMax --type MAX --rangeForecastHour 0@20,140@150,150@160 --fieldName TT --interval 2,3,4 --step 2,2,2] >>
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
-    df.loc[df.nomvar.str.match('V[0-9]+M.'),'etiket'] = '__TIMNMXX'
-    df['ig1'] = 0
-    df['ig2'] = 0
-    df['grtyp'] = 'X'
-   
+    df.loc[df.nomvar.str.match("V[0-9]+M."), "etiket"] = "__TIMNMXX"
+    df["ig1"] = 0
+    df["ig2"] = 0
+    df["grtyp"] = "X"
+
     df = spookipy.encode_ip_when_interval(df)
 
     # write the result
@@ -642,34 +694,36 @@ def test_25(plugin_test_path, test_tmp_path, call_fstcomp):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_path / \
-        "TT_Interval_2_3_4_160_150_140_20_0_diff_file2cmp_encodeIP2andIP3.std"
+    file_to_compare = plugin_test_path / "TT_Interval_2_3_4_160_150_140_20_0_diff_file2cmp_encodeIP2andIP3.std"
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_26(plugin_test_path, test_tmp_path, call_fstcomp):
-    """ Calcul d'un test MAX avec 3 fieldNames et 1 rangeForecastHour."""
+    """Calcul d'un test MAX avec 3 fieldNames et 1 rangeForecastHour."""
     # open and read source
     source0 = plugin_test_path / "TT_HU_GZ_Interval_2_30_0_diff_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spookipy.TimeIntervalMinMax(src_df0,
-        nomvar=['TT','HU','GZ'],
+    df = spookipy.TimeIntervalMinMax(
+        src_df0,
+        nomvar=["TT", "HU", "GZ"],
         max=True,
-        forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=30)), 
-        interval=datetime.timedelta(hours=2), 
-        step=datetime.timedelta(hours=2)).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]} ] >> 
-    # [TimeIntervalMinMax --type MAX --rangeForecastHour 0@30 --fieldName TT,HU,GZ --interval 2 --step 2] >> 
+        forecast_hour_range=(datetime.timedelta(hours=0), datetime.timedelta(hours=30)),
+        interval=datetime.timedelta(hours=2),
+        step=datetime.timedelta(hours=2),
+    ).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]} ] >>
+    # [TimeIntervalMinMax --type MAX --rangeForecastHour 0@30 --fieldName TT,HU,GZ --interval 2 --step 2] >>
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
-    df.loc[df.nomvar.str.match('V[0-9]+M.'),'etiket'] = '__TIMNMXX'
-    df['ig1'] = 0
-    df['ig2'] = 0
-    df['grtyp'] = 'X'
-  
+    df.loc[df.nomvar.str.match("V[0-9]+M."), "etiket"] = "__TIMNMXX"
+    df["ig1"] = 0
+    df["ig2"] = 0
+    df["grtyp"] = "X"
+
     df = spookipy.encode_ip_when_interval(df)
 
     # write the result
@@ -677,158 +731,177 @@ def test_26(plugin_test_path, test_tmp_path, call_fstcomp):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_path / \
-        "TT_HU_GZ_Interval_2_30_0_diff_file2cmp_encodeIP2andIP3.std"
+    file_to_compare = plugin_test_path / "TT_HU_GZ_Interval_2_30_0_diff_file2cmp_encodeIP2andIP3.std"
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_27(plugin_test_path, test_tmp_path, call_fstcomp):
-    """ Calcul d'un test BOTH avec 2 fieldNames , 2 rangeForecastHours."""
+    """Calcul d'un test BOTH avec 2 fieldNames , 2 rangeForecastHours."""
     # open and read source
     source0 = plugin_test_path / "TT_HU_Interval_3_168_160_20_0_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spookipy.TimeIntervalMinMax(src_df0,
-        nomvar=['TT','HU'],
+    df = spookipy.TimeIntervalMinMax(
+        src_df0,
+        nomvar=["TT", "HU"],
         min=True,
         max=True,
-        forecast_hour_range=[(datetime.timedelta(hours=160), datetime.timedelta(hours=168)),(datetime.timedelta(hours=0), datetime.timedelta(hours=20))], 
-        interval=[datetime.timedelta(hours=3),datetime.timedelta(hours=3)], 
-        step=[datetime.timedelta(hours=3),datetime.timedelta(hours=3)]).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]} ] >> 
-    # [TimeIntervalMinMax --type BOTH --rangeForecastHour 160@168,0@20 --fieldName TT,HU --interval 3,3 --step 3,3] >> 
+        forecast_hour_range=[
+            (datetime.timedelta(hours=160), datetime.timedelta(hours=168)),
+            (datetime.timedelta(hours=0), datetime.timedelta(hours=20)),
+        ],
+        interval=[datetime.timedelta(hours=3), datetime.timedelta(hours=3)],
+        step=[datetime.timedelta(hours=3), datetime.timedelta(hours=3)],
+    ).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]} ] >>
+    # [TimeIntervalMinMax --type BOTH --rangeForecastHour 160@168,0@20 --fieldName TT,HU --interval 3,3 --step 3,3] >>
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
-    df.loc[df.nomvar.str.match('V[0-9]+M.'),'etiket'] = '__TIMNMXX'
-    df['ig1'] = 0
-    df['ig2'] = 0
-    df['grtyp'] = 'X'
-  
+    df.loc[df.nomvar.str.match("V[0-9]+M."), "etiket"] = "__TIMNMXX"
+    df["ig1"] = 0
+    df["ig2"] = 0
+    df["grtyp"] = "X"
+
     df = spookipy.encode_ip_when_interval(df)
     # write the result
     results_file = test_tmp_path / "test_27.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_path / \
-        "TT_HU_Interval_3_168_160_20_0_diff_file2cmp_encodeIP2andIP3.std"
+    file_to_compare = plugin_test_path / "TT_HU_Interval_3_168_160_20_0_diff_file2cmp_encodeIP2andIP3.std"
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_28(plugin_test_path, test_tmp_path, call_fstcomp):
-    """ Calcul d'un test BOTH avec 1 fieldNames , 3 rangeForecastHours"""
+    """Calcul d'un test BOTH avec 1 fieldNames , 3 rangeForecastHours"""
     # open and read source
     source0 = plugin_test_path / "TT_168_160_140_20_0_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spookipy.TimeIntervalMinMax(src_df0,
-        nomvar='TT',
+    df = spookipy.TimeIntervalMinMax(
+        src_df0,
+        nomvar="TT",
         min=True,
         max=True,
-        forecast_hour_range=[(datetime.timedelta(hours=160), datetime.timedelta(hours=168)),(datetime.timedelta(hours=140), datetime.timedelta(hours=160)),(datetime.timedelta(hours=0), datetime.timedelta(hours=20))], 
-        interval=[datetime.timedelta(hours=2),datetime.timedelta(hours=3),datetime.timedelta(hours=4)], 
-        step=[datetime.timedelta(hours=1),datetime.timedelta(hours=2),datetime.timedelta(hours=3)]).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]} ] >> 
-    # [TimeIntervalMinMax --type BOTH --rangeForecastHour 160@168,140@160,0@20 --fieldName TT --interval 2,3,4 --step 1,2,3] >> 
+        forecast_hour_range=[
+            (datetime.timedelta(hours=160), datetime.timedelta(hours=168)),
+            (datetime.timedelta(hours=140), datetime.timedelta(hours=160)),
+            (datetime.timedelta(hours=0), datetime.timedelta(hours=20)),
+        ],
+        interval=[datetime.timedelta(hours=2), datetime.timedelta(hours=3), datetime.timedelta(hours=4)],
+        step=[datetime.timedelta(hours=1), datetime.timedelta(hours=2), datetime.timedelta(hours=3)],
+    ).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]} ] >>
+    # [TimeIntervalMinMax --type BOTH --rangeForecastHour 160@168,140@160,0@20 --fieldName TT --interval 2,3,4 --step 1,2,3] >>
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
-    df.loc[df.nomvar.str.match('V[0-9]+M.'),'etiket'] = '__TIMNMXX'
-    df['ig1']   = 0
-    df['ig2']   = 0
-    df['grtyp'] = 'X'
-    df          = spookipy.encode_ip_when_interval(df)
+    df.loc[df.nomvar.str.match("V[0-9]+M."), "etiket"] = "__TIMNMXX"
+    df["ig1"] = 0
+    df["ig2"] = 0
+    df["grtyp"] = "X"
+    df = spookipy.encode_ip_when_interval(df)
 
     # write the result
     results_file = test_tmp_path / "test_28.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_path / \
-        "TT_Interval_2_3_4_168_160_140_20_0_diff_file2cmp_encodeIP2andIP3.std"
+    file_to_compare = plugin_test_path / "TT_Interval_2_3_4_168_160_140_20_0_diff_file2cmp_encodeIP2andIP3.std"
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_29(plugin_test_path, test_tmp_path, call_fstcomp):
-    """ Calcul d'un test BOTH avec 3 fieldNames , 3 rangeForecastHours."""
+    """Calcul d'un test BOTH avec 3 fieldNames , 3 rangeForecastHours."""
     # open and read source
     source0 = plugin_test_path / "TT_HU_GZ_168_160_140_20_0_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spookipy.TimeIntervalMinMax(src_df0,
-        nomvar=['TT','HU','GZ'],
+    df = spookipy.TimeIntervalMinMax(
+        src_df0,
+        nomvar=["TT", "HU", "GZ"],
         min=True,
         max=True,
-        forecast_hour_range=[(datetime.timedelta(hours=160), datetime.timedelta(hours=168)),(datetime.timedelta(hours=140), datetime.timedelta(hours=160)),(datetime.timedelta(hours=0), datetime.timedelta(hours=20))], 
-        interval=[datetime.timedelta(hours=2),datetime.timedelta(hours=3),datetime.timedelta(hours=4)], 
-        step=[datetime.timedelta(hours=1),datetime.timedelta(hours=2),datetime.timedelta(hours=3)]).compute()
-    
-    # [ReaderStd --ignoreExtended --input {sources[0]} ] >> 
-    # [TimeIntervalMinMax --type BOTH --rangeForecastHour 160@168,140@160,0@20 --fieldName TT,HU,GZ --interval 2,3,4 --step 1,2,3] >> 
+        forecast_hour_range=[
+            (datetime.timedelta(hours=160), datetime.timedelta(hours=168)),
+            (datetime.timedelta(hours=140), datetime.timedelta(hours=160)),
+            (datetime.timedelta(hours=0), datetime.timedelta(hours=20)),
+        ],
+        interval=[datetime.timedelta(hours=2), datetime.timedelta(hours=3), datetime.timedelta(hours=4)],
+        step=[datetime.timedelta(hours=1), datetime.timedelta(hours=2), datetime.timedelta(hours=3)],
+    ).compute()
+
+    # [ReaderStd --ignoreExtended --input {sources[0]} ] >>
+    # [TimeIntervalMinMax --type BOTH --rangeForecastHour 160@168,140@160,0@20 --fieldName TT,HU,GZ --interval 2,3,4 --step 1,2,3] >>
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
-    df.loc[df.nomvar.str.match('V[0-9]+M.'),'etiket'] = '__TIMNMXX'
-    df['ig1']   = 0
-    df['ig2']   = 0
-    df['grtyp'] = 'X'
-    df          = spookipy.encode_ip_when_interval(df)
+    df.loc[df.nomvar.str.match("V[0-9]+M."), "etiket"] = "__TIMNMXX"
+    df["ig1"] = 0
+    df["ig2"] = 0
+    df["grtyp"] = "X"
+    df = spookipy.encode_ip_when_interval(df)
 
     # write the result
     results_file = test_tmp_path / "test_29.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_path / \
-        "TT_HU_GZ_Interval_2_3_4_168_160_140_20_0_diff_file2cmp_encodeIP2andIP3.std"
+    file_to_compare = plugin_test_path / "TT_HU_GZ_Interval_2_3_4_168_160_140_20_0_diff_file2cmp_encodeIP2andIP3.std"
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_30(plugin_test_path, test_tmp_path, call_fstcomp):
-    """ Calcul d'un test MIN avec 1 fieldName sans interval."""
+    """Calcul d'un test MIN avec 1 fieldName sans interval."""
     # open and read source
     source0 = plugin_test_path / "TT_168_160_140_20_0_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spookipy.TimeIntervalMinMax(src_df0,
-        nomvar='TT',
+    df = spookipy.TimeIntervalMinMax(
+        src_df0,
+        nomvar="TT",
         min=True,
         forecast_hour_range=[
             (datetime.timedelta(hours=160), datetime.timedelta(hours=168)),
             (datetime.timedelta(hours=140), datetime.timedelta(hours=160)),
-            (datetime.timedelta(hours=0), datetime.timedelta(hours=20))], 
-        ).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]} ] >> 
-    # [TimeIntervalMinMax --type MIN --rangeForecastHour 160@168,140@160,0@20 --fieldName TT] >> 
+            (datetime.timedelta(hours=0), datetime.timedelta(hours=20)),
+        ],
+    ).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]} ] >>
+    # [TimeIntervalMinMax --type MIN --rangeForecastHour 160@168,140@160,0@20 --fieldName TT] >>
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
-    df.loc[df.nomvar.str.match('V[0-9]+M.'),'etiket'] = '__TIMNMXX'
-    df['ig1']   = 0
-    df['ig2']   = 0
-    df['grtyp'] = 'X'
-    df          = spookipy.encode_ip_when_interval(df)
+    df.loc[df.nomvar.str.match("V[0-9]+M."), "etiket"] = "__TIMNMXX"
+    df["ig1"] = 0
+    df["ig2"] = 0
+    df["grtyp"] = "X"
+    df = spookipy.encode_ip_when_interval(df)
 
     # write the result
     results_file = test_tmp_path / "test_30.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_path / \
-        "min_TT_Interval_not_set_160_140_20_0_diff_file2cmp_encodeIP2andIP3.std"
+    file_to_compare = plugin_test_path / "min_TT_Interval_not_set_160_140_20_0_diff_file2cmp_encodeIP2andIP3.std"
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 # same as test_30
 # def test_31(plugin_test_path):
@@ -839,8 +912,8 @@ def test_30(plugin_test_path, test_tmp_path, call_fstcomp):
 
 #     # compute TimeIntervalMinMax
 #     df = spookipy.TimeIntervalMinMax(src_df0).compute()
-#     # [ReaderStd --ignoreExtended --input {sources[0]} ] >> 
-#     # [TimeIntervalMinMax --type MAX --rangeForecastHour 160@168,140@160,0@20 --fieldName TT] >> 
+#     # [ReaderStd --ignoreExtended --input {sources[0]} ] >>
+#     # [TimeIntervalMinMax --type MAX --rangeForecastHour 160@168,140@160,0@20 --fieldName TT] >>
 #     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
 #     # write the result
@@ -866,8 +939,8 @@ def test_30(plugin_test_path, test_tmp_path, call_fstcomp):
 
 #     # compute TimeIntervalMinMax
 #     df = spookipy.TimeIntervalMinMax(src_df0).compute()
-#     # [ReaderStd --ignoreExtended --input {sources[0]} ] >> 
-#     # [TimeIntervalMinMax --type BOTH --rangeForecastHour 160@168,140@160,0@20 --fieldName TT] >> 
+#     # [ReaderStd --ignoreExtended --input {sources[0]} ] >>
+#     # [TimeIntervalMinMax --type BOTH --rangeForecastHour 160@168,140@160,0@20 --fieldName TT] >>
 #     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
 #     # write the result
@@ -884,65 +957,80 @@ def test_30(plugin_test_path, test_tmp_path, call_fstcomp):
 #     fstpy.delete_file(results_file)
 #     assert(res)
 
+
 def test_33(plugin_test_path, test_tmp_path, call_fstcomp):
-    """ Calcul d'un test MIN avec 3 fieldName avec interval sans step."""
+    """Calcul d'un test MIN avec 3 fieldName avec interval sans step."""
     # open and read source
     source0 = plugin_test_path / "TT_125_100_75_50_25_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spookipy.TimeIntervalMinMax(src_df0,
-        nomvar='TT',
+    df = spookipy.TimeIntervalMinMax(
+        src_df0,
+        nomvar="TT",
         min=True,
-        forecast_hour_range=[(datetime.timedelta(hours=0), datetime.timedelta(hours=25)),(datetime.timedelta(hours=50), datetime.timedelta(hours=75)),(datetime.timedelta(hours=100), datetime.timedelta(hours=125))], 
+        forecast_hour_range=[
+            (datetime.timedelta(hours=0), datetime.timedelta(hours=25)),
+            (datetime.timedelta(hours=50), datetime.timedelta(hours=75)),
+            (datetime.timedelta(hours=100), datetime.timedelta(hours=125)),
+        ],
         interval=[datetime.timedelta(hours=3), datetime.timedelta(hours=4), datetime.timedelta(hours=5)],
-        nomvar_min='TTMN').compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]} ] >> 
-    # [TimeIntervalMinMax --type MIN --rangeForecastHour 0@25,50@75,100@125 --fieldName TT --interval 3,4,5 --outputFieldNameMin TTMN] >> 
+        nomvar_min="TTMN",
+    ).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]} ] >>
+    # [TimeIntervalMinMax --type MIN --rangeForecastHour 0@25,50@75,100@125 --fieldName TT --interval 3,4,5 --outputFieldNameMin TTMN] >>
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
-    df.loc[df.nomvar.str.match('TTM.'),'etiket'] = '__TIMNMXX'
-    df['ig1']   = 0
-    df['ig2']   = 0
-    df['grtyp'] = 'X'
-    df          = spookipy.encode_ip_when_interval(df)
+    df.loc[df.nomvar.str.match("TTM."), "etiket"] = "__TIMNMXX"
+    df["ig1"] = 0
+    df["ig2"] = 0
+    df["grtyp"] = "X"
+    df = spookipy.encode_ip_when_interval(df)
 
     # write the result
     results_file = test_tmp_path / "test_33.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_path / \
-        "min_TT_Interval_3_4_5_125_100_75_50_25_diff_file2cmp_encodeIP2andIP3.std+PY20240404"
+    file_to_compare = (
+        plugin_test_path / "min_TT_Interval_3_4_5_125_100_75_50_25_diff_file2cmp_encodeIP2andIP3.std+PY20240404"
+    )
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_34(plugin_test_path, test_tmp_path, call_fstcomp):
-    """ Calcul d'un test MAX avec 3 fieldName avec interval sans step."""
+    """Calcul d'un test MAX avec 3 fieldName avec interval sans step."""
     # open and read source
     source0 = plugin_test_path / "TT_125_100_75_50_25_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spookipy.TimeIntervalMinMax(src_df0,
-        nomvar='TT',
+    df = spookipy.TimeIntervalMinMax(
+        src_df0,
+        nomvar="TT",
         max=True,
-        forecast_hour_range=[(datetime.timedelta(hours=0), datetime.timedelta(hours=25)),(datetime.timedelta(hours=50), datetime.timedelta(hours=75)),(datetime.timedelta(hours=100), datetime.timedelta(hours=125))], 
-        interval=[datetime.timedelta(hours=3),datetime.timedelta(hours=4),datetime.timedelta(hours=5)],
-        nomvar_max='TTMX').compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]} ] >> 
-    # [TimeIntervalMinMax --type MAX --rangeForecastHour 0@25,50@75,100@125 --fieldName TT --interval 3,4,5 --outputFieldNameMax TTMX] >> 
+        forecast_hour_range=[
+            (datetime.timedelta(hours=0), datetime.timedelta(hours=25)),
+            (datetime.timedelta(hours=50), datetime.timedelta(hours=75)),
+            (datetime.timedelta(hours=100), datetime.timedelta(hours=125)),
+        ],
+        interval=[datetime.timedelta(hours=3), datetime.timedelta(hours=4), datetime.timedelta(hours=5)],
+        nomvar_max="TTMX",
+    ).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]} ] >>
+    # [TimeIntervalMinMax --type MAX --rangeForecastHour 0@25,50@75,100@125 --fieldName TT --interval 3,4,5 --outputFieldNameMax TTMX] >>
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
-    df.loc[df.nomvar.str.match('TTM.'),'etiket'] = '__TIMNMXX'
-    df['ig1']   = 0
-    df['ig2']   = 0
-    df['grtyp'] = 'X'
-  
+    df.loc[df.nomvar.str.match("TTM."), "etiket"] = "__TIMNMXX"
+    df["ig1"] = 0
+    df["ig2"] = 0
+    df["grtyp"] = "X"
+
     # Necessaire car pour un des niveaux, le datyp est 'f' au lieu de 'F'
-    df.at[48,'datyp'] = 134               # Correspond a f
+    df.at[48, "datyp"] = 134  # Correspond a f
 
     df = spookipy.encode_ip_when_interval(df)
 
@@ -951,77 +1039,92 @@ def test_34(plugin_test_path, test_tmp_path, call_fstcomp):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_path / \
-        "max_TT_Interval_3_4_5_125_100_75_50_25_diff_file2cmp_encodeIP2andIP3.std+PY20240404"
+    file_to_compare = (
+        plugin_test_path / "max_TT_Interval_3_4_5_125_100_75_50_25_diff_file2cmp_encodeIP2andIP3.std+PY20240404"
+    )
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_35(plugin_test_path, test_tmp_path, call_fstcomp):
-    """ Calcul d'un test BOTH avec 3 fieldName avec interval sans step."""
+    """Calcul d'un test BOTH avec 3 fieldName avec interval sans step."""
     # open and read source
     source0 = plugin_test_path / "TT_125_100_75_50_25_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spookipy.TimeIntervalMinMax(src_df0,
-        nomvar='TT',
+    df = spookipy.TimeIntervalMinMax(
+        src_df0,
+        nomvar="TT",
         min=True,
         max=True,
-        forecast_hour_range=[(datetime.timedelta(hours=0), datetime.timedelta(hours=25)),(datetime.timedelta(hours=50), datetime.timedelta(hours=75)),(datetime.timedelta(hours=100), datetime.timedelta(hours=125))], 
-        interval=[datetime.timedelta(hours=3),datetime.timedelta(hours=4),datetime.timedelta(hours=5)],
-        nomvar_min='TTMN',
-        nomvar_max='TTMX').compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]} ] >> 
-    # [TimeIntervalMinMax --type BOTH --rangeForecastHour 0@25,50@75,100@125 --fieldName TT --interval 3,4,5 
-    # --outputFieldNameMax TTMX --outputFieldNameMin TTMN ] >> 
+        forecast_hour_range=[
+            (datetime.timedelta(hours=0), datetime.timedelta(hours=25)),
+            (datetime.timedelta(hours=50), datetime.timedelta(hours=75)),
+            (datetime.timedelta(hours=100), datetime.timedelta(hours=125)),
+        ],
+        interval=[datetime.timedelta(hours=3), datetime.timedelta(hours=4), datetime.timedelta(hours=5)],
+        nomvar_min="TTMN",
+        nomvar_max="TTMX",
+    ).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]} ] >>
+    # [TimeIntervalMinMax --type BOTH --rangeForecastHour 0@25,50@75,100@125 --fieldName TT --interval 3,4,5
+    # --outputFieldNameMax TTMX --outputFieldNameMin TTMN ] >>
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
-    df.loc[df.nomvar.str.match('TTM.'),'etiket'] = '__TIMNMXX'
-    df['ig1']   = 0
-    df['ig2']   = 0
-    df['grtyp'] = 'X'
-  
+    df.loc[df.nomvar.str.match("TTM."), "etiket"] = "__TIMNMXX"
+    df["ig1"] = 0
+    df["ig2"] = 0
+    df["grtyp"] = "X"
+
     df = spookipy.encode_ip_when_interval(df)
-    
+
     # write the result
     results_file = test_tmp_path / "test_35.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_path / \
-        "both_TT_Interval_3_4_5_125_100_75_50_25_diff_file2cmp_encodeIP2andIP3.std+PY20240404"
-    
+    file_to_compare = (
+        plugin_test_path / "both_TT_Interval_3_4_5_125_100_75_50_25_diff_file2cmp_encodeIP2andIP3.std+PY20240404"
+    )
+
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
 
 
 def test_36(plugin_test_path, test_tmp_path, call_fstcomp):
-    """ Identique au test 35 avec rangeForecastHour en hh:min:sec"""
+    """Identique au test 35 avec rangeForecastHour en hh:min:sec"""
     # open and read sourcep
     source0 = plugin_test_path / "TT_125_100_75_50_25_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spookipy.TimeIntervalMinMax(src_df0,
-        nomvar='TT',
+    df = spookipy.TimeIntervalMinMax(
+        src_df0,
+        nomvar="TT",
         min=True,
         max=True,
-        forecast_hour_range=[(datetime.timedelta(hours=0,minutes=0,seconds=0), datetime.timedelta(hours=25,minutes=0,seconds=0)),(datetime.timedelta(hours=50,minutes=0,seconds=0), datetime.timedelta(hours=75,minutes=0,seconds=0)),(datetime.timedelta(hours=100,minutes=0,seconds=0), datetime.timedelta(hours=125,minutes=0,seconds=0))], 
-        interval=[datetime.timedelta(hours=3),datetime.timedelta(hours=4),datetime.timedelta(hours=5)],
-        nomvar_min='TTMN',
-        nomvar_max='TTMX').compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]} ] >> 
-    # [TimeIntervalMinMax --type BOTH --rangeForecastHour 0:00:00@25:00:00,50:00:00@75:00:00,100:00:00@125:00:00 
+        forecast_hour_range=[
+            (datetime.timedelta(hours=0, minutes=0, seconds=0), datetime.timedelta(hours=25, minutes=0, seconds=0)),
+            (datetime.timedelta(hours=50, minutes=0, seconds=0), datetime.timedelta(hours=75, minutes=0, seconds=0)),
+            (datetime.timedelta(hours=100, minutes=0, seconds=0), datetime.timedelta(hours=125, minutes=0, seconds=0)),
+        ],
+        interval=[datetime.timedelta(hours=3), datetime.timedelta(hours=4), datetime.timedelta(hours=5)],
+        nomvar_min="TTMN",
+        nomvar_max="TTMX",
+    ).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]} ] >>
+    # [TimeIntervalMinMax --type BOTH --rangeForecastHour 0:00:00@25:00:00,50:00:00@75:00:00,100:00:00@125:00:00
     # --fieldName TT --interval 3,4,5 --outputFieldNameMax TTMX --outputFieldNameMin TTMN ] >>
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
-    df.loc[df.nomvar.str.match('TTM.'),'etiket'] = '__TIMNMXX'
-    df['ig1']   = 0
-    df['ig2']   = 0
-    df['grtyp'] = 'X'
+    df.loc[df.nomvar.str.match("TTM."), "etiket"] = "__TIMNMXX"
+    df["ig1"] = 0
+    df["ig2"] = 0
+    df["grtyp"] = "X"
 
     df = spookipy.encode_ip_when_interval(df)
 
@@ -1030,88 +1133,106 @@ def test_36(plugin_test_path, test_tmp_path, call_fstcomp):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_path / \
-        "both_TT_Interval_3_4_5_125_100_75_50_25_diff_file2cmp_encodeIP2andIP3.std+PY20240404"
+    file_to_compare = (
+        plugin_test_path / "both_TT_Interval_3_4_5_125_100_75_50_25_diff_file2cmp_encodeIP2andIP3.std+PY20240404"
+    )
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
 
 
 def test_37(plugin_test_path, test_tmp_path, call_fstcomp):
-    """ Identique au test 34 mais avec interval en hh:min:sec"""
+    """Identique au test 34 mais avec interval en hh:min:sec"""
     # open and read source
     source0 = plugin_test_path / "TT_125_100_75_50_25_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spookipy.TimeIntervalMinMax(src_df0,
-        nomvar='TT',
+    df = spookipy.TimeIntervalMinMax(
+        src_df0,
+        nomvar="TT",
         max=True,
-        forecast_hour_range=[(datetime.timedelta(hours=0), datetime.timedelta(hours=25)),(datetime.timedelta(hours=50), datetime.timedelta(hours=75)),(datetime.timedelta(hours=100), datetime.timedelta(hours=125))], 
-        interval=[datetime.timedelta(hours=3,minutes=0,seconds=0),datetime.timedelta(hours=4,minutes=0,seconds=0),datetime.timedelta(hours=5,minutes=0,seconds=0)],
-        nomvar_max='TTMX').compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]} ] >> 
-    # [TimeIntervalMinMax --type MAX --rangeForecastHour 0@25,50@75,100@125 --fieldName TT 
-    # --interval 3:00:00,4:00:00,5:00:00 --outputFieldNameMax TTMX] >> 
+        forecast_hour_range=[
+            (datetime.timedelta(hours=0), datetime.timedelta(hours=25)),
+            (datetime.timedelta(hours=50), datetime.timedelta(hours=75)),
+            (datetime.timedelta(hours=100), datetime.timedelta(hours=125)),
+        ],
+        interval=[
+            datetime.timedelta(hours=3, minutes=0, seconds=0),
+            datetime.timedelta(hours=4, minutes=0, seconds=0),
+            datetime.timedelta(hours=5, minutes=0, seconds=0),
+        ],
+        nomvar_max="TTMX",
+    ).compute()
+    # [ReaderStd --ignoreExtended --input {sources[0]} ] >>
+    # [TimeIntervalMinMax --type MAX --rangeForecastHour 0@25,50@75,100@125 --fieldName TT
+    # --interval 3:00:00,4:00:00,5:00:00 --outputFieldNameMax TTMX] >>
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]
 
-    df.loc[df.nomvar.str.match('TTM.'),'etiket'] = '__TIMNMXX'
-    df['ig1']   = 0
-    df['ig2']   = 0
-    df['grtyp'] = 'X'
-  
+    df.loc[df.nomvar.str.match("TTM."), "etiket"] = "__TIMNMXX"
+    df["ig1"] = 0
+    df["ig2"] = 0
+    df["grtyp"] = "X"
+
     # Necessaire car pour un des niveaux, le datyp est 'f' au lieu de 'F'
-    df.at[48,'datyp'] = 134               # Correspond a f
+    df.at[48, "datyp"] = 134  # Correspond a f
 
     df = spookipy.encode_ip_when_interval(df)
-    
+
     # write the result
     results_file = test_tmp_path / "test_37.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_path / \
-        "max_TT_Interval_3_4_5_125_100_75_50_25_diff_file2cmp_encodeIP2andIP3.std+PY20240404"
+    file_to_compare = (
+        plugin_test_path / "max_TT_Interval_3_4_5_125_100_75_50_25_diff_file2cmp_encodeIP2andIP3.std+PY20240404"
+    )
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_38(plugin_test_path, test_tmp_path, call_fstcomp):
-    """ Identique au test 21 mais avec step en hh:min:sec."""
+    """Identique au test 21 mais avec step en hh:min:sec."""
     # open and read source
     source0 = plugin_test_path / "TT_Interval_3_168_160_150_fileSrc.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute TimeIntervalMinMax
-    df = spookipy.TimeIntervalMinMax(src_df0,
-        nomvar='TT',
+    df = spookipy.TimeIntervalMinMax(
+        src_df0,
+        nomvar="TT",
         min=True,
-        forecast_hour_range=[(datetime.timedelta(hours=160), datetime.timedelta(hours=168)),(datetime.timedelta(hours=150), datetime.timedelta(hours=160))], 
-        interval=[datetime.timedelta(hours=3),datetime.timedelta(hours=3)],
-        step=[datetime.timedelta(hours=2,minutes=0,seconds=0),datetime.timedelta(hours=2,minutes=0,seconds=0)]).compute()
-    #['[ReaderStd --ignoreExtended --input {sources[0]} ] >> ', '
+        forecast_hour_range=[
+            (datetime.timedelta(hours=160), datetime.timedelta(hours=168)),
+            (datetime.timedelta(hours=150), datetime.timedelta(hours=160)),
+        ],
+        interval=[datetime.timedelta(hours=3), datetime.timedelta(hours=3)],
+        step=[datetime.timedelta(hours=2, minutes=0, seconds=0), datetime.timedelta(hours=2, minutes=0, seconds=0)],
+    ).compute()
+    # ['[ReaderStd --ignoreExtended --input {sources[0]} ] >> ', '
     # [TimeIntervalMinMax --type MIN --rangeForecastHour 160@168,150@160 --fieldName TT --interval 3,3 --step 2:00:00,2:00:00] >> ', '
     # [WriterStd --output {destination_path} --noUnitConversion --noMetadata --encodeIP2andIP3 ]']
 
-    df.loc[df.nomvar.str.match('V[0-9]+M.'),'etiket'] = '__TIMNMXX'
-    df['ig1']   = 0
-    df['ig2']   = 0
-    df['grtyp'] = 'X'
-    df          = spookipy.encode_ip_when_interval(df)
+    df.loc[df.nomvar.str.match("V[0-9]+M."), "etiket"] = "__TIMNMXX"
+    df["ig1"] = 0
+    df["ig2"] = 0
+    df["grtyp"] = "X"
+    df = spookipy.encode_ip_when_interval(df)
 
     # write the result
     results_file = test_tmp_path / "test_38.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_path / \
-        "TT_Interval_3_168_160_150_diff_file2cmp_encodeIP2andIP3.std"
+    file_to_compare = plugin_test_path / "TT_Interval_3_168_160_150_diff_file2cmp_encodeIP2andIP3.std"
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 def test_39(plugin_test_path, test_tmp_path, call_fstcomp):
     """Teste HourMinuteSecond - objet interval - avec encodage des IPs"""
@@ -1120,12 +1241,17 @@ def test_39(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute PrecipitationAmount
-    df = spookipy.TimeIntervalMinMax(src_df0, nomvar='PR', min=True,
-                                        forecast_hour_range=(datetime.timedelta(hours=22, minutes=30), datetime.timedelta(hours=23)),
-                                        interval=datetime.timedelta(minutes=30), nomvar_min='TTMN',
-                                        step=datetime.timedelta(minutes=30)).compute()
-    
-    df.loc[df.nomvar!='PR', 'etiket'] = 'WE_1_2_0N'
+    df = spookipy.TimeIntervalMinMax(
+        src_df0,
+        nomvar="PR",
+        min=True,
+        forecast_hour_range=(datetime.timedelta(hours=22, minutes=30), datetime.timedelta(hours=23)),
+        interval=datetime.timedelta(minutes=30),
+        nomvar_min="TTMN",
+        step=datetime.timedelta(minutes=30),
+    ).compute()
+
+    df.loc[df.nomvar != "PR", "etiket"] = "WE_1_2_0N"
     df = spookipy.encode_ip_when_interval(df)
 
     # write the result
@@ -1137,5 +1263,4 @@ def test_39(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
-
+    assert res

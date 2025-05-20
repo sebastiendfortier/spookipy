@@ -8,7 +8,8 @@ import pandas as pd
 import pytest
 import spookipy
 
-pytestmark = [pytest.mark.regressions]
+pytestmark = [pytest.mark.regressions, pytest.mark.regressions2]
+
 
 @pytest.fixture(scope="module")
 def plugin_name():
@@ -24,10 +25,10 @@ def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compute WindModulus
     df = spookipy.WindModulus(src_df0).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
-    # [WindModulus] >> 
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [WindModulus] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
- 
+
     # write the result
     results_file = test_tmp_path / "test_1.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
@@ -37,7 +38,7 @@ def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
 
 
 def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -48,10 +49,10 @@ def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compute WindModulus
     df = spookipy.WindModulus(src_df0).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
-    # [WindModulus] >> 
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [WindModulus] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
-   
+
     # write the result
     results_file = test_tmp_path / "test_2.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
@@ -61,7 +62,8 @@ def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
+
 
 # def test_3(plugin_test_path):
 #     pass
@@ -76,7 +78,7 @@ def test_4(plugin_test_path, test_tmp_path, call_fstcomp):
     # compute WindModulus
     df = spookipy.WindModulus(src_df0).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >>
-    # [WindModulus] >> 
+    # [WindModulus] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     # write the result
@@ -88,7 +90,7 @@ def test_4(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
 
 
 def test_5(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -99,8 +101,8 @@ def test_5(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compute WindModulus
     df = spookipy.WindModulus(src_df0).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
-    # [Select --fieldName UV,UU,VV] >> 
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [Select --fieldName UV,UU,VV] >>
     # [WindModulus --optimizationLevel 1] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
@@ -113,7 +115,7 @@ def test_5(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
 
 
 def test_6(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -124,8 +126,8 @@ def test_6(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compute WindModulus
     df = spookipy.WindModulus(src_df0).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
-    # [WindModulus] >> 
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [WindModulus] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
     # write the result
@@ -137,7 +139,8 @@ def test_6(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare, e_max=0.001)
-    assert(res)
+    assert res
+
 
 # def test_7(plugin_test_path):
 #     pass
@@ -155,12 +158,12 @@ def test_9(plugin_test_path, test_tmp_path, call_fstcomp):
     source1 = plugin_test_path / "vv_850.std"
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
 
-    src_df  = pd.concat([src_df0, src_df1], ignore_index=True)
+    src_df = pd.safe_concat([src_df0, src_df1])
 
     # compute WindModulus
     df = spookipy.WindModulus(src_df).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]} {sources[1]}] >> 
-    # [WindModulus] >> 
+    # [ReaderStd --ignoreExtended --input {sources[0]} {sources[1]}] >>
+    # [WindModulus] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
@@ -172,7 +175,7 @@ def test_9(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
 
 
 # def test_10(plugin_test_path):

@@ -12,7 +12,7 @@ connecter a un ppp (coin inf gauche, petit carre en vert -> connect to host -> t
 
 ensuite dans file -> preferences -> settings Remote [SSH:ppp[3|4]]
 
-chercher "python interpreter", changer default a  /fs/ssm/eccc/cmd/cmde/surge/surgepy/1.0.8/surgepy_1.0.8_all/bin/python
+chercher "python interpreter", changer default a  . ssmuse-sh -p /fs/ssm/eccc/cmd/cmds/env/python/py310_2023.07.28_all/bin/python
 
 
 ensuite dans file -> preferences -> settings - chercher "rulers" -> edit settings.json 
@@ -31,7 +31,7 @@ ensuite dans file -> preferences -> settings - chercher "docstring", changer Aut
 installer extension - pylance
 
 optionnel
-(pour que ca marche, il faut faire ssmuse surgepy et ensuite faire pip install snooty rstcheck - il est pas dans le package)
+(pour que ca marche, il faut faire ssmuse py310_2023.07.28_all et ensuite faire pip install snooty rstcheck - il est pas dans le package)
 
 installer extension - reStructuredText v166
 

@@ -4,10 +4,13 @@ import numpy as np
 
 import fstpy
 from ..plugin import Plugin, PluginParser
-from ..utils import (initializer, validate_nomvar)
+from ..utils import initializer, validate_nomvar
+
 
 class PressureError(Exception):
     pass
+
+
 class Pressure(Plugin):
     """creates a pressure field associated to a level for each identified vertical coordinate type
 
@@ -18,47 +21,62 @@ class Pressure(Plugin):
     :param standard_atmosphere: calculate pressure in standard atmosphere if specified, defaults to False
     :type standard_atmosphere: bool, optional
     :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
-    :type dependency_check: bool, optional  
+    :type dependency_check: bool, optional
     :param copy_input: Indicates that the input fields will be returned with the plugin results , defaults to False
-    :type copy_input: bool, optional 
+    :type copy_input: bool, optional
     :param reduce_df: Indicates to reduce the dataframe to its minimum, defaults to True
     :type reduce_df: bool, optional
     """
 
     computable_plugin = "PX"
-    @initializer
-    def __init__( self, 
-                df: pd.DataFrame, 
-                reference_field           = None, 
-                standard_atmosphere: bool = False, 
-                dependency_check          = False,
-                copy_input                = False,
-                reduce_df                 = True):
 
+    @initializer
+    def __init__(
+        self,
+        df: pd.DataFrame,
+        reference_field=None,
+        standard_atmosphere: bool = False,
+        dependency_check=False,
+        copy_input=False,
+        reduce_df=True,
+    ):
         self.df = fstpy.metadata_cleanup(self.df)
         super().__init__(self.df)
 
         if not (self.reference_field is None):
             self.no_meta_df = self.no_meta_df.loc[self.no_meta_df.nomvar == self.reference_field]
-            self.df         = pd.concat([self.meta_df,self.no_meta_df], ignore_index=True)
+            self.df = pd.safe_concat([self.meta_df, self.no_meta_df])
 
-        if 'path' not in df.columns:
+        if "path" not in df.columns:
             self.dropPath = True
         else:
             self.dropPath = False
 
-        self.df        = fstpy.add_path_and_key_columns(self.df)
-        self.df.loc[self.df.path.isna(), 'path'] = '/TMP_PATH_TO_MAKE_PRESSURE_WORK'
+        self.df = fstpy.add_path_and_key_columns(self.df)
+        self.df.loc[self.df.path.isna(), "path"] = "/TMP_PATH_TO_MAKE_PRESSURE_WORK"
         self.df["key"] = np.where(self.df.key.isna(), None, self.df.key)
 
-        self.df = self.df.drop(columns=['level', 'ip1_kind', 'ip1_pkind', 'ip2_dec', 'ip2_kind', 'ip2_pkind',
-                                        'ip3_dec', 'ip3_kind', 'ip3_pkind', 'surface', 'follow_topography',
-                                        'ascending', 'interval', 'vctype'],
-                               errors='ignore')
+        self.df = self.df.drop(
+            columns=[
+                "level",
+                "ip1_kind",
+                "ip1_pkind",
+                "ip2_dec",
+                "ip2_kind",
+                "ip2_pkind",
+                "ip3_dec",
+                "ip3_kind",
+                "ip3_pkind",
+                "surface",
+                "follow_topography",
+                "ascending",
+                "interval",
+                "vctype",
+            ],
+            errors="ignore",
+        )
 
-        self.qp = fstpy.QuickPressure(self.df,
-                                      self.standard_atmosphere)
-
+        self.qp = fstpy.QuickPressure(self.df, self.standard_atmosphere)
 
     def compute(self, test_dependency=False) -> pd.DataFrame:
         """groups records by grid->vctype->forecast_hour then applies the appropriate algorithm to compute the pressure
@@ -71,33 +89,35 @@ class Pressure(Plugin):
         # On supprime la colonne path si elle n'etait pas presente initialement dans les donnees en entree
         # car on veut remettre le dataframe dans son etat original (attention dataframe en input et non le resultat)
         if self.dropPath:
-            self.df = self.df.drop(columns=['path', 'key'], errors='ignore')
+            self.df = self.df.drop(columns=["path", "key"], errors="ignore")
         else:
             self.df["path"] = np.where(self.df["path"] == "/TMP_PATH_TO_MAKE_PRESSURE_WORK", None, self.df.path)
-        
-        # Initialisation des colonnes reliees aux etiket
-        res_df = fstpy.add_columns(res_df, columns=['etiket'])
 
-        res_df.loc[res_df.nomvar.isin(["PX", "PXSA"]),'label']           = 'PRESSR'
-        res_df.loc[res_df.nomvar.isin(["PX", "PXSA"]),'etiket']          = '  '
-        res_df.loc[res_df.nomvar.isin(["PX", "PXSA"]),'run']             = '__'
-        res_df.loc[res_df.nomvar.isin(["PX", "PXSA"]),'ensemble_member'] = None
-        res_df.loc[res_df.nomvar.isin(["PX", "PXSA"]),'implementation']  = 'X'
-        res_df.loc[res_df.nomvar.isin(["PX", "PXSA"]),'etiket_format']   = ''
+        # Initialisation des colonnes reliees aux etiket
+        res_df = fstpy.add_columns(res_df, columns=["etiket"])
+
+        res_df.loc[res_df.nomvar.isin(["PX", "PXSA"]), "label"] = "PRESSR"
+        res_df.loc[res_df.nomvar.isin(["PX", "PXSA"]), "etiket"] = "  "
+        res_df.loc[res_df.nomvar.isin(["PX", "PXSA"]), "run"] = "__"
+        res_df.loc[res_df.nomvar.isin(["PX", "PXSA"]), "ensemble_member"] = None
+        res_df.loc[res_df.nomvar.isin(["PX", "PXSA"]), "implementation"] = "X"
+        res_df.loc[res_df.nomvar.isin(["PX", "PXSA"]), "etiket_format"] = ""
 
         # Necessaire car on doit mettre a jour self.meta_df
-        self.meta_df = res_df.loc[res_df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY", "PT"])].reset_index(drop=True) 
-        
+        self.meta_df = res_df.loc[res_df.nomvar.isin(["^^", ">>", "^>", "!!", "!!SF", "HY", "PT"])].reset_index(
+            drop=True
+        )
+
         # Separation des donnees des metadonnees avant l'appel a final_results
-        res_df = res_df.loc[~res_df.nomvar.isin(
-            ["^^", ">>", "^>", "!!", "!!SF", "HY"])].reset_index(drop=True)
-        
-        return self.final_results([res_df], 
-                                  PressureError, 
-                                  dependency_check = self.dependency_check, 
-                                  copy_input       = self.copy_input,
-                                  reduce_df        = self.reduce_df)
+        res_df = res_df.loc[~res_df.nomvar.isin(["^^", ">>", "^>", "!!", "!!SF", "HY"])].reset_index(drop=True)
+
+        return self.final_results(
+            [res_df],
+            PressureError,
+            dependency_check=self.dependency_check,
+            copy_input=self.copy_input,
+            reduce_df=self.reduce_df,
+        )
 
     @staticmethod
     def parse_config(args: str) -> dict:
@@ -107,12 +127,25 @@ class Pressure(Plugin):
         :return: a dictionnary of converted parameters
         :rtype: dict
         """
-        parser = PluginParser(prog=Pressure.__name__, parents=[Plugin.base_parser],add_help=False)
-        parser.add_argument('--coordinateType',type=str,dest='coordinate_type', help="Deprecated - default to AUTODETECT ")
-        parser.add_argument('--referenceField',type=str,dest='reference_field',help="Reference field used to define the grid on which PX is calculated.")
-        parser.add_argument('--standardAtmosphere',dest='standard_atmosphere',action='store_true',default=False, help="Standard atmosphere condition (constant pressure).")
-        
+        parser = PluginParser(prog=Pressure.__name__, parents=[Plugin.base_parser], add_help=False)
+        parser.add_argument(
+            "--coordinateType", type=str, dest="coordinate_type", help="Deprecated - default to AUTODETECT "
+        )
+        parser.add_argument(
+            "--referenceField",
+            type=str,
+            dest="reference_field",
+            help="Reference field used to define the grid on which PX is calculated.",
+        )
+        parser.add_argument(
+            "--standardAtmosphere",
+            dest="standard_atmosphere",
+            action="store_true",
+            default=False,
+            help="Standard atmosphere condition (constant pressure).",
+        )
+
         parsed_arg = vars(parser.parse_args(args.split()))
-        validate_nomvar(parsed_arg['reference_field'],"Pressure",PressureError)
- 
+        validate_nomvar(parsed_arg["reference_field"], "Pressure", PressureError)
+
         return parsed_arg

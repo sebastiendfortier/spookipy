@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,9 +20,8 @@ plugin_test_dir = TEST_PATH + "TemperatureWetBulb/testsFiles/"
 
 
 class TestTemperatureWetBulb(unittest.TestCase):
-
     def test_1(self):
-        """ Calculates wet-bulb temperature from a reghyb file."""
+        """Calculates wet-bulb temperature from a reghyb file."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_reghyb"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -34,7 +31,7 @@ class TestTemperatureWetBulb(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --fieldName TT,HU] >> [TemperatureWetBulb] >> [WriterStd --output {destination_path}]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,10 +39,10 @@ class TestTemperatureWetBulb(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_2(self):
-        """ Calculates wet-bulb temperature from a regpres file."""
+        """Calculates wet-bulb temperature from a regpres file."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_regpres"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -55,7 +52,7 @@ class TestTemperatureWetBulb(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [TemperatureWetBulb] >> [WriterStd --output {destination_path}]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -63,10 +60,10 @@ class TestTemperatureWetBulb(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_3(self):
-        """ Calculates wet-bulb temperature from a glbeta file."""
+        """Calculates wet-bulb temperature from a glbeta file."""
         # open and read source
         source0 = plugin_test_dir + "2011100712_012_glbeta"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -76,7 +73,7 @@ class TestTemperatureWetBulb(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --fieldName TT,HU] >> [TemperatureWetBulb] >> [WriterStd --output {destination_path}]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -84,10 +81,10 @@ class TestTemperatureWetBulb(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_4(self):
-        """ Calculates wet-bulb temperature using neil's files."""
+        """Calculates wet-bulb temperature using neil's files."""
         # open and read source
         source0 = plugin_test_dir + "inputforTW_withQV.fst"
         src_df0 = fstpy.StandardFileReader(source0).to_pandas()
@@ -97,7 +94,7 @@ class TestTemperatureWetBulb(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [TemperatureWetBulb] >> [WriterStd --output {destination_path}]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_4.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -105,4 +102,4 @@ class TestTemperatureWetBulb(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

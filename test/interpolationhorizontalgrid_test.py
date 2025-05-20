@@ -6,15 +6,17 @@ check_test_ssm_package()
 import fstpy
 import pandas as pd
 import pytest
-import rpnpy.librmn.all as rmn
+from spookipy.rmn_interface import RmnInterface
 import spookipy
 
-pytestmark = [pytest.mark.regressions]
+pytestmark = [pytest.mark.regressions, pytest.mark.regressions1]
+
 
 @pytest.fixture(scope="module")
 def plugin_name():
     """plugin_name in the path /fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/{plugin_name}"""
     return "InterpolationHorizontalGrid"
+
 
 def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
     """Interpolation with multiple different input grid"""
@@ -25,23 +27,24 @@ def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
     # compute Pressure
     df = spookipy.InterpolationHorizontalGrid(
         src_df0,
-        method='user',
-        grtyp='N',
+        method="user",
+        grtyp="N",
         ni=191,
         nj=141,
         param1=79.0,
         param2=117.0,
         param3=57150.0,
         param4=21.0,
-        interpolation_type='bi-linear',
-        extrapolation_type='maximum').compute()
-    #"[ReaderStd --input {sources[0]}] >>
+        interpolation_type="bi-linear",
+        extrapolation_type="maximum",
+    ).compute()
+    # "[ReaderStd --input {sources[0]}] >>
     # [InterpolationHorizontalGrid -m USER_DEFINED --gridType TYPE_N --xyDimensions 191,141 -p 79.0,117.0,57150.0,21.0 --interpolationType BI-LINEAR --extrapolationType MAXIMUM] >>
     # [Zap --nbitsForDataStorage E32]>>
     # [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]"
 
-    df = spookipy.convip(df, style=rmn.CONVIP_ENCODE_OLD)
-    
+    df = spookipy.convip(df, style=RmnInterface.CONVIP_ENCODE_OLD)
+
     # write the result
     results_file = test_tmp_path / "test_1.std"
     fstpy.StandardFileWriter(results_file, df, no_meta=True).to_fst()
@@ -51,7 +54,8 @@ def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare, e_max=0.126)
-    assert(res)
+    assert res
+
 
 def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
     """Interpolation with scalar fields only"""
@@ -60,18 +64,20 @@ def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute Pressure
-    df      = spookipy.InterpolationHorizontalGrid( src_df0,
-                                                    method='user',
-                                                    grtyp='N',
-                                                    ni=191,
-                                                    nj=141,
-                                                    param1=79.0,
-                                                    param2=117.0,
-                                                    param3=57150.0,
-                                                    param4=21.0,
-                                                    interpolation_type='bi-linear',
-                                                    extrapolation_type='maximum').compute()
-    #"[ReaderStd --input {sources[0]}] >>
+    df = spookipy.InterpolationHorizontalGrid(
+        src_df0,
+        method="user",
+        grtyp="N",
+        ni=191,
+        nj=141,
+        param1=79.0,
+        param2=117.0,
+        param3=57150.0,
+        param4=21.0,
+        interpolation_type="bi-linear",
+        extrapolation_type="maximum",
+    ).compute()
+    # "[ReaderStd --input {sources[0]}] >>
     # [InterpolationHorizontalGrid -m USER_DEFINED --gridType TYPE_N --xyDimensions 191,141 -p 79.0,117.0,57150.0,21.0 --interpolationType BI-LINEAR --extrapolationType MAXIMUM] >>
     # [Zap --nbitsForDataStorage E32]>>
     # [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]",
@@ -85,7 +91,7 @@ def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare, e_max=0.001)
-    assert(res)
+    assert res
 
 
 def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -95,23 +101,25 @@ def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute Pressure
-    df      = spookipy.InterpolationHorizontalGrid( src_df0,
-                                                    method             = 'user',
-                                                    grtyp              = 'N',
-                                                    ni                 = 191,
-                                                    nj                 = 141,
-                                                    param1             = 79.0,
-                                                    param2             = 117.0,
-                                                    param3             = 57150.0,
-                                                    param4             = 21.0,
-                                                    interpolation_type ='bi-linear',
-                                                    extrapolation_type ='maximum').compute()
-    #"[ReaderStd --input {sources[0]}] >>
+    df = spookipy.InterpolationHorizontalGrid(
+        src_df0,
+        method="user",
+        grtyp="N",
+        ni=191,
+        nj=141,
+        param1=79.0,
+        param2=117.0,
+        param3=57150.0,
+        param4=21.0,
+        interpolation_type="bi-linear",
+        extrapolation_type="maximum",
+    ).compute()
+    # "[ReaderStd --input {sources[0]}] >>
     # [InterpolationHorizontalGrid -m USER_DEFINED --gridType TYPE_N --xyDimensions 191,141 -p 79.0,117.0,57150.0,21.0 --interpolationType BI-LINEAR --extrapolationType MAXIMUM] >>
     # [Zap --nbitsForDataStorage E32]>>
     # [WriterStd --output {destination_path} --IP1EncodingStyle OLDSTYLE]"
 
-    df = spookipy.convip(df, style=rmn.CONVIP_ENCODE_OLD)
+    df = spookipy.convip(df, style=RmnInterface.CONVIP_ENCODE_OLD)
 
     # write the result
     results_file = test_tmp_path / "test_3.std"
@@ -122,7 +130,7 @@ def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare, e_max=0.1)
-    assert(res)
+    assert res
 
 
 def test_5(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -133,17 +141,15 @@ def test_5(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute spookipy.InterpolationHorizontalGrid
-    df      = spookipy.InterpolationHorizontalGrid( src_df0,
-                                                    method='field',
-                                                    nomvar='RT',
-                                                    interpolation_type='nearest',
-                                                    extrapolation_type='nearest').compute()
+    df = spookipy.InterpolationHorizontalGrid(
+        src_df0, method="field", nomvar="RT", interpolation_type="nearest", extrapolation_type="nearest"
+    ).compute()
     # [ReaderStd --input {sources[0]}] >>
     # [InterpolationHorizontalGrid -m FIELD_DEFINED --fieldName RT --interpolationType NEAREST --extrapolationType NEAREST] >>
     # [WriterStd --output {destination_path} --makeIP1EncodingWorkWithTests]
 
-    df = spookipy.convip(df, style=rmn.CONVIP_ENCODE_OLD)
-    
+    df = spookipy.convip(df, style=RmnInterface.CONVIP_ENCODE_OLD)
+
     # write the result
     results_file = test_tmp_path / "test_5.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
@@ -153,7 +159,7 @@ def test_5(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare, e_max=0.01)
-    assert(res)
+    assert res
 
 
 def test_6(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -163,13 +169,11 @@ def test_6(plugin_test_path, test_tmp_path, call_fstcomp):
 
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-    src_df0 = fstpy.select_with_meta(src_df0, ['TT', 'RT'])
+    src_df0 = fstpy.select_with_meta(src_df0, ["TT", "RT"])
     # compute spookipy.InterpolationHorizontalGrid
-    df      = spookipy.InterpolationHorizontalGrid( src_df0,
-                                                    method='field',
-                                                    nomvar='RT',
-                                                    interpolation_type='nearest',
-                                                    extrapolation_type='nearest').compute()
+    df = spookipy.InterpolationHorizontalGrid(
+        src_df0, method="field", nomvar="RT", interpolation_type="nearest", extrapolation_type="nearest"
+    ).compute()
     # [ReaderStd --input {sources[0]}] >> [Select --fieldName TT,RT] >>
     # [InterpolationHorizontalGrid -m FIELD_DEFINED --fieldName RT --interpolationType NEAREST --extrapolationType NEAREST] >>
     # [WriterStd --output {destination_path} ]
@@ -183,7 +187,7 @@ def test_6(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
 
 
 def test_7(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -198,21 +202,19 @@ def test_7(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
     src_df1 = fstpy.select_with_meta(src_df1, ["ES"])
 
-    src_df  = pd.concat([src_df0, src_df1], ignore_index=True)
+    src_df = pd.safe_concat([src_df0, src_df1])
 
     # print(src_df[['nomvar','ni','nj','ip1','ip2','ig1','ig2']])
     # compute spookipy.InterpolationHorizontalGrid
-    df      = spookipy.InterpolationHorizontalGrid(src_df,
-                                                   method='field',
-                                                   nomvar='ES',
-                                                   interpolation_type='bi-cubic',
-                                                   extrapolation_type='nearest').compute()
+    df = spookipy.InterpolationHorizontalGrid(
+        src_df, method="field", nomvar="ES", interpolation_type="bi-cubic", extrapolation_type="nearest"
+    ).compute()
     # ([ReaderStd --input {sources[0]}] >> [Select --fieldName TT]) +
     # ([ReaderStd --input {sources[1]}] >> [Select --fieldName ES]) >>
     # [InterpolationHorizontalGrid -m FIELD_DEFINED --fieldName ES --interpolationType BI-CUBIC --extrapolationType NEAREST] >>
     # [WriterStd --output {destination_path}]
 
-    # On force l'encodage pour agir comme le WriterStd 
+    # On force l'encodage pour agir comme le WriterStd
     df = spookipy.convip(df)
 
     # write the result
@@ -224,7 +226,7 @@ def test_7(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
 
 
 def test_8(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -240,20 +242,18 @@ def test_8(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
     src_df1 = fstpy.select_with_meta(src_df1, ["TT"])
 
-    src_df = pd.concat([src_df0, src_df1], ignore_index=True)
+    src_df = pd.safe_concat([src_df0, src_df1])
 
     # compute spookipy.InterpolationHorizontalGrid
-    df     = spookipy.InterpolationHorizontalGrid(src_df,
-                                                  method='field',
-                                                  nomvar='ES',
-                                                  interpolation_type='bi-cubic',
-                                                  extrapolation_type='nearest').compute()
+    df = spookipy.InterpolationHorizontalGrid(
+        src_df, method="field", nomvar="ES", interpolation_type="bi-cubic", extrapolation_type="nearest"
+    ).compute()
     # "([ReaderStd --input {sources[0]}] >> [Select --fieldName ES]) +
     # ([ReaderStd --input {sources[1]}] >> [Select --fieldName TT]) >>
     # [InterpolationHorizontalGrid -m FIELD_DEFINED --fieldName ES --interpolationType BI-CUBIC --extrapolationType NEAREST] >>
     # [Zap --nbitsForDataStorage E32]>>[WriterStd --output {destination_path} ]",
- 
-    # On force l'encodage pour agir comme le WriterStd 
+
+    # On force l'encodage pour agir comme le WriterStd
     df = spookipy.convip(df)
 
     # write the result
@@ -265,7 +265,7 @@ def test_8(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare, e_max=0.01)
-    assert(res)
+    assert res
 
 
 def test_9(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -279,14 +279,12 @@ def test_9(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
     src_df1 = fstpy.select_with_meta(src_df1, ["TT"])
 
-    src_df  = pd.concat([src_df0, src_df1], ignore_index=True)
+    src_df = pd.safe_concat([src_df0, src_df1])
 
     # compute spookipy.InterpolationHorizontalGrid
-    df      = spookipy.InterpolationHorizontalGrid(src_df,
-                                                   method='field',
-                                                   nomvar='TT',
-                                                   interpolation_type='bi-cubic',
-                                                   extrapolation_type='nearest').compute()
+    df = spookipy.InterpolationHorizontalGrid(
+        src_df, method="field", nomvar="TT", interpolation_type="bi-cubic", extrapolation_type="nearest"
+    ).compute()
     # ([ReaderStd --input {sources[0]}] >> [Select --fieldName UU,VV]) +
     # ([ReaderStd --input {sources[1]}] >> [Select --fieldName TT]) >>
     # [InterpolationHorizontalGrid -m FIELD_DEFINED --fieldName TT --interpolationType BI-CUBIC --extrapolationType NEAREST] >>
@@ -294,9 +292,9 @@ def test_9(plugin_test_path, test_tmp_path, call_fstcomp):
     # [WriterStd --output {destination_path} ]
 
     # On selection UU,VV car par defaut (sans option output_fields) tous les champs sont resortis.
-    df = fstpy.select_with_meta(df, ['UU', 'VV'])
+    df = fstpy.select_with_meta(df, ["UU", "VV"])
 
-    # On force l'encodage pour agir comme le WriterStd 
+    # On force l'encodage pour agir comme le WriterStd
     df = spookipy.convip(df)
 
     # write the result
@@ -304,11 +302,11 @@ def test_9(plugin_test_path, test_tmp_path, call_fstcomp):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_path /  "InterpHorizGridUtoZ_UUVV_file2cmp.std+20210517"
-    
+    file_to_compare = plugin_test_path / "InterpHorizGridUtoZ_UUVV_file2cmp.std+20210517"
+
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
 
 
 def test_10(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -322,14 +320,12 @@ def test_10(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
     src_df1 = fstpy.select_with_meta(src_df1, ["UU", "VV"])
 
-    src_df  = pd.concat([src_df0, src_df1], ignore_index=True)
+    src_df = pd.safe_concat([src_df0, src_df1])
 
     # compute spookipy.InterpolationHorizontalGrid
-    df      = spookipy.InterpolationHorizontalGrid(src_df,
-                                                   method='field',
-                                                   nomvar='TT',
-                                                   interpolation_type='bi-cubic',
-                                                   extrapolation_type='nearest').compute()
+    df = spookipy.InterpolationHorizontalGrid(
+        src_df, method="field", nomvar="TT", interpolation_type="bi-cubic", extrapolation_type="nearest"
+    ).compute()
     # ([ReaderStd --input {sources[0]}] >> [Select --fieldName TT]) +
     # ([ReaderStd --input {sources[1]}] >> [Select --fieldName UU,VV]) >>
     # [InterpolationHorizontalGrid -m FIELD_DEFINED --fieldName TT --interpolationType BI-CUBIC --extrapolationType NEAREST] >>
@@ -337,7 +333,7 @@ def test_10(plugin_test_path, test_tmp_path, call_fstcomp):
     # [WriterStd --output {destination_path} ]
 
     # On selection UU,VV car par defaut (sans option output_fields) tous les champs sont resortis.
-    df = fstpy.select_with_meta(df, ['UU', 'VV'])
+    df = fstpy.select_with_meta(df, ["UU", "VV"])
 
     # write the result
     results_file = test_tmp_path / "test_10.std"
@@ -348,7 +344,7 @@ def test_10(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare, e_max=0.1)
-    assert(res)
+    assert res
 
 
 def test_11(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -362,23 +358,19 @@ def test_11(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
     src_df1 = fstpy.select_with_meta(src_df1, ["ES"])
 
-    src_df  = pd.concat([src_df0, src_df1], ignore_index=True)
-    
+    src_df = pd.safe_concat([src_df0, src_df1])
+
     # compute spookipy.InterpolationHorizontalGrid
     df = spookipy.InterpolationHorizontalGrid(
-        src_df,
-        method='field',
-        nomvar='ES',
-        interpolation_type='bi-cubic',
-        extrapolation_type='nearest').compute()
+        src_df, method="field", nomvar="ES", interpolation_type="bi-cubic", extrapolation_type="nearest"
+    ).compute()
     # ([ReaderStd --input {sources[0]}] >> [Select --fieldName TT,UU,VV]) +
     # ([ReaderStd --input {sources[1]}] >> [Select --fieldName ES]) >>
-    # [InterpolationHorizontalGrid -m FIELD_DEFINED --fieldName ES 
-    #                              --interpolationType BI-CUBIC --extrapolationType NEAREST] >> 
+    # [InterpolationHorizontalGrid -m FIELD_DEFINED --fieldName ES
+    #                              --interpolationType BI-CUBIC --extrapolationType NEAREST] >>
     # [WriterStd --output {destination_path} ]
 
-
-    # On force l'encodage pour agir comme le WriterStd 
+    # On force l'encodage pour agir comme le WriterStd
     df = spookipy.convip(df)
 
     # write the result
@@ -390,7 +382,7 @@ def test_11(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare, e_max=0.6)
-    assert(res)
+    assert res
 
 
 def test_13(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -401,21 +393,23 @@ def test_13(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.select_with_meta(src_df0, ["TT"])
 
     # compute spookipy.InterpolationHorizontalGrid
-    df      = spookipy.InterpolationHorizontalGrid( src_df0,    
-                                                    method='user',
-                                                    grtyp='N',
-                                                    ni=152,
-                                                    nj=120,
-                                                    param1=52.0,
-                                                    param2=120.0,
-                                                    param3=50000.0,
-                                                    param4=21.0,
-                                                    interpolation_type='nearest',
-                                                    extrapolation_type='value',
-                                                    extrapolation_value=-888.8).compute()
+    df = spookipy.InterpolationHorizontalGrid(
+        src_df0,
+        method="user",
+        grtyp="N",
+        ni=152,
+        nj=120,
+        param1=52.0,
+        param2=120.0,
+        param3=50000.0,
+        param4=21.0,
+        interpolation_type="nearest",
+        extrapolation_type="value",
+        extrapolation_value=-888.8,
+    ).compute()
     # [ReaderStd --input {sources[0]}] >>
     # [Select --fieldName TT] >>
-    # [InterpolationHorizontalGrid -m USER_DEFINED --gridType TYPE_N --xyDimensions 152,120 
+    # [InterpolationHorizontalGrid -m USER_DEFINED --gridType TYPE_N --xyDimensions 152,120
     #                         -p 52.0,120.0,50000.0,21.0 --interpolationType NEAREST --extrapolationType VALUE=-888.8] >>
     # [WriterStd --output {destination_path} ]
 
@@ -428,7 +422,7 @@ def test_13(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
 
 
 def test_14(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -442,15 +436,12 @@ def test_14(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
     src_df1 = fstpy.select_with_meta(src_df1, ["TT"])
 
-    src_df  = pd.concat([src_df0, src_df1], ignore_index=True)
+    src_df = pd.safe_concat([src_df0, src_df1])
 
     # compute spookipy.InterpolationHorizontalGrid
-    df      = spookipy.InterpolationHorizontalGrid( src_df,
-                                                    method='field',
-                                                    nomvar='TT',
-                                                    interpolation_type='bi-cubic',
-                                                    extrapolation_type='nearest',
-                                                    parallel=True).compute()
+    df = spookipy.InterpolationHorizontalGrid(
+        src_df, method="field", nomvar="TT", interpolation_type="bi-cubic", extrapolation_type="nearest", parallel=True
+    ).compute()
     # ([ReaderStd --input {sources[0]}] >> [Select --fieldName UU,VV]) +
     # ([ReaderStd --input {sources[1]}] >> [Select --fieldName TT]) >>
     # [InterpolationHorizontalGrid -m FIELD_DEFINED --fieldName TT --interpolationType BI-CUBIC --extrapolationType NEAREST] >>
@@ -458,7 +449,7 @@ def test_14(plugin_test_path, test_tmp_path, call_fstcomp):
     # [WriterStd --output {destination_path} ]
 
     # On selection UU,VV car par defaut (sans option output_fields) tous les champs sont resortis.
-    df = fstpy.select_with_meta(df, ['UU', 'VV'])
+    df = fstpy.select_with_meta(df, ["UU", "VV"])
 
     # On force l'encodage pour agir comme le WriterStd
     df = spookipy.convip(df)
@@ -468,9 +459,8 @@ def test_14(plugin_test_path, test_tmp_path, call_fstcomp):
     fstpy.StandardFileWriter(results_file, df).to_fst()
 
     # open and read comparison file
-    file_to_compare = plugin_test_path / \
-        "InterpHorizGridUtoZ_UUVV_file2cmp.std+20210517"
+    file_to_compare = plugin_test_path / "InterpHorizGridUtoZ_UUVV_file2cmp.std+20210517"
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res

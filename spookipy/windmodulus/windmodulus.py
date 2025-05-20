@@ -6,9 +6,15 @@ import numpy as np
 import pandas as pd
 
 from ..plugin import Plugin
-from ..utils import (DependencyError, create_empty_result, existing_results, 
-                     get_dependencies, get_existing_result, get_from_dataframe,
-                     initializer)
+from ..utils import (
+    DependencyError,
+    create_empty_result,
+    existing_results,
+    get_dependencies,
+    get_existing_result,
+    get_from_dataframe,
+    initializer,
+)
 
 
 class WindModulusError(Exception):
@@ -25,7 +31,7 @@ def wind_modulus(uu: np.ndarray, vv: np.ndarray) -> np.ndarray:
     :return: wind modulus
     :rtype: np.ndarray
     """
-    return (uu**2 + vv**2)**.5
+    return (uu**2 + vv**2) ** 0.5
 
 
 class WindModulus(Plugin):
@@ -34,84 +40,69 @@ class WindModulus(Plugin):
     :param df: input DataFrame
     :type df: pd.DataFrame
     :param dependency_check: Indicates the plugin is being called from another one who checks dependencies , defaults to False
-    :type dependency_check: bool, 
+    :type dependency_check: bool,
     :param reduce_df: Indicates to reduce the dataframe to its minimum, defaults to True
     :type reduce_df: bool, optional
     """
-    computable_plugin = "UV"
-    @initializer
-    def __init__(
-        self,
-        df:pd.DataFrame,
-        dependency_check = False,
-        copy_input       = False,
-        reduce_df        = True
-        ):
 
+    computable_plugin = "UV"
+
+    @initializer
+    def __init__(self, df: pd.DataFrame, dependency_check=False, copy_input=False, reduce_df=True):
         self.plugin_mandatory_dependencies = [
             {
-                'UU': {'nomvar': 'UU', 'unit': 'knot'},
-                'VV': {'nomvar': 'VV', 'unit': 'knot'},
+                "UU": {"nomvar": "UU", "unit": "knot"},
+                "VV": {"nomvar": "VV", "unit": "knot"},
             }
         ]
 
-        self.plugin_result_specifications = {
-            'UV': {'nomvar': 'UV', 
-                   'label' : 'WNDMOD', 
-                   'unit'  : 'knot'}
-        }
+        self.plugin_result_specifications = {"UV": {"nomvar": "UV", "label": "WNDMOD", "unit": "knot"}}
 
-        #ajouter forecast_hour et unit
+        # ajouter forecast_hour et unit
         self.df = fstpy.metadata_cleanup(self.df)
-        super().__init__(self.df)    
+        super().__init__(self.df)
         self.prepare_groups()
 
     # might be able to move
     def prepare_groups(self):
-        self.no_meta_df = fstpy.add_columns(
-            self.no_meta_df, columns=[
-                'unit', 'ip_info'])
+        self.no_meta_df = fstpy.add_columns(self.no_meta_df, columns=["unit", "ip_info"])
 
         # check if result already exists
         self.existing_result_df = get_existing_result(self.no_meta_df, self.plugin_result_specifications)
 
-        self.groups = self.no_meta_df.groupby(['grid', 'datev', 'dateo', 'vctype'])
+        self.groups = self.no_meta_df.groupby(["grid", "datev", "dateo", "vctype"])
 
     def compute(self) -> pd.DataFrame:
         if not self.existing_result_df.empty:
-            return existing_results(
-                'WindModulus',
-                self.existing_result_df,
-                self.meta_df)
+            return existing_results("WindModulus", self.existing_result_df, self.meta_df)
 
-        logging.info('WindModulus - compute')
+        logging.info("WindModulus - compute")
 
         df_list = []
         try:
             dependencies_list = get_dependencies(
-                self.groups,
-                self.meta_df,
-                'WindModulus',
-                self.plugin_mandatory_dependencies,
-                intersect_levels=True)
+                self.groups, self.meta_df, "WindModulus", self.plugin_mandatory_dependencies, intersect_levels=True
+            )
         except DependencyError:
-             raise DependencyError(f'{WindModulus} - No matching dependencies found')
+            raise DependencyError(f"{WindModulus} - No matching dependencies found")
         else:
             for dependencies_df, _ in dependencies_list:
-                uu_df = get_from_dataframe(dependencies_df, 'UU')
-                vv_df = get_from_dataframe(dependencies_df, 'VV')
-                uv_df = create_empty_result(
-                    vv_df, self.plugin_result_specifications['UV'], all_rows=True)
+                uu_df = get_from_dataframe(dependencies_df, "UU")
+                vv_df = get_from_dataframe(dependencies_df, "VV")
+                uv_df = create_empty_result(vv_df, self.plugin_result_specifications["UV"], all_rows=True)
 
                 for i in uv_df.index:
-                    uu = uu_df.at[i,'d']
-                    vv = vv_df.at[i,'d']
-                    uv_df.at[i,'d'] = wind_modulus(uu,vv)
+                    uu = uu_df.at[i, "d"]
+                    vv = vv_df.at[i, "d"]
+                    uv_df.at[i, "d"] = wind_modulus(uu, vv)
 
                 df_list.append(uv_df)
 
         finally:
-            return self.final_results(df_list, WindModulusError, 
-                                      dependency_check = self.dependency_check,
-                                      copy_input       = self.copy_input,
-                                      reduce_df        = self.reduce_df)
+            return self.final_results(
+                df_list,
+                WindModulusError,
+                dependency_check=self.dependency_check,
+                copy_input=self.copy_input,
+                reduce_df=self.reduce_df,
+            )

@@ -7,12 +7,14 @@ import fstpy
 import pytest
 import spookipy
 
-pytestmark = [pytest.mark.regressions]
+pytestmark = [pytest.mark.regressions, pytest.mark.regressions1]
+
 
 @pytest.fixture(scope="module")
 def plugin_name():
     """plugin_name in the path /fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/{plugin_name}"""
     return "GridCut"
+
 
 def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
     """Tester sur une zone de 3x4 depuis une extremite de la matrice."""
@@ -21,10 +23,7 @@ def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridCut
-    df = spookipy.GridCut(
-        src_df0, start_point=(
-            0, 0), end_point=(
-            2, 3)).compute()
+    df = spookipy.GridCut(src_df0, start_point=(0, 0), end_point=(2, 3)).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GridCut --start_point 0,0 --end_point 2,3] >> [WriterStd --output {destination_path} --ignoreExtended]
 
     df = spookipy.convip(df)
@@ -37,7 +36,7 @@ def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
 
 
 def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -47,10 +46,7 @@ def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridCut
-    df = spookipy.GridCut(
-        src_df0, start_point=(
-            2, 1), end_point=(
-            4, 4)).compute()
+    df = spookipy.GridCut(src_df0, start_point=(2, 1), end_point=(4, 4)).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GridCut --start_point 2,1 --end_point 4,4] >> [WriterStd --output {destination_path} --ignoreExtended]
 
     df = spookipy.convip(df)
@@ -63,7 +59,7 @@ def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
 
 
 def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -73,10 +69,7 @@ def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridCut
-    df = spookipy.GridCut(
-        src_df0, start_point=(
-            0, 0), end_point=(
-            4, 4)).compute()
+    df = spookipy.GridCut(src_df0, start_point=(0, 0), end_point=(4, 4)).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GridCut --start_point 0,0 --end_point 4,4] >>
     # [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
@@ -89,7 +82,7 @@ def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
 
 
 def test_4(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -100,10 +93,7 @@ def test_4(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compute GridCut
     with pytest.raises(spookipy.GridCutError):
-        _ = spookipy.GridCut(
-            src_df0, start_point=(
-                0, 0), end_point=(
-                4, 5)).compute()
+        _ = spookipy.GridCut(src_df0, start_point=(0, 0), end_point=(4, 5)).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GridCut --start_point 0,0 --end_point 4,5]
 
 
@@ -113,13 +103,9 @@ def test_5(plugin_test_path, test_tmp_path, call_fstcomp):
     source0 = plugin_test_path / "2014031800_024_reghyb_TT.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
-         
     # compute GridCut
-    df = spookipy.GridCut(
-        src_df0, start_point=(
-            4, 6), end_point=(
-            28, 30)).compute()
-           
+    df = spookipy.GridCut(src_df0, start_point=(4, 6), end_point=(28, 30)).compute()
+
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GridCut --start_point 4,6 --end_point 28,30] >> [WriterStd --output {destination_path} --ignoreExtended]
 
     # write the result
@@ -131,7 +117,7 @@ def test_5(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
 
 
 def test_6(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -139,19 +125,16 @@ def test_6(plugin_test_path, test_tmp_path, call_fstcomp):
     # open and read source
     source0 = plugin_test_path / "glbpres_TT_UU_VV.std"
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
-    # print('src_df0',src_df0[['nomvar','ni','nj','grid','ip1','ip2','ig1','ig2']].to_string())   
+    # print('src_df0',src_df0[['nomvar','ni','nj','grid','ip1','ip2','ig1','ig2']].to_string())
     # compute GridCut
-    df = spookipy.GridCut(
-        src_df0, start_point=(
-            0, 0), end_point=(
-            511, 399)).compute()
+    df = spookipy.GridCut(src_df0, start_point=(0, 0), end_point=(511, 399)).compute()
     # [ReaderStd --ignoreExtended --input {sources[0]}] >> [GridCut --start_point 0,0 --end_point 511,399] >> [WriterStd --output {destination_path} --ignoreExtended]
-    # print('after gridcut',df[['nomvar','ni','nj','grid','ip1','ip2','ig1','ig2']].to_string()) 
-    #temp fix for missing !!
+    # print('after gridcut',df[['nomvar','ni','nj','grid','ip1','ip2','ig1','ig2']].to_string())
+    # temp fix for missing !!
     # toctoc = df.loc[(df.nomvar=="!!") & (df.ig1==5002)].reset_index(drop=True)
     # df = df.loc[df.nomvar!="!!"].reset_index(drop=True)
 
-    # df = pd.concat([toctoc,df],ignore_index=True)
+    # df = pd.safe_concat([toctoc,df])
     # write the result
     results_file = test_tmp_path / "test_6.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
@@ -160,11 +143,14 @@ def test_6(plugin_test_path, test_tmp_path, call_fstcomp):
     file_to_compare = plugin_test_path / "gc_test_6.std+20240516"
 
     # compare results
-    res = call_fstcomp(results_file, file_to_compare,exclude_meta=True)
+    res = call_fstcomp(results_file, file_to_compare, exclude_meta=True)
     # res = fstcomp(results_file, file_to_compare,exclude_meta=True)
-    assert(res)
+    assert res
 
-@pytest.mark.skip(reason="Fait planter un test dans une autre suite de test... gridpointdifference_test.py::test_28 : 2 groupes de TT avec dates d'origine differentes mais dates de validity identiques FAILED")
+
+@pytest.mark.skip(
+    reason="Fait planter un test dans une autre suite de test... gridpointdifference_test.py::test_28 : 2 groupes de TT avec dates d'origine differentes mais dates de validity identiques FAILED"
+)
 def test_7(plugin_test_path):
     """Tester avec un type de grille qui n'est pas supporte (yinyang)"""
     # open and read source
@@ -173,10 +159,7 @@ def test_7(plugin_test_path):
 
     # compute GridCut
     with pytest.raises(spookipy.GridCutError):
-        _ = spookipy.GridCut(
-            src_df0, start_point=(
-                0, 0), end_point=(
-                4, 5)).compute()
+        _ = spookipy.GridCut(src_df0, start_point=(0, 0), end_point=(4, 5)).compute()
 
 
 def test_8(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -186,11 +169,7 @@ def test_8(plugin_test_path, test_tmp_path, call_fstcomp):
     src_df0 = fstpy.StandardFileReader(source0).to_pandas()
 
     # compute GridCut
-    df = spookipy.GridCut(
-        src_df0, start_point=(
-            4, 6), end_point=(
-            28, 30), grid_tag=(
-            22,333,4444)).compute()
+    df = spookipy.GridCut(src_df0, start_point=(4, 6), end_point=(28, 30), grid_tag=(22, 333, 4444)).compute()
 
     # write the result
     results_file = test_tmp_path / "test_8.std"
@@ -201,7 +180,7 @@ def test_8(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
 
 
 def test_9(plugin_test_path):
@@ -212,11 +191,7 @@ def test_9(plugin_test_path):
 
     # compute GridCut
     with pytest.raises(spookipy.GridCutError):
-        _ = spookipy.GridCut(
-            src_df0, start_point=(
-                0, 0), end_point=(
-                4, 5), grid_tag=(
-            22,333)).compute()
+        _ = spookipy.GridCut(src_df0, start_point=(0, 0), end_point=(4, 5), grid_tag=(22, 333)).compute()
 
 
 def test_10(plugin_test_path):
@@ -227,11 +202,7 @@ def test_10(plugin_test_path):
 
     # compute GridCut
     with pytest.raises(spookipy.GridCutError):
-        _ = spookipy.GridCut(
-            src_df0, start_point=(
-                0, 0), end_point=(
-                4, 5), grid_tag=(
-            "bad",333,4444)).compute()
+        _ = spookipy.GridCut(src_df0, start_point=(0, 0), end_point=(4, 5), grid_tag=("bad", 333, 4444)).compute()
 
 
 def test_11(plugin_test_path):
@@ -242,11 +213,8 @@ def test_11(plugin_test_path):
 
     # compute GridCut
     with pytest.raises(spookipy.GridCutError):
-        _ = spookipy.GridCut(
-            src_df0, start_point=(
-                0, 0), end_point=(
-                4, 5), grid_tag=(
-            -22,333,4444)).compute()
+        _ = spookipy.GridCut(src_df0, start_point=(0, 0), end_point=(4, 5), grid_tag=(-22, 333, 4444)).compute()
+
 
 # def test_14(plugin_test_path, test_tmp_path, call_fstcomp):
 #     """Interpolation Verticale 1/16 pieces 649x672 664Mo"""
@@ -257,7 +225,7 @@ def test_11(plugin_test_path):
 #     source1 = plugin_test_path / "2011100712_012_reghyb"
 #     src_df1 = fstpy.StandardFileReader(source1).to_pandas()
 
-#     src_df = pd.concat([src_df0,src_df1],ignore_index=True)
+#     src_df = pd.safe_concat([src_df0,src_df1])
 
 #     #compute GridCut
 #     df = spookipy.GridCut(src_df,start_point=(0,0),end_point=(648,42)).compute()

@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,7 +20,6 @@ plugin_test_dir = TEST_PATH + "HumidityRelativeWeightedMean/testsFiles/"
 
 
 class TestHumidityRelativeWeightedMean(unittest.TestCase):
-
     def test_1(self):
         """Test avec un petit fichier contenant des valeurs verifiees a la main."""
         # open and read source
@@ -34,7 +31,7 @@ class TestHumidityRelativeWeightedMean(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [HumidityRelativeWeightedMean] >> [WriterStd --output {destination_path} --encodeIP2andIP3]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,7 +39,7 @@ class TestHumidityRelativeWeightedMean(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_2(self):
         """Test avec une sortie de modele."""
@@ -55,7 +52,7 @@ class TestHumidityRelativeWeightedMean(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [HumidityRelativeWeightedMean] >> [WriterStd --output {destination_path}]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -63,7 +60,7 @@ class TestHumidityRelativeWeightedMean(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_3(self):
         """Test avec une sortie de modele, avec clé --capped."""
@@ -76,7 +73,7 @@ class TestHumidityRelativeWeightedMean(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [HumidityRelativeWeightedMean --capped 1.0] >> [WriterStd --output {destination_path}]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -84,4 +81,4 @@ class TestHumidityRelativeWeightedMean(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

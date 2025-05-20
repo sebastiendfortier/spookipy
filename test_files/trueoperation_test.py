@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,7 +20,6 @@ plugin_test_dir = TEST_PATH + "TrueOperation/testsFiles/"
 
 
 class TestTrueOperation(unittest.TestCase):
-
     def test_1(self):
         """Test qui fait un appel a TrueOperation"""
         # open and read source
@@ -34,7 +31,7 @@ class TestTrueOperation(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> ([Copy] + [TrueOperation]) >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,7 +39,7 @@ class TestTrueOperation(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_2(self):
         """Test simple."""
@@ -55,7 +52,7 @@ class TestTrueOperation(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [TrueOperation]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -63,4 +60,4 @@ class TestTrueOperation(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

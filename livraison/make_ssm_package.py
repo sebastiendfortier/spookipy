@@ -21,7 +21,10 @@ mendatory_plugins = [
     "pressure",
     "science",
 ]
-mendatory_files = ["all.py", "utils.py"]
+mendatory_files = [
+    "utils.py",
+    "rmn_interface.py",
+]
 
 
 def main():
@@ -33,9 +36,7 @@ def main():
     name = "spookipy"
 
     pkg_name = "_".join(
-        [name, version, plat]
-        if parsed_arg["suffix"] == ""
-        else [name, version, plat, parsed_arg["suffix"]]
+        [name, version, plat] if parsed_arg["suffix"] == "" else [name, version, plat, parsed_arg["suffix"]]
     )
 
     # generate package file hierarchy
@@ -49,9 +50,7 @@ def main():
     os.rmdir(temp_dir)
 
     # add requirements
-    ssm.add(
-        root_dir + "/ssm/requirements.txt", arcname=pkg_name + "/share/requirements.txt"
-    )
+    ssm.add(root_dir + "/ssm/requirements.txt", arcname=pkg_name + "/share/requirements.txt")
 
     # add setup script
     ssm.add(
@@ -105,9 +104,14 @@ def main():
         install(pkg_name, dir_livraison, parsed_arg["temp"], name, version)
 
 
-def get_version(root_dir):
+def get_version(root_dir=None):
+    # If no root_dir is provided, use the directory of the current script
+    if root_dir is None:
+        root_dir = Path(__file__).resolve().parent
+
     init_py = Path(root_dir).resolve() / "spookipy" / "__init__.py"
     version_regex = r"__version__\s*=\s*['\"]([^'\"]*)['\"]"
+
     try:
         with open(init_py, "r", encoding="utf-8") as f:
             content = f.read()
@@ -131,26 +135,14 @@ def generate_control_json(file_name, name, version, plat):
         "description": "spookipy package",
         "x-build-date": datetime.datetime.now().strftime("%c"),
         "x-build-platform": os.getenv("BASE_ARCH"),
-        "x-build-host": subprocess.run(["hostname", "-f"], capture_output=True)
-        .stdout[0:-1]
-        .decode("utf-8"),
+        "x-build-host": subprocess.run(["hostname", "-f"], capture_output=True).stdout[0:-1].decode("utf-8"),
         "x-build-user": os.getenv("USER"),
         "x-build-uname": [
-            subprocess.run(["uname", "-s"], capture_output=True)
-            .stdout[0:-1]
-            .decode("utf-8"),
-            subprocess.run(["uname", "-n"], capture_output=True)
-            .stdout[0:-1]
-            .decode("utf-8"),
-            subprocess.run(["uname", "-r"], capture_output=True)
-            .stdout[0:-1]
-            .decode("utf-8"),
-            subprocess.run(["uname", "-v"], capture_output=True)
-            .stdout[0:-1]
-            .decode("utf-8"),
-            subprocess.run(["uname", "-m"], capture_output=True)
-            .stdout[0:-1]
-            .decode("utf-8"),
+            subprocess.run(["uname", "-s"], capture_output=True).stdout[0:-1].decode("utf-8"),
+            subprocess.run(["uname", "-n"], capture_output=True).stdout[0:-1].decode("utf-8"),
+            subprocess.run(["uname", "-r"], capture_output=True).stdout[0:-1].decode("utf-8"),
+            subprocess.run(["uname", "-v"], capture_output=True).stdout[0:-1].decode("utf-8"),
+            subprocess.run(["uname", "-m"], capture_output=True).stdout[0:-1].decode("utf-8"),
         ],
     }
 
@@ -180,7 +172,6 @@ from pathlib import Path
 
 
 def get_arguments():
-
     description = "Makes the ssm package for spookipy with a YAML file."
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument(
@@ -206,9 +197,7 @@ def get_arguments():
 
 def install(pkg_name, dir_livraison, path, name, version):
     temp_path = path if path else dir_livraison
-    process = subprocess.run(
-        ["ssm", "created", "-d", os.path.join(temp_path, "master")]
-    )
+    process = subprocess.run(["ssm", "created", "-d", os.path.join(temp_path, "master")])
     process = subprocess.run(
         [
             "ssm",
@@ -225,9 +214,7 @@ def install(pkg_name, dir_livraison, path, name, version):
     except FileExistsError:
         print(name + " dir already exists")
 
-    process = subprocess.run(
-        ["ssm", "created", "-d", os.path.join(temp_path, name, version)]
-    )
+    process = subprocess.run(["ssm", "created", "-d", os.path.join(temp_path, name, version)])
 
     process = subprocess.run(
         [
@@ -246,7 +233,6 @@ def install(pkg_name, dir_livraison, path, name, version):
 
 
 def get_all_plugins(root_dir):
-
     plugins = []
 
     for file in os.listdir(root_dir + "/spookipy"):

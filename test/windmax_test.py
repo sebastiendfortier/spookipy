@@ -7,7 +7,8 @@ import fstpy
 import pytest
 import spookipy
 
-pytestmark = [pytest.mark.regressions]
+pytestmark = [pytest.mark.regressions, pytest.mark.regressions2]
+
 
 @pytest.fixture(scope="module")
 def plugin_name():
@@ -23,10 +24,10 @@ def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compute WindMax
     df = spookipy.WindMax(src_df0).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [WindMax] >> [WriterStd --output {destination_path} --ignoreExtended ]
 
-    df['etiket'] = 'WNDMAX'
+    df["etiket"] = "WNDMAX"
 
     # write the result
     results_file = test_tmp_path / "test_1.std"
@@ -37,7 +38,7 @@ def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res
 
 
 def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -48,11 +49,11 @@ def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compute WindMax
     df = spookipy.WindMax(src_df0).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [WindMax] >> [WriterStd --output {destination_path} --ignoreExtended ]
 
     # write the result
-    df.loc[df.nomvar.isin(['UU','VV','UV','PX']),'etiket'] = 'WNDMAX'
+    df.loc[df.nomvar.isin(["UU", "VV", "UV", "PX"]), "etiket"] = "WNDMAX"
 
     results_file = test_tmp_path / "test_2.std"
     fstpy.StandardFileWriter(results_file, df).to_fst()
@@ -62,7 +63,7 @@ def test_2(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare, e_max=0.01)  # ,e_max=0.0003)
-    assert(res)
+    assert res
 
 
 def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
@@ -73,10 +74,10 @@ def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compute WindMax
     df = spookipy.WindMax(src_df0).compute()
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
     # [WindMax] >> [WriterStd --output {destination_path} --ignoreExtended]
 
-    df['etiket'] = 'WNDMAX'
+    df["etiket"] = "WNDMAX"
 
     # write the result
     results_file = test_tmp_path / "test_3.std"
@@ -87,4 +88,4 @@ def test_3(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare, e_max=0.01)
-    assert(res)
+    assert res

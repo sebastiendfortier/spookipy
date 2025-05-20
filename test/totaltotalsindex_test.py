@@ -7,12 +7,14 @@ import fstpy
 import pytest
 import spookipy
 
-pytestmark = [pytest.mark.regressions]
+pytestmark = [pytest.mark.regressions, pytest.mark.regressions2]
+
 
 @pytest.fixture(scope="module")
 def plugin_name():
     """plugin_name in the path /fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/{plugin_name}"""
     return "TotalTotalsIndex"
+
 
 def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
     """Calcul de l'indice total-total avec TT à 850 et 500 mb et ES à 850 mb."""
@@ -23,8 +25,8 @@ def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
     # compute TotalTotalsIndex
     df = spookipy.TotalTotalsIndex(src_df0).compute()
 
-    # [ReaderStd --ignoreExtended --input {sources[0]}] >> 
-    # [TotalTotalsIndex] >> 
+    # [ReaderStd --ignoreExtended --input {sources[0]}] >>
+    # [TotalTotalsIndex] >>
     # [WriterStd --output {destination_path} --ignoreExtended]
 
     # Note:  Fichier de comparaison recree en 20231026 en ne tenant pas compte du ignoreExtended.
@@ -38,4 +40,4 @@ def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res

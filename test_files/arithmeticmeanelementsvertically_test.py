@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,7 +20,6 @@ plugin_test_dir = TEST_PATH + "ArithmeticMeanElementsVertically/testsFiles/"
 
 
 class TestArithmeticMeanElementsVertically(unittest.TestCase):
-
     def test_1(self):
         """Calcul des moyennes verticales de chaque champ."""
         # open and read source
@@ -34,7 +31,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ArithmeticMeanElementsVertically] >> [Zap --pdsLabel MEANCOLUMNS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,7 +39,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_2(self):
         """Calcul des moyennes verticales avec un niveau seulement."""
@@ -55,7 +52,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --verticalLevel 500] >> [ArithmeticMeanElementsVertically] >> [Zap --pdsLabel MEANCOLUMNS --doNotFlagAsZapped] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -63,7 +60,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_3(self):
         """Calcul des moyennes verticales avec un seul champ et utilisation de --outputFieldName."""
@@ -76,7 +73,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [Select --fieldName UU] >> [ArithmeticMeanElementsVertically --outputFieldName ABCD] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended --noUnitConversion]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_3.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -84,7 +81,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_5(self):
         """Calcul des moyennes verticales des champs TT, UU et VV entre 0.0102@à0.0374 et 0.0625@1 à partir d'un fichier de regeta­ pour différent intervalle de hauteurs."""
@@ -94,19 +91,18 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
         # compute ArithmeticMeanElementsVertically
         df = ArithmeticMeanElementsVertically(src_df0).compute()
-        #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '(', '([Select --fieldName TT --verticalLevel 0.0102@0.0374] >> [ArithmeticMeanElementsVertically]) + ', '([Select --fieldName TT --verticalLevel 0.0625@1] >> [ArithmeticMeanElementsVertically]) + ', '([Select --fieldName UU --verticalLevel 0.0102@0.0374] >> [ArithmeticMeanElementsVertically]) + ', '([Select --fieldName UU --verticalLevel 0.0625@1] >> [ArithmeticMeanElementsVertically]) + ', '([Select --fieldName VV --verticalLevel 0.0102@0.0374] >> [ArithmeticMeanElementsVertically]) + ', '([Select --fieldName VV --verticalLevel 0.0625@1] >> [ArithmeticMeanElementsVertically])', ')', ' >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]']
+        # ['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '(', '([Select --fieldName TT --verticalLevel 0.0102@0.0374] >> [ArithmeticMeanElementsVertically]) + ', '([Select --fieldName TT --verticalLevel 0.0625@1] >> [ArithmeticMeanElementsVertically]) + ', '([Select --fieldName UU --verticalLevel 0.0102@0.0374] >> [ArithmeticMeanElementsVertically]) + ', '([Select --fieldName UU --verticalLevel 0.0625@1] >> [ArithmeticMeanElementsVertically]) + ', '([Select --fieldName VV --verticalLevel 0.0102@0.0374] >> [ArithmeticMeanElementsVertically]) + ', '([Select --fieldName VV --verticalLevel 0.0625@1] >> [ArithmeticMeanElementsVertically])', ')', ' >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_5.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
-        file_to_compare = plugin_test_dir + \
-            "2013102212_024_UUVVTT_TwoIntervalPerField_file2cmp.std"
+        file_to_compare = plugin_test_dir + "2013102212_024_UUVVTT_TwoIntervalPerField_file2cmp.std"
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_6(self):
         """Calcul des moyennes verticales des champs TT, UU et VV entre 0@1 à partir d'un fichier de regeta­ pour différent intervalle de hauteurs."""
@@ -119,16 +115,15 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> ( ([Select --fieldName TT --verticalLevel 0@1] >> [ArithmeticMeanElementsVertically]) + ([Select --fieldName UU --verticalLevel 0@1] >> [ArithmeticMeanElementsVertically]) + ([Select --fieldName VV --verticalLevel 0@1] >> [ArithmeticMeanElementsVertically]) ) >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_6.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
-        file_to_compare = plugin_test_dir + \
-            "2013102212_024_UUVVTT_OneIntervalPerField_file2cmp.std"
+        file_to_compare = plugin_test_dir + "2013102212_024_UUVVTT_OneIntervalPerField_file2cmp.std"
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_7(self):
         """Calcul des moyennes verticales des champs TT, UU et VV entre 0@1 à partir d'un fichier de regeta­ pour différent intervalle de hauteurs qui contient deja des champs calcules."""
@@ -141,16 +136,15 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName TT,UU,VV --verticalLevel 0@1] >> [ArithmeticMeanElementsVertically] >> [WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_7.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
-        file_to_compare = plugin_test_dir + \
-            "2013102212_024_UUVVTT_OneIntervalPerField_file2cmp.std"
+        file_to_compare = plugin_test_dir + "2013102212_024_UUVVTT_OneIntervalPerField_file2cmp.std"
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_8(self):
         """Effectue un test sur un fichier qui possède seulement des intervalles."""
@@ -160,10 +154,10 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
         # compute ArithmeticMeanElementsVertically
         df = ArithmeticMeanElementsVertically(src_df0).compute()
-        #['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '[ArithmeticMeanElementsVertically] >> ', '[WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]']
+        # ['[ReaderStd --ignoreExtended --input {sources[0]}] >> ', '[ArithmeticMeanElementsVertically] >> ', '[WriterStd --output {destination_path} --encodeIP2andIP3 --ignoreExtended]']
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_8.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -171,7 +165,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_9(self):
         """Effectue un test avec --outputFieldName mais plusieurs champs en entree."""
@@ -184,7 +178,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [ArithmeticMeanElementsVertically --outputFieldName ABCD]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_9.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -192,7 +186,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_10(self):
         """Utilisation de --outputFieldName avec une valeur > 4 caractères."""
@@ -205,7 +199,7 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [ArithmeticMeanElementsVertically --outputFieldName ABCDEF]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_10.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -213,4 +207,4 @@ class TestArithmeticMeanElementsVertically(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

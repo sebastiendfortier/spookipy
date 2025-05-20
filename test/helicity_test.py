@@ -9,10 +9,12 @@ import spookipy
 
 pytestmark = [pytest.mark.skip]
 
+
 @pytest.fixture(scope="module")
 def plugin_name():
     """plugin_name in the path /fs/site5/eccc/cmd/w/spst900/spooki/spooki_dir/pluginsRelatedStuff/{plugin_name}"""
     return "Helicity"
+
 
 def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
     """Test du plugin Helicity"""
@@ -34,4 +36,4 @@ def test_1(plugin_test_path, test_tmp_path, call_fstcomp):
 
     # compare results
     res = call_fstcomp(results_file, file_to_compare)
-    assert(res)
+    assert res

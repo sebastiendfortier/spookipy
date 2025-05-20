@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,7 +20,6 @@ plugin_test_dir = TEST_PATH + "CubeRoot/testsFiles/"
 
 
 class TestCubeRoot(unittest.TestCase):
-
     def test_function_CBRT(self):
         """Calcul de la fonction racine cubique pour chaque element."""
         # open and read source
@@ -34,7 +31,7 @@ class TestCubeRoot(unittest.TestCase):
         # [ReaderStd --input {sources[0]}] >> [CubeRoot] >> [WriterStd --output {destination_path} --ignoreExtended --IP1EncodingStyle OLDSTYLE]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_function_CBRT.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_function_CBRT.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,4 +39,4 @@ class TestCubeRoot(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

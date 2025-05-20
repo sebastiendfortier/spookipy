@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -22,7 +20,6 @@ plugin_test_dir = TEST_PATH + "PrecipitationTypeSignificant/testsFiles/"
 
 
 class TestPrecipitationTypeSignificant(unittest.TestCase):
-
     def test_1(self):
         """Tester le plugin avec 2 groupes d'intervalles avec un fichier qui provient de regeta et regdiag."""
         # open and read source
@@ -34,7 +31,7 @@ class TestPrecipitationTypeSignificant(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [PrecipitationAmount --fieldName RN,SN,FR,PE --rangeForecastHour 0@48,0@48 --interval 12,24 --step 12,24] >> [Select --fieldName RN,SN,FR,PE] >> [FilterDigital --filter 1,2,1 --repetitions 1] >> [PrecipitationTypeSignificant] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_1.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -42,7 +39,7 @@ class TestPrecipitationTypeSignificant(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res
 
     def test_2(self):
         """Tester le plugin avec 2 groupes d'intervalles avec un fichier qui provient de regeta et regdiag. intervals already calculated"""
@@ -55,7 +52,7 @@ class TestPrecipitationTypeSignificant(unittest.TestCase):
         # [ReaderStd --ignoreExtended --input {sources[0]}] >> [Select --fieldName RN,SN,FR,PE] >> [PrecipitationTypeSignificant] >> [WriterStd --output {destination_path} --ignoreExtended]
 
         # write the result
-        results_file = ''.join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
+        results_file = "".join([TMP_PATH, secrets.token_hex(16), "test_2.std"])
         StandardFileWriter(results_file, df)()
 
         # open and read comparison file
@@ -63,4 +60,4 @@ class TestPrecipitationTypeSignificant(unittest.TestCase):
 
         # compare results
         res = fstcomp(results_file, file_to_compare)
-        assert(res)
+        assert res

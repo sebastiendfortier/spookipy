@@ -36,18 +36,19 @@ message(){
    true
 }
 
-print_and_do(){
-   message $@
-   eval $@
-}
-
-use_spookipy_deps(){
-    # spookipy uses low-level python binding for
-    # librmn functions provided by rpnpy
-    print_and_do . r.load.dot eccc/mrd/rpn/MIG/ENV/migdep/5.1.1 eccc/mrd/rpn/MIG/ENV/x/rpnpy/2.2.0-a11
-    print_and_do . ssmuse-sh -d /fs/ssm/eccc/cmd/cmde/surge/surgepy/1.0.8/
-    print_and_do . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/apps/ci_fstcomp/1.0.5
-    print_and_do . ssmuse-sh -d /fs/ssm/eccc/cmd/cmds/fstpy/2.1.11/
+use_spookipy_deps() {
+    # Les fichiers cmds_python_env.txt et fstpy_env.txt contiennent les packages necessaires a sourcer 
+    local filenames=("cmds_python_env.txt" "fstpy_env.txt")
+    
+    for filename in "${filenames[@]}"; do
+        message "Processing $filename"
+        
+        while IFS= read -r line || [[ -n "$line" ]]; do
+            if [[ $line =~ ^[[:space:]]*\..* ]]; then
+                eval "$line"
+            fi
+        done < "$filename"
+    done
 }
 
 use_spookipy

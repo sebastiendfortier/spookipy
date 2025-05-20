@@ -40,7 +40,7 @@ cmd = "rm -rf /tmp/conda-build && rattler-build build --recipe-dir conda.recipe 
 cmd = "conda-smithy rerender"
 
 [tasks.conda-upload]
-cmd = "rattler-build upload anaconda --force -v -o fortiers /tmp/conda-build/linux-64/spookipy-*.conda"
+cmd = "rattler-build upload anaconda -v -o fortiers /tmp/conda-build/linux-64/spookipy-*.conda"
 depends-on = ["conda-build"]
 
 [dependencies]
